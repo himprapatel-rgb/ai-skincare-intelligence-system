@@ -1,4 +1,4 @@
-name: Frontend & Mobile CI/CD
+npm ci  npm installname: Frontend & Mobile CI/CD
 
 on:
   push:
@@ -30,7 +30,7 @@ jobs:
       - name: Install dependencies
         run: |
           cd frontend
-          npm ci
+          npm install
       
       - name: Run ESLint
         run: |

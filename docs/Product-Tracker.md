@@ -4,7 +4,7 @@
 
 - **Document Type:** Product Development Tracker
 - **Version:** 1.2
-- **Last Updated:** December 2, 2025, 9:52 AM GMT
+- **Last Updated: December 2, 2025, 2:45 PM GMT (Sprint 1.2 Backend Tests Complete)
 - **Owner:** Product & Development Team
 - **Status:** Active Development
 
@@ -103,8 +103,8 @@
 ### 🟢 Sprint 1.2: Onboarding, Profile Management & Consent (IN PROGRESS)
 
 **Duration:** Dec 2-12, 2025 (10 days)  
-**Status:** 🟢 In Progress (70% Complete - Code Written, Testing Pending)  
-**Story Points:** 39 committed / 39 total  
+**Status:** 🟢 In Pro 🟢 Backend Complete (82% - Backend Tests Passing, Frontend/Accessibility Pending)
+**Story Points:** 39 committed /32 committed / 39 total (Backend tests complete, frontend pending)
 **Team:** Backend (2), Frontend (2), QA (1)
 
 **Epic:** EPIC 1 (User Accounts & Onboarding) + EPIC 18 (UX/Design System)  

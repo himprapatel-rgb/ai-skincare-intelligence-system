@@ -50,7 +50,7 @@ jobs:
           path: frontend/build/
   
   ios-build:
-      if: false  # Disabled until React Native project structure is initialized
+      : false  # Disabled until React Native project structure is initialized
     name: iOS - Build & Test
     runs-on: macos-latest
     
@@ -100,8 +100,7 @@ jobs:
     
     steps:
       - uses: actions/checkout@v4
-      
-      - name: Setup Node.js
+           - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'

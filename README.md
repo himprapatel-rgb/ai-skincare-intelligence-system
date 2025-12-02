@@ -47,7 +47,7 @@ This is a private development project. Contribution guidelines will be establish
 
 ## License
 
-All rights reserved - DataEdge Ltd
+All rights reserved - Himanshu Patel
 
 ## Contact
 

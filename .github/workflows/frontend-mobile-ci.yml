@@ -11,7 +11,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  # Web Frontend Build & Test
   web-frontend:
     name: Web Frontend - Build & Test
     runs-on: ubuntu-latest
@@ -52,7 +51,6 @@ jobs:
           name: web-build
           path: frontend/build/
   
-  # iOS Build
   ios-build:
       if: false  # Disabled until React Native project structure is initialized
     name: iOS - Build & Test
@@ -97,7 +95,6 @@ jobs:
             -sdk iphonesimulator \
             -destination 'platform=iOS Simulator,name=iPhone 14'
   
-  # Android Build
   android-build:
       if: false  # Disabled until React Native project structure is initialized
     name: Android - Build & Test

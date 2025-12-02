@@ -1,0 +1,132 @@
+name: Daily AI Agile Summary
+
+on:
+  schedule:
+    - cron: "30 12 * * *" # Runs daily at 12:30 UTC
+  workflow_dispatch:
+
+permissions:
+  issues: write
+
+jobs:
+  generate-summary:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Generate and post daily summary
+        uses: actions/github-script@v7
+        # Provide the API key from secrets; optional GPTGPT_API_BASE secret can override the default.
+        env:
+          GPTGPT_API_KEY: ${{ secrets.GPTGPT_API_KEY }}
+          GPTGPT_API_BASE: ${{ secrets.GPTGPT_API_BASE }}
+          # Optional: GitHub username to assign the daily summary issue to
+          DAILY_ASSIGNEE: ${{ secrets.DAILY_ASSIGNEE }}
+        with:
+          script: |
+            const fs = require('fs');
+            const { owner, repo } = context.repo;
+
+            const title = 'Daily: Update AI Agile Workflow trackers';
+
+            // Find the open reminder issue
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner,
+              repo,
+              state: 'open',
+              per_page: 100,
+            });
+
+            const issue = issues.find(i => i.title === title);
+            if (!issue) {
+              console.log('No open daily reminder issue found; skipping summary.');
+              return;
+            }
+
+            // Read key repo docs to build the prompt (best-effort)
+            function readFileSafe(path) {
+              try { return fs.readFileSync(path, 'utf8'); } catch (e) { return ''; }
+            }
+
+            const aiWorkflow = readFileSafe('docs/AI_AGILE_WORKFLOW.md');
+            const progress = readFileSafe('docs/PROJECT_PROGRESS_TRACKER.md');
+            const sprintFiles = readFileSafe('docs/SPRINT-1.1-CODE-FILES.md');
+            const readme = readFileSafe('README.md');
+
+            // Build a concise prompt for the LLM
+            const prompt = `You are an assistant asked to produce a short, actionable daily project summary for the AI Skincare Intelligence System repo. Produce two sections in Markdown:\n\n1) Where we are: a concise summary of current status based on the provided files.\n2) Next steps: 3-6 concrete next tasks for the active sprint, prioritized and actionable.\n\nFiles (concatenate):\n---AI_AGILE_WORKFLOW---\n${aiWorkflow.slice(0,4000)}\n---PROJECT_PROGRESS_TRACKER---\n${progress.slice(0,4000)}\n---SPRINT_FILES---\n${sprintFiles.slice(0,4000)}\n---README---\n${readme.slice(0,2000)}\n\nKeep the output to about 300-600 words, in Markdown, suitable to paste directly into a GitHub issue comment.`;
+
+            // Prefer calling an internal deployed summary endpoint for security and auditing.
+            // The endpoint should accept POST { prompt } and return { summary }.
+            const summaryEndpoint = process.env.SUMMARY_ENDPOINT || process.env.GPTGPT_API_BASE;
+            const summaryToken = process.env.SUMMARY_TOKEN || process.env.GPTGPT_API_KEY;
+            if (!summaryEndpoint) {
+              console.log('No SUMMARY_ENDPOINT configured. Skipping LLM call.');
+              return;
+            }
+
+            console.log('Calling internal summary endpoint at', summaryEndpoint);
+
+            const resp = await fetch(summaryEndpoint, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-SUMMARY-TOKEN': summaryToken || ''
+              },
+              body: JSON.stringify({ prompt })
+            });
+
+            if (!resp.ok) {
+              const text = await resp.text();
+              throw new Error(`Summary endpoint failed: ${resp.status} ${text}`);
+            }
+
+            const payload = await resp.json();
+            let summary = '';
+            if (payload && typeof payload === 'object' && payload.summary) {
+              summary = payload.summary;
+            } else if (payload && typeof payload === 'object' && payload.text) {
+              summary = payload.text;
+            } else {
+              summary = JSON.stringify(payload, null, 2);
+            }
+
+            // Post the summary as a comment on the reminder issue
+            await github.rest.issues.createComment({
+              owner,
+              repo,
+              issue_number: issue.number,
+              body: `**Automated daily summary (generated)**\n\n${summary}`
+            });
+
+            // Add labels to indicate automation ran
+            try {
+              await github.rest.issues.addLabels({
+                owner,
+                repo,
+                issue_number: issue.number,
+                labels: ['automated-summary','daily']
+              });
+              console.log('Added labels to issue #' + issue.number);
+            } catch (err) {
+              console.log('Failed to add labels:', err.message || err);
+            }
+
+            // Optionally assign the issue to a user if DAILY_ASSIGNEE secret is set
+            const assignee = process.env.DAILY_ASSIGNEE;
+            if (assignee) {
+              try {
+                await github.rest.issues.addAssignees({
+                  owner,
+                  repo,
+                  issue_number: issue.number,
+                  assignees: [assignee]
+                });
+                console.log('Assigned issue #' + issue.number + ' to ' + assignee);
+              } catch (err) {
+                console.log('Failed to assign issue:', err.message || err);
+              }
+            } else {
+              console.log('No DAILY_ASSIGNEE configured; skipping assignee step.');
+            }

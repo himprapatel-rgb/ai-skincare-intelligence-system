@@ -8,13 +8,13 @@ from pydantic import Field
 
 class Settings(BaseSettings):
     """Application settings loaded from environment variables."""
-    
+
     # Database
     DATABASE_URL: str = Field(
         ...,
         description="PostgreSQL database connection URL"
     )
-    
+
     # JWT Settings
     SECRET_KEY: str = Field(
         ...,
@@ -28,7 +28,7 @@ class Settings(BaseSettings):
         default=30,
         description="Access token expiration time in minutes"
     )
-    
+
     # Application Settings
     APP_NAME: str = Field(
         default="AI Skincare Intelligence System",
@@ -42,7 +42,7 @@ class Settings(BaseSettings):
         default=False,
         description="Debug mode"
     )
-    
+
     # CORS Settings
     ALLOWED_ORIGINS: list[str] = Field(
         default=[
@@ -52,7 +52,23 @@ class Settings(BaseSettings):
         ],
         description="List of allowed CORS origins"
     )
-    
+
+    # External AI provider keys
+    GPTGPT_API_KEY: str | None = Field(
+        default=None,
+        description="API key for external GPTGPT service (optional)"
+    )
+    GPTGPT_API_BASE: str | None = Field(
+        default=None,
+        description="Optional base URL for GPTGPT API (overrides built-in default)"
+    )
+
+    # Summary endpoint protection token (for internal summary endpoint)
+    SUMMARY_TOKEN: str | None = Field(
+        default=None,
+        description="Shared secret token required by internal summary endpoint"
+    )
+
     class Config:
         env_file = ".env"
         case_sensitive = True

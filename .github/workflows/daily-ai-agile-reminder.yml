@@ -1,0 +1,52 @@
+name: Daily AI Agile Reminder
+
+on:
+  schedule:
+    - cron: '0 12 * * *' # Runs daily at 12:00 UTC
+  workflow_dispatch:
+
+permissions:
+  issues: write
+
+jobs:
+  create-reminder-issue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create daily reminder issue if none exists
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await (async () => {
+              const title = 'Daily: Update AI Agile Workflow trackers';
+              const body = `This is an automated reminder to follow /docs/AI_AGILE_WORKFLOW.md and update the following if needed:
+
+- \`/docs/PROJECT_PROGRESS_TRACKER.md\`
+- \`/docs/sprint-X.Y.md\`
+- Ensure tests exist/updated for changed code
+
+If you've already updated today, close this issue. This reminder is part of the team's daily update rule.`;
+
+              const { owner, repo } = context.repo;
+
+              const { data: issues } = await github.rest.issues.listForRepo({
+                owner,
+                repo,
+                state: 'open',
+                per_page: 100
+              });
+
+              const exists = issues.some(i => i.title === title);
+              if (exists) {
+                console.log('A daily reminder issue is already open — skipping creation.');
+                return;
+              }
+
+              await github.rest.issues.create({
+                owner,
+                repo,
+                title,
+                body,
+                labels: ['reminder', 'daily']
+              });
+              console.log('Daily reminder issue created.');
+            })();

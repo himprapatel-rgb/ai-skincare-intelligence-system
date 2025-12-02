@@ -48,7 +48,7 @@ jobs:
           npm run build
       
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: web-build
           path: frontend/build/
@@ -135,7 +135,7 @@ jobs:
           ./gradlew test
       
       - name: Upload APK
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: android-apk
           path: mobile/android/app/build/outputs/apk/debug/app-debug.apk
@@ -167,7 +167,7 @@ jobs:
       
       - name: Upload test results
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: playwright-results
           path: frontend/test-results/

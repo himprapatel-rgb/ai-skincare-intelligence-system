@@ -31,4 +31,7 @@ app.include_router(api_router, prefix="/api/v1")
 
 @app.get("/", tags=["Root"])
 def read_root():
-    return {"message": "AI Skincare Intelligence System API", "version": settings.APP_VERSION}
+    return {
+        "message": "AI Skincare Intelligence System API",
+        "version": settings.APP_VERSION,
+    }

@@ -6,6 +6,7 @@ This module reads `GPTGPT_API_KEY` from `app.config.settings` and provides
 
 Replace `BASE_URL` with the provider's real base URL.
 """
+
 from __future__ import annotations
 
 import requests
@@ -18,13 +19,16 @@ BASE_URL = "https://chatgpt.com/g/g-p-692c8d9ea8b081919bd35079970719fc-ai-skin-c
 
 
 class GPTService:
-    def __init__(self, api_key: str | None = None, base_url: str = BASE_URL, timeout: int = 30):
+    def __init__(
+        self, api_key: str | None = None, base_url: str = BASE_URL, timeout: int = 30
+    ):
         self.api_key = api_key or settings.GPTGPT_API_KEY
         self.base_url = base_url
         self.timeout = timeout
         if not self.api_key:
             raise RuntimeError(
-                "GPTGPT_API_KEY is not configured. Set it in environment or .env")
+                "GPTGPT_API_KEY is not configured. Set it in environment or .env"
+            )
 
     def _headers(self) -> dict[str, str]:
         return {
@@ -41,8 +45,9 @@ class GPTService:
         url = f"{self.base_url}/chat"
         payload = {"model": model, "prompt": prompt, "max_tokens": max_tokens}
 
-        resp = requests.post(url, headers=self._headers(),
-                             json=payload, timeout=self.timeout)
+        resp = requests.post(
+            url, headers=self._headers(), json=payload, timeout=self.timeout
+        )
         resp.raise_for_status()
         data = resp.json()
 
@@ -54,14 +59,28 @@ class GPTService:
             if "text" in data and isinstance(data["text"], str):
                 return data["text"]
 
-            if "choices" in data and isinstance(data["choices"], list) and data["choices"]:
+            if (
+                "choices" in data
+                and isinstance(data["choices"], list)
+                and data["choices"]
+            ):
                 first = data["choices"][0]
                 # choice.text
-                if isinstance(first, dict) and "text" in first and isinstance(first["text"], str):
+                if (
+                    isinstance(first, dict)
+                    and "text" in first
+                    and isinstance(first["text"], str)
+                ):
                     return first["text"]
                 # choice.message.content (chat-style)
-                if isinstance(first, dict) and "message" in first and isinstance(first["message"], dict):
-                    if "content" in first["message"] and isinstance(first["message"]["content"], str):
+                if (
+                    isinstance(first, dict)
+                    and "message" in first
+                    and isinstance(first["message"], dict)
+                ):
+                    if "content" in first["message"] and isinstance(
+                        first["message"]["content"], str
+                    ):
                         return first["message"]["content"]
 
         # Fallback: return the whole JSON payload

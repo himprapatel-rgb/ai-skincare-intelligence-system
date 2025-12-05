@@ -7,6 +7,7 @@ IMPORTANT: This is a temporary shim to make CI/local checks possible when
 network or packaging is restricted. Remove this file once real packages
 are installed (via `pip install -r requirements.txt`).
 """
+
 from typing import Any
 
 
@@ -23,7 +24,12 @@ class _DummyResponse:
             raise Exception(f"HTTP {self.status_code}")
 
 
-def post(url: str, headers: dict | None = None, json: Any | None = None, timeout: int | None = None):
+def post(
+    url: str,
+    headers: dict | None = None,
+    json: Any | None = None,
+    timeout: int | None = None,
+):
     """Placeholder `post` used by tests via monkeypatch.
 
     Tests in this repo monkeypatch `requests.post` before importing modules

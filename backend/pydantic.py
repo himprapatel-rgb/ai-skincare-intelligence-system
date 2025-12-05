@@ -6,6 +6,7 @@ This shim implements a small `Field` function that simply returns the
 default value provided. It's intentionally tiny and should be removed
 once `pydantic` is installed from `requirements.txt`.
 """
+
 from typing import Any
 
 

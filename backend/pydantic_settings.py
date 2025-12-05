@@ -8,6 +8,7 @@ tests to import `app.config` and to set attributes on the created
 Remove this shim after installing `pydantic-settings` from
 `requirements.txt`.
 """
+
 from typing import Any
 
 

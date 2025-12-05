@@ -16,27 +16,31 @@ class SummaryRequest(BaseModel):
 
 
 @router.post("/summary")
-def generate_summary(request: SummaryRequest, x_summary_token: str | None = Header(None)) -> Any:
+def generate_summary(
+    request: SummaryRequest, x_summary_token: str | None = Header(None)
+) -> Any:
     """Generate a project summary using the GPT service.
 
     This endpoint is intended for internal automation. It requires the
     `X-SUMMARY-TOKEN` header to match `settings.SUMMARY_TOKEN`.
     """
     if not settings.SUMMARY_TOKEN or x_summary_token != settings.SUMMARY_TOKEN:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized"
+        )
 
     # Build a prompt from repository docs (best-effort, truncate to keep size reasonable)
     def read_safe(path: str) -> str:
         try:
-            with open(path, 'r', encoding='utf8') as f:
+            with open(path, "r", encoding="utf8") as f:
                 return f.read()
         except Exception:
             return ""
 
-    ai_workflow = read_safe('docs/AI_AGILE_WORKFLOW.md')[:4000]
-    progress = read_safe('docs/PROJECT_PROGRESS_TRACKER.md')[:4000]
-    sprint = read_safe('docs/SPRINT-1.1-CODE-FILES.md')[:4000]
-    readme = read_safe('README.md')[:2000]
+    ai_workflow = read_safe("docs/AI_AGILE_WORKFLOW.md")[:4000]
+    progress = read_safe("docs/PROJECT_PROGRESS_TRACKER.md")[:4000]
+    sprint = read_safe("docs/SPRINT-1.1-CODE-FILES.md")[:4000]
+    readme = read_safe("README.md")[:2000]
 
     prompt = request.prompt or (
         "You are an assistant asked to produce a short, actionable daily project summary for the AI Skincare Intelligence System repo. "

@@ -5,6 +5,7 @@ import uuid
 
 from app.database import Base
 
+
 class ConsentLog(Base):
     __tablename__ = "consent_logs"
 

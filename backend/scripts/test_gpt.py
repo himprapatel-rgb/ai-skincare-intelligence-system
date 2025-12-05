@@ -8,6 +8,7 @@ Usage:
 This script calls `GPTService.chat` and prints the result. It is intended
 for local verification only and will not be executed in CI.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -21,7 +22,11 @@ def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser()
     p.add_argument("--key", help="GPTGPT API key (overrides env)")
     p.add_argument("--base", help="GPTGPT API base URL (overrides default)")
-    p.add_argument("--prompt", default="Provide a short 3-line sprint status summary.", help="Prompt to send to the LLM")
+    p.add_argument(
+        "--prompt",
+        default="Provide a short 3-line sprint status summary.",
+        help="Prompt to send to the LLM",
+    )
     args = p.parse_args(argv)
 
     api_key = args.key or os.getenv("GPTGPT_API_KEY")

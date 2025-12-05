@@ -45,7 +45,7 @@ def generate_summary(
     prompt = request.prompt or (
         "You are an assistant asked to produce a short, actionable daily project summary for the AI Skincare Intelligence System repo. "
         "Produce two sections in Markdown: 1) Where we are, 2) Next steps (3-6 items). Use these files as context: \n"
-        f"AI_AGILE_WORKFLOW:\n{ai_workflow}\nPROJECT_PROGRESS_TRACKER:\n{progress}\nSPRINT_FILES:\n{sprint}\nREADME:\n{readme}"
+        f"AI_AGILE_WORKFLOW:{ai_workflow}PROJECT_PROGRESS_TRACKER:{progress}SPRINT_FILES:{sprint}README:{readme}"
     )
 
     # Initialize service

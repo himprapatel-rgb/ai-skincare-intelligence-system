@@ -17,7 +17,7 @@ from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, status
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-from app.models import User, FaceScan
+from app.models import User, ScanSession, SkinAnalysis
 from app.schemas.scan_schemas import (
     ScanInitResponse,
     ScanUploadResponse,
@@ -37,8 +37,8 @@ SCAN_MEDIA_ROOT = "media/face_scans"  # adjust if you have a different media roo
 
 # ---------- Helper functions ----------
 
-def _create_scan(db: Session, user: User) -> FaceScan:
-    scan = FaceScan(
+def _create_scan(db: Session, user: User) -> ScanSession:
+    scan = ScanSession(
         user_id=user.id,
         status="pending",
         image_path=None,
@@ -52,8 +52,8 @@ def _create_scan(db: Session, user: User) -> FaceScan:
     return scan
 
 
-def _get_user_scan_or_404(db: Session, scan_id: int, user: User) -> FaceScan:
-    scan = db.query(FaceScan).filter(FaceScan.id == scan_id).first()
+def _get_user_scan_or_404(db: Session, scan_id: int, user: User) -> ScanSession:
+    scan = db.query(ScanSession).filter(ScanSession.id == scan_id).first()
     if not scan:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -67,7 +67,7 @@ def _get_user_scan_or_404(db: Session, scan_id: int, user: User) -> FaceScan:
     return scan
 
 
-async def _validate_and_save_image(scan: FaceScan, image: UploadFile, user: User) -> str:
+async def _validate_and_save_image(scan: ScanSession, image: UploadFile, user: User) -> str:
     # Validate content type
     if image.content_type not in ALLOWED_IMAGE_TYPES:
         raise HTTPException(
@@ -103,7 +103,7 @@ async def _validate_and_save_image(scan: FaceScan, image: UploadFile, user: User
     return file_path
 
 
-def _run_mock_analysis(scan: FaceScan) -> dict:
+def _run_mock_analysis(scan: ScanSession) -> dict:
     """
     Run mock ML analysis and return placeholder results.
     
@@ -144,11 +144,11 @@ def _run_mock_analysis(scan: FaceScan) -> dict:
 
 def _update_scan_status(
     db: Session,
-    scan: FaceScan,
+    scan: ScanSession,
     status_value: str,
     result: Optional[dict] = None,
     image_path: Optional[str] = None,
-) -> FaceScan:
+) -> ScanSession:
     scan.status = status_value
     scan.updated_at = datetime.utcnow()
     
@@ -324,10 +324,10 @@ def get_scan_history(
     """
     Get the authenticated user's face scan history.
     """
-    scans: List[FaceScan] = (
-        db.query(FaceScan)
-        .filter(FaceScan.user_id == current_user.id)
-        .order_by(FaceScan.created_at.desc())
+    scans: List[ScanSession] = (
+        db.query(ScanSession)
+        .filter(ScanSession.user_id == current_user.id)
+        .order_by(ScanSession.created_at.desc())
         .all()
     )
     

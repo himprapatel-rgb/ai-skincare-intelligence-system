@@ -7,7 +7,7 @@ Status: Phase 1 Implementation - Foundation Layer
 Created: December 6, 2025
 """
 
-from typing import List
+from typing import List, Optional
 from datetime import datetime
 import os
 import uuid
@@ -146,8 +146,8 @@ def _update_scan_status(
     db: Session,
     scan: FaceScan,
     status_value: str,
-    result: dict | None = None,
-    image_path: str | None = None,
+    result: Optional[dict] = None,
+    image_path: Optional[str] = None,
 ) -> FaceScan:
     scan.status = status_value
     scan.updated_at = datetime.utcnow()

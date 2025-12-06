@@ -39,7 +39,7 @@ class ScanSession(Base):
     Tracks individual face scanning sessions including:
     - User identification
     - Scan status and timing
-    - Image metadata
+    - Image scan_metadata
     - Processing results linkage
     """
     __tablename__ = "scan_sessions"
@@ -55,8 +55,8 @@ class ScanSession(Base):
     image_url = Column(String(500), nullable=True)  # Cloud storage URL
     image_hash = Column(String(64), nullable=True)  # SHA-256 hash for deduplication
     
-    # Metadata
-    metadata = Column(JSONB, nullable=True)  # lighting_quality, image_dimensions, device_info
+    # scan_metadata
+    scan_metadata = Column(JSONB, nullable=True)  # lighting_quality, image_dimensions, device_info
     
     # Timestamps
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False, index=True)
@@ -81,7 +81,7 @@ class ScanSession(Base):
             "user_id": str(self.user_id),
             "status": self.status.value,
             "image_url": self.image_url,
-            "metadata": self.metadata,
+            "scan_metadata": self.scan_metadata,
             "created_at": self.created_at.isoformat() if self.created_at else None,
             "completed_at": self.completed_at.isoformat() if self.completed_at else None,
             "error_message": self.error_message

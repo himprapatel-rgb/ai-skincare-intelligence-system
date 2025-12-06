@@ -202,3 +202,50 @@ class ErrorResponse(BaseModel):
                 "timestamp": "2025-12-06T12:00:00Z"
             }
         }
+
+# Router compatibility aliases - maps router import names to schema classes
+# These ensure backward compatibility with existing router code
+
+# Alias for scan initialization response
+ScanInitResponse = ScanSessionResponse
+
+# Upload response schema
+class ScanUploadResponse(BaseModel):
+    """Response after successful image upload"""
+    scan_id: UUID = Field(..., description="Scan session ID")
+    status: ScanStatusEnum = Field(..., description="Upload status")
+    image_url: Optional[str] = Field(None, description="Uploaded image URL")
+    message: str = Field(..., description="Status message")
+    
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "scan_id": "123e4567-e89b-12d3-a456-426614174000",
+                "status": "processing",
+                "image_url": "https://storage.example.com/scans/...",
+                "message": "Image uploaded successfully. Processing started."
+            }
+        }
+
+# Status check response schema  
+class ScanStatusResponse(BaseModel):
+    """Response for scan status check"""
+    scan_id: UUID = Field(..., description="Scan session ID")
+    status: ScanStatusEnum = Field(..., description="Current scan status")
+    progress: Optional[int] = Field(None, description="Processing progress (0-100)", ge=0, le=100)
+    message: Optional[str] = Field(None, description="Status message")
+    estimated_completion: Optional[datetime] = Field(None, description="Estimated completion time")
+    
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "scan_id": "123e4567-e89b-12d3-a456-426614174000",
+                "status": "processing",
+                "progress": 75,
+                "message": "Analyzing skin concerns...",
+                "estimated_completion": "2025-12-06T12:05:30Z"
+            }
+        }
+
+# Alias for analysis/result response
+ScanResultResponse = AnalysisResponse

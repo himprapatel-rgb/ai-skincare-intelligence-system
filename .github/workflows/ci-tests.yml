@@ -9,8 +9,8 @@ on:
 jobs:
   tests:
     runs-on: ubuntu-latest
-        services:
-      postgres:
+        ices:
+      stgres:
         image: postgres:15
         env:
           POSTGRES_USER: test

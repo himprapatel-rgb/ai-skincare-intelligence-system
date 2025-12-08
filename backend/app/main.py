@@ -42,3 +42,6 @@ def read_root():
         "message": "AI Skincare Intelligence System API",
         "version": settings.APP_VERSION,
     }
+
+
+# Sprint 3 Digital Twin deployment trigger - Force redeploy

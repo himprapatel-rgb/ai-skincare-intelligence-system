@@ -12,12 +12,12 @@ class ProgressPhotoBase(BaseModel):
 
 
 class ProgressPhotoCreate(ProgressPhotoBase):
-    metadata: Optional[str] = None
+    photo_metadata: Optional[str] = None
 
 
 class ProgressPhotoResponse(ProgressPhotoBase):
     id: UUID
-    metadata: Optional[str] = None
+    photo_metadata: Optional[str] = None
     created_at: datetime
 
     class Config:

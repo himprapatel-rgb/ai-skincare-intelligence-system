@@ -1,3 +1,7 @@
+
+from app.api.v1.routines import router as routines_router
+from app.api.v1.progress import router as progress_router
+from app.api.v1.products import router as external_products_router
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
@@ -33,6 +37,9 @@ async def health_check():
 app.include_router(api_router, prefix="/api/v1")
 app.include_router(scan.router)  # Sprint 2: Face Scan & AI Analysis endpoints
 app.include_router(digital_twin.router)  # Sprint 3: Digital Twin
+app.include_router(routines_router, prefix="/api/v1")
+app.include_router(progress_router, prefix="/api/v1")
+app.include_router(external_products_router, prefix="/api/v1")
 
 
 @app.get("/", tags=["Root"])

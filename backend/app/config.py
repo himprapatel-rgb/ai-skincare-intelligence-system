@@ -10,10 +10,10 @@ class Settings(BaseSettings):
     """Application settings loaded from environment variables."""
 
     # Database
-    DATABASE_URL: str = Field(..., description="PostgreSQL database connection URL")
+    DATABASE_URL: str | None = Field(default=None, description="PostgreSQL database connection URL")
 
     # JWT Settings
-    SECRET_KEY: str = Field(..., description="Secret key for JWT token generation")
+    SECRET_KEY: str = Field(default="dev-secret-key-change-in-production", description="Secret key for JWT token generation")
     ALGORITHM: str = Field(default="HS256", description="Algorithm for JWT encoding")
     ACCESS_TOKEN_EXPIRE_MINUTES: int = Field(
         default=30, description="Access token expiration time in minutes"
@@ -32,6 +32,8 @@ class Settings(BaseSettings):
             "http://localhost:3000",  # Next.js dev
             "http://localhost:19006",  # Expo web
             "http://localhost:8081",  # Expo mobile
+            "https://himprapatel-rgb.github.io",  # GitHub Pages production
+            "https://ai-skincare-intelligence-system-production.up.railway.app",  # Railway backend
         ],
         description="List of allowed CORS origins",
     )

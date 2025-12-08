@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
 from app.api.v1 import api_router
 from app.database import engine, Base
-from app.routers import scan
+from app.routers import scan, digital_twin
 
 # Create database tables if needed (safe for local dev)
 try:
@@ -33,6 +33,7 @@ async def health_check():
     return {"status": "healthy", "service": "ai-skincare-intelligence-system"}
 app.include_router(api_router, prefix="/api/v1")
 app.include_router(scan.router)  # Sprint 2: Face Scan & AI Analysis endpoints
+app.include_router(digital_twin.router)  # Sprint 3: Digital Twin
 
 
 @app.get("/", tags=["Root"])

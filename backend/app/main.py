@@ -45,3 +45,5 @@ def read_root():
 
 
 # Sprint 3 Digital Twin deployment trigger - Force redeploy
+
+# Watch path test: /backend/** configured

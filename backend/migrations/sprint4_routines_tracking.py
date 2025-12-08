@@ -93,7 +93,7 @@ def upgrade():
         sa.Column("photo_type", sa.String(32), nullable=False),
         sa.Column("image_url", sa.Text(), nullable=False),
         sa.Column("taken_at", sa.DateTime(timezone=True), nullable=False),
-        sa.Column("metadata", sa.JSON(), nullable=True),
+        sa.Column("photo_metadata", sa.JSON(), nullable=True),
         sa.Column("created_at", sa.DateTime(timezone=True), server_default=sa.func.now()),
     )
     op.create_index("ix_progress_photos_user_id", "progress_photos", ["user_id"])

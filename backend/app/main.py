@@ -4,9 +4,7 @@ from app.config import settings
 from app.api.v1 import api_router
 from app.database import engine, Base
 from app.routers import scan, digital_twin
-from app.models import digital_twin_models  # Import Digital Twin models for table creation
-
-# Create database tables if needed (safe for local dev)
+from app.models.twin_models import *  # Import Digital Twin models for table creation# Create database tables if needed (safe for local dev)
 try:
     Base.metadata.create_all(bind=engine)
 except Exception:

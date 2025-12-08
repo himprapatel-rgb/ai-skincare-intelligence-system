@@ -18,7 +18,7 @@ class ProgressPhoto(Base):
     image_url = Column(Text, nullable=False)
     taken_at = Column(DateTime(timezone=True), nullable=False)
 
-    metadata = Column(Text, nullable=True)
+    photo_metadata = Column(Text, nullable=True)
     created_at = Column(DateTime(timezone=True), default=datetime.utcnow)
 
     routine = relationship("SavedRoutine", back_populates="progress_photos")

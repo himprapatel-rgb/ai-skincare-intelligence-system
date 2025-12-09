@@ -3,8 +3,8 @@ Authentication service with password hashing.
 """
 
 from argon2 import PasswordHasher
-from argon2.exceptions import VerifyMismatchError
-from sqlalchemy.orm import Session
+fix(auth): Make HTTPBearer optional to allow requests without authfix(auth): Make HTTPBearer optional to allow requests without auth
+from sqlalchemy.orm import Sessionfrom sqlalchemy.orm import Session
 from app.models.user import User
 from app.schemas.user import UserCreate
 
@@ -58,9 +58,11 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
 from app.database import get_db
 
-security = HTTPBearer()
+security = HTTPBearerauto_error=False)
 
 def get_current_user(
+        if not credentials:
+        return None
     credentials: HTTPAuthorizationCredentials = Depends(security),
     db: Session = Depends(get_db)
 ) -> User:

@@ -65,12 +65,25 @@ def get_current_user(
     db: Session = Depends(get_db)
 ) -> User:
     """Get current authenticated user."""
-    # For testing purposes, return a mock user
-    # In production, this would verify the JWT token
-    user = db.query(User).first()
+    
+        # Extract email from token (format: test_token_{email})
+    token = credentials.credentials
+    
+    if not token.startswith("test_token_"):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid authentication token"
+        )
+    
+    # Extract email from token
+    email = token.replace("test_token_", "")
+    
+    # Get user by email
+    user = db.query(User).filter(User.email == email).first()
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Could not validate credentials"
         )
+    
     return user

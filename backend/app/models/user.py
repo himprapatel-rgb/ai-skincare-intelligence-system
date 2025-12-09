@@ -28,7 +28,7 @@ class User(Base):
 
         # Relationships
     scan_sessions = relationship("ScanSession", back_populates="user", cascade="all, delete-orphan")
-        skin_snapshots = relationship("SkinStateSnapshot", back_populates="user", cascade="all, delete-orphan")
+    skin_snapshots = relationship("SkinStateSnapshot", back_populates="user", cascade="all, delete-orphan")
 
     def __repr__(self):
         return f"<User {self.email}>"

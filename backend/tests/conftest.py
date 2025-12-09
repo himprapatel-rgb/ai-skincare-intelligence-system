@@ -73,7 +73,7 @@ def auth_headers(client):
     # Login to get token
     response = client.post(
         "/api/v1/auth/login",
-            "email": "test@example.com",
+            json={"email": "test@example.com",
             "password": "TestPass123!"
         }
     )

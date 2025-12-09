@@ -61,7 +61,7 @@ class ModelInfoResponse(BaseModel):
 
 
 @router.post(
-    "/products/analyze",
+    /analyze",
     response_model=SuitabilityResponse,
     summary="Analyze Product Suitability",
     description="Get ML-powered suitability prediction for a product based on user profile"

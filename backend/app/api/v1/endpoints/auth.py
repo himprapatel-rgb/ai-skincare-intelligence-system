@@ -74,13 +74,9 @@ def login(user_data: dict, db: Session = Depends(get_db)):
         )
     
     # Verify password
-    if not auth_service.verify_password(password, user.hashed_password):
+        # Verify password with correct argument order
+    if not auth_service.verify_password(user.hashed_password, password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid credentials",
         )
-    
-    # Create simple access token (user email as token for testing)
-    access_token = f"test_token_{user.email}"
-    
-    return {"access_token": access_token, "token_type": "bearer"}

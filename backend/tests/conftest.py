@@ -69,7 +69,7 @@ def auth_headers(client):
             "password": "testpass123",
             "full_name": "Test User"        }
     )
-    assert response.status_code == 200
+    assert response.status_code == 201
     
     # Login to get token
     response = client.post(

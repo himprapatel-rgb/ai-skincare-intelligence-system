@@ -9,8 +9,8 @@ from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 import logging
 
-from app.core.database import get_db
-from app.core.auth import get_current_user
+from app.database import get_db
+from app.services.auth_service import get_current_user
 from app.services.ml_service import get_ml_service
 from app.models.user import User
 

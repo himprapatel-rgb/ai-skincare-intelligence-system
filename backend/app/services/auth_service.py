@@ -3,7 +3,6 @@ Authentication service with password hashing.
 """
 
 from argon2 import PasswordHasher
-fix(auth): Make HTTPBearer optional to allow requests without authfix(auth): Make HTTPBearer optional to allow requests without auth
 from sqlalchemy.orm import Sessionfrom sqlalchemy.orm import Session
 from app.models.user import User
 from app.schemas.user import UserCreate

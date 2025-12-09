@@ -28,7 +28,7 @@ from app.schemas.scan_schemas import (
 )
 from app.core.security import get_current_user
 
-router = APIRouter(prefix="/api/scan", tags=["Face Scan"])
+router = APIRouter(prefix="/api/v1/scan", tags=["Face Scan"])
 
 ALLOWED_IMAGE_TYPES = {"image/jpeg", "image/png", "image/webp"}
 MAX_IMAGE_SIZE = 5 * 1024 * 1024  # 5 MB

@@ -67,8 +67,7 @@ def auth_headers(client):
         json={
             "email": "test@example.com",
             "password": "testpass123",
-            "name": "Test User"
-        }
+            "full_name": "Test User"        }
     )
     assert response.status_code == 200
     

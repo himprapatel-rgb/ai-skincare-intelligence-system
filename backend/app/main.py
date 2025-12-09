@@ -35,7 +35,7 @@ app.add_middleware(
 async def health_check():
     return {"status": "healthy", "service": "ai-skincare-intelligence-system"}
 app.include_router(api_router, prefix="/api/v1")
-app.include_router(scan.rou, prefix=""ter)  # Sprint 2: Face Scan & AI Analysis endpoints
+app.include_router(scan.router, prefix="")  # Sprint 2: Face Scan & AI Analysis endpoints
 
 app.include_router(digital_twin.router)  # Sprint 3: Digital Twin
 app.include_router(routines_router, prefix="/api/v1")

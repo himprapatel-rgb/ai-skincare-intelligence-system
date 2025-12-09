@@ -66,17 +66,17 @@ def auth_headers(client):
         "/api/v1/auth/register",
         json={
             "email": "test@example.com",
-            "password": "testpass123",
+            "password": "TestPass123!",
             "full_name": "Test User"        }
     )
     assert response.status_code == 201
-    
+TestPass123!TestPass123!!
     # Login to get token
     response = client.post(
         "/api/v1/auth/login",
         json={
             "email": "test@example.com",
-            "password": "testpass123"
+            "password": "TestPass123!"
         }
     )
     assert response.status_code == 200

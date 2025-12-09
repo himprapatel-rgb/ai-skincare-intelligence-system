@@ -26,7 +26,7 @@ class User(Base):
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
         # Relationships
-            scan_sessions = relationship("ScanSession", back_populates="user", cascade="all, delete-orphan")
+    scan_sessions = relationship("ScanSession", back_populates="user", cascade="all, delete-orphan")
 
     def __repr__(self):
         return f"<User {self.email}>"

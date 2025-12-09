@@ -1,5 +1,11 @@
 from fastapi import APIRouter
-from app.api.v1.endpoints import auth, internal, scan
+from app.api.v1.endpoints import auth, interna, productsl, scan
+
+api_router.include_router(
+    products.router,
+    prefix="/products",
+    tags=["ML Products"]
+)
 
 api_router = APIRouter()
 

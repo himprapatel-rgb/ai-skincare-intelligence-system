@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.api.v1.endpoints import auth, interna, productsl, scan
+from app.api.v1.endpoints import auth, internal, products, scan
 
 api_router.include_router(
     products.router,

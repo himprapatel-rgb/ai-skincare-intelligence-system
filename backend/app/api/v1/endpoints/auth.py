@@ -46,3 +46,41 @@ def register_user(user_data: UserCreate, db: Session = Depends(get_db)):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Internal server error: {str(e)}",
         )
+
+
+@router.post(
+    "/login",
+    status_code=status.HTTP_200_OK,
+    summary="User login",
+    description="Authenticate user and return access token",
+)
+def login(user_data: dict, db: Session = Depends(get_db)):
+    """Authenticate user and return access token."""
+    email = user_data.get("email")
+    password = user_data.get("password")
+    
+    if not email or not password:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Email and password are required",
+        )
+    
+    # Get user by email
+    user = auth_service.get_user_by_email(db, email)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid credentials",
+        )
+    
+    # Verify password
+    if not auth_service.verify_password(password, user.hashed_password):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid credentials",
+        )
+    
+    # Create simple access token (user email as token for testing)
+    access_token = f"test_token_{user.email}"
+    
+    return {"access_token": access_token, "token_type": "bearer"}

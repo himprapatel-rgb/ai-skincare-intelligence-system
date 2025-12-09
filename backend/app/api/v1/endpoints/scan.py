@@ -40,7 +40,7 @@ def init_scan_session(
     summary="Upload Scan Image"
 )
 async def upload_scan(
-    scan_id: int,
+    scan_id: str,
     file: UploadFile = File(...),
     db: Session = Depends(get_db),
     current_user: Optional[User] = Depends(get_current_user)
@@ -79,7 +79,7 @@ async def upload_scan(
     summary="Get Scan Results"
 )
 def get_scan_results(
-    scan_id: int,
+    scan_id: str,
     db: Session = Depends(get_db),
     current_user: Optional[User] = Depends(get_current_user)
 ):

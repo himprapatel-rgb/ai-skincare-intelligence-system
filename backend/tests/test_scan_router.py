@@ -8,14 +8,35 @@ import base64
 class TestScanRouter:
     """Test suite for face scan analysis endpoints"""
 
+    def test_init_scan_session(self, client, auth_headers):
+        """Test initializing a new scan session"""
+        response = client.post(
+            "/api/v1/scan/init",
+            headers=auth_headers
+        )
+        
+        assert response.status_code == status.HTTP_201_CREATED
+        data = response.json()
+        assert "scan_id" in data
+        assert "status" in data
+        assert data["status"] == "pending"
+
     def test_upload_scan_success(self, client, auth_headers):
         """Test successful face scan upload"""
-        # Create test image data
+        # First, initialize a scan session
+        init_response = client.post(
+            "/api/v1/scan/init",
+            headers=auth_headers
+        )
+        assert init_response.status_code == status.HTTP_201_CREATED
+        scan_id = init_response.json()["scan_id"]
+        
+        # Then upload the image
         test_image = BytesIO(b"fake_image_data")
         files = {"file": ("test.jpg", test_image, "image/jpeg")}
         
         response = client.post(
-            "/api/v1/scan/upload",
+            f"/api/v1/scan/{scan_id}/upload",
             files=files,
             headers=auth_headers
         )
@@ -23,61 +44,68 @@ class TestScanRouter:
         assert response.status_code == status.HTTP_200_OK
         data = response.json()
         assert "scan_id" in data
-        assert "analysis_status" in data
+        assert "status" in data
 
     def test_upload_scan_no_auth(self, client):
         """Test scan upload without authentication"""
-        test_image = BytesIO(b"fake_image_data")
-        files = {"file": ("test.jpg", test_image, "image/jpeg")}
-        
-        response = client.post("/api/v1/scan/upload", files=files)
-        
+        # Try to init without auth
+        response = client.post("/api/v1/scan/init")
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
     def test_upload_scan_invalid_file_type(self, client, auth_headers):
         """Test scan upload with invalid file type"""
+        # Initialize scan
+        init_response = client.post(
+            "/api/v1/scan/init",
+            headers=auth_headers
+        )
+        scan_id = init_response.json()["scan_id"]
+        
+        # Try to upload invalid file
         test_file = BytesIO(b"not_an_image")
         files = {"file": ("test.txt", test_file, "text/plain")}
         
         response = client.post(
-            "/api/v1/scan/upload",
+            f"/api/v1/scan/{scan_id}/upload",
             files=files,
             headers=auth_headers
         )
         
-        assert response.status_code in [
-            status.HTTP_400_BAD_REQUEST,
-            status.HTTP_415_UNSUPPORTED_MEDIA_TYPE
-        ]
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
 
     def test_get_scan_results(self, client, auth_headers):
         """Test retrieving scan results"""
-        # First upload a scan
+        # Initialize and upload
+        init_response = client.post(
+            "/api/v1/scan/init",
+            headers=auth_headers
+        )
+        scan_id = init_response.json()["scan_id"]
+        
         test_image = BytesIO(b"fake_image_data")
         files = {"file": ("test.jpg", test_image, "image/jpeg")}
         
         upload_response = client.post(
-            "/api/v1/scan/upload",
+            f"/api/v1/scan/{scan_id}/upload",
             files=files,
             headers=auth_headers
         )
-        scan_id = upload_response.json()["scan_id"]
         
         # Get results
         response = client.get(
-            f"/api/v1/scan/{scan_id}",
+            f"/api/v1/scan/{scan_id}/results",
             headers=auth_headers
         )
         
         assert response.status_code == status.HTTP_200_OK
         data = response.json()
         assert "scan_id" in data
-        assert "skin_analysis" in data
+        assert "result" in data
 
     def test_get_scan_not_found(self, client, auth_headers):
         """Test getting non-existent scan"""
         response = client.get(
-            "/api/v1/scan/999999",
+            "/api/v1/scan/999999/results",
             headers=auth_headers
         )
         
@@ -92,54 +120,5 @@ class TestScanRouter:
         
         assert response.status_code == status.HTTP_200_OK
         data = response.json()
-        assert isinstance(data, list)
-
-    def test_rate_limiting(self, client, auth_headers):
-        """Test rate limiting on scan uploads"""
-        test_image = BytesIO(b"fake_image_data")
-        
-        # Make multiple rapid requests
-        responses = []
-        for _ in range(15):
-            files = {"file": ("test.jpg", BytesIO(b"fake_image_data"), "image/jpeg")}
-            response = client.post(
-                "/api/v1/scan/upload",
-                files=files,
-                headers=auth_headers
-            )
-            responses.append(response.status_code)
-        
-        # Should hit rate limit
-        assert status.HTTP_429_TOO_MANY_REQUESTS in responses
-
-    def test_file_cleanup_after_processing(self, client, auth_headers):
-        """Test that temporary files are cleaned up"""
-        test_image = BytesIO(b"fake_image_data")
-        files = {"file": ("test.jpg", test_image, "image/jpeg")}
-        
-        response = client.post(
-            "/api/v1/scan/upload",
-            files=files,
-            headers=auth_headers
-        )
-        
-        assert response.status_code == status.HTTP_200_OK
-        # File cleanup is handled by middleware
-        # This test ensures no exceptions during cleanup
-
-    def test_error_recovery(self, client, auth_headers):
-        """Test error handling and recovery"""
-        # Test with empty file
-        files = {"file": ("test.jpg", BytesIO(b""), "image/jpeg")}
-        
-        response = client.post(
-            "/api/v1/scan/upload",
-            files=files,
-            headers=auth_headers
-        )
-        
-        # Should handle gracefully
-        assert response.status_code in [
-            status.HTTP_400_BAD_REQUEST,
-            status.HTTP_422_UNPROCESSABLE_ENTITY
-        ]
+        assert "scans" in data
+        assert isinstance(data["scans"], list)

@@ -72,6 +72,12 @@ def login(user_data: dict, db: Session = Depends(get_db)):
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid credentials",
         )
+
+        # Return access token
+    return {
+        "access_token": f"test_token_{user.email}",
+        "token_type": "bearer"
+    }
     
     # Verify password
         # Verify password with correct argument order

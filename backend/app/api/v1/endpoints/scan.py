@@ -2,18 +2,14 @@
 from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File
 from sqlalchemy.orm import Session
 from app.database import get_db
-from app.schemas.scan_schemas import ScanSessionResponse
 from app.models.scan import ScanSession
 from app.services.auth_service import get_current_user
 from app.models.user import User
-from typing import List
-import uuid
 
 router = APIRouter()
 
 @router.post(
     "/init",
-    response_model=ScanSessionResponse,
     status_code=status.HTTP_201_CREATED,
     summary="Init Scan Session",
     description="Initialize a new face scan session for the authenticated user."
@@ -23,7 +19,6 @@ def init_scan_session(
     current_user: User = Depends(get_current_user)
 ):
     """Initialize a new scan session."""
-    # Create new scan session
     scan_session = ScanSession(
         user_id=current_user.id,
         status="pending"
@@ -40,8 +35,7 @@ def init_scan_session(
 @router.post(
     "/{scan_id}/upload",
     status_code=status.HTTP_200_OK,
-    summary="Upload Scan Image",
-    description="Upload face image for an existing scan session."
+    summary="Upload Scan Image"
 )
 async def upload_scan(
     scan_id: int,
@@ -50,7 +44,6 @@ async def upload_scan(
     current_user: User = Depends(get_current_user)
 ):
     """Upload image for scan session."""
-    # Validate file type
     allowed_types = ["image/jpeg", "image/jpg", "image/png"]
     if file.content_type not in allowed_types:
         raise HTTPException(
@@ -58,7 +51,6 @@ async def upload_scan(
             detail="Invalid file type. Only JPEG and PNG images are allowed."
         )
     
-    # Get scan session
     scan_session = db.query(ScanSession).filter(
         ScanSession.id == scan_id,
         ScanSession.user_id == current_user.id
@@ -70,7 +62,6 @@ async def upload_scan(
             detail="Scan session not found"
         )
     
-    # Update scan session status
     scan_session.status = "processing"
     db.commit()
     
@@ -82,8 +73,7 @@ async def upload_scan(
 @router.get(
     "/{scan_id}/results",
     status_code=status.HTTP_200_OK,
-    summary="Get Scan Results",
-    description="Retrieve results for a completed scan session."
+    summary="Get Scan Results"
 )
 def get_scan_results(
     scan_id: int,
@@ -110,8 +100,7 @@ def get_scan_results(
 @router.get(
     "/history",
     status_code=status.HTTP_200_OK,
-    summary="Get Scan History",
-    description="Get all scan sessions for the authenticated user."
+    summary="Get Scan History"
 )
 def get_scan_history(
     db: Session = Depends(get_db),

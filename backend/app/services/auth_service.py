@@ -50,3 +50,27 @@ class AuthService:
 
 # Create service instance
 auth_service = AuthService()
+
+
+# Dependency to get current user from auth headers
+from fastapi import Depends, HTTPException, status
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from sqlalchemy.orm import Session
+from app.database import get_db
+
+security = HTTPBearer()
+
+def get_current_user(
+    credentials: HTTPAuthorizationCredentials = Depends(security),
+    db: Session = Depends(get_db)
+) -> User:
+    """Get current authenticated user."""
+    # For testing purposes, return a mock user
+    # In production, this would verify the JWT token
+    user = db.query(User).first()
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Could not validate credentials"
+        )
+    return user

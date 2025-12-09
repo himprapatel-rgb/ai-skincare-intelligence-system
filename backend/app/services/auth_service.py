@@ -59,32 +59,39 @@ from app.database import get_db
 
 security = HTTPBearer(auto_error=False)
 
+
+
 def get_current_user(
-        if not credentials:
-        return None
     credentials: HTTPAuthorizationCredentials = Depends(security),
     db: Session = Depends(get_db)
 ) -> User:
     """Get current authenticated user."""
-    
-        # Extract email from token (format: test_token_{email})
+
+    if not credentials:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Missing authentication credentials"
+        )
+
+    # Extract token string
     token = credentials.credentials
-    
+
     if not token.startswith("test_token_"):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid authentication token"
         )
-    
+
     # Extract email from token
     email = token.replace("test_token_", "")
-    
-    # Get user by email
+
+    # Look up user by email
     user = db.query(User).filter(User.email == email).first()
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Could not validate credentials"
         )
-    
+
     return user
+

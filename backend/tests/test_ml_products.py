@@ -7,11 +7,6 @@ from app.main import app
 client = TestClient(app)
 
 
-@pytest.fixture
-def auth_headers(test_user_token):
-    """Get authentication headers for test user."""
-    return {"Authorization": f"Bearer {test_user_token}"}
-
 
 def test_analyze_product_suitability(auth_headers):
     """Test single product suitability analysis."""

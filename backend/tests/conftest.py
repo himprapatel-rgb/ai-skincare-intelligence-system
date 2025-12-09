@@ -70,11 +70,9 @@ def auth_headers(client):
             "full_name": "Test User"        }
     )
     assert response.status_code == 201
-TestPass123!TestPass123!!
     # Login to get token
     response = client.post(
         "/api/v1/auth/login",
-        json={
             "email": "test@example.com",
             "password": "TestPass123!"
         }

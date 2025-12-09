@@ -1,5 +1,6 @@
 """Face scan API endpoints."""
 from typing import Optional
+from uuid import UUID
 from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File
 from sqlalchemy.orm import Session
 from app.database import get_db
@@ -53,9 +54,18 @@ async def upload_scan(
             detail="Invalid file type. Only JPEG and PNG images are allowed."
         )
     
+    # Validate UUID format
+    try:
+        uuid_obj = UUID(scan_id)
+    except ValueError:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Scan session not found"
+        )
+    
     user_id = current_user.id if current_user else 1
     scan_session = db.query(ScanSession).filter(
-        ScanSession.id == scan_id,
+        ScanSession.id == uuid_obj,
         ScanSession.user_id == user_id
     ).first()
     
@@ -84,9 +94,18 @@ def get_scan_results(
     current_user: Optional[User] = Depends(get_current_user)
 ):
     """Get scan results."""
+    # Validate UUID format
+    try:
+        uuid_obj = UUID(scan_id)
+    except ValueError:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Scan session not found"
+        )
+    
     user_id = current_user.id if current_user else 1
     scan_session = db.query(ScanSession).filter(
-        ScanSession.id == scan_id,
+        ScanSession.id == uuid_obj,
         ScanSession.user_id == user_id
     ).first()
     

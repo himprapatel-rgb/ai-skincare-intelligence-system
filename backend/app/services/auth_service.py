@@ -57,7 +57,7 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
 from app.database import get_db
 
-security = HTTPBearerauto_error=False)
+security = HTTPBearer(auto_error=False)
 
 def get_current_user(
         if not credentials:

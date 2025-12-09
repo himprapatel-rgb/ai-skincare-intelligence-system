@@ -1,5 +1,5 @@
 """Face scan API endpoints."""
-from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File
+from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File, Optional
 from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models.scan import ScanSession
@@ -12,9 +12,8 @@ router = APIRouter()
     "/init",
     status_code=status.HTTP_201_CREATED,
     summary="Init Scan Session",
-    description="Initialize a new face scan session for the authenticated user."
-)
-def init_scan_session(
+    description="Initialize a new face scan session for the authenticatedOptional[User] = NoneOptional[User] = None
+Optional[User] = Depends(get_current_user)
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):

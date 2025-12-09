@@ -2,7 +2,7 @@
 User database model.
 """
 
-from sqlalchemy import Column, String, Boolean, DateTime, Intege
+from sqlalchemy import Column, String, Boolean, DateTime, Integer
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from app.database import Base

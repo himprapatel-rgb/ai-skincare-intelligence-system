@@ -110,8 +110,7 @@ async def analyze_product_suitability(
 
 
 @router.get(
-    "/products/model-info",
-    response_model=ModelInfoResponse,
+    "/model-info",    response_model=ModelInfoResponse,
     summary="Get ML Model Information",
     description="Retrieve information about the active ML model"
 )
@@ -141,8 +140,7 @@ async def get_model_info(
 
 
 @router.post(
-    "/products/batch-analyze",
-    response_model=List[SuitabilityResponse],
+    "/batch-analyze",    response_model=List[SuitabilityResponse],
     summary="Batch Analyze Products",
     description="Analyze multiple products at once for efficiency"
 )

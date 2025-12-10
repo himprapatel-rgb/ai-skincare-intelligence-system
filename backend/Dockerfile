@@ -17,4 +17,4 @@ COPY scripts /app/backend/scripts
 EXPOSE 8000
 
 # Use Railway's PORT environment variable (Railway provides $PORT dynamically)
-CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+CMD ["sh", "-c", "python3 /app/backend/scripts/run_migrations.py && uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"]

@@ -34,8 +34,8 @@ async def seed_database(background_tasks: BackgroundTasks):
                 logger.info("Starting database seeding via seed_database.py script...")
                 
                 # Get path to seed_database.py script
-                backend_dir = Path(__file__).parent.parent                script_path = backend_dir / "scripts" / "seed_database.py"
-                
+                backend_dir = Path(__file__).parent.parent
+                script_path = backend_dir / "scripts" / "seed_database.py"                
                 if not script_path.exists():
                     logger.error(f"Seed script not found at: {script_path}")
                     return

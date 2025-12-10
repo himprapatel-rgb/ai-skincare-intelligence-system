@@ -176,9 +176,21 @@ class CSCPImporter:
 
 if __name__ == '__main__':
 
-def main():
+
+def main() -> None:
     """Entry point for database seeding"""
-    importer = CSCPImporter()
-    importer.run()
-    importer = CSCPImporter()
-    importer.run()
+    db = SessionLocal()
+    try:
+        logger.info("Starting CSCP dataset import")
+        run_import(db)
+        db.commit()
+        logger.info("CSCP dataset import completed successfully")
+    except Exception:
+        logger.exception("CSCP dataset import failed - rolling back")
+        db.rollback()
+        raise
+    finally:
+        db.close()
+
+if __name__ == "__main__":
+    main()

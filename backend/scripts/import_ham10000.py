@@ -204,23 +204,16 @@ if __name__ == '__main__':
     except ImportError:
         logger.error("Required packages missing. Run: pip install scikit-learn pandas")
         sys.exit(1)
-    
-
-
 def main() -> None:
     """Entry point for database seeding"""
-    db = SessionLocal()
     try:
         logger.info("Starting HAM10000 dataset import")
-        run_import(db)
-        db.commit()
+        importer = HAM10000Importer()
+        importer.run()
         logger.info("HAM10000 dataset import completed successfully")
     except Exception:
-        logger.exception("HAM10000 dataset import failed - rolling back")
-        db.rollback()
+        logger.exception("HAM10000 dataset import failed")
         raise
-    finally:
-        db.close()
 
 if __name__ == "__main__":
     main()

@@ -13,6 +13,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application code
 COPY app /app/app
 COPY scripts /app/backend/scripts
+COPY migrations /app/backend/migrations
 
 EXPOSE 8000
 

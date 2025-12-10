@@ -117,9 +117,21 @@ class OBFImporter:
 
 if __name__ == '__main__':
 
-def main():
+
+def main() -> None:
     """Entry point for database seeding"""
-    importer = OBFImporter()
-    importer.run()
-    importer = OBFImporter()
-    importer.run()
+    db = SessionLocal()
+    try:
+        logger.info("Starting Open Beauty Facts dataset import")
+        run_import(db)
+        db.commit()
+        logger.info("Open Beauty Facts dataset import completed successfully")
+    except Exception:
+        logger.exception("Open Beauty Facts dataset import failed - rolling back")
+        db.rollback()
+        raise
+    finally:
+        db.close()
+
+if __name__ == "__main__":
+    main()

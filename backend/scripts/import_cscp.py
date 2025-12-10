@@ -175,5 +175,10 @@ class CSCPImporter:
         self.conn.close()
 
 if __name__ == '__main__':
+
+def main():
+    """Entry point for database seeding"""
+    importer = CSCPImporter()
+    importer.run()
     importer = CSCPImporter()
     importer.run()

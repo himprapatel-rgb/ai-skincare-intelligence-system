@@ -195,23 +195,16 @@ if __name__ == '__main__':
                        help='Maximum number of images to download (default: 25000)')
     
     args = parser.parse_args()
-    
-
-
 def main() -> None:
     """Entry point for database seeding"""
-    db = SessionLocal()
     try:
         logger.info("Starting ISIC dataset import")
-        run_import(db)
-        db.commit()
+        importer = ISICImporter()
+        importer.run()
         logger.info("ISIC dataset import completed successfully")
     except Exception:
-        logger.exception("ISIC dataset import failed - rolling back")
-        db.rollback()
+        logger.exception("ISIC dataset import failed")
         raise
-    finally:
-        db.close()
 
 if __name__ == "__main__":
     main()

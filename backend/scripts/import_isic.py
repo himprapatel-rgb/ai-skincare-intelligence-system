@@ -197,9 +197,21 @@ if __name__ == '__main__':
     args = parser.parse_args()
     
 
-def main():
+
+def main() -> None:
     """Entry point for database seeding"""
-    importer = ISICImporter()
-    importer.run()
-    importer = ISICImporter(max_images=args.max_images)
-    importer.run()
+    db = SessionLocal()
+    try:
+        logger.info("Starting ISIC dataset import")
+        run_import(db)
+        db.commit()
+        logger.info("ISIC dataset import completed successfully")
+    except Exception:
+        logger.exception("ISIC dataset import failed - rolling back")
+        db.rollback()
+        raise
+    finally:
+        db.close()
+
+if __name__ == "__main__":
+    main()

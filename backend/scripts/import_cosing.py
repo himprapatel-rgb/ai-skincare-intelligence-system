@@ -168,24 +168,16 @@ class CosIngImporter:
         logger.info(f"Import complete! Stats: {self.stats}")
         self.conn.close()
 
-if __name__ == '__main__':
-    importer = CosIngImporter()
-
-
 def main() -> None:
     """Entry point for database seeding"""
-    db = SessionLocal()
     try:
         logger.info("Starting Cosing dataset import")
-        run_import(db)
-        db.commit()
+        importer = CosIngImporter()
+        importer.run()
         logger.info("Cosing dataset import completed successfully")
     except Exception:
-        logger.exception("Cosing dataset import failed - rolling back")
-        db.rollback()
+        logger.exception("Cosing dataset import failed")
         raise
-    finally:
-        db.close()
 
 if __name__ == "__main__":
     main()

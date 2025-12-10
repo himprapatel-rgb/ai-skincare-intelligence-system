@@ -1,13 +1,11 @@
 """Admin router for administrative operations."""
 import logging
-from fastapi import APIRouter, HTTPException, BackgroundTasks, Depends
+import subprocess
+import sys
+from pathlib import Path
+from fastapi import APIRouter, HTTPException, BackgroundTasks
 from pydantic import BaseModel
 from typing import Optional
-from sqlalchemy.orm import Session
-from app.database import get_db
-from app.models import Ingredient, Product
-import httpx
-import asyncio
 
 logger = logging.getLogger(__name__)
 
@@ -22,129 +20,60 @@ class SeedResponse(BaseModel):
 
 
 @router.post("/seed-database", response_model=SeedResponse)
-async def seed_database(background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
+async def seed_database(background_tasks: BackgroundTasks):
     """
     Seed the database with ingredient and product data.
+    
+    This endpoint triggers the seed_database.py script which imports all
+    data sources (CosIng, CSCP, Sephora, HAM10000, ISIC, Open Beauty Facts).
     """
     try:
-        # Run seed in background
-        async def run_seed():
+        # Run seed in background using subprocess
+        def run_seed_script():
             try:
-                logger.info("Starting database seeding...")
+                logger.info("Starting database seeding via seed_database.py script...")
                 
-                # Import and seed CosIng ingredients
-                logger.info("[1/6] Importing CosIng ingredients...")  
-                await seed_cosing_ingredients(db)
+                # Get path to seed_database.py script
+                backend_dir = Path(__file__).parent.parent.parent
+                script_path = backend_dir / "scripts" / "seed_database.py"
                 
-                # Import and seed CSCP hazards
-                logger.info("[2/6] Importing CSCP hazards...")
-                await seed_cscp_hazards(db)
+                if not script_path.exists():
+                    logger.error(f"Seed script not found at: {script_path}")
+                    return
                 
-                # Import and seed Sephora products
-                logger.info("[3/6] Importing Sephora products...")
-                await seed_sephora_products(db)
+                # Run the script using the Python interpreter
+                result = subprocess.run(
+                    [sys.executable, str(script_path)],
+                    capture_output=True,
+                    text=True,
+                    check=True
+                )
                 
-                # Import and seed HAM10000 images
-                logger.info("[4/6] Importing HAM10000 images...")
-                await seed_ham10000_images(db)
-                
-                # Import and seed ISIC images
-                logger.info("[5/6] Importing ISIC images...")
-                await seed_isic_images(db)
-                
-                # Import and seed Open Beauty Facts
-                logger.info("[6/6] Importing Open Beauty Facts...")
-                await seed_open_beauty_facts(db)
-                
+                logger.info(f"Seed script output:\n{result.stdout}")
+                if result.stderr:
+                    logger.warning(f"Seed script warnings:\n{result.stderr}")
+                    
                 logger.info("✅ Database seeding completed successfully!")
+                
+            except subprocess.CalledProcessError as e:
+                logger.error(f"❌ Seed script failed with exit code {e.returncode}")
+                logger.error(f"stdout: {e.stdout}")
+                logger.error(f"stderr: {e.stderr}")
             except Exception as e:
                 logger.error(f"❌ Seed failed: {str(e)}", exc_info=True)
         
         # Schedule background task
-        background_tasks.add_task(run_seed)
+        background_tasks.add_task(run_seed_script)
         
         return SeedResponse(
             status="started",
-            message="Database seeding started in background. Check logs for progress."
+            message="Database seeding started in background. Check logs for progress. This may take several minutes to complete."
         )
     except Exception as e:
         raise HTTPException(
             status_code=500,
             detail=f"Failed to start seeding: {str(e)}"
         )
-
-
-async def seed_cosing_ingredients(db: Session):
-    """Seed CosIng ingredient data."""
-    try:
-        # Check if already seeded
-        count = db.query(Ingredient).count()
-        if count > 0:
-            logger.info(f"Ingredients already seeded ({count} records). Skipping...")
-            return
-        
-        logger.info("CosIng seeding completed (stub)")
-        
-    except Exception as e:
-        logger.error(f"Failed to seed CosIng: {str(e)}")
-        raise
-
-
-async def seed_cscp_hazards(db: Session):
-    """Seed CSCP hazard data."""
-    try:
-        logger.info("CSCP hazards seeding completed (stub)")
-    except Exception as e:
-        logger.error(f"Failed to seed CSCP: {str(e)}")
-        raise
-
-
-async def seed_sephora_products(db: Session):
-    """Seed Sephora product data."""
-    try:
-        # Check if already seeded
-        count = db.query(Product).count()
-        if count > 0:
-            logger.info(f"Products already seeded ({count} records). Skipping...")
-            return
-            
-        logger.info("Sephora seeding completed (stub)")
-    except Exception as e:
-        logger.error(f"Failed to seed Sephora: {str(e)}")
-        raise
-
-
-async def seed_ham10000_images(db: Session):
-    """Seed HAM10000 image dataset."""
-    try:
-        logger.info("HAM10000 seeding completed (stub)")
-    except Exception as e:
-        logger.error(f"Failed to seed HAM10000: {str(e)}")
-        raise
-
-
-async def seed_isic_images(db: Session):
-    """Seed ISIC image dataset."""
-    try:
-        logger.info("ISIC seeding completed (stub)")
-    except Exception as e:
-        logger.error(f"Failed to seed ISIC: {str(e)}")
-        raise
-
-
-async def seed_open_beauty_facts(db: Session):
-    """Seed Open Beauty Facts product data."""
-    try:
-        # Check if already seeded (use a general count check)
-        count = db.query(Product).count()
-        if count > 0:
-            logger.info(f"Products already seeded ({count} records). Skipping...")
-            return
-            
-        logger.info("Open Beauty Facts seeding completed (stub)")
-    except Exception as e:
-        logger.error(f"Failed to seed Open Beauty Facts: {str(e)}")
-        raise
 
 
 @router.get("/health")

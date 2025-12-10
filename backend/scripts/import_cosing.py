@@ -170,4 +170,9 @@ class CosIngImporter:
 
 if __name__ == '__main__':
     importer = CosIngImporter()
+
+def main():
+    """Entry point for database seeding"""
+    importer = CosingImporter()
+    importer.run()
     importer.run()

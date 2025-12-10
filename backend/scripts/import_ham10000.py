@@ -205,5 +205,10 @@ if __name__ == '__main__':
         logger.error("Required packages missing. Run: pip install scikit-learn pandas")
         sys.exit(1)
     
+
+def main():
+    """Entry point for database seeding"""
+    importer = HAM10000Importer()
+    importer.run()
     importer = HAM10000Importer()
     importer.run()

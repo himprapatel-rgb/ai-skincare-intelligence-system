@@ -33,7 +33,7 @@ async def seed_database(background_tasks: BackgroundTasks, db: Session = Depends
                 logger.info("Starting database seeding...")
                 
                 # Import and seed CosIng ingredients
-                logger.info("[1/6] Importing CosIng ingredients...")
+                logger.info("[1/6] Importing CosIng ingredients...")  
                 await seed_cosing_ingredients(db)
                 
                 # Import and seed CSCP hazards
@@ -78,20 +78,12 @@ async def seed_cosing_ingredients(db: Session):
     """Seed CosIng ingredient data."""
     try:
         # Check if already seeded
-        count = db.query(Ingredient).filter(Ingredient.source == "cosing").count()
+        count = db.query(Ingredient).count()
         if count > 0:
-            logger.info(f"CosIng ingredients already seeded ({count} records). Skipping...")
+            logger.info(f"Ingredients already seeded ({count} records). Skipping...")
             return
         
-        # Download CosIng data
-        url = "https://ec.europa.eu/growth/tools-databases/cosing/export.zip"
-        async with httpx.AsyncClient(timeout=120.0) as client:
-            response = await client.get(url)
-            response.raise_for_status()
-            
-        logger.info(f"Downloaded CosIng data. Processing...")
-        # TODO: Implement CSV parsing and ingredient creation
-        logger.info("CosIng seeding completed")
+        logger.info("CosIng seeding completed (stub)")
         
     except Exception as e:
         logger.error(f"Failed to seed CosIng: {str(e)}")
@@ -101,7 +93,7 @@ async def seed_cosing_ingredients(db: Session):
 async def seed_cscp_hazards(db: Session):
     """Seed CSCP hazard data."""
     try:
-        logger.info("CSCP hazards seeding completed")
+        logger.info("CSCP hazards seeding completed (stub)")
     except Exception as e:
         logger.error(f"Failed to seed CSCP: {str(e)}")
         raise
@@ -111,12 +103,12 @@ async def seed_sephora_products(db: Session):
     """Seed Sephora product data."""
     try:
         # Check if already seeded
-        count = db.query(Product).filter(Product.source == "sephora").count()
+        count = db.query(Product).count()
         if count > 0:
-            logger.info(f"Sephora products already seeded ({count} records). Skipping...")
+            logger.info(f"Products already seeded ({count} records). Skipping...")
             return
             
-        logger.info("Sephora seeding completed")
+        logger.info("Sephora seeding completed (stub)")
     except Exception as e:
         logger.error(f"Failed to seed Sephora: {str(e)}")
         raise
@@ -125,7 +117,7 @@ async def seed_sephora_products(db: Session):
 async def seed_ham10000_images(db: Session):
     """Seed HAM10000 image dataset."""
     try:
-        logger.info("HAM10000 seeding completed")
+        logger.info("HAM10000 seeding completed (stub)")
     except Exception as e:
         logger.error(f"Failed to seed HAM10000: {str(e)}")
         raise
@@ -134,7 +126,7 @@ async def seed_ham10000_images(db: Session):
 async def seed_isic_images(db: Session):
     """Seed ISIC image dataset."""
     try:
-        logger.info("ISIC seeding completed")
+        logger.info("ISIC seeding completed (stub)")
     except Exception as e:
         logger.error(f"Failed to seed ISIC: {str(e)}")
         raise
@@ -143,13 +135,13 @@ async def seed_isic_images(db: Session):
 async def seed_open_beauty_facts(db: Session):
     """Seed Open Beauty Facts product data."""
     try:
-        # Check if already seeded
-        count = db.query(Product).filter(Product.source == "open_beauty_facts").count()
+        # Check if already seeded (use a general count check)
+        count = db.query(Product).count()
         if count > 0:
-            logger.info(f"Open Beauty Facts already seeded ({count} records). Skipping...")
+            logger.info(f"Products already seeded ({count} records). Skipping...")
             return
             
-        logger.info("Open Beauty Facts seeding completed")
+        logger.info("Open Beauty Facts seeding completed (stub)")
     except Exception as e:
         logger.error(f"Failed to seed Open Beauty Facts: {str(e)}")
         raise

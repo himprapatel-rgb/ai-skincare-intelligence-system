@@ -180,5 +180,10 @@ Please download it manually from Kaggle:
         self.conn.close()
 
 if __name__ == '__main__':
+
+def main():
+    """Entry point for database seeding"""
+    importer = SephoraImporter()
+    importer.run()
     importer = SephoraImporter()
     importer.run()

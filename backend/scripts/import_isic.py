@@ -196,5 +196,10 @@ if __name__ == '__main__':
     
     args = parser.parse_args()
     
+
+def main():
+    """Entry point for database seeding"""
+    importer = ISICImporter()
+    importer.run()
     importer = ISICImporter(max_images=args.max_images)
     importer.run()

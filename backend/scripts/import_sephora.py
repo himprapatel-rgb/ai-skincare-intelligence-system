@@ -179,23 +179,16 @@ Please download it manually from Kaggle:
         logger.info(f"Import complete! Stats: {self.stats}")
         self.conn.close()
 
-if __name__ == '__main__':
-
-
 def main() -> None:
     """Entry point for database seeding"""
-    db = SessionLocal()
     try:
         logger.info("Starting Sephora dataset import")
-        run_import(db)
-        db.commit()
+        importer = SephoraImporter()
+        importer.run()
         logger.info("Sephora dataset import completed successfully")
     except Exception:
-        logger.exception("Sephora dataset import failed - rolling back")
-        db.rollback()
+        logger.exception("Sephora dataset import failed")
         raise
-    finally:
-        db.close()
 
 if __name__ == "__main__":
     main()

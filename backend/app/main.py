@@ -8,6 +8,7 @@ from app.config import settings
 from app.api.v1 import api_router
 from app.database import engine, Base
 from app.routers import scan, digital_twin
+from app.routers import admin
 from app.models.twin_models import *  # Import Digital Twin models for table creation# Create database tables if needed (safe for local dev)
 try:
     Base.metadata.create_all(bind=engine)
@@ -41,6 +42,7 @@ app.include_router(digital_twin.router)  # Sprint 3: Digital Twin
 app.include_router(routines_router, prefix="/api/v1")
 app.include_router(progress_router, prefix="/api/v1")
 app.include_router(external_products_router, prefix="/api/v1")
+app.include_router(admin.router, prefix="/api/v1")  # Admin endpoints
 
 
 @app.get("/", tags=["Root"])

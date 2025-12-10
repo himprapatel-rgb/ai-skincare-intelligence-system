@@ -206,9 +206,21 @@ if __name__ == '__main__':
         sys.exit(1)
     
 
-def main():
+
+def main() -> None:
     """Entry point for database seeding"""
-    importer = HAM10000Importer()
-    importer.run()
-    importer = HAM10000Importer()
-    importer.run()
+    db = SessionLocal()
+    try:
+        logger.info("Starting HAM10000 dataset import")
+        run_import(db)
+        db.commit()
+        logger.info("HAM10000 dataset import completed successfully")
+    except Exception:
+        logger.exception("HAM10000 dataset import failed - rolling back")
+        db.rollback()
+        raise
+    finally:
+        db.close()
+
+if __name__ == "__main__":
+    main()

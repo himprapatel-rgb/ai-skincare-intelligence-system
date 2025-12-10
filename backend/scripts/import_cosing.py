@@ -171,8 +171,21 @@ class CosIngImporter:
 if __name__ == '__main__':
     importer = CosIngImporter()
 
-def main():
+
+def main() -> None:
     """Entry point for database seeding"""
-    importer = CosingImporter()
-    importer.run()
-    importer.run()
+    db = SessionLocal()
+    try:
+        logger.info("Starting Cosing dataset import")
+        run_import(db)
+        db.commit()
+        logger.info("Cosing dataset import completed successfully")
+    except Exception:
+        logger.exception("Cosing dataset import failed - rolling back")
+        db.rollback()
+        raise
+    finally:
+        db.close()
+
+if __name__ == "__main__":
+    main()

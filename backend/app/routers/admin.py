@@ -78,3 +78,50 @@ async def seed_database(background_tasks: BackgroundTasks):
 async def health_check():
     """Health check endpoint."""
     return {"status": "healthy", "service": "admin"}
+
+
+@router.post("/populate-ingredients")
+async def populate_ingredients():
+    """Populate ingredients table with initial data."""
+    from app.database import SessionLocal
+    
+    ingredients_data = [
+        ("Aqua", "7732-18-5", "231-791-2", "Solvent", "Approved", None, False, 0),
+        ("Glycerin", "56-81-5", "200-289-5", "Humectant", "Approved", None, False, 0),
+        ("Niacinamide", "98-92-0", "202-713-4", "Skin Conditioning", "Approved", None, False, 0),
+        ("Hyaluronic Acid", "9067-32-7", "618-388-6", "Skin Conditioning", "Approved", None, False, 0),
+        ("Retinol", "68-26-8", "200-683-7", "Skin Conditioning", "Approved", "Max 0.3%", False, 2)
+    ]
+    
+    db = SessionLocal()
+    try:
+        inserted = 0
+        for data in ingredients_data:
+            # Check if ingredient already exists
+            existing = db.execute(
+                "SELECT id FROM ingredients WHERE inci_name = :name",
+                {"name": data[0]}
+            ).fetchone()
+            
+            if not existing:
+                db.execute(
+                    """INSERT INTO ingredients 
+                       (inci_name, cas_number, ec_number, function, regulatory_status, 
+                        restrictions, microbiome_risk_flag, comedogenicity_score, source)
+                       VALUES (:inci, :cas, :ec, :func, :reg, :rest, :micro, :comed, 'manual')""",
+                    {
+                        "inci": data[0], "cas": data[1], "ec": data[2], "func": data[3],
+                        "reg": data[4], "rest": data[5], "micro": data[6], "comed": data[7]
+                    }
+                )
+                inserted += 1
+        
+        db.commit()
+        logger.info(f"✅ Populated {inserted} ingredients")
+        return {"status": "success", "inserted": inserted, "message": f"Populated {inserted} new ingredients"}
+    except Exception as e:
+        db.rollback()
+        logger.error(f"❌ Failed to populate: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        db.close()

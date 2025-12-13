@@ -7,6 +7,7 @@ from app.database import get_db
 from app.models.scan import ScanSession
 from app.services.auth_service import get_current_user
 from app.models.user import User
+from services.skin_analysis_service import get_skin_analysis_service
 
 router = APIRouter()
 
@@ -76,6 +77,36 @@ async def upload_scan(
         )
     
     scan_session.status = "processing"
+        
+    # Read image data
+    image_data = await file.read()
+    
+    # Get skin analysis service and perform analysis
+    try:
+        skin_service = get_skin_analysis_service()
+        analysis_result = await skin_service.analyze_skin(image_data)
+        
+        # Update scan session with results
+        scan_session.result = {
+            "skin_tone": analysis_result.skin_tone,
+            "texture_quality": analysis_result.texture_quality,
+            "acne_detected": analysis_result.acne_detected,
+            "acne_severity": analysis_result.acne_severity,
+            "wrinkles_detected": analysis_result.wrinkles_detected,
+            "wrinkle_density": analysis_result.wrinkle_density,
+            "dark_circles_detected": analysis_result.dark_circles_detected,
+            "dark_circle_severity": analysis_result.dark_circle_severity,
+            "skin_type": analysis_result.skin_type,
+            "confidence_score": analysis_result.confidence_score
+        }
+        scan_session.status = "completed"
+    except ValueError as e:
+        scan_session.status = "failed"
+        scan_session.result = {"error": str(e)}
+    except Exception as e:
+        scan_session.status = "failed"
+        scan_session.result = {"error": "Analysis failed"}
+    
     db.commit()
     
     return {
@@ -117,8 +148,7 @@ def get_scan_results(
     
     return {
         "scan_id": str(scan_session.id),
-        "result": {}
-    }
+        "result": scan_session.result if scan_session.result else {}    }
 
 @router.get(
     "/history",

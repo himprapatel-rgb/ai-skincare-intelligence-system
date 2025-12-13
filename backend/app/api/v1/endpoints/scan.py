@@ -1,12 +1,13 @@
 """Face scan API endpoints."""
 from typing import Optional
 from uuid import UUID
+import sys
+import os
 from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File
 from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models.scan import ScanSession
-from app.services.auth_service import get_current_user
-from app.models.user import User
+sys.path.append(os.path.join(os.path.dirname(__file__), '../../../../../'))
 from services.skin_analysis_service import get_skin_analysis_service
 
 router = APIRouter()

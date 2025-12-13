@@ -2,6 +2,7 @@
 from app.api.v1.routines import router as routines_router
 from app.api.v1.progress import router as progress_router
 from app.api.v1.products import router as external_products_router
+from app.routers import products
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
@@ -43,6 +44,7 @@ app.include_router(routines_router, prefix="/api/v1")
 app.include_router(progress_router, prefix="/api/v1")
 app.include_router(external_products_router, prefix="/api/v1")
 app.include_router(admin.router, prefix="/api/v1")  # Admin endpoints
+app.include_router(products.router)  # Product recommendations
 
 
 @app.get("/", tags=["Root"])

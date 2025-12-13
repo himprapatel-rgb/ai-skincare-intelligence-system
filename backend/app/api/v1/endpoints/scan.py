@@ -10,7 +10,8 @@ from app.models.scan import ScanSession
 # Add backend directory to path to import services
 import pathlib
 backend_dir = pathlib.Path(__file__).parent.parent.parent.parent.parent.parent
-sys.path.insert(0, str(backend_dir))from services.skin_analysis_service import get_skin_analysis_service
+sys.path.insert(0, str(backend_dir))
+from services.skin_analysis_service import get_skin_analysis_service
 
 router = APIRouter()
 

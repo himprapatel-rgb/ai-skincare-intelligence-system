@@ -126,3 +126,91 @@ async def populate_ingredients():
         raise HTTPException(status_code=500, detail=str(e))
     finally:
         db.close()
+
+
+@router.post("/upload-scin-data")
+async def upload_scin_data(samples: dict):
+    """Upload SCIN dataset samples to PostgreSQL."""
+    from app.database import SessionLocal
+    
+    db = SessionLocal()
+    try:
+        # Create scin_samples table if it doesn't exist
+        create_table_sql = text("""
+        CREATE TABLE IF NOT EXISTS scin_samples (
+            id SERIAL PRIMARY KEY,
+            case_id VARCHAR(255) UNIQUE,
+            source VARCHAR(100),
+            year INTEGER,
+            age_group VARCHAR(50),
+            sex_at_birth VARCHAR(50),
+            fitzpatrick_skin_type VARCHAR(50),
+            monk_skin_tone_india INTEGER,
+            monk_skin_tone_us INTEGER,
+            dermatologist_fst_label VARCHAR(50),
+            image_1_path TEXT,
+            image_1_shot_type VARCHAR(50),
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+        """)
+        db.execute(create_table_sql)
+        db.commit()
+        
+        # Insert samples
+        samples_list = samples.get("samples", [])
+        inserted = 0
+        
+        for sample in samples_list:
+            try:
+                # Check if sample already exists
+                existing = db.execute(
+                    text("SELECT id FROM scin_samples WHERE case_id = :case_id"),
+                    {"case_id": sample.get("case_id")}
+                ).fetchone()
+                
+                if not existing:
+                    db.execute(
+                        text("""
+                        INSERT INTO scin_samples 
+                        (case_id, source, year, age_group, sex_at_birth, 
+                         fitzpatrick_skin_type, monk_skin_tone_india, monk_skin_tone_us,
+                         dermatologist_fst_label, image_1_path, image_1_shot_type)
+                        VALUES (:case_id, :source, :year, :age_group, :sex_at_birth,
+                                :fitzpatrick_skin_type, :monk_skin_tone_india, :monk_skin_tone_us,
+                                :dermatologist_fst_label, :image_1_path, :image_1_shot_type)
+                        """),
+                        {
+                            "case_id": sample.get("case_id"),
+                            "source": sample.get("source", "SCIN"),
+                            "year": sample.get("year"),
+                            "age_group": sample.get("age_group"),
+                            "sex_at_birth": sample.get("sex_at_birth"),
+                            "fitzpatrick_skin_type": sample.get("fitzpatrick_skin_type"),
+                            "monk_skin_tone_india": sample.get("monk_skin_tone_india"),
+                            "monk_skin_tone_us": sample.get("monk_skin_tone_us"),
+                            "dermatologist_fst_label": sample.get("dermatologist_fst_label"),
+                            "image_1_path": sample.get("image_1_path"),
+                            "image_1_shot_type": sample.get("image_1_shot_type")
+                        }
+                    )
+                    inserted += 1
+            except Exception as e:
+                logger.error(f"Error inserting sample {sample.get('case_id')}: {str(e)}")
+                continue
+        
+        db.commit()
+        logger.info(f"✅ Uploaded {inserted} SCIN samples")
+        return {
+            "status": "success",
+            "inserted": inserted,
+            "total_received": len(samples_list),
+            "message": f"Successfully uploaded {inserted} samples"
+        }
+        
+    except Exception as e:
+        db.rollback()
+        logger.error(f"❌ Failed to upload SCIN data: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        db.close()
+        db.close()

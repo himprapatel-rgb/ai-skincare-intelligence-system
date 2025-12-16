@@ -5,6 +5,7 @@ import sys
 from pathlib import Path
 from fastapi import APIRouter, HTTPException, BackgroundTasks
 from pydantic import BaseModel
+from sqlalchemy import text
 from typing import Optional
 
 logger = logging.getLogger(__name__)
@@ -99,13 +100,13 @@ async def populate_ingredients():
         for data in ingredients_data:
             # Check if ingredient already exists
             existing = db.execute(
-                "SELECT id FROM ingredients WHERE inci_name = :name",
+                "text(SELECT id FROM ingredients WHERE inci_name = :name"),
                 {"name": data[0]}
             ).fetchone()
             
             if not existing:
                 db.execute(
-                    """INSERT INTO ingredients 
+                    text("""INSERT INTO ingredients 
                        (inci_name, cas_number, ec_number, function, regulatory_status, 
                         restrictions, microbiome_risk_flag, comedogenicity_score, source)
                        VALUES (:inci, :cas, :ec, :func, :reg, :rest, :micro, :comed, 'manual')""",

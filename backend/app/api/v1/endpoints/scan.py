@@ -13,6 +13,7 @@ backend_dir = pathlib.Path(__file__).parent.parent.parent.parent.parent.parent
 sys.path.insert(0, str(backend_dir))
 from app.services.ml_service import get_ml_service
 from app.core.security import get_current_user
+from app.models.user import User
 router = APIRouter()
 
 @router.post(

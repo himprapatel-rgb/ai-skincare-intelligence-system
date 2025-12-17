@@ -212,4 +212,56 @@ async def upload_scin_data(samples: dict):
         raise HTTPException(status_code=500, detail=str(e))
     finally:
         db.close()
+
+        @router.post("/import-scin")
+async def import_scin(background_tasks: BackgroundTasks):
+    """Import SCIN dataset from HuggingFace to PostgreSQL.
+    
+    Downloads 5033 skin samples in streaming mode and inserts
+    into scin_samples table in batches to avoid RAM issues.
+    """
+    try:
+        def run_import_script():
+            try:
+                logger.info("Starting SCIN dataset import via import_scin.py script...")
+                
+                # Get path to import_scin.py script
+                script_path = Path("/app/backend/scripts/import_scin.py")
+                if not script_path.exists():
+                    logger.error(f"Import script not found at: {script_path}")
+                    return
+                
+                # Run the script
+                result = subprocess.run(
+                    [sys.executable, str(script_path)],
+                    capture_output=True,
+                    text=True,
+                    check=True
+                )
+                
+                logger.info(f"Import script output:\n{result.stdout}")
+                if result.stderr:
+                    logger.warning(f"Import script warnings:\n{result.stderr}")
+                
+                logger.info("✅ SCIN import completed successfully!")
+                
+            except subprocess.CalledProcessError as e:
+                logger.error(f"❌ Import script failed with exit code {e.returncode}")
+                logger.error(f"stdout: {e.stdout}")
+                logger.error(f"stderr: {e.stderr}")
+            except Exception as e:
+                logger.error(f"❌ Import failed: {str(e)}", exc_info=True)
+        
+        # Schedule background task
+        background_tasks.add_task(run_import_script)
+        
+        return {
+            "status": "started",
+            "message": "SCIN dataset import started in background. This will download 5033 samples from HuggingFace and insert into PostgreSQL. Check logs for progress."
+        }
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to start SCIN import: {str(e)}"
+        )
         db.close()

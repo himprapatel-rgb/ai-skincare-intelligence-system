@@ -1,7 +1,6 @@
 from sqlalchemy import Column, Integer, String, Text, DateTime, Float, Boolean
 from sqlalchemy.sql import func
-from app.core import Base
-
+from app.database import Base
 
 class SCINSample(Base):
     """SCIN (Skin Condition Image Network) dataset sample model"""

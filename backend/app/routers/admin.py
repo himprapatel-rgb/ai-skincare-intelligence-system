@@ -102,7 +102,7 @@ async def populate_ingredients():
             # Check if ingredient already exists
             existing = db.execute(
                     text("SELECT id FROM ingredients WHERE inci_name = :name"),
-                    {"name": data[0]}).fetchone()
+                    {"name": data[0]}}).fetchone()
             
             if not existing:
                 db.execute(

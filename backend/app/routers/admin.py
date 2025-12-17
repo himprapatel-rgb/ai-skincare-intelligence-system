@@ -97,6 +97,7 @@ async def populate_ingredients():
     db = SessionLocal()
     try:
         inserted = 0
+# Force rebuild - cache clear
         for data in ingredients_data:
             # Check if ingredient already exists
             existing = db.execute(

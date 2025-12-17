@@ -11,8 +11,7 @@ from app.models.scan import ScanSession
 import pathlib
 backend_dir = pathlib.Path(__file__).parent.parent.parent.parent.parent.parent
 sys.path.insert(0, str(backend_dir))
-from app.services.skin_analysis_service import get_skin_analysis_service
-
+from app.services.ml_service import get_ml_service
 router = APIRouter()
 
 @router.post(
@@ -87,7 +86,7 @@ async def upload_scan(
     
     # Get skin analysis service and perform analysis
     try:
-        skin_service = get_skin_analysis_service()
+        skin_service = get_ml_service()
         analysis_result = await skin_service.analyze_skin(image_data)
         
         # Update scan session with results

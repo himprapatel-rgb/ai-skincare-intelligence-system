@@ -53,8 +53,7 @@ async def health_check():
             "status": "healthy" if db_ok else "degraded",
             "service": "ai-skincare-intelligence-system",
             "database": "ok" if db_ok else "error",
-        },
-    )
+        })
     
 # Mount all routers under /api/v1 for consistency
 app.include_router(api_router, prefix="/api/v1")

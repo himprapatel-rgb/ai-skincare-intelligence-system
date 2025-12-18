@@ -8,7 +8,7 @@ from sqlalchemy.pool import StaticPool
 
 from app.database import Base
 from app.main import app
-from app.dependencies import get_db, get_current_user
+from app.dependencies import get_db
 
 # Use DATABASE_URL from environment if available (PostgreSQL in CI),
 # otherwise fall back to SQLite for local testing

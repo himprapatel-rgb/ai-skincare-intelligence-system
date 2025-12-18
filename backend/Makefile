@@ -12,6 +12,10 @@ help:
 	@echo "  seed-data        - seed database with all datasets (requires DB connection)"
 	@echo "  seed-data-skip   - seed database skipping specific datasets"
 	@echo "  seed-data-only   - seed only specific datasets"
+	@echo "  migrate           - run database migrations"
+	@echo "  import-scin       - import SCIN dataset into database"
+	@echo "  migrate-scin-images - migrate SCIN images to Cloudinary"
+	@echo "  scin-pipeline     - run full SCIN ETL pipeline (migrate -> seed -> SCIN -> images)"
 
 venv:
 	$(PYTHON) -m venv $(VENV)

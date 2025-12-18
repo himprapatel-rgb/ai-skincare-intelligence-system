@@ -37,7 +37,7 @@ jobs:
         run: npm run lint || true
 
       - name: Run Tests
-            continue-on-error: true
+                  continue-on-error: true
         working-directory: frontend
         run: npm test -- --coverage --watchAll=false
 

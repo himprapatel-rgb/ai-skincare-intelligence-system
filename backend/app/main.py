@@ -54,6 +54,8 @@ async def health_check():
             "service": "ai-skincare-intelligence-system",
             "database": "ok" if db_ok else "error",
         },
+    )
+    
 # Mount all routers under /api/v1 for consistency
 app.include_router(api_router, prefix="/api/v1")
 app.include_router(scan.router, prefix="/api/v1", tags=["scan"])  # Sprint 2: Face Scan & AI Analysis

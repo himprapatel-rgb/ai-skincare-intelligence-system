@@ -35,17 +35,35 @@ app.add_middleware(
 
 @app.get("/api/health")
 async def health_check():
-    return {"status": "healthy", "service": "ai-skincare-intelligence-system"}
+    from fastapi.responses import JSONResponse
+    from app.database import SessionLocal
+    
+    db_ok = False
+    try:
+        with SessionLocal() as db:
+            db.execute("SELECT 1")
+        db_ok = True
+    except Exception:
+        db_ok = False
+    
+    status_code = 200 if db_ok else 503
+    return JSONResponse(
+        status_code=status_code,
+        content={
+            "status": "healthy" if db_ok else "degraded",
+            "service": "ai-skincare-intelligence-system",
+            "database": "ok" if db_ok else "error",
+        },
+    )app.include_router(api_router, prefix="/api/v1")
+# Mount all routers under /api/v1 for consistency
 app.include_router(api_router, prefix="/api/v1")
-app.include_router(scan.router, prefix="")  # Sprint 2: Face Scan & AI Analysis endpoints
-
-app.include_router(digital_twin.router)  # Sprint 3: Digital Twin
-app.include_router(routines_router, prefix="/api/v1")
-app.include_router(progress_router, prefix="/api/v1")
-app.include_router(external_products_router, prefix="/api/v1")
-app.include_router(admin.router, prefix="/api/v1")  # Admin endpoints
-app.include_router(products.router)  # Product recommendations
-
+app.include_router(scan.router, prefix="/api/v1", tags=["scan"])  # Sprint 2: Face Scan & AI Analysis
+app.include_router(digital_twin.router, prefix="/api/v1", tags=["digital_twin"])  # Sprint 3: Digital Twin
+app.include_router(routines_router, prefix="/api/v1", tags=["routines"])
+app.include_router(progress_router, prefix="/api/v1", tags=["progress"])
+app.include_router(external_products_router, prefix="/api/v1", tags=["external_products"])
+app.include_router(admin.router, prefix="/api/v1/admin", tags=["admin"])  # Admin endpoints
+app.include_router(products.router, prefix="/api/v1", tags=["products"])  # Product recommendations
 
 @app.get("/", tags=["Root"])
 def read_root():

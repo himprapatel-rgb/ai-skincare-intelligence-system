@@ -50,8 +50,92 @@ For detailed CI/CD completion report, see [SPRINT-3-PHASE-3-CI-CD-COMPLETION.md]
 
 ## Getting Started
 
-Detailed setup instructions will be added as development progresses.
+### Prerequisites
 
+- **Python 3.9+**
+- **PostgreSQL 12+**
+- **Git**
+- **Docker & Docker Compose** (optional, for containerized setup)
+
+### Quick Start
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/himprapatel-rgb/ai-skincare-intelligence-system.git
+   cd ai-skincare-intelligence-system
+   ```
+
+2. **Backend Setup**
+   ```bash
+   cd backend
+   
+   # Create and activate virtual environment
+   python3 -m venv .venv
+   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+   
+   # Install dependencies
+   pip install -r requirements.txt
+   ```
+
+3. **Configure Environment Variables**
+   
+   Create a `.env` file in the `backend` directory:
+   ```bash
+   DATABASE_URL=postgresql://user:password@localhost:5432/skincare_db
+   SECRET_KEY=your-secret-key-here
+   CLOUDINARY_CLOUD_NAME=your-cloudinary-cloud-name
+   CLOUDINARY_API_KEY=your-cloudinary-api-key
+   CLOUDINARY_API_SECRET=your-cloudinary-api-secret
+   GPTGPT_API_KEY=your-openai-api-key
+   ```
+
+4. **Database Setup & SCIN Data Pipeline**
+   ```bash
+   # Run full SCIN ETL pipeline (migrations -> seed -> SCIN import -> images)
+   make scin-pipeline
+   
+   # Or run steps individually:
+   make migrate           # Run database migrations
+   make seed-data         # Seed core datasets
+   make import-scin       # Import SCIN dataset
+   make migrate-scin-images  # Upload SCIN images to Cloudinary
+   ```
+
+5. **Start the Backend Server**
+   ```bash
+   uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+   ```
+   
+   API will be available at:
+   - **Local**: http://localhost:8000
+   - **Swagger UI**: http://localhost:8000/docs
+   - **Health Check**: http://localhost:8000/api/health
+
+6. **Run Tests**
+   ```bash
+   make test
+   # Or directly:
+   pytest -v
+   ```
+
+### Docker Setup (Alternative)
+
+```bash
+# Start all services (backend + database)
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop services
+docker-compose down
+```
+
+### Production Deployment
+
+The backend is deployed on **Railway** with automatic CI/CD:
+- **API**: https://ai-skincare-intelligence-system-production.up.railway.app
+- **Swagger**: https://ai-skincare-intelligence-system-production.up.railway.app/docs
 ## Contributing
 
 This is a private development project. Contribution guidelines will be established in future updates.

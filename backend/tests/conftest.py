@@ -62,12 +62,12 @@ def client(test_db):
 def test_user(test_db):
     """Create a test user in the database"""
     from app.models.user import User
-    from app.core.security import get_password_hash
+    from app.core.security import hash_password
     
     user = User(
         email="testuser@example.com",
         username="testuser",
-        hashed_password=get_password_hash("testpassword123"),
+        hashed_password=hash_password("testpassword123"),
         is_active=True,
         is_verified=True
     )

@@ -1,0 +1,277 @@
+# AI Skincare Intelligence System - Model Registry
+# Version: 1.0
+# Last Updated: 2025-12-19
+# Purpose: Central registry for all pretrained and custom ML models
+
+# IMPORTANT: This file is version controlled.
+# Model weights are downloaded to _weights/ directory (git-ignored)
+
+registry_version: "1.0"
+last_updated: "2025-12-19"
+
+# Local custom-trained models (already in repo)
+custom_models:
+  acne_binary_v1:
+    name: "Acne Binary Classifier v1"
+    task: "binary_classification"
+    description: "Binary acne detection trained on custom dataset"
+    framework: "pytorch"
+    architecture: "custom_cnn"
+    filename: "acne_binary_v1.pt"
+    path: "backend/models/acne_binary_v1.pt"
+    size_mb: 2.5
+    input_size: [224, 224]
+    input_channels: 3
+    classes: ["no_acne", "acne"]
+    license: "MIT"
+    training_data: "Custom dataset - diverse skin tones"
+    notes: "Optimized for selfie images"
+    version: "1.0"
+    sha256: null  # Add after upload
+    
+  other_condition_v1:
+    name: "Skin Condition Classifier v1"
+    task: "multiclass_classification"
+    description: "Multi-class skin condition classifier"
+    framework: "pytorch"
+    architecture: "custom_cnn"
+    filename: "other_condition_v1.pt"
+    path: "backend/models/other_condition_v1.pt"
+    size_mb: 3.8
+    input_size: [224, 224]
+    input_channels: 3
+    classes: ["normal", "acne", "rosacea", "eczema", "pigmentation"]
+    license: "MIT"
+    training_data: "Custom dataset - diverse conditions"
+    notes: "Trained on clinical + selfie images"
+    version: "1.0"
+    sha256: null  # Add after upload
+
+# Pretrained models (download on demand)
+pretrained_models:
+  
+  # FACE DETECTION MODELS
+  yunet_face_detection:
+    name: "YuNet Face Detector"
+    task: "face_detection"
+    description: "Lightweight fast face detection by OpenCV"
+    source: "opencv"
+    source_url: "https://github.com/opencv/opencv_zoo/tree/main/models/face_detection_yunet"
+    download_url: "https://github.com/opencv/opencv_zoo/raw/main/models/face_detection_yunet/face_detection_yunet_2023mar.onnx"
+    framework: "onnx"
+    architecture: "yunet"
+    filename: "yunet_2023mar.onnx"
+    path: "_weights/yunet_2023mar.onnx"
+    size_mb: 1.2
+    input_size: [320, 320]
+    input_channels: 3
+    outputs:
+      - bbox: "[x, y, w, h]"
+      - confidence: "float"
+      - landmarks: "5 points [left_eye, right_eye, nose, left_mouth, right_mouth]"
+    license: "MIT"
+    performance:
+      widerface_easy: 0.834
+      widerface_medium: 0.824
+      widerface_hard: 0.708
+    face_size_range: [10, 300]  # pixels
+    notes: "Best for selfies 10x10 to 300x300px faces. Very fast."
+    recommended: true
+    sha256: "5fd2c08c5c6583e6b0d93a8f8e7e1e1e9b8c8c8c8c8c8c8c8c8c8c8c8c8c"  # placeholder
+    version: "2023mar"
+    
+  retinaface_mobilenet:
+    name: "RetinaFace MobileNet0.25"
+    task: "face_detection_landmarks"
+    description: "Face detection + 5 facial landmarks"
+    source: "serengil/retinaface"
+    source_url: "https://github.com/serengil/retinaface"
+    download_url: "https://github.com/serengil/retinaface/releases/download/v0.0.1/retinaface.h5"
+    framework: "tensorflow"
+    architecture: "retinaface_mobilenet025"
+    filename: "retinaface_mobilenet025.h5"
+    path: "_weights/retinaface_mobilenet025.h5"
+    size_mb: 3.5
+    input_size: [640, 640]
+    input_channels: 3
+    outputs:
+      - bbox: "[x1, y1, x2, y2]"
+      - confidence: "float"
+      - landmarks: "5 points [left_eye, right_eye, nose, left_mouth, right_mouth]"
+    license: "MIT"
+    performance:
+      widerface_easy: 0.965
+      widerface_medium: 0.956
+      widerface_hard: 0.904
+    notes: "Production-ready. Good for varied lighting and angles."
+    recommended: true
+    sha256: null
+    version: "0.0.1"
+  
+  mediapipe_face_mesh:
+    name: "MediaPipe Face Mesh"
+    task: "face_landmarks"
+    description: "468-point 3D facial landmarks"
+    source: "google/mediapipe"
+    source_url: "https://github.com/google/mediapipe"
+    download_url: "pip:mediapipe"  # Installed via pip
+    framework: "mediapipe"
+    architecture: "mediapipe_facemesh"
+    filename: null  # Bundled with mediapipe
+    path: null
+    size_mb: 0  # Included in mediapipe package
+    input_size: [192, 192]
+    input_channels: 3
+    outputs:
+      - landmarks: "468 3D points"
+      - mesh: "triangulated mesh"
+    license: "Apache-2.0"
+    notes: "Already integrated. Best for detailed facial analysis."
+    recommended: true
+    installed: true
+    version: "0.10.9"
+
+  # SKIN ANALYSIS MODELS
+  
+  mobilenetv3_skin_base:
+    name: "MobileNetV3 Skin Analysis Base"
+    task: "feature_extraction"
+    description: "Pretrained MobileNetV3 for transfer learning"
+    source: "torchvision"
+    source_url: "https://pytorch.org/vision/stable/models.html"
+    download_url: "torchvision://mobilenet_v3_large"
+    framework: "pytorch"
+    architecture: "mobilenet_v3_large"
+    filename: "mobilenet_v3_large-imagenet.pth"
+    path: "_weights/mobilenet_v3_large.pth"
+    size_mb: 17
+    input_size: [224, 224]
+    input_channels: 3
+    pretrained_on: "ImageNet"
+    license: "BSD-3-Clause"
+    notes: "Fast inference. Good for mobile deployment. Use for transfer learning."
+    recommended: true
+    sha256: null
+    version: "imagenet"
+    
+  densenet201_skin_base:
+    name: "DenseNet-201 Skin Analysis Base"
+    task: "feature_extraction"
+    description: "DenseNet-201 pretrained for dermatology transfer learning"
+    source: "torchvision"
+    source_url: "https://pytorch.org/vision/stable/models.html"
+    download_url: "torchvision://densenet201"
+    framework: "pytorch"
+    architecture: "densenet201"
+    filename: "densenet201-imagenet.pth"
+    path: "_weights/densenet201.pth"
+    size_mb: 80
+    input_size: [224, 224]
+    input_channels: 3
+    pretrained_on: "ImageNet"
+    license: "BSD-3-Clause"
+    notes: "Higher accuracy. Best for server-side inference. Research shows good dermatology performance."
+    recommended: true
+    sha256: null
+    version: "imagenet"
+
+# Model usage guidelines
+usage_guidelines:
+  selfie_pipeline:
+    recommended_models:
+      - yunet_face_detection
+      - acne_binary_v1
+      - other_condition_v1
+    notes: "Fast, optimized for consumer selfies"
+    
+  clinical_pipeline:
+    recommended_models:
+      - retinaface_mobilenet
+      - densenet201_skin_base  # + fine-tune
+    notes: "Higher accuracy for clinical dermoscopy images"
+    
+  mobile_deployment:
+    recommended_models:
+      - yunet_face_detection
+      - mobilenetv3_skin_base
+      - acne_binary_v1  # quantized version
+    notes: "Optimized for on-device inference"
+
+# Image type compatibility
+image_compatibility:
+  selfie:
+    description: "Consumer smartphone selfies"
+    characteristics:
+      - varied_lighting: true
+      - angles: ["frontal", "slight_angle"]
+      - resolution: "medium_to_high"
+      - typical_distance: "arm_length"
+    best_models:
+      - yunet_face_detection
+      - acne_binary_v1
+      - other_condition_v1
+      
+  clinical_dermoscopy:
+    description: "Professional dermatoscope images"
+    characteristics:
+      - controlled_lighting: true
+      - magnification: "10x-100x"
+      - resolution: "high"
+      - typical_distance: "close_up"
+    best_models:
+      - retinaface_mobilenet
+      - densenet201_skin_base
+    notes: "Custom models may need retraining for dermoscopy"
+
+# Licensing summary
+license_summary:
+  commercial_safe:
+    - yunet_face_detection  # MIT
+    - retinaface_mobilenet  # MIT
+    - mediapipe_face_mesh  # Apache-2.0
+    - mobilenetv3_skin_base  # BSD-3
+    - densenet201_skin_base  # BSD-3
+    - acne_binary_v1  # MIT (yours)
+    - other_condition_v1  # MIT (yours)
+    
+  research_only:
+    - dlib_68_landmarks  # Requires Imperial College permission for commercial use
+    
+  notes: |
+    All recommended models are safe for commercial use.
+    dlib excluded from default pipeline due to licensing restrictions.
+    MediaPipe is our primary landmark detector (Apache 2.0).
+
+# Download strategy
+download_strategy:
+  default: "on_demand"  # Download when first requested
+  options:
+    - on_demand: "Download models as needed (saves space)"
+    - all_at_once: "Download all models during setup (faster startup)"
+    - manual: "Admin manually runs download script"
+  
+  storage:
+    local_dev: "backend/models/_weights/"
+    railway_production: "/app/models/_weights/"
+    cache_policy: "persistent"  # Don't re-download unless version changes
+
+# Environment variables (Railway deployment)
+env_config:
+  MODEL_DIR: "/app/models/_weights"
+  ACNE_MODEL_PATH: "/app/models/acne_binary_v1.pt"
+  OTHER_CONDITION_MODEL_PATH: "/app/models/other_condition_v1.pt"
+  YUNET_MODEL_PATH: "${MODEL_DIR}/yunet_2023mar.onnx"
+  RETINAFACE_MODEL_PATH: "${MODEL_DIR}/retinaface_mobilenet025.h5"
+  MOBILENETV3_MODEL_PATH: "${MODEL_DIR}/mobilenet_v3_large.pth"
+  DENSENET_MODEL_PATH: "${MODEL_DIR}/densenet201.pth"
+  AUTO_DOWNLOAD_MODELS: "true"  # Auto-download missing models on startup
+
+# Checksums for integrity verification (update after download)
+checksums:
+  sha256:
+    yunet_2023mar.onnx: null  # Run verify_models.py to generate
+    retinaface_mobilenet025.h5: null
+    mobilenet_v3_large.pth: null
+    densenet201.pth: null
+    acne_binary_v1.pt: null
+    other_condition_v1.pt: null

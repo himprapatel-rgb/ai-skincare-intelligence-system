@@ -88,4 +88,3 @@ def auth_headers(client, test_user):
         expires_delta=timedelta(minutes=30)
     )
         return {"Authorization": f"Bearer {access_token}"}
-    return {"Authorization": f"Bearer {access_token}"}

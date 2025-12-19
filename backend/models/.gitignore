@@ -1,0 +1,39 @@
+# Model weights directory (downloaded at runtime)
+_weights/
+
+# Downloaded model files (except custom trained)
+*.onnx
+*.h5
+*.tflite
+*.pb
+*.caffemodel
+
+# EXCEPTION: Keep custom trained models
+!acne_binary_v1.pt
+!other_condition_v1.pt
+!*_info.txt
+
+# Python cache
+*.pyc
+__pycache__/
+*.py[cod]
+*$py.class
+
+# System files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Temporary download files
+*.tmp
+*.download
+*.partial
+
+# Model checkpoints during training
+checkpoints/
+*.ckpt
+
+# Logs
+*.log

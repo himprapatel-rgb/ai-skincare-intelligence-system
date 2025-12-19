@@ -1,0 +1,10 @@
+# ML Models Directory
+
+This directory contains the trained PyTorch models for skin analysis.
+
+## Models to upload:
+- acne_binary_v1.pth
+- other_condition_v1.pth
+
+## Model Loading
+Models are loaded by the ML inference service at runtime.

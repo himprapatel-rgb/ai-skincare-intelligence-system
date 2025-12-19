@@ -70,5 +70,27 @@ async def get_current_user(
     
     user = db.query(User).filter(User.id == int(user_id)).first()
     if user is None:
+            user_identifi    user_identifier = user_id
+               user_identifier = user_id
+    user = db.query(User).filter(User.email == user_identifier).first()
+    if user is None:
         raise credentials_exception
+    return useruser_identifier = user_id
+    user = db.query(User).filter(User.email == user_identifier).first()
+    if user is None:
+        raise credentials_exception
+    return user
+    user = db.query(User).filter(User.email == user_identifier).first()
+    if user is None:
+        raise credentials_exception
+    return userdb.query(User).filter(User.email == user_identifier).first()
+    if user is None:
+        raise credentials_exception
+    return userquery(User).filter(User.email == user_identi    user_identifier = user_id
+    user = db.query(User).filter(User.email == user_identifier).first()
+    if user is None:
+        raise credentials_exception
+    return user
+        raise credentials_exception
+    return user
     return user

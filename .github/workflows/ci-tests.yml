@@ -41,4 +41,4 @@ jobs:
           DATABASE_URL: "postgresql://test:test@localhost:5432/test_db"
           SECRET_KEY: "test-secret-key-for-ci"
         run: |
-pytest tests/ -v --cov=app --cov-report=html --cov-report=term-missing --cov-fail-under=50
+            pytest tests/ -v --cov=app --cov-report=html --cov-report=term-missing --cov-fail-under=50

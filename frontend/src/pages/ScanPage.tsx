@@ -12,8 +12,7 @@ import type { ScanAnalysisResult } from '../types/scan';
  * Main page for face scanning and analysis
  */
 export const ScanPage: React.FC = () => {
-  const [sessionId, setSessionId] = useState<string | null>(null);
-  const [isScanning, setIsScanning] = useState(false);
+  const [sessionId, setSessionId] = useState<number | null>(null);  const [isScanning, setIsScanning] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [results, setResults] = useState<ScanAnalysisResult | null>(null);
@@ -65,8 +64,7 @@ export const ScanPage: React.FC = () => {
 
     try {
       // Client-side face validation
-      const validation = await faceDetectionService.validateFace(imageBlob);
-      
+    setSessionId(response.scan_id);      
       if (!validation.faceDetected) {
         setValidationWarning(validation.warning || 'No face detected. Please try again.');
         setIsProcessing(false);

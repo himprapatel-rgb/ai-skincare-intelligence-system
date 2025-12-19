@@ -49,8 +49,7 @@ jobs:
         id: check_changes
         working-directory: ./frontend
         run: |
-          if git diff --quiet package-lock.json; then
-            echo "changed=false" >> $GITHUB_OUTPUT
+        if [ -z "$(git status --porcelain package-lock.json)" ]; then            echo "changed=false" >> $GITHUB_OUTPUT
             echo "No changes to package-lock.json"
           else
             echo "changed=true" >> $GITHUB_OUTPUT

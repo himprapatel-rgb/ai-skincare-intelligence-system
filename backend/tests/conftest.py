@@ -59,8 +59,33 @@ def client(test_db):
 
 
 @pytest.fixture
-def auth_headers(client):
-    """Create mock auth headers for testing (bypasses actual auth)"""
-    # Skip actual authentication for these tests since auth endpoints may not be ready
-    # Return mock bearer token that tests can use
-    return {"Authorization": "Bearer test_mock_token_for_ci"}
+def test_user(test_db):
+    """Create a test user in the database"""
+    from app.models.user import User
+    from app.core.security import get_password_hash
+    
+    user = User(
+        email="testuser@example.com",
+        username="testuser",
+        hashed_password=get_password_hash("testpassword123"),
+        is_active=True,
+        is_verified=True
+    )
+    test_db.add(user)
+    test_db.commit()
+    test_db.refresh(user)
+    return user
+
+@pytest.fixture
+def auth_headers(client, test_user):
+    """Create auth headers with real JWT token"""
+    from app.core.security import create_access_token
+    from datetime import timedelta
+    
+    # Create a real JWT token for the test user
+    access_token = create_access_token(
+        data={"sub": test_user.email},
+        expires_delta=timedelta(minutes=30)
+    )
+        return {"Authorization": f"Bearer {access_token}"}
+    return {"Authorization": f"Bearer {access_token}"}

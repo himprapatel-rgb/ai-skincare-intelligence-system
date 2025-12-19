@@ -1,0 +1,1 @@
+csv=C:\Users\hpatel\AI_Skin_database\datasets\faceskin_master\manifest_other_condition.csv

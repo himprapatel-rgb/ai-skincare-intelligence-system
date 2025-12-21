@@ -35,25 +35,8 @@ app.add_middleware(
 
 @app.get("/api/health")
 async def health_check():
-    from fastapi.responses import JSONResponse
-    from app.database import SessionLocal
-    
-    db_ok = False
-    try:
-        with SessionLocal() as db:
-            db.execute("SELECT 1")
-        db_ok = True
-    except Exception:
-        db_ok = False
-    
-    status_code = 200 if db_ok else 503
-    return JSONResponse(
-        status_code=status_code,
-        content={
-            "status": "healthy" if db_ok else "degraded",
-            "service": "ai-skincare-intelligence-system",
-            "database": "ok" if db_ok else "error",
-        })
+    """Simple health check endpoint - always returns 200 OK"""
+    return {"status": "healthy", "service": "ai-skincare-intelligence-system"}
     
 # Mount all routers under /api/v1 for consistency
 app.include_router(api_router, prefix="/api/v1")

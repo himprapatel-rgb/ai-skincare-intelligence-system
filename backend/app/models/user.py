@@ -1,7 +1,6 @@
 """
 User database model.
-"""
-
+feat(user): add optional phone fields and nullable password
 from sqlalchemy import Column, String, Boolean, DateTime, Integer
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func

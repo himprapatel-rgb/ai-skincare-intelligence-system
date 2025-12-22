@@ -5,7 +5,7 @@ import { LoadingSpinner } from '../components/LoadingSpinner';
 import { ErrorMessage } from '../components/ErrorMessage';
 import { scanApi } from '../services/scanApi';
 import { faceDetectionService } from '../services/faceDetection';
-import type { ScanAnalysisResult } from '../types/scan';
+import type { ScanAnalysisResult, ScanInitResponse } from '../types/scan';
 
 /**
  * ScanPage Component

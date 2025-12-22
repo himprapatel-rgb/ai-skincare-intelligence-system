@@ -1,11 +1,7 @@
-/api/scan  /api/v1/scan// src/api/scanApi.ts
+// src/api/scanApi.ts
 
 import type { ScanInitResponse } from "../types/scan";
 
-/**
- * Optional: If you already have stronger types for these, replace these with imports.
- * Keeping them permissive here avoids new TS errors.
- */
 export type ScanStatusResponse = {
   status: "pending" | "processing" | "completed" | "failed" | string;
   message?: string;
@@ -15,66 +11,79 @@ export type ScanStatusResponse = {
 export type ScanResultResponse = Record<string, unknown>;
 
 /**
- * Base API URL:
- * - In local dev you can set VITE_API_URL="http://localhost:8000"
- * - In production, leaving it empty works if frontend and backend share the same domain
- * (or you proxy through Railway).
+ * IMPORTANT:
+ * - This file intentionally DOES NOT use any `api` axios instance (so “Cannot find name 'api'” is impossible).
+ * - This file intentionally DOES NOT use RegExp flags at all (so TS1499 is impossible).
+ * - Replace your scanApi.ts ENTIRELY with this file.
  */
-const API_BASE = (import.meta.env.VITE_API_URL ?? "").replace(/\/$/, "");
 
-/** Small helper to build URLs safely */
-function url(path: string): string {
-  if (!path.startsWith("/")) path = `/${path}`;
-  return `${API_BASE}${path}`;
+// Vite env var (string). If empty => same-origin requests.
+const API_BASE: string = typeof import.meta !== "undefined" && import.meta.env
+  ? String(import.meta.env.VITE_API_URL ?? "")
+  : "";
+
+// Avoid regex to prevent “unknown regexp flag” issues caused by accidental edits.
+function trimTrailingSlash(input: string): string {
+  if (input.length > 1 && input.endsWith("/")) return input.slice(0, -1);
+  return input;
 }
 
-/** Common JSON fetch helper with better error messages */
-async function fetchJson<T>(input: RequestInfo, init?: RequestInit): Promise<T> {
-  const res = await fetch(input, init);
+function buildUrl(path: string): string {
+  const base = trimTrailingSlash(API_BASE);
+  const p = path.startsWith("/") ? path : `/${path}`;
+  return `${base}${p}`;
+}
 
-  // Try to capture server error details (JSON or text)
+async function fetchJson<T>(path: string, init?: RequestInit): Promise<T> {
+  const res = await fetch(buildUrl(path), init);
+
   if (!res.ok) {
+    // Read error details safely (no regex, no api)
     let detail = "";
     try {
-      const data = await res.json();
-      detail = typeof data === "string" ? data : JSON.stringify(data);
-    } catch {
-      try {
+      const ct = res.headers.get("content-type") || "";
+      if (ct.includes("application/json")) {
+        const data: unknown = await res.json();
+        detail = typeof data === "string" ? data : JSON.stringify(data);
+      } else {
         detail = await res.text();
-      } catch {
-        detail = "";
       }
+    } catch {
+      detail = "";
     }
-    throw new Error(`Scan API error ${res.status} ${res.statusText}${detail ? `: ${detail}` : ""}`);
+
+    throw new Error(
+      `Scan API error ${res.status} ${res.statusText}${detail ? `: ${detail}` : ""}`
+    );
   }
 
-  return (await res.json()) as T;
+  // Some endpoints might return empty body; handle safely
+  const text = await res.text();
+  if (!text) return {} as T;
+
+  return JSON.parse(text) as T;
 }
 
 /**
- * initScan
+ * POST /api/v1/scan/init
  * Backend returns: { session_id: string }
  */
 export async function initScan(): Promise<ScanInitResponse> {
-  return fetchJson<ScanInitResponse>(url("/api/v1/scan/init"), {
+  return fetchJson<ScanInitResponse>("/api/v1/scan/init", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    // If your backend expects a JSON body, add it here. Otherwise keep empty.
     body: JSON.stringify({}),
   });
 }
 
 /**
- * uploadScanImage
- * Upload an image for a scan session.
+ * POST /api/v1/scan/{session_id}/upload
  */
 export async function uploadScanImage(sessionId: string, file: File): Promise<{ ok: true }> {
   const formData = new FormData();
   formData.append("file", file);
-  // Some backends expect "image" instead of "file".
-  // If yours expects "image", change the key above to "image".
 
-  await fetchJson<unknown>(url(`/api/v1/scan/${encodeURIComponent(sessionId)}/upload`), {
+  await fetchJson<unknown>(`/api/v1/scan/${encodeURIComponent(sessionId)}/upload`, {
     method: "POST",
     body: formData,
   });
@@ -83,26 +92,25 @@ export async function uploadScanImage(sessionId: string, file: File): Promise<{ 
 }
 
 /**
- * getScanStatus
+ * GET /api/v1/scan/{session_id}/status
  */
 export async function getScanStatus(sessionId: string): Promise<ScanStatusResponse> {
-  return fetchJson<ScanStatusResponse>(url(`/api/v1/scan/${encodeURIComponent(sessionId)}/status`), {
+  return fetchJson<ScanStatusResponse>(`/api/v1/scan/${encodeURIComponent(sessionId)}/status`, {
     method: "GET",
   });
 }
 
 /**
- * getScanResult
+ * GET /api/v1/scan/{session_id}/result
  */
 export async function getScanResult(sessionId: string): Promise<ScanResultResponse> {
-  return fetchJson<ScanResultResponse>(url(`/api/v1/scan/${encodeURIComponent(sessionId)}/result`), {
+  return fetchJson<ScanResultResponse>(`/api/v1/scan/${encodeURIComponent(sessionId)}/result`, {
     method: "GET",
   });
 }
 
 /**
- * Convenience: full flow helper (optional)
- * init -> upload -> status/result handled by caller
+ * Convenience helper: init -> upload
  */
 export async function initAndUpload(file: File): Promise<ScanInitResponse> {
   const init = await initScan();

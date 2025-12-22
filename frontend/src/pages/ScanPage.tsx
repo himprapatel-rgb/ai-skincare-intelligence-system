@@ -40,8 +40,8 @@ export const ScanPage: React.FC = () => {
     try {
       setError(null);
       const response = await scanApi.initScan();
-      setSessionId(sessionId);
-      console.log('Scan session initialized:', sessionId);
+      setSessionId(response.session_id);
+      console.log('Scan session initialized:', response.session_id);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to initialize scan';
       setError(errorMessage);
@@ -84,8 +84,7 @@ export const ScanPage: React.FC = () => {
       console.log('Polling for analysis results...');
       const analysisResults = await scanApi.pollResults(sessionId);
       
-      setResults(analysisResults as ScanAnalysisResult);      console.log('Analysis complete:', analysisResults);
-    } catch (err) {
+      setResults(analysisResults as unknown as ScanAnalysisResult);    console.log('Analysis complete:', analysisResults);    } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to process scan';
       setError(errorMessage);
       console.error('Scan processing failed:', err);

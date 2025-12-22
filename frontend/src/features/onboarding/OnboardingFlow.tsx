@@ -11,7 +11,6 @@ import { useNavigate } from 'react-router-dom';
 const OnboardingStep: React.FC<any> = () => null;
 const ProgressIndicator: React.FC<any> = () => null;
 const ProfileService = { createProfile: async () => {} };
-const useAuth = () => ({ user: null });
 interface OnboardingData { goals: string[]; concerns: string[]; skinType: string; routineFrequency: string; }
 /**
  * Complete user onboarding flow capturing baseline profile.
@@ -37,7 +36,6 @@ export const OnboardingFlow: React.FC = () => {
   
   const totalSteps = 6;
   const navigate = useNavigate();
-  const { user } = useAuth();
 
   const handleStepComplete = async (stepData: Partial<OnboardingData>) => {
     const updatedData = { ...formData, ...stepData };
@@ -49,7 +47,7 @@ export const OnboardingFlow: React.FC = () => {
       setError(null);
       
       try {
-        await ProfileService.createProfile(updatedData);
+        await ProfileService.createProfile();
         
         // Track analytics (commented out - window.analytics type needs to be declared)
         // if (window.analytics) {

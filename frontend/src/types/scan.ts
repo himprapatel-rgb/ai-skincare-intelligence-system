@@ -125,3 +125,9 @@ export interface ApiError {
   status: number;
   timestamp: string;
 }
+
+
+// Scan init response
+export interface ScanInitResponse {
+  session_id: string;
+}

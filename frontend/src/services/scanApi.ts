@@ -1,4 +1,4 @@
-// src/api/scanApi.ts
+/api/scan  /api/v1/scan// src/api/scanApi.ts
 
 import type { ScanInitResponse } from "../types/scan";
 
@@ -56,7 +56,7 @@ async function fetchJson<T>(input: RequestInfo, init?: RequestInit): Promise<T> 
  * Backend returns: { session_id: string }
  */
 export async function initScan(): Promise<ScanInitResponse> {
-  return fetchJson<ScanInitResponse>(url("/api/scan/init"), {
+  return fetchJson<ScanInitResponse>(url("/api/v1/scan/init"), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     // If your backend expects a JSON body, add it here. Otherwise keep empty.
@@ -74,7 +74,7 @@ export async function uploadScanImage(sessionId: string, file: File): Promise<{ 
   // Some backends expect "image" instead of "file".
   // If yours expects "image", change the key above to "image".
 
-  await fetchJson<unknown>(url(`/api/scan/${encodeURIComponent(sessionId)}/upload`), {
+  await fetchJson<unknown>(url(`/api/v1/scan/${encodeURIComponent(sessionId)}/upload`), {
     method: "POST",
     body: formData,
   });
@@ -86,7 +86,7 @@ export async function uploadScanImage(sessionId: string, file: File): Promise<{ 
  * getScanStatus
  */
 export async function getScanStatus(sessionId: string): Promise<ScanStatusResponse> {
-  return fetchJson<ScanStatusResponse>(url(`/api/scan/${encodeURIComponent(sessionId)}/status`), {
+  return fetchJson<ScanStatusResponse>(url(`/api/v1/scan/${encodeURIComponent(sessionId)}/status`), {
     method: "GET",
   });
 }
@@ -95,7 +95,7 @@ export async function getScanStatus(sessionId: string): Promise<ScanStatusRespon
  * getScanResult
  */
 export async function getScanResult(sessionId: string): Promise<ScanResultResponse> {
-  return fetchJson<ScanResultResponse>(url(`/api/scan/${encodeURIComponent(sessionId)}/result`), {
+  return fetchJson<ScanResultResponse>(url(`/api/v1/scan/${encodeURIComponent(sessionId)}/result`), {
     method: "GET",
   });
 }

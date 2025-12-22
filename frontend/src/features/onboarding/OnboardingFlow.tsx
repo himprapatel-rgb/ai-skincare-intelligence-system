@@ -30,8 +30,7 @@ export const OnboardingFlow: React.FC = () => {
     goals: [],
     concerns: [],
     skinType: '',
-    routineFrequency: '',
-    climate: ''
+    routineFrequency: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -43,26 +42,25 @@ export const OnboardingFlow: React.FC = () => {
   const handleStepComplete = async (stepData: Partial<OnboardingData>) => {
     const updatedData = { ...formData, ...stepData };
     setFormData(updatedData);
-
+    
     if (currentStep === totalSteps) {
       // Final step - submit profile
       setIsSubmitting(true);
       setError(null);
       
       try {
-        await ProfileService.createBaselineProfile(updatedData);
+        await ProfileService.createProfile(updatedData);
         
-        // Track analytics
-            // Track analytics (commented out - window.analytics type needs to be declared)
-    // if (window.analytics) {
-    //   window.analytics.track('Onboarding Completed', {
-    //     user_id: user?.id,
-    //     goals: updatedData.goals,
-    //     concerns_count: updatedData.concerns.length,
-    //     skin_type: updatedData.skinType,
-    //     timestamp: new Date().toISOString()
-    //   });
-    // }}
+        // Track analytics (commented out - window.analytics type needs to be declared)
+        // if (window.analytics) {
+        //   window.analytics.track('Onboarding Completed', {
+        //     user_id: user?.id,
+        //     goals: updatedData.goals,
+        //     concerns_count: updatedData.concerns.length,
+        //     skin_type: updatedData.skinType,
+        //     timestamp: new Date().toISOString()
+        //   });
+        // }}
         
         navigate('/dashboard');
       } catch (err: any) {

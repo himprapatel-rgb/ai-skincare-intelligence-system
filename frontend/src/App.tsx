@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import { ScanPage } from './pages/ScanPage';
+import ScanPage from './pages/ScanPage';
 
 /**
  * Main App Component

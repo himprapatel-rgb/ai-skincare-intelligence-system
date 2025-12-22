@@ -1,126 +1,111 @@
-import { apiClient } from './api';
+// src/api/scanApi.ts
 
-export interface ScanInitResponse {
-  scan_id: number;
-  status: string;
-  created_at: string;
+import type { ScanInitResponse } from "../types/scan";
+
+/**
+ * Optional: If you already have stronger types for these, replace these with imports.
+ * Keeping them permissive here avoids new TS errors.
+ */
+export type ScanStatusResponse = {
+  status: "pending" | "processing" | "completed" | "failed" | string;
+  message?: string;
+  progress?: number;
+};
+
+export type ScanResultResponse = Record<string, unknown>;
+
+/**
+ * Base API URL:
+ * - In local dev you can set VITE_API_URL="http://localhost:8000"
+ * - In production, leaving it empty works if frontend and backend share the same domain
+ * (or you proxy through Railway).
+ */
+const API_BASE = (import.meta.env.VITE_API_URL ?? "").replace(/\/$/, "");
+
+/** Small helper to build URLs safely */
+function url(path: string): string {
+  if (!path.startsWith("/")) path = `/${path}`;
+  return `${API_BASE}${path}`;
 }
 
-export interface ScanUploadResponse {
-  scan_id: number;
-  status: string;
-  image_path: string;
-}
+/** Common JSON fetch helper with better error messages */
+async function fetchJson<T>(input: RequestInfo, init?: RequestInit): Promise<T> {
+  const res = await fetch(input, init);
 
-export interface ScanStatusResponse {
-  scan_id: number;
-  status: string;
-  created_at: string;
-  updated_at: string;
-}
+  // Try to capture server error details (JSON or text)
+  if (!res.ok) {
+    let detail = "";
+    try {
+      const data = await res.json();
+      detail = typeof data === "string" ? data : JSON.stringify(data);
+    } catch {
+      try {
+        detail = await res.text();
+      } catch {
+        detail = "";
+      }
+    }
+    throw new Error(`Scan API error ${res.status} ${res.statusText}${detail ? `: ${detail}` : ""}`);
+  }
 
-export interface ScanResultResponse {
-  scan_id: number;
-  status: string;
-  result: {
-    scan_id: number;
-    status: string;
-    skin_mood: string;
-    scores: {
-      redness: number;
-      acne: number;
-      pigmentation: number;
-      dehydration: number;
-      sensitivity: number;
-    };
-    recommendations: {
-      summary: string;
-      priority_actions: string[];
-    };
-    generated_at: string;
-  };
-  created_at: string;
-  updated_at: string;
+  return (await res.json()) as T;
 }
 
 /**
- * Scan API Service
- * Handles all scan-related API calls to the backend
+ * initScan
+ * Backend returns: { session_id: string }
  */
-export class ScanApiService {
-  /**
-   * Initialize a new scan session
-   */
-  static async initScan(): Promise<ScanInitResponse> {
-    const response = await apiClient.post<ScanInitResponse>('/api/v1/scan/init');
-    return response.data;
-  }
-
-  /**
-   * Upload face scan image for analysis
-   */
-  static async uploadScan(scanId: number, imageBlob: Blob): Promise<ScanUploadResponse> {
-    const formData = new FormData();
-    formData.append('file', imageBlob, 'face-scan.jpg');
-
-    const response = await apiClient.post<ScanUploadResponse>(
-      `/api/v1/scan/${scanId}/upload`,
-      formData,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      }
-    );
-    return response.data;
-  }
-
-  /**
-   * Get scan status
-   */
-  static async getScanStatus(scanId: number): Promise<ScanStatusResponse> {
-    const response = await apiClient.get<ScanStatusResponse>(
-      `/api/v1/scan/${scanId}/status`
-    );
-    return response.data;
-  }
-
-  /**
-   * Get scan analysis results
-   */
-  static async getResults(scanId: number): Promise<ScanResultResponse> {
-    const response = await apiClient.get<ScanResultResponse>(
-      `/api/v1/scan/${scanId}/results`
-    );
-    return response.data;
-  }
-
-  /**
-   * Poll for results with timeout
-   */
-  static async pollResults(
-    scanId: number,
-    maxAttempts: number = 30,
-    interval: number = 2000
-  ): Promise<ScanResultResponse> {
-    for (let attempt = 0; attempt < maxAttempts; attempt++) {
-      const status = await this.getScanStatus(scanId);
-      
-      if (status.status === 'completed') {
-        return await this.getResults(scanId);
-      }
-      
-      if (status.status === 'failed') {
-        throw new Error('Scan analysis failed - please try again');
-      }
-      
-      // Wait before next poll
-      await new Promise((resolve) => setTimeout(resolve, interval));
-    }
-    
-    throw new Error('Scan analysis timeout - please try again');
-  }
+export async function initScan(): Promise<ScanInitResponse> {
+  return fetchJson<ScanInitResponse>(url("/api/scan/init"), {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    // If your backend expects a JSON body, add it here. Otherwise keep empty.
+    body: JSON.stringify({}),
+  });
 }
 
-// Export singleton instance
-export const scanApi = ScanApiService;
+/**
+ * uploadScanImage
+ * Upload an image for a scan session.
+ */
+export async function uploadScanImage(sessionId: string, file: File): Promise<{ ok: true }> {
+  const formData = new FormData();
+  formData.append("file", file);
+  // Some backends expect "image" instead of "file".
+  // If yours expects "image", change the key above to "image".
+
+  await fetchJson<unknown>(url(`/api/scan/${encodeURIComponent(sessionId)}/upload`), {
+    method: "POST",
+    body: formData,
+  });
+
+  return { ok: true };
+}
+
+/**
+ * getScanStatus
+ */
+export async function getScanStatus(sessionId: string): Promise<ScanStatusResponse> {
+  return fetchJson<ScanStatusResponse>(url(`/api/scan/${encodeURIComponent(sessionId)}/status`), {
+    method: "GET",
+  });
+}
+
+/**
+ * getScanResult
+ */
+export async function getScanResult(sessionId: string): Promise<ScanResultResponse> {
+  return fetchJson<ScanResultResponse>(url(`/api/scan/${encodeURIComponent(sessionId)}/result`), {
+    method: "GET",
+  });
+}
+
+/**
+ * Convenience: full flow helper (optional)
+ * init -> upload -> status/result handled by caller
+ */
+export async function initAndUpload(file: File): Promise<ScanInitResponse> {
+  const init = await initScan();
+  await uploadScanImage(init.session_id, file);
+  return init;
+}

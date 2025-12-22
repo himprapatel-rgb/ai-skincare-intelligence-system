@@ -40,8 +40,8 @@ export const ScanPage: React.FC = () => {
     try {
       setError(null);
       const response = await scanApi.initScan();
-      setSessionId(response.session_id);
-      console.log('Scan session initialized:', response.session_id);
+      setSessionId(response.sessionId);
+      console.log('Scan session initialized:', response.sessionId);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to initialize scan';
       setError(errorMessage);
@@ -64,17 +64,18 @@ export const ScanPage: React.FC = () => {
 
     try {
       // Client-side face validation
-    setSessionId(response.scan_id);      
-      if (!validation.faceDetected) {
-        setValidationWarning(validation.warning || 'No face detected. Please try again.');
+          // Perform client-side face validation
+      const validationResponse = await faceDetectionService.validateFace(imageBlob);
+      
+      if (!validationResponse.faceDetected) {
+        setValidationWarning(validationResponse.warning || 'No face detected. Please try again.');
         setIsProcessing(false);
         return;
       }
-
-      if (validation.warning) {
-        setValidationWarning(validation.warning);
+      
+      if (validationResponse.warning) {
+        setValidationWarning(validationResponse.warning);
       }
-
       // Upload image to backend
       console.log('Uploading image to backend...');
       await scanApi.uploadScan(sessionId, imageBlob);
@@ -83,8 +84,7 @@ export const ScanPage: React.FC = () => {
       console.log('Polling for analysis results...');
       const analysisResults = await scanApi.pollResults(sessionId);
       
-      setResults(analysisResults);
-      console.log('Analysis complete:', analysisResults);
+      setResults(analysisResults as ScanAnalysisResult);      console.log('Analysis complete:', analysisResults);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to process scan';
       setError(errorMessage);

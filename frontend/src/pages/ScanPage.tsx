@@ -12,7 +12,7 @@ import type { ScanAnalysisResult } from '../types/scan';
  * Main page for face scanning and analysis
  */
 export const ScanPage: React.FC = () => {
-  const [sessionId, setSessionId] = useState<number | null>(null);  const [isScanning, setIsScanning] = useState(false);
+    const [sessionId, setSessionId] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [results, setResults] = useState<ScanAnalysisResult | null>(null);
@@ -40,8 +40,8 @@ export const ScanPage: React.FC = () => {
     try {
       setError(null);
       const response = await scanApi.initScan();
-      setSessionId(response.sessionId);
-      console.log('Scan session initialized:', response.sessionId);
+      setSessionId(sessionId);
+      console.log('Scan session initialized:', sessionId);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to initialize scan';
       setError(errorMessage);

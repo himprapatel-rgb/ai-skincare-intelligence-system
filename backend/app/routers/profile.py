@@ -11,8 +11,8 @@ from app.core.security import (
     encrypt_sensitive_data,
     decrypt_sensitive_data,
 )
-from app.dependencies import get_dbfrom app.core.audit import log_profile_event
-
+from app.dependencies import get_db
+from app.core.audit import log_profile_event
 router = APIRouter(prefix="/profile", tags=["profile"])
 logger = logging.getLogger(__name__)
 

@@ -10,13 +10,10 @@ from app.api.v1 import api_router
 from app.database import engine, Base
 from app.routers import scan, digital_twin
 from app.routers import admin
+from app.routers import consent, profile  # GDPR & User Management
 from app.models.twin_models import *  # Import Digital Twin models for table creation# Create database tables if needed (safe for local dev)
 try:
-    Base.metadata.create_all(bind=engine)
-except Exception:
-    # In some CI or restricted environments the DB may not be available; skip silently
-    pass
-
+    
 app = FastAPI(
     title=settings.APP_NAME,
     version=settings.APP_VERSION,
@@ -40,13 +37,13 @@ async def health_check():
     
 # Mount all routers under /api/v1 for consistency
 app.include_router(api_router, prefix="/api/v1")
-app.include_router(scan.router, prefix="/api/v1", tags=["scan"])  # Sprint 2: Face Scan & AI Analysis
 app.include_router(digital_twin.router, prefix="/api/v1", tags=["digital_twin"])  # Sprint 3: Digital Twin
 app.include_router(routines_router, prefix="/api/v1", tags=["routines"])
 app.include_router(progress_router, prefix="/api/v1", tags=["progress"])
 app.include_router(external_products_router, prefix="/api/v1", tags=["external_products"])
 app.include_router(admin.router, prefix="/api/v1/admin", tags=["admin"])  # Admin endpoints
-app.include_router(products.router, prefix="/api/v1", tags=["products"])  # Product recommendations
+app.include_router(consent.router, prefix="/api/v1", tags=["consent"])  # GDPR Compliance (FR44-FR46)
+app.include_router(profile.router, prefix="/api/v1", tags=["profile"])  # User Profile Management
 
 @app.get("/", tags=["Root"])
 def read_root():

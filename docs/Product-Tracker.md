@@ -979,6 +979,50 @@
 
 ---
 
+## CR-ML-003: External Pre-Trained ML Models (December 23, 2025)
+
+### Change Log Entry
+
+**Date:** 2025-12-23  
+**Change Type:** Architecture & ML Strategy  
+**Summary:** Introduced external pre-trained ML models (inference-only) with runtime loading from Railway volumes / external storage; deferred dataset ingestion & training to post-MVP.
+
+**Artifacts Updated:**
+- SRS updated to V5.3 (FR6A-FR6F, DR4A-DR4B, NFR21-NFR25, roadmap clarifications)
+- Product Backlog updated with EPIC 16 and related stories; training stories marked as Deferred/Post-MVP
+- ADR-ML-003 created for external ML storage strategy
+
+**Impact:** No changes to external API contracts; backend implementation can change models without frontend updates; protects against GitHub >100 MB limits.
+
+---
+
+### Decision Log Entry
+
+**DL-2025-12-23-1 – External Model Storage Strategy**
+
+- **Decision:** Adopt external, runtime-loaded pre-trained ML models using Railway volumes as primary storage and external object storage as secondary, with model-agnostic architecture and versioning.
+- **Reasoning:** Complies with GitHub file size constraints, aligns with ML deployment best practices, and keeps MVP scope focused on inference while preserving future training options.
+- **Linked Items:** CR-ML-003, SRS V5.3, EPIC 16, ADR-ML-003.
+
+---
+
+### Risk Register Updates
+
+| Risk ID | Description | Impact | Prob. | Mitigation | Status |
+|---------|-------------|--------|-------|------------|--------|
+| R-ML-003-1 | External model download failure or latency | High | Med | Use Railway volume as primary store; warm caches; monitor startup failures and add alerts. | Open |
+| R-ML-003-2 | Misconfiguration of model path/version | Med | Med | Centralize config, add health checks verifying model load at startup. | Open |
+
+---
+
+### Technical Debt Register
+
+| TD ID | Description | Priority | Plan |
+|-------|-------------|----------|------|
+| TD-ML-003-1 | No automated pipeline yet for training/fine-tuning models using stored user data and open-source datasets. | High | Implement post-MVP as separate ML training service with its own ADR and SRS update. |
+
+---
+
 **Document Updated**: December 5, 2025, 16:00 GMT
 **Next Update**: December 13, 2025 (Sprint 2 Kickoff)
 **Sprint 1.2 Status**: ✅ CLOSED - COMPLETE SUCCESS

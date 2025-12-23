@@ -53,6 +53,28 @@ class Settings(BaseSettings):
         description="Shared secret token required by internal summary endpoint",
     )
 
+        # ML Model Configuration
+    MODEL_SOURCE: str = Field(
+        default="volume",
+        description="Model source: 'volume' (Railway) or 'download' (external URL)"
+    )
+    MODEL_PATH: str = Field(
+        default="/models/skin_analysis_v1.pth",
+        description="Path to model file when using volume source"
+    )
+    MODEL_URL: str | None = Field(
+        default=None,
+        description="HTTPS URL to download model (required if MODEL_SOURCE='download')"
+    )
+    MODEL_SHA256: str | None = Field(
+        default=None,
+        description="SHA256 checksum for downloaded model verification"
+    )
+    MODEL_VERSION: str = Field(
+        default="1.0.0",
+        description="Model version identifier for tracking"
+    )
+
     class Config:
         env_file = ".env"
         case_sensitive = True

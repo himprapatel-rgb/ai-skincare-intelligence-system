@@ -17,8 +17,7 @@ import logging
 from app.models.user import User, UserConsent, PolicyVersion
 from app.schemas.consent import ConsentCreate, ConsentResponse, PolicyResponse
 from app.core.security import get_current_user
-from app.db.session import get_db
-
+from app.dependencies import get_db
 router = APIRouter(prefix="/consent", tags=["consent"])
 logger = logging.getLogger(__name__)
 

@@ -99,7 +99,7 @@ def _get_fernet():
         algorithm=hashes.SHA256(),
         length=32,
         salt=salt,
-        iterations=0,HMAC
+        iterations=100000,
         backend=default_backend()
     )
     key = base64.urlsafe_b64encode(kdf.derive(ENCRYPTION_KEY.encode()))

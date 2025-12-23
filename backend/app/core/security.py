@@ -91,20 +91,38 @@ ENCRYPTION_KEY = os.getenv(
     "your-encryption-key-here-must-be-32-bytes-base64-encoded"
 )
 
-def _get_fernet():
-    """Get Fernet cipher instance with derived key."""
-    # Derive a proper 32-byte key from the encryption key
-    salt = b'ai-skincare-salt'  # TODO: Store salt securely
-    kdf = PBKDF2(
+# Cached Fernet instance to prevent CPU exhaustion (Gemini AI recommendation)
+_FERNET_INSTANCE = None
+
+def get_fernet():
+    """Get cached Fernet cipher instance with derived key."""
+    global _FERNET_INSTANCE
+    if _FERNET_INSTANCE:
+        return _FERNET_INSTANCE
+    
+    # Get encryption key and salt from environment
+    key_str = os.getenv("ENCRYPTION_KEY")
+    salt_str = os.getenv("ENCRYPTION_SALT")
+    
+    # Validate environment variables in production
+    if not key_str or not salt_str:
+        if os.getenv("ENV") == "production":
+            raise RuntimeError("ENCRYPTION_KEY or ENCRYPTION_SALT not set!")
+        # Development fallback
+        key_str = "development-key-must-be-32-chars-long-"
+        salt_str = "dev-salt"
+    
+    # Derive key using PBKDF2 (only once at startup)
+    kdf = PBKDF2HMAC(
         algorithm=hashes.SHA256(),
         length=32,
-        salt=salt,
+        salt=salt_str.encode(),
         iterations=100000,
         backend=default_backend()
     )
-    key = base64.urlsafe_b64encode(kdf.derive(ENCRYPTION_KEY.encode()))
-    return Fernet(key)
-
+    derived_key = base64.urlsafe_b64encode(kdf.derive(key_str.encode()))
+    _FERNET_INSTANCE = Fernet(derived_key)
+    return _FERNET_INSTANCE
 def encrypt_sensitive_data(data: Union[str, List, dict]) -> str:
     """
     Encrypt sensitive user data using AES-256 encryption.
@@ -119,7 +137,7 @@ def encrypt_sensitive_data(data: Union[str, List, dict]) -> str:
     - NFR4: Use AES-256 encryption for sensitive data at rest
     """
     try:
-        fernet = _get_fernet()
+        fernet = get_fernet()
         # Convert to JSON string if not already a string
         if not isinstance(data, str):
             data = json.dumps(data)
@@ -143,7 +161,7 @@ def decrypt_sensitive_data(encrypted_data: str) -> Union[str, List, dict]:
     - NFR4: Use AES-256 encryption for sensitive data at rest
     """
     try:
-        fernet = _get_fernet()
+        fernet = get_fernet()
         # Decrypt
         decrypted_bytes = fernet.decrypt(encrypted_data.encode())
         decrypted_str = decrypted_bytes.decode()

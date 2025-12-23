@@ -12,7 +12,6 @@ from app.routers import scan, digital_twin
 from app.routers import admin
 from app.routers import consent, profile  # GDPR & User Management
 from app.models.twin_models import *  # Import Digital Twin models for table creation# Create database tables if needed (safe for local dev)
-try:
     
 app = FastAPI(
     title=settings.APP_NAME,

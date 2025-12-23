@@ -66,3 +66,22 @@ class PolicyVersion(Base):
     
     def __repr__(self):
         return f"<PolicyVersion {self.policy_type} v{self.version}>"
+
+
+class UserProfile(Base):
+    """User profile for skincare goals and preferences."""
+    __tablename__ = "user_profiles"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, nullable=False, unique=True, index=True)
+    goals = Column(String, nullable=False)  # Encrypted JSON string
+    concerns = Column(String, nullable=False)  # Encrypted JSON string
+    skin_type = Column(String, nullable=False)  # Encrypted string
+    routine_frequency = Column(String, nullable=True)
+    climate = Column(String, nullable=True)
+    profile_complete = Column(Boolean, default=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    
+    def __repr__(self):
+        return f"<UserProfile user_id={self.user_id}>"

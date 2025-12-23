@@ -1,0 +1,28 @@
+name: Deploy to Production
+
+on:
+  workflow_dispatch:  # Manual trigger only
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - staging
+
+jobs:
+  deploy:
+    name: Deploy Application
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Deployment placeholder
+        run: |
+          echo "Deployment workflow configured for ${{ github.event.inputs.environment }}"
+          echo "Manual deployment trigger only - configure Railway/Render deployment as needed"
+          echo "This workflow prevents auto-trigger errors while deployment is configured"

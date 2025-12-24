@@ -5,7 +5,7 @@ Created: December 8, 2025
 """
 
 from sqlalchemy import Column, String, DateTime, Integer, Float, ForeignKey, Text, Index
-from sqlalchemy.dialects.postgresql import UUID, JSONB
+from sqlalchemy.dialects.postgresql import UUID, JSONB, ARRAY
 from sqlalchemy.orm import relationship
 from datetime import datetime
 import uuid
@@ -42,6 +42,8 @@ class Product(Base):
     size_ml = Column(Float, nullable=True)
     primary_concerns = Column(JSONB, nullable=True)
     skin_types = Column(JSONB, nullable=True)
+        suitable_for = Column(ARRAY(String))  # e.g., ['Oily', 'Combination']
+    targets = Column(ARRAY(String))  # e.g., ['Acne', 'Redness']
     is_fragrance_free = Column(Integer, default=0, nullable=False)
     is_vegan = Column(Integer, default=0, nullable=False)
     is_cruelty_free = Column(Integer, default=0, nullable=False)

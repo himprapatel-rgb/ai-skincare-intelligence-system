@@ -13,6 +13,7 @@ Includes:
 - normalization for DB ingestion
 
 Fix: Properly manages httpx.AsyncClient lifecycle to prevent 500 errors
+# Deployment: This fix resolves the 500 Internal Server Error in external products search
 """
 
 import httpx

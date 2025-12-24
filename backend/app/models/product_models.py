@@ -42,7 +42,7 @@ class Product(Base):
     size_ml = Column(Float, nullable=True)
     primary_concerns = Column(JSONB, nullable=True)
     skin_types = Column(JSONB, nullable=True)
-        suitable_for = Column(ARRAY(String))  # e.g., ['Oily', 'Combination']
+    suitable_for = Column(ARRAY(String))  # e.g., ['Oily', 'Combination']
     targets = Column(ARRAY(String))  # e.g., ['Acne', 'Redness']
     is_fragrance_free = Column(Integer, default=0, nullable=False)
     is_vegan = Column(Integer, default=0, nullable=False)

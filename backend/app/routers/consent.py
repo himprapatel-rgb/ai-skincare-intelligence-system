@@ -29,36 +29,36 @@ async def get_current_policies(db: Session = Depends(get_db)):
     Sprint: 1.2 - Story 1.9
     """
     try:
-            terms = db.query(PolicyVersion).filter(
-        PolicyVersion.policy_type == "terms_of_service",
-        PolicyVersion.is_active == True
-    ).first()
+                terms = db.query(PolicyVersion).filter(
+            PolicyVersion.policy_type == "terms_of_service",
+            PolicyVersion.is_active == True
+        ).first()
     
-    privacy = db.query(PolicyVersion).filter(
-        PolicyVersion.policy_type == "privacy_policy",
-        PolicyVersion.is_active == True
-    ).first()
+        privacy = db.query(PolicyVersion).filter(
+            PolicyVersion.policy_type == "privacy_policy",
+            PolicyVersion.is_active == True
+        ).first()
     
-    if not terms or not privacy:
-        raise HTTPException(
-            status_code=500,
-            detail="Active policies not found"
+        if not terms or not privacy:
+            raise HTTPException(
+                status_code=500,
+                detail="Active policies not found"
+            )
+    
+        return PolicyResponse(
+            terms_of_service={
+                "version": terms.version,
+                "effective_date": terms.effective_date.isoformat(),
+                "content_url": terms.content_url or "/terms",
+                "summary": terms.summary
+            },
+            privacy_policy={
+                "version": privacy.version,
+                "effective_date": privacy.effective_date.isoformat(),
+                "content_url": privacy.content_url or "/privacy",
+                "summary": privacy.summary
+            }
         )
-    
-    return PolicyResponse(
-        terms_of_service={
-            "version": terms.version,
-            "effective_date": terms.effective_date.isoformat(),
-            "content_url": terms.content_url or "/terms",
-            "summary": terms.summary
-        },
-        privacy_policy={
-            "version": privacy.version,
-            "effective_date": privacy.effective_date.isoformat(),
-            "content_url": privacy.content_url or "/privacy",
-            "summary": privacy.summary
-        }
-    )
     except Exception as e:
         # Fallback when policy_versions table doesn't exist
         logger.warning(f"Policy versions table not found: {e}")

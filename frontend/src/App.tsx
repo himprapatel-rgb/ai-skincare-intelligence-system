@@ -1,4 +1,4 @@
-// src/App.tsx
+// src/App.tsx - Premium GUI
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { AuthPage } from "./pages/AuthPage";

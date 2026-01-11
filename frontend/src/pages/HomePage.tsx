@@ -1,4 +1,5 @@
 // src/pages/HomePage.tsx - Ultra Modern 2026 Design
+// BUILD TRIGGER: Force rebuild with modern 2026 premium UI
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import '../CommonStyles.css';

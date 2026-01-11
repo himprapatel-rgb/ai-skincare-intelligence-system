@@ -66,7 +66,7 @@ const RoutineBuilderPage: React.FC = () => {
     setCurrentRoutine(currentRoutine.map(s => s.id === id ? { ...s, category } : s));
   };
 
-  const handleSelectProduct = (id: string) => {
+  const handleSelectProduct = _(id: string) => {
     navigate('/myshelf');
   };
 

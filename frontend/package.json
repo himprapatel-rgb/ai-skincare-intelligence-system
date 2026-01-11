@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "AI-powered skincare analysis frontend with React",
   "private": true,
+    "engines": {
+    "node": "20.x"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",

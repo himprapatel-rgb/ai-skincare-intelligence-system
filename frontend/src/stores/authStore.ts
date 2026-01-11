@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persis, createJSONStoraget } from 'zustand/middleware';
 import axios from 'axios';
 
 export interface User {
@@ -35,7 +35,7 @@ export interface AuthState {
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/v1';
 
-port const useAuthStore = create<AuthState>()(n  persist(
+export const useAuthStore = create<AuthState>()  persist(
     (set, get) => ({
       // Initial State
       user: null,

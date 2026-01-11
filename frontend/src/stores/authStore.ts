@@ -26,7 +26,7 @@ export interface AuthState {
   setError: (error: string | null) => void;
   
   // API Methods
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<void>
   register: (email: string, password: string, username: string) => Promise<void>;
   logout: () => void;
   refreshToken: () => Promise<void>;

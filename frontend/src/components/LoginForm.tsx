@@ -21,8 +21,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegis
 
     try {
       const response = await authApi.login({ email, password });
-      localStorage.setItem('token', response.token);
-      localStorage.setItem('user', JSON.stringify(response.user));
+      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('user', JSON.stringify(response.data.user));
       onSuccess();
     } catch (err: any) {
       setError(err.response?.data?.message || 'Login failed. Please try again.');

@@ -51,3 +51,4 @@ class ApiClient {
 }
 
 export const apiClient = new ApiClient().getClient();
+export const api = apiClient;  // Alias for backward compatibility

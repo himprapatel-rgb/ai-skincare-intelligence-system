@@ -27,13 +27,6 @@ const RoutineBuilderPage: React.FC = () => {
     { id: '8', time: 'evening', order: 3, category: 'Treatment', productName: 'Retinol' },
     { id: '9', time: 'evening', order: 4, category: 'Moisturizer', productName: 'Night Cream' }
   ]);
-const 30
-  = (_id: string) => {
-    navigate('/myshelf');
-  };
-  const handleSelectProduct = (_id: string) => {
-    navigate('/myshelf');
-  };
 
   const categories = ['Cleanser', 'Toner', 'Essence', 'Serum', 'Treatment', 'Eye Cream', 'Moisturizer', 'Oil', 'Sunscreen'];
 
@@ -71,6 +64,10 @@ const 30
 
   const handleUpdateCategory = (id: string, category: string) => {
     setCurrentRoutine(currentRoutine.map(s => s.id === id ? { ...s, category } : s));
+  };
+
+  const handleSelectProduct = (id: string) => {
+    navigate('/myshelf');
   };
 
   const handleSaveRoutine = async () => {
@@ -198,4 +195,5 @@ const 30
   );
 };
 
-export default RoutineBuilderPage;
+export default RoutineBuilderPage;handleSelectProduct = (id: string)  handleSelectProduct = (_id: string)
+  

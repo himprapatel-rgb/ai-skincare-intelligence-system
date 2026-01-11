@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persis, createJSONStoraget } from 'zustand/middleware';
+import { persis, createJSONStoragt } from 'zustand/middleware';
 import axios from 'axios';
 
 export interface User {

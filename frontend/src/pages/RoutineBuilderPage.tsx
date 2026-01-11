@@ -54,11 +54,9 @@ const RoutineBuilderPage: React.FC = () => {
     const newRoutine = [...currentRoutine];
     const targetIndex = direction === 'up' ? index - 1 : index + 1;
     [newRoutine[index], newRoutine[targetIndex]] = [newRoutine[targetIndex], newRoutine[index]];
-    
     newRoutine.forEach((step, idx) => {
       step.order = idx + 1;
     });
-    
     setCurrentRoutine(newRoutine);
   };
 
@@ -66,7 +64,7 @@ const RoutineBuilderPage: React.FC = () => {
     setCurrentRoutine(currentRoutine.map(s => s.id === id ? { ...s, category } : s));
   };
 
-  const handleSelectProduct = (id: string) => {
+  const handleSelectProduct = (_id: string) => {
     navigate('/myshelf');
   };
 
@@ -83,18 +81,18 @@ const RoutineBuilderPage: React.FC = () => {
     <div className="routine-builder-page">
       <div className="routine-header">
         <h1>Routine Builder</h1>
-        <p className="subtitle">Create your personalized skincare routine</p>
+        <p>Create your personalized skincare routine</p>
       </div>
 
       <div className="time-selector">
         <button 
-          className={activeTime === 'morning' ? 'active' : ''}
+          className={`time-btn ${activeTime === 'morning' ? 'active' : ''}`}
           onClick={() => setActiveTime('morning')}
         >
           ☀ Morning Routine
         </button>
         <button 
-          className={activeTime === 'evening' ? 'active' : ''}
+          className={`time-btn ${activeTime === 'evening' ? 'active' : ''}`}
           onClick={() => setActiveTime('evening')}
         >
           ☽ Evening Routine
@@ -105,16 +103,15 @@ const RoutineBuilderPage: React.FC = () => {
         {currentRoutine.length === 0 ? (
           <div className="empty-state">
             <p>No steps in your {activeTime} routine yet</p>
-            <button className="btn-primary" onClick={handleAddStep}>Add First Step</button>
+            <button onClick={handleAddStep} className="btn-primary">Add First Step</button>
           </div>
         ) : (
           <>
             {currentRoutine.map((step, index) => (
-              <div key={step.id} className="routine-step">
-                <div className="step-order">{step.order}</div>
-                
+              <div key={step.id} className="step-card">
+                <div className="step-number">{step.order}</div>
                 <div className="step-content">
-                  <div className="step-category">
+                  <div className="step-field">
                     <label>Category:</label>
                     <select 
                       value={step.category}
@@ -125,21 +122,19 @@ const RoutineBuilderPage: React.FC = () => {
                       ))}
                     </select>
                   </div>
-                  
-                  <div className="step-product">
+                  <div className="step-field">
                     {step.productName ? (
                       <div className="selected-product">
                         <span>{step.productName}</span>
-                        <button onClick={() => handleSelectProduct(step.id)}>Change</button>
+                        <button onClick={() => handleSelectProduct(step.id)} className="btn-link">Change</button>
                       </div>
                     ) : (
-                      <button className="btn-outline" onClick={() => handleSelectProduct(step.id)}>
+                      <button onClick={() => handleSelectProduct(step.id)} className="btn-secondary">
                         Select Product
                       </button>
                     )}
                   </div>
                 </div>
-                
                 <div className="step-actions">
                   <button 
                     onClick={() => handleMoveStep(index, 'up')}
@@ -165,8 +160,7 @@ const RoutineBuilderPage: React.FC = () => {
                 </div>
               </div>
             ))}
-            
-            <button className="btn-add-step" onClick={handleAddStep}>
+            <button onClick={handleAddStep} className="btn-add-step">
               + Add Step
             </button>
           </>
@@ -184,10 +178,10 @@ const RoutineBuilderPage: React.FC = () => {
       </div>
 
       <div className="routine-actions">
-        <button className="btn-secondary" onClick={() => navigate('/myshelf')}>
+        <button onClick={() => navigate('/myshelf')} className="btn-secondary">
           View My Shelf
         </button>
-        <button className="btn-primary" onClick={handleSaveRoutine}>
+        <button onClick={handleSaveRoutine} className="btn-primary">
           Save Routine
         </button>
       </div>
@@ -195,5 +189,4 @@ const RoutineBuilderPage: React.FC = () => {
   );
 };
 
-export default RoutineBuilderPage;handleSelectProduct = (id: string)  handleSelectProduct = (_id: string)
-  
+export default RoutineBuilderPage;

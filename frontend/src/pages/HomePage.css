@@ -158,7 +158,9 @@
   /* Fix: Use gradient with low opacity instead of transparent white */
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   opacity: 0.08; /* Very subtle */
-  /* Fix: Blur the element itself, not the background */
+  /* Fix: Blur the element itself, not the background */.float-circle {
+  display: none; /* Hide decorative elements causing black boxes */
+}
   filter: blur(60px);
   /* Ensure it doesn't block clicks */
   pointer-events: none;

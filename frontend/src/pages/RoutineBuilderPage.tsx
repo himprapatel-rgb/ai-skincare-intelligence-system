@@ -27,7 +27,10 @@ const RoutineBuilderPage: React.FC = () => {
     { id: '8', time: 'evening', order: 3, category: 'Treatment', productName: 'Retinol' },
     { id: '9', time: 'evening', order: 4, category: 'Moisturizer', productName: 'Night Cream' }
   ]);
-
+const 30
+  = (_id: string) => {
+    navigate('/myshelf');
+  };
   const categories = ['Cleanser', 'Toner', 'Essence', 'Serum', 'Treatment', 'Eye Cream', 'Moisturizer', 'Oil', 'Sunscreen'];
 
   const currentRoutine = activeTime === 'morning' ? morningRoutine : eveningRoutine;
@@ -66,133 +69,4 @@ const RoutineBuilderPage: React.FC = () => {
     setCurrentRoutine(currentRoutine.map(s => s.id === id ? { ...s, category } : s));
   };
 
-  const handleSelectProduct = _(id: string) => {
-    navigate('/myshelf');
-  };
-
-  const handleSaveRoutine = async () => {
-    try {
-      // TODO: API call to save routine
-      alert('Routine saved successfully!');
-    } catch (error) {
-      console.error('Failed to save routine:', error);
-    }
-  };
-
-  return (
-    <div className="routine-builder-page">
-      <div className="routine-header">
-        <h1>Routine Builder</h1>
-        <p className="subtitle">Create your personalized skincare routine</p>
-      </div>
-
-      <div className="time-selector">
-        <button 
-          className={activeTime === 'morning' ? 'active' : ''}
-          onClick={() => setActiveTime('morning')}
-        >
-          ☀ Morning Routine
-        </button>
-        <button 
-          className={activeTime === 'evening' ? 'active' : ''}
-          onClick={() => setActiveTime('evening')}
-        >
-          ☽ Evening Routine
-        </button>
-      </div>
-
-      <div className="routine-steps">
-        {currentRoutine.length === 0 ? (
-          <div className="empty-state">
-            <p>No steps in your {activeTime} routine yet</p>
-            <button className="btn-primary" onClick={handleAddStep}>Add First Step</button>
-          </div>
-        ) : (
-          <>
-            {currentRoutine.map((step, index) => (
-              <div key={step.id} className="routine-step">
-                <div className="step-order">{step.order}</div>
-                
-                <div className="step-content">
-                  <div className="step-category">
-                    <label>Category:</label>
-                    <select 
-                      value={step.category}
-                      onChange={(e) => handleUpdateCategory(step.id, e.target.value)}
-                    >
-                      {categories.map(cat => (
-                        <option key={cat} value={cat}>{cat}</option>
-                      ))}
-                    </select>
-                  </div>
-                  
-                  <div className="step-product">
-                    {step.productName ? (
-                      <div className="selected-product">
-                        <span>{step.productName}</span>
-                        <button onClick={() => handleSelectProduct(step.id)}>Change</button>
-                      </div>
-                    ) : (
-                      <button className="btn-outline" onClick={() => handleSelectProduct(step.id)}>
-                        Select Product
-                      </button>
-                    )}
-                  </div>
-                </div>
-                
-                <div className="step-actions">
-                  <button 
-                    onClick={() => handleMoveStep(index, 'up')}
-                    disabled={index === 0}
-                    title="Move up"
-                  >
-                    ↑
-                  </button>
-                  <button 
-                    onClick={() => handleMoveStep(index, 'down')}
-                    disabled={index === currentRoutine.length - 1}
-                    title="Move down"
-                  >
-                    ↓
-                  </button>
-                  <button 
-                    onClick={() => handleRemoveStep(step.id)}
-                    className="btn-remove"
-                    title="Remove"
-                  >
-                    ×
-                  </button>
-                </div>
-              </div>
-            ))}
-            
-            <button className="btn-add-step" onClick={handleAddStep}>
-              + Add Step
-            </button>
-          </>
-        )}
-      </div>
-
-      <div className="routine-tips">
-        <h3>Skincare Tips</h3>
-        <ul>
-          <li>Always apply products from thinnest to thickest consistency</li>
-          <li>Wait 1-2 minutes between each step for better absorption</li>
-          <li>Use sunscreen as the last step in your morning routine</li>
-          <li>Patch test new products before adding to your routine</li>
-        </ul>
-      </div>
-
-      <div className="routine-actions">
-        <button className="btn-secondary" onClick={() => navigate('/myshelf')}>
-          View My Shelf
-        </button>
-        <button className="btn-primary" onClick={handleSaveRoutine}>
-          Save Routine
-        </button>
-      </div>
-    </div>
-  );
-};
-
-export default RoutineBuilderPage;
+  const 69

@@ -174,10 +174,6 @@ const HomePage = () => {
     </div>
   )
     
-      {/* Remove black box decorative elements */}
-      <style>{`
-        .float-circle { display: none !important; }
-      `}</style>;
 };
 
 export default HomePage;

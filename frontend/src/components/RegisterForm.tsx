@@ -1,4 +1,4 @@
-response.data.token  response.data.tokenimport React, { useState } from 'react';
+import React, { useState } from 'react';
 import { authApi } from '../services/authApi';
 import { ErrorMessage } from './ErrorMessage';
 import { LoadingSpinner } from './LoadingSpinner';
@@ -41,8 +41,8 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onSwitchT
     try {
       const { name, email, password } = formData;
       const response = await authApi.register({ name, email, password });
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('user', JSON.stringify(response.data.user));
+      localStorage.setItem('token', response.token);
+      localStorage.setItem('user', JSON.stringify(response.user));
       onSuccess();
     } catch (err: any) {
       setError(err.response?.data?.message || 'Registration failed. Please try again.');

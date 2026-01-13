@@ -18,8 +18,28 @@ from app.models.user import User, UserConsent, PolicyVersion
 from app.schemas.consent import ConsentCreate, ConsentResponse, PolicyResponse
 from app.core.security import get_current_user
 from app.dependencies import get_db
+
 router = APIRouter(prefix="/consent", tags=["consent"])
 logger = logging.getLogger(__name__)
+
+
+def _get_default_policies():
+    """Return default policies when database policies don't exist."""
+    return PolicyResponse(
+        terms_of_service={
+            "version": "1.0.0",
+            "effective_date": datetime(2025, 1, 1).isoformat(),
+            "content_url": "/terms",
+            "summary": "Terms of Service - Version 1.0.0"
+        },
+        privacy_policy={
+            "version": "1.0.0",
+            "effective_date": datetime(2025, 1, 1).isoformat(),
+            "content_url": "/privacy",
+            "summary": "Privacy Policy - Version 1.0.0"
+        }
+    )
+
 
 @router.get("/policies/current", response_model=PolicyResponse)
 async def get_current_policies(db: Session = Depends(get_db)):
@@ -29,22 +49,21 @@ async def get_current_policies(db: Session = Depends(get_db)):
     Sprint: 1.2 - Story 1.9
     """
     try:
-                terms = db.query(PolicyVersion).filter(
+        terms = db.query(PolicyVersion).filter(
             PolicyVersion.policy_type == "terms_of_service",
             PolicyVersion.is_active == True
         ).first()
-    
+
         privacy = db.query(PolicyVersion).filter(
             PolicyVersion.policy_type == "privacy_policy",
             PolicyVersion.is_active == True
         ).first()
-    
+
+        # Return default policies if none found in database
         if not terms or not privacy:
-            raise HTTPException(
-                status_code=500,
-                detail="Active policies not found"
-            )
-    
+            logger.info("No active policies in database, returning defaults")
+            return _get_default_policies()
+
         return PolicyResponse(
             terms_of_service={
                 "version": terms.version,
@@ -62,21 +81,8 @@ async def get_current_policies(db: Session = Depends(get_db)):
     except Exception as e:
         # Fallback when policy_versions table doesn't exist
         logger.warning(f"Policy versions table not found: {e}")
-        from datetime import datetime
-        return PolicyResponse(
-            terms_of_service={
-                "version": "1.0.0",
-                "effective_date": datetime(2025, 1, 1).isoformat(),
-                "content_url": "/terms",
-                "summary": "Terms of Service - Version 1.0.0"
-            },
-            privacy_policy={
-                "version": "1.0.0",
-                "effective_date": datetime(2025, 1, 1).isoformat(),
-                "content_url": "/privacy",
-                "summary": "Privacy Policy - Version 1.0.0"
-            }
-        )
+        return _get_default_policies()
+
 
 @router.post("/accept", response_model=ConsentResponse)
 async def accept_policies(
@@ -94,68 +100,50 @@ async def accept_policies(
         PolicyVersion.policy_type == "terms_of_service",
         PolicyVersion.version == consent_data.terms_version
     ).first()
-    
+
     privacy = db.query(PolicyVersion).filter(
         PolicyVersion.policy_type == "privacy_policy",
         PolicyVersion.version == consent_data.privacy_version
     ).first()
-    
+
     if not terms or not privacy:
         raise HTTPException(
-            status_code=400,
-            detail="Invalid policy versions"
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid policy versions specified"
         )
-    
-    # Check if consent already exists
+
+    # Create or update consent record
     existing_consent = db.query(UserConsent).filter(
         UserConsent.user_id == current_user.id
     ).first()
-    
+
     if existing_consent:
-        # Update existing consent
-        existing_consent.terms_accepted = consent_data.terms_accepted
-        existing_consent.privacy_accepted = consent_data.privacy_accepted
         existing_consent.terms_version = consent_data.terms_version
         existing_consent.privacy_version = consent_data.privacy_version
         existing_consent.accepted_at = datetime.utcnow()
         existing_consent.ip_address = consent_data.ip_address
-        db.commit()
-        db.refresh(existing_consent)
-        user_consent = existing_consent
+        consent = existing_consent
     else:
-        # Create new consent record
-        user_consent = UserConsent(
+        consent = UserConsent(
             user_id=current_user.id,
-            terms_accepted=consent_data.terms_accepted,
-            privacy_accepted=consent_data.privacy_accepted,
             terms_version=consent_data.terms_version,
             privacy_version=consent_data.privacy_version,
-            accepted_at=datetime.utcnow(),
             ip_address=consent_data.ip_address
         )
-        db.add(user_consent)
-        db.commit()
-        db.refresh(user_consent)
-    
-    logger.info(
-        f"Consent accepted for user {current_user.id}",
-        extra={
-            "user_id": str(current_user.id),
-            "terms_version": consent_data.terms_version,
-            "privacy_version": consent_data.privacy_version,
-            "timestamp": datetime.utcnow().isoformat()
-        }
-    )
-    
+        db.add(consent)
+
+    db.commit()
+    db.refresh(consent)
+
     return ConsentResponse(
-        id=user_consent.id,
-        user_id=user_consent.user_id,
-        terms_accepted=user_consent.terms_accepted,
-        privacy_accepted=user_consent.privacy_accepted,
-        terms_version=user_consent.terms_version,
-        privacy_version=user_consent.privacy_version,
-        accepted_at=user_consent.accepted_at
+        id=consent.id,
+        user_id=consent.user_id,
+        terms_version=consent.terms_version,
+        privacy_version=consent.privacy_version,
+        accepted_at=consent.accepted_at,
+        ip_address=consent.ip_address
     )
+
 
 @router.get("/status", response_model=ConsentResponse)
 async def get_consent_status(
@@ -163,29 +151,28 @@ async def get_consent_status(
     db: Session = Depends(get_db)
 ):
     """
-    Get user's consent status.
-    SRS: BR12, NFR6
+    Get user's current consent status.
     Sprint: 1.2 - Story 1.9
     """
     consent = db.query(UserConsent).filter(
         UserConsent.user_id == current_user.id
     ).first()
-    
+
     if not consent:
         raise HTTPException(
-            status_code=404,
-            detail="Consent record not found"
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="No consent record found"
         )
-    
+
     return ConsentResponse(
         id=consent.id,
         user_id=consent.user_id,
-        terms_accepted=consent.terms_accepted,
-        privacy_accepted=consent.privacy_accepted,
         terms_version=consent.terms_version,
         privacy_version=consent.privacy_version,
-        accepted_at=consent.accepted_at
+        accepted_at=consent.accepted_at,
+        ip_address=consent.ip_address
     )
+
 
 @router.delete("/withdraw")
 async def withdraw_consent(
@@ -193,21 +180,21 @@ async def withdraw_consent(
     db: Session = Depends(get_db)
 ):
     """
-    Withdraw consent and trigger account deletion process.
-    SRS: NFR6 - GDPR Right to be Forgotten
+    Withdraw consent (GDPR compliance).
+    SRS: NFR6 - GDPR compliance
     Sprint: 1.2 - Story 1.9
     """
     consent = db.query(UserConsent).filter(
         UserConsent.user_id == current_user.id
     ).first()
-    
-    if consent:
-        # Mark for deletion (14-day grace period)
-        consent.terms_accepted = False
-        consent.privacy_accepted = False
-        db.commit()
-        logger.info(f"Consent withdrawn for user {current_user.id}")
-    
-    return {
-        "message": "Consent withdrawn. Account will be deleted within 14 days."
-    }
+
+    if not consent:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="No consent record found"
+        )
+
+    db.delete(consent)
+    db.commit()
+
+    return {"message": "Consent withdrawn successfully"}

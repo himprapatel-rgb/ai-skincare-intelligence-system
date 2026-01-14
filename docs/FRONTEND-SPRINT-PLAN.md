@@ -187,16 +187,16 @@ A story is **Done** when:
 
 Use this like a miniboard:
 
-- [ ] F201 `api.ts` base client
-- [ ] F202 `scanApi.ts`
-- [ ] F203 `mlService.ts`
-- [ ] F204 `FaceScanCamera.tsx`
-- [ ] F205 `ScanResults.tsx` + `ScanResults.css`
-- [ ] F206 `ScanPage.tsx`
-- [ ] F207 Routing to `/scan`
-- [ ] F208 Onboarding/profile verification
-- [ ] F209 Tests & lint baseline
-- [ ] F210 Frontend CI job
+- [x] F2▸01 `api.ts` base client
+- [x] F2▸02 `scanApi.ts`
+- [x] F2▸03 `mlService.ts` (implemented as faceDetection.ts)
+- [x] F2▸04 `FaceScanCamera.tsx` (implemented as Camera.tsx)
+- [x] F2▸05 `ScanResults.tsx` + `ScanResults.css` (implemented as AnalysisResults.tsx)
+- [x] F2▸06 `ScanPage.tsx`
+- [x] F2▸07 Routing to `/scan`
+- [x] F2▸08 Onboarding/profile verification
+- [x] F2▸09 Tests & lint baseline
+- [x] F2▸10 Frontend CI job
 
 ---
 

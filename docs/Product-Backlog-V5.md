@@ -325,3 +325,39 @@ Before proceeding to Sprint 1, verify:
 **Deployment Frequency**: Multiple per day
 **Lead Time for Changes**: < 30 minutes
 
+
+
+---
+
+## EPIC 20: Database Integration (Sprint 0)
+
+> **See:** [PRODUCT-BACKLOG-V5.1-DATABASE-STORIES.md](./PRODUCT-BACKLOG-V5.1-DATABASE-STORIES.md)
+
+**Epic ID**: EPIC 20  
+**SRS Traceability**: DR1, DR2, DR5A, TR1-TR4, NFR21-NFR23  
+**Priority**: CRITICAL (Sprint 0)  
+**Total Stories**: 12  
+**Estimated Story Points**: 65-75  
+**Team Assignment**: Backend Lead + Data Engineer + ML Lead  
+
+### Summary
+Bootstrap ML and product intelligence by integrating 9 open-source databases:
+
+| Story | Title | Points | Priority |
+|-------|-------|--------|----------|
+| 20.1 | HAM10000 Dataset Import | 5 | P0 |
+| 20.2 | ISIC Archive Import | 5 | P0 |
+| 20.3 | Open Beauty Facts Bulk Import | 8 | P0 |
+| 20.4 | Open Beauty Facts API | 8 | P0 |
+| 20.5 | EU CosIng Import | 5 | P0 |
+| 20.6 | California CSCP Hazards | 5 | P1 |
+| 20.7 | INCI Normalizer | 8 | P1 |
+| 20.8 | Google SCIN Dataset | 5 | P1 |
+| 20.9 | Kaggle Sephora Products | 3 | P1 |
+| 20.10 | Automated Cron Jobs | 5 | P1 |
+| 20.11 | License Documentation | 2 | P0 |
+| 20.12 | Database Monitoring | 5 | P1 |
+
+**Total**: 64 story points
+
+*For detailed stories, acceptance criteria, and technical requirements, see the linked document.*

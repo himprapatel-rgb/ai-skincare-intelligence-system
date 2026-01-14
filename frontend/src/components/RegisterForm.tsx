@@ -41,8 +41,8 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onSwitchT
     try {
       const { name, email, password } = formData;
       const response = await authApi.register({ name, email, password });
-      localStorage.setItem('token', response.token);
-      localStorage.setItem('user', JSON.stringify(response.user));
+      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('user', JSON.stringify(response.data.user));
       onSuccess();
     } catch (err: any) {
       setError(err.response?.data?.message || 'Registration failed. Please try again.');

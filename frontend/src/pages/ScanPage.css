@@ -1,255 +1,242 @@
-/* Medical Scan Page - Clean Healthcare Design */
+/* Medical Scan Page - Clean Healthcare Design with onskin- classes */
 
-.scan-page {
+/* Main page container */
+.onskin-page {
   min-height: 100vh;
-  background: #f0fdfa;
-  padding: 32px;
-  font-family: 'Inter', -apple-system, sans-serif;
+  background: linear-gradient(135deg, #f0fdfa 0%, #e6fffa 50%, #f0f9ff 100%);
+  padding: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
-.scan-container {
-  max-width: 700px;
+/* Header styles */
+.onskin-header {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(13, 148, 136, 0.1);
+  padding: 16px 24px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.onskin-header .onskin-container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
-.scan-header {
-  text-align: center;
-  margin-bottom: 40px;
+.onskin-logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0d9488;
+  text-decoration: none;
+  letter-spacing: -0.5px;
 }
 
-.scan-header h1 {
+.onskin-logo:hover {
+  color: #0f766e;
+}
+
+.onskin-back {
+  color: #64748b;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.2s;
+}
+
+.onskin-back:hover {
+  color: #0d9488;
+}
+
+/* Main content area */
+.onskin-main {
+  padding: 40px 24px 60px;
+}
+
+.onskin-container.onskin-main {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.onskin-content {
+  background: white;
+  border-radius: 24px;
+  padding: 48px 40px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(13, 148, 136, 0.08);
+}
+
+/* Title and subtitle */
+.onskin-title {
   font-size: 2rem;
   font-weight: 700;
   color: #0f172a;
   margin-bottom: 12px;
+  text-align: center;
+  letter-spacing: -0.5px;
 }
 
-.scan-header p {
+.onskin-subtitle {
   color: #64748b;
-  font-size: 1rem;
+  font-size: 1.05rem;
+  text-align: center;
+  margin-bottom: 36px;
   line-height: 1.6;
 }
 
-.scan-card {
-  background: white;
-  border-radius: 20px;
-  padding: 40px;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+/* Upload section */
+.onskin-upload-section {
+  margin-top: 8px;
 }
 
-.upload-zone {
-  border: 2px dashed #cbd5e1;
-  border-radius: 16px;
-  padding: 60px 40px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.3s;
-  background: #f8fafc;
-  margin-bottom: 24px;
+.onskin-upload-box {
+  position: relative;
 }
 
-.upload-zone:hover {
-  border-color: #0891b2;
-  background: #f0fdfa;
-}
-
-.upload-zone.dragover {
-  border-color: #0891b2;
-  background: #e0f2fe;
-}
-
-.upload-icon {
-  width: 80px;
-  height: 80px;
-  background: linear-gradient(135deg, #e0f2fe 0%, #ccfbf1 100%);
-  border-radius: 20px;
-  margin: 0 auto 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2.5rem;
-  color: #0891b2;
-}
-
-.upload-text h3 {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #0f172a;
-  margin-bottom: 8px;
-}
-
-.upload-text p {
-  color: #64748b;
-  font-size: 0.9rem;
-  margin-bottom: 16px;
-}
-
-.upload-btn {
-  background: #0891b2;
-  color: white;
-  padding: 12px 24px;
-  border-radius: 10px;
-  border: none;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.upload-btn:hover {
-  background: #0e7490;
-}
-
-.preview-container {
-  margin-bottom: 24px;
-}
-
-.preview-image {
+.onskin-file-input {
+  position: absolute;
   width: 100%;
-  max-height: 400px;
-  object-fit: contain;
-  border-radius: 12px;
-  border: 1px solid #e2e8f0;
-}
-
-.scan-tips {
-  background: #f0f9ff;
-  border: 1px solid #bae6fd;
-  border-radius: 12px;
-  padding: 20px;
-  margin-top: 24px;
-}
-
-.tips-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 12px;
-  color: #0369a1;
-  font-weight: 600;
-}
-
-.tips-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.tips-list li {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  color: #0c4a6e;
-  font-size: 0.9rem;
-  margin-bottom: 8px;
-}
-
-.tips-list li::before {
-  content: '\2713';
-  color: #0891b2;
-  font-weight: bold;
-}
-
-.scan-actions {
-  display: flex;
-  gap: 16px;
-  margin-top: 24px;
-}
-
-.btn-analyze {
-  flex: 1;
-  background: #0891b2;
-  color: white;
-  padding: 16px;
-  border: none;
-  border-radius: 12px;
-  font-size: 1rem;
-  font-weight: 600;
+  height: 100%;
+  opacity: 0;
   cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
+  z-index: 10;
 }
 
-.btn-analyze:hover {
-  background: #0e7490;
-  transform: translateY(-1px);
-}
-
-.btn-analyze:disabled {
-  background: #94a3b8;
-  cursor: not-allowed;
-}
-
-.btn-reset {
-  padding: 16px 24px;
-  background: white;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  font-size: 1rem;
-  font-weight: 600;
-  color: #64748b;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.btn-reset:hover {
-  background: #f8fafc;
-  border-color: #cbd5e1;
-}
-
-.analyzing-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(255,255,255,0.95);
+.onskin-upload-label {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  padding: 48px 32px;
+  border: 2px dashed #cbd5e1;
+  border-radius: 16px;
+  background: #f8fafc;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-height: 200px;
 }
 
-.analyzing-spinner {
-  width: 60px;
-  height: 60px;
-  border: 4px solid #e2e8f0;
-  border-top-color: #0891b2;
+.onskin-upload-label:hover {
+  border-color: #0d9488;
+  background: #f0fdfa;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(13, 148, 136, 0.12);
+}
+
+.onskin-preview {
+  max-width: 100%;
+  max-height: 280px;
+  border-radius: 12px;
+  object-fit: contain;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.onskin-upload-prompt {
+  text-align: center;
+}
+
+.onskin-upload-icon {
+  font-size: 3rem;
+  margin-bottom: 16px;
+}
+
+.onskin-upload-text {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #334155;
+  margin-bottom: 8px;
+}
+
+.onskin-upload-hint {
+  font-size: 0.9rem;
+  color: #94a3b8;
+}
+
+/* Scan button */
+.onskin-scan-button {
+  width: 100%;
+  margin-top: 24px;
+  padding: 16px 32px;
+  background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(13, 148, 136, 0.3);
+}
+
+.onskin-scan-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(13, 148, 136, 0.4);
+}
+
+.onskin-scan-button:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Loading state */
+.onskin-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 24px;
+}
+
+.onskin-spinner {
+  width: 48px;
+  height: 48px;
+  border: 3px solid #e2e8f0;
+  border-top-color: #0d9488;
   border-radius: 50%;
   animation: spin 1s linear infinite;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
 
-.analyzing-text {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #0f172a;
-  margin-bottom: 8px;
-}
-
-.analyzing-subtext {
+.onskin-loading-text {
   color: #64748b;
+  font-size: 1rem;
 }
 
+/* Error message */
+.onskin-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  padding: 16px 20px;
+  border-radius: 12px;
+  margin-top: 20px;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+/* Responsive design */
 @media (max-width: 640px) {
-  .scan-page {
-    padding: 16px;
+  .onskin-content {
+    padding: 32px 24px;
+    border-radius: 20px;
   }
   
-  .scan-card {
-    padding: 24px;
+  .onskin-title {
+    font-size: 1.75rem;
   }
   
-  .upload-zone {
-    padding: 40px 20px;
+  .onskin-upload-label {
+    padding: 36px 24px;
+    min-height: 180px;
   }
   
-  .scan-actions {
-    flex-direction: column;
+  .onskin-main {
+    padding: 24px 16px 48px;
   }
 }

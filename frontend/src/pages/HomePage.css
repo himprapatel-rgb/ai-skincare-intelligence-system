@@ -400,17 +400,6 @@
   color: white;
   font-size: 1rem;
   .footer-links {
-  display: flex;
-  gap: 48px;
-}
-
-  font-weight: 600;
-  margin-bottom: 20px;
-}
-
-.footer-links a {
-  display: block;
-  color: var(--text-light);
   text-decoration: none;
   margin-bottom: 12px;
   font-size: 0.95rem;

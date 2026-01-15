@@ -34,6 +34,7 @@ class Settings(BaseSettings):
             "http://localhost:8081",  # Expo mobile
             "https://himprapatel-rgb.github.io",  # GitHub Pages production
             "https://ai-skincare-intelligence-system-production.up.railway.app",  # Railway backend
+                        "https://frontend-production-0415.up.railway.app",  # Railway frontend
         ],
         description="List of allowed CORS origins",
     )

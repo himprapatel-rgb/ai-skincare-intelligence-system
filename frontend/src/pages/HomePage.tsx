@@ -1,256 +1,217 @@
-// src/pages/HomePage.tsx
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import './HomePage.css';
 
-function IconSparkles() {
+const HomePage: React.FC = () => {
+  const navigate = useNavigate();
+
   return (
-    <svg viewBox="0 0 24 24" className="icon" aria-hidden="true">
-      <path fill="currentColor" d="M12 2l1.2 4.2L17.5 8l-4.3 1.6L12 14l-1.2-4.4L6.5 8l4.3-1.8L12 2zm7 6l.7 2.2L22 11l-2.3.8L19 14l-.7-2.2L16 11l2.3-.8L19 8zM5 12l.9 3.2L9 16l-3.1 1.1L5 20l-.9-2.9L1 16l3.1-.8L5 12z" />
-    </svg>
-  );
-}
-
-function IconShield() {
-  return (
-    <svg viewBox="0 0 24 24" className="icon" aria-hidden="true">
-      <path fill="currentColor" d="M12 2l8 4v6c0 5-3.4 9.4-8 10-4.6-.6-8-5-8-10V6l8-4zm0 4.2L6 9v3c0 3.7 2.4 6.8 6 7.7 3.6-.9 6-4 6-7.7V9l-6-2.8z" />
-    </svg>
-  );
-}
-
-function IconChart() {
-  return (
-    <svg viewBox="0 0 24 24" className="icon" aria-hidden="true">
-      <path fill="currentColor" d="M4 19h16v2H2V3h2v16zm4-8h2v6H8v-6zm4-4h2v10h-2V7zm4 2h2v8h-2V9z" />
-    </svg>
-  );
-}
-
-function IconScan() {
-  return (
-    <svg viewBox="0 0 24 24" className="icon" aria-hidden="true">
-      <path fill="currentColor" d="M4 7V4h3V2H2v5h2zm17-5h-5v2h3v3h2V2zM4 17H2v5h5v-2H4v-3zm18 0h-2v3h-3v2h5v-5zM7 7h10v10H7V7zm2 2v6h6V9H9z" />
-    </svg>
-  );
-}
-
-const FeatureCard = ({ icon, title, desc }: { icon: React.ReactNode; title: string; desc: string; }) => (
-  <div className="feature-card glass tilt">
-    <div className="feature-icon">{icon}</div>
-    <div className="feature-body">
-      <h3 className="feature-title">{title}</h3>
-      <p className="feature-desc">{desc}</p>
-    </div>
-  </div>
-);
-
-export default function HomePage() {
-  return (
-    <div className="app-shell">
-      <header className="topbar">
-        <div className="container topbar-inner">
-          <Link to="/" className="brand">
-            <span className="brand-mark" aria-hidden="true"> ✦ </span>
-            <span className="brand-name">AuraSkin AI</span>
-          </Link>
-          <nav className="nav">
-            <a className="nav-link" href="#features"> Features </a>
-            <a className="nav-link" href="#how"> How it works </a>
-            <Link className="btn btn-ghost" to="/scan"> Try scan </Link>
-          </nav>
+    <div className="homepage">
+      {/* Navigation Header */}
+      <nav className="navbar">
+        <div className="nav-container">
+          <div className="logo">
+            <span className="logo-icon">✨</span>
+            <span className="logo-text">AuraSkin AI</span>
+          </div>
+          <div className="nav-links">
+            <Link to="/" className="nav-link">Home</Link>
+            <Link to="/scan" className="nav-link">Features</Link>
+            <Link to="/auth" className="nav-link">About</Link>
+            <Link to="/auth" className="nav-btn-primary">Get Started</Link>
+          </div>
         </div>
-      </header>
+      </nav>
 
-      <div className="hero-bg">
-        <div className="hero-orbs" aria-hidden="true">
-          <div className="orb orb-a" />
-          <div className="orb orb-b" />
-          <div className="orb orb-c" />
-          <div className="grid-noise" />
-        </div>
-        <div className="container hero">
-          <div className="hero-left">
-            <div className="pill">
-              <span className="pill-dot" /> AI Skin Intelligence • Premium Experience
+      {/* Hero Section */}
+      <section className="hero">
+        <div className="hero-content">
+          <div className="hero-badge">
+            <span>🔬 AI-Powered Skincare Analysis</span>
+          </div>
+          <h1 className="hero-title">
+            Your Skin's Personal
+            <br />
+            <span className="gradient-text">Intelligence Platform</span>
+          </h1>
+          <p className="hero-description">
+            Transform your skincare routine with AI-powered analysis.
+            Upload a selfie and receive personalized recommendations,
+            track your progress, and achieve your skin goals.
+          </p>
+          <div className="hero-buttons">
+            <button 
+              className="btn-primary"
+              onClick={() => navigate('/scan')}
+            >
+              Start Free Scan
+              <span className="btn-arrow">→</span>
+            </button>
+            <button 
+              className="btn-secondary"
+              onClick={() => navigate('/auth')}
+            >
+              Learn More
+            </button>
+          </div>
+          <div className="hero-stats">
+            <div className="stat">
+              <span className="stat-number">50K+</span>
+              <span className="stat-label">Active Users</span>
             </div>
-            <h1 className="hero-title">
-              Your skin,{" "}
-              <span className="grad-text">decoded</span> in seconds.
-            </h1>
-            <p className="hero-subtitle">
-              Upload a selfie and get a clean, modern report: skin signals, patterns, and next-step guidance — built for a professional skincare workflow.
-            </p>
-            <div className="hero-actions">
-              <Link to="/scan" className="btn btn-primary btn-xl">
-                <span className="btn-glow" aria-hidden="true" />
-                Start AI Scan
-              </Link>
-              <a href="#features" className="btn btn-secondary btn-xl"> Explore features </a>
+            <div className="stat">
+              <span className="stat-number">1M+</span>
+              <span className="stat-label">Scans Completed</span>
             </div>
-            <div className="trust-row">
-              <div className="trust-chip">
-                <span className="trust-icon">⚡</span> Fast analysis
-              </div>
-              <div className="trust-chip">
-                <span className="trust-icon">🔒</span> Privacy-first
-              </div>
-              <div className="trust-chip">
-                <span className="trust-icon">✨</span> Premium UI
-              </div>
+            <div className="stat">
+              <span className="stat-number">98%</span>
+              <span className="stat-label">Satisfaction Rate</span>
             </div>
           </div>
-          <div className="hero-right">
-            <div className="hero-card glass">
-              <div className="hero-card-head">
-                <div className="dot dot-red" />
-                <div className="dot dot-yellow" />
-                <div className="dot dot-green" />
-                <span className="hero-card-title">Live Skin Report</span>
-              </div>
-              <div className="hero-card-body">
-                <div className="metric">
-                  <span className="metric-label">Hydration</span>
-                  <div className="meter">
-                    <div className="meter-fill w-72" />
-                  </div>
-                  <span className="metric-value">72%</span>
-                </div>
-                <div className="metric">
-                  <span className="metric-label">Texture</span>
-                  <div className="meter">
-                    <div className="meter-fill w-58" />
-                  </div>
-                  <span className="metric-value">58%</span>
-                </div>
-                <div className="metric">
-                  <span className="metric-label">Clarity</span>
-                  <div className="meter">
-                    <div className="meter-fill w-81" />
-                  </div>
-                  <span className="metric-value">81%</span>
-                </div>
-                <div className="mini-cards">
-                  <div className="mini-card">
-                    <div className="mini-title">Detected</div>
-                    <div className="mini-value">3 signals</div>
-                  </div>
-                  <div className="mini-card">
-                    <div className="mini-title">Confidence</div>
-                    <div className="mini-value">High</div>
-                  </div>
-                </div>
-                <div className="hero-card-cta">
-                  <Link to="/scan" className="btn btn-primary btn-full"> Scan now </Link>
-                </div>
-              </div>
-            </div>
-            <div className="hero-badge glass">
-              <div className="hero-badge-icon" aria-hidden="true">
-                <IconScan />
-              </div>
+        </div>
+        <div className="hero-image">
+          <div className="hero-card animate-float">
+            <div className="card-header">
+              <div className="card-icon">📊</div>
               <div>
-                <div className="hero-badge-title">Modern scan flow</div>
-                <div className="hero-badge-desc">Drag & drop • progress • elegant results</div>
+                <h3>Skin Analysis</h3>
+                <p>Real-time results</p>
+              </div>
+            </div>
+            <div className="progress-bar">
+              <div className="progress" style={{width: '85%'}}></div>
+            </div>
+            <div className="metrics">
+              <div className="metric">
+                <span>Hydration</span>
+                <strong>85%</strong>
+              </div>
+              <div className="metric">
+                <span>Texture</span>
+                <strong>72%</strong>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      <section id="features" className="container section">
-        <div className="section-head">
-          <h2 className="section-title">Premium features built for trust</h2>
-          <p className="section-subtitle">
-            A polished experience that feels like a production-grade AI skincare product.
+      {/* Features Section */}
+      <section className="features">
+        <div className="section-header">
+          <span className="section-badge">Features</span>
+          <h2 className="section-title">Everything You Need for Perfect Skin</h2>
+          <p className="section-description">
+            Advanced AI technology meets personalized skincare
           </p>
         </div>
         <div className="features-grid">
-          <FeatureCard icon={<IconSparkles />} title="Beautiful analysis reports" desc="Elegant cards, clean typography, and readable insights designed for real users." />
-          <FeatureCard icon={<IconShield />} title="Privacy-first by design" desc="Clear states, transparent processing, and simple controls for confidence." />
-          <FeatureCard icon={<IconChart />} title="Progress + confidence signals" desc="Professional progress indicators and results presentation with polished motion." />
-        </div>
-      </section>
-
-      <section id="how" className="container section">
-        <div className="how">
-          <div className="how-left">
-            <h2 className="section-title">How it works</h2>
-            <p className="section-subtitle">
-              Designed for speed and clarity — from upload to results.
-            </p>
-            <div className="steps">
-              <div className="step glass">
-                <div className="step-num">01</div>
-                <div>
-                  <div className="step-title">Upload a clear selfie</div>
-                  <div className="step-desc">Drag & drop or browse — built-in preview.</div>
-                </div>
-              </div>
-              <div className="step glass">
-                <div className="step-num">02</div>
-                <div>
-                  <div className="step-title">AI scan session starts</div>
-                  <div className="step-desc">We initialize and process with live status updates.</div>
-                </div>
-              </div>
-              <div className="step glass">
-                <div className="step-num">03</div>
-                <div>
-                  <div className="step-title">Review your results</div>
-                  <div className="step-desc">Insights displayed in premium, structured cards.</div>
-                </div>
-              </div>
-            </div>
-            <div className="how-actions">
-              <Link to="/scan" className="btn btn-primary"> Start scan </Link>
-              <a href="#features" className="btn btn-ghost"> See features </a>
-            </div>
+          <div className="feature-card">
+            <div className="feature-icon">🎯</div>
+            <h3>AI-Powered Analysis</h3>
+            <p>Advanced machine learning algorithms analyze your skin in seconds, detecting concerns and tracking improvements.</p>
           </div>
-          <div className="how-right">
-            <div className="showcase glass">
-              <div className="showcase-top">
-                <div className="showcase-title">Sample insight</div>
-                <div className="showcase-chip">AI powered</div>
-              </div>
-              <div className="showcase-content">
-                <div className="insight">
-                  <div className="insight-kicker">Hydration</div>
-                  <div className="insight-main">Suggest a richer moisturizer + occlusive at night</div>
-                </div>
-                <div className="insight">
-                  <div className="insight-kicker">Texture</div>
-                  <div className="insight-main">Add gentle exfoliation 1–2×/week</div>
-                </div>
-                <div className="insight">
-                  <div className="insight-kicker">Barrier</div>
-                  <div className="insight-main">Prioritize ceramides + soothing ingredients</div>
-                </div>
-              </div>
-              <div className="showcase-bottom">
-                <Link to="/scan" className="btn btn-secondary btn-full"> Try it yourself </Link>
-              </div>
-            </div>
+          <div className="feature-card">
+            <div className="feature-icon">🛡️</div>
+            <h3>Privacy First</h3>
+            <p>Your data is encrypted and secure. We never share your information without your explicit consent.</p>
+          </div>
+          <div className="feature-card">
+            <div className="feature-icon">📈</div>
+            <h3>Progress Tracking</h3>
+            <p>Monitor your skin's journey with detailed analytics, charts, and historical comparisons.</p>
+          </div>
+          <div className="feature-card">
+            <div className="feature-icon">💎</div>
+            <h3>Personalized Recommendations</h3>
+            <p>Get product suggestions tailored to your unique skin type, concerns, and goals.</p>
+          </div>
+          <div className="feature-card">
+            <div className="feature-icon">🔄</div>
+            <h3>Routine Builder</h3>
+            <p>Create and customize your perfect skincare routine with AI-guided recommendations.</p>
+          </div>
+          <div className="feature-card">
+            <div className="feature-icon">⭐</div>
+            <h3>Expert Insights</h3>
+            <p>Access professional-grade analysis typically reserved for dermatologist offices.</p>
           </div>
         </div>
       </section>
 
+      {/* How It Works */}
+      <section className="how-it-works">
+        <div className="section-header">
+          <span className="section-badge">Process</span>
+          <h2 className="section-title">How It Works</h2>
+          <p className="section-description">
+            Get professional-grade skin analysis in 3 simple steps
+          </p>
+        </div>
+        <div className="steps">
+          <div className="step">
+            <div className="step-number">01</div>
+            <div className="step-icon">📸</div>
+            <h3>Upload Your Selfie</h3>
+            <p>Take a clear photo of your face in good lighting. Our AI supports all skin types and tones.</p>
+          </div>
+          <div className="step-line"></div>
+          <div className="step">
+            <div className="step-number">02</div>
+            <div className="step-icon">🧠</div>
+            <h3>AI Analysis</h3>
+            <p>Our advanced algorithms analyze your skin, detecting concerns, texture, and hydration levels.</p>
+          </div>
+          <div className="step-line"></div>
+          <div className="step">
+            <div className="step-number">03</div>
+            <div className="step-icon">✨</div>
+            <h3>Get Recommendations</h3>
+            <p>Receive personalized product suggestions and a custom skincare routine tailored to you.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="cta">
+        <div className="cta-content">
+          <h2>Ready to Transform Your Skin?</h2>
+          <p>Join thousands of users who have discovered their perfect skincare routine</p>
+          <button 
+            className="btn-cta"
+            onClick={() => navigate('/scan')}
+          >
+            Start Your Free Analysis
+            <span className="btn-arrow">→</span>
+          </button>
+        </div>
+      </section>
+
+      {/* Footer */}
       <footer className="footer">
-        <div className="container footer-inner">
-          <div className="footer-left">
-            <Link to="/" className="brand brand-sm">
-              <span className="brand-mark" aria-hidden="true"> ✦ </span>
-              <span className="brand-name">AuraSkin AI</span>
-            </Link>
-            <p className="footer-note">
-              Premium UI/UX demo — connect to your backend scan endpoints.
-            </p>
+        <div className="footer-content">
+          <div className="footer-section">
+            <h4>AuraSkin AI</h4>
+            <p>Your personal skincare intelligence platform</p>
           </div>
-          <div className="footer-right">
-            <Link className="footer-link" to="/scan"> Scan </Link>
-            <a className="footer-link" href="#features"> Features </a>
-            <a className="footer-link" href="#how"> How it works </a>
+          <div className="footer-section">
+            <h4>Product</h4>
+            <Link to="/scan">Features</Link>
+            <Link to="/auth">Pricing</Link>
+            <Link to="/auth">How It Works</Link>
           </div>
+          <div className="footer-section">
+            <h4>Company</h4>
+            <Link to="/auth">About Us</Link>
+            <Link to="/auth">Privacy Policy</Link>
+            <Link to="/auth">Terms of Service</Link>
+          </div>
+        </div>
+        <div className="footer-bottom">
+          <p>© 2026 AuraSkin AI. All rights reserved.</p>
         </div>
       </footer>
     </div>
   );
-}
+};
+
+export default HomePage;

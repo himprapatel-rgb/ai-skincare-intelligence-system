@@ -6,9 +6,9 @@
 /* CSS Variables */
 :root {
   /* Primary Medical Colors */
-  --primary: #0891b2;
-  --primary-hover: #0e7490;
-  --primary-light: #e0f2fe;
+    --primary: #0d9488;
+    --primary-hover: #0f766e;
+    --primary-light: #f0fdfa;
   --accent: #14b8a6;
   --accent-light: #ccfbf1;
   

@@ -399,7 +399,8 @@
 .footer-links h4 {
   color: white;
   font-size: 1rem;
-  .footer-links {
+}
+  .footer-links a {   display: block;
   text-decoration: none;
   margin-bottom: 12px;
   font-size: 0.95rem;

@@ -1,0 +1,166 @@
+/* AnalysisResults.css */
+.analysis-results {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.analysis-results h1 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #2d3748;
+  text-align: center;
+}
+
+.results-container {
+  display: grid;
+  gap: 2rem;
+}
+
+.result-card {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.result-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #2d3748;
+}
+
+.result-card h3 {
+  font-size: 1.25rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: #4a5568;
+}
+
+.ingredients-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.ingredient-tag {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.ingredient-tag.good {
+  background: #c6f6d5;
+  color: #22543d;
+}
+
+.ingredient-tag.caution {
+  background: #fef5e7;
+  color: #975a16;
+}
+
+.ingredient-tag.bad {
+  background: #fed7d7;
+  color: #742a2a;
+}
+
+.score-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.score-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+}
+
+.score-circle.excellent {
+  background: #48bb78;
+}
+
+.score-circle.good {
+  background: #4299e1;
+}
+
+.score-circle.fair {
+  background: #ed8936;
+}
+
+.score-circle.poor {
+  background: #f56565;
+}
+
+.recommendations {
+  margin-top: 1.5rem;
+}
+
+.recommendation-item {
+  padding: 1rem;
+  background: #f7fafc;
+  border-left: 3px solid #4299e1;
+  margin-bottom: 0.75rem;
+  border-radius: 4px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-primary {
+  background: #4299e1;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #3182ce;
+}
+
+.btn-secondary {
+  background: #e2e8f0;
+  color: #2d3748;
+}
+
+.btn-secondary:hover {
+  background: #cbd5e0;
+}
+
+@media (max-width: 768px) {
+  .analysis-results {
+    padding: 1rem;
+  }
+  
+  .result-card {
+    padding: 1.5rem;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+  }
+  
+  .btn {
+    width: 100%;
+  }
+}

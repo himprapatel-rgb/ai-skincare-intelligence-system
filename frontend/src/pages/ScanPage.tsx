@@ -2,6 +2,7 @@
 import React, { useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { initScan, uploadScanImage, getScanStatus, getScanResult } from "../services/scanApi";
+import './ScanPage.css';
 
 export default function ScanPage() {
   const [file, setFile] = useState<File | null>(null);

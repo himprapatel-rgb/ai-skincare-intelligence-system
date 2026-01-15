@@ -12,7 +12,7 @@ const HomePage: React.FC = () => {
         <div className="nav-container">
           <div className="logo">
             <span className="logo-icon">✨</span>
-            <span className="logo-text">AuraSkin AI</span>
+            <span className="logo-text">AI Skincare AI</span>
           </div>
           <div className="nav-links">
             <Link to="/" className="nav-link">Home</Link>
@@ -190,7 +190,7 @@ const HomePage: React.FC = () => {
       <footer className="footer">
         <div className="footer-content">
           <div className="footer-section">
-            <h4>AuraSkin AI</h4>
+            <h4>AI Skincare AI</h4>
             <p>Your personal skincare intelligence platform</p>
           </div>
           <div className="footer-section">
@@ -207,7 +207,7 @@ const HomePage: React.FC = () => {
           </div>
         </div>
         <div className="footer-bottom">
-          <p>© 2026 AuraSkin AI. All rights reserved.</p>
+          <p>© 2026 AI Skincare AI. All rights reserved.</p>
         </div>
       </footer>
     </div>

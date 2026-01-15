@@ -1,0 +1,43 @@
+/* DataExportPage.css */
+.data-export-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.data-export-page h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #2d3748;
+}
+
+.data-export-page p {
+  color: #4a5568;
+  margin-bottom: 2rem;
+}
+
+.export-options {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.export-button {
+  padding: 1rem;
+  background: #4299e1;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.export-button:hover {
+  background: #3182ce;
+}
+
+.export-button:disabled {
+  background: #cbd5e0;
+  cursor: not-allowed;
+}

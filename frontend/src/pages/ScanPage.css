@@ -1,158 +1,163 @@
+/* AuraSkin Scan Page Premium Design */
+
 .scan-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 2rem;
+  background: linear-gradient(180deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+  padding: 32px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-family: 'Inter', -apple-system, sans-serif;
 }
 
 .scan-container {
-  max-width: 800px;
+  max-width: 600px;
   width: 100%;
-  background: white;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 24px;
-  padding: 3rem;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-  margin-top: 2rem;
+  padding: 48px 40px;
+  margin-top: 40px;
 }
 
 .scan-header {
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 40px;
 }
 
 .scan-header h1 {
-  font-size: 2.5rem;
-  color: #2d3748;
-  margin-bottom: 0.5rem;
-  font-weight: 700;
+  font-size: 2.25rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 12px;
 }
 
 .scan-header p {
-  color: #718096;
-  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1rem;
 }
 
 .upload-area {
-  border: 3px dashed #cbd5e0;
-  border-radius: 16px;
-  padding: 4rem 2rem;
+  border: 2px dashed rgba(99, 102, 241, 0.4);
+  border-radius: 20px;
+  padding: 60px 40px;
   text-align: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+  background: rgba(99, 102, 241, 0.05);
 }
 
 .upload-area:hover {
+  border-color: rgba(99, 102, 241, 0.8);
+  background: rgba(99, 102, 241, 0.1);
+  transform: scale(1.01);
+}
+
+.upload-area.dragover {
   border-color: #667eea;
-  background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
-  transform: translateY(-4px);
-  box-shadow: 0 12px 24px rgba(102, 126, 234, 0.15);
+  background: rgba(99, 102, 241, 0.15);
 }
 
 .upload-icon {
   font-size: 4rem;
-  margin-bottom: 1rem;
-  color: #667eea;
+  margin-bottom: 20px;
+  opacity: 0.8;
 }
 
 .upload-text {
-  font-size: 1.25rem;
-  color: #2d3748;
+  color: #fff;
+  font-size: 1.1rem;
   font-weight: 600;
-  margin-bottom: 0.5rem;
+  margin-bottom: 8px;
 }
 
 .upload-hint {
-  color: #a0aec0;
-  font-size: 0.95rem;
-}
-
-.file-input {
-  display: none;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.9rem;
 }
 
 .preview-container {
-  margin-top: 2rem;
-  text-align: center;
+  margin-top: 30px;
+  position: relative;
 }
 
 .preview-image {
-  max-width: 100%;
-  max-height: 400px;
+  width: 100%;
   border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-  margin-bottom: 1.5rem;
+  border: 2px solid rgba(99, 102, 241, 0.3);
 }
 
-.scan-button {
+.analyze-btn {
+  width: 100%;
+  margin-top: 24px;
+  padding: 18px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 1rem 3rem;
   border: none;
-  border-radius: 12px;
+  border-radius: 14px;
+  color: #fff;
   font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 25px rgba(99, 102, 241, 0.4);
 }
 
-.scan-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.5);
+.analyze-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 35px rgba(99, 102, 241, 0.6);
 }
 
-.scan-button:disabled {
-  opacity: 0.6;
+.analyze-btn:disabled {
+  opacity: 0.5;
   cursor: not-allowed;
   transform: none;
 }
 
-.loading-spinner {
-  display: inline-block;
-  width: 24px;
-  height: 24px;
-  border: 3px solid rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-  border-top-color: white;
-  animation: spin 1s linear infinite;
-  margin-right: 0.5rem;
+.tips-section {
+  margin-top: 40px;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-.back-link {
-  display: inline-flex;
+.tips-title {
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  display: flex;
   align-items: center;
-  color: white;
-  text-decoration: none;
-  font-weight: 500;
-  padding: 0.75rem 1.5rem;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 12px;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
+  gap: 8px;
 }
 
-.back-link:hover {
-  background: rgba(255, 255, 255, 0.3);
-  transform: translateX(-4px);
+.tip-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  margin-bottom: 10px;
 }
 
-@media (max-width: 768px) {
+.tip-item:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 640px) {
   .scan-container {
-    padding: 2rem 1.5rem;
+    padding: 32px 24px;
+    margin: 20px;
   }
   
   .scan-header h1 {
-    font-size: 2rem;
+    font-size: 1.75rem;
   }
   
   .upload-area {
-    padding: 3rem 1.5rem;
+    padding: 40px 24px;
   }
 }

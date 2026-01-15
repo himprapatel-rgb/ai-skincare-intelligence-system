@@ -1,0 +1,4 @@
+/* ProductDetailsPage Styles */
+.product-details-page { padding: 2rem; max-width: 1200px; margin: 0 auto; }
+.product-details-page h1 { font-size: 2rem; margin-bottom: 1rem; }
+.product-card { background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }

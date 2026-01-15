@@ -1,58 +1,182 @@
-/* SkinGoalsPage.css */
+/* AuraSkin Skin Goals Premium Design */
+
 .skin-goals-page {
-  max-width: 900px;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+  padding: 32px;
+  font-family: 'Inter', -apple-system, sans-serif;
+}
+
+.goals-container {
+  max-width: 1000px;
   margin: 0 auto;
-  padding: 2rem;
 }
 
-.skin-goals-page h1 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-  color: #2d3748;
+.goals-header {
+  text-align: center;
+  margin-bottom: 48px;
 }
 
-.skin-goals-page p {
-  color: #4a5568;
-  margin-bottom: 2rem;
+.goals-header h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 12px;
+}
+
+.goals-header p {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1.1rem;
 }
 
 .goals-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  margin-bottom: 48px;
 }
 
 .goal-card {
-  background: white;
-  border: 2px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  padding: 28px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s ease;
 }
 
 .goal-card:hover {
-  border-color: #4299e1;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(165, 180, 252, 0.3);
+  transform: translateY(-4px);
 }
 
 .goal-card.selected {
-  border-color: #4299e1;
-  background: #ebf8ff;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+  border-color: #667eea;
 }
 
-.save-button {
-  padding: 0.75rem 2rem;
-  background: #4299e1;
-  color: white;
-  border: none;
-  border-radius: 8px;
+.goal-icon {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+}
+
+.goal-card.selected .goal-icon {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.goal-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.goal-description {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.5);
+  line-height: 1.5;
+}
+
+.goal-checkbox {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.goal-card.selected .goal-checkbox {
+  background: #10b981;
+  border-color: #10b981;
+}
+
+.goals-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.btn-skip {
+  padding: 16px 32px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 14px;
+  color: rgba(255, 255, 255, 0.7);
   font-size: 1rem;
+  font-weight: 600;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.save-button:hover {
-  background: #3182ce;
+.btn-skip:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+}
+
+.btn-save-goals {
+  padding: 16px 48px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  border-radius: 14px;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-save-goals:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.btn-save-goals:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.selected-count {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 24px;
+}
+
+.selected-count span {
+  color: #667eea;
+  font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .skin-goals-page {
+    padding: 20px 16px;
+  }
+  
+  .goals-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .goals-actions {
+    flex-direction: column;
+  }
+  
+  .btn-skip, .btn-save-goals {
+    width: 100%;
+  }
 }

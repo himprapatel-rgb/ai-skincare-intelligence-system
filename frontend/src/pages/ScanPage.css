@@ -1,24 +1,15 @@
-/* AuraSkin Scan Page Premium Design */
+/* Medical Scan Page - Clean Healthcare Design */
 
 .scan-page {
   min-height: 100vh;
-  background: linear-gradient(180deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+  background: #f0fdfa;
   padding: 32px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   font-family: 'Inter', -apple-system, sans-serif;
 }
 
 .scan-container {
-  max-width: 600px;
-  width: 100%;
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 24px;
-  padding: 48px 40px;
-  margin-top: 40px;
+  max-width: 700px;
+  margin: 0 auto;
 }
 
 .scan-header {
@@ -27,137 +18,238 @@
 }
 
 .scan-header h1 {
-  font-size: 2.25rem;
-  font-weight: 800;
-  background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #0f172a;
   margin-bottom: 12px;
 }
 
 .scan-header p {
-  color: rgba(255, 255, 255, 0.6);
+  color: #64748b;
   font-size: 1rem;
+  line-height: 1.6;
 }
 
-.upload-area {
-  border: 2px dashed rgba(99, 102, 241, 0.4);
+.scan-card {
+  background: white;
   border-radius: 20px;
+  padding: 40px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+}
+
+.upload-zone {
+  border: 2px dashed #cbd5e1;
+  border-radius: 16px;
   padding: 60px 40px;
   text-align: center;
   cursor: pointer;
-  transition: all 0.3s ease;
-  background: rgba(99, 102, 241, 0.05);
+  transition: all 0.3s;
+  background: #f8fafc;
+  margin-bottom: 24px;
 }
 
-.upload-area:hover {
-  border-color: rgba(99, 102, 241, 0.8);
-  background: rgba(99, 102, 241, 0.1);
-  transform: scale(1.01);
+.upload-zone:hover {
+  border-color: #0891b2;
+  background: #f0fdfa;
 }
 
-.upload-area.dragover {
-  border-color: #667eea;
-  background: rgba(99, 102, 241, 0.15);
+.upload-zone.dragover {
+  border-color: #0891b2;
+  background: #e0f2fe;
 }
 
 .upload-icon {
-  font-size: 4rem;
-  margin-bottom: 20px;
-  opacity: 0.8;
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #e0f2fe 0%, #ccfbf1 100%);
+  border-radius: 20px;
+  margin: 0 auto 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  color: #0891b2;
 }
 
-.upload-text {
-  color: #fff;
-  font-size: 1.1rem;
+.upload-text h3 {
+  font-size: 1.2rem;
   font-weight: 600;
+  color: #0f172a;
   margin-bottom: 8px;
 }
 
-.upload-hint {
-  color: rgba(255, 255, 255, 0.5);
+.upload-text p {
+  color: #64748b;
   font-size: 0.9rem;
+  margin-bottom: 16px;
+}
+
+.upload-btn {
+  background: #0891b2;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 10px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.upload-btn:hover {
+  background: #0e7490;
 }
 
 .preview-container {
-  margin-top: 30px;
-  position: relative;
+  margin-bottom: 24px;
 }
 
 .preview-image {
   width: 100%;
-  border-radius: 16px;
-  border: 2px solid rgba(99, 102, 241, 0.3);
+  max-height: 400px;
+  object-fit: contain;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
 }
 
-.analyze-btn {
-  width: 100%;
+.scan-tips {
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 12px;
+  padding: 20px;
   margin-top: 24px;
-  padding: 18px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border: none;
-  border-radius: 14px;
-  color: #fff;
-  font-size: 1.1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 25px rgba(99, 102, 241, 0.4);
 }
 
-.analyze-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 35px rgba(99, 102, 241, 0.6);
-}
-
-.analyze-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
-}
-
-.tips-section {
-  margin-top: 40px;
-  padding: 24px;
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.tips-title {
-  color: #fff;
-  font-size: 1rem;
-  font-weight: 600;
-  margin-bottom: 16px;
+.tips-header {
   display: flex;
   align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  color: #0369a1;
+  font-weight: 600;
+}
+
+.tips-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tips-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: #0c4a6e;
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+}
+
+.tips-list li::before {
+  content: '\2713';
+  color: #0891b2;
+  font-weight: bold;
+}
+
+.scan-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.btn-analyze {
+  flex: 1;
+  background: #0891b2;
+  color: white;
+  padding: 16px;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   gap: 8px;
 }
 
-.tip-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 0.9rem;
-  margin-bottom: 10px;
+.btn-analyze:hover {
+  background: #0e7490;
+  transform: translateY(-1px);
 }
 
-.tip-item:last-child {
-  margin-bottom: 0;
+.btn-analyze:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+}
+
+.btn-reset {
+  padding: 16px 24px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-reset:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.analyzing-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255,255,255,0.95);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.analyzing-spinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid #e2e8f0;
+  border-top-color: #0891b2;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 24px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.analyzing-text {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #0f172a;
+  margin-bottom: 8px;
+}
+
+.analyzing-subtext {
+  color: #64748b;
 }
 
 @media (max-width: 640px) {
-  .scan-container {
-    padding: 32px 24px;
-    margin: 20px;
+  .scan-page {
+    padding: 16px;
   }
   
-  .scan-header h1 {
-    font-size: 1.75rem;
+  .scan-card {
+    padding: 24px;
   }
   
-  .upload-area {
-    padding: 40px 24px;
+  .upload-zone {
+    padding: 40px 20px;
+  }
+  
+  .scan-actions {
+    flex-direction: column;
   }
 }

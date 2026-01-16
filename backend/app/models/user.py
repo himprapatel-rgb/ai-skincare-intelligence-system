@@ -1,7 +1,7 @@
 """ 
 User database model with comprehensive profile fields.
 """
-from sqlalchemy import Column, String, Boolean, DateTime, Integer, Date, Text, Float, JSON
+from sqlalchemy import Column, ForeignKey, String, Boolean, DateTime, Integer, Date, Text, Float, JSON
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from app.database import Base
@@ -77,7 +77,7 @@ class UserProfile(Base):
     __tablename__ = "user_profiles"
 
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, nullable=False, unique=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, unique=True, index=True)
     
     # ===== PERSONAL INFORMATION =====
     first_name = Column(String(100), nullable=True)

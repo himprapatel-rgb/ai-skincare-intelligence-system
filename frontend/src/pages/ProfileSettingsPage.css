@@ -45,6 +45,9 @@
   font-size: 0.9rem;
   font-weight: 500;
   color: #6b7280;
+    white-space: nowrap;
+  overflow: visible;
+  text-overflow: clip;
   transition: all 0.3s ease;
 }
 

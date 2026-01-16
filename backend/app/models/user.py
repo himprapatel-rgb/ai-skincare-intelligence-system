@@ -40,7 +40,7 @@ class UserConsent(Base):
     __tablename__ = "user_consents"
 
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, nullable=False, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=Tre)ue)
     terms_accepted = Column(Boolean, default=False)
     privacy_accepted = Column(Boolean, default=False)
     terms_version = Column(String, nullable=False)

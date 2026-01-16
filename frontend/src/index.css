@@ -208,3 +208,61 @@ input, textarea, select {
   background-color: var(--primary-light);
   color: var(--primary);
 }
+
+/* Loading Spinner Styles */
+.loading-spinner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.loading-spinner__spinner {
+  display: inline-block;
+  border-radius: 50%;
+  border-style: solid;
+  border-color: var(--primary) transparent transparent transparent;
+  animation: spinner-rotate 1s linear infinite;
+}
+
+.loading-spinner--small .loading-spinner__spinner {
+  width: 16px;
+  height: 16px;
+  border-width: 2px;
+}
+
+.loading-spinner--medium .loading-spinner__spinner {
+  width: 24px;
+  height: 24px;
+  border-width: 3px;
+}
+
+.loading-spinner--large .loading-spinner__spinner {
+  width: 40px;
+  height: 40px;
+  border-width: 4px;
+}
+
+.loading-spinner__circle {
+  display: none;
+}
+
+.loading-spinner__message {
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+@keyframes spinner-rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Button Loading State */
+.btn-primary .loading-spinner__spinner {
+  border-color: rgba(255, 255, 255, 0.3) transparent transparent transparent;
+  border-top-color: white;
+}

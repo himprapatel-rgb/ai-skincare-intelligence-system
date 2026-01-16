@@ -338,11 +338,10 @@
 }
 
 
-/* Modern Error Message Styles */
-.error-message,
-.auth-error,
-[class*="error"],
-[class*="alert"] {
+
+
+/* Error Message Component Styles */
+.error-message {
   display: flex;
   align-items: flex-start;
   gap: 12px;
@@ -352,21 +351,24 @@
   border-left: 4px solid #ef4444;
   border-radius: 12px;
   margin-bottom: 20px;
-  animation: slideIn 0.3s ease-out;
+  animation: errorSlideIn 0.3s ease-out;
   box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.1);
 }
 
-.error-message::before,
-.auth-error::before {
-  content: '⚠';
+.error-message__content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.error-message__icon {
   font-size: 1.25rem;
   color: #dc2626;
   flex-shrink: 0;
 }
 
-.error-message p,
-.auth-error p,
-[class*="error"] p {
+.error-message__text {
   color: #991b1b;
   font-size: 0.95rem;
   font-weight: 500;
@@ -374,35 +376,32 @@
   margin: 0;
 }
 
-/* Dismiss Button Styling */
-.error-message button,
-.auth-error button,
-[class*="error"] button,
-[class*="alert"] button {
+.error-message__actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.error-message__button {
   background: transparent;
-  border: none;
+  border: 1px solid #dc2626;
   color: #dc2626;
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   font-weight: 600;
   cursor: pointer;
-  padding: 4px 12px;
+  padding: 6px 16px;
   border-radius: 6px;
-  margin-left: auto;
   transition: all 0.2s ease;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-.error-message button:hover,
-.auth-error button:hover,
-[class*="error"] button:hover,
-[class*="alert"] button:hover {
-  background: rgba(220, 38, 38, 0.1);
-  color: #b91c1c;
+.error-message__button:hover {
+  background: #dc2626;
+  color: white;
 }
 
-/* Slide-in Animation */
-@keyframes slideIn {
+@keyframes errorSlideIn {
   from {
     opacity: 0;
     transform: translateY(-10px);

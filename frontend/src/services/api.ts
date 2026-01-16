@@ -1,8 +1,7 @@
 import axios, { AxiosInstance, AxiosError } from 'axios';
 import { ApiError } from '../types/scan';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app';
-
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
 class ApiClient {
   private client: AxiosInstance;
 

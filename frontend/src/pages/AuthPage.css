@@ -304,3 +304,35 @@
     padding: 24px;
   }
 }
+
+/* Modern Register Button - switch-form and btn-link styles */
+.switch-form {
+  text-align: center;
+  margin-top: 32px;
+  padding-top: 28px;
+  border-top: 1px solid #e2e8f0;
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+.btn-link {
+  display: inline-block;
+  color: #0891b2;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  background: transparent;
+  border: 2px solid #0891b2;
+  border-radius: 10px;
+  padding: 12px 32px;
+  margin-top: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-link:hover {
+  background: linear-gradient(135deg, #0891b2 0%, #14b8a6 100%);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(8, 145, 178, 0.3);
+}

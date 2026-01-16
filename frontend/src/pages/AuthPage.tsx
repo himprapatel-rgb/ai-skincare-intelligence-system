@@ -9,9 +9,8 @@ export const AuthPage: React.FC = () => {
   const navigate = useNavigate();
 
   const handleAuthSuccess = () => {
-    navigate('/scan');
+    navigate('/dashboard')
   };
-
   return (
     <div className="auth-page">
       {/* Left Panel - Branding */}

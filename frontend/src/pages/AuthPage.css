@@ -447,14 +447,32 @@
   transform: none;
 }
 
-/* Loading Spinner in Button */
+/* Fix loading spinner nested elements */
 .btn-primary .loading-spinner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+}
+
+.btn-primary .loading-spinner__spinner {
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  padding: 0;
+}}
+.btn-primary .loading-spinner__circle {
   width: 20px;
   height: 20px;
   border: 2px solid rgba(255, 255, 255, 0.3);
   border-top-color: white;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
+}
+
+.btn-primary .loading-spinner__message {
+  display: none;
 }
 
 @keyframes spin {

@@ -3,20 +3,58 @@ import { useAuth } from '../context/AuthContext';
 import './ProfileSettingsPage.css';
 
 interface UserProfile {
+  // Personal Information
   name: string;
   email: string;
-  age: number;
+  phone: string;
+  dateOfBirth: string;
+  gender: string;
+  profilePhoto: string;
+  location: string;
+  timezone: string;
+  
+  // Skin Profile
   skinType: string;
+  skinTone: string;
+  skinUndertone: string;
   skinConcerns: string[];
+  
+  // Skin Goals
+  skinGoals: string[];
+  goalPriorities: { [key: string]: number };
+  targetTimeline: string;
+  
+  // Lifestyle & Preferences
   allergies: string[];
+  preferredIngredients: string[];
+  budgetRange: string;
+  brandPreferences: string[];
+  climate: string;
+  sunExposure: string;
+  sleepQuality: string;
+  stressLevel: string;
+  dietType: string;
+  
+  // Notifications
   notificationPreferences: {
     email: boolean;
     push: boolean;
     recommendations: boolean;
+    routineReminders: boolean;
+    weeklySummary: boolean;
   };
+  reminderSettings: {
+    amReminder: boolean;
+    amTime: string;
+    pmReminder: boolean;
+    pmTime: string;
+  };
+  
+  // Privacy
   privacy: {
     profileVisible: boolean;
     shareData: boolean;
+    showProgress: boolean;
   };
 }
 
@@ -25,50 +63,111 @@ const ProfileSettingsPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
-  const [activeTab, setActiveTab] = useState<'profile' | 'notifications' | 'privacy'>('profile');
+  const [activeTab, setActiveTab] = useState<'personal' | 'skin' | 'goals' | 'lifestyle' | 'notifications' | 'privacy' | 'stats'>('personal');
   
   const [profile, setProfile] = useState<UserProfile>({
     name: '',
     email: '',
-    age: 25,
+    phone: '',
+    dateOfBirth: '',
+    gender: '',
+    profilePhoto: '',
+    location: '',
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     skinType: 'combination',
+    skinTone: 'medium',
+    skinUndertone: 'neutral',
     skinConcerns: [],
+    skinGoals: [],
+    goalPriorities: {},
+    targetTimeline: '90days',
     allergies: [],
+    preferredIngredients: [],
+    budgetRange: 'medium',
+    brandPreferences: [],
+    climate: 'temperate',
+    sunExposure: 'moderate',
+    sleepQuality: 'good',
+    stressLevel: 'moderate',
+    dietType: 'balanced',
     notificationPreferences: {
       email: true,
       push: true,
-      recommendations: true
+      recommendations: true,
+      routineReminders: true,
+      weeklySummary: true
+    },
+    reminderSettings: {
+      amReminder: true,
+      amTime: '07:00',
+      pmReminder: true,
+      pmTime: '21:00'
     },
     privacy: {
       profileVisible: true,
-      shareData: false
+      shareData: false,
+      showProgress: true
     }
   });
 
+  // Stats data
+  const [stats] = useState({
+    skinHealthScore: 78,
+    totalScans: 12,
+    productsInShelf: 8,
+    activeRoutines: 2
+  });
+
+  // Options
   const skinTypes = ['Normal', 'Dry', 'Oily', 'Combination', 'Sensitive'];
-  const commonConcerns = ['Acne', 'Wrinkles', 'Dark Spots', 'Redness', 'Dryness', 'Oiliness', 'Sensitivity'];
-  const commonAllergies = ['Fragrances', 'Parabens', 'Sulfates', 'Alcohol', 'Essential Oils', 'Retinol'];
+  const skinTones = ['Fair', 'Light', 'Medium', 'Tan', 'Deep', 'Dark'];
+  const undertones = ['Cool', 'Warm', 'Neutral', 'Olive'];
+  const genderOptions = ['Female', 'Male', 'Non-binary', 'Prefer not to say'];
+  
+  const skinConcernOptions = [
+    'Acne/Breakouts', 'Aging/Wrinkles', 'Dark Spots/Hyperpigmentation',
+    'Dryness', 'Oiliness', 'Redness/Rosacea', 'Large Pores', 'Dullness', 'Uneven Texture'
+  ];
+  
+  const skinGoalOptions = [
+    'Clear Skin', 'Anti-aging', 'Hydration', 'Brightening', 'Even Skin Tone', 'Minimize Pores'
+  ];
+  
+  const allergyOptions = [
+    'Fragrances', 'Parabens', 'Sulfates', 'Alcohol', 'Essential Oils',
+    'Retinol', 'AHA/BHA', 'Niacinamide', 'Vitamin C'
+  ];
+  
+  const ingredientOptions = [
+    'Vitamin C', 'Hyaluronic Acid', 'Retinol', 'Niacinamide', 'Salicylic Acid',
+    'Glycolic Acid', 'Ceramides', 'Peptides', 'Squalane', 'Tea Tree Oil'
+  ];
+  
+  const budgetOptions = [
+    { value: 'budget', label: 'Budget (Under €20)' },
+    { value: 'medium', label: 'Mid-range (€20-€50)' },
+    { value: 'premium', label: 'Premium (€50-€100)' },
+    { value: 'luxury', label: 'Luxury (€100+)' }
+  ];
+  
+  const timelineOptions = [
+    { value: '30days', label: '30 Days' },
+    { value: '90days', label: '90 Days' },
+    { value: '6months', label: '6 Months' },
+    { value: '1year', label: '1 Year' }
+  ];
 
   useEffect(() => {
-    // Load user profile from API
     fetchUserProfile();
   }, []);
 
   const fetchUserProfile = async () => {
     try {
-      // TODO: Replace with actual API call
-      // const response = await fetch('/api/profile', {
-      //   headers: { 'Authorization': `Bearer ${user.token}` }
-      // });
-      // const data = await response.json();
-      // setProfile(data);
-      
-      // Mock data for now
-      setProfile({
-        ...profile,
+      setProfile(prev => ({
+        ...prev,
         name: user?.name || 'User',
         email: user?.email || 'user@example.com'
-      });
+      }));
     } catch (err) {
       console.error('Failed to fetch profile:', err);
     }
@@ -79,19 +178,7 @@ const ProfileSettingsPage: React.FC = () => {
     setLoading(true);
     setError('');
     setSuccess(false);
-
     try {
-      // TODO: Replace with actual API call
-      // await fetch('/api/profile', {
-      //   method: 'PUT',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //     'Authorization': `Bearer ${user.token}`
-      //   },
-      //   body: JSON.stringify(profile)
-      // });
-      
-      // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
@@ -102,22 +189,27 @@ const ProfileSettingsPage: React.FC = () => {
     }
   };
 
-  const handleConcernToggle = (concern: string) => {
-    setProfile(prev => ({
-      ...prev,
-      skinConcerns: prev.skinConcerns.includes(concern)
-        ? prev.skinConcerns.filter(c => c !== concern)
-        : [...prev.skinConcerns, concern]
-    }));
+  const handleArrayToggle = (field: keyof UserProfile, value: string) => {
+    setProfile(prev => {
+      const currentArray = prev[field] as string[];
+      return {
+        ...prev,
+        [field]: currentArray.includes(value)
+          ? currentArray.filter(item => item !== value)
+          : [...currentArray, value]
+      };
+    });
   };
 
-  const handleAllergyToggle = (allergy: string) => {
-    setProfile(prev => ({
-      ...prev,
-      allergies: prev.allergies.includes(allergy)
-        ? prev.allergies.filter(a => a !== allergy)
-        : [...prev.allergies, allergy]
-    }));
+  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfile(prev => ({ ...prev, profilePhoto: reader.result as string }));
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   return (
@@ -126,106 +218,118 @@ const ProfileSettingsPage: React.FC = () => {
         <h1>Profile Settings</h1>
         
         <div className="tabs">
-          <button 
-            className={activeTab === 'profile' ? 'active' : ''}
-            onClick={() => setActiveTab('profile')}
-          >
-            Profile
-          </button>
-          <button 
-            className={activeTab === 'notifications' ? 'active' : ''}
-            onClick={() => setActiveTab('notifications')}
-          >
-            Notifications
-          </button>
-          <button 
-            className={activeTab === 'privacy' ? 'active' : ''}
-            onClick={() => setActiveTab('privacy')}
-          >
-            Privacy
-          </button>
+          <button className={activeTab === 'personal' ? 'active' : ''} onClick={() => setActiveTab('personal')}>Personal</button>
+          <button className={activeTab === 'skin' ? 'active' : ''} onClick={() => setActiveTab('skin')}>Skin Profile</button>
+          <button className={activeTab === 'goals' ? 'active' : ''} onClick={() => setActiveTab('goals')}>Goals</button>
+          <button className={activeTab === 'lifestyle' ? 'active' : ''} onClick={() => setActiveTab('lifestyle')}>Lifestyle</button>
+          <button className={activeTab === 'notifications' ? 'active' : ''} onClick={() => setActiveTab('notifications')}>Notifications</button>
+          <button className={activeTab === 'privacy' ? 'active' : ''} onClick={() => setActiveTab('privacy')}>Privacy</button>
+          <button className={activeTab === 'stats' ? 'active' : ''} onClick={() => setActiveTab('stats')}>Statistics</button>
         </div>
 
         <form onSubmit={handleSubmit} className="settings-form">
-          {activeTab === 'profile' && (
+          {/* PERSONAL INFORMATION TAB */}
+          {activeTab === 'personal' && (
             <div className="tab-content">
               <h2>Personal Information</h2>
               
-              <div className="form-group">
-                <label htmlFor="name">Full Name</label>
-                <input
-                  type="text"
-                  id="name"
-                  value={profile.name}
-                  onChange={(e) => setProfile({ ...profile, name: e.target.value })}
-                  required
-                />
+              <div className="photo-upload-section">
+                <div className="photo-preview">
+                  {profile.profilePhoto ? (
+                    <img src={profile.profilePhoto} alt="Profile" />
+                  ) : (
+                    <div className="photo-placeholder">No Photo</div>
+                  )}
+                </div>
+                <label className="upload-btn">
+                  Upload Photo
+                  <input type="file" accept="image/*" onChange={handlePhotoUpload} hidden />
+                </label>
               </div>
 
-              <div className="form-group">
-                <label htmlFor="email">Email Address</label>
-                <input
-                  type="email"
-                  id="email"
-                  value={profile.email}
-                  onChange={(e) => setProfile({ ...profile, email: e.target.value })}
-                  required
-                />
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="name">Full Name</label>
+                  <input type="text" id="name" value={profile.name} onChange={(e) => setProfile({ ...profile, name: e.target.value })} required />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="email">Email Address</label>
+                  <input type="email" id="email" value={profile.email} onChange={(e) => setProfile({ ...profile, email: e.target.value })} required />
+                </div>
               </div>
 
-              <div className="form-group">
-                <label htmlFor="age">Age</label>
-                <input
-                  type="number"
-                  id="age"
-                  value={profile.age}
-                  onChange={(e) => setProfile({ ...profile, age: parseInt(e.target.value) })}
-                  min="13"
-                  max="120"
-                  required
-                />
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="phone">Phone Number (Optional)</label>
+                  <input type="tel" id="phone" value={profile.phone} onChange={(e) => setProfile({ ...profile, phone: e.target.value })} placeholder="+353 xxx xxx xxxx" />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="dateOfBirth">Date of Birth</label>
+                  <input type="date" id="dateOfBirth" value={profile.dateOfBirth} onChange={(e) => setProfile({ ...profile, dateOfBirth: e.target.value })} />
+                </div>
               </div>
 
-              <div className="form-group">
-                <label htmlFor="skinType">Skin Type</label>
-                <select
-                  id="skinType"
-                  value={profile.skinType}
-                  onChange={(e) => setProfile({ ...profile, skinType: e.target.value })}
-                >
-                  {skinTypes.map(type => (
-                    <option key={type} value={type.toLowerCase()}>{type}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="form-group">
-                <label>Skin Concerns</label>
-                <div className="checkbox-group">
-                  {commonConcerns.map(concern => (
-                    <label key={concern} className="checkbox-label">
-                      <input
-                        type="checkbox"
-                        checked={profile.skinConcerns.includes(concern)}
-                        onChange={() => handleConcernToggle(concern)}
-                      />
-                      {concern}
-                    </label>
-                  ))}
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="gender">Gender</label>
+                  <select id="gender" value={profile.gender} onChange={(e) => setProfile({ ...profile, gender: e.target.value })}>
+                    <option value="">Select...</option>
+                    {genderOptions.map(g => <option key={g} value={g.toLowerCase()}>{g}</option>)}
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label htmlFor="location">Location</label>
+                  <input type="text" id="location" value={profile.location} onChange={(e) => setProfile({ ...profile, location: e.target.value })} placeholder="City, Country" />
                 </div>
               </div>
 
               <div className="form-group">
-                <label>Known Allergies/Sensitivities</label>
-                <div className="checkbox-group">
-                  {commonAllergies.map(allergy => (
-                    <label key={allergy} className="checkbox-label">
-                      <input
-                        type="checkbox"
-                        checked={profile.allergies.includes(allergy)}
-                        onChange={() => handleAllergyToggle(allergy)}
-                      />
-                      {allergy}
+                <label htmlFor="timezone">Timezone</label>
+                <select id="timezone" value={profile.timezone} onChange={(e) => setProfile({ ...profile, timezone: e.target.value })}>
+                  <option value="Europe/Dublin">Europe/Dublin (GMT)</option>
+                  <option value="Europe/London">Europe/London (GMT/BST)</option>
+                  <option value="Europe/Paris">Europe/Paris (CET)</option>
+                  <option value="America/New_York">America/New_York (EST)</option>
+                  <option value="America/Los_Angeles">America/Los_Angeles (PST)</option>
+                </select>
+              </div>
+            </div>
+          )}
+
+          {/* SKIN PROFILE TAB */}
+          {activeTab === 'skin' && (
+            <div className="tab-content">
+              <h2>Skin Profile</h2>
+              
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="skinType">Skin Type</label>
+                  <select id="skinType" value={profile.skinType} onChange={(e) => setProfile({ ...profile, skinType: e.target.value })}>
+                    {skinTypes.map(type => <option key={type} value={type.toLowerCase()}>{type}</option>)}
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label htmlFor="skinTone">Skin Tone</label>
+                  <select id="skinTone" value={profile.skinTone} onChange={(e) => setProfile({ ...profile, skinTone: e.target.value })}>
+                    {skinTones.map(tone => <option key={tone} value={tone.toLowerCase()}>{tone}</option>)}
+                  </select>
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="skinUndertone">Skin Undertone</label>
+                <select id="skinUndertone" value={profile.skinUndertone} onChange={(e) => setProfile({ ...profile, skinUndertone: e.target.value })}>
+                  {undertones.map(ut => <option key={ut} value={ut.toLowerCase()}>{ut}</option>)}
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>Primary Skin Concerns (Select all that apply)</label>
+                <div className="checkbox-grid">
+                  {skinConcernOptions.map(concern => (
+                    <label key={concern} className="checkbox-card">
+                      <input type="checkbox" checked={profile.skinConcerns.includes(concern)} onChange={() => handleArrayToggle('skinConcerns', concern)} />
+                      <span>{concern}</span>
                     </label>
                   ))}
                 </div>
@@ -233,23 +337,133 @@ const ProfileSettingsPage: React.FC = () => {
             </div>
           )}
 
+          {/* SKIN GOALS TAB */}
+          {activeTab === 'goals' && (
+            <div className="tab-content">
+              <h2>Skin Goals</h2>
+              
+              <div className="form-group">
+                <label>Priority Goals (Select your top goals)</label>
+                <div className="checkbox-grid">
+                  {skinGoalOptions.map(goal => (
+                    <label key={goal} className="checkbox-card">
+                      <input type="checkbox" checked={profile.skinGoals.includes(goal)} onChange={() => handleArrayToggle('skinGoals', goal)} />
+                      <span>{goal}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="targetTimeline">Target Timeline</label>
+                <select id="targetTimeline" value={profile.targetTimeline} onChange={(e) => setProfile({ ...profile, targetTimeline: e.target.value })}>
+                  {timelineOptions.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
+                </select>
+                <p className="help-text">Set a realistic timeline to achieve your skin goals</p>
+              </div>
+            </div>
+          )}
+
+          {/* LIFESTYLE TAB */}
+          {activeTab === 'lifestyle' && (
+            <div className="tab-content">
+              <h2>Lifestyle & Preferences</h2>
+              
+              <div className="form-group">
+                <label>Allergies / Sensitivities (Ingredients to avoid)</label>
+                <div className="checkbox-grid">
+                  {allergyOptions.map(allergy => (
+                    <label key={allergy} className="checkbox-card">
+                      <input type="checkbox" checked={profile.allergies.includes(allergy)} onChange={() => handleArrayToggle('allergies', allergy)} />
+                      <span>{allergy}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label>Preferred Ingredients</label>
+                <div className="checkbox-grid">
+                  {ingredientOptions.map(ing => (
+                    <label key={ing} className="checkbox-card">
+                      <input type="checkbox" checked={profile.preferredIngredients.includes(ing)} onChange={() => handleArrayToggle('preferredIngredients', ing)} />
+                      <span>{ing}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="budgetRange">Budget Range</label>
+                  <select id="budgetRange" value={profile.budgetRange} onChange={(e) => setProfile({ ...profile, budgetRange: e.target.value })}>
+                    {budgetOptions.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label htmlFor="climate">Climate</label>
+                  <select id="climate" value={profile.climate} onChange={(e) => setProfile({ ...profile, climate: e.target.value })}>
+                    <option value="humid">Humid</option>
+                    <option value="dry">Dry</option>
+                    <option value="temperate">Temperate</option>
+                    <option value="tropical">Tropical</option>
+                    <option value="cold">Cold</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="sunExposure">Sun Exposure</label>
+                  <select id="sunExposure" value={profile.sunExposure} onChange={(e) => setProfile({ ...profile, sunExposure: e.target.value })}>
+                    <option value="minimal">Minimal (Mostly indoors)</option>
+                    <option value="moderate">Moderate</option>
+                    <option value="high">High (Outdoor work/activities)</option>
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label htmlFor="sleepQuality">Sleep Quality</label>
+                  <select id="sleepQuality" value={profile.sleepQuality} onChange={(e) => setProfile({ ...profile, sleepQuality: e.target.value })}>
+                    <option value="poor">Poor (Less than 5 hours)</option>
+                    <option value="fair">Fair (5-6 hours)</option>
+                    <option value="good">Good (7-8 hours)</option>
+                    <option value="excellent">Excellent (8+ hours)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label htmlFor="stressLevel">Stress Level</label>
+                  <select id="stressLevel" value={profile.stressLevel} onChange={(e) => setProfile({ ...profile, stressLevel: e.target.value })}>
+                    <option value="low">Low</option>
+                    <option value="moderate">Moderate</option>
+                    <option value="high">High</option>
+                    <option value="very-high">Very High</option>
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label htmlFor="dietType">Diet Type</label>
+                  <select id="dietType" value={profile.dietType} onChange={(e) => setProfile({ ...profile, dietType: e.target.value })}>
+                    <option value="balanced">Balanced</option>
+                    <option value="vegetarian">Vegetarian</option>
+                    <option value="vegan">Vegan</option>
+                    <option value="keto">Keto</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* NOTIFICATIONS TAB */}
           {activeTab === 'notifications' && (
             <div className="tab-content">
               <h2>Notification Preferences</h2>
               
               <div className="form-group">
                 <label className="switch-label">
-                  <input
-                    type="checkbox"
-                    checked={profile.notificationPreferences.email}
-                    onChange={(e) => setProfile({
-                      ...profile,
-                      notificationPreferences: {
-                        ...profile.notificationPreferences,
-                        email: e.target.checked
-                      }
-                    })}
-                  />
+                  <input type="checkbox" checked={profile.notificationPreferences.email} onChange={(e) => setProfile({ ...profile, notificationPreferences: { ...profile.notificationPreferences, email: e.target.checked } })} />
                   <span>Email Notifications</span>
                 </label>
                 <p className="help-text">Receive updates and recommendations via email</p>
@@ -257,59 +471,61 @@ const ProfileSettingsPage: React.FC = () => {
 
               <div className="form-group">
                 <label className="switch-label">
-                  <input
-                    type="checkbox"
-                    checked={profile.notificationPreferences.push}
-                    onChange={(e) => setProfile({
-                      ...profile,
-                      notificationPreferences: {
-                        ...profile.notificationPreferences,
-                        push: e.target.checked
-                      }
-                    })}
-                  />
+                  <input type="checkbox" checked={profile.notificationPreferences.push} onChange={(e) => setProfile({ ...profile, notificationPreferences: { ...profile.notificationPreferences, push: e.target.checked } })} />
                   <span>Push Notifications</span>
                 </label>
-                <p className="help-text">Get instant alerts for new recommendations</p>
+                <p className="help-text">Get instant alerts on your device</p>
               </div>
 
               <div className="form-group">
                 <label className="switch-label">
-                  <input
-                    type="checkbox"
-                    checked={profile.notificationPreferences.recommendations}
-                    onChange={(e) => setProfile({
-                      ...profile,
-                      notificationPreferences: {
-                        ...profile.notificationPreferences,
-                        recommendations: e.target.checked
-                      }
-                    })}
-                  />
+                  <input type="checkbox" checked={profile.notificationPreferences.recommendations} onChange={(e) => setProfile({ ...profile, notificationPreferences: { ...profile.notificationPreferences, recommendations: e.target.checked } })} />
                   <span>Product Recommendations</span>
                 </label>
                 <p className="help-text">Receive personalized product suggestions</p>
               </div>
+
+              <div className="form-group">
+                <label className="switch-label">
+                  <input type="checkbox" checked={profile.notificationPreferences.weeklySummary} onChange={(e) => setProfile({ ...profile, notificationPreferences: { ...profile.notificationPreferences, weeklySummary: e.target.checked } })} />
+                  <span>Weekly Summary</span>
+                </label>
+                <p className="help-text">Get a weekly report of your skin progress</p>
+              </div>
+
+              <h3>Routine Reminders</h3>
+              
+              <div className="form-row">
+                <div className="form-group">
+                  <label className="switch-label">
+                    <input type="checkbox" checked={profile.reminderSettings.amReminder} onChange={(e) => setProfile({ ...profile, reminderSettings: { ...profile.reminderSettings, amReminder: e.target.checked } })} />
+                    <span>Morning Routine Reminder</span>
+                  </label>
+                  {profile.reminderSettings.amReminder && (
+                    <input type="time" value={profile.reminderSettings.amTime} onChange={(e) => setProfile({ ...profile, reminderSettings: { ...profile.reminderSettings, amTime: e.target.value } })} />
+                  )}
+                </div>
+                <div className="form-group">
+                  <label className="switch-label">
+                    <input type="checkbox" checked={profile.reminderSettings.pmReminder} onChange={(e) => setProfile({ ...profile, reminderSettings: { ...profile.reminderSettings, pmReminder: e.target.checked } })} />
+                    <span>Evening Routine Reminder</span>
+                  </label>
+                  {profile.reminderSettings.pmReminder && (
+                    <input type="time" value={profile.reminderSettings.pmTime} onChange={(e) => setProfile({ ...profile, reminderSettings: { ...profile.reminderSettings, pmTime: e.target.value } })} />
+                  )}
+                </div>
+              </div>
             </div>
           )}
 
+          {/* PRIVACY TAB */}
           {activeTab === 'privacy' && (
             <div className="tab-content">
-              <h2>Privacy Settings</h2>
+              <h2>Privacy & Account Settings</h2>
               
               <div className="form-group">
                 <label className="switch-label">
-                  <input
-                    type="checkbox"
-                    checked={profile.privacy.profileVisible}
-                    onChange={(e) => setProfile({
-                      ...profile,
-                      privacy: {
-                        ...profile.privacy,
-                        profileVisible: e.target.checked
-                      }
-                    })}
-                  />
+                  <input type="checkbox" checked={profile.privacy.profileVisible} onChange={(e) => setProfile({ ...profile, privacy: { ...profile.privacy, profileVisible: e.target.checked } })} />
                   <span>Public Profile</span>
                 </label>
                 <p className="help-text">Make your profile visible to other users</p>
@@ -317,33 +533,92 @@ const ProfileSettingsPage: React.FC = () => {
 
               <div className="form-group">
                 <label className="switch-label">
-                  <input
-                    type="checkbox"
-                    checked={profile.privacy.shareData}
-                    onChange={(e) => setProfile({
-                      ...profile,
-                      privacy: {
-                        ...profile.privacy,
-                        shareData: e.target.checked
-                      }
-                    })}
-                  />
+                  <input type="checkbox" checked={profile.privacy.shareData} onChange={(e) => setProfile({ ...profile, privacy: { ...profile.privacy, shareData: e.target.checked } })} />
                   <span>Share Data for Research</span>
                 </label>
-                <p className="help-text">Help improve our recommendations by sharing anonymized data</p>
+                <p className="help-text">Help improve recommendations with anonymized data</p>
+              </div>
+
+              <div className="form-group">
+                <label className="switch-label">
+                  <input type="checkbox" checked={profile.privacy.showProgress} onChange={(e) => setProfile({ ...profile, privacy: { ...profile.privacy, showProgress: e.target.checked } })} />
+                  <span>Show Progress Photos</span>
+                </label>
+                <p className="help-text">Display before/after comparison photos</p>
+              </div>
+
+              <div className="section-divider"></div>
+
+              <h3>Account Security</h3>
+              <div className="action-buttons">
+                <button type="button" className="btn-secondary">Change Password</button>
+                <button type="button" className="btn-secondary">Connected Accounts</button>
+              </div>
+
+              <div className="section-divider"></div>
+
+              <h3>Data Management</h3>
+              <div className="action-buttons">
+                <button type="button" className="btn-secondary">Export My Data</button>
+                <button type="button" className="btn-danger">Delete Account</button>
               </div>
 
               <div className="privacy-info">
-                <h3>Data Privacy</h3>
-                <p>We take your privacy seriously. Your personal data is encrypted and never sold to third parties.</p>
+                <p>We take your privacy seriously. Your data is encrypted and never sold.</p>
                 <a href="#" className="privacy-link">Read our Privacy Policy</a>
+              </div>
+            </div>
+          )}
+
+          {/* STATISTICS TAB */}
+          {activeTab === 'stats' && (
+            <div className="tab-content">
+              <h2>Your Statistics</h2>
+              
+              <div className="stats-grid">
+                <div className="stat-card">
+                  <div className="stat-icon">📊</div>
+                  <div className="stat-value">{stats.skinHealthScore}%</div>
+                  <div className="stat-label">Skin Health Score</div>
+                </div>
+                <div className="stat-card">
+                  <div className="stat-icon">📷</div>
+                  <div className="stat-value">{stats.totalScans}</div>
+                  <div className="stat-label">Total Scans</div>
+                </div>
+                <div className="stat-card">
+                  <div className="stat-icon">🧴</div>
+                  <div className="stat-value">{stats.productsInShelf}</div>
+                  <div className="stat-label">Products in Shelf</div>
+                </div>
+                <div className="stat-card">
+                  <div className="stat-icon">✨</div>
+                  <div className="stat-value">{stats.activeRoutines}</div>
+                  <div className="stat-label">Active Routines</div>
+                </div>
+              </div>
+
+              <div className="progress-section">
+                <h3>Progress Over Time</h3>
+                <div className="progress-chart-placeholder">
+                  <p>📈 Progress chart will be displayed here</p>
+                  <p className="help-text">Track your skin improvements over time</p>
+                </div>
+              </div>
+
+              <div className="comparison-section">
+                <h3>Before/After Comparison</h3>
+                <div className="comparison-placeholder">
+                  <p>📸 Upload photos to see your transformation</p>
+                  <button type="button" className="btn-secondary">View Comparison</button>
+                </div>
               </div>
             </div>
           )}
 
           {error && <div className="error-message">{error}</div>}
           {success && <div className="success-message">Profile updated successfully!</div>}
-
+          
           <div className="form-actions">
             <button type="submit" className="btn-primary" disabled={loading}>
               {loading ? 'Saving...' : 'Save Changes'}

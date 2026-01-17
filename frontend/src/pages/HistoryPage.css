@@ -165,7 +165,7 @@
 /* Stats Grid */
 .history-stats {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
   gap: 16px;
   margin-bottom: 32px;
 }
@@ -179,6 +179,10 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
+  }
+
+  .history-stats {
+    grid-template-columns: 1fr;
   }
   
   .history-actions {

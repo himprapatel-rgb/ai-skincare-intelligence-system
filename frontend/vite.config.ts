@@ -4,15 +4,15 @@ import react from '@vitejs/plugin-react'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: '/',  server: {
+  base: '/ai-skincare-intelligence-system/',
+  server: {
     port: 3000,
     host: true,
   },
   build: {
     outDir: 'dist',
     sourcemap: true,
-  },
-  test: {
+  },  test: {
     globals: true,
     environment: 'jsdom',
     setupFiles: './src/test/setup.ts',

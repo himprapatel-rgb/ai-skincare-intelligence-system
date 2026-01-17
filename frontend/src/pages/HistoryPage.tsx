@@ -81,16 +81,13 @@ const HistoryPage: React.FC = () => {
       ) : (
         <>
           <div className="history-stats">
-            <div className="stat-card">
-              <h3>{filteredHistory.length}</h3>
+              <div className="stat-card" style={{background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', color: 'white', padding: '28px 20px', borderRadius: '20px', textAlign: 'center'}}>              <h3>{filteredHistory.length}</h3>
               <p>Total Scans</p>
             </div>
-            <div className="stat-card">
-              <h3>{Math.round(filteredHistory.reduce((sum, item) => sum + item.score, 0) / filteredHistory.length)}</h3>
+              <div className="stat-card" style={{background: 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)', color: 'white', padding: '28px 20px', borderRadius: '20px', textAlign: 'center'}}>              <h3>{Math.round(filteredHistory.reduce((sum, item) => sum + item.score, 0) / filteredHistory.length)}</h3>
               <p>Avg Score</p>
             </div>
-            <div className="stat-card">
-              <h3>{filteredHistory.reduce((sum, item) => sum + item.recommendations, 0)}</h3>
+              <div className="stat-card" style={{background: 'linear-gradient(135deg, #ff6b6b 0%, #feca57 100%)', color: 'white', padding: '28px 20px', borderRadius: '20px', textAlign: 'center'}}>              <h3>{filteredHistory.reduce((sum, item) => sum + item.recommendations, 0)}</h3>
               <p>Recommendations</p>
             </div>
           </div>

@@ -191,18 +191,17 @@
 }
 
 /* ===== ENHANCED STAT CARDS ===== */
-.history-stats .stat-card {
+.history-page .history-stats .stat-card {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-  color: white !important;
-  padding: 28px 20px;
-  border-radius: 20px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
-  transition: all 0.3s ease;
+    color: white !important;
+    padding: 28px 20px;
+    border-radius: 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+    transition: all 0.3s ease;
 }
-
 .history-stats .stat-card::before {
   content: '';
   position: absolute;

@@ -2,9 +2,9 @@
 
 .history-page {
   min-height: 100vh;
-  background: linear-gradient(180deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+  background: #ffffff;
   padding: 32px;
-  font-family: 'Inter', -apple-system, sans-serif;
+  font-family: 'Inter', -apple-system, sans-serif;}
 }
 
 .history-container {
@@ -12,8 +12,7 @@
   margin: 0 auto;
 }
 
-.history-header {
-  text-align: center;
+.history-header {  text-align: center;
   margin-bottom: 48px;
 }
 

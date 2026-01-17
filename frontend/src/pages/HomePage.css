@@ -490,3 +490,151 @@
     justify-content: center;
   }
 }
+
+/* Sprint HP-1: Hero Subtitle and Time Indicator */
+.hero-subtitle {
+  font-size: 1.125rem;
+  color: var(--text-gray);
+  margin-bottom: 16px;
+}
+
+.time-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-light);
+  padding: 8px 16px;
+  border-radius: 100px;
+  font-size: 0.875rem;
+  color: var(--primary);
+  font-weight: 500;
+  margin-bottom: 32px;
+}
+
+.time-indicator svg {
+  color: var(--primary);
+}
+
+/* Sprint HP-1: Trust Section - US-HP-2.1 */
+.trust-section {
+  background: var(--bg-white);
+  padding: 32px 24px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.trust-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  gap: 64px;
+  flex-wrap: wrap;
+}
+
+.trust-badge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.trust-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.trust-title {
+  font-weight: 600;
+  color: var(--text-dark);
+  font-size: 0.95rem;
+}
+
+.trust-link {
+  font-size: 0.8rem;
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.trust-link:hover {
+  text-decoration: underline;
+}
+
+/* Sprint HP-1: How It Works Section - US-HP-3.1 */
+.how-it-works-section {
+  padding: 80px 24px;
+  background: var(--bg-white);
+}
+
+.how-it-works-container {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+
+.step-card {
+  background: var(--bg-light);
+  padding: 40px 32px;
+  border-radius: 16px;
+  text-align: center;
+  position: relative;
+  border: 1px solid var(--border);
+  transition: all 0.3s;
+}
+
+.step-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+}
+
+.step-number {
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32px;
+  height: 32px;
+  background: var(--primary);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.875rem;
+}
+
+.step-icon {
+  margin-bottom: 16px;
+}
+
+.step-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 8px;
+}
+
+.step-description {
+  color: var(--text-gray);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* Responsive - Sprint HP-1 */
+@media (max-width: 768px) {
+  .trust-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+  
+  .steps-grid {
+    grid-template-columns: 1fr;
+  }
+}

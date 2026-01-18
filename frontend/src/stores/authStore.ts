@@ -1,11 +1,12 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
+import type { User } from '../context/AuthContext';
 
 // Define the shape of your store state
 interface AuthState {
-  user: any | null;
+  user: User | null;
   token: string | null;
-  login: (userData: any, token: string) => void;
+  login: (userData: User, token: string) => void;
   logout: () => void;
 }
 

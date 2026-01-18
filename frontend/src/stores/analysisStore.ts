@@ -36,7 +36,16 @@ export interface AnalysisState {
 }
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/v1';
-
+const getErrorMessage = (error: unknown, fallback: string) => {
+  if (axios.isAxiosError(error)) {
+    const data = error.response?.data as { detail?: string } | undefined;
+    return data?.detail || fallback;
+  }
+  if (error instanceof Error) {
+    return error.message;
+  }
+  return fallback;
+};
 export const useAnalysisStore = create<AnalysisState>((set, get) => ({
   // Initial State
   currentAnalysis: null,
@@ -83,8 +92,8 @@ export const useAnalysisStore = create<AnalysisState>((set, get) => ({
         uploadProgress: 100,
       });
       return analysis;
-    } catch (error: any) {
-      const errorMessage = error.response?.data?.detail || 'Upload failed';
+    } catch (error: unknown) {
+      const errorMessage = getErrorMessage(error, 'Upload failed');
       set({
         error: errorMessage,
         isLoading: false,
@@ -105,8 +114,8 @@ export const useAnalysisStore = create<AnalysisState>((set, get) => ({
       const analysis = response.data;
       set({ currentAnalysis: analysis, isLoading: false });
       return analysis;
-    } catch (error: any) {
-      const errorMessage = error.response?.data?.detail || 'Failed to fetch analysis';
+    } catch (error: unknown) {
+      const errorMessage = getErrorMessage(error, 'Failed to fetch analysis');
       set({ error: errorMessage, isLoading: false });
       throw error;
     }
@@ -124,8 +133,8 @@ export const useAnalysisStore = create<AnalysisState>((set, get) => ({
       const analyses = response.data;
       set({ analyses, isLoading: false });
       return analyses;
-    } catch (error: any) {
-      const errorMessage = error.response?.data?.detail || 'Failed to fetch history';
+    } catch (error: unknown) {
+      const errorMessage = getErrorMessage(error, 'Failed to fetch history');
       set({ error: errorMessage, isLoading: false });
       throw error;
     }
@@ -146,8 +155,8 @@ export const useAnalysisStore = create<AnalysisState>((set, get) => ({
         currentAnalysis: currentAnalysis?.id === id ? null : currentAnalysis,
         isLoading: false,
       });
-    } catch (error: any) {
-      const errorMessage = error.response?.data?.detail || 'Delete failed';
+    } catch (error: unknown) {
+      const errorMessage = getErrorMessage(error, 'Delete failed');
       set({ error: errorMessage, isLoading: false });
       throw error;
     }

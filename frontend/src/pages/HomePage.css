@@ -985,3 +985,294 @@
     padding-bottom: 80px;
   }
 }
+
+/* =============================================
+   DESIGN & VISUAL POLISH IMPROVEMENTS
+   ============================================= */
+
+/* 1. Hero Section - Better Visual Anchoring */
+.hero {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--bg-light) 0%, transparent 70%);
+  z-index: 0;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* 2. Sample Card - Increased Visual Weight */
+.sample-report-preview {
+  background: white;
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: 0 20px 60px rgba(13, 148, 136, 0.15), 0 8px 24px rgba(0, 0, 0, 0.08);
+  border: 2px solid var(--bg-light);
+  min-width: 320px;
+  transform: translateY(-20px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.sample-report-preview:hover {
+  transform: translateY(-24px);
+  box-shadow: 0 24px 70px rgba(13, 148, 136, 0.2), 0 12px 32px rgba(0, 0, 0, 0.1);
+}
+
+.preview-header {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 20px;
+  text-align: center;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--bg-light);
+}
+
+/* 3. Button Hierarchy - Stronger Primary CTA */
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: white;
+  padding: 18px 36px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(13, 148, 136, 0.4);
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(13, 148, 136, 0.5);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--text-gray);
+  padding: 16px 32px;
+  border-radius: 12px;
+  font-weight: 500;
+  font-size: 1rem;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: var(--bg-light);
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+/* 4. Trust Badges - Grouped Container */
+.trust-badges {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding: 20px 32px;
+  background: var(--bg-light);
+  border-radius: 16px;
+  max-width: 900px;
+  margin: 32px auto 0;
+}
+
+.badge-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-dark);
+  padding: 8px 16px;
+  background: white;
+  border-radius: 30px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+/* 5. Section Transitions - Better Spacing */
+.results-preview,
+.how-it-works,
+.faq-section {
+  position: relative;
+  padding: 100px 24px;
+}
+
+.results-preview::before,
+.how-it-works::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+  border-radius: 2px;
+}
+
+/* 6. Step Cards - More Visual Distinction */
+.step-card {
+  background: white;
+  border-radius: 20px;
+  padding: 40px 32px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  border: 1px solid var(--border);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.step-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+  border-color: var(--primary);
+}
+
+.step-number {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.25rem;
+  margin: 0 auto 20px;
+  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+}
+
+/* 7. Result Cards - Consistent Styling */
+.result-card {
+  background: white;
+  border-radius: 16px;
+  padding: 32px 24px;
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  border: 1px solid var(--border);
+  transition: all 0.3s ease;
+}
+
+.result-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  border-color: var(--accent);
+}
+
+.result-card:first-child {
+  border: 2px solid var(--primary);
+  box-shadow: 0 6px 24px rgba(13, 148, 136, 0.15);
+}
+
+/* 8. Subtle Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-content {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.sample-report-preview {
+  animation: fadeInUp 0.6s ease-out 0.2s both;
+}
+
+.result-card,
+.step-card,
+.faq-item {
+  animation: fadeInUp 0.5s ease-out both;
+}
+
+.result-card:nth-child(1) { animation-delay: 0.1s; }
+.result-card:nth-child(2) { animation-delay: 0.2s; }
+.result-card:nth-child(3) { animation-delay: 0.3s; }
+.result-card:nth-child(4) { animation-delay: 0.4s; }
+
+.step-card:nth-child(1) { animation-delay: 0.1s; }
+.step-card:nth-child(2) { animation-delay: 0.2s; }
+.step-card:nth-child(3) { animation-delay: 0.3s; }
+
+/* 9. Score Circles - Enhanced */
+.score-circle {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: white;
+  margin: 0 auto 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.score-circle.good {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.score-circle.medium {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+}
+
+/* 10. CTA Section Enhancement */
+.cta-section {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  padding: 80px 24px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-section::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 60%;
+  height: 200%;
+  background: rgba(255,255,255,0.05);
+  transform: rotate(15deg);
+}
+
+.cta-section h2 {
+  color: white;
+  font-size: 2.5rem;
+  margin-bottom: 16px;
+}
+
+.cta-section p {
+  color: rgba(255,255,255,0.9);
+  margin-bottom: 32px;
+}
+
+.cta-section .btn-primary {
+  background: white;
+  color: var(--primary);
+}
+
+.cta-section .btn-primary:hover {
+  background: var(--bg-light);
+}

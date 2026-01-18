@@ -1,138 +1,125 @@
 .comparison-page {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  padding: 2rem;
-}
-
-.comparison-container {
-  max-width: 1200px;
-  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
 .comparison-header {
   text-align: center;
-  margin-bottom: 3rem;
-}
-
-.comparison-header h1 {
-  font-size: 2.5rem;
-  color: #2d3748;
-  margin-bottom: 0.5rem;
-  font-weight: 700;
-}
-
-.comparison-header p {
-  color: #718096;
-  font-size: 1.1rem;
-}
-
-.comparison-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  margin-bottom: 2rem;
 }
 
 .comparison-card {
-  background: white;
-  border-radius: 16px;
-  padding: 2rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
+  margin-bottom: 24px;
 }
 
-.comparison-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-}
-
-.analysis-section {
-  background: white;
-  border-radius: 16px;
-  padding: 2rem;
-  margin-bottom: 2rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-}
-
-.analysis-section h2 {
-  font-size: 1.5rem;
-  color: #2d3748;
-  margin-bottom: 1.5rem;
-  font-weight: 600;
-}
-
-.metric-row {
+.comparison-selects {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 0;
-  border-bottom: 1px solid #e2e8f0;
+  gap: 24px;
+  flex-wrap: wrap;
 }
 
-.metric-row:last-child {
-  border-bottom: none;
-}
-
-.metric-label {
-  font-weight: 500;
-  color: #4a5568;
-}
-
-.metric-value {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #667eea;
-}
-
-.comparison-chart {
-  height: 300px;
-  margin: 2rem 0;
-}
-
-.action-buttons {
+.comparison-select {
+  flex: 1;
+  min-width: 220px;
   display: flex;
-  gap: 1rem;
-  justify-content: center;
-  margin-top: 2rem;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 1rem 2rem;
-  border: none;
-  border-radius: 12px;
+.comparison-label {
   font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  color: var(--text-primary);
 }
 
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+.comparison-input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  background: #ffffff;
+  color: var(--text-primary);
 }
 
-.btn-secondary {
-  background: white;
-  color: #667eea;
-  padding: 1rem 2rem;
-  border: 2px solid #667eea;
-  border-radius: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
+.comparison-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
 }
 
-.btn-secondary:hover {
-  background: #f7fafc;
+.comparison-score-card {
+  text-align: center;
+  background: var(--bg-secondary);
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid var(--border-color);
 }
 
-@media (max-width: 768px) {
-  .comparison-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .comparison-header h1 {
-    font-size: 2rem;
-  }
+.comparison-score-date {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.comparison-score-value {
+  font-size: 48px;
+  font-weight: 700;
+}
+
+.comparison-score-value.primary {
+  color: var(--primary);
+}
+
+.comparison-score-value.muted {
+  color: var(--text-secondary);
+}
+
+.comparison-score-label {
+  color: var(--text-secondary);
+}
+
+.comparison-section-title {
+  margin-top: 24px;
+}
+
+.comparison-table {
+  width: 100%;
+  margin-top: 16px;
+  border-collapse: collapse;
+}
+
+.comparison-th,
+.comparison-td {
+  padding: 8px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.comparison-th.left,
+.comparison-td.left {
+  text-align: left;
+}
+
+.comparison-th.center,
+.comparison-td.center {
+  text-align: center;
+}
+
+.comparison-td.capitalize {
+  text-transform: capitalize;
+}
+
+.comparison-delta {
+  font-weight: 700;
+}
+
+.comparison-delta.improved {
+  color: var(--success);
+}
+
+.comparison-delta.declined {
+  color: var(--danger);
+}
+
+.comparison-actions {
+  margin-top: 24px;
+  text-align: center;
 }

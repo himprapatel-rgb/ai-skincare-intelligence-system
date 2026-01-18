@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './CommonStyles.css';
+import './PasswordResetPage.css';
 
 /**
  * Password Reset Page (US-103)
@@ -36,19 +37,19 @@ const PasswordResetPage: React.FC = () => {
 
   if (isSubmitted) {
     return (
-      <div className="page-container">
-        <div className="card" style={{ maxWidth: '400px', margin: '0 auto' }}>
+      <div className="page-container password-reset-page">
+        <div className="card password-reset-card">
           <div className="card-header">
             <h2>Check Your Email</h2>
           </div>
-          <div className="card-content" style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '48px', marginBottom: '16px' }}>📧</div>
+          <div className="card-content password-reset-content">
+            <div className="password-reset-icon">📧</div>
             <p>We've sent a password reset link to:</p>
-            <p style={{ fontWeight: 'bold', color: 'var(--primary)' }}>{email}</p>
-            <p style={{ color: 'var(--text-secondary)', marginTop: '16px' }}>
+            <p className="password-reset-email">{email}</p>
+            <p className="password-reset-note">
               The link will expire in 24 hours.
             </p>
-            <Link to="/auth" className="btn btn-primary" style={{ marginTop: '24px' }}>
+            <Link to="/auth" className="btn btn-primary password-reset-action">
               Return to Login
             </Link>
           </div>
@@ -58,18 +59,18 @@ const PasswordResetPage: React.FC = () => {
   }
 
   return (
-    <div className="page-container">
-      <div className="card" style={{ maxWidth: '400px', margin: '0 auto' }}>
+    <div className="page-container password-reset-page">
+      <div className="card password-reset-card">
         <div className="card-header">
           <h2>Reset Password</h2>
-          <p style={{ color: 'var(--text-secondary)' }}>
+          <p className="password-reset-note">
             Enter your email and we'll send you a reset link
           </p>
         </div>
         <div className="card-content">
           <form onSubmit={handleSubmit}>
             {error && (
-              <div className="alert alert-error" style={{ marginBottom: '16px' }}>
+              <div className="alert alert-error password-reset-alert">
                 {error}
               </div>
             )}
@@ -94,8 +95,8 @@ const PasswordResetPage: React.FC = () => {
               {isLoading ? 'Sending...' : 'Send Reset Link'}
             </button>
           </form>
-          <div style={{ textAlign: 'center', marginTop: '24px' }}>
-            <Link to="/auth" style={{ color: 'var(--primary)' }}>
+          <div className="password-reset-footer">
+            <Link to="/auth" className="password-reset-link">
               ← Back to Login
             </Link>
           </div>

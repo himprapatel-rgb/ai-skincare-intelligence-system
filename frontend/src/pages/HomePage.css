@@ -586,14 +586,11 @@
 }
 
 .steps-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
   gap: 32px;
-    max-width: 1100px;
-    margin: 0 auto;
-    justify-items: center;
 }
-
 .step-card {
   background: var(--bg-light);
   padding: 40px 32px;

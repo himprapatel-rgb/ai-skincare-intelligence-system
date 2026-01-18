@@ -808,3 +808,87 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Trust Badges - Centered alignment */
+.trust-badges {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 32px;
+  padding: 24px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.badge-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  color: var(--text-gray);
+}
+
+.badge-icon-trust {
+  font-size: 1rem;
+}
+
+/* Footer alignment fixes */
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 48px;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.footer-links {
+  display: flex;
+  gap: 64px;
+}
+
+.footer-col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer-col h4 {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--bg-white);
+}
+
+.footer-col a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.footer-col a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive trust badges */
+@media (max-width: 768px) {
+  .trust-badges {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+    padding: 24px 32px;
+  }
+  
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .footer-links {
+    flex-direction: column;
+    gap: 32px;
+    width: 100%;
+  }
+}

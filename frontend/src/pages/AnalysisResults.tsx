@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './AnalysisResults.css';
 
@@ -28,11 +28,7 @@ const AnalysisResults: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [previousAnalyses, setPreviousAnalyses] = useState<SkinAnalysis[]>([]);
 
-  useEffect(() => {
-    fetchAnalysisResults();
-  }, [analysisId]);
-
-  const fetchAnalysisResults = async () => {
+  const fetchAnalysisResults = useCallback(async () => {
     try {
       setLoading(true);
       const API_BASE = import.meta.env.VITE_API_BASE_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app';
@@ -67,7 +63,11 @@ const AnalysisResults: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [analysisId]);
+
+  useEffect(() => {
+    fetchAnalysisResults();
+  }, [fetchAnalysisResults]);
 
   const getSeverityColor = (severity: number): string => {
     if (severity >= 80) return 'severity-severe';

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import './ProfileSettingsPage.css';
 
@@ -157,11 +157,7 @@ const ProfileSettingsPage: React.FC = () => {
     { value: '1year', label: '1 Year' }
   ];
 
-  useEffect(() => {
-    fetchUserProfile();
-  }, []);
-
-  const fetchUserProfile = async () => {
+  const fetchUserProfile = useCallback(async () => {
     try {
       setProfile(prev => ({
         ...prev,
@@ -170,7 +166,11 @@ const ProfileSettingsPage: React.FC = () => {
     } catch (err) {
       console.error('Failed to fetch profile:', err);
     }
-  };
+  }, [user]);
+
+  useEffect(() => {
+    fetchUserProfile();
+  }, [fetchUserProfile]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

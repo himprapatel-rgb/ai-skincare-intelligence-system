@@ -8,10 +8,29 @@ import { useNavigate } from 'react-router-dom';
 // import { OnboardingData } from './types';
 
 // Stub components and functions to fix build
-const OnboardingStep: React.FC<any> = () => null;
-const ProgressIndicator: React.FC<any> = () => null;
+type OnboardingData = {
+  goals: string[];
+  concerns: string[];
+  skinType: string;
+  routineFrequency: string;
+};
+
+type OnboardingStepProps = {
+  step: number;
+  data: OnboardingData;
+  onComplete: (data: Partial<OnboardingData>) => void | Promise<void>;
+  onBack: () => void;
+  isSubmitting: boolean;
+};
+
+type ProgressIndicatorProps = {
+  current: number;
+  total: number;
+};
+
+const OnboardingStep: React.FC<OnboardingStepProps> = () => null;
+const ProgressIndicator: React.FC<ProgressIndicatorProps> = () => null;
 const ProfileService = { createProfile: async () => {} };
-interface OnboardingData { goals: string[]; concerns: string[]; skinType: string; routineFrequency: string; }
 /**
  * Complete user onboarding flow capturing baseline profile.
  * 
@@ -61,8 +80,10 @@ export const OnboardingFlow: React.FC = () => {
         // }}
         
         navigate('/dashboard');
-      } catch (err: any) {
-        setError(err.response?.data?.detail || 'Failed to create profile. Please try again.');
+      } catch (err: unknown) {
+        const message =
+          err instanceof Error ? err.message : 'Failed to create profile. Please try again.';
+        setError(message);
         setIsSubmitting(false);
       }
     } else {

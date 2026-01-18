@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './ProductDetailsPage.css';
 
@@ -28,11 +28,7 @@ const ProductDetailsPage: React.FC = () => {
   const [inShelf, setInShelf] = useState(false);
   const [activeTab, setActiveTab] = useState<'overview' | 'ingredients' | 'reviews'>('overview');
 
-  useEffect(() => {
-    fetchProductDetails();
-  }, [id]);
-
-  const fetchProductDetails = async () => {
+  const fetchProductDetails = useCallback(async () => {
     try {
       setLoading(true);
       // TODO: Replace with actual API call
@@ -66,7 +62,11 @@ const ProductDetailsPage: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
+
+  useEffect(() => {
+    fetchProductDetails();
+  }, [fetchProductDetails]);
 
   const handleAddToShelf = async () => {
     try {

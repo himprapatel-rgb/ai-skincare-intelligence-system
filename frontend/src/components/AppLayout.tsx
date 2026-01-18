@@ -63,6 +63,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
         <div className="app-footer-bottom">
           <p>© 2026 SkinCareAI. All rights reserved.</p>
           <p className="app-footer-disclaimer">Not a medical device. For informational purposes only.</p>
+          <p className="app-footer-build">Build 2026-01-18-02</p>
         </div>
       </footer>
     </div>

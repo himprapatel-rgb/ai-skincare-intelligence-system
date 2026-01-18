@@ -140,7 +140,7 @@
 
 #### vite.config.ts - FIXED ✅
 - **Change**: `base: '/'` (was `/ai-skincare-intelligence-system/`)
-- **Reason**: Railway needs root path, not GitHub Pages subdirectory
+- **Reason**: Railway uses root path (GitHub Pages used a subdirectory)
 - **Status**: COMMITTED ✅
 
 #### _redirects File ✅

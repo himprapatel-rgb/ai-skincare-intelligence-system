@@ -93,7 +93,7 @@ async def upload_scan(
         analysis_result = await skin_service.analyze_skin(image_data)
         
         # Update scan session with results
-        scan_session.result = {
+        scan_session.scan_metadata = {
             "skin_tone": analysis_result.skin_tone,
             "texture_quality": analysis_result.texture_quality,
             "acne_detected": analysis_result.acne_detected,
@@ -108,10 +108,10 @@ async def upload_scan(
         scan_session.status = "completed"
     except ValueError as e:
         scan_session.status = "failed"
-        scan_session.result = {"error": str(e)}
+        scan_session.scan_metadata = {"error": str(e)}
     except Exception as e:
         scan_session.status = "failed"
-        scan_session.result = {"error": "Analysis failed"}
+        scan_session.scan_metadata = {"error": "Analysis failed"}
     
     db.commit()
     
@@ -195,7 +195,7 @@ def get_scan_results(
     return {
         "scan_id": str(scan_session.id),
         "session_id": str(scan_session.id),
-        "result": scan_session.result if scan_session.result else {}
+        "result": scan_session.scan_metadata if scan_session.scan_metadata else {}
     }
 
 

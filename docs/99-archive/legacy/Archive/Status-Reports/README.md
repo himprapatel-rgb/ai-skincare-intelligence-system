@@ -20,9 +20,9 @@ To preserve weekly/monthly status updates, progress snapshots, and project healt
 
 ## Current Status Location
 For current project status, see:
-- `/docs/status/current-state.md` - Current project state
-- `/docs/BASELINE-HEALTHCHECK.md` - Latest production health
-- `/docs/Product-Tracker.md` - Active decisions and progress
+- `/docs/06-operations/Current-State.md` - Current project state
+- `/docs/06-operations/Baseline-Healthcheck.md` - Latest production health
+- `/docs/03-product/Product-Tracker.md` - Active decisions and progress
 
 ---
 **Note**: Status reports older than 3 months should be moved here for archival reference.

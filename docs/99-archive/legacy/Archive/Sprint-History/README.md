@@ -3,7 +3,7 @@
 This folder contains completed sprint documentation for historical reference.
 
 ## Purpose
-To preserve sprint execution records, completion reports, and implementation history while keeping active sprint docs in the main `/docs/Sprints/` folders.
+To preserve sprint execution records, completion reports, and implementation history while keeping active sprint docs in the main `/docs/07-sprints/` folders.
 
 ## What Goes Here
 - Completed sprint summary documents
@@ -18,8 +18,7 @@ To preserve sprint execution records, completion reports, and implementation his
 
 ## Active Sprint Docs Location
 Current sprint documentation is located at:
-- `/docs/Sprints/In-Progress/` - Currently active sprints
-- `/docs/Sprints/Completed/` - Recently completed sprints (last 2 sprints)
+- `/docs/07-sprints/` - Canonical sprint summaries and folders
 
 ---
 **Note**: These are archived for historical tracking only. Always refer to active sprint folders for current work.

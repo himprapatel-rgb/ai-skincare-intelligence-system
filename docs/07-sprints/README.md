@@ -28,6 +28,7 @@ This folder contains **canonical sprint summaries** - the single source of truth
 | Sprint 4 | AI/ML Implementation | ✅ Complete | Dec 2025 |
 | Sprint 5 | Current | 🔄 In Progress | Dec 2025 |
 | Sprint 6 | Current | 🔄 In Progress | Dec 2025 |
+| Sprint HP-1 | Home Page Refresh | ✅ Complete | Jan 2026 |
 
 ## Rules
 

@@ -11,7 +11,7 @@ To preserve the evolution of project requirements while maintaining a single can
 - `SRS-V5.3-ExternalML-YYYYMMDD.md`
 
 ## Current Canonical SRS
-The official, current SRS document is located at: `/docs/SRS.md`
+The official, current SRS document is located at: `/docs/01-requirements/SRS-V5.3-External-Pretrained-ML.md`
 
 ---
 **Note**: These are archived for historical reference only. Always refer to the canonical SRS for current requirements.

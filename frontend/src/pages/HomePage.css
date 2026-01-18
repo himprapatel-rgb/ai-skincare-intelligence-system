@@ -37,6 +37,25 @@
   align-items: center;
   position: sticky;
   top: 0;
+
+/* Horizontal timeline for tablets and desktop (768px+) */
+@media (min-width: 768px) {
+  .steps-grid {
+    display: flex;
+    flex-direction: row;
+    gap: 0;
+    align-items: stretch;
+  }
+
+  .step-card {
+    flex: 1;
+    min-width: 240px;
+  }
+
+  .step-card:not(:last-child)::after {
+    display: block;
+  }
+}
   z-index: 1000;
   box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }

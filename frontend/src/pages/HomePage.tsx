@@ -54,7 +54,7 @@ const HomePage: React.FC = () => {
               <span className="btn-icon">&#128247;</span>
               Start Free Skin Scan
             </button>
-            <button className="btn-secondary" onClick={() => navigate('/about')}>
+            <button className="btn-secondary" onClick={() => navigatenavigate('/analysis/demo')about')}>
               See Sample Report
             </button>
           </div>

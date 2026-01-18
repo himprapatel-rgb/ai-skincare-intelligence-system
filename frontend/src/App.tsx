@@ -29,6 +29,12 @@ import ProgressTrackingPage from "./pages/ProgressTrackingPage";
 import DataExportPage from "./pages/DataExportPage";
 import DashboardPage from "./pages/DashboardPage";
 
+// Page Imports - Epic 5: Legal & Information Pages
+import AboutPage from "./pages/AboutPage";
+import ContactPage from "./pages/ContactPage";
+import PrivacyPage from "./pages/PrivacyPage";
+import TermsPage from "./pages/TermsPage";
+
 export default function App() {
   return (
     <AuthProvider>
@@ -60,6 +66,12 @@ export default function App() {
           <Route path="/progress" element={<ProgressTrackingPage />} />
           <Route path="/export" element={<DataExportPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
+
+                  {/* Legal & Information Pages */}
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/privacy" element={<PrivacyPage />} />
+        <Route path="/terms" element={<TermsPage />} />
           
           {/* Fallback */}
           <Route path="*" element={<Navigate to="/" replace />} />

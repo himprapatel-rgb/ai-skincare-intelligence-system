@@ -76,7 +76,7 @@ const ProgressTrackingPage: React.FC = () => {
         <div className="chart-section">
           <div className="chart-header">
             <h2>Progress Chart</h2>
-            <select value={timeRange} onChange={(e) => setTimeRange(e.target.value as any)}>
+            <select value={timeRange} onChange={(e) => setTimeRange(e.target.value as 'week' | 'month' | '3months')}>
               <option value="week">Last Week</option>
               <option value="month">Last Month</option>
               <option value="3months">Last 3 Months</option>

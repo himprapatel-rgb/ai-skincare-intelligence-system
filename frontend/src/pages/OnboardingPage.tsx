@@ -73,8 +73,8 @@ const OnboardingPage: React.FC = () => {
       if (!response.ok) throw new Error('Onboarding failed');
 
       navigate('/scan');
-    } catch (err: any) {
-      setError(err.message || 'Failed to complete onboarding');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to complete onboarding');
     } finally {
       setLoading(false);
     }

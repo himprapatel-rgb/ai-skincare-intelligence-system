@@ -64,7 +64,7 @@ const RoutineBuilderPage: React.FC = () => {
     setCurrentRoutine(currentRoutine.map(s => s.id === id ? { ...s, category } : s));
   };
 
-  const handleSelectProduct = (_id: string) => {
+  const handleSelectProduct = () => {
     navigate('/myshelf');
   };
 
@@ -126,10 +126,10 @@ const RoutineBuilderPage: React.FC = () => {
                     {step.productName ? (
                       <div className="selected-product">
                         <span>{step.productName}</span>
-                        <button onClick={() => handleSelectProduct(step.id)} className="btn-link">Change</button>
+                        <button onClick={handleSelectProduct} className="btn-link">Change</button>
                       </div>
                     ) : (
-                      <button onClick={() => handleSelectProduct(step.id)} className="btn-secondary">
+                      <button onClick={handleSelectProduct} className="btn-secondary">
                         Select Product
                       </button>
                     )}

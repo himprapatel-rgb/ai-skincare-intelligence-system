@@ -60,7 +60,7 @@ const FavoritesPage: React.FC = () => {
         <div className="card-content favorites-toolbar-content">
           <div className="favorites-sort">
             <label>Sort by: </label>
-            <select value={sortBy} onChange={(e) => setSortBy(e.target.value as any)}>
+            <select value={sortBy} onChange={(e) => setSortBy(e.target.value as 'date' | 'name' | 'price')}>
               <option value="date">Date Added</option>
               <option value="name">Name</option>
               <option value="price">Price</option>

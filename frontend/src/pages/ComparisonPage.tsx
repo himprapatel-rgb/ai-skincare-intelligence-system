@@ -25,7 +25,7 @@ interface Analysis {
 const ComparisonPage: React.FC = () => {
   const [analyses, setAnalyses] = useState<Analysis[]>([]);
   const [selectedAnalyses, setSelectedAnalyses] = useState<[string | null, string | null]>([null, null]);
-  const [_isLoading, setIsLoading] = useState(true);
+  // Loading state reserved for future API integration.
 
   useEffect(() => {
     // Mock data - replace with API call
@@ -47,7 +47,6 @@ const ComparisonPage: React.FC = () => {
       },
     ];
     setAnalyses(mockAnalyses);
-    setIsLoading(false);
   }, []);
 
   const getComparison = (key: keyof Analysis['concerns']) => {

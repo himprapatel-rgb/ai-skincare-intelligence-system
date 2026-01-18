@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './CommonStyles.css';
+import './SkinGoalsPage.css';
 
 interface SkinGoal {
   id: string;
@@ -71,19 +72,25 @@ const SkinGoalsPage: React.FC = () => {
         <p>Select and prioritize your skincare goals for personalized recommendations</p>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+      <div className="skin-goals-grid">
         <div className="card">
           <div className="card-header"><h3>Available Goals</h3></div>
           <div className="card-content">
             {goals.map(goal => (
-              <div key={goal.id} onClick={() => toggleGoal(goal.id)} style={{ display: 'flex', alignItems: 'center', padding: '12px', marginBottom: '8px', background: goal.selected ? 'var(--primary)' : 'var(--bg-secondary)', borderRadius: '8px', cursor: 'pointer', color: goal.selected ? 'white' : 'inherit' }}>
-                <span style={{ fontSize: '24px', marginRight: '12px' }}>{goal.icon}</span>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontWeight: 'bold' }}>{goal.name}</div>
-                  <div style={{ fontSize: '12px', opacity: 0.8 }}>{goal.description}</div>
-                </div>
-                <span>{goal.selected ? '✓' : '+'}</span>
-              </div>
+              <button
+                key={goal.id}
+                type="button"
+                onClick={() => toggleGoal(goal.id)}
+                className={`skin-goals-item${goal.selected ? ' selected' : ''}`}
+                aria-pressed={goal.selected}
+              >
+                <span className="skin-goals-icon">{goal.icon}</span>
+                <span className="skin-goals-text">
+                  <span className="skin-goals-title">{goal.name}</span>
+                  <span className="skin-goals-desc">{goal.description}</span>
+                </span>
+                <span className="skin-goals-toggle">{goal.selected ? '✓' : '+'}</span>
+              </button>
             ))}
           </div>
         </div>
@@ -95,14 +102,14 @@ const SkinGoalsPage: React.FC = () => {
               <p style={{ color: 'var(--text-secondary)', textAlign: 'center', padding: '24px' }}>Select goals from the left panel</p>
             ) : (
               selectedGoals.map((goal, index) => (
-                <div key={goal.id} style={{ display: 'flex', alignItems: 'center', padding: '12px', marginBottom: '8px', background: 'var(--bg-secondary)', borderRadius: '8px' }}>
-                  <span style={{ fontSize: '20px', fontWeight: 'bold', marginRight: '12px', color: 'var(--primary)' }}>#{index + 1}</span>
-                  <span style={{ fontSize: '24px', marginRight: '12px' }}>{goal.icon}</span>
-                  <div style={{ flex: 1 }}>{goal.name}</div>
-                  <div style={{ display: 'flex', gap: '4px' }}>
-                    <button onClick={() => updatePriority(goal.id, 'up')} disabled={index === 0} style={{ padding: '4px 8px', background: 'var(--bg-primary)', border: '1px solid var(--border-color)', borderRadius: '4px', cursor: 'pointer' }}>↑</button>
-                    <button onClick={() => updatePriority(goal.id, 'down')} disabled={index === selectedGoals.length - 1} style={{ padding: '4px 8px', background: 'var(--bg-primary)', border: '1px solid var(--border-color)', borderRadius: '4px', cursor: 'pointer' }}>↓</button>
-                  </div>
+                <div key={goal.id} className="skin-goals-priority">
+                  <span className="skin-goals-rank">#{index + 1}</span>
+                  <span className="skin-goals-icon">{goal.icon}</span>
+                  <span className="skin-goals-name">{goal.name}</span>
+                  <span className="skin-goals-controls">
+                    <button onClick={() => updatePriority(goal.id, 'up')} disabled={index === 0} type="button">↑</button>
+                    <button onClick={() => updatePriority(goal.id, 'down')} disabled={index === selectedGoals.length - 1} type="button">↓</button>
+                  </span>
                 </div>
               ))
             )}
@@ -110,7 +117,7 @@ const SkinGoalsPage: React.FC = () => {
         </div>
       </div>
 
-      <div style={{ marginTop: '24px', display: 'flex', justifyContent: 'space-between' }}>
+      <div className="skin-goals-actions">
         <Link to="/profile" className="btn btn-secondary">← Back to Profile</Link>
         <button onClick={handleSave} className="btn btn-primary" disabled={isSaving}>
           {isSaving ? 'Saving...' : 'Save Goals'}

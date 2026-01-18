@@ -83,6 +83,7 @@ const HomePage: React.FC = () => {
               <span className="concern-badge">Mild Acne</span>
               <span className="concern-badge">Slight Redness</span>
             </div>
+              <p className="preview-disclaimer">Results are estimates based on visible features and image quality.</p>
           </div>
         </div>
       </section>
@@ -133,7 +134,7 @@ const HomePage: React.FC = () => {
           <div className="result-card">
             <div className="result-icon">&#128202;</div>
             <h3>Progress Tracking</h3>
-            <p>Track improvements over time with scan history comparisons</p>
+                        <p>Track improvements over time with scan history comparisons <span className="account-note">(Optional – requires account)</span></p>
           </div>
         </div>
       </section>
@@ -171,6 +172,28 @@ const HomePage: React.FC = () => {
           </div>
         </div>
       </section>
+
+        {/* FAQ Section */}
+        <section className="faq-section">
+          <div className="section-header">
+            <span className="section-tag">Common Questions</span>
+            <h2>FAQ</h2>
+          </div>
+          <div className="faq-container">
+            <div className="faq-item">
+              <h4>Is this a medical diagnosis?</h4>
+              <p>No. This tool provides informational insights only. It is not intended to diagnose, treat, or prevent any condition.</p>
+            </div>
+            <div className="faq-item">
+              <h4>Do you store my photos?</h4>
+              <p>Photos are processed securely and can be deleted anytime from your account or automatically after analysis.</p>
+            </div>
+            <div className="faq-item">
+              <h4>What affects accuracy?</h4>
+              <p>Lighting, camera quality, image clarity, and whether makeup is present can all affect the analysis results.</p>
+            </div>
+          </div>
+        </section>
 
       {/* CTA Section */}
       <section className="cta-section">
@@ -218,6 +241,13 @@ const HomePage: React.FC = () => {
           <p className="disclaimer">Not a medical device. Not intended to diagnose, treat, or prevent any condition. For informational purposes only.</p>
         </div>
       </footer>
+
+        {/* Mobile Sticky CTA */}
+        <div className="mobile-sticky-cta">
+          <button className="btn-primary" onClick={() => navigate('/scan')}>
+            Start Free Skin Scan
+          </button>
+        </div>
     </div>
   );
 };

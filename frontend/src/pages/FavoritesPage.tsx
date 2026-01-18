@@ -91,17 +91,17 @@ const FavoritesPage: React.FC = () => {
                     <h4 style={{ marginBottom: '4px' }}>{product.name}</h4>
                     <p style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>{product.brand}</p>
                   </div>
-                  <span style={{ background: 'var(--primary-color)', color: 'white', padding: '4px 8px', borderRadius: '12px', fontSize: '12px' }}>
+                  <span style={{ background: 'var(--primary)', color: 'white', padding: '4px 8px', borderRadius: '12px', fontSize: '12px' }}>
                     {product.matchScore}% Match
                   </span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '12px' }}>
-                  <span style={{ color: '#fbbf24' }}>★ {product.rating}</span>
+                  <span style={{ color: 'var(--warning)' }}>★ {product.rating}</span>
                   <span style={{ fontWeight: 'bold' }}>€{product.price.toFixed(2)}</span>
                 </div>
                 <div style={{ display: 'flex', gap: '8px', marginTop: '16px' }}>
                   <Link to={`/product/${product.id}`} className="btn btn-secondary" style={{ flex: 1, textAlign: 'center' }}>View</Link>
-                  <button onClick={() => handleRemove(product.id)} className="btn" style={{ background: 'var(--error-color)', color: 'white' }}>✕</button>
+                  <button onClick={() => handleRemove(product.id)} className="btn" style={{ background: 'var(--danger)', color: 'white' }}>✕</button>
                 </div>
               </div>
             </div>

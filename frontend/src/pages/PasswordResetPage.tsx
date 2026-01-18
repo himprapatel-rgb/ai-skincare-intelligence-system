@@ -44,7 +44,7 @@ const PasswordResetPage: React.FC = () => {
           <div className="card-content" style={{ textAlign: 'center' }}>
             <div style={{ fontSize: '48px', marginBottom: '16px' }}>📧</div>
             <p>We've sent a password reset link to:</p>
-            <p style={{ fontWeight: 'bold', color: 'var(--primary-color)' }}>{email}</p>
+            <p style={{ fontWeight: 'bold', color: 'var(--primary)' }}>{email}</p>
             <p style={{ color: 'var(--text-secondary)', marginTop: '16px' }}>
               The link will expire in 24 hours.
             </p>
@@ -95,7 +95,7 @@ const PasswordResetPage: React.FC = () => {
             </button>
           </form>
           <div style={{ textAlign: 'center', marginTop: '24px' }}>
-            <Link to="/auth" style={{ color: 'var(--primary-color)' }}>
+            <Link to="/auth" style={{ color: 'var(--primary)' }}>
               ← Back to Login
             </Link>
           </div>

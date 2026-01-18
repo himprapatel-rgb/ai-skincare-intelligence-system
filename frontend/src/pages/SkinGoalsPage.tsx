@@ -76,7 +76,7 @@ const SkinGoalsPage: React.FC = () => {
           <div className="card-header"><h3>Available Goals</h3></div>
           <div className="card-content">
             {goals.map(goal => (
-              <div key={goal.id} onClick={() => toggleGoal(goal.id)} style={{ display: 'flex', alignItems: 'center', padding: '12px', marginBottom: '8px', background: goal.selected ? 'var(--primary-color)' : 'var(--bg-secondary)', borderRadius: '8px', cursor: 'pointer', color: goal.selected ? 'white' : 'inherit' }}>
+              <div key={goal.id} onClick={() => toggleGoal(goal.id)} style={{ display: 'flex', alignItems: 'center', padding: '12px', marginBottom: '8px', background: goal.selected ? 'var(--primary)' : 'var(--bg-secondary)', borderRadius: '8px', cursor: 'pointer', color: goal.selected ? 'white' : 'inherit' }}>
                 <span style={{ fontSize: '24px', marginRight: '12px' }}>{goal.icon}</span>
                 <div style={{ flex: 1 }}>
                   <div style={{ fontWeight: 'bold' }}>{goal.name}</div>
@@ -96,7 +96,7 @@ const SkinGoalsPage: React.FC = () => {
             ) : (
               selectedGoals.map((goal, index) => (
                 <div key={goal.id} style={{ display: 'flex', alignItems: 'center', padding: '12px', marginBottom: '8px', background: 'var(--bg-secondary)', borderRadius: '8px' }}>
-                  <span style={{ fontSize: '20px', fontWeight: 'bold', marginRight: '12px', color: 'var(--primary-color)' }}>#{index + 1}</span>
+                  <span style={{ fontSize: '20px', fontWeight: 'bold', marginRight: '12px', color: 'var(--primary)' }}>#{index + 1}</span>
                   <span style={{ fontSize: '24px', marginRight: '12px' }}>{goal.icon}</span>
                   <div style={{ flex: 1 }}>{goal.name}</div>
                   <div style={{ display: 'flex', gap: '4px' }}>

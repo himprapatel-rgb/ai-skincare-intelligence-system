@@ -57,7 +57,7 @@ const ProgressTrackingPage: React.FC = () => {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', marginBottom: '24px' }}>
         <div className="card">
           <div className="card-content" style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '36px', fontWeight: 'bold', color: 'var(--primary-color)' }}>
+            <div style={{ fontSize: '36px', fontWeight: 'bold', color: 'var(--primary)' }}>
               {progressData[0]?.overallScore || 0}
             </div>
             <div style={{ color: 'var(--text-secondary)' }}>Current Score</div>
@@ -65,7 +65,7 @@ const ProgressTrackingPage: React.FC = () => {
         </div>
         <div className="card">
           <div className="card-content" style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '36px', fontWeight: 'bold', color: getImprovement() >= 0 ? '#22c55e' : '#ef4444' }}>
+            <div style={{ fontSize: '36px', fontWeight: 'bold', color: getImprovement() >= 0 ? 'var(--success)' : 'var(--danger)' }}>
               {getImprovement() >= 0 ? '+' : ''}{getImprovement()}
             </div>
             <div style={{ color: 'var(--text-secondary)' }}>Improvement</div>
@@ -92,7 +92,7 @@ const ProgressTrackingPage: React.FC = () => {
           <div style={{ height: '200px', display: 'flex', alignItems: 'flex-end', gap: '8px', padding: '16px 0' }}>
             {progressData.map((data, index) => (
               <div key={index} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <div style={{ background: 'var(--primary-color)', width: '100%', maxWidth: '40px', height: `${data.overallScore * 1.5}px`, borderRadius: '4px 4px 0 0' }} />
+                <div style={{ background: 'var(--primary)', width: '100%', maxWidth: '40px', height: `${data.overallScore * 1.5}px`, borderRadius: '4px 4px 0 0' }} />
                 <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '8px' }}>{data.date.slice(5)}</div>
               </div>
             ))}

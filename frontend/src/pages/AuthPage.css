@@ -348,7 +348,7 @@
   padding: 16px 20px;
   background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
   border: 1px solid #fecaca;
-  border-left: 4px solid #ef4444;
+  border-left: 4px solid var(--danger);
   border-radius: 12px;
   margin-bottom: 20px;
   animation: errorSlideIn 0.3s ease-out;

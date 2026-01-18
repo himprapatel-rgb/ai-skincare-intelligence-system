@@ -718,7 +718,7 @@
 }
 
 .score-circle.medium {
-  background: linear-gradient(135deg, #f59e0b, #fbbf24);
+  background: linear-gradient(135deg, var(--warning), #fbbf24);
 }
 
 .preview-concerns {

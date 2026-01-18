@@ -74,12 +74,12 @@ const DataExportPage: React.FC = () => {
           <div className="card" style={{ marginBottom: '24px' }}>
             <div className="card-header"><h3>Export Format</h3></div>
             <div className="card-content" style={{ display: 'flex', gap: '16px' }}>
-              <div onClick={() => setExportFormat('json')} style={{ flex: 1, padding: '24px', background: exportFormat === 'json' ? 'var(--primary-color)' : 'var(--bg-secondary)', color: exportFormat === 'json' ? 'white' : 'inherit', borderRadius: '8px', cursor: 'pointer', textAlign: 'center' }}>
+              <div onClick={() => setExportFormat('json')} style={{ flex: 1, padding: '24px', background: exportFormat === 'json' ? 'var(--primary)' : 'var(--bg-secondary)', color: exportFormat === 'json' ? 'white' : 'inherit', borderRadius: '8px', cursor: 'pointer', textAlign: 'center' }}>
                 <div style={{ fontSize: '32px', marginBottom: '8px' }}>📝</div>
                 <div style={{ fontWeight: 'bold' }}>JSON</div>
                 <div style={{ fontSize: '12px', opacity: 0.8 }}>Machine-readable format</div>
               </div>
-              <div onClick={() => setExportFormat('pdf')} style={{ flex: 1, padding: '24px', background: exportFormat === 'pdf' ? 'var(--primary-color)' : 'var(--bg-secondary)', color: exportFormat === 'pdf' ? 'white' : 'inherit', borderRadius: '8px', cursor: 'pointer', textAlign: 'center' }}>
+              <div onClick={() => setExportFormat('pdf')} style={{ flex: 1, padding: '24px', background: exportFormat === 'pdf' ? 'var(--primary)' : 'var(--bg-secondary)', color: exportFormat === 'pdf' ? 'white' : 'inherit', borderRadius: '8px', cursor: 'pointer', textAlign: 'center' }}>
                 <div style={{ fontSize: '32px', marginBottom: '8px' }}>📄</div>
                 <div style={{ fontWeight: 'bold' }}>PDF</div>
                 <div style={{ fontSize: '12px', opacity: 0.8 }}>Human-readable report</div>

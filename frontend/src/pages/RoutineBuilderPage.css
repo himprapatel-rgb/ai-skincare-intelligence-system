@@ -230,7 +230,7 @@
   background: #fef2f2 !important;
   border: none !important;
   border-radius: 8px;
-  color: #ef4444 !important;
+  color: var(--danger) !important;
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -242,7 +242,7 @@
 
 .btn-delete:hover,
 .delete-btn:hover {
-  background: #ef4444 !important;
+  background: var(--danger) !important;
   color: white !important;
 }
 

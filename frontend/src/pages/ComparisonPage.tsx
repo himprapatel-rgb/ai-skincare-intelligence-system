@@ -63,7 +63,7 @@ const ComparisonPage: React.FC = () => {
     if (!comparison) return null;
     const { diff, improved } = comparison;
     return (
-      <span style={{ color: improved ? '#22c55e' : '#ef4444', fontWeight: 'bold' }}>
+      <span style={{ color: improved ? 'var(--success)' : 'var(--danger)', fontWeight: 'bold' }}>
         {improved ? '↓' : '↑'} {Math.abs(diff)}%
       </span>
     );
@@ -118,7 +118,7 @@ const ComparisonPage: React.FC = () => {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
               <div style={{ textAlign: 'center' }}>
                 <div style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>{analysis1.date}</div>
-                <div style={{ fontSize: '48px', fontWeight: 'bold', color: 'var(--primary-color)' }}>
+                <div style={{ fontSize: '48px', fontWeight: 'bold', color: 'var(--primary)' }}>
                   {analysis1.overallScore}
                 </div>
                 <div>Overall Score</div>

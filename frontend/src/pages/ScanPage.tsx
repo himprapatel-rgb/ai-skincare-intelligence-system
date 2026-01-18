@@ -66,7 +66,7 @@ export default function ScanPage() {
     <div className="onskin-page">
       <header className="onskin-header">
         <div className="onskin-container">
-          <Link to="/" className="onskin-logo">AuraSkin</Link>
+          <Link to="/" className="onskin-logo">SkinCareAI</Link>
           <Link to="/" className="onskin-back">← Back</Link>
         </div>
       </header>

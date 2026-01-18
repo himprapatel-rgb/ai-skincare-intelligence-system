@@ -75,6 +75,8 @@
 
 .app-main {
   flex: 1;
+  background: var(--bg-secondary);
+  padding: 24px 0 48px;
 }
 
 .app-footer {
@@ -149,4 +151,100 @@
   .app-footer-links {
     grid-template-columns: 1fr;
   }
+}
+
+/* =============================================
+   GLOBAL PAGE STYLING (CLINICAL PREMIUM)
+============================================= */
+
+.app-layout .page-container,
+.app-layout .dashboard-page,
+.app-layout .profile-settings-page,
+.app-layout .routine-builder-page,
+.app-layout .myshelf-page,
+.app-layout .product-details-page,
+.app-layout .history-page,
+.app-layout .consent-page,
+.app-layout .onboarding-page,
+.app-layout .auth-page,
+.app-layout .contact-page,
+.app-layout .about-page,
+.app-layout .privacy-page,
+.app-layout .terms-page,
+.app-layout .sample-report-page,
+.app-layout .onskin-page {
+  background: transparent;
+  color: var(--text-primary);
+}
+
+.app-layout .page-container {
+  max-width: var(--max-width-xl);
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.app-layout .page-header {
+  margin-bottom: 24px;
+}
+
+.app-layout .page-header h1,
+.app-layout .page-header h2 {
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.app-layout .page-header p,
+.app-layout .subtitle {
+  color: var(--text-secondary);
+}
+
+.app-layout .card,
+.app-layout .card-content {
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  box-shadow: var(--shadow-md);
+}
+
+.app-layout .card {
+  padding: 20px;
+}
+
+.app-layout .card-header {
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+  color: var(--text-primary);
+}
+
+.app-layout .btn,
+.app-layout .btn-primary,
+.app-layout .btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border-radius: 999px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.app-layout .btn-primary {
+  background: linear-gradient(135deg, var(--primary) 0%, #5a8bff 100%);
+  color: #ffffff;
+  box-shadow: var(--shadow-lg);
+}
+
+.app-layout .btn-secondary {
+  background: #ffffff;
+  color: var(--primary);
+  border: 1px solid rgba(31, 111, 235, 0.2);
+  box-shadow: var(--shadow-sm);
+}
+
+.app-layout .btn-primary:hover,
+.app-layout .btn-secondary:hover {
+  transform: translateY(-2px);
 }

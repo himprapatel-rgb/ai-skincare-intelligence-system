@@ -165,8 +165,7 @@ const ProfileSettingsPage: React.FC = () => {
     try {
       setProfile(prev => ({
         ...prev,
-        name: user?.name || 'User',
-        email: user?.email || 'user@example.com'
+        name: user?.full_name || 'User',        email: user?.email || 'user@example.com'
       }));
     } catch (err) {
       console.error('Failed to fetch profile:', err);

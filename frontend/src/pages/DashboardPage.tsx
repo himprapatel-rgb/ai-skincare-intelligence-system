@@ -60,8 +60,7 @@ const DashboardPage: React.FC = () => {
   return (
     <div className="dashboard-page">
       <div className="dashboard-header">
-        <h1>Welcome back, {user?.name || 'User'}!</h1>
-        <p className="subtitle">Here's your skincare overview</p>
+            <h1>Welcome back, {user?.full_name || 'User'}!</h1>        <p className="subtitle">Here's your skincare overview</p>
       </div>
 
       <div className="dashboard-stats">

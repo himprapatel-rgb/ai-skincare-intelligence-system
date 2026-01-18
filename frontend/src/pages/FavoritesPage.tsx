@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './CommonStyles.css';
+import './FavoritesPage.css';
 
 interface FavoriteProduct {
   id: string;
@@ -55,11 +56,11 @@ const FavoritesPage: React.FC = () => {
         <p>Your saved skincare products ({favorites.length} items)</p>
       </div>
 
-      <div className="card" style={{ marginBottom: '24px' }}>
-        <div className="card-content" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div>
+      <div className="card favorites-toolbar">
+        <div className="card-content favorites-toolbar-content">
+          <div className="favorites-sort">
             <label>Sort by: </label>
-            <select value={sortBy} onChange={(e) => setSortBy(e.target.value as any)} style={{ padding: '8px', marginLeft: '8px' }}>
+            <select value={sortBy} onChange={(e) => setSortBy(e.target.value as any)}>
               <option value="date">Date Added</option>
               <option value="name">Name</option>
               <option value="price">Price</option>
@@ -70,38 +71,38 @@ const FavoritesPage: React.FC = () => {
       </div>
 
       {favorites.length === 0 ? (
-        <div className="card">
-          <div className="card-content" style={{ textAlign: 'center', padding: '48px' }}>
-            <div style={{ fontSize: '64px', marginBottom: '16px' }}>❤️</div>
+        <div className="card favorites-empty">
+          <div className="card-content favorites-empty-content">
+            <div className="favorites-empty-icon">❤️</div>
             <h3>No Favorites Yet</h3>
-            <p style={{ color: 'var(--text-secondary)' }}>Start adding products to your favorites list</p>
-            <Link to="/recommendations" className="btn btn-primary" style={{ marginTop: '24px' }}>Browse Products</Link>
+            <p className="favorites-empty-text">Start adding products to your favorites list</p>
+            <Link to="/recommendations" className="btn btn-primary favorites-empty-action">Browse Products</Link>
           </div>
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '24px' }}>
+        <div className="favorites-grid">
           {sortedFavorites.map(product => (
             <div key={product.id} className="card">
-              <div style={{ height: '160px', background: 'var(--bg-secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <span style={{ fontSize: '48px' }}>🧟</span>
+              <div className="favorites-image">
+                <span className="favorites-image-icon">🧟</span>
               </div>
               <div className="card-content">
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
+                <div className="favorites-header">
                   <div>
-                    <h4 style={{ marginBottom: '4px' }}>{product.name}</h4>
-                    <p style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>{product.brand}</p>
+                    <h4 className="favorites-title">{product.name}</h4>
+                    <p className="favorites-brand">{product.brand}</p>
                   </div>
-                  <span style={{ background: 'var(--primary)', color: 'white', padding: '4px 8px', borderRadius: '12px', fontSize: '12px' }}>
+                  <span className="favorites-match">
                     {product.matchScore}% Match
                   </span>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '12px' }}>
-                  <span style={{ color: 'var(--warning)' }}>★ {product.rating}</span>
-                  <span style={{ fontWeight: 'bold' }}>€{product.price.toFixed(2)}</span>
+                <div className="favorites-meta">
+                  <span className="favorites-rating">★ {product.rating}</span>
+                  <span className="favorites-price">€{product.price.toFixed(2)}</span>
                 </div>
-                <div style={{ display: 'flex', gap: '8px', marginTop: '16px' }}>
-                  <Link to={`/product/${product.id}`} className="btn btn-secondary" style={{ flex: 1, textAlign: 'center' }}>View</Link>
-                  <button onClick={() => handleRemove(product.id)} className="btn" style={{ background: 'var(--danger)', color: 'white' }}>✕</button>
+                <div className="favorites-actions">
+                  <Link to={`/product/${product.id}`} className="btn btn-secondary favorites-action-link">View</Link>
+                  <button onClick={() => handleRemove(product.id)} className="btn favorites-remove">✕</button>
                 </div>
               </div>
             </div>

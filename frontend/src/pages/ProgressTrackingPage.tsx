@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './CommonStyles.css';
+import './ProgressTrackingPage.css';
 
 interface ProgressData {
   date: string;
@@ -48,75 +49,68 @@ const ProgressTrackingPage: React.FC = () => {
   if (isLoading) return <div className="page-container"><p>Loading progress data...</p></div>;
 
   return (
-    <div className="page-container">
-      <div className="page-header">
-        <h1>📈 Progress Tracking</h1>
-        <p>Monitor your skin health journey over time</p>
-      </div>
-
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', marginBottom: '24px' }}>
-        <div className="card">
-          <div className="card-content" style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '36px', fontWeight: 'bold', color: 'var(--primary)' }}>
-              {progressData[0]?.overallScore || 0}
-            </div>
-            <div style={{ color: 'var(--text-secondary)' }}>Current Score</div>
-          </div>
+    <div className="progress-tracking-page">
+      <div className="progress-container">
+        <div className="page-header">
+          <h1>📈 Progress Tracking</h1>
+          <p>Monitor your skin health journey over time</p>
         </div>
-        <div className="card">
-          <div className="card-content" style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '36px', fontWeight: 'bold', color: getImprovement() >= 0 ? 'var(--success)' : 'var(--danger)' }}>
+
+        <div className="stats-summary">
+          <div className="summary-card">
+            <div className="value">{progressData[0]?.overallScore || 0}</div>
+            <div className="label">Current Score</div>
+          </div>
+          <div className="summary-card">
+            <div className={`value ${getImprovement() >= 0 ? 'positive' : 'negative'}`}>
               {getImprovement() >= 0 ? '+' : ''}{getImprovement()}
             </div>
-            <div style={{ color: 'var(--text-secondary)' }}>Improvement</div>
+            <div className="label">Improvement</div>
+          </div>
+          <div className="summary-card">
+            <div className="value">{progressData.length}</div>
+            <div className="label">Total Scans</div>
           </div>
         </div>
-        <div className="card">
-          <div className="card-content" style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '36px', fontWeight: 'bold' }}>{progressData.length}</div>
-            <div style={{ color: 'var(--text-secondary)' }}>Total Scans</div>
-          </div>
-        </div>
-      </div>
 
-      <div className="card" style={{ marginBottom: '24px' }}>
-        <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h3>Progress Chart</h3>
-          <select value={timeRange} onChange={(e) => setTimeRange(e.target.value as any)} style={{ padding: '8px' }}>
-            <option value="week">Last Week</option>
-            <option value="month">Last Month</option>
-            <option value="3months">Last 3 Months</option>
-          </select>
-        </div>
-        <div className="card-content">
-          <div style={{ height: '200px', display: 'flex', alignItems: 'flex-end', gap: '8px', padding: '16px 0' }}>
+        <div className="chart-section">
+          <div className="chart-header">
+            <h2>Progress Chart</h2>
+            <select value={timeRange} onChange={(e) => setTimeRange(e.target.value as any)}>
+              <option value="week">Last Week</option>
+              <option value="month">Last Month</option>
+              <option value="3months">Last 3 Months</option>
+            </select>
+          </div>
+          <div className="chart-bars">
             {progressData.map((data, index) => (
-              <div key={index} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <div style={{ background: 'var(--primary)', width: '100%', maxWidth: '40px', height: `${data.overallScore * 1.5}px`, borderRadius: '4px 4px 0 0' }} />
-                <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '8px' }}>{data.date.slice(5)}</div>
+              <div key={index} className="chart-bar-group">
+                <div className="chart-bar" style={{ height: `${data.overallScore * 1.5}px` }} />
+                <div className="chart-bar-label">{data.date.slice(5)}</div>
               </div>
             ))}
           </div>
         </div>
-      </div>
 
-      <div className="card">
-        <div className="card-header"><h3>🏆 Milestones</h3></div>
-        <div className="card-content">
-          {milestones.map(milestone => (
-            <div key={milestone.id} style={{ display: 'flex', alignItems: 'center', padding: '12px 0', borderBottom: '1px solid var(--border-color)' }}>
-              <span style={{ fontSize: '24px', marginRight: '16px' }}>{milestone.achieved ? '✅' : '⭕'}</span>
-              <div style={{ flex: 1 }}>
-                <div style={{ fontWeight: milestone.achieved ? 'bold' : 'normal' }}>{milestone.title}</div>
-                {milestone.date && <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Achieved: {milestone.date}</div>}
+        <div className="milestones-section">
+          <h2>🏆 Milestones</h2>
+          <div className="milestones-list">
+            {milestones.map(milestone => (
+              <div key={milestone.id} className={`milestone-item${milestone.achieved ? ' achieved' : ''}`}>
+                <span className="milestone-icon">{milestone.achieved ? '✅' : '⭕'}</span>
+                <div className="milestone-content">
+                  <h4>{milestone.title}</h4>
+                  {milestone.date && <p>Achieved: {milestone.date}</p>}
+                </div>
+                <span className="milestone-status">{milestone.achieved ? 'Achieved' : 'In Progress'}</span>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
 
-      <div style={{ marginTop: '24px', textAlign: 'center' }}>
-        <Link to="/comparison" className="btn btn-secondary">Compare Analyses</Link>
+        <div className="compare-section">
+          <Link to="/comparison" className="btn btn-secondary">Compare Analyses</Link>
+        </div>
       </div>
     </div>
   );

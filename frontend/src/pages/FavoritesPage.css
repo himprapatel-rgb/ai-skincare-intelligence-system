@@ -13,8 +13,8 @@
 
 .favorites-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
 }
 
 .favorite-card {
@@ -34,4 +34,122 @@
   text-align: center;
   padding: 3rem;
   color: #718096;
+}
+
+.favorites-toolbar {
+  margin-bottom: 24px;
+}
+
+.favorites-toolbar-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.favorites-sort select {
+  padding: 8px;
+  margin-left: 8px;
+}
+
+.favorites-empty-content {
+  text-align: center;
+  padding: 48px;
+}
+
+.favorites-empty-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+}
+
+.favorites-empty-text {
+  color: var(--text-secondary);
+}
+
+.favorites-empty-action {
+  margin-top: 24px;
+}
+
+.favorites-image {
+  height: 160px;
+  background: var(--bg-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+}
+
+.favorites-image-icon {
+  font-size: 48px;
+}
+
+.favorites-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.favorites-title {
+  margin-bottom: 4px;
+}
+
+.favorites-brand {
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.favorites-match {
+  background: var(--primary);
+  color: #ffffff;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+}
+
+.favorites-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.favorites-rating {
+  color: var(--warning);
+}
+
+.favorites-price {
+  font-weight: 700;
+}
+
+.favorites-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.favorites-action-link {
+  flex: 1;
+  text-align: center;
+}
+
+.favorites-remove {
+  background: var(--danger);
+  color: #ffffff;
+}
+
+@media (max-width: 600px) {
+  .favorites-toolbar-content {
+    align-items: flex-start;
+  }
+
+  .favorites-actions {
+    flex-direction: column;
+  }
+
+  .favorites-action-link,
+  .favorites-remove {
+    width: 100%;
+  }
 }

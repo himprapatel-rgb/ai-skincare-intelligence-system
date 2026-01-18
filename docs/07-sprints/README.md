@@ -13,7 +13,7 @@ This folder contains **canonical sprint summaries** - the single source of truth
 - Linked from main README
 
 ### Tier 2: Sprint Evidence & History
-- Lives in: `/docs/Archive/Sprint-History/`
+- Lives in: `/docs/99-archive/legacy/Archive/Sprint-History/`
 - Phase docs, CI/CD proofs, intermediate reports
 - Referenced by link from sprint summaries
 - NEVER used as canonical truth

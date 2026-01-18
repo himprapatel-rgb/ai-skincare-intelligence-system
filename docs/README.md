@@ -5,104 +5,79 @@
 ## 🚀 Quick Start
 
 **New to the project?** Start here:
-1. [Quick Start Guide](./QUICK-START.md) - Get up and running in 5 minutes
-2. [System Requirements](./AI-Skincare-Intelligence-System-SRS-V5.3-EXTERNAL-PRETRAINED-ML.md) - Full SRS specification
-3. [Product Backlog](./Product-Backlog-V5.md) - Current feature priorities
+1. [Quick Start Guide](./00-index/Quick-Start.md)
+2. [System Requirements](./01-requirements/SRS-V5.3-External-Pretrained-ML.md)
+3. [Product Backlog](./03-product/Product-Backlog-V5.md)
 
 ## 📋 Core Documentation
 
-### System Requirements & Architecture
-- **[SRS V5.3](./AI-Skincare-Intelligence-System-SRS-V5.3-EXTERNAL-PRETRAINED-ML.md)** - Software Requirements Specification (ACTIVE)
-- **[Traceability Matrix](./TRACEABILITY-MATRIX.md)** - Requirements → Implementation mapping
-- **[Architecture Decisions](./architecture/)** - ADRs and design decisions
+### Requirements & Architecture
+- **[SRS V5.3](./01-requirements/SRS-V5.3-External-Pretrained-ML.md)**
+- **[Traceability Matrix](./01-requirements/Traceability-Matrix.md)**
+- **[Architecture Decisions](./02-architecture/Architecture-Decisions.md)**
 
-### Product Management
-- **[Product Backlog V5](./Product-Backlog-V5.md)** - Active backlog with epics and stories
-- **[Product Tracker](./Product-Tracker.md)** - Live progress tracking
-- **[Sprint Summaries](./sprints/)** - Canonical sprint records ([See Sprint Index](./sprints/README.md))
+### Product & Agile
+- **[Product Backlog](./03-product/Product-Backlog-V5.md)**
+- **[Product Tracker](./03-product/Product-Tracker.md)**
+- **[Sprint Index](./07-sprints/README.md)**
 
-### Current Status (Living Docs)
-- **[Current State](./CURRENT-STATE-UNDERSTANDING.md)** - System state as of today
-- **[Baseline Healthcheck](./BASELINE-HEALTHCHECK.md)** - Production health status
-- **[Action Plan](./ACTION-PLAN-TODAY.md)** - Today's priorities
+### Operations (Living Docs)
+- **[Current State](./06-operations/Current-State.md)**
+- **[Baseline Healthcheck](./06-operations/Baseline-Healthcheck.md)**
+- **[Action Plan](./06-operations/Action-Plan-Today.md)**
 
-## 🧪 Testing & Quality
+## 🧪 Testing & Deployment
 
-- **[Testing Guide](./TESTING-GUIDE.md)** - Comprehensive testing strategy
-- **[API Testing Reports](./API_TESTING_COMPLETE_REPORT.md)** - Latest API test results
-- **[Backend Testing Summary](./BACKEND_TESTING_SUMMARY.md)** - Backend test coverage
-
-## 🚢 Deployment & Operations
-
-- **[CI/CD Setup Guide](./CI-CD-SETUP-GUIDE.md)** - GitHub Actions pipeline configuration
-- **[Deployment Guide](./SPRINT-0-DEPLOYMENT-GUIDE.md)** - Railway deployment instructions
-- **[Required Secrets](./REQUIRED_SECRETS.md)** - Environment variables reference
-- **[Configuration Guide](./CONFIGURATION-GUIDE-EXTERNAL-ML-MODELS.md)** - External ML model setup
-
-## 📚 Implementation Guides
-
-- **[Database Integration](./DATABASE_INTEGRATION_GUIDE.md)** - PostgreSQL setup
-- **[ML Inference Integration](./ML-INFERENCE-INTEGRATION.md)** - AI/ML implementation
-- **[API Impact Analysis](./API-IMPACT-ANALYSIS.md)** - API changes and impacts
+- **[Testing Guide](./04-testing/Testing-Guide.md)**
+- **[Testing Strategy (External ML Models)](./04-testing/Testing-Strategy-External-ML-Models.md)**
+- **[Deployment Guide](./05-deployment/Deployment-Guide.md)**
+- **[Required Secrets](./05-deployment/Required-Secrets.md)**
 
 ## 📂 Documentation Structure
 
 ```
 /docs
-├── README.md (THIS FILE) - Master index
-├── /sprints - Canonical sprint summaries
-├── /architecture - SRS, ADRs, design docs
-├── /Archive - Historical docs (Sprint-History, SRS-Versions, Status-Reports)
-├── /00-index - Documentation guides
-├── /sprint1 - Sprint 1 artifacts
-├── /status - Current state tracking
-└── /docs - Legacy subfolder (being reorganized)
+├── README.md (THIS FILE)
+├── /00-index        Entry point & navigation
+├── /01-requirements SRS + traceability
+├── /02-architecture ADRs + integrations
+├── /03-product      Backlog + trackers
+├── /04-testing      Test strategy
+├── /05-deployment   Deployment + secrets
+├── /06-operations   Live ops docs
+├── /07-sprints      Sprint summaries & folders
+├── /08-audits       Audit reports
+├── /09-reports      Progress and completion reports
+└── /99-archive      Legacy & historical docs
 ```
 
 ## 🔍 Finding What You Need
 
 | I want to... | Go to |
 |--------------|-------|
-| Understand system requirements | [SRS V5.3](./AI-Skincare-Intelligence-System-SRS-V5.3-EXTERNAL-PRETRAINED-ML.md) |
-| See current priorities | [Product Backlog](./Product-Backlog-V5.md) |
-| Review sprint history | [Sprint Summaries](./sprints/) |
-| Check production status | [Baseline Healthcheck](./BASELINE-HEALTHCHECK.md) |
-| Set up development environment | [Quick Start](./QUICK-START.md) |
-| Deploy to production | [Deployment Guide](./SPRINT-0-DEPLOYMENT-GUIDE.md) |
-| Run tests | [Testing Guide](./TESTING-GUIDE.md) |
-| View implementation details | [Sprint History Archive](./Archive/Sprint-History/) |
+| Understand system requirements | [SRS V5.3](./01-requirements/SRS-V5.3-External-Pretrained-ML.md) |
+| See current priorities | [Product Backlog](./03-product/Product-Backlog-V5.md) |
+| Review sprint history | [Sprint Index](./07-sprints/README.md) |
+| Check production status | [Baseline Healthcheck](./06-operations/Baseline-Healthcheck.md) |
+| Set up development environment | [Quick Start](./00-index/Quick-Start.md) |
+| Deploy to production | [Deployment Guide](./05-deployment/Deployment-Guide.md) |
+| Run tests | [Testing Guide](./04-testing/Testing-Guide.md) |
+| View legacy docs | [Archive](./99-archive/) |
 
 ## 📖 Documentation Principles
 
-✅ **Single Source of Truth**
-- One canonical doc per topic
-- Archive old versions, don't delete
-- Link to Archive for historical evidence
-
-✅ **Living Documents**
-- Current status docs updated in place
-- Sprint summaries immutable after close
-- Archive detailed phase documentation
-
-✅ **Zero Duplication**
-- Reference existing docs, don't copy content
-- Use links, not embedded content
-- Merge overlapping docs
-
-## 🗄️ Archive
-
-Historical documentation preserved for audit and reference:
-- **[Sprint History](./Archive/Sprint-History/)** - Phase docs, intermediate reports
-- **[SRS Versions](./Archive/SRS-Versions/)** - Previous SRS versions
-- **[Status Reports](./Archive/Status-Reports/)** - Completed status snapshots
+✅ **Single Source of Truth**  
+✅ **Living Docs for Operations**  
+✅ **Immutable Sprint Summaries**  
+✅ **Archive for Legacy/Evidence**
 
 ## 🔄 Document Lifecycle
 
 1. **Active** - Current, referenced from this index
-2. **Complete** - Sprint closed, moved to `/sprints` as canonical summary
-3. **Archived** - Evidence preserved in `/Archive`
+2. **Complete** - Sprint closed, moved to `/07-sprints`
+3. **Archived** - Evidence preserved in `/99-archive`
 
 ---
 
-**Last Updated:** December 25, 2025
+**Last Updated:** January 2026  
 **Maintained by:** AI Skincare Intelligence System Team

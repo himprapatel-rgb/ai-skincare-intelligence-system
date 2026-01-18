@@ -1,340 +1,491 @@
-# Testing Guide
-## AI Skincare Intelligence System
+# Testing Guide - AI Skincare Intelligence System
 
-**Version:** 1.0  
-**Last Updated:** January 2026  
-**Status:** Active
+## Overview
 
----
+This document provides comprehensive testing guidelines for the AI Skincare Intelligence System, including test structure, execution, and best practices.
 
-## 1. Testing Overview
+## Table of Contents
 
-### 1.1 Testing Strategy
-The project employs a comprehensive testing pyramid approach:
+1. [Testing Framework](#testing-framework)
+2. [Test Structure](#test-structure)
+3. [Running Tests](#running-tests)
+4. [Test Categories](#test-categories)
+5. [Writing Tests](#writing-tests)
+6. [Code Coverage](#code-coverage)
+7. [CI/CD Integration](#cicd-integration)
+8. [Best Practices](#best-practices)
+
+## Testing Framework
+
+### Backend Testing
+
+- **Framework**: pytest
+- **Configuration**: `pytest.ini`
+- **Coverage Tool**: pytest-cov
+- **Async Support**: pytest-asyncio
+
+### Frontend Testing
+
+- **Framework**: Vitest
+- **Testing Library**: @testing-library/react
+- **DOM Environment**: jsdom
+
+## Test Structure
 
 ```
-        /\         E2E Tests (10%)
-       /  \        - Cypress
-      /----\       Integration Tests (20%)
-     /      \      - API testing
-    /--------\     Unit Tests (70%)
-   /          \    - Jest, PyTest
-  --------------
+ai-skincare-intelligence-system/
+├── backend/
+│   ├── tests/
+│   │   ├── __init__.py
+│   │   ├── conftest.py
+│   │   ├── unit/
+│   │   │   ├── test_models.py
+│   │   │   ├── test_services.py
+│   │   │   └── test_utils.py
+│   │   ├── integration/
+│   │   │   ├── test_api_endpoints.py
+│   │   │   ├── test_database.py
+│   │   │   └── test_ml_pipeline.py
+│   │   └── e2e/
+│   │       └── test_user_workflows.py
+│   └── ...
+├── frontend/
+│   ├── src/
+│   │   ├── __tests__/
+│   │   │   ├── components/
+│   │   │   ├── pages/
+│   │   │   └── utils/
+│   │   └── ...
+│   └── vitest.config.ts
+├── tests/
+│   ├── logs/
+│   └── fixtures/
+└── pytest.ini
 ```
 
-### 1.2 Test Coverage Targets
-| Layer | Target | Current |
-|-------|--------|----------|
-| Unit Tests | 80% | 76% |
-| Integration | 60% | 55% |
-| E2E | 40% | 35% |
+## Running Tests
 
----
+### Backend Tests
 
-## 2. Testing Environment Setup
-
-### 2.1 Prerequisites
+#### Run All Tests
 ```bash
-# Node.js environment
-node -v  # v18.x or higher
-npm -v   # v9.x or higher
+# From project root
+pytest
 
-# Python environment
-python --version  # 3.10+
-pip --version
+# With coverage
+pytest --cov=backend --cov-report=html
 ```
 
-### 2.2 Install Test Dependencies
+#### Run Specific Test Categories
 ```bash
-# Frontend tests
+# Unit tests only
+pytest -m unit
+
+# Integration tests
+pytest -m integration
+
+# API tests
+pytest -m api
+
+# Database tests
+pytest -m database
+
+# ML model tests
+pytest -m ml
+```
+
+#### Run Specific Test File
+```bash
+pytest backend/tests/unit/test_models.py
+```
+
+#### Run Specific Test Function
+```bash
+pytest backend/tests/unit/test_models.py::test_user_creation
+```
+
+#### Run Tests in Parallel
+```bash
+pytest -n auto
+```
+
+#### Stop on First Failure
+```bash
+pytest -x
+```
+
+### Frontend Tests
+
+#### Run All Frontend Tests
+```bash
 cd frontend
-npm install --save-dev jest @testing-library/react @testing-library/jest-dom cypress
-
-# Backend tests
-cd api
-npm install --save-dev jest supertest
-
-# ML service tests
-cd ml-service
-pip install pytest pytest-cov pytest-asyncio
-```
-
-### 2.3 Environment Variables
-```bash
-# .env.test
-NODE_ENV=test
-DATABASE_URL=postgresql://test:test@localhost:5432/skincare_test
-JWT_SECRET=test-secret-key
-ML_SERVICE_URL=http://localhost:5001
-```
-
----
-
-## 3. Unit Testing
-
-### 3.1 Frontend Unit Tests (Jest + React Testing Library)
-
-#### Running Tests
-```bash
-cd frontend
-npm test                  # Run all tests
-npm test -- --coverage    # With coverage report
-npm test -- --watch       # Watch mode
-npm test -- ComponentName # Specific test
-```
-
-#### Example Test
-```javascript
-// src/components/__tests__/Button.test.jsx
-import { render, screen, fireEvent } from '@testing-library/react';
-import Button from '../Button';
-
-describe('Button Component', () => {
-  it('renders with correct text', () => {
-    render(<Button>Click Me</Button>);
-    expect(screen.getByText('Click Me')).toBeInTheDocument();
-  });
-
-  it('calls onClick when clicked', () => {
-    const handleClick = jest.fn();
-    render(<Button onClick={handleClick}>Click</Button>);
-    fireEvent.click(screen.getByText('Click'));
-    expect(handleClick).toHaveBeenCalledTimes(1);
-  });
-});
-```
-
-### 3.2 Backend Unit Tests (Jest)
-
-#### Running Tests
-```bash
-cd api
 npm test
+```
+
+#### Run with Coverage
+```bash
 npm test -- --coverage
 ```
 
-#### Example Test
-```javascript
-// tests/unit/auth.test.js
-const { hashPassword, verifyPassword } = require('../../src/utils/auth');
-
-describe('Auth Utils', () => {
-  it('hashes password correctly', async () => {
-    const password = 'TestPassword123';
-    const hash = await hashPassword(password);
-    expect(hash).not.toBe(password);
-    expect(hash.length).toBeGreaterThan(50);
-  });
-
-  it('verifies correct password', async () => {
-    const password = 'TestPassword123';
-    const hash = await hashPassword(password);
-    const isValid = await verifyPassword(password, hash);
-    expect(isValid).toBe(true);
-  });
-});
-```
-
-### 3.3 ML Service Unit Tests (PyTest)
-
-#### Running Tests
+#### Watch Mode
 ```bash
-cd ml-service
-pytest                           # Run all tests
-pytest --cov=src                 # With coverage
-pytest tests/unit/               # Specific folder
-pytest -v                        # Verbose output
+npm test -- --watch
 ```
 
-#### Example Test
+## Test Categories
+
+### 1. Unit Tests (@pytest.mark.unit)
+
+**Purpose**: Test individual components in isolation
+
+**Examples**:
+- Model methods
+- Utility functions
+- Service layer functions
+- Data validators
+
+**Characteristics**:
+- Fast execution
+- No external dependencies
+- Use mocks/stubs for dependencies
+
+### 2. Integration Tests (@pytest.mark.integration)
+
+**Purpose**: Test interaction between components
+
+**Examples**:
+- API endpoint integration
+- Database operations
+- Service layer integration
+- External API calls
+
+**Characteristics**:
+- Slower than unit tests
+- May use test database
+- Test component interactions
+
+### 3. End-to-End Tests (@pytest.mark.e2e)
+
+**Purpose**: Test complete user workflows
+
+**Examples**:
+- User registration flow
+- Skin analysis workflow
+- Product recommendation flow
+
+**Characteristics**:
+- Slowest tests
+- Test entire system
+- Most realistic scenarios
+
+### 4. API Tests (@pytest.mark.api)
+
+**Purpose**: Test REST API endpoints
+
+**Examples**:
+- Request/response validation
+- Authentication/authorization
+- Error handling
+- Status codes
+
+### 5. Database Tests (@pytest.mark.database)
+
+**Purpose**: Test database operations
+
+**Examples**:
+- CRUD operations
+- Query performance
+- Data integrity
+- Migrations
+
+### 6. ML Tests (@pytest.mark.ml)
+
+**Purpose**: Test machine learning components
+
+**Examples**:
+- Model predictions
+- Data preprocessing
+- Feature extraction
+- Model performance
+
+### 7. Security Tests (@pytest.mark.security)
+
+**Purpose**: Test security features
+
+**Examples**:
+- Authentication mechanisms
+- Authorization checks
+- Input validation
+- SQL injection prevention
+
+### 8. Performance Tests (@pytest.mark.performance)
+
+**Purpose**: Test system performance
+
+**Examples**:
+- Response times
+- Load handling
+- Memory usage
+- Query optimization
+
+## Writing Tests
+
+### Backend Test Example
+
 ```python
-# tests/unit/test_analyzer.py
 import pytest
-from src.analyzer import SkinAnalyzer
+from app.models import User
+from app.services.user_service import UserService
 
-class TestSkinAnalyzer:
-    def setup_method(self):
-        self.analyzer = SkinAnalyzer()
+@pytest.mark.unit
+class TestUserService:
+    """Unit tests for UserService"""
+    
+    def test_create_user_success(self, db_session):
+        """Test successful user creation"""
+        service = UserService(db_session)
+        user_data = {
+            "email": "test@example.com",
+            "password": "SecurePass123!"
+        }
+        
+        user = service.create_user(user_data)
+        
+        assert user.email == user_data["email"]
+        assert user.id is not None
+    
+    @pytest.mark.asyncio
+    async def test_async_operation(self):
+        """Test async operation"""
+        result = await some_async_function()
+        assert result is not None
 
-    def test_preprocess_image(self):
-        # Test image preprocessing
-        image = self.analyzer.preprocess("test_image.jpg")
-        assert image.shape == (224, 224, 3)
-
-    def test_prediction_output(self):
-        # Test prediction format
-        result = self.analyzer.analyze("test_image.jpg")
-        assert 'conditions' in result
-        assert 'confidence' in result
+@pytest.mark.integration
+@pytest.mark.api
+class TestUserAPI:
+    """Integration tests for User API"""
+    
+    def test_register_endpoint(self, client):
+        """Test user registration endpoint"""
+        response = client.post(
+            "/api/users/register",
+            json={
+                "email": "newuser@example.com",
+                "password": "SecurePass123!"
+            }
+        )
+        
+        assert response.status_code == 201
+        assert "id" in response.json()
 ```
 
----
+### Frontend Test Example
 
-## 4. Integration Testing
+```typescript
+import { render, screen, fireEvent } from '@testing-library/react';
+import { describe, it, expect } from 'vitest';
+import LoginForm from './LoginForm';
 
-### 4.1 API Integration Tests
-
-#### Running Tests
-```bash
-cd api
-npm run test:integration
-```
-
-#### Example Test
-```javascript
-// tests/integration/auth.integration.test.js
-const request = require('supertest');
-const app = require('../../src/app');
-const db = require('../../src/db');
-
-describe('Auth API Integration', () => {
-  beforeAll(async () => {
-    await db.migrate.latest();
+describe('LoginForm', () => {
+  it('renders login form correctly', () => {
+    render(<LoginForm />);
+    
+    expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /login/i })).toBeInTheDocument();
   });
-
-  afterAll(async () => {
-    await db.destroy();
-  });
-
-  describe('POST /api/auth/register', () => {
-    it('creates new user', async () => {
-      const res = await request(app)
-        .post('/api/auth/register')
-        .send({
-          email: 'test@example.com',
-          password: 'Password123!'
-        });
-      
-      expect(res.status).toBe(201);
-      expect(res.body).toHaveProperty('token');
+  
+  it('submits form with valid data', async () => {
+    const onSubmit = vi.fn();
+    render(<LoginForm onSubmit={onSubmit} />);
+    
+    fireEvent.change(screen.getByLabelText(/email/i), {
+      target: { value: 'test@example.com' }
     });
-
-    it('rejects duplicate email', async () => {
-      const res = await request(app)
-        .post('/api/auth/register')
-        .send({
-          email: 'test@example.com',
-          password: 'Password123!'
-        });
-      
-      expect(res.status).toBe(409);
+    fireEvent.change(screen.getByLabelText(/password/i), {
+      target: { value: 'password123' }
+    });
+    
+    fireEvent.click(screen.getByRole('button', { name: /login/i }));
+    
+    expect(onSubmit).toHaveBeenCalledWith({
+      email: 'test@example.com',
+      password: 'password123'
     });
   });
 });
 ```
 
----
+## Code Coverage
 
-## 5. End-to-End Testing (Cypress)
+### Coverage Requirements
 
-### 5.1 Setup
+- **Minimum Coverage**: 70%
+- **Target Coverage**: 85%
+- **Critical Paths**: 95%+
+
+### Viewing Coverage Reports
+
+#### Backend Coverage
+```bash
+# Generate HTML report
+pytest --cov=backend --cov-report=html
+
+# Open in browser
+open htmlcov/index.html
+```
+
+#### Frontend Coverage
 ```bash
 cd frontend
-npx cypress open    # Interactive mode
-npx cypress run     # Headless mode
+npm test -- --coverage
+
+# View report
+open coverage/index.html
 ```
 
-### 5.2 Configuration
-```javascript
-// cypress.config.js
-module.exports = {
-  e2e: {
-    baseUrl: 'http://localhost:3000',
-    supportFile: 'cypress/support/e2e.js',
-    specPattern: 'cypress/e2e/**/*.cy.js'
-  }
-};
+### Coverage Configuration
+
+Configured in `pytest.ini`:
+```ini
+[coverage:run]
+source = backend,.
+omit = 
+    */tests/*
+    */test_*.py
+    */__pycache__/*
+    */venv/*
 ```
 
-### 5.3 Example E2E Test
-```javascript
-// cypress/e2e/auth.cy.js
-describe('Authentication Flow', () => {
-  it('allows user to register', () => {
-    cy.visit('/register');
-    cy.get('[data-testid=email-input]').type('newuser@test.com');
-    cy.get('[data-testid=password-input]').type('Password123!');
-    cy.get('[data-testid=submit-btn]').click();
-    cy.url().should('include', '/dashboard');
-  });
+## CI/CD Integration
 
-  it('allows user to login', () => {
-    cy.visit('/login');
-    cy.get('[data-testid=email-input]').type('existing@test.com');
-    cy.get('[data-testid=password-input]').type('Password123!');
-    cy.get('[data-testid=submit-btn]').click();
-    cy.url().should('include', '/dashboard');
-  });
-});
+### GitHub Actions Workflow
+
+Tests are automatically run on:
+- Push to `main` or `develop` branches
+- Pull requests to `main` or `develop`
+
+### Pipeline Stages
+
+1. **Lint**: Code quality checks
+2. **Test**: Run all test suites
+3. **Coverage**: Generate coverage reports
+4. **Security**: Security scanning
+5. **Build**: Build artifacts
+6. **Deploy**: Deploy to staging (main branch only)
+
+### Workflow File
+
+See `.github/workflows/ci.yml` for complete configuration.
+
+## Best Practices
+
+### General Guidelines
+
+1. **Write Tests First**: Follow TDD when possible
+2. **One Assert Per Test**: Keep tests focused
+3. **Use Descriptive Names**: Test names should describe what they test
+4. **Arrange-Act-Assert**: Follow AAA pattern
+5. **Independent Tests**: Tests should not depend on each other
+6. **Clean Up**: Use fixtures and teardown methods
+
+### Testing Patterns
+
+#### Fixtures (pytest)
+
+```python
+@pytest.fixture
+def user(db_session):
+    """Create a test user"""
+    user = User(email="test@example.com")
+    db_session.add(user)
+    db_session.commit()
+    yield user
+    db_session.delete(user)
+    db_session.commit()
 ```
 
----
+#### Mocking
 
-## 6. Test Data Management
+```python
+from unittest.mock import Mock, patch
 
-### 6.1 Fixtures
-```javascript
-// tests/fixtures/users.js
-module.exports = {
-  validUser: {
-    email: 'test@example.com',
-    password: 'Password123!'
-  },
-  adminUser: {
-    email: 'admin@example.com',
-    password: 'AdminPass123!',
-    role: 'admin'
-  }
-};
+@patch('app.services.email_service.send_email')
+def test_user_registration_sends_email(mock_send_email):
+    mock_send_email.return_value = True
+    # Test code
+    assert mock_send_email.called
 ```
 
-### 6.2 Database Seeding
+#### Parametrized Tests
+
+```python
+@pytest.mark.parametrize("email,password,expected", [
+    ("valid@email.com", "ValidPass123!", True),
+    ("invalid", "password", False),
+    ("", "", False),
+])
+def test_user_validation(email, password, expected):
+    result = validate_user(email, password)
+    assert result == expected
+```
+
+### Error Testing
+
+```python
+def test_invalid_user_raises_error():
+    with pytest.raises(ValueError):
+        create_user(invalid_data)
+```
+
+### Async Testing
+
+```python
+@pytest.mark.asyncio
+async def test_async_endpoint():
+    result = await async_function()
+    assert result is not None
+```
+
+## Debugging Tests
+
+### Verbose Output
 ```bash
-npm run db:seed:test    # Seed test database
-npm run db:reset:test   # Reset and reseed
+pytest -vv
 ```
 
----
-
-## 7. CI/CD Integration
-
-### 7.1 GitHub Actions Workflow
-```yaml
-# .github/workflows/test.yml
-name: Tests
-on: [push, pull_request]
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-      - run: npm ci
-      - run: npm test -- --coverage
-      - uses: codecov/codecov-action@v3
-```
-
----
-
-## 8. Test Reports
-
-### 8.1 Generating Reports
+### Show Print Statements
 ```bash
-# HTML coverage report
-npm test -- --coverage --coverageReporters="html"
-
-# JUnit XML (for CI)
-npm test -- --reporters=jest-junit
+pytest -s
 ```
 
-### 8.2 Report Locations
-- Coverage: `coverage/lcov-report/index.html`
-- JUnit: `test-results/junit.xml`
-- Cypress: `cypress/reports/`
+### Drop into Debugger on Failure
+```bash
+pytest --pdb
+```
+
+### Run Last Failed Tests
+```bash
+pytest --lf
+```
+
+## Additional Resources
+
+- [pytest Documentation](https://docs.pytest.org/)
+- [Vitest Documentation](https://vitest.dev/)
+- [Testing Library](https://testing-library.com/)
+- [Python Testing Best Practices](https://docs.python-guide.org/writing/tests/)
+
+## Continuous Improvement
+
+- Review test coverage regularly
+- Update tests when requirements change
+- Refactor tests to improve maintainability
+- Add tests for bug fixes
+- Monitor test execution time
+- Keep dependencies updated
 
 ---
 
-**End of Document**
+**Last Updated**: December 2025
+**Maintained By**: Engineering Team

@@ -102,11 +102,18 @@ const HistoryPage: React.FC = () => {
 
             <div className="history-list">
               {filteredHistory.map(item => (
-                <button
+                <div
                   key={item.id}
-                  type="button"
+                  role="button"
+                  tabIndex={0}
                   className="history-item"
                   onClick={() => navigate(`/analysis/${item.id}`)}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.preventDefault();
+                      navigate(`/analysis/${item.id}`);
+                    }
+                  }}
                 >
                   <div className="history-thumbnail">
                     {item.imageUrl ? <img src={item.imageUrl} alt="Scan" /> : '📸'}
@@ -127,7 +134,7 @@ const HistoryPage: React.FC = () => {
                     <button className="view-btn">View Details</button>
                     <span className="recommendations-count">{item.recommendations} recommendations</span>
                   </div>
-                </button>
+                </div>
               ))}
             </div>
           </>

@@ -129,5 +129,7 @@ export interface ApiError {
 
 // Scan init response
 export interface ScanInitResponse {
-  session_id: string;
+  scan_id?: string;
+  session_id?: string;
+  status?: string;
 }

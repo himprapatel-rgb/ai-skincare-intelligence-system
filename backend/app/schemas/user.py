@@ -54,3 +54,15 @@ class UserResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class UserLogin(BaseModel):
+    """Schema for user login."""
+    email: EmailStr = Field(..., description="User email address")
+    password: str = Field(..., description="User password")
+
+
+class AuthResponse(BaseModel):
+    """Authentication response with token and user."""
+    token: str
+    user: UserResponse

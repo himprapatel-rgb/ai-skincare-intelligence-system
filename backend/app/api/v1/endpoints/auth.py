@@ -5,8 +5,8 @@ Authentication API endpoints.
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.database import get_db
-from app.schemas.user import UserCreate, UserResponse
-from app.services.auth_service import auth_service
+from app.schemas.user import UserCreate, UserResponse, UserLogin, AuthResponse
+from app.services.auth_service import auth_service, get_current_user
 from sqlalchemy.exc import IntegrityError
 
 
@@ -15,7 +15,7 @@ router = APIRouter()
 
 @router.post(
     "/register",
-    response_model=UserResponse,
+    response_model=AuthResponse,
     status_code=status.HTTP_201_CREATED,
     summary="Register a new user",
     description="Create a new user account with email and password",
@@ -33,7 +33,8 @@ def register_user(user_data: UserCreate, db: Session = Depends(get_db)):
     try:
         # Create new user
         new_user = auth_service.create_user(db, user_data)
-        return new_user
+        token = f"test_token_{new_user.email}"
+        return AuthResponse(token=token, user=UserResponse.model_validate(new_user))
 
     except IntegrityError:
         db.rollback()
@@ -54,16 +55,10 @@ def register_user(user_data: UserCreate, db: Session = Depends(get_db)):
     summary="User login",
     description="Authenticate user and return access token",
 )
-def login(user_data: dict, db: Session = Depends(get_db)):
+def login(user_data: UserLogin, db: Session = Depends(get_db)):
     """Authenticate user and return access token."""
-    email = user_data.get("email")
-    password = user_data.get("password")
-    
-    if not email or not password:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Email and password are required",
-        )
+    email = user_data.email
+    password = user_data.password
     
     # Get user by email
     user = auth_service.get_user_by_email(db, email)
@@ -73,16 +68,24 @@ def login(user_data: dict, db: Session = Depends(get_db)):
             detail="Invalid credentials",
         )
 
-        # Return access token
-    return {
-        "access_token": f"test_token_{user.email}",
-        "token_type": "bearer"
-    }
-    
-    # Verify password
-        # Verify password with correct argument order
     if not auth_service.verify_password(user.hashed_password, password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid credentials",
         )
+
+    token = f"test_token_{user.email}"
+    return AuthResponse(token=token, user=UserResponse.model_validate(user))
+
+
+@router.get(
+    "/me",
+    response_model=UserResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Get current user",
+    description="Return the authenticated user's profile",
+)
+def get_current_user_profile(
+    current_user=Depends(get_current_user),
+):
+    return current_user

@@ -16,11 +16,10 @@
 - API v1: `https://ai-skincare-intelligence-system-production.up.railway.app/api/v1/`
 
 ### Web Application (Frontend)
-**Status**: 🔄 NOT YET DEPLOYED
-**Planned Platform**: GitHub Pages / Vercel / Netlify
+**Status**: ✅ DEPLOYED
+**Platform**: Railway
+**URL**: https://frontend-production-0415.up.railway.app
 **Repository**: https://github.com/himprapatel-rgb/ai-skincare-intelligence-system/tree/main/frontend
-
-**Action Required**: Deploy frontend to hosting platform
 
 ### iOS Application
 **Status**: 🔄 IN DEVELOPMENT
@@ -93,14 +92,12 @@
 - [ ] Verify health check endpoint
 - [ ] Test API endpoints
 
-### Frontend - 📋 TO DO
-- [ ] Choose hosting platform (Vercel/Netlify/GitHub Pages)
-- [ ] Configure build process
-- [ ] Set up environment variables
-- [ ] Configure custom domain (optional)
-- [ ] Deploy to production
-- [ ] Test deployment
-- [ ] Update README with live URL
+### Frontend (Railway) - ✅ LIVE
+- [x] Railway frontend service created
+- [x] Build and start commands configured
+- [x] Public domain generated
+- [x] Deployment verified
+- [ ] Update README with live URL (optional)
 
 ### iOS App - 📋 TO DO
 - [ ] Complete app development
@@ -128,7 +125,7 @@
 
 ### IMMEDIATE (This Week)
 1. **Fix Backend 502 Error** - Investigate Railway deployment logs
-2. **Deploy Frontend** - Set up Vercel/Netlify deployment
+2. **Deploy Frontend** - Railway service live
 3. **Create Deployment Documentation** - Step-by-step guides
 
 ### SHORT-TERM (Next 2 Weeks)
@@ -157,7 +154,7 @@
 | Platform | Status | URL | Last Updated |
 |----------|--------|-----|-------------|
 | Backend API | ⚠️ Error | https://ai-skincare-intelligence-system-production.up.railway.app | 2025-12-05 |
-| Web Frontend | 🔄 Pending | TBD | - |
+| Web Frontend | ✅ Live | https://frontend-production-0415.up.railway.app | 2026-01-18 |
 | iOS App | 🔄 Dev | Not deployed | - |
 | Android App | 🔄 Dev | Not deployed | - |
 | CI/CD | ✅ Active | https://github.com/.../actions | 2025-12-05 |

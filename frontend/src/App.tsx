@@ -12,6 +12,7 @@ import ScanPage from "./pages/ScanPage";
 import AnalysisResults from "./pages/AnalysisResults";
 import HistoryPage from "./pages/HistoryPage";
 import ComparisonPage from "./pages/ComparisonPage";
+import SampleReportPage from "./pages/SampleReportPage";
 
 // Page Imports - Epic 3: Product Recommendations
 import Recommendations from "./pages/Recommendations";
@@ -48,6 +49,7 @@ export default function App() {
           {/* Skin Analysis Routes */}
           <Route path="/scan" element={<ScanPage />} />
           <Route path="/analysis/:analysisId" element={<AnalysisResults />} />
+          <Route path="/analysis/demo" element={<SampleReportPage />} />
           <Route path="/history" element={<HistoryPage />} />
           <Route path="/comparison" element={<ComparisonPage />} />
           

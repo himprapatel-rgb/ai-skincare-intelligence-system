@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { authApi } from '../services/authApi';
+import { useAuth } from '../context/AuthContext';
 import { ErrorMessage } from './ErrorMessage';
 import { LoadingSpinner } from './LoadingSpinner';
 
@@ -9,6 +9,7 @@ interface RegisterFormProps {
 }
 
 export const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onSwitchToLogin }) => {
+  const { register } = useAuth();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -31,8 +32,23 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onSwitchT
       return;
     }
 
-    if (formData.password.length < 6) {
-      setError('Password must be at least 6 characters');
+    if (formData.password.length < 8) {
+      setError('Password must be at least 8 characters');
+      return;
+    }
+
+    if (!/[A-Z]/.test(formData.password)) {
+      setError('Password must include at least one uppercase letter');
+      return;
+    }
+
+    if (!/[0-9]/.test(formData.password)) {
+      setError('Password must include at least one number');
+      return;
+    }
+
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(formData.password)) {
+      setError('Password must include at least one special character');
       return;
     }
 
@@ -40,12 +56,10 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onSwitchT
 
     try {
       const { name, email, password } = formData;
-      const response = await authApi.register({ name, email, password });
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('user', JSON.stringify(response.data.user));
+      await register(name, email, password);
       onSuccess();
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Registration failed. Please try again.');
+      setError(err.response?.data?.detail || err.response?.data?.message || 'Registration failed. Please try again.');
     } finally {
       setLoading(false);
     }

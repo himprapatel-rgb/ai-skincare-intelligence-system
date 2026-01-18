@@ -114,6 +114,10 @@ export async function getScanResult(sessionId: string): Promise<ScanResultRespon
  */
 export async function initAndUpload(file: File): Promise<ScanInitResponse> {
   const init = await initScan();
-  await uploadScanImage(init.session_id, file);
+  const sessionId = init.session_id ?? init.scan_id;
+  if (!sessionId) {
+    throw new Error("Scan initialization did not return a session id");
+  }
+  await uploadScanImage(sessionId, file);
   return init;
 }

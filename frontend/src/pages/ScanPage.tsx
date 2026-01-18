@@ -29,7 +29,10 @@ export default function ScanPage() {
     
     try {
       const initResponse = await initScan();
-      const sessionId = initResponse.session_id;
+      const sessionId = initResponse.session_id ?? initResponse.scan_id;
+      if (!sessionId) {
+        throw new Error("Scan initialization did not return a session id");
+      }
       
       await uploadScanImage(sessionId, file);
       

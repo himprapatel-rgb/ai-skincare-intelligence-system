@@ -4,16 +4,16 @@
 
 ## ✅ Deployment Status
 
-### Frontend (GitHub Pages)
-- [x] GitHub Actions workflow created
-- [x] Vite config updated with base path
-- [ ] **ACTION REQUIRED**: Enable GitHub Pages in repository settings
-- [ ] Verify deployment at: `https://himprapatel-rgb.github.io/ai-skincare-intelligence-system/`
+### Frontend (Railway)
+- [x] Railway frontend service created
+- [x] Build and start commands configured
+- [x] Public domain generated
+- [ ] Verify deployment at: `https://frontend-production-0415.up.railway.app`
 
 ### Backend (Railway)
 - [x] Railway configuration files created (`railway.toml`, `railway.json`)
 - [x] Dockerfile configured correctly
-- [x] CORS origins updated with GitHub Pages URL
+- [x] CORS origins updated with Railway frontend URL
 - [ ] **ACTION REQUIRED**: Set environment variables in Railway dashboard
 - [ ] Verify API health at: `https://ai-skincare-intelligence-system-production.up.railway.app/api/health`
 
@@ -25,12 +25,13 @@
 
 ## 🔧 Step-by-Step Setup
 
-### 1. Enable GitHub Pages
+### 1. Configure Railway Frontend Service
 
-1. Go to repository **Settings** → **Pages**
-2. Under "Source", select **GitHub Actions**
-3. Save changes
-4. The workflow will auto-deploy on next push to `main` branch
+1. Railway Dashboard → New Service → Deploy from GitHub
+2. Set **Root Directory** to `frontend`
+3. Build command: `npm install && npm run build`
+4. Start command: `node server.js`
+5. Generate a public domain under **Networking**
 
 ### 2. Configure Railway Environment Variables
 
@@ -91,9 +92,9 @@ If DATABASE_URL is not set, the app might fail to start. Check:
 - Push any change to `main` branch in `/backend/**` folder
 - Or manually trigger: Railway Dashboard → Deployments → "Deploy"
 
-**Frontend (GitHub Pages)**:
+**Frontend (Railway)**:
 - Push any change to `main` branch in `/frontend/**` folder
-- Or manually trigger: Actions tab → "Deploy Frontend to GitHub Pages" → "Run workflow"
+- Or manually trigger: Railway Dashboard → Deployments → "Deploy"
 
 ---
 
@@ -116,7 +117,7 @@ curl https://ai-skincare-intelligence-system-production.up.railway.app/api/healt
 Visit: `https://ai-skincare-intelligence-system-production.up.railway.app/docs`
 
 ### 3. Test Frontend
-Visit: `https://himprapatel-rgb.github.io/ai-skincare-intelligence-system/`
+Visit: `https://frontend-production-0415.up.railway.app`
 
 ### 4. Test Frontend → Backend Connection
 - Open frontend in browser
@@ -141,21 +142,21 @@ Visit: `https://himprapatel-rgb.github.io/ai-skincare-intelligence-system/`
 - Database not connected to backend service
 - Port binding issue (check Dockerfile CMD)
 
-### Frontend: 404 Not Found on GitHub Pages
+### Frontend: 404/500 on Railway
 
 **Solution:**
-1. Check GitHub Actions workflow ran successfully
-2. Verify GitHub Pages is enabled in Settings
-3. Check `vite.config.ts` has correct base path
-4. Wait 2-3 minutes for GitHub Pages DNS to update
+1. Check Railway deployment logs for build or runtime errors
+2. Confirm the `frontend` service uses `node server.js`
+3. Verify `npm run build` produces the `dist/` folder
+4. Regenerate the public domain if needed
 
 ### Frontend: CORS Errors
 
 **Solution:**
-Backend `config.py` already includes GitHub Pages origin:
+Backend `config.py` already includes Railway frontend origin:
 ```python
 ALLOWED_ORIGINS: list[str] = [
-    "https://himprapatel-rgb.github.io",
+    "https://frontend-production-0415.up.railway.app",
     ...
 ]
 ```
@@ -184,7 +185,7 @@ echo $DATABASE_URL
 
 | Service | URL | Status |
 |---------|-----|--------|
-| **Frontend (Web)** | https://himprapatel-rgb.github.io/ai-skincare-intelligence-system/ | 🟡 Pending setup |
+| **Frontend (Web)** | https://frontend-production-0415.up.railway.app | ✅ Live |
 | **Backend API** | https://ai-skincare-intelligence-system-production.up.railway.app | 🟡 Needs env vars |
 | **API Docs** | https://ai-skincare-intelligence-system-production.up.railway.app/docs | 🟡 Needs env vars |
 | **Health Check** | https://ai-skincare-intelligence-system-production.up.railway.app/api/health | 🟡 Needs env vars |
@@ -195,10 +196,9 @@ echo $DATABASE_URL
 ## 🎯 Next Steps (Priority Order)
 
 1. **IMMEDIATE**
-   - [ ] Enable GitHub Pages in repository settings
    - [ ] Set Railway environment variables (DATABASE_URL, SECRET_KEY)
    - [ ] Verify backend health endpoint responds
-   - [ ] Verify frontend deploys to GitHub Pages
+   - [ ] Verify frontend responds on Railway domain
 
 2. **SHORT-TERM** (This Week)
    - [ ] Test end-to-end user flow (signup → scan → results)
@@ -215,7 +215,6 @@ echo $DATABASE_URL
 ## 📞 Support Resources
 
 - **Railway Docs**: https://docs.railway.app
-- **GitHub Pages**: https://docs.github.com/pages
 - **Vite Deployment**: https://vitejs.dev/guide/static-deploy.html
 - **FastAPI on Railway**: https://railway.app/template/fastapi
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { authApi } from '../services/authApi';
+import { useAuth } from '../context/AuthContext';
 import { ErrorMessage } from './ErrorMessage';
 import { LoadingSpinner } from './LoadingSpinner';
 
@@ -9,6 +9,7 @@ interface LoginFormProps {
 }
 
 export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegister }) => {
+  const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -20,12 +21,10 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegis
     setLoading(true);
 
     try {
-      const response = await authApi.login({ email, password });
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('user', JSON.stringify(response.data.user));
+      await login(email, password);
       onSuccess();
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Login failed. Please try again.');
+      setError(err.response?.data?.detail || err.response?.data?.message || 'Login failed. Please try again.');
     } finally {
       setLoading(false);
     }

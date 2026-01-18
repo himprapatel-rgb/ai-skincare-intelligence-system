@@ -13,7 +13,7 @@
 │  ┌──────────────┐         ┌────────────────────────┐  │
 │  │   FRONTEND   │────────>│      BACKEND API       │  │
 │  │              │  calls  │                        │  │
-│  │ GitHub Pages │         │  Railway (FastAPI)     │  │
+│  │   Railway    │         │  Railway (FastAPI)     │  │
 │  │              │         │   + Database (PG)      │  │
 │  └──────────────┘         └────────────────────────┘  │
 │                                                         │
@@ -23,16 +23,17 @@
 
 ## 📍 **Production Endpoints**
 
-### Frontend (GitHub Pages)
-**URL**: `https://himprapatel-rgb.github.io/ai-skincare-intelligence-system/`  
-**Platform**: GitHub Pages  
-**Status**: ✅ DEPLOYED (via GitHub Actions)  
+### Frontend (Railway)
+**URL**: `https://frontend-production-0415.up.railway.app`  
+**Platform**: Railway  
+**Status**: ✅ DEPLOYED  
 **Technology**: React + TypeScript + Vite
 
 **Deployment**:
 - Auto-deploys from `main` branch
-- Triggered by changes to `frontend/` directory
-- Workflow: `.github/workflows/deploy-frontend.yml`
+- Service root: `frontend/`
+- Build: `npm install && npm run build`
+- Start: `node server.js`
 
 ### Backend API (Railway)
 **URL**: `https://ai-skincare-intelligence-system-production.up.railway.app`  
@@ -53,7 +54,7 @@
 
 ## 🔄 **Data Flow**
 
-1. **User** → Accesses frontend via GitHub Pages URL
+1. **User** → Accesses frontend via Railway URL
 2. **Frontend** → Makes API calls to Railway backend
 3. **Backend** → Processes requests, queries Railway PostgreSQL
 4. **Database** → Returns data to backend
@@ -91,7 +92,7 @@
 ## ✅ **Working Components**
 
 1. **CI/CD Pipeline**: GitHub Actions running all tests ✅
-2. **Frontend Deployment**: Automated via GitHub Actions ✅
+2. **Frontend Deployment**: Railway service deployed ✅
 3. **Railway Connection**: Repository connected to Railway ✅
 4. **Database**: PostgreSQL running on Railway ✅
 5. **GitHub Pages**: Configured and enabled ✅
@@ -104,12 +105,13 @@ Required environment variables on Railway:
 - `DATABASE_URL` - Railway PostgreSQL connection string
 - `ENVIRONMENT` - production
 
-### Frontend (GitHub Pages)
-No environment variables needed (static site)
+### Frontend (Railway)
+Optional environment variables (if used in Vite build):
+- `VITE_API_BASE_URL`
 
 ## 🔐 **Security**
 
-- Frontend: HTTPS via GitHub Pages
+- Frontend: HTTPS via Railway
 - Backend: HTTPS via Railway
 - Database: Internal Railway network (not publicly exposed)
 - API Keys: Stored as Railway environment variables
@@ -117,7 +119,7 @@ No environment variables needed (static site)
 ## 📈 **Scaling**
 
 **Current Setup**:
-- Frontend: GitHub Pages (unlimited static hosting)
+- Frontend: Railway web service
 - Backend: Railway free tier (500 hours/month)
 - Database: Railway PostgreSQL (512 MB free tier)
 
@@ -131,7 +133,7 @@ No environment variables needed (static site)
 1. **Develop**: Use Codespace for local testing
 2. **Commit**: Push to `main` branch
 3. **CI/CD**: GitHub Actions runs tests
-4. **Deploy Frontend**: GitHub Actions deploys to Pages
+4. **Deploy Frontend**: Railway auto-deploys
 5. **Deploy Backend**: Railway auto-deploys
 6. **Test**: Verify production URLs work
 

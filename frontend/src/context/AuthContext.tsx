@@ -3,12 +3,16 @@ import axios from 'axios';
 
 // Types
 export interface User {
-  id: string;
+  id: number;
+  public_id?: string;
   email: string;
-  name: string;
+  full_name?: string | null;
   skinType?: string;
   skinConcerns?: string[];
   preferences?: Record<string, unknown>;
+  is_active?: boolean;
+  is_verified?: boolean;
+  created_at?: string;
 }
 
 export interface AuthResponse {
@@ -32,25 +36,25 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // API base URL
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const API_URL = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
 
 // Provider component
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
+  const [token, setToken] = useState<string | null>(localStorage.getItem('auth_token'));
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const initAuth = async () => {
-      const storedToken = localStorage.getItem('token');
+      const storedToken = localStorage.getItem('auth_token');
       if (storedToken) {
         try {
           axios.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`;
           const response = await axios.get(`${API_URL}/auth/me`);
-          setUser(response.data.user);
+          setUser(response.data);
           setToken(storedToken);
         } catch {
-          localStorage.removeItem('token');
+          localStorage.removeItem('auth_token');
           delete axios.defaults.headers.common['Authorization'];
         }
       }
@@ -62,7 +66,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const login = async (email: string, password: string): Promise<void> => {
     const response = await axios.post(`${API_URL}/auth/login`, { email, password });
     const { token: newToken, user: userData } = response.data;
-    localStorage.setItem('token', newToken);
+    localStorage.setItem('auth_token', newToken);
     axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
     setToken(newToken);
     setUser(userData);
@@ -71,7 +75,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const register = async (name: string, email: string, password: string): Promise<AuthResponse> => {
     const response = await axios.post(`${API_URL}/auth/register`, { name, email, password });
     const { token: newToken, user: userData } = response.data;
-    localStorage.setItem('token', newToken);
+    localStorage.setItem('auth_token', newToken);
     axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
     setToken(newToken);
     setUser(userData);
@@ -79,7 +83,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const logout = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem('auth_token');
     delete axios.defaults.headers.common['Authorization'];
     setToken(null);
     setUser(null);

@@ -38,6 +38,7 @@ def init_scan_session(
     
     return {
         "scan_id": str(scan_session.id),
+        "session_id": str(scan_session.id),
         "status": scan_session.status
     }
 
@@ -116,6 +117,46 @@ async def upload_scan(
     
     return {
         "scan_id": str(scan_session.id),
+        "session_id": str(scan_session.id),
+        "status": scan_session.status
+    }
+
+
+@router.get(
+    "/{scan_id}/status",
+    status_code=status.HTTP_200_OK,
+    summary="Get Scan Status"
+)
+def get_scan_status(
+    scan_id: str,
+    db: Session = Depends(get_db),
+    current_user: Optional[User] = Depends(get_current_user)
+):
+    """Get scan status."""
+    # Validate UUID format
+    try:
+        uuid_obj = UUID(scan_id)
+    except ValueError:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Scan session not found"
+        )
+
+    user_id = current_user.id if current_user else 1
+    scan_session = db.query(ScanSession).filter(
+        ScanSession.id == uuid_obj,
+        ScanSession.user_id == user_id
+    ).first()
+
+    if not scan_session:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Scan session not found"
+        )
+
+    return {
+        "scan_id": str(scan_session.id),
+        "session_id": str(scan_session.id),
         "status": scan_session.status
     }
 
@@ -153,7 +194,23 @@ def get_scan_results(
     
     return {
         "scan_id": str(scan_session.id),
-        "result": scan_session.result if scan_session.result else {}    }
+        "session_id": str(scan_session.id),
+        "result": scan_session.result if scan_session.result else {}
+    }
+
+
+@router.get(
+    "/{scan_id}/result",
+    status_code=status.HTTP_200_OK,
+    summary="Get Scan Result (Alias)"
+)
+def get_scan_result_alias(
+    scan_id: str,
+    db: Session = Depends(get_db),
+    current_user: Optional[User] = Depends(get_current_user)
+):
+    """Alias for get scan results to support older clients."""
+    return get_scan_results(scan_id=scan_id, db=db, current_user=current_user)
 
 @router.get(
     "/history",

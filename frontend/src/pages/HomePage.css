@@ -1,17 +1,17 @@
 /* SkinCare AI - Industry Standard Medical Design */
 
 :root {
-  --primary: #9b7b6a;
-  --primary-dark: #7f6152;
-  --accent: #d8c1b0;
-  --success: #a3b18a;
-  --bg-light: #f8f4f2;
+  --primary: #1f6feb;
+  --primary-dark: #1e4fd6;
+  --accent: #a9c7ff;
+  --success: #34c759;
+  --bg-light: #f3f7ff;
   --bg-white: #ffffff;
-  --text-dark: #1f1b18;
-  --text-gray: #5e534c;
-  --text-light: #a89b93;
-  --border: #eadfd7;
-  --shadow: 0 10px 24px rgba(31, 27, 24, 0.08);
+  --text-dark: #0b1220;
+  --text-gray: #4b5b76;
+  --text-light: #8a9ab7;
+  --border: #e3ecff;
+  --shadow: 0 12px 26px rgba(13, 27, 62, 0.08);
 }
 
 * {
@@ -22,7 +22,7 @@
 
 .homepage {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: #fbf8f6;
+  background: #f8fbff;
   min-height: 100vh;
   color: var(--text-dark);
 }
@@ -1247,9 +1247,9 @@
 
 .homepage {
   background:
-    radial-gradient(900px 400px at 10% -10%, rgba(216, 193, 176, 0.25), transparent 60%),
-    radial-gradient(600px 300px at 90% 10%, rgba(155, 123, 106, 0.18), transparent 55%),
-    #fbf8f6;
+    radial-gradient(800px 360px at 12% -10%, rgba(169, 199, 255, 0.22), transparent 60%),
+    radial-gradient(600px 260px at 88% 10%, rgba(31, 111, 235, 0.14), transparent 55%),
+    #f8fbff;
 }
 
 .hero {
@@ -1262,8 +1262,8 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(1200px 420px at 50% -10%, rgba(255, 255, 255, 0.7), transparent 60%),
-    radial-gradient(420px 240px at 78% 70%, rgba(216, 193, 176, 0.28), transparent 70%);
+    radial-gradient(1200px 420px at 50% -10%, rgba(255, 255, 255, 0.75), transparent 60%),
+    radial-gradient(420px 240px at 78% 70%, rgba(169, 199, 255, 0.22), transparent 70%);
   pointer-events: none;
 }
 
@@ -1274,10 +1274,10 @@
 
 .sample-report-preview {
   border-radius: 20px;
-  border: 1px solid rgba(234, 223, 215, 0.8);
+  border: 1px solid rgba(227, 236, 255, 0.9);
   box-shadow:
-    0 24px 60px rgba(31, 27, 24, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    0 22px 52px rgba(13, 27, 62, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.85);
 }
 
 .sample-report-preview .preview-header {
@@ -1288,7 +1288,7 @@
 }
 
 .sample-report-preview .score-circle {
-  box-shadow: 0 10px 24px rgba(155, 123, 106, 0.25);
+  box-shadow: 0 10px 24px rgba(31, 111, 235, 0.2);
 }
 
 .result-card,
@@ -1302,13 +1302,13 @@
 .step-card:hover,
 .faq-item:hover {
   transform: translateY(-6px);
-  box-shadow: 0 22px 44px rgba(31, 27, 24, 0.12);
-  border-color: rgba(155, 123, 106, 0.35);
+  box-shadow: 0 22px 44px rgba(13, 27, 62, 0.12);
+  border-color: rgba(31, 111, 235, 0.28);
 }
 
 .badge-item {
-  border: 1px solid rgba(155, 123, 106, 0.18);
-  background: linear-gradient(135deg, #ffffff 0%, #fbf7f4 100%);
+  border: 1px solid rgba(31, 111, 235, 0.18);
+  background: linear-gradient(135deg, #ffffff 0%, #f3f7ff 100%);
 }
 
 .cta-section::after {
@@ -1389,8 +1389,8 @@
 .sample-report-preview {
   padding: 28px;
   border-radius: 20px;
-  border: 1px solid rgba(234, 223, 215, 0.9);
-  box-shadow: 0 20px 50px rgba(31, 27, 24, 0.12);
+  border: 1px solid rgba(227, 236, 255, 0.9);
+  box-shadow: 0 20px 50px rgba(13, 27, 62, 0.12);
 }
 
 .preview-header {
@@ -1415,25 +1415,26 @@
   display: grid;
   place-items: center;
   font-weight: 700;
-  background: #f5eee9;
+  background: #ecf2ff;
   color: var(--primary-dark);
   margin: 0 auto 8px;
 }
 
 .score-circle.good {
-  background: #efe5de;
+  background: #e6efff;
 }
 
 .score-circle.medium {
-  background: #f4ede7;
+  background: #f1f5ff;
 }
 
 .concern-badge {
   display: inline-flex;
   padding: 6px 12px;
   border-radius: 999px;
-  border: 1px solid rgba(155, 123, 106, 0.25);
+  border: 1px solid rgba(31, 111, 235, 0.2);
   color: var(--primary-dark);
+  background: #f1f5ff;
   font-size: 0.75rem;
   margin-right: 8px;
 }
@@ -1525,12 +1526,12 @@
 .nav-btn-primary {
   border-radius: 999px;
   padding: 12px 22px;
-  box-shadow: 0 10px 24px rgba(155, 123, 106, 0.22);
+  box-shadow: 0 10px 24px rgba(31, 111, 235, 0.2);
 }
 
 .hero {
-  background: radial-gradient(1200px 520px at 10% -10%, rgba(216, 193, 176, 0.35), transparent 60%),
-    linear-gradient(180deg, #fefcfb 0%, #f8f4f2 100%);
+  background: radial-gradient(1100px 520px at 10% -10%, rgba(169, 199, 255, 0.35), transparent 60%),
+    linear-gradient(180deg, #ffffff 0%, #f3f7ff 100%);
 }
 
 .hero-title {
@@ -1542,7 +1543,7 @@
 }
 
 .hero-badge {
-  border-color: rgba(234, 223, 215, 0.9);
+  border-color: rgba(227, 236, 255, 0.9);
   background: #ffffff;
   color: var(--primary);
 }
@@ -1556,11 +1557,11 @@
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--primary) 0%, #c4a48f 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, #5a8bff 100%);
   border-radius: 999px;
   padding: 14px 28px;
   letter-spacing: 0.01em;
-  box-shadow: 0 14px 28px rgba(155, 123, 106, 0.28);
+  box-shadow: 0 14px 28px rgba(31, 111, 235, 0.25);
 }
 
 .btn-primary:hover {
@@ -1570,13 +1571,13 @@
 .btn-secondary {
   background: #ffffff;
   border-radius: 999px;
-  border: 1px solid rgba(155, 123, 106, 0.25);
-  box-shadow: 0 10px 22px rgba(31, 27, 24, 0.08);
+  border: 1px solid rgba(31, 111, 235, 0.2);
+  box-shadow: 0 10px 22px rgba(13, 27, 62, 0.08);
 }
 
 .hero-cta .btn-primary,
 .hero-cta .btn-secondary {
-  box-shadow: 0 12px 26px rgba(155, 123, 106, 0.22);
+  box-shadow: 0 12px 26px rgba(31, 111, 235, 0.2);
 }
 
 .results-preview {
@@ -1585,8 +1586,8 @@
 }
 
 .result-card {
-  border: 1px solid rgba(31, 27, 24, 0.08);
-  box-shadow: 0 18px 36px rgba(31, 27, 24, 0.08);
+  border: 1px solid rgba(13, 27, 62, 0.08);
+  box-shadow: 0 18px 36px rgba(13, 27, 62, 0.08);
 }
 
 .trust-badges .badge-item {
@@ -1594,12 +1595,12 @@
   border: 1px solid var(--border);
   padding: 10px 16px;
   border-radius: 999px;
-  box-shadow: 0 10px 22px rgba(31, 27, 24, 0.08);
+  box-shadow: 0 10px 22px rgba(13, 27, 62, 0.08);
 }
 
 .faq-item {
   background: #ffffff;
-  box-shadow: 0 12px 26px rgba(31, 27, 24, 0.08);
+  box-shadow: 0 12px 26px rgba(13, 27, 62, 0.08);
   border-left-color: var(--accent);
 }
 
@@ -1607,7 +1608,7 @@
   position: relative;
   overflow: hidden;
   background: radial-gradient(800px 320px at 20% -30%, rgba(255, 255, 255, 0.35), transparent 60%),
-    linear-gradient(135deg, var(--primary) 0%, #b7957f 100%);
+    linear-gradient(135deg, var(--primary) 0%, #2f7bff 100%);
 }
 
 .cta-content {

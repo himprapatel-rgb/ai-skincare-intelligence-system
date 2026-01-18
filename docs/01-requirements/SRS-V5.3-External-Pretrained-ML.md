@@ -299,7 +299,7 @@ CIRCUIT_BREAKER_THRESHOLD=5
 
 1. [SRS-ADDENDUM-EXTERNAL-PRETRAINED-MODEL.md](./SRS-ADDENDUM-EXTERNAL-PRETRAINED-MODEL.md)
 2. [ADR-ML-003-External-Model-Storage.md](./ADR-ML-003-External-Model-Storage.md)
-3. [Product-Backlog-V5.md](./Product-Backlog-V5.md)
+3. [Product Backlog V5](../03-product/Product-Backlog-V5.md)
 4. [AI-MODEL-TRAINING-INTEGRATION-PLAN.md](./AI-MODEL-TRAINING-INTEGRATION-PLAN.md)
 5. [API-IMPACT-ANALYSIS.md](./API-IMPACT-ANALYSIS.md)
 

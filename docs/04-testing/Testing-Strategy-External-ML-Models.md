@@ -325,7 +325,7 @@ Run after every deployment:
 
 ## 📖 References
 
-1. [SRS-V5.3-EXTERNAL-PRETRAINED-ML.md](./AI-Skincare-Intelligence-System-SRS-V5.3-EXTERNAL-PRETRAINED-ML.md)
+1. [SRS V5.3](../01-requirements/SRS-V5.3-External-Pretrained-ML.md)
 2. [API-IMPACT-ANALYSIS.md](./API-IMPACT-ANALYSIS.md)
 3. [CONFIGURATION-GUIDE-EXTERNAL-ML-MODELS.md](./CONFIGURATION-GUIDE-EXTERNAL-ML-MODELS.md)
 

@@ -95,7 +95,7 @@
 
 - [HOME-PAGE-AGILE-DEVELOPMENT-PLAN.md](../03-product/HOME-PAGE-AGILE-DEVELOPMENT-PLAN.md) - Full Agile plan
 - [Product-Backlog-V5.md](../03-product/Product-Backlog-V5.md) - Main product backlog
-- [FRONTEND-SPRINT-PLAN.md](../FRONTEND-SPRINT-PLAN.md) - Sprint F2 reference
+- [Frontend Sprint Plan](../07-sprints/sprint-f2/Frontend-Sprint-Plan.md) - Sprint F2 reference
 
 ---
 

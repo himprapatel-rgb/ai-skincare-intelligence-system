@@ -384,9 +384,9 @@ If critical issues arise:
 
 ## 📖 References
 
-1. [SRS-V5.3-EXTERNAL-PRETRAINED-ML.md](./AI-Skincare-Intelligence-System-SRS-V5.3-EXTERNAL-PRETRAINED-ML.md)
+1. [SRS V5.3](../01-requirements/SRS-V5.3-External-Pretrained-ML.md)
 2. [ADR-ML-003-External-Model-Storage.md](./ADR-ML-003-External-Model-Storage.md)
-3. [Product-Backlog-V5.md](./Product-Backlog-V5.md) - Epic 16
+3. [Product Backlog V5](../03-product/Product-Backlog-V5.md) - Epic 16
 
 ---
 

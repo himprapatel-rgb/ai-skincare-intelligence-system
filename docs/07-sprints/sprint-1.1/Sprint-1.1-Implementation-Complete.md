@@ -859,7 +859,7 @@ After Sprint 1.1 completion:
 ## 📚 REFERENCES
 
 - [Sprint 1 - Core MVP Development](../Sprint-1-Core-MVP-Development.md)
-- [Product Backlog V5](../Product-Backlog-V5.md)
+- [Product Backlog V5](../../03-product/Product-Backlog-V5.md)
 - [SRS V5 Enhanced](../SRS-V5-Enhanced.md)
 - [Sprint 0 - Foundation Setup](../Sprint-0-Foundation-Setup.md)
 

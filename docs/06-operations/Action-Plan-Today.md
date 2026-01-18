@@ -226,11 +226,11 @@ curl https://<your-app>.up.railway.app/api/v1/profile
 
 ## 📁 KEY DOCUMENTS (Updated Yesterday)
 
-1. **docs/AUDIT-REPORT.md** - Full audit with all findings (Updated Dec 22, 5 PM)
-2. **docs/TRACEABILITY-MATRIX.md** - Requirements mapping (Dec 18)
-3. **docs/IMPLEMENTATION_AUDIT.md** - Code verification (Dec 12)
-4. **docs/Product-Backlog-V5.md** - Sprint planning
-5. **docs/AI-Skincare-Intelligence-System-SRS-V5.1-DATABASE-UPDATE.md** - Requirements
+1. **docs/08-audits/Audit-Report.md** - Full audit with all findings (Updated Dec 22, 5 PM)
+2. **docs/01-requirements/Traceability-Matrix.md** - Requirements mapping (Dec 18)
+3. **docs/08-audits/Implementation-Audit.md** - Code verification (Dec 12)
+4. **docs/03-product/Product-Backlog-V5.md** - Sprint planning
+5. **docs/99-archive/legacy/Archive/SRS-Versions/AI-Skincare-Intelligence-System-SRS-V5.1-DATABASE-UPDATE.md** - Requirements
 
 ---
 

@@ -114,7 +114,7 @@ backend/
 ```
 frontend/
 ├── public/
-│   └── .nojekyll          # GitHub Pages compatibility
+│   └── .nojekyll          # Legacy GitHub Pages compatibility
 ├── src/
 │   ├── components/         # React components
 │   ├── features/           # Feature modules
@@ -135,7 +135,7 @@ frontend/
 ├── index.html
 ├── package.json            # Dependencies (React, TensorFlow.js, Vitest)
 ├── tsconfig.json
-├── vite.config.ts          # Vite config with GitHub Pages base
+├── vite.config.ts          # Vite config for Railway deployment
 └── vitest.config.ts        # Vitest config (jsdom)
 ```
 
@@ -151,7 +151,7 @@ frontend/
   - HomePage with premium UI added (1 hour ago)
   - OnSkin-inspired ScanPage (1 hour ago)
   - CSS modernization (53 minutes ago)
-  - Vite config updated for GitHub Pages (2 weeks ago)
+  - Vite config updated for Railway deployment (2 weeks ago)
 
 ---
 
@@ -170,9 +170,9 @@ frontend/
 - **Last Deploy**: 2 weeks ago
 - **Service**: 361 deployments
 
-### 5.2 Frontend (GitHub Pages)
+### 5.2 Frontend (Railway)
 
-- **Production URL**: `https://himprapatel-rgb.github.io/ai-skincare-intelligence-system/`
+- **Production URL**: `https://frontend-production-0415.up.railway.app/`
 - **Brand**: "AuraSkin AI"
 - **Pages Live**:
   - HomePage (✅ Live)
@@ -344,14 +344,14 @@ This affects:
 ### 8.1 Documentation Categories (Observed)
 
 #### Core Requirements
-- `SRS-V5-Enhanced.md` (main SRS)
-- `AI-Skincare-Intelligence-System-SRS-V5.1-DATABASE-UPDATE.md` (DB extension)
+- `01-requirements/SRS-V5.3-External-Pretrained-ML.md` (main SRS)
+- `99-archive/legacy/Archive/SRS-Versions/AI-Skincare-Intelligence-System-SRS-V5.1-DATABASE-UPDATE.md` (DB extension)
 
 #### Product & Planning
-- `Product-Backlog-V5.md`
-- `PRODUCT-BACKLOG-V5.1-DATABASE-STORIES.md`
-- `Product-Tracker.md`
-- `FRONTEND-SPRINT-PLAN.md`
+- `03-product/Product-Backlog-V5.md`
+- `03-product/Product-Backlog-V5.1-Database-Stories.md`
+- `03-product/Product-Tracker.md`
+- `07-sprints/sprint-f2/Frontend-Sprint-Plan.md`
 
 #### Sprint Documentation (Multiple)
 - Sprint 0: 3 docs (Foundation, Deployment, Implementation)
@@ -364,43 +364,43 @@ This affects:
 - Sprint Audit/Verification: 2 docs
 
 #### Testing
-- `TESTING-GUIDE.md`
-- `BACKEND_TESTING_SUMMARY.md`
-- `API-TESTING-REPORT.md`
-- `API_TESTING_COMPLETE_REPORT.md`
-- `Sprint-1.2-Test-Execution-Report.md`
-- `SPRINT-F2-TEST-EXECUTION-REPORT.md`
+- `04-testing/Testing-Guide.md`
+- `99-archive/legacy/Archive/Sprint-History/BACKEND_TESTING_SUMMARY.md`
+- `99-archive/legacy/Archive/Sprint-History/API-TESTING-REPORT.md`
+- `99-archive/legacy/Archive/Sprint-History/API_TESTING_COMPLETE_REPORT.md`
+- `07-sprints/sprint-1.2/Sprint-1.2-Test-Execution-Report.md`
+- `07-sprints/sprint-f2/Sprint-F2-Test-Execution-Report.md`
 
 #### CI/CD & Deployment
-- `CI-CD-SETUP-GUIDE.md`
-- `CI-CD-IMPLEMENTATION-COMPLETE.md`
-- `CI-CD-STATUS-UPDATE-2025-12-05.md`
-- `SPRINT-F2-F3-CI-FIX-REPORT.md`
-- `SPRINT-3-PHASE-3-CI-CD-COMPLETION.md`
+- `99-archive/legacy/Archive/Sprint-History/CI-CD-SETUP-GUIDE.md`
+- `09-reports/CI-CD-Implementation-Complete.md`
+- `99-archive/legacy/Archive/Status-Reports/CI-CD-STATUS-UPDATE-2025-12-05.md`
+- `07-sprints/sprint-f2/Sprint-F2-F3-CI-Fix-Report.md`
+- `99-archive/legacy/Archive/Sprint-History/SPRINT-3-PHASE-3-CI-CD-COMPLETION.md`
 - Multiple deployment docs at root
 
 #### Audit & Traceability
-- `AUDIT-REPORT.md`
-- `IMPLEMENTATION_AUDIT.md`
-- `audit version 1` (older)
-- `TRACEABILITY-MATRIX.md` (exists but needs verification)
+- `08-audits/Audit-Report.md`
+- `08-audits/Implementation-Audit.md`
+- `08-audits/Audit-Report-V1.md` (older)
+- `01-requirements/Traceability-Matrix.md` (exists but needs verification)
 
 #### Technical Reference
-- `DATABASE_INTEGRATION_GUIDE.md`
-- `ML_TRAINING_DATASET_INTEGRATION.md`
-- `ML-INFERENCE-INTEGRATION.md`
-- `PRODUCT-RECOMMENDATIONS-IMPLEMENTATION.md`
-- `DATASET_LICENSES.md`
-- `REQUIRED_SECRETS.md`
-- `SETUP_GPTGPT.md`
+- `99-archive/legacy/Archive/Sprint-History/DATABASE_INTEGRATION_GUIDE.md`
+- `02-architecture/ML-Training-Dataset-Integration.md`
+- `02-architecture/ML-Inference-Integration.md`
+- `02-architecture/Product-Recommendations-Implementation.md`
+- `02-architecture/Dataset-Licenses.md`
+- `05-deployment/Required-Secrets.md`
+- `06-operations/Setup-GPTGPT.md`
 
 #### Miscellaneous
-- `ACTION-PLAN-TODAY.md`
-- `QUICK-START.md`
-- `BACKEND_IMPROVEMENTS.md`
-- `AI_AGILE_WORKFLOW.md`
-- `Master-Documentation-Log.md`
-- `Sprint-Documentation-Index.md`
+- `06-operations/Action-Plan-Today.md`
+- `00-index/Quick-Start.md`
+- `99-archive/legacy/Archive/Sprint-History/BACKEND_IMPROVEMENTS.md`
+- `99-archive/legacy/Archive/Status-Reports/AI_AGILE_WORKFLOW.md`
+- `99-archive/legacy/Master-Documentation-Log.md`
+- `99-archive/legacy/Sprint-Documentation-Index.md`
 
 ### 8.2 Documentation Observations
 
@@ -480,7 +480,7 @@ This affects:
 
 - No LICENSE file (legal risk)
 - No CONTRIBUTING.md (contributor friction)
-- Secrets management relies on Railway envars + REQUIRED_SECRETS.md
+- Secrets management relies on Railway envars + 05-deployment/Required-Secrets.md
 - Production monitoring/alerting not documented
 
 ---
@@ -490,7 +490,7 @@ This affects:
 ### 13.1 What IS Live
 
 ✅ Backend API (54 endpoints) on Railway  
-✅ Frontend (AuraSkin AI) on GitHub Pages  
+✅ Frontend (AuraSkin AI) on Railway  
 ✅ CI/CD pipeline (GitHub Actions → Railway)  
 ✅ Database (PostgreSQL on Railway)  
 ✅ ML inference service (PyTorch models)  
@@ -523,7 +523,7 @@ This inventory provides a factual snapshot. The following documents will provide
 
 1. **DOCS-INVENTORY.md** - Detailed doc-by-doc catalog
 2. **DOCUMENT-AUDIT-REPORT.md** - Doc quality assessment
-3. **TRACEABILITY-MATRIX.md** - SRS→Backlog→Code→Test mapping
+3. **01-requirements/Traceability-Matrix.md** - SRS→Backlog→Code→Test mapping
 4. **MISMATCH-AND-GAP-REPORT.md** - Documented vs implemented features
 5. **AUDIT-EXECUTIVE-SUMMARY.md** - CTO-level honest assessment
 
@@ -531,4 +531,4 @@ This inventory provides a factual snapshot. The following documents will provide
 
 **Document Owner**: Senior Engineering Audit Team  
 **Last Updated**: December 22, 2025, 1:00 PM GMT  
-**Verification Method**: Direct inspection of GitHub repo, live Railway backend, live GitHub Pages frontend, and Swagger UI
+**Verification Method**: Direct inspection of GitHub repo, live Railway backend, live Railway frontend, and Swagger UI

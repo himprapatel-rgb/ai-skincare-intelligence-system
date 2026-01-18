@@ -194,7 +194,7 @@ import Recommendations from "./pages/Recommendations";
 - **Platform:** GitHub Actions + Railway
 
 **Active Workflows:**
-1. Deploy Frontend to GitHub Pages - In Progress
+1. Deploy Frontend to Railway - In Progress
 2. CI - Tests - In Progress
 3. Frontend CI - Running
 4. Backend CI - Running

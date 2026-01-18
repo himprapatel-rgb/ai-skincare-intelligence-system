@@ -360,5 +360,5 @@ The Digital Twin Engine is now live and ready for use. All backend infrastructur
 - [SPRINT-3-PHASE-1-COMPLETE.md](./SPRINT-3-PHASE-1-COMPLETE.md)
 - [SPRINT-3-PHASE-2-COMPLETE.md](./SPRINT-3-PHASE-2-COMPLETE.md)
 - [SPRINT-3-PROGRESS-STATUS.md](./SPRINT-3-PROGRESS-STATUS.md)
-- [Product-Tracker.md](./Product-Tracker.md)
+- [Product Tracker](../../../../03-product/Product-Tracker.md)
 - [API Documentation](https://ai-skincare-intelligence-system-production.up.railway.app/docs)

@@ -544,6 +544,6 @@ Begin with Phase 1 (Foundation Layer) while resolving ML blockers in parallel. T
 ## Related Documents
 
 - [Sprint 2 Technical Specifications](./Sprint-2-Face-Scan-AI-Analysis.md)
-- [Product Tracker](./Product-Tracker.md)
-- [Product Backlog V5](./Product-Backlog-V5.md)
+- [Product Tracker](../../03-product/Product-Tracker.md)
+- [Product Backlog V5](../../03-product/Product-Backlog-V5.md)
 - [SRS V5 Enhanced](./SRS-V5-Enhanced.md)

@@ -191,7 +191,7 @@ All acceptance criteria met:
 - ✅ CI/CD pipeline established
 - ⏳ Generate `package-lock.json` (`npm install`)
 - ⏳ Verify CI pipeline passes
-- ⏳ Deploy to GitHub Pages or Vercel
+- ⏳ Deploy to Railway
 
 ---
 
@@ -272,7 +272,7 @@ All acceptance criteria met:
 ✅ **Features wired into app (routing functional)**  
 ✅ **Behavior matches SRS + backlog intent**  
 ✅ **Changes documented in commit messages**  
-✅ **FRONTEND-SPRINT-PLAN.md updated**  
+✅ **Frontend-Sprint-Plan.md updated**  
 ✅ **Sprint completion report created**
 
 ---

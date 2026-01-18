@@ -38,7 +38,7 @@ Many features are live and functional in production but may not be formally trac
 **Methodology**: Direct inspection of live systems
 - ✅ Accessed Railway backend at production URL
 - ✅ Verified Swagger UI with all endpoints
-- ✅ Accessed GitHub Pages frontend
+- ✅ Accessed Railway frontend
 - ✅ Reviewed GitHub repository code
 - ✅ Checked Railway deployment history
 - ✅ Reviewed CI/CD pipeline status
@@ -136,7 +136,7 @@ Many features are live and functional in production but may not be formally trac
 | Dimension | Dec 18 Audit | Dec 22 Verification | Reconciliation |
 |-----------|--------------|---------------------|----------------|
 | **Backend API** | "Not verified" | 54 endpoints live | ✅ **Significantly more than "8-12 stories" suggests** |
-| **Frontend** | "Not verified" | Live on GitHub Pages, active deploys | ✅ **Working and actively maintained** |
+| **Frontend** | "Not verified" | Live on Railway, active deploys | ✅ **Working and actively maintained** |
 | **Database** | "Not verified" | PostgreSQL + migrations + SCIN | ✅ **Production-ready** |
 | **CI/CD** | "Not verified" | 7/7 tests, 361 deploys, 58% coverage | ✅ **Functional and active** |
 | **ML Integration** | "Not verified" | PyTorch models, SCIN, product analysis | ✅ **Working in production** |

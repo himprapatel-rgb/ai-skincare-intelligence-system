@@ -128,7 +128,7 @@ So that I can make informed decisions about roadmap and commitments.
 3. ✅ Sprint velocity recalculated based on actual completed work
 4. ✅ Sprint burndown chart shows realistic progress
 5. ✅ New roadmap published with achievable milestones
-6. ✅ TRACEABILITY-MATRIX.md verified against actual code
+6. ✅ Traceability-Matrix.md verified against actual code
 
 #### Tasks
 - [ ] Review all 15 EPICs and update status
@@ -351,7 +351,7 @@ If health check or smoke tests fail:
 - [ ] Stakeholder presentation deck
 
 ### To Be Updated
-- [ ] TRACEABILITY-MATRIX.md
+- [ ] Traceability-Matrix.md
 - [ ] README.md (with realistic status)
 - [ ] DEPLOYMENT_STATUS.md
 - [ ] Product Tracker
@@ -389,8 +389,8 @@ If health check or smoke tests fail:
 ## 🔗 RELATED DOCUMENTS
 
 - [AUDIT-REPORT.md](./AUDIT-REPORT.md) - Full audit findings
-- [TRACEABILITY-MATRIX.md](./TRACEABILITY-MATRIX.md) - Requirements mapping
-- [Product-Backlog-V5.md](./Product-Backlog-V5.md) - All 650 user stories
+- [Traceability Matrix](../01-requirements/Traceability-Matrix.md) - Requirements mapping
+- [Product Backlog V5](../03-product/Product-Backlog-V5.md) - All 650 user stories
 - [DEPLOYMENT_STATUS.md](./DEPLOYMENT_STATUS.md) - Current deployment state
 
 ---

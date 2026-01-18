@@ -327,8 +327,8 @@ A story is **Done** when:
 ## Related Documents
 
 - [Product-Backlog-V5.md](./Product-Backlog-V5.md) - Main product backlog
-- [FRONTEND-SPRINT-PLAN.md](../FRONTEND-SPRINT-PLAN.md) - Sprint F2 (Face Scan)
-- [AI-Skincare-Intelligence-System-SRS-V5.3](../AI-Skincare-Intelligence-System-SRS-V5.3-EXTERNAL-PRETRAINED-ML.md) - System Requirements
+- [Frontend Sprint Plan](../07-sprints/sprint-f2/Frontend-Sprint-Plan.md) - Sprint F2 (Face Scan)
+- [SRS V5.3](../01-requirements/SRS-V5.3-External-Pretrained-ML.md) - System Requirements
 
 ---
 

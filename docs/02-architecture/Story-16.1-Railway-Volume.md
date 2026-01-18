@@ -319,8 +319,8 @@ Once Story 16.1 is complete:
 
 - [Railway Volumes Documentation](https://docs.railway.app/reference/volumes)
 - [Configuration Guide](./CONFIGURATION-GUIDE-EXTERNAL-ML-MODELS.md)
-- [SRS V5.3](./AI-Skincare-Intelligence-System-SRS-V5.3-EXTERNAL-PRETRAINED-ML.md)
-- [Product Backlog](./Product-Backlog-V5.md) - Story 16.1
+- [SRS V5.3](../01-requirements/SRS-V5.3-External-Pretrained-ML.md)
+- [Product Backlog](../03-product/Product-Backlog-V5.md) - Story 16.1
 
 ---
 

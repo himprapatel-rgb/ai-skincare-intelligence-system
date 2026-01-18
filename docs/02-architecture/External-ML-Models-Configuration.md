@@ -383,7 +383,7 @@ CORS_ALLOWED_ORIGINS=https://app.skincare-ai.com
 
 ## 🔗 References
 
-1. [SRS-V5.3-EXTERNAL-PRETRAINED-ML.md](./AI-Skincare-Intelligence-System-SRS-V5.3-EXTERNAL-PRETRAINED-ML.md)
+1. [SRS V5.3](../01-requirements/SRS-V5.3-External-Pretrained-ML.md)
 2. [API-IMPACT-ANALYSIS.md](./API-IMPACT-ANALYSIS.md)
 3. [ADR-ML-003-External-Model-Storage.md](./ADR-ML-003-External-Model-Storage.md)
 

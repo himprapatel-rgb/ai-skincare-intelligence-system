@@ -13,7 +13,7 @@ This document describes the production ML inference pipeline for the AI Skincare
 ```
 ┌─────────────────┐
 │  Frontend       │
-│ (GitHub Pages)  │
+│ (Railway)       │
 └────────┬────────┘
          │ HTTPS
          ▼

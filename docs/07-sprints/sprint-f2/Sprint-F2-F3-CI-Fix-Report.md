@@ -163,7 +163,7 @@ You have an error in your yaml syntax on line 52
 
 ## Sprint F3 Foundation (In Progress)
 
-### 📋 Planned Features (Per FRONTEND-SPRINT-PLAN.md)
+### 📋 Planned Features (Per Frontend-Sprint-Plan.md)
 
 **F3.1 - Digital Twin Progress Visualization**
 - 3D skin model progress tracking

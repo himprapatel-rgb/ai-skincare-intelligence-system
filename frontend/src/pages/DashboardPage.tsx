@@ -64,7 +64,7 @@ const DashboardPage: React.FC = () => {
       </div>
 
       <div className="dashboard-stats">
-        <div className="stat-card primary" onClick={() => navigate('/history')}>
+        <button type="button" className="stat-card primary" onClick={() => navigate('/history')}>
           <div className="stat-icon">📈</div>
           <div className="stat-content">
             <h3>{data.skinScore}%</h3>
@@ -74,31 +74,31 @@ const DashboardPage: React.FC = () => {
                data.skinTrend === 'declining' ? '↓ Declining' : '→ Stable'}
             </span>
           </div>
-        </div>
+        </button>
 
-        <div className="stat-card" onClick={() => navigate('/history')}>
+        <button type="button" className="stat-card" onClick={() => navigate('/history')}>
           <div className="stat-icon">📷</div>
           <div className="stat-content">
             <h3>{data.recentScans}</h3>
             <p>Total Scans</p>
           </div>
-        </div>
+        </button>
 
-        <div className="stat-card" onClick={() => navigate('/myshelf')}>
+        <button type="button" className="stat-card" onClick={() => navigate('/myshelf')}>
           <div className="stat-icon">🧴</div>
           <div className="stat-content">
             <h3>{data.productsInShelf}</h3>
             <p>Products in Shelf</p>
           </div>
-        </div>
+        </button>
 
-        <div className="stat-card" onClick={() => navigate('/routine-builder')}>
+        <button type="button" className="stat-card" onClick={() => navigate('/routine-builder')}>
           <div className="stat-icon">✨</div>
           <div className="stat-content">
             <h3>{data.activeRoutines}</h3>
             <p>Active Routines</p>
           </div>
-        </div>
+        </button>
       </div>
 
       <div className="dashboard-content">

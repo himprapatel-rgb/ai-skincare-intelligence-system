@@ -175,16 +175,27 @@ const MyShelfPage: React.FC = () => {
         <div className="products-grid">
           {filteredProducts.map(product => (
             <div key={product.id} className="product-card">
-              <div className="product-image" onClick={() => handleProductClick(product.id)}>
+              <button
+                type="button"
+                className="product-image-button"
+                onClick={() => handleProductClick(product.id)}
+                aria-label={`Open ${product.name}`}
+              >
                 {product.imageUrl ? (
                   <img src={product.imageUrl} alt={product.name} />
                 ) : (
                   <div className="placeholder-image">No Image</div>
                 )}
-              </div>
+              </button>
               
               <div className="product-info">
-                <h3 onClick={() => handleProductClick(product.id)}>{product.name}</h3>
+                <button
+                  type="button"
+                  className="product-title-button"
+                  onClick={() => handleProductClick(product.id)}
+                >
+                  {product.name}
+                </button>
                 <p className="brand">{product.brand}</p>
                 <p className="category">{product.category}</p>
                 

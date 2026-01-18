@@ -22,6 +22,8 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
             <Link className={`app-nav-link${location.pathname.startsWith('/scan') ? ' active' : ''}`} to="/scan">Analysis</Link>
             <Link className={`app-nav-link${location.pathname.startsWith('/dashboard') ? ' active' : ''}`} to="/dashboard">Dashboard</Link>
             <Link className={`app-nav-link${location.pathname.startsWith('/about') ? ' active' : ''}`} to="/about">About</Link>
+            <Link className={`app-nav-link${location.pathname.startsWith('/auth') ? ' active' : ''}`} to="/auth">Login</Link>
+            <Link className="app-nav-link" to="/auth">Register</Link>
             <Link className="app-nav-cta" to="/scan">Start Free Scan</Link>
           </nav>
         </div>
@@ -43,6 +45,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
               <Link to="/scan">Skin Analysis</Link>
               <Link to="/dashboard">Dashboard</Link>
               <Link to="/history">History</Link>
+              <Link to="/auth">Login / Register</Link>
             </div>
             <div>
               <h4>Company</h4>

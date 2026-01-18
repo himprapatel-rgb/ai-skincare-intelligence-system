@@ -7,34 +7,6 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="homepage">
-      {/* Navigation Header */}
-      <nav className="navbar">
-        <div className="nav-container">
-          <div className="logo">
-            <span className="logo-icon">
-              <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                <circle cx="16" cy="16" r="14" fill="url(#grad1)" />
-                <circle cx="16" cy="16" r="3" fill="white" />
-                <defs>
-                  <linearGradient id="grad1" x1="0" y1="0" x2="32" y2="32">
-                    <stop offset="0%" stopColor="#089182" />
-                    <stop offset="100%" stopColor="#06B6D4" />
-                  </linearGradient>
-                </defs>
-              </svg>
-            </span>
-            <span className="logo-text">SkinCare<span className="logo-highlight">AI</span></span>
-          </div>
-          <div className="nav-links">
-            <Link to="/" className="nav-link active">Home</Link>
-            <Link to="/scan" className="nav-link">Analysis</Link>
-            <Link to="/dashboard" className="nav-link">Dashboard</Link>
-            <Link to="/about" className="nav-link">About</Link>
-            <Link to="/scan" className="nav-btn-primary">Start Free Scan</Link>
-          </div>
-        </div>
-      </nav>
-
       {/* Hero Section - Updated with safer claims */}
       <section className="hero">
         <div className="hero-content">
@@ -228,39 +200,6 @@ const HomePage: React.FC = () => {
           </p>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="footer">
-        <div className="footer-content">
-          <div className="footer-brand">
-            <span className="logo-text">SkinCare<span className="logo-highlight">AI</span></span>
-            <p>AI-powered skin analysis for everyone</p>
-          </div>
-          <div className="footer-links">
-            <div className="footer-col">
-              <h4>Product</h4>
-              <Link to="/scan">Skin Analysis</Link>
-              <Link to="/dashboard">Dashboard</Link>
-              <Link to="/history">History</Link>
-            </div>
-            <div className="footer-col">
-              <h4>Company</h4>
-              <Link to="/about">About Us</Link>
-              <Link to="/contact">Contact</Link>
-            </div>
-            <div className="footer-col">
-              <h4>Legal</h4>
-              <Link to="/privacy">Privacy Policy</Link>
-              <Link to="/terms">Terms of Service</Link>
-              <Link to="/privacy#delete">Delete My Data</Link>
-            </div>
-          </div>
-        </div>
-        <div className="footer-bottom">
-          <p>&copy; 2025 SkinCareAI. All rights reserved.</p>
-          <p className="disclaimer">Not a medical device. Not intended to diagnose, treat, or prevent any condition. For informational purposes only.</p>
-        </div>
-      </footer>
 
         {/* Mobile Sticky CTA */}
         <div className="mobile-sticky-cta">

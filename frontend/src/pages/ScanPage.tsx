@@ -67,13 +67,6 @@ export default function ScanPage() {
 
   return (
     <div className="onskin-page">
-      <header className="onskin-header">
-        <div className="onskin-container">
-          <Link to="/" className="onskin-logo">SkinCareAI</Link>
-          <Link to="/" className="onskin-back">← Back</Link>
-        </div>
-      </header>
-
       <main className="onskin-container onskin-main">
         <div className="onskin-content">
           <h1 className="onskin-title">Face Scan Analysis</h1>

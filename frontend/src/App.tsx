@@ -1,6 +1,7 @@
 // src/App.tsx - Premium GUI v3 - Complete Frontend
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
+import AppLayout from "./components/AppLayout";
 
 // Page Imports - Epic 1: Core Authentication
 import { AuthPage } from "./pages/AuthPage";
@@ -40,7 +41,8 @@ export default function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <Routes>
+        <AppLayout>
+          <Routes>
           {/* Public Routes */}
           <Route path="/" element={<HomePage />} />
           <Route path="/auth" element={<AuthPage />} />
@@ -77,7 +79,8 @@ export default function App() {
           
           {/* Fallback */}
           <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+          </Routes>
+        </AppLayout>
       </BrowserRouter>
     </AuthProvider>
   );

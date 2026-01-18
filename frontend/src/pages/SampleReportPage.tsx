@@ -5,13 +5,6 @@ import './SampleReportPage.css';
 const SampleReportPage: React.FC = () => {
   return (
     <div className="sample-report-page">
-      <header className="sample-report-header">
-        <div className="sample-report-container">
-          <Link to="/" className="sample-report-logo">SkinCareAI</Link>
-          <Link to="/" className="sample-report-back">← Back to Home</Link>
-        </div>
-      </header>
-
       <main className="sample-report-container sample-report-main">
         <section className="sample-report-hero">
           <h1>Sample Skin Analysis Report</h1>

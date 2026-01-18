@@ -40,7 +40,7 @@ const HomePage: React.FC = () => {
         <div className="hero-content">
           <div className="hero-badge">
             <span className="badge-icon">&#128161;</span>
-            AI-Powered Skin Insights
+            Premium Skin Intelligence
           </div>
           <h1 className="hero-title">
             AI Skin Analysis<br />

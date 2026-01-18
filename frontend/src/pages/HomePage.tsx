@@ -189,6 +189,26 @@ const HomePage: React.FC = () => {
               <p>Photos are processed securely and can be deleted anytime from your account or automatically after analysis.</p>
             </div>
             <div className="faq-item">
+                        <div className="faq-item">
+            <h4>Is this free to use?</h4>
+            <p>Yes! Basic skin analysis scans are completely free with no signup required. Advanced features like progress tracking require a free account.</p>
+          </div>
+          <div className="faq-item">
+            <h4>What skin types are supported?</h4>
+            <p>Our AI works with all skin types and tones. However, accuracy improves with clear, well-lit photos and front-facing angles.</p>
+          </div>
+          <div className="faq-item">
+            <h4>How long does analysis take?</h4>
+            <p>Most scans complete in 20-40 seconds. Complex images may take up to 60 seconds depending on server load.</p>
+          </div>
+          <div className="faq-item">
+            <h4>Can I use this for medical purposes?</h4>
+            <p>No. This is an informational tool only and should never replace professional medical advice from a qualified dermatologist or healthcare provider.</p>
+          </div>
+          <div className="faq-item">
+            <h4>Do you sell my data?</h4>
+            <p>Never. We do not sell, share, or monetize your personal data or photos. Your privacy is our priority.</p>
+          </div>
               <h4>What affects accuracy?</h4>
               <p>Lighting, camera quality, image clarity, and whether makeup is present can all affect the analysis results.</p>
             </div>

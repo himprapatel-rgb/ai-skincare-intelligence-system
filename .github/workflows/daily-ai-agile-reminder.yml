@@ -18,13 +18,15 @@ jobs:
           script: |
             await (async () => {
               const title = 'Daily: Update AI Agile Workflow trackers';
-              const body = `This is an automated reminder to follow /docs/AI_AGILE_WORKFLOW.md and update the following if needed:
-
-- \`/docs/PROJECT_PROGRESS_TRACKER.md\`
-- \`/docs/sprint-X.Y.md\`
-- Ensure tests exist/updated for changed code
-
-If you've already updated today, close this issue. This reminder is part of the team's daily update rule.`;
+              const body = [
+                'This is an automated reminder to follow /docs/AI_AGILE_WORKFLOW.md and update the following if needed:',
+                '',
+                '- /docs/PROJECT_PROGRESS_TRACKER.md',
+                '- /docs/sprint-X.Y.md',
+                '- Ensure tests exist/updated for changed code',
+                '',
+                'If you\\'ve already updated today, close this issue. This reminder is part of the team\\'s daily update rule.'
+              ].join('\\n');
 
               const { owner, repo } = context.repo;
 

@@ -1091,3 +1091,149 @@
   animation: none;
 }
 
+
+
+/* =============================================
+   HORIZONTAL TIMELINE LAYOUT - HOW IT WORKS
+   Industry-standard horizontal process flow
+============================================= */
+
+/* Override grid to create horizontal timeline */
+.steps-grid {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: center;
+  gap: 0;
+  position: relative;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Horizontal step cards */
+.step-card {
+  flex: 1;
+  min-width: 280px;
+  max-width: 380px;
+  position: relative;
+  margin: 0;
+}
+
+/* Add connecting timeline line */
+.step-card:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 32px;
+  right: -2px;
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+  z-index: 1;
+  box-shadow: 0 2px 8px rgba(13, 148, 136, 0.3);
+}
+
+/* Arrow head for timeline */
+.step-card:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  top: 24px;
+  right: -10px;
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-left: 12px solid var(--accent);
+  z-index: 2;
+  filter: drop-shadow(2px 0 4px rgba(13, 148, 136, 0.3));
+}
+
+/* Reposition step numbers to top center */
+.step-number {
+  position: relative;
+  top: -20px;
+  margin-bottom: 8px;
+}
+
+/* Adjust spacing for horizontal layout */
+.step-icon {
+  margin-bottom: 16px;
+}
+
+.step-title {
+  margin-bottom: 10px;
+}
+
+/* Tablet horizontal layout */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .steps-grid {
+    flex-direction: row;
+    gap: 0;
+  }
+  
+  .step-card {
+    min-width: 240px;
+  }
+  
+  .step-card:not(:last-child)::after {
+    width: 40px;
+  }
+  
+  .step-card:not(:last-child)::before {
+    right: -8px;
+  }
+}
+
+/* Mobile: Keep vertical for small screens */
+@media (max-width: 768px) {
+  .steps-grid {
+    flex-direction: column;
+    gap: 32px;
+  }
+  
+  .step-card:not(:last-child)::after {
+    display: none;
+  }
+  
+  .step-card:not(:last-child)::before {
+    display: none;
+  }
+  
+  .step-number {
+    top: 0;
+    margin-bottom: 24px;
+  }
+}
+
+/* Add subtle pulsing animation to arrows */
+@keyframes arrowPulse {
+  0%, 100% {
+    opacity: 0.8;
+    transform: translateX(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(3px);
+  }
+}
+
+.step-card:not(:last-child)::before {
+  animation: arrowPulse 2s ease-in-out infinite;
+}
+
+/* Enhanced hover for horizontal layout */
+.step-card:hover {
+  z-index: 10;
+}
+
+.step-card:hover:not(:last-child)::after {
+  background: linear-gradient(90deg, var(--accent) 0%, var(--success) 100%);
+  height: 5px;
+  box-shadow: 0 3px 12px rgba(13, 148, 136, 0.5);
+}
+
+.step-card:hover:not(:last-child)::before {
+  border-left-color: var(--success);
+  animation: none;
+  transform: translateX(3px);
+}

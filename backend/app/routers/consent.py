@@ -28,13 +28,13 @@ def _get_default_policies():
     """Return default policies when database policies don't exist."""
     return PolicyResponse(
         terms_of_service={
-            "version": "1.0.0",
+            "version": "terms-1.0.0",
             "effective_date": datetime(2025, 1, 1).isoformat(),
             "content_url": "/terms",
             "summary": "Terms of Service - Version 1.0.0"
         },
         privacy_policy={
-            "version": "1.0.0",
+            "version": "privacy-1.0.0",
             "effective_date": datetime(2025, 1, 1).isoformat(),
             "content_url": "/privacy",
             "summary": "Privacy Policy - Version 1.0.0"

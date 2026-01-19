@@ -12,7 +12,7 @@ from app.api.v1.routines import router as routines_router
 from app.config import settings
 from app.database import Base, SessionLocal, engine
 from app.core.security import encrypt_sensitive_data
-from sqlalchemy.exc import ProgrammingError
+from sqlalchemy.exc import IntegrityError, ProgrammingError
 
 from app.models.user import PolicyVersion, User, UserConsent, UserProfile
 from app.models.twin_models import *  # Import Digital Twin models for table creation# Create database tables if needed (safe for local dev)
@@ -90,7 +90,7 @@ def ensure_test_user() -> None:
             if not terms:
                 terms = PolicyVersion(
                     policy_type="terms_of_service",
-                    version="1.0.0",
+                    version="terms-1.0.0",
                     effective_date=datetime(2025, 1, 1),
                     content_url="/terms",
                     summary="Terms of Service - Version 1.0.0",
@@ -101,7 +101,7 @@ def ensure_test_user() -> None:
             if not privacy:
                 privacy = PolicyVersion(
                     policy_type="privacy_policy",
-                    version="1.0.0",
+                    version="privacy-1.0.0",
                     effective_date=datetime(2025, 1, 1),
                     content_url="/privacy",
                     summary="Privacy Policy - Version 1.0.0",
@@ -110,7 +110,11 @@ def ensure_test_user() -> None:
                 db.add(privacy)
                 policies_changed = True
             if policies_changed:
-                db.commit()
+                try:
+                    db.commit()
+                except IntegrityError:
+                    db.rollback()
+                    logger.warning("Policy versions already seeded; skipping insert.")
         except ProgrammingError:
             db.rollback()
             logger.warning("Policy tables not available yet; skipping seed.")

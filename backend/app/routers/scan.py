@@ -12,10 +12,12 @@ from datetime import datetime
 import os
 import uuid
 import json
+import logging
 
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, status
 from sqlalchemy.orm import Session
 
+from app.config import settings
 from app.database import get_db
 from app.models import User, ScanSession, SkinAnalysis
 from app.schemas.scan_schemas import (
@@ -27,8 +29,14 @@ from app.schemas.scan_schemas import (
     ScanHistoryResponse,
 )
 from app.core.security import get_current_user
+from services.youcam_service import (
+    get_youcam_client,
+    get_default_skin_analysis_actions,
+    YouCamError,
+)
 
 router = APIRouter(prefix="/api/v1/scan", tags=["Face Scan"])
+logger = logging.getLogger(__name__)
 
 ALLOWED_IMAGE_TYPES = {"image/jpeg", "image/png", "image/webp"}
 MAX_IMAGE_SIZE = 5 * 1024 * 1024  # 5 MB
@@ -218,14 +226,48 @@ async def upload_scan_image(
         image_path=image_path,
     )
     
-    # Run mock analysis synchronously (TODO: move to background worker)
+    # Run analysis synchronously (TODO: move to background worker)
     try:
-        mock_results = _run_mock_analysis(scan)
+        if settings.YOUCAM_API_KEY:
+            with open(image_path, "rb") as image_file:
+                image_bytes = image_file.read()
+
+            youcam_client = get_youcam_client()
+            youcam_result = await youcam_client.run_skin_analysis(
+                image_bytes=image_bytes,
+                filename=file.filename or os.path.basename(image_path),
+                content_type=file.content_type or "image/jpeg",
+                dst_actions=get_default_skin_analysis_actions(),
+                response_format=settings.YOUCAM_SKIN_ANALYSIS_FORMAT,
+                poll_interval_seconds=settings.YOUCAM_POLL_INTERVAL_SECONDS,
+                max_wait_seconds=settings.YOUCAM_MAX_POLL_SECONDS,
+            )
+            analysis_result = {
+                "scan_id": scan.id,
+                "status": "completed",
+                "provider": "youcam",
+                "youcam": youcam_result,
+                "generated_at": datetime.utcnow().isoformat(),
+            }
+        else:
+            analysis_result = _run_mock_analysis(scan)
+
         scan = _update_scan_status(
             db=db,
             scan=scan,
             status_value="completed",
-            result=mock_results,
+            result=analysis_result,
+        )
+    except YouCamError as exc:
+        logger.warning("YouCam API failure: %s", exc)
+        scan = _update_scan_status(
+            db=db,
+            scan=scan,
+            status_value="failed",
+        )
+        raise HTTPException(
+            status_code=status.HTTP_502_BAD_GATEWAY,
+            detail=f"YouCam API error: {exc}",
         )
     except Exception:
         scan = _update_scan_status(
@@ -241,7 +283,8 @@ async def upload_scan_image(
     return ScanUploadResponse(
         scan_id=scan.id,
         status=scan.status,
-        image_path=scan.image_path,
+        image_url=scan.image_path,
+        message="Image uploaded successfully. Processing completed.",
     )
 
 

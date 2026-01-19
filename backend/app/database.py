@@ -7,9 +7,21 @@ from sqlalchemy.orm import sessionmaker, DeclarativeBase
 from app.config import settings
 
 # Create database engine
-engine = create_engine(
-    settings.DATABASE_URL, pool_pre_ping=True, pool_size=10, max_overflow=20
-)
+if not settings.DATABASE_URL:
+    raise ValueError("DATABASE_URL is not configured.")
+
+if settings.DATABASE_URL.startswith("sqlite"):
+    engine = create_engine(
+        settings.DATABASE_URL,
+        connect_args={"check_same_thread": False},
+    )
+else:
+    engine = create_engine(
+        settings.DATABASE_URL,
+        pool_pre_ping=True,
+        pool_size=10,
+        max_overflow=20,
+    )
 
 # Create session factory
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

@@ -48,6 +48,46 @@ class Settings(BaseSettings):
         description="Optional base URL for GPTGPT API (overrides built-in default)",
     )
 
+    # YouCam API settings
+    YOUCAM_API_BASE: str = Field(
+        default="https://yce-api-01.makeupar.com",
+        description="Base URL for YouCam API",
+    )
+    YOUCAM_API_KEY: str | None = Field(
+        default=None, description="YouCam API key"
+    )
+    YOUCAM_TIMEOUT_SECONDS: int = Field(
+        default=30, description="YouCam API timeout in seconds"
+    )
+    YOUCAM_POLL_INTERVAL_SECONDS: int = Field(
+        default=2, description="YouCam polling interval in seconds"
+    )
+    YOUCAM_MAX_POLL_SECONDS: int = Field(
+        default=120, description="YouCam max polling wait in seconds"
+    )
+    YOUCAM_SKIN_ANALYSIS_FORMAT: str = Field(
+        default="json", description="YouCam skin analysis response format"
+    )
+    YOUCAM_SKIN_ANALYSIS_ACTIONS: str = Field(
+        default="wrinkle,pore,texture,acne",
+        description="Comma-separated YouCam skin analysis actions",
+    )
+
+    # Skinive API settings
+    SKINIVE_API_BASE: str = Field(
+        default="https://api.skiniver.com",
+        description="Base URL for Skinive API",
+    )
+    SKINIVE_API_TOKEN: str | None = Field(
+        default=None, description="Skinive API token"
+    )
+    SKINIVE_LOCALE: str = Field(
+        default="en", description="Skinive response locale"
+    )
+    SKINIVE_TIMEOUT_SECONDS: int = Field(
+        default=30, description="Skinive API timeout in seconds"
+    )
+
     # Summary endpoint protection token (for internal summary endpoint)
     SUMMARY_TOKEN: str | None = Field(
         default=None,

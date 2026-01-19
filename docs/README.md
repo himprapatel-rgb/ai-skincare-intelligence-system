@@ -48,6 +48,7 @@
 ├── /07-sprints      Sprint summaries & folders
 ├── /08-audits       Audit reports
 ├── /09-reports      Progress and completion reports
+├── /11-working      Working notes during implementation
 └── /99-archive      Legacy & historical docs
 ```
 

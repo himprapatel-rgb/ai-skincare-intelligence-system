@@ -3,16 +3,29 @@ import os
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
+from sqlalchemy.ext.compiler import compiles
+from sqlalchemy.dialects.postgresql import ARRAY, JSONB
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
 from app.database import Base
 from app.main import app
 from app.dependencies import get_db
+from app.database import get_db as app_db_get_db
 
 # Use DATABASE_URL from environment if available (PostgreSQL in CI),
 # otherwise fall back to SQLite for local testing
 SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///:memory:")
+
+
+@compiles(JSONB, "sqlite")
+def _compile_jsonb_sqlite(_type, _compiler, **_kwargs):
+    return "JSON"
+
+
+@compiles(ARRAY, "sqlite")
+def _compile_array_sqlite(_type, _compiler, **_kwargs):
+    return "JSON"
 
 # Configure engine based on database type
 if SQLALCHEMY_DATABASE_URL.startswith("sqlite"):
@@ -34,6 +47,7 @@ TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engin
 @pytest.fixture
 def test_db():
     """Create test database and tables"""
+    import app.models  # noqa: F401
     Base.metadata.create_all(bind=engine)
     db = TestingSessionLocal()
     try:
@@ -53,6 +67,7 @@ def client(test_db):
             pass
     
     app.dependency_overrides[get_db] = override_get_db
+    app.dependency_overrides[app_db_get_db] = override_get_db
     with TestClient(app) as test_client:
         yield test_client
     app.dependency_overrides.clear()

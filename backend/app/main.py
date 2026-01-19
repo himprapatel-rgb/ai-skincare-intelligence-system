@@ -40,6 +40,15 @@ app.add_middleware(
 @app.on_event("startup")
 def ensure_test_user() -> None:
     """Create a static test user and full profile if missing."""
+    try:
+        User.__table__.create(bind=engine, checkfirst=True)
+        PolicyVersion.__table__.create(bind=engine, checkfirst=True)
+        UserProfile.__table__.create(bind=engine, checkfirst=True)
+        UserConsent.__table__.create(bind=engine, checkfirst=True)
+    except ProgrammingError:
+        logger.warning("Unable to create auth tables; skipping seed.")
+        return
+
     db = SessionLocal()
     try:
         email = "dhimanshu@example.com"

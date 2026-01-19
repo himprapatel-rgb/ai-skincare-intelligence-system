@@ -3,6 +3,10 @@
 This list is a starting point for third-party skin analysis capabilities.
 It does not imply endorsement and should be validated with trials.
 
+## Decision
+
+- Selected for MVP pilot: Skinive (pending contract, SLA, and pricing).
+
 ## Category A: Skincare-specific vendors (best fit for app promises)
 
 Examples:

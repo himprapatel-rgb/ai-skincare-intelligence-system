@@ -1,11 +1,22 @@
-/* ===============================================
-   ROUTINE BUILDER PAGE - IMPROVED CSS
-   =============================================== */
+/* Routine Builder Page - Brand-Aligned Design */
+
+:root {
+  --primary: #0D9488;
+  --primary-dark: #0f766e;
+  --secondary: #F97316;
+  --bg-light: #F8FAFC;
+  --bg-white: #FFFFFF;
+  --text-dark: #1E293B;
+  --text-gray: #4b5b76;
+  --border: #E2E8F0;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
 
 .routine-builder-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f0fdfa 0%, #e0f2fe 50%, #f0fdf4 100%);
+  background: var(--bg-light);
   padding: 40px 24px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 .routine-builder-container {
@@ -15,18 +26,21 @@
 
 /* Page Header */
 .routine-builder-page h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #1a1a2e;
+  font-size: 3rem; /* Brand guideline: 48px / 3rem for H1 */
+  font-weight: 700; /* Brand guideline: Bold */
+  color: var(--text-dark); /* Deep Navy */
   text-align: center;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
+  line-height: 1.2;
+  letter-spacing: -0.5px;
 }
 
 .routine-builder-page > p {
-  font-size: 1.1rem;
-  color: #6b7280;
+  font-size: 1.125rem; /* Brand guideline: 18px Body Large */
+  color: var(--text-gray);
   text-align: center;
-  margin-bottom: 32px;
+  margin-bottom: 48px;
+  line-height: 1.6;
 }
 
 /* Routine Type Toggle */
@@ -35,10 +49,11 @@
   justify-content: center;
   gap: 8px;
   margin-bottom: 32px;
-  background: #fff;
+  background: var(--bg-white);
   padding: 6px;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border-radius: 8px; /* Brand guideline: 8px */
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
   width: fit-content;
   margin-left: auto;
   margin-right: auto;
@@ -46,39 +61,39 @@
 
 .routine-toggle button,
 .routine-toggle label {
-  padding: 12px 28px;
+  padding: 12px 24px; /* Brand guideline: 12px 24px */
   border: none;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  font-weight: 600;
+  border-radius: 8px; /* Brand guideline: 8px */
+  font-size: 1rem; /* Brand guideline: 16px Body */
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   gap: 8px;
   background: transparent;
-  color: #6b7280;
+  color: var(--text-gray);
 }
 
 .routine-toggle button.active,
 .routine-toggle input:checked + label {
-  background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+  background: var(--primary); /* Brand teal */
   color: white;
-  box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
+  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.2);
 }
 
 .routine-toggle button:not(.active):hover {
-  background: #f3f4f6;
-  color: #1a1a2e;
+  background: var(--bg-light);
+  color: var(--primary);
 }
 
 /* Main Routine Builder Card */
 .routine-builder {
-  background: #fff;
-  border-radius: 20px;
+  background: var(--bg-white);
+  border-radius: 12px; /* Brand guideline: 12px for cards */
   padding: 32px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  border: 1px solid #e5e7eb;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
 }
 
 /* Steps Container */
@@ -90,314 +105,608 @@
 
 /* Individual Step Card */
 .routine-step {
-  background: #f9fafb;
-  border-radius: 16px;
+  background: var(--bg-light);
+  border-radius: 12px; /* Brand guideline: 12px for cards */
   padding: 20px 24px;
-  border: 2px solid #e5e7eb;
+  border: 2px solid var(--border);
   transition: all 0.3s ease;
   display: grid;
   grid-template-columns: 50px 1fr auto;
   align-items: center;
-  gap: 20px;
+  gap: 16px;
 }
 
 .routine-step:hover {
-  border-color: #14b8a6;
-  box-shadow: 0 4px 16px rgba(20, 184, 166, 0.1);
-  transform: translateY(-2px);
+  border-color: var(--primary);
+  transform: translateX(4px);
 }
 
-/* Step Number Badge */
 .step-number {
-  width: 44px;
-  height: 44px;
-  background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--primary);
   color: white;
-  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
   font-weight: 700;
+  font-size: 1.125rem;
   flex-shrink: 0;
 }
 
-/* Step Content */
 .step-content {
+  flex: 1;
+}
+
+.step-content h3 {
+  font-size: 1.125rem; /* Brand guideline: 18px Body Large */
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 8px;
+}
+
+.step-content p {
+  font-size: 0.95rem;
+  color: var(--text-gray);
+  margin: 0;
+  line-height: 1.6;
+}
+
+.step-actions {
   display: flex;
-  flex-direction: column;
   gap: 8px;
 }
 
-.step-category {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.step-category label {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #9ca3af;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.step-category select,
-.routine-step select {
-  padding: 10px 16px;
-  border: 2px solid #e5e7eb;
-  border-radius: 10px;
-  font-size: 0.95rem;
-  color: #1a1a2e;
-  background: #fff;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  min-width: 150px;
+.btn-step {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
   font-weight: 500;
-}
-
-.step-category select:hover,
-.step-category select:focus,
-.routine-step select:hover,
-.routine-step select:focus {
-  border-color: #14b8a6;
-  outline: none;
-}
-
-.step-product,
-.product-name {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #1a1a2e;
-}
-
-/* Buttons */
-.btn-change,
-.btn-select,
-.routine-step button {
-  padding: 10px 20px;
-  border: 2px solid #14b8a6;
-  border-radius: 10px;
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-size: 0.875rem;
   cursor: pointer;
   transition: all 0.2s ease;
-  background: transparent;
-  color: #14b8a6;
 }
 
-.btn-change:hover,
-.btn-select:hover,
-.routine-step button:hover {
-  background: #14b8a6;
+.btn-step-primary {
+  background: var(--primary);
   color: white;
 }
 
-/* Step Actions (reorder & delete) */
-.step-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.btn-step-primary:hover {
+  background: var(--primary-dark);
 }
 
-.btn-reorder,
-.reorder-btn {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  background: #f3f4f6;
-  border: none;
-  border-radius: 8px;
-  padding: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  color: #6b7280;
+.btn-step-secondary {
+  background: transparent;
+  color: var(--primary);
+  border: 2px solid var(--primary);
 }
 
-.btn-reorder:hover,
-.reorder-btn:hover {
-  background: #e5e7eb;
-  color: #1a1a2e;
-}
-
-.btn-delete,
-.delete-btn,
-.routine-step button[class*="delete"],
-.routine-step button:last-child {
-  width: 36px;
-  height: 36px;
-  background: #fef2f2 !important;
-  border: none !important;
-  border-radius: 8px;
-  color: var(--danger) !important;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-}
-
-.btn-delete:hover,
-.delete-btn:hover {
-  background: var(--danger) !important;
-  color: white !important;
+.btn-step-secondary:hover {
+  background: rgba(13, 148, 136, 0.05);
 }
 
 /* Add Step Button */
-.btn-add-step,
-.add-step-btn,
-button[class*="add"] {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
+.btn-add-step {
+  width: 100%;
   padding: 16px;
-  background: #f9fafb;
-  border: 2px dashed #d1d5db;
-  border-radius: 12px;
-  color: #6b7280;
-  font-size: 1rem;
+  background: var(--bg-light);
+  border: 2px dashed var(--border);
+  border-radius: 8px;
+  color: var(--primary);
   font-weight: 600;
+  font-size: 1rem;
   cursor: pointer;
   transition: all 0.2s ease;
   margin-top: 16px;
+}
+
+.btn-add-step:hover {
+  background: rgba(13, 148, 136, 0.05);
+  border-color: var(--primary);
+  transform: translateY(-2px);
+}
+
+/* Save Button */
+.btn-save-routine {
   width: 100%;
-}
-
-.btn-add-step:hover,
-.add-step-btn:hover {
-  border-color: #14b8a6;
-  color: #14b8a6;
-  background: #f0fdfa;
-}
-
-/* Skincare Tips Section */
-.skincare-tips {
-  background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%);
-  border-radius: 16px;
-  padding: 24px;
+  padding: 16px 32px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.2);
   margin-top: 32px;
-  border: 1px solid #99f6e4;
 }
 
-.skincare-tips h3,
-.skincare-tips h2 {
-  font-size: 1.25rem;
+.btn-save-routine:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(13, 148, 136, 0.3);
+}
+
+/* Routine Header */
+.routine-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.routine-header h1 {
+  font-size: 3rem;
   font-weight: 700;
-  color: #0d9488;
-  margin-bottom: 16px;
+  color: var(--text-dark);
+  margin-bottom: 12px;
+}
+
+.routine-header p {
+  font-size: 1.125rem;
+  color: var(--text-gray);
+}
+
+/* Time Selector */
+.time-selector {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.time-btn {
+  padding: 12px 24px;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-white);
+  color: var(--text-gray);
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
   display: flex;
   align-items: center;
+}
+
+.time-btn.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.time-btn:not(.active):hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* Routine Suggestions */
+.routine-suggestions {
+  margin-bottom: 24px;
+}
+
+.suggestion-card {
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: var(--shadow);
+}
+
+.suggestion-card svg {
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.suggestion-content {
+  flex: 1;
+}
+
+.suggestion-content h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 4px;
+}
+
+.suggestion-content p {
+  font-size: 0.875rem;
+  color: var(--text-gray);
+  margin: 0;
+}
+
+.btn-suggest {
+  padding: 8px 16px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-suggest:hover {
+  background: var(--primary-dark);
+}
+
+/* Step Card */
+.step-card {
+  background: var(--bg-white);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 50px 1fr auto;
+  gap: 16px;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.step-card:hover {
+  border-color: var(--primary);
+  box-shadow: var(--shadow);
+}
+
+.step-field {
+  display: flex;
+  flex-direction: column;
   gap: 8px;
 }
 
-.skincare-tips ul {
+.step-field label {
+  font-weight: 500;
+  color: var(--text-dark);
+  font-size: 0.875rem;
+}
+
+.step-field select {
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-light);
+  color: var(--text-dark);
+  font-size: 1rem;
+}
+
+.step-field select:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: var(--bg-white);
+}
+
+.selected-product {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: var(--bg-light);
+  border-radius: 8px;
+}
+
+.btn-link {
+  background: none;
+  border: none;
+  color: var(--primary);
+  cursor: pointer;
+  font-weight: 500;
+  text-decoration: underline;
+}
+
+.btn-icon-action {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px;
+  cursor: pointer;
+  color: var(--text-gray);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-icon-action:hover {
+  background: var(--bg-light);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.btn-icon-action:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-icon-action.btn-remove:hover {
+  background: rgba(220, 38, 38, 0.1);
+  border-color: #dc2626;
+  color: #dc2626;
+}
+
+/* Routine Tips */
+.routine-tips {
+  background: var(--bg-white);
+  border-radius: 12px;
+  padding: 24px;
+  margin: 32px 0;
+  border: 1px solid var(--border);
+}
+
+.routine-tips h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 16px;
+}
+
+.routine-tips ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.skincare-tips li {
+.routine-tips li {
   padding: 8px 0;
-  padding-left: 24px;
+  color: var(--text-gray);
   position: relative;
-  color: #115e59;
-  font-size: 0.95rem;
-  line-height: 1.6;
+  padding-left: 24px;
 }
 
-.skincare-tips li::before {
-  content: "✓";
+.routine-tips li::before {
+  content: "•";
   position: absolute;
   left: 0;
-  color: #14b8a6;
+  color: var(--primary);
   font-weight: 700;
 }
 
-/* Action Buttons */
-.routine-actions {
-  display: flex;
-  gap: 16px;
-  margin-top: 32px;
-  justify-content: center;
-  flex-wrap: wrap;
+/* Routine Reminders */
+.routine-reminders {
+  background: var(--bg-white);
+  border-radius: 12px;
+  padding: 24px;
+  margin: 32px 0;
+  border: 1px solid var(--border);
 }
 
-.btn-view-shelf,
-.routine-actions button:first-child {
-  padding: 14px 32px;
-  background: #fff;
-  border: 2px solid #14b8a6;
-  border-radius: 12px;
-  color: #14b8a6;
-  font-size: 1rem;
+.reminder-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.reminder-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.reminder-title h3 {
+  font-size: 1.25rem;
   font-weight: 600;
+  color: var(--text-dark);
+  margin: 0;
+}
+
+.reminder-title svg {
+  color: var(--primary);
+}
+
+.btn-toggle {
+  padding: 8px 16px;
+  background: var(--bg-light);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-dark);
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
-.btn-view-shelf:hover {
-  background: #f0fdfa;
-}
-
-.btn-save-routine,
-.routine-actions button:last-child,
-.routine-actions button[type="submit"] {
-  padding: 14px 32px;
-  background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
-  border: none;
-  border-radius: 12px;
+.btn-toggle:hover {
+  background: var(--primary);
   color: white;
-  font-size: 1rem;
-  font-weight: 600;
+  border-color: var(--primary);
+}
+
+.reminder-settings-card {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.reminder-setting-item {
+  margin-bottom: 16px;
+}
+
+.reminder-setting-item label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  color: var(--text-dark);
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
 }
 
-.btn-save-routine:hover {
+.reminder-time-settings {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 16px 0;
+}
+
+.time-setting {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.time-setting label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  color: var(--text-dark);
+  font-size: 0.875rem;
+}
+
+.time-setting input[type="time"] {
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-light);
+  color: var(--text-dark);
+  font-size: 1rem;
+}
+
+.time-setting input[type="time"]:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: var(--bg-white);
+}
+
+.reminder-days {
+  margin-top: 16px;
+}
+
+.reminder-days > label {
+  display: block;
+  font-weight: 500;
+  color: var(--text-dark);
+  margin-bottom: 12px;
+}
+
+.days-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.day-checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-light);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.day-checkbox:hover {
+  border-color: var(--primary);
+}
+
+.day-checkbox input[type="checkbox"] {
+  margin-right: 4px;
+}
+
+.day-checkbox input[type="checkbox"]:checked + span,
+.day-checkbox:has(input[type="checkbox"]:checked) {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+/* Routine Actions */
+.routine-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.routine-actions .btn-primary,
+.routine-actions .btn-secondary {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+}
+
+.routine-actions .btn-primary {
+  background: var(--primary);
+  color: white;
+  border: none;
+}
+
+.routine-actions .btn-primary:hover {
+  background: var(--primary-dark);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(20, 184, 166, 0.4);
 }
 
-/* Responsive Design */
+.routine-actions .btn-secondary {
+  background: var(--bg-white);
+  color: var(--text-dark);
+  border: 2px solid var(--border);
+}
+
+.routine-actions .btn-secondary:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 48px 24px;
+  background: var(--bg-white);
+  border-radius: 12px;
+  border: 2px dashed var(--border);
+}
+
+.empty-state p {
+  color: var(--text-gray);
+  margin-bottom: 16px;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
   .routine-builder-page {
     padding: 24px 16px;
   }
-  
-  .routine-builder {
-    padding: 20px;
+
+  .routine-builder-page h1 {
+    font-size: 2rem; /* Responsive: 32px / 2rem for H2 */
   }
-  
-  .routine-step {
+
+  .routine-step,
+  .step-card {
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 12px;
   }
-  
+
   .step-number {
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     font-size: 1rem;
   }
-  
-  .step-actions {
-    justify-content: flex-end;
+
+  .time-selector {
+    flex-direction: column;
   }
-  
+
+  .reminder-time-settings {
+    grid-template-columns: 1fr;
+  }
+
+  .days-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
   .routine-actions {
     flex-direction: column;
-  }
-  
-  .routine-toggle {
-    flex-direction: column;
-    width: 100%;
-  }
-  
-  .routine-builder-page h1 {
-    font-size: 1.75rem;
   }
 }

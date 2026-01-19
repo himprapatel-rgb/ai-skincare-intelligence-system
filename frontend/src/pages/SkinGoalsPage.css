@@ -1,33 +1,87 @@
-/* Skin Goals Page - Clinical Premium */
+/* Skin Goals Page - Brand-Aligned Design */
+
+:root {
+  --primary: #0D9488;
+  --primary-dark: #0f766e;
+  --bg-light: #F8FAFC;
+  --bg-white: #FFFFFF;
+  --text-dark: #1E293B;
+  --text-gray: #4b5b76;
+  --text-primary: #1E293B;
+  --border: #E2E8F0;
+  --border-color: #E2E8F0;
+  --bg-secondary: #F8FAFC;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.skin-goals-page {
+  min-height: 100vh;
+  background: var(--bg-light);
+  padding: 40px 24px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.skin-goals-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.skin-goals-page h1 {
+  font-size: 3rem; /* Brand guideline: 48px / 3rem for H1 */
+  font-weight: 700; /* Brand guideline: Bold */
+  color: var(--text-dark);
+  margin-bottom: 32px;
+  text-align: center;
+  line-height: 1.2;
+  letter-spacing: -0.5px;
+}
+
 .skin-goals-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
 }
 
 .skin-goals-item {
   width: 100%;
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px;
-  margin-bottom: 8px;
-  background: var(--bg-secondary);
-  border-radius: 10px;
-  border: 1px solid var(--border-color);
+  gap: 16px;
+  padding: 20px;
+  background: var(--bg-white);
+  border-radius: 12px; /* Brand guideline: 12px for cards */
+  border: 2px solid var(--border);
   cursor: pointer;
-  color: var(--text-primary);
+  color: var(--text-dark);
   text-align: left;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow);
+}
+
+.skin-goals-item:hover {
+  border-color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.15);
 }
 
 .skin-goals-item.selected {
   background: var(--primary);
-  color: #ffffff;
-  border-color: transparent;
+  color: white;
+  border-color: var(--primary);
+  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
 }
 
 .skin-goals-icon {
-  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--primary);
+}
+
+.skin-goals-icon svg {
+  width: 24px;
+  height: 24px;
 }
 
 .skin-goals-text {
@@ -37,72 +91,40 @@
 }
 
 .skin-goals-title {
-  font-weight: 700;
+  font-weight: 600;
+  font-size: 1.125rem; /* Brand guideline: 18px Body Large */
+  margin-bottom: 4px;
 }
 
 .skin-goals-desc {
-  font-size: 12px;
+  font-size: 0.875rem; /* Brand guideline: 14px Body Small */
   opacity: 0.8;
+  line-height: 1.5;
 }
 
 .skin-goals-toggle {
-  font-weight: 700;
-}
-
-.skin-goals-priority {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px;
-  margin-bottom: 8px;
-  background: var(--bg-secondary);
-  border-radius: 10px;
-}
-
-.skin-goals-rank {
-  font-size: 20px;
-  font-weight: 700;
+  justify-content: center;
   color: var(--primary);
+  flex-shrink: 0;
 }
 
-.skin-goals-name {
-  flex: 1;
+.skin-goals-toggle svg {
+  width: 20px;
+  height: 20px;
 }
 
-.skin-goals-controls {
-  display: flex;
-  gap: 4px;
-}
+@media (max-width: 768px) {
+  .skin-goals-page {
+    padding: 24px 16px;
+  }
 
-.skin-goals-controls button {
-  padding: 4px 8px;
-  background: var(--bg-primary);
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
-  cursor: pointer;
-}
+  .skin-goals-page h1 {
+    font-size: 2rem; /* Responsive: 32px / 2rem for H2 */
+  }
 
-.skin-goals-actions {
-  margin-top: 24px;
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-@media (max-width: 900px) {
   .skin-goals-grid {
     grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 600px) {
-  .skin-goals-actions {
-    flex-direction: column;
-  }
-
-  .skin-goals-actions .btn {
-    width: 100%;
-    justify-content: center;
   }
 }

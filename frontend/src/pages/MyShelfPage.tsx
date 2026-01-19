@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { IconStar } from '../components/Icons';
 import './MyShelfPage.css';
 
 interface Product {
@@ -200,8 +201,15 @@ const MyShelfPage: React.FC = () => {
                 <p className="category">{product.category}</p>
                 
                 <div className="rating">
-                  {'★'.repeat(Math.floor(product.rating))}
-                  {'☆'.repeat(5 - Math.floor(product.rating))}
+                  {Array.from({ length: 5 }).map((_, index) => (
+                    <IconStar
+                      key={index}
+                      size={14}
+                      strokeWidth={2}
+                      fill={index < Math.floor(product.rating) ? 'currentColor' : 'none'}
+                      style={{ marginRight: '4px' }}
+                    />
+                  ))}
                   <span>{product.rating}</span>
                 </div>
                 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { IconBrain, IconShield, IconBookOpen, IconZap, IconAlertTriangle } from '../components/Icons';
 import './AboutPage.css';
 
 const AboutPage: React.FC = () => {
@@ -41,7 +42,9 @@ const AboutPage: React.FC = () => {
           <h2 className="section-title">Our Technology</h2>
           <div className="tech-grid">
             <div className="tech-card">
-              <div className="tech-icon">🤖</div>
+              <div className="tech-icon">
+                <IconBrain size={32} strokeWidth={2} />
+              </div>
               <h3>AI-Powered Analysis</h3>
               <p>
                 Advanced computer vision models trained on millions of dermatological
@@ -49,7 +52,9 @@ const AboutPage: React.FC = () => {
               </p>
             </div>
             <div className="tech-card">
-              <div className="tech-icon">🔒</div>
+              <div className="tech-icon">
+                <IconShield size={32} strokeWidth={2} />
+              </div>
               <h3>Privacy First</h3>
               <p>
                 Your photos are encrypted, processed securely, and never shared.
@@ -57,7 +62,9 @@ const AboutPage: React.FC = () => {
               </p>
             </div>
             <div className="tech-card">
-              <div className="tech-icon">📚</div>
+              <div className="tech-icon">
+                <IconBookOpen size={32} strokeWidth={2} />
+              </div>
               <h3>Evidence-Based</h3>
               <p>
                 Built on peer-reviewed dermatology research and validated by
@@ -65,7 +72,9 @@ const AboutPage: React.FC = () => {
               </p>
             </div>
             <div className="tech-card">
-              <div className="tech-icon">⚡</div>
+              <div className="tech-icon">
+                <IconZap size={32} strokeWidth={2} />
+              </div>
               <h3>Instant Results</h3>
               <p>
                 Get comprehensive skin analysis in under 30 seconds. No appointments,
@@ -113,7 +122,10 @@ const AboutPage: React.FC = () => {
         {/* Disclaimer Section */}
         <section className="about-section disclaimer-section">
           <div className="disclaimer-box">
-            <h3>⚕️ Important Medical Disclaimer</h3>
+            <h3>
+              <IconAlertTriangle size={20} strokeWidth={2} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+              Important Medical Disclaimer
+            </h3>
             <p>
               SkinCareAI is not a medical device and is not intended to diagnose, treat,
               cure, or prevent any disease or condition. Our service provides informational

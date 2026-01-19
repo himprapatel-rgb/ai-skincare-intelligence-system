@@ -1,6 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { 
+  IconTrendingUp, 
+  IconCamera, 
+  IconPackage, 
+  IconSparkles,
+  IconScan,
+  IconShoppingCart,
+  IconCalendar,
+  IconStar,
+  IconClock,
+  IconTrendingDown,
+  IconArrowRight
+} from '../components/Icons';
 import './DashboardPage.css';
 
 interface DashboardData {
@@ -65,19 +78,37 @@ const DashboardPage: React.FC = () => {
 
       <div className="dashboard-stats">
         <button type="button" className="stat-card primary" onClick={() => navigate('/history')}>
-          <div className="stat-icon">📈</div>
+          <div className="stat-icon">
+            <IconTrendingUp size={32} strokeWidth={2} />
+          </div>
           <div className="stat-content">
             <h3>{data.skinScore}%</h3>
             <p>Skin Health Score</p>
             <span className={`trend ${data.skinTrend}`}>
-              {data.skinTrend === 'improving' ? '↑ Improving' : 
-               data.skinTrend === 'declining' ? '↓ Declining' : '→ Stable'}
+              {data.skinTrend === 'improving' ? (
+                <>
+                  <IconTrendingUp size={16} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '4px' }} />
+                  Improving
+                </>
+              ) : data.skinTrend === 'declining' ? (
+                <>
+                  <IconTrendingDown size={16} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '4px' }} />
+                  Declining
+                </>
+              ) : (
+                <>
+                  <IconArrowRight size={16} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '4px' }} />
+                  Stable
+                </>
+              )}
             </span>
           </div>
         </button>
 
         <button type="button" className="stat-card" onClick={() => navigate('/history')}>
-          <div className="stat-icon">📷</div>
+          <div className="stat-icon">
+            <IconCamera size={32} strokeWidth={2} />
+          </div>
           <div className="stat-content">
             <h3>{data.recentScans}</h3>
             <p>Total Scans</p>
@@ -85,7 +116,9 @@ const DashboardPage: React.FC = () => {
         </button>
 
         <button type="button" className="stat-card" onClick={() => navigate('/myshelf')}>
-          <div className="stat-icon">🧴</div>
+          <div className="stat-icon">
+            <IconPackage size={32} strokeWidth={2} />
+          </div>
           <div className="stat-content">
             <h3>{data.productsInShelf}</h3>
             <p>Products in Shelf</p>
@@ -93,7 +126,9 @@ const DashboardPage: React.FC = () => {
         </button>
 
         <button type="button" className="stat-card" onClick={() => navigate('/routine-builder')}>
-          <div className="stat-icon">✨</div>
+          <div className="stat-icon">
+            <IconSparkles size={32} strokeWidth={2} />
+          </div>
           <div className="stat-content">
             <h3>{data.activeRoutines}</h3>
             <p>Active Routines</p>
@@ -106,22 +141,30 @@ const DashboardPage: React.FC = () => {
           <h2>Quick Actions</h2>
           <div className="quick-actions">
             <button className="action-card" onClick={() => navigate('/scan')}>
-              <div className="action-icon">📸</div>
+              <div className="action-icon">
+                <IconScan size={24} strokeWidth={2} />
+              </div>
               <h3>New Scan</h3>
               <p>Analyze your skin</p>
             </button>
             <button className="action-card" onClick={() => navigate('/myshelf')}>
-              <div className="action-icon">🛒</div>
+              <div className="action-icon">
+                <IconShoppingCart size={24} strokeWidth={2} />
+              </div>
               <h3>My Shelf</h3>
               <p>Manage products</p>
             </button>
             <button className="action-card" onClick={() => navigate('/routine-builder')}>
-              <div className="action-icon">📅</div>
+              <div className="action-icon">
+                <IconCalendar size={24} strokeWidth={2} />
+              </div>
               <h3>Routines</h3>
               <p>Build routine</p>
             </button>
             <button className="action-card" onClick={() => navigate('/recommendations')}>
-              <div className="action-icon">🌟</div>
+              <div className="action-icon">
+                <IconStar size={24} strokeWidth={2} />
+              </div>
               <h3>Discover</h3>
               <p>Get recommendations</p>
             </button>
@@ -137,8 +180,9 @@ const DashboardPage: React.FC = () => {
               data.recentActivity.map(activity => (
                 <div key={activity.id} className="activity-item">
                   <div className="activity-icon">
-                    {activity.type === 'scan' ? '📷' :
-                     activity.type === 'product' ? '🧴' : '✨'}
+                    {activity.type === 'scan' ? <IconCamera size={20} strokeWidth={2} /> :
+                     activity.type === 'product' ? <IconPackage size={20} strokeWidth={2} /> : 
+                     <IconSparkles size={20} strokeWidth={2} />}
                   </div>
                   <div className="activity-details">
                     <h4>{activity.title}</h4>
@@ -151,7 +195,9 @@ const DashboardPage: React.FC = () => {
         </div>
 
         <div className="dashboard-section reminder">
-          <div className="reminder-icon">⏰</div>
+          <div className="reminder-icon">
+            <IconClock size={48} strokeWidth={2} />
+          </div>
           <div className="reminder-content">
             <h3>Next Scan Reminder</h3>
             <p>Schedule your next skin analysis on {new Date(data.nextScanDue).toLocaleDateString('en', { month: 'long', day: 'numeric' })}</p>

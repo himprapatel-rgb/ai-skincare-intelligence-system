@@ -1,6 +1,7 @@
 // src/pages/OnboardingPage.tsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { IconSparkles, IconScan, IconZap, IconShield, IconBarChart, IconCheck } from '../components/Icons';
 import './OnboardingPage.css';
 
 interface OnboardingData {
@@ -85,13 +86,24 @@ const OnboardingPage: React.FC = () => {
       case 1:
         return (
           <div className="step-content">
-            <div className="welcome-icon">✨</div>
+            <div className="welcome-icon">
+              <IconSparkles size={64} strokeWidth={2} />
+            </div>
             <h1>Welcome to AuraSkin AI</h1>
             <p>Analyze your skin in seconds with AI-powered technology</p>
             <ul className="features-list">
-              <li>⚡ Fast analysis in under 3 seconds</li>
-              <li>🔒 Privacy-first - your data is secure</li>
-              <li>📊 Detailed insights and recommendations</li>
+              <li>
+                <IconZap size={20} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '8px' }} />
+                Fast analysis in under 3 seconds
+              </li>
+              <li>
+                <IconShield size={20} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '8px' }} />
+                Privacy-first - your data is secure
+              </li>
+              <li>
+                <IconBarChart size={20} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '8px' }} />
+                Detailed insights and recommendations
+              </li>
             </ul>
             <button onClick={handleNext} className="btn-primary">Get Started</button>
           </div>
@@ -208,12 +220,23 @@ const OnboardingPage: React.FC = () => {
             <h2>Camera Permission</h2>
             <p className="step-description">Allow camera access for skin analysis</p>
             <div className="camera-info">
-              <div className="camera-icon">📸</div>
+              <div className="camera-icon">
+                <IconScan size={64} strokeWidth={2} />
+              </div>
               <p>We need access to your camera to capture your skin for analysis</p>
               <ul className="permission-list">
-                <li>✓ Photos are processed securely</li>
-                <li>✓ Never shared without permission</li>
-                <li>✓ You can revoke access anytime</li>
+                <li>
+                  <IconCheck size={16} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '8px' }} />
+                  Photos are processed securely
+                </li>
+                <li>
+                  <IconCheck size={16} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '8px' }} />
+                  Never shared without permission
+                </li>
+                <li>
+                  <IconCheck size={16} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '8px' }} />
+                  You can revoke access anytime
+                </li>
               </ul>
             </div>
             <label className="consent-checkbox">

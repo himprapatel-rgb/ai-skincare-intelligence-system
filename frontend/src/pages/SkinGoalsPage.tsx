@@ -1,16 +1,32 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { 
+  IconTarget, IconSparkles, IconDroplet, IconStar, 
+  IconPackage, IconLeaf, IconSun, IconSearch, IconCheck, IconPlus,
+  IconArrowUp, IconArrowDown, IconArrowLeft
+} from '../components/Icons';
 import './CommonStyles.css';
 import './SkinGoalsPage.css';
 
 interface SkinGoal {
   id: string;
   name: string;
-  icon: string;
+  iconKey: string;
   description: string;
   selected: boolean;
   priority: number;
 }
+
+const iconMap: Record<string, React.ReactNode> = {
+  'acne': <IconTarget size={24} strokeWidth={2} />,
+  'anti-aging': <IconSparkles size={24} strokeWidth={2} />,
+  'hydration': <IconDroplet size={24} strokeWidth={2} />,
+  'even-tone': <IconStar size={24} strokeWidth={2} />,
+  'oil-control': <IconPackage size={24} strokeWidth={2} />,
+  'sensitive': <IconLeaf size={24} strokeWidth={2} />,
+  'sun-protection': <IconSun size={24} strokeWidth={2} />,
+  'pores': <IconSearch size={24} strokeWidth={2} />,
+};
 
 /**
  * Skin Goals Page (US-402)
@@ -18,14 +34,14 @@ interface SkinGoal {
  */
 const SkinGoalsPage: React.FC = () => {
   const [goals, setGoals] = useState<SkinGoal[]>([
-    { id: '1', name: 'Clear Acne', icon: '🩹', description: 'Reduce breakouts and blemishes', selected: true, priority: 1 },
-    { id: '2', name: 'Anti-Aging', icon: '✨', description: 'Reduce fine lines and wrinkles', selected: false, priority: 0 },
-    { id: '3', name: 'Hydration', icon: '💧', description: 'Improve skin moisture levels', selected: true, priority: 2 },
-    { id: '4', name: 'Even Skin Tone', icon: '🌟', description: 'Reduce dark spots and hyperpigmentation', selected: false, priority: 0 },
-    { id: '5', name: 'Oil Control', icon: '🧴', description: 'Manage excess sebum production', selected: false, priority: 0 },
-    { id: '6', name: 'Sensitive Skin Care', icon: '🌸', description: 'Gentle care for reactive skin', selected: false, priority: 0 },
-    { id: '7', name: 'Sun Protection', icon: '☀️', description: 'Protect against UV damage', selected: true, priority: 3 },
-    { id: '8', name: 'Pore Minimizing', icon: '🔍', description: 'Reduce appearance of pores', selected: false, priority: 0 },
+    { id: '1', name: 'Clear Acne', iconKey: 'acne', description: 'Reduce breakouts and blemishes', selected: true, priority: 1 },
+    { id: '2', name: 'Anti-Aging', iconKey: 'anti-aging', description: 'Reduce fine lines and wrinkles', selected: false, priority: 0 },
+    { id: '3', name: 'Hydration', iconKey: 'hydration', description: 'Improve skin moisture levels', selected: true, priority: 2 },
+    { id: '4', name: 'Even Skin Tone', iconKey: 'even-tone', description: 'Reduce dark spots and hyperpigmentation', selected: false, priority: 0 },
+    { id: '5', name: 'Oil Control', iconKey: 'oil-control', description: 'Manage excess sebum production', selected: false, priority: 0 },
+    { id: '6', name: 'Sensitive Skin Care', iconKey: 'sensitive', description: 'Gentle care for reactive skin', selected: false, priority: 0 },
+    { id: '7', name: 'Sun Protection', iconKey: 'sun-protection', description: 'Protect against UV damage', selected: true, priority: 3 },
+    { id: '8', name: 'Pore Minimizing', iconKey: 'pores', description: 'Reduce appearance of pores', selected: false, priority: 0 },
   ]);
   const [isSaving, setIsSaving] = useState(false);
 
@@ -68,7 +84,10 @@ const SkinGoalsPage: React.FC = () => {
   return (
     <div className="page-container">
       <div className="page-header">
-        <h1>🎯 Skin Goals</h1>
+        <h1>
+          <IconTarget size={32} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '12px' }} />
+          Skin Goals
+        </h1>
         <p>Select and prioritize your skincare goals for personalized recommendations</p>
       </div>
 
@@ -84,12 +103,18 @@ const SkinGoalsPage: React.FC = () => {
                 className={`skin-goals-item${goal.selected ? ' selected' : ''}`}
                 aria-pressed={goal.selected}
               >
-                <span className="skin-goals-icon">{goal.icon}</span>
+                <span className="skin-goals-icon">{iconMap[goal.iconKey]}</span>
                 <span className="skin-goals-text">
                   <span className="skin-goals-title">{goal.name}</span>
                   <span className="skin-goals-desc">{goal.description}</span>
                 </span>
-                <span className="skin-goals-toggle">{goal.selected ? '✓' : '+'}</span>
+                <span className="skin-goals-toggle">
+                  {goal.selected ? (
+                    <IconCheck size={20} strokeWidth={2} />
+                  ) : (
+                    <IconPlus size={20} strokeWidth={2} />
+                  )}
+                </span>
               </button>
             ))}
           </div>
@@ -104,11 +129,15 @@ const SkinGoalsPage: React.FC = () => {
               selectedGoals.map((goal, index) => (
                 <div key={goal.id} className="skin-goals-priority">
                   <span className="skin-goals-rank">#{index + 1}</span>
-                  <span className="skin-goals-icon">{goal.icon}</span>
+                  <span className="skin-goals-icon">{iconMap[goal.iconKey]}</span>
                   <span className="skin-goals-name">{goal.name}</span>
                   <span className="skin-goals-controls">
-                    <button onClick={() => updatePriority(goal.id, 'up')} disabled={index === 0} type="button">↑</button>
-                    <button onClick={() => updatePriority(goal.id, 'down')} disabled={index === selectedGoals.length - 1} type="button">↓</button>
+                    <button onClick={() => updatePriority(goal.id, 'up')} disabled={index === 0} type="button" className="btn-icon-small">
+                      <IconArrowUp size={16} strokeWidth={2} />
+                    </button>
+                    <button onClick={() => updatePriority(goal.id, 'down')} disabled={index === selectedGoals.length - 1} type="button" className="btn-icon-small">
+                      <IconArrowDown size={16} strokeWidth={2} />
+                    </button>
                   </span>
                 </div>
               ))
@@ -118,7 +147,10 @@ const SkinGoalsPage: React.FC = () => {
       </div>
 
       <div className="skin-goals-actions">
-        <Link to="/profile" className="btn btn-secondary">← Back to Profile</Link>
+        <Link to="/profile" className="btn btn-secondary">
+          <IconArrowLeft size={16} strokeWidth={2} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
+          Back to Profile
+        </Link>
         <button onClick={handleSave} className="btn btn-primary" disabled={isSaving}>
           {isSaving ? 'Saving...' : 'Save Goals'}
         </button>

@@ -1,101 +1,214 @@
-/* Medical Scan Page - Clean Healthcare Design with onskin- classes */
+/* Scan Page - Brand-Aligned Design */
+
+:root {
+  /* Brand Colors - From Visual Identity Guidelines */
+  --primary: #0D9488; /* Intelligent Teal - Primary brand color */
+  --primary-dark: #0f766e; /* Darker teal for hover states */
+  --secondary: #F97316; /* Warm Coral - Accents, highlights */
+  --accent: #a9c7ff; /* Light accent */
+  --bg-light: #F8FAFC; /* Light Gray - Secondary backgrounds */
+  --bg-white: #FFFFFF; /* Pure White - Backgrounds */
+  --text-dark: #1E293B; /* Deep Navy - Primary text */
+  --text-gray: #4b5b76; /* Gray text */
+  --text-light: #8a9ab7; /* Light gray text */
+  --border: #E2E8F0; /* Border color */
+  --shadow: 0 4px 12px rgba(13, 148, 136, 0.08);
+  --success: #D1FAE5; /* Soft Sage - Success states */
+}
 
 /* Main page container */
-.onskin-page {
+.scan-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f0fdfa 0%, #e6fffa 50%, #f0f9ff 100%);
+  background: var(--bg-light);
   padding: 0;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
-/* Header styles */
-.onskin-header {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(13, 148, 136, 0.1);
-  padding: 16px 24px;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-
-.onskin-header .onskin-container {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.onskin-logo {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #0d9488;
-  text-decoration: none;
-  letter-spacing: -0.5px;
-}
-
-.onskin-logo:hover {
-  color: #0f766e;
-}
-
-.onskin-back {
-  color: #64748b;
-  text-decoration: none;
-  font-size: 0.9rem;
-  transition: color 0.2s;
-}
-
-.onskin-back:hover {
-  color: #0d9488;
+/* Remove particles */
+.scan-particles {
+  display: none;
 }
 
 /* Main content area */
-.onskin-main {
-  padding: 40px 24px 60px;
+.scan-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 60px 24px 80px;
 }
 
-.onskin-container.onskin-main {
+.scan-content {
+  background: var(--bg-white);
+  border-radius: 12px; /* Brand guideline: 12px for cards */
+  padding: 56px 48px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Brand guideline */
+  border: 1px solid var(--border);
+}
+
+/* Header section */
+.scan-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.scan-title {
+  font-size: 3rem; /* Brand guideline: 48px / 3rem for H1 */
+  font-weight: 700; /* Brand guideline: Bold */
+  color: var(--text-dark); /* Deep Navy */
+  margin-bottom: 16px;
+  letter-spacing: -0.5px;
+  line-height: 1.2; /* Brand guideline */
+}
+
+.scan-title .gradient-text {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.scan-subtitle {
+  color: var(--text-gray);
+  font-size: 1.125rem; /* Brand guideline: 18px Body Large */
+  line-height: 1.6; /* Brand guideline: 28px / 1.6 */
   max-width: 600px;
   margin: 0 auto;
 }
 
-.onskin-content {
-  background: white;
+/* Mode Toggle */
+.scan-mode-toggle {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+  background: var(--bg-light);
+  padding: 6px;
+  border-radius: 8px; /* Brand guideline: 8px */
+}
+
+.mode-btn {
+  flex: 1;
+  padding: 12px 24px; /* Brand guideline: 12px 24px */
+  border: none;
+  background: transparent;
+  border-radius: 8px; /* Brand guideline: 8px */
+  font-size: 1rem; /* Brand guideline: 16px Body */
+  font-weight: 500; /* Brand guideline: Medium */
+  color: var(--text-gray);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mode-btn:hover {
+  color: var(--primary);
+  background: rgba(13, 148, 136, 0.05);
+}
+
+.mode-btn.active {
+  background: var(--bg-white);
+  color: var(--primary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  font-weight: 600;
+}
+
+/* Camera Section */
+.scan-camera-section {
+  margin-bottom: 32px;
+}
+
+.camera-container {
+  position: relative;
+  width: 100%;
+  max-width: 650px;
+  margin: 0 auto 24px;
+  border-radius: 12px; /* Brand guideline: 12px for cards */
+  overflow: hidden;
+  background: #000;
+  aspect-ratio: 4/3;
+  border: 2px solid var(--border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Brand guideline */
+}
+
+.camera-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.camera-placeholder {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.camera-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  color: var(--primary);
+}
+
+.camera-icon svg {
+  width: 48px;
+  height: 48px;
+}
+
+.face-guide-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.face-guide-circle {
+  width: 300px;
+  height: 380px;
+  border: 3px solid var(--primary);
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.4);
+  opacity: 0.9;
+}
+
+.face-guide-text {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  background: var(--primary); /* Brand teal */
+  padding: 10px 20px;
   border-radius: 24px;
-  padding: 48px 40px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
-  border: 1px solid rgba(13, 148, 136, 0.08);
+  font-size: 0.95rem;
+  font-weight: 600;
+  box-shadow: 0 4px 16px rgba(13, 148, 136, 0.3);
 }
 
-/* Title and subtitle */
-.onskin-title {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #0f172a;
-  margin-bottom: 12px;
-  text-align: center;
-  letter-spacing: -0.5px;
-}
-
-.onskin-subtitle {
-  color: #64748b;
-  font-size: 1.05rem;
-  text-align: center;
-  margin-bottom: 36px;
-  line-height: 1.6;
+.capture-btn {
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+  display: block;
 }
 
 /* Upload section */
-.onskin-upload-section {
+.scan-upload-section {
   margin-top: 8px;
 }
 
-.onskin-upload-box {
+.scan-upload-box {
   position: relative;
+  margin-bottom: 32px;
 }
 
-.onskin-file-input {
+.scan-file-input {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -104,139 +217,421 @@
   z-index: 10;
 }
 
-.onskin-upload-label {
+.scan-upload-label {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 48px 32px;
-  border: 2px dashed #cbd5e1;
-  border-radius: 16px;
-  background: #f8fafc;
+  padding: 56px 40px;
+  border: 2px dashed var(--border);
+  border-radius: 8px; /* Brand guideline: 8px for inputs */
+  background: var(--bg-light);
   cursor: pointer;
   transition: all 0.3s ease;
-  min-height: 200px;
+  min-height: 350px;
 }
 
-.onskin-upload-label:hover {
-  border-color: #0d9488;
-  background: #f0fdfa;
+.scan-upload-label:hover {
+  border-color: var(--primary);
+  background: rgba(13, 148, 136, 0.02);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(13, 148, 136, 0.12);
+  box-shadow: 0 8px 24px rgba(13, 148, 136, 0.1);
 }
 
-.onskin-preview {
+.preview-container {
+  position: relative;
+  width: 100%;
   max-width: 100%;
-  max-height: 280px;
-  border-radius: 12px;
-  object-fit: contain;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.onskin-upload-prompt {
+.scan-preview {
+  max-width: 100%;
+  max-height: 450px;
+  border-radius: 16px;
+  object-fit: contain;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  display: block;
+  margin: 0 auto;
+  border: 1px solid var(--border);
+}
+
+.preview-remove {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(220, 38, 38, 0.9);
+  color: white;
+  border: 2px solid white;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  z-index: 20;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+.preview-remove:hover {
+  background: rgba(220, 38, 38, 1);
+  transform: scale(1.1);
+}
+
+.scan-upload-prompt {
   text-align: center;
 }
 
-.onskin-upload-icon {
-  font-size: 3rem;
-  margin-bottom: 16px;
+.scan-upload-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  color: var(--primary);
 }
 
-.onskin-upload-text {
-  font-size: 1.1rem;
-  font-weight: 500;
-  color: #334155;
-  margin-bottom: 8px;
+.scan-upload-icon svg {
+  width: 64px;
+  height: 64px;
 }
 
-.onskin-upload-hint {
-  font-size: 0.9rem;
-  color: #94a3b8;
+.scan-upload-text {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 12px;
 }
 
-/* Scan button */
-.onskin-scan-button {
-  width: 100%;
-  margin-top: 24px;
+.scan-upload-hint {
+  font-size: 1rem;
+  color: var(--text-gray);
+}
+
+/* Tips Section */
+.scan-tips {
+  background: var(--bg-light);
+  border-radius: 12px; /* Brand guideline: 12px for cards */
+  padding: 32px;
+  margin-bottom: 32px;
+  border-left: 4px solid var(--primary); /* Brand teal accent */
+  border: 1px solid var(--border);
+}
+
+.scan-tips h3 {
+  font-size: 1.5rem; /* Brand guideline: 24px / 1.5rem for H3 */
+  font-weight: 600; /* Brand guideline: Semibold */
+  color: var(--text-dark); /* Deep Navy */
+  margin-bottom: 20px;
+  line-height: 1.4; /* Brand guideline */
+}
+
+.scan-tips ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.scan-tips li {
+  padding: 12px 0;
+  color: var(--text-gray);
+  font-size: 1rem; /* Brand guideline: 16px Body */
+  line-height: 1.6; /* Brand guideline: 24px / 1.6 */
+  display: flex;
+  align-items: center;
+  transition: color 0.2s ease;
+}
+
+.scan-tips li:hover {
+  color: var(--primary);
+}
+
+.scan-tips li svg {
+  flex-shrink: 0;
+  margin-right: 8px;
+}
+
+/* Action Buttons */
+.scan-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.scan-btn-primary {
+  flex: 1;
   padding: 16px 32px;
-  background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+  background: var(--primary); /* Brand teal */
   color: white;
   border: none;
-  border-radius: 12px;
+  border-radius: 8px; /* Brand guideline: 8px */
   font-size: 1.1rem;
-  font-weight: 600;
+  font-weight: 600; /* Brand guideline */
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 16px rgba(13, 148, 136, 0.3);
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.2);
 }
 
-.onskin-scan-button:hover:not(:disabled) {
+.scan-btn-primary:hover:not(:disabled) {
+  background: var(--primary-dark);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(13, 148, 136, 0.4);
+  box-shadow: 0 6px 16px rgba(13, 148, 136, 0.3);
 }
 
-.onskin-scan-button:disabled {
-  background: #94a3b8;
+.scan-btn-primary:disabled {
+  background: var(--text-light);
   cursor: not-allowed;
   box-shadow: none;
+  transform: none;
 }
 
-/* Loading state */
-.onskin-loading {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 48px 24px;
+.scan-btn-secondary {
+  padding: 16px 32px;
+  background: transparent; /* Brand guideline */
+  color: var(--primary); /* Brand teal */
+  border: 2px solid var(--primary); /* Brand guideline */
+  border-radius: 8px; /* Brand guideline: 8px */
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.onskin-spinner {
-  width: 48px;
-  height: 48px;
-  border: 3px solid #e2e8f0;
-  border-top-color: #0d9488;
+.scan-btn-secondary:hover:not(:disabled) {
+  background: rgba(13, 148, 136, 0.05);
+  transform: translateY(-2px);
+}
+
+.scan-btn-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Progress Section */
+.scan-progress-section {
+  padding: 80px 24px;
+}
+
+.progress-container {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.progress-spinner {
+  width: 64px;
+  height: 64px;
+  border: 4px solid var(--bg-light);
+  border-top-color: var(--primary);
   border-radius: 50%;
   animation: spin 1s linear infinite;
-  margin-bottom: 16px;
+  margin: 0 auto 32px;
 }
 
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
 
-.onskin-loading-text {
-  color: #64748b;
-  font-size: 1rem;
+.progress-title {
+  font-size: 2rem; /* Brand guideline: 32px / 2rem for H2 */
+  font-weight: 600; /* Brand guideline: Semibold */
+  color: var(--text-dark); /* Deep Navy */
+  margin-bottom: 16px;
+  line-height: 1.3; /* Brand guideline */
+}
+
+.progress-message {
+  color: var(--text-gray);
+  font-size: 1.1rem;
+  margin-bottom: 40px;
+  min-height: 28px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 10px;
+  background: var(--bg-light);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  border: 1px solid var(--border);
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+  border-radius: 8px;
+  transition: width 0.4s ease;
+  box-shadow: 0 2px 8px rgba(13, 148, 136, 0.3);
+}
+
+.progress-percentage {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+/* Results Preview */
+.scan-results-preview {
+  padding: 80px 24px;
+  text-align: center;
+}
+
+.results-success {
+  max-width: 500px;
+  margin: 0 auto;
+  background: var(--bg-white);
+  padding: 48px;
+  border-radius: 12px; /* Brand guideline: 12px for cards */
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Brand guideline */
+}
+
+.success-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+  color: var(--primary);
+  animation: scaleIn 0.5s ease;
+}
+
+.success-icon svg {
+  width: 64px;
+  height: 64px;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.results-success h2 {
+  font-size: 2rem; /* Brand guideline: 32px / 2rem for H2 */
+  font-weight: 600; /* Brand guideline: Semibold */
+  color: var(--text-dark); /* Deep Navy */
+  margin-bottom: 16px;
+  line-height: 1.3; /* Brand guideline */
+}
+
+.results-success p {
+  color: var(--text-gray);
+  font-size: 1.125rem; /* Brand guideline: 18px Body Large */
+  line-height: 1.6; /* Brand guideline: 28px / 1.6 */
 }
 
 /* Error message */
-.onskin-error {
+.scan-error {
   background: #fef2f2;
   border: 1px solid #fecaca;
+  border-left: 4px solid #dc2626;
   color: #dc2626;
-  padding: 16px 20px;
+  padding: 20px 24px;
   border-radius: 12px;
-  margin-top: 20px;
-  text-align: center;
-  font-size: 0.95rem;
+  margin-top: 24px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.error-icon {
+  font-size: 1.8rem;
+  flex-shrink: 0;
+}
+
+.error-content {
+  flex: 1;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.error-content strong {
+  display: block;
+  margin-bottom: 6px;
 }
 
 /* Responsive design */
-@media (max-width: 640px) {
-  .onskin-content {
-    padding: 32px 24px;
+@media (max-width: 768px) {
+  .scan-container {
+    padding: 40px 16px 60px;
+  }
+
+  .scan-content {
+    padding: 40px 28px;
     border-radius: 20px;
   }
   
-  .onskin-title {
-    font-size: 1.75rem;
+  .scan-title {
+    font-size: 2.2rem;
   }
-  
-  .onskin-upload-label {
-    padding: 36px 24px;
-    min-height: 180px;
+
+  .scan-subtitle {
+    font-size: 1rem;
   }
-  
-  .onskin-main {
-    padding: 24px 16px 48px;
+
+  .scan-mode-toggle {
+    flex-direction: column;
+  }
+
+  .mode-btn {
+    width: 100%;
+  }
+
+  .camera-container {
+    aspect-ratio: 3/4;
+  }
+
+  .face-guide-circle {
+    width: 240px;
+    height: 320px;
+  }
+
+  .scan-upload-label {
+    padding: 40px 28px;
+    min-height: 280px;
+  }
+
+  .scan-actions {
+    flex-direction: column;
+  }
+
+  .scan-btn-primary,
+  .scan-btn-secondary {
+    width: 100%;
+  }
+
+  .scan-tips {
+    padding: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .scan-title {
+    font-size: 1.9rem;
+  }
+
+  .face-guide-circle {
+    width: 200px;
+    height: 260px;
+  }
+
+  .scan-upload-icon svg {
+    width: 48px;
+    height: 48px;
+  }
+
+  .scan-upload-text {
+    font-size: 1.1rem;
+  }
+
+  .progress-title {
+    font-size: 1.6rem;
   }
 }

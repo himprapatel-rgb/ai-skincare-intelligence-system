@@ -133,6 +133,30 @@
   border: 1px solid var(--border);
 }
 
+.badge-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+}
+
+.badge-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.btn-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
 .hero-title {
   font-size: 3.5rem;
   font-weight: 800;
@@ -624,10 +648,19 @@
   font-size: 24px;
   box-shadow: 0 6px 20px rgba(13, 148, 136, 0.3);
   z-index: 10;
-}}
+}
 
 .step-icon {
-  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  color: var(--primary);
+}
+
+.step-icon svg {
+  width: 40px;
+  height: 40px;
 }
 
 .step-title {
@@ -738,8 +771,17 @@
 
 /* Trust badges safer version */
 .badge-icon-trust {
-  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-right: 8px;
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.badge-icon-trust svg {
+  width: 24px;
+  height: 24px;
 }
 
 /* Results Preview Section */
@@ -770,8 +812,16 @@
 }
 
 .result-icon {
-  font-size: 2.5rem;
-  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  color: var(--primary);
+}
+
+.result-icon svg {
+  width: 32px;
+  height: 32px;
 }
 
 .result-card h3 {
@@ -789,9 +839,21 @@
 .step-tips {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 8px;
   margin-top: 12px;
-  font-size: 0.75rem;
+  font-size: 0.875rem;
+}
+
+.step-tips span {
+  display: flex;
+  align-items: center;
+  color: var(--text-gray);
+}
+
+.step-tips span svg {
+  margin-right: 8px;
+  color: var(--primary);
+  flex-shrink: 0;
   color: var(--text-gray);
 }
 
@@ -846,9 +908,10 @@
   color: var(--text-gray);
 }
 
-.badge-icon-trust {
-  font-size: 2rem;
-}
+  .badge-icon-trust svg {
+    width: 32px;
+    height: 32px;
+  }
 
 /* Footer alignment fixes */
 .footer-content {
@@ -1159,12 +1222,13 @@
 }
 
 /* Adjust spacing for horizontal layout */
-.step-icon {
-  margin-bottom: 16px;
-}
+  .step-icon svg {
+    width: 32px;
+    height: 32px;
+  }
 
-.step-title {
-  margin-bottom: 10px;
+  .step-title {
+    margin-bottom: 10px;
 }
 
 /* Tablet horizontal layout */
@@ -1503,6 +1567,13 @@
 
   .steps-container {
     grid-template-columns: 1fr;
+    justify-items: stretch;
+  }
+
+  .step-card {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
   }
 
   .preview-scores {

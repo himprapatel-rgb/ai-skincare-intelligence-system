@@ -1,5 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { 
+  IconZap, IconScan, IconClock, IconShield, IconBookOpen, 
+  IconTrash2, IconCheckCircle, IconBarChart, IconSearch, 
+  IconSparkles, IconTrendingUp, IconCamera, IconBrain, IconFileText, IconCheck
+} from '../components/Icons';
 import './HomePage.css';
 
 const HomePage: React.FC = () => {
@@ -11,7 +16,9 @@ const HomePage: React.FC = () => {
       <section className="hero">
         <div className="hero-content">
           <div className="hero-badge">
-            <span className="badge-icon">&#128161;</span>
+            <span className="badge-icon">
+              <IconZap size={20} strokeWidth={2} />
+            </span>
             Premium Skin Intelligence
           </div>
           <h1 className="hero-title">
@@ -23,7 +30,9 @@ const HomePage: React.FC = () => {
           </p>
           <div className="hero-cta">
             <button className="btn-primary" onClick={() => navigate('/scan')}>
-              <span className="btn-icon">&#128247;</span>
+              <span className="btn-icon">
+                <IconScan size={20} strokeWidth={2} />
+              </span>
               Start Free Skin Scan
             </button>
             <button className="btn-secondary" onClick={() => navigate('/analysis/demo')}>
@@ -31,7 +40,8 @@ const HomePage: React.FC = () => {
             </button>
           </div>
           <p className="hero-reassurance">
-            &#9201; Takes ~30 seconds &bull; No signup required &bull; Delete your photo anytime
+            <IconClock size={16} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '6px' }} />
+            Takes ~30 seconds &bull; No signup required &bull; Delete your photo anytime
           </p>
         </div>
         <div className="hero-visual">
@@ -63,19 +73,27 @@ const HomePage: React.FC = () => {
       {/* Trust Badges - Safer language */}
       <section className="trust-badges">
         <div className="badge-item">
-          <span className="badge-icon-trust">&#128274;</span>
+          <span className="badge-icon-trust">
+            <IconShield size={24} strokeWidth={2} />
+          </span>
           <span>Encrypted Uploads</span>
         </div>
         <div className="badge-item">
-          <span className="badge-icon-trust">&#128218;</span>
+          <span className="badge-icon-trust">
+            <IconBookOpen size={24} strokeWidth={2} />
+          </span>
           <span>Built on Dermatology Research</span>
         </div>
         <div className="badge-item">
-          <span className="badge-icon-trust">&#128465;</span>
+          <span className="badge-icon-trust">
+            <IconTrash2 size={24} strokeWidth={2} />
+          </span>
           <span>Delete Data Anytime</span>
         </div>
         <div className="badge-item">
-          <span className="badge-icon-trust">&#9989;</span>
+          <span className="badge-icon-trust">
+            <IconCheckCircle size={24} strokeWidth={2} />
+          </span>
           <span>Privacy-First Processing</span>
         </div>
       </section>
@@ -89,22 +107,30 @@ const HomePage: React.FC = () => {
         </div>
         <div className="results-grid">
           <div className="result-card">
-            <div className="result-icon">&#128200;</div>
+            <div className="result-icon">
+              <IconBarChart size={32} strokeWidth={2} />
+            </div>
             <h3>Skin Scores</h3>
             <p>Overall health, texture, hydration, and clarity scores from 0-100</p>
           </div>
           <div className="result-card">
-            <div className="result-icon">&#128269;</div>
+            <div className="result-icon">
+              <IconSearch size={32} strokeWidth={2} />
+            </div>
             <h3>Concern Detection</h3>
             <p>Identifies visible signs of acne, redness, pigmentation, and fine lines</p>
           </div>
           <div className="result-card">
-            <div className="result-icon">&#128161;</div>
+            <div className="result-icon">
+              <IconSparkles size={32} strokeWidth={2} />
+            </div>
             <h3>Routine Suggestions</h3>
             <p>Personalized AM/PM skincare routine recommendations</p>
           </div>
           <div className="result-card">
-            <div className="result-icon">&#128202;</div>
+            <div className="result-icon">
+              <IconTrendingUp size={32} strokeWidth={2} />
+            </div>
             <h3>Progress Tracking</h3>
                         <p>Track improvements over time with scan history comparisons <span className="account-note">(Optional – requires account)</span></p>
           </div>
@@ -121,24 +147,39 @@ const HomePage: React.FC = () => {
         <div className="steps-container">
           <div className="step-card">
             <div className="step-number">1</div>
-            <div className="step-icon">&#128247;</div>
+            <div className="step-icon">
+              <IconCamera size={40} strokeWidth={2} />
+            </div>
             <h3>Upload Photo</h3>
             <p>Take or upload a clear selfie</p>
             <div className="step-tips">
-              <span>&#9989; Good lighting</span>
-              <span>&#9989; No makeup</span>
-              <span>&#9989; Front-facing</span>
+              <span>
+                <IconCheck size={16} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '6px' }} />
+                Good lighting
+              </span>
+              <span>
+                <IconCheck size={16} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '6px' }} />
+                No makeup
+              </span>
+              <span>
+                <IconCheck size={16} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '6px' }} />
+                Front-facing
+              </span>
             </div>
           </div>
           <div className="step-card">
             <div className="step-number">2</div>
-            <div className="step-icon">&#129302;</div>
+            <div className="step-icon">
+              <IconBrain size={40} strokeWidth={2} />
+            </div>
             <h3>AI Analysis</h3>
             <p>Our model detects visible signs of acne, redness, pigmentation, and texture patterns</p>
           </div>
           <div className="step-card">
             <div className="step-number">3</div>
-            <div className="step-icon">&#128203;</div>
+            <div className="step-icon">
+              <IconFileText size={40} strokeWidth={2} />
+            </div>
             <h3>Get Results</h3>
             <p>Receive a skin summary, concern scores, and personalized routine suggestions</p>
           </div>
@@ -196,7 +237,8 @@ const HomePage: React.FC = () => {
             Start Free Skin Scan
           </button>
           <p className="cta-reassurance">
-            &#128274; Your photo is processed securely and never shared
+            <IconShield size={16} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '6px' }} />
+            Your photo is processed securely and never shared
           </p>
         </div>
       </section>

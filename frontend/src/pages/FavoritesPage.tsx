@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { IconHeart, IconX, IconPackage, IconStar } from '../components/Icons';
 import './CommonStyles.css';
 import './FavoritesPage.css';
 
@@ -52,7 +53,10 @@ const FavoritesPage: React.FC = () => {
   return (
     <div className="page-container">
       <div className="page-header">
-        <h1>❤️ My Favorites</h1>
+        <h1>
+          <IconHeart size={28} strokeWidth={2} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+          My Favorites
+        </h1>
         <p>Your saved skincare products ({favorites.length} items)</p>
       </div>
 
@@ -73,7 +77,9 @@ const FavoritesPage: React.FC = () => {
       {favorites.length === 0 ? (
         <div className="card favorites-empty">
           <div className="card-content favorites-empty-content">
-            <div className="favorites-empty-icon">❤️</div>
+            <div className="favorites-empty-icon">
+              <IconHeart size={48} strokeWidth={2} />
+            </div>
             <h3>No Favorites Yet</h3>
             <p className="favorites-empty-text">Start adding products to your favorites list</p>
             <Link to="/recommendations" className="btn btn-primary favorites-empty-action">Browse Products</Link>
@@ -84,7 +90,9 @@ const FavoritesPage: React.FC = () => {
           {sortedFavorites.map(product => (
             <div key={product.id} className="card">
               <div className="favorites-image">
-                <span className="favorites-image-icon">🧟</span>
+                <span className="favorites-image-icon">
+                  <IconPackage size={32} strokeWidth={2} />
+                </span>
               </div>
               <div className="card-content">
                 <div className="favorites-header">
@@ -97,12 +105,17 @@ const FavoritesPage: React.FC = () => {
                   </span>
                 </div>
                 <div className="favorites-meta">
-                  <span className="favorites-rating">★ {product.rating}</span>
+                  <span className="favorites-rating">
+                    <IconStar size={16} strokeWidth={2} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
+                    {product.rating}
+                  </span>
                   <span className="favorites-price">€{product.price.toFixed(2)}</span>
                 </div>
                 <div className="favorites-actions">
                   <Link to={`/product/${product.id}`} className="btn btn-secondary favorites-action-link">View</Link>
-                  <button onClick={() => handleRemove(product.id)} className="btn favorites-remove">✕</button>
+                  <button onClick={() => handleRemove(product.id)} className="btn favorites-remove" title="Remove">
+                    <IconX size={16} strokeWidth={2} />
+                  </button>
                 </div>
               </div>
             </div>

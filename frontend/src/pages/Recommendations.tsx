@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { IconStar, IconAlertTriangle, IconHeart, IconArrowLeft } from '../components/Icons';
+import './Recommendations.css';
 
 interface Product {
   id: string;
@@ -99,7 +101,9 @@ const Recommendations: React.FC = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center">
         <div className="text-center bg-white p-8 rounded-lg shadow-lg max-w-md">
-          <div className="text-red-500 text-5xl mb-4">⚠️</div>
+          <div className="text-red-500 mb-4 flex justify-center">
+            <IconAlertTriangle size={48} strokeWidth={2} />
+          </div>
           <h2 className="text-2xl font-bold text-gray-800 mb-2">Error Loading Recommendations</h2>
           <p className="text-gray-600 mb-6">{error}</p>
           <button
@@ -125,9 +129,10 @@ const Recommendations: React.FC = () => {
             </div>
             <button
               onClick={() => navigate('/')}
-              className="text-purple-600 hover:text-purple-700 font-semibold"
+              className="text-purple-600 hover:text-purple-700 font-semibold flex items-center"
             >
-              ← Back to Dashboard
+              <IconArrowLeft size={18} strokeWidth={2} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
+              Back to Dashboard
             </button>
           </div>
         </div>
@@ -209,9 +214,14 @@ const Recommendations: React.FC = () => {
                   />
                   <button
                     onClick={() => toggleFavorite(product.id)}
-                    className={`absolute top-3 right-3 p-2 rounded-full ${favorites.has(product.id) ? 'bg-red-500 text-white' : 'bg-white text-gray-600'} hover:scale-110 transition`}
+                    className={`absolute top-3 right-3 p-2 rounded-full ${favorites.has(product.id) ? 'bg-red-500 text-white' : 'bg-white text-gray-600'} hover:scale-110 transition flex items-center justify-center`}
+                    title={favorites.has(product.id) ? 'Remove from favorites' : 'Add to favorites'}
                   >
-                    {favorites.has(product.id) ? '❤️' : '♡'}
+                    <IconHeart 
+                      size={20} 
+                      strokeWidth={2} 
+                      fill={favorites.has(product.id) ? 'currentColor' : 'none'}
+                    />
                   </button>
                 </div>
 
@@ -219,7 +229,7 @@ const Recommendations: React.FC = () => {
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs font-semibold text-purple-600 uppercase">{product.category}</span>
                     <div className="flex items-center">
-                      <span className="text-yellow-500">⭐</span>
+                      <IconStar size={16} strokeWidth={2} className="text-yellow-500" fill="currentColor" />
                       <span className="text-sm font-semibold ml-1">{product.rating}</span>
                     </div>
                   </div>

@@ -2,6 +2,17 @@
 
 /* Import this in each page CSS: @import './CommonStyles.css'; */
 
+.page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 24px;
+  width: 100%;
+}
+
+.page-container.full-width {
+  max-width: 1400px;
+}
+
 .loading-spinner {
   display: flex;
   justify-content: center;

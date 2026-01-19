@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { IconScan, IconHome, IconCheck, IconAlertTriangle, IconArrowLeft } from '../components/Icons';
 import './AnalysisResults.css';
 
 interface SkinAnalysis {
@@ -100,7 +101,9 @@ const AnalysisResults: React.FC = () => {
     return (
       <div className="analysis-results">
         <div className="analysis-error">
-          <div className="analysis-error-icon">⚠️</div>
+          <div className="analysis-error-icon">
+            <IconAlertTriangle size={48} strokeWidth={2} />
+          </div>
           <h2>Error Loading Results</h2>
           <p>{error || 'Analysis not found'}</p>
           <button onClick={() => navigate('/')} className="btn btn-primary">
@@ -127,7 +130,10 @@ const AnalysisResults: React.FC = () => {
               })}
             </p>
           </div>
-          <button onClick={() => navigate('/')} className="results-back">← Back to Dashboard</button>
+          <button onClick={() => navigate('/')} className="results-back">
+            <IconArrowLeft size={16} strokeWidth={2} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
+            Back to Dashboard
+          </button>
         </div>
 
         <div className="confidence-row">
@@ -188,7 +194,10 @@ const AnalysisResults: React.FC = () => {
             <h2>Recommendations</h2>
             <ul className="recommendations-list">
               {analysis.recommendations.map((rec, index) => (
-                <li key={index}>✓ {rec}</li>
+                <li key={index}>
+                  <IconCheck size={16} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '8px' }} />
+                  {rec}
+                </li>
               ))}
             </ul>
             <button onClick={() => navigate('/recommendations')} className="btn btn-primary">
@@ -233,10 +242,12 @@ const AnalysisResults: React.FC = () => {
 
         <div className="results-actions">
           <button onClick={() => navigate('/scan')} className="btn btn-primary">
-            📸 Take New Scan
+            <IconScan size={18} strokeWidth={2} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+            Take New Scan
           </button>
           <button onClick={() => navigate('/')} className="btn btn-secondary">
-            🏠 Back to Dashboard
+            <IconHome size={18} strokeWidth={2} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+            Back to Dashboard
           </button>
         </div>
       </div>

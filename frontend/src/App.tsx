@@ -14,6 +14,7 @@ import AnalysisResults from "./pages/AnalysisResults";
 import HistoryPage from "./pages/HistoryPage";
 import ComparisonPage from "./pages/ComparisonPage";
 import SampleReportPage from "./pages/SampleReportPage";
+import DigitalTwinTimelinePage from "./pages/DigitalTwinTimelinePage";
 
 // Page Imports - Epic 3: Product Recommendations
 import Recommendations from "./pages/Recommendations";
@@ -21,6 +22,7 @@ import ProductDetailsPage from "./pages/ProductDetailsPage";
 import RoutineBuilderPage from "./pages/RoutineBuilderPage";
 import FavoritesPage from "./pages/FavoritesPage";
 import MyShelfPage from "./pages/MyShelfPage";
+import ProductScannerPage from "./pages/ProductScannerPage";
 
 // Page Imports - Epic 4: User Profile & History
 import ProfileSettingsPage from "./pages/ProfileSettingsPage";
@@ -30,6 +32,7 @@ import SkinGoalsPage from "./pages/SkinGoalsPage";
 import ProgressTrackingPage from "./pages/ProgressTrackingPage";
 import DataExportPage from "./pages/DataExportPage";
 import DashboardPage from "./pages/DashboardPage";
+import NotificationCenterPage from "./pages/NotificationCenterPage";
 
 // Page Imports - Epic 5: Legal & Information Pages
 import AboutPage from "./pages/AboutPage";
@@ -54,6 +57,7 @@ export default function App() {
           <Route path="/analysis/demo" element={<SampleReportPage />} />
           <Route path="/history" element={<HistoryPage />} />
           <Route path="/comparison" element={<ComparisonPage />} />
+          <Route path="/digital-twin" element={<DigitalTwinTimelinePage />} />
           
           {/* Product Recommendation Routes */}
           <Route path="/recommendations" element={<Recommendations />} />
@@ -61,6 +65,7 @@ export default function App() {
           <Route path="/routine-builder" element={<RoutineBuilderPage />} />
           <Route path="/favorites" element={<FavoritesPage />} />
           <Route path="/myshelf" element={<MyShelfPage />} />
+          <Route path="/scanner" element={<ProductScannerPage />} />
           
           {/* User Profile Routes */}
           <Route path="/onboarding" element={<OnboardingPage />} />
@@ -70,6 +75,7 @@ export default function App() {
           <Route path="/progress" element={<ProgressTrackingPage />} />
           <Route path="/export" element={<DataExportPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/notifications" element={<NotificationCenterPage />} />
 
                   {/* Legal & Information Pages */}
         <Route path="/about" element={<AboutPage />} />

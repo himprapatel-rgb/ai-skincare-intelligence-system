@@ -1,40 +1,71 @@
+/* Consent Page - Brand-Aligned Design */
+
+:root {
+  --primary: #0D9488;
+  --primary-dark: #0f766e;
+  --bg-light: #F8FAFC;
+  --bg-white: #FFFFFF;
+  --text-dark: #1E293B;
+  --text-gray: #4b5b76;
+  --border: #E2E8F0;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
 .consent-page {
-  padding: 2rem;
+  min-height: 100vh;
+  background: var(--bg-light);
+  padding: 40px 24px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.consent-container {
   max-width: 800px;
   margin: 0 auto;
 }
 
 .consent-page h1 {
-  color: #2c3e50;
-  margin-bottom: 1.5rem;
+  font-size: 3rem; /* Brand guideline: 48px / 3rem for H1 */
+  font-weight: 700; /* Brand guideline: Bold */
+  color: var(--text-dark);
+  margin-bottom: 32px;
+  text-align: center;
+  line-height: 1.2;
+  letter-spacing: -0.5px;
 }
 
 .consent-options {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 16px;
 }
 
 .consent-option {
-  padding: 1.5rem;
-  background: white;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
+  padding: 24px;
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: 12px; /* Brand guideline: 12px for cards */
   transition: all 0.3s ease;
+  box-shadow: var(--shadow);
 }
 
 .consent-option:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.15);
+  border-color: var(--primary);
+  transform: translateY(-2px);
 }
 
 .consent-option h3 {
-  margin-bottom: 0.5rem;
-  color: #34495e;
+  font-size: 1.25rem; /* Brand guideline: 20px / 1.25rem for H4 */
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 8px;
 }
 
 .consent-option p {
-  color: #7f8c8d;
-  margin-bottom: 1rem;
+  font-size: 1rem; /* Brand guideline: 16px Body */
+  color: var(--text-gray);
+  margin-bottom: 16px;
+  line-height: 1.6;
 }
 
 .consent-toggle {
@@ -44,16 +75,32 @@
 }
 
 .save-button {
-  background: #3498db;
+  background: var(--primary);
   color: white;
-  padding: 0.75rem 2rem;
+  padding: 12px 24px; /* Brand guideline: 12px 24px */
   border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  margin-top: 2rem;
+  border-radius: 8px; /* Brand guideline: 8px */
+  font-weight: 600;
   font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.2);
+  margin-top: 32px;
+  width: 100%;
 }
 
 .save-button:hover {
-  background: #2980b9;
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(13, 148, 136, 0.3);
+}
+
+@media (max-width: 768px) {
+  .consent-page {
+    padding: 24px 16px;
+  }
+
+  .consent-page h1 {
+    font-size: 2rem; /* Responsive: 32px / 2rem for H2 */
+  }
 }

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { IconMail, IconClock, IconMessageCircle, IconMapPin, IconCheckCircle } from '../components/Icons';
 import './ContactPage.css';
 
 const ContactPage: React.FC = () => {
@@ -39,25 +40,33 @@ const ContactPage: React.FC = () => {
       <div className="contact-container">
         <div className="contact-info">
           <div className="info-card">
-            <div className="info-icon">📧</div>
+            <div className="info-icon">
+              <IconMail size={32} strokeWidth={2} />
+            </div>
             <h3>Email Us</h3>
             <p>support@aiskincareai.com</p>
           </div>
 
           <div className="info-card">
-            <div className="info-icon">💬</div>
+            <div className="info-icon">
+              <IconMessageCircle size={32} strokeWidth={2} />
+            </div>
             <h3>Live Chat</h3>
             <p>Available 9AM - 6PM EST</p>
           </div>
 
           <div className="info-card">
-            <div className="info-icon">📍</div>
+            <div className="info-icon">
+              <IconMapPin size={32} strokeWidth={2} />
+            </div>
             <h3>Location</h3>
             <p>San Francisco, CA</p>
           </div>
 
           <div className="info-card">
-            <div className="info-icon">⏰</div>
+            <div className="info-icon">
+              <IconClock size={32} strokeWidth={2} />
+            </div>
             <h3>Response Time</h3>
             <p>Within 24 hours</p>
           </div>
@@ -66,7 +75,9 @@ const ContactPage: React.FC = () => {
         <div className="contact-form-container">
           {submitted ? (
             <div className="success-message">
-              <div className="success-icon">✓</div>
+              <div className="success-icon">
+                <IconCheckCircle size={24} strokeWidth={2} />
+              </div>
               <h2>Thank You!</h2>
               <p>Your message has been received. We'll get back to you soon.</p>
             </div>

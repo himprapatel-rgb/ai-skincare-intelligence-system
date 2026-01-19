@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { IconCamera, IconStar, IconZap, IconBarChart, IconScan } from '../components/Icons';
 import './HistoryPage.css';
 
 interface ScanHistory {
@@ -75,7 +76,9 @@ const HistoryPage: React.FC = () => {
           <div className="loading-spinner">Loading history...</div>
         ) : filteredHistory.length === 0 ? (
           <div className="empty-state">
-            <div className="empty-state-icon">📊</div>
+            <div className="empty-state-icon">
+              <IconBarChart size={64} strokeWidth={2} />
+            </div>
             <h3>No scans yet</h3>
             <p>Start your skincare journey by scanning your skin</p>
             <button className="view-btn" onClick={() => navigate('/scan')}>Take Your First Scan</button>
@@ -84,17 +87,23 @@ const HistoryPage: React.FC = () => {
           <>
             <div className="history-stats">
               <div className="stat-card">
-                <div className="stat-icon">📷</div>
+                <div className="stat-icon">
+                  <IconCamera size={32} strokeWidth={2} />
+                </div>
                 <div className="stat-value">{totalScans}</div>
                 <div className="stat-label">Total Scans</div>
               </div>
               <div className="stat-card">
-                <div className="stat-icon">⭐</div>
+                <div className="stat-icon">
+                  <IconStar size={32} strokeWidth={2} />
+                </div>
                 <div className="stat-value">{avgScore}%</div>
                 <div className="stat-label">Avg Score</div>
               </div>
               <div className="stat-card">
-                <div className="stat-icon">💡</div>
+                <div className="stat-icon">
+                  <IconZap size={32} strokeWidth={2} />
+                </div>
                 <div className="stat-value">{totalRecs}</div>
                 <div className="stat-label">Recommendations</div>
               </div>
@@ -116,7 +125,11 @@ const HistoryPage: React.FC = () => {
                   }}
                 >
                   <div className="history-thumbnail">
-                    {item.imageUrl ? <img src={item.imageUrl} alt="Scan" /> : '📸'}
+                    {item.imageUrl ? <img src={item.imageUrl} alt="Scan" /> : (
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%', background: 'var(--bg-light)' }}>
+                        <IconScan size={32} strokeWidth={2} color="var(--text-gray)" />
+                      </div>
+                    )}
                   </div>
                   <div className="history-content">
                     <div className="history-date">

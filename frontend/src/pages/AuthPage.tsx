@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LoginForm } from '../components/LoginForm';
 import { RegisterForm } from '../components/RegisterForm';
+import { IconCamera, IconSparkles, IconBarChart } from '../components/Icons';
 import './AuthPage.css';
 
 export const AuthPage: React.FC = () => {
@@ -21,21 +22,27 @@ export const AuthPage: React.FC = () => {
         </div>
         <div className="auth-features">
           <div className="auth-feature">
-            <div className="feature-icon">&#x1F4F7;</div>
+            <div className="feature-icon">
+              <IconCamera size={28} strokeWidth={2} />
+            </div>
             <div className="feature-text">
               <h3>Smart Analysis</h3>
               <p>Upload a photo and get instant AI-powered skin analysis</p>
             </div>
           </div>
           <div className="auth-feature">
-            <div className="feature-icon">&#x2728;</div>
+            <div className="feature-icon">
+              <IconSparkles size={28} strokeWidth={2} />
+            </div>
             <div className="feature-text">
               <h3>Personalized Routines</h3>
               <p>Get customized skincare routines tailored to your skin type</p>
             </div>
           </div>
           <div className="auth-feature">
-            <div className="feature-icon">&#x1F4CA;</div>
+            <div className="feature-icon">
+              <IconBarChart size={28} strokeWidth={2} />
+            </div>
             <div className="feature-text">
               <h3>Track Progress</h3>
               <p>Monitor your skin health improvements over time</p>

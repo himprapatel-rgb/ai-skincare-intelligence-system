@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { IconArrowLeft, IconStar } from '../components/Icons';
 import './ProductDetailsPage.css';
 
 interface ProductDetails {
@@ -96,7 +97,10 @@ const ProductDetailsPage: React.FC = () => {
 
   return (
     <div className="product-details-page">
-      <button className="back-button" onClick={() => navigate(-1)}>← Back</button>
+      <button className="back-button" onClick={() => navigate(-1)}>
+        <IconArrowLeft size={16} strokeWidth={2} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
+        Back
+      </button>
       
       <div className="product-header">
         <div className="product-image-section">
@@ -114,8 +118,15 @@ const ProductDetailsPage: React.FC = () => {
           
           <div className="rating-section">
             <div className="stars">
-              {'★'.repeat(Math.floor(product.rating))}
-              {'☆'.repeat(5 - Math.floor(product.rating))}
+              {Array.from({ length: 5 }).map((_, index) => (
+                <IconStar
+                  key={index}
+                  size={16}
+                  strokeWidth={2}
+                  fill={index < Math.floor(product.rating) ? 'currentColor' : 'none'}
+                  style={{ marginRight: '4px' }}
+                />
+              ))}
             </div>
             <span className="rating-text">{product.rating} ({product.reviews} reviews)</span>
           </div>

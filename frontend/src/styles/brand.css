@@ -1,0 +1,40 @@
+/* Brand Variables - Shared Across All Pages */
+
+:root {
+  /* Brand Colors - From Visual Identity Guidelines */
+  --primary: #0D9488; /* Intelligent Teal - Primary brand color */
+  --primary-dark: #0f766e; /* Darker teal for hover states */
+  --primary-light: rgba(13, 148, 136, 0.1);
+  --secondary: #F97316; /* Warm Coral - Accents, highlights */
+  --accent: #a9c7ff; /* Light accent */
+  
+  /* Backgrounds */
+  --bg-light: #F8FAFC; /* Light Gray - Secondary backgrounds */
+  --bg-white: #FFFFFF; /* Pure White - Backgrounds */
+  --bg-secondary: #F8FAFC;
+  
+  /* Text Colors */
+  --text-dark: #1E293B; /* Deep Navy - Primary text */
+  --text-gray: #4b5b76; /* Gray text */
+  --text-light: #8a9ab7; /* Light gray text */
+  --text-primary: #1E293B;
+  --text-secondary: #4b5b76;
+  
+  /* Borders & Shadows */
+  --border: #E2E8F0; /* Border color */
+  --border-color: #E2E8F0;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Brand guideline */
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  
+  /* Status Colors */
+  --success: #D1FAE5; /* Soft Sage - Success states */
+  --success-text: #065f46;
+  --warning: #FEF3C7; /* Warm Cream */
+  --warning-text: #92400e;
+  --warning-light: #FEF3C7;
+  --danger: #dc2626;
+  --info: #0D9488;
+  
+  /* Grays */
+  --gray-200: #E2E8F0;
+}

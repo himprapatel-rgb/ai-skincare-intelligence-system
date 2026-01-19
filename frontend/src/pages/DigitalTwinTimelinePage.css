@@ -1,0 +1,359 @@
+/* Digital Twin Timeline Page - Brand-Aligned Design */
+
+:root {
+  --primary: #0D9488;
+  --primary-dark: #0f766e;
+  --secondary: #F97316;
+  --bg-light: #F8FAFC;
+  --bg-white: #FFFFFF;
+  --text-dark: #1E293B;
+  --text-gray: #4b5b76;
+  --border: #E2E8F0;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.digital-twin-page {
+  min-height: 100vh;
+  background: var(--bg-light);
+  padding: 40px 24px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.digital-twin-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.page-header h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 12px;
+  line-height: 1.2;
+  letter-spacing: -0.5px;
+}
+
+.page-header p {
+  font-size: 1.125rem;
+  color: var(--text-gray);
+  line-height: 1.6;
+}
+
+.progress-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.summary-card {
+  background: var(--bg-white);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: all 0.3s ease;
+}
+
+.summary-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.15);
+  border-color: var(--primary);
+}
+
+.summary-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  background: var(--primary-light, rgba(13, 148, 136, 0.1));
+  border-radius: 12px;
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.summary-content {
+  flex: 1;
+}
+
+.summary-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.summary-label {
+  font-size: 0.875rem;
+  color: var(--text-gray);
+  font-weight: 500;
+}
+
+.card {
+  background: var(--bg-white);
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  margin-bottom: 32px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.card-header h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin: 0;
+}
+
+.timeline-snapshots {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 20px;
+}
+
+.snapshot-item {
+  cursor: pointer;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  background: var(--bg-white);
+}
+
+.snapshot-item:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md, 0 4px 12px rgba(0, 0, 0, 0.08));
+  border-color: var(--primary);
+}
+
+.snapshot-item.selected {
+  border-color: var(--primary);
+  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.2);
+}
+
+.snapshot-image {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+}
+
+.snapshot-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.snapshot-date {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+  color: white;
+  padding: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.snapshot-info {
+  padding: 12px;
+  text-align: center;
+}
+
+.snapshot-score {
+  font-weight: 600;
+  color: var(--text-dark);
+  font-size: 0.875rem;
+}
+
+.snapshot-mood {
+  font-size: 0.75rem;
+  color: var(--text-gray);
+  margin-top: 4px;
+}
+
+.snapshot-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-bottom: 24px;
+}
+
+.detail-image {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.detail-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+}
+
+.detail-metrics h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 16px;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.metric-item {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  background: var(--bg-light);
+  border-radius: 8px;
+}
+
+.metric-label {
+  font-size: 0.875rem;
+  color: var(--text-gray);
+  margin-bottom: 4px;
+}
+
+.metric-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.improvements-section {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+
+.improvements-section h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 16px;
+}
+
+.improvements-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.improvements-list li {
+  display: flex;
+  align-items: center;
+  padding: 12px 0;
+  color: var(--text-dark);
+  font-weight: 500;
+}
+
+.before-after-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-bottom: 24px;
+}
+
+.before-after-item {
+  text-align: center;
+}
+
+.before-after-item img {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  margin: 16px 0;
+}
+
+.ba-label {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 8px;
+}
+
+.ba-date {
+  font-size: 0.875rem;
+  color: var(--text-gray);
+  margin-top: 8px;
+}
+
+.ba-score {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-top: 8px;
+}
+
+.improvement-summary {
+  text-align: center;
+  padding: 24px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  border-radius: 12px;
+  color: white;
+}
+
+.improvement-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.improvement-label {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+.loading-spinner {
+  text-align: center;
+  padding: 48px;
+  color: var(--text-gray);
+}
+
+@media (max-width: 768px) {
+  .digital-twin-page {
+    padding: 24px 16px;
+  }
+
+  .page-header h1 {
+    font-size: 2rem;
+  }
+
+  .snapshot-details-grid,
+  .before-after-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .timeline-snapshots {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+}

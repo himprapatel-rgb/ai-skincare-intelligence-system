@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { IconMail, IconArrowLeft } from '../components/Icons';
 import './CommonStyles.css';
 import './PasswordResetPage.css';
 
@@ -43,7 +44,9 @@ const PasswordResetPage: React.FC = () => {
             <h2>Check Your Email</h2>
           </div>
           <div className="card-content password-reset-content">
-            <div className="password-reset-icon">📧</div>
+            <div className="password-reset-icon">
+              <IconMail size={48} strokeWidth={2} />
+            </div>
             <p>We've sent a password reset link to:</p>
             <p className="password-reset-email">{email}</p>
             <p className="password-reset-note">
@@ -97,7 +100,8 @@ const PasswordResetPage: React.FC = () => {
           </form>
           <div className="password-reset-footer">
             <Link to="/auth" className="password-reset-link">
-              ← Back to Login
+              <IconArrowLeft size={16} strokeWidth={2} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
+              Back to Login
             </Link>
           </div>
         </div>

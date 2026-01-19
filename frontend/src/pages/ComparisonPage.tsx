@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { IconDownload, IconShare2, IconTrendingUp, IconTrendingDown } from '../components/Icons';
 import './CommonStyles.css';
 import './ComparisonPage.css';
 
@@ -7,6 +9,7 @@ interface Analysis {
   id: string;
   date: string;
   thumbnail: string;
+  imageUrl?: string;
   skinType: string;
   overallScore: number;
   concerns: {
@@ -27,26 +30,29 @@ const ComparisonPage: React.FC = () => {
   const [selectedAnalyses, setSelectedAnalyses] = useState<[string | null, string | null]>([null, null]);
   // Loading state reserved for future API integration.
 
+  const [allAnalysesForChart, setAllAnalysesForChart] = useState<Analysis[]>([]);
+
   useEffect(() => {
     // Mock data - replace with API call
     const mockAnalyses: Analysis[] = [
       {
-        id: '1', date: '2026-01-14', thumbnail: '/placeholder.jpg',
+        id: '1', date: '2026-01-14', thumbnail: '/placeholder.jpg', imageUrl: '/placeholder.jpg',
         skinType: 'Combination', overallScore: 72,
         concerns: { acne: 35, wrinkles: 20, darkSpots: 25, hydration: 65, redness: 30 }
       },
       {
-        id: '2', date: '2026-01-07', thumbnail: '/placeholder.jpg',
+        id: '2', date: '2026-01-07', thumbnail: '/placeholder.jpg', imageUrl: '/placeholder.jpg',
         skinType: 'Combination', overallScore: 68,
         concerns: { acne: 45, wrinkles: 22, darkSpots: 30, hydration: 58, redness: 35 }
       },
       {
-        id: '3', date: '2025-12-28', thumbnail: '/placeholder.jpg',
+        id: '3', date: '2025-12-28', thumbnail: '/placeholder.jpg', imageUrl: '/placeholder.jpg',
         skinType: 'Oily', overallScore: 62,
         concerns: { acne: 55, wrinkles: 18, darkSpots: 28, hydration: 52, redness: 40 }
       },
     ];
     setAnalyses(mockAnalyses);
+    setAllAnalysesForChart(mockAnalyses);
   }, []);
 
   const getComparison = (key: keyof Analysis['concerns']) => {
@@ -64,13 +70,57 @@ const ComparisonPage: React.FC = () => {
     const { diff, improved } = comparison;
     return (
       <span className={`comparison-delta ${improved ? 'improved' : 'declined'}`}>
-        {improved ? '↓' : '↑'} {Math.abs(diff)}%
+        {improved ? (
+          <>
+            <IconTrendingDown size={14} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '4px' }} />
+            {Math.abs(diff)}%
+          </>
+        ) : (
+          <>
+            <IconTrendingUp size={14} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '4px' }} />
+            {Math.abs(diff)}%
+          </>
+        )}
       </span>
     );
   };
 
   const analysis1 = analyses.find(a => a.id === selectedAnalyses[0]);
   const analysis2 = analyses.find(a => a.id === selectedAnalyses[1]);
+
+  const chartData = allAnalysesForChart
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+    .map(a => ({
+      date: new Date(a.date).toLocaleDateString('en', { month: 'short', day: 'numeric' }),
+      score: a.overallScore,
+      acne: a.concerns.acne,
+      hydration: a.concerns.hydration
+    }));
+
+  const handleExportComparison = () => {
+    // TODO: Implement export functionality
+    alert('Export comparison feature coming soon!');
+  };
+
+  const handleShareComparison = () => {
+    // TODO: Implement share functionality
+    if (navigator.share) {
+      navigator.share({
+        title: 'Skin Analysis Comparison',
+        text: `Comparing analyses from ${analysis2?.date} to ${analysis1?.date}`,
+      });
+    } else {
+      alert('Share feature coming soon!');
+    }
+  };
+
+  const getOverallChange = () => {
+    if (!analysis1 || !analysis2) return null;
+    const diff = analysis1.overallScore - analysis2.overallScore;
+    return { diff, improved: diff > 0 };
+  };
+
+  const overallChange = getOverallChange();
 
   return (
     <div className="page-container comparison-page">
@@ -112,51 +162,151 @@ const ComparisonPage: React.FC = () => {
       </div>
 
       {analysis1 && analysis2 && (
-        <div className="card comparison-card">
-          <div className="card-header"><h3>Comparison Results</h3></div>
-          <div className="card-content">
-            <div className="comparison-summary">
-              <div className="comparison-score-card">
-                <div className="comparison-score-date">{analysis1.date}</div>
-                <div className="comparison-score-value primary">
-                  {analysis1.overallScore}
-                </div>
-                <div className="comparison-score-label">Overall Score</div>
-              </div>
-              <div className="comparison-score-card">
-                <div className="comparison-score-date">{analysis2.date}</div>
-                <div className="comparison-score-value muted">
-                  {analysis2.overallScore}
-                </div>
-                <div className="comparison-score-label">Overall Score</div>
+        <>
+          {/* Side-by-Side Image Comparison */}
+          <div className="card comparison-card">
+            <div className="card-header">
+              <h3>Visual Comparison</h3>
+              <div className="comparison-actions-header">
+                <button onClick={handleShareComparison} className="btn-icon-small" title="Share">
+                  <IconShare2 size={18} strokeWidth={2} />
+                </button>
+                <button onClick={handleExportComparison} className="btn-icon-small" title="Export">
+                  <IconDownload size={18} strokeWidth={2} />
+                </button>
               </div>
             </div>
-            
-            <h4 className="comparison-section-title">Concern Changes</h4>
-            <table className="comparison-table">
-              <thead>
-                <tr>
-                  <th className="comparison-th left">Concern</th>
-                  <th className="comparison-th center">{analysis1.date}</th>
-                  <th className="comparison-th center">{analysis2.date}</th>
-                  <th className="comparison-th center">Change</th>
-                </tr>
-              </thead>
-              <tbody>
-                {(['acne', 'wrinkles', 'darkSpots', 'hydration', 'redness'] as const).map(concern => (
-                  <tr key={concern}>
-                    <td className="comparison-td capitalize">
-                      {concern.replace(/([A-Z])/g, ' $1')}
-                    </td>
-                    <td className="comparison-td center">{analysis1.concerns[concern]}%</td>
-                    <td className="comparison-td center">{analysis2.concerns[concern]}%</td>
-                    <td className="comparison-td center">{renderComparisonIndicator(concern)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <div className="card-content">
+              <div className="comparison-images">
+                <div className="comparison-image-container">
+                  <img 
+                    src={analysis1.imageUrl || analysis1.thumbnail} 
+                    alt={`Analysis from ${analysis1.date}`}
+                    className="comparison-image"
+                  />
+                  <div className="comparison-image-label">
+                    {analysis1.date} - Score: {analysis1.overallScore}
+                  </div>
+                </div>
+                <div className="comparison-vs-divider">VS</div>
+                <div className="comparison-image-container">
+                  <img 
+                    src={analysis2.imageUrl || analysis2.thumbnail} 
+                    alt={`Analysis from ${analysis2.date}`}
+                    className="comparison-image"
+                  />
+                  <div className="comparison-image-label">
+                    {analysis2.date} - Score: {analysis2.overallScore}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
+
+          {/* Overall Score Summary */}
+          <div className="card comparison-card">
+            <div className="card-header"><h3>Overall Score Comparison</h3></div>
+            <div className="card-content">
+              <div className="comparison-summary">
+                <div className="comparison-score-card">
+                  <div className="comparison-score-date">{analysis1.date}</div>
+                  <div className="comparison-score-value primary">
+                    {analysis1.overallScore}
+                  </div>
+                  <div className="comparison-score-label">Current Score</div>
+                </div>
+                {overallChange && (
+                  <div className="comparison-score-card change-indicator">
+                    <div className="comparison-score-date">Change</div>
+                    <div className={`comparison-score-value ${overallChange.improved ? 'improved' : 'declined'}`}>
+                      {overallChange.improved ? (
+                        <IconTrendingUp size={32} strokeWidth={2} />
+                      ) : (
+                        <IconTrendingDown size={32} strokeWidth={2} />
+                      )}
+                      <span style={{ marginLeft: '8px' }}>
+                        {overallChange.improved ? '+' : ''}{overallChange.diff}
+                      </span>
+                    </div>
+                    <div className="comparison-score-label">
+                      {overallChange.improved ? 'Improved' : 'Declined'}
+                    </div>
+                  </div>
+                )}
+                <div className="comparison-score-card">
+                  <div className="comparison-score-date">{analysis2.date}</div>
+                  <div className="comparison-score-value muted">
+                    {analysis2.overallScore}
+                  </div>
+                  <div className="comparison-score-label">Previous Score</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Timeline Chart */}
+          {chartData.length > 0 && (
+            <div className="card comparison-card">
+              <div className="card-header"><h3>Progress Timeline</h3></div>
+              <div className="card-content">
+                <ResponsiveContainer width="100%" height={300}>
+                  <LineChart data={chartData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="date" />
+                    <YAxis domain={[0, 100]} />
+                    <Tooltip />
+                    <Legend />
+                    <Line 
+                      type="monotone" 
+                      dataKey="score" 
+                      stroke="var(--primary)" 
+                      strokeWidth={3}
+                      name="Overall Score"
+                      dot={{ r: 6 }}
+                    />
+                    <Line 
+                      type="monotone" 
+                      dataKey="hydration" 
+                      stroke="var(--secondary)" 
+                      strokeWidth={2}
+                      name="Hydration"
+                      strokeDasharray="5 5"
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          )}
+
+          {/* Concern Changes Table */}
+          <div className="card comparison-card">
+            <div className="card-header"><h3>Concern Changes</h3></div>
+            <div className="card-content">
+              <table className="comparison-table">
+                <thead>
+                  <tr>
+                    <th className="comparison-th left">Concern</th>
+                    <th className="comparison-th center">{analysis1.date}</th>
+                    <th className="comparison-th center">{analysis2.date}</th>
+                    <th className="comparison-th center">Change</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {(['acne', 'wrinkles', 'darkSpots', 'hydration', 'redness'] as const).map(concern => (
+                    <tr key={concern}>
+                      <td className="comparison-td capitalize">
+                        {concern.replace(/([A-Z])/g, ' $1')}
+                      </td>
+                      <td className="comparison-td center">{analysis1.concerns[concern]}%</td>
+                      <td className="comparison-td center">{analysis2.concerns[concern]}%</td>
+                      <td className="comparison-td center">{renderComparisonIndicator(concern)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </>
       )}
 
       <div className="comparison-actions">

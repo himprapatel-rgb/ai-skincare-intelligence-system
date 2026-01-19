@@ -1,27 +1,82 @@
-/* DataExportPage.css */
+/* Data Export Page - Brand-Aligned Design */
+
+:root {
+  --primary: #0D9488;
+  --primary-dark: #0f766e;
+  --bg-light: #F8FAFC;
+  --bg-white: #FFFFFF;
+  --text-dark: #1E293B;
+  --text-gray: #4b5b76;
+  --text-secondary: #4b5b76;
+  --border: #E2E8F0;
+  --bg-secondary: #F8FAFC;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.data-export-page {
+  min-height: 100vh;
+  background: var(--bg-light);
+  padding: 40px 24px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.data-export-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.data-export-page h1 {
+  font-size: 3rem; /* Brand guideline: 48px / 3rem for H1 */
+  font-weight: 700; /* Brand guideline: Bold */
+  color: var(--text-dark);
+  margin-bottom: 32px;
+  text-align: center;
+  line-height: 1.2;
+  letter-spacing: -0.5px;
+}
+
 .export-format-grid {
   display: flex;
   gap: 16px;
   flex-wrap: wrap;
+  margin-bottom: 32px;
 }
 
 .export-card {
+  background: var(--bg-white);
+  border-radius: 12px; /* Brand guideline: 12px for cards */
+  padding: 32px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
   margin-bottom: 24px;
+  transition: all 0.3s ease;
+}
+
+.export-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary);
+  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.15);
 }
 
 .export-complete {
   text-align: center;
   padding: 48px;
+  background: var(--bg-white);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
 }
 
 .export-complete-icon {
-  font-size: 64px;
-  margin-bottom: 16px;
+  font-size: 5rem;
+  margin-bottom: 24px;
 }
 
 .export-complete-text {
-  color: var(--text-secondary);
+  color: var(--text-gray);
+  font-size: 1rem;
   margin-bottom: 24px;
+  line-height: 1.6;
 }
 
 .export-complete-actions {
@@ -33,14 +88,16 @@
   align-items: center;
   padding: 16px;
   margin-bottom: 8px;
-  background: var(--bg-secondary);
+  background: var(--bg-light);
   border-radius: 8px;
+  border: 1px solid var(--border);
 }
 
 .export-category-check {
   width: 20px;
   height: 20px;
   margin-right: 16px;
+  accent-color: var(--primary);
 }
 
 .export-category-info {
@@ -48,80 +105,87 @@
 }
 
 .export-category-label {
-  font-weight: 700;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--text-dark);
+  margin-bottom: 4px;
 }
 
 .export-category-desc {
-  font-size: 14px;
-  color: var(--text-secondary);
+  font-size: 0.875rem;
+  color: var(--text-gray);
+  line-height: 1.5;
 }
 
 .export-category-size {
-  color: var(--text-secondary);
-  font-size: 14px;
-}
-
-.export-actions {
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.export-note {
-  margin-top: 24px;
-}
-
-.export-note-content {
-  font-size: 14px;
-  color: var(--text-secondary);
+  font-size: 0.875rem;
+  color: var(--text-gray);
+  font-weight: 500;
 }
 
 .export-format-card {
   flex: 1;
-  min-width: 220px;
+  min-width: 200px;
   padding: 24px;
-  background: var(--bg-secondary);
-  color: var(--text-primary);
+  background: var(--bg-light);
+  border: 2px solid var(--border);
   border-radius: 12px;
-  border: 1px solid var(--border-color);
   cursor: pointer;
+  transition: all 0.2s ease;
   text-align: center;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.export-format-card:hover {
+  border-color: var(--primary);
+  transform: translateY(-2px);
 }
 
 .export-format-card.active {
   background: var(--primary);
-  color: #ffffff;
-  box-shadow: var(--shadow-lg);
-  border-color: transparent;
-}
-
-.export-format-card:hover {
-  transform: translateY(-2px);
+  border-color: var(--primary);
+  color: white;
 }
 
 .export-format-icon {
-  font-size: 32px;
-  margin-bottom: 8px;
+  font-size: 2.5rem;
+  margin-bottom: 12px;
 }
 
 .export-format-title {
-  font-weight: 700;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 4px;
 }
 
 .export-format-subtitle {
-  font-size: 12px;
+  font-size: 0.875rem;
   opacity: 0.8;
 }
 
-@media (max-width: 720px) {
-  .export-format-grid {
-    flex-direction: column;
+.export-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 32px;
+  margin-bottom: 32px;
+}
+
+.export-note {
+  background: rgba(13, 148, 136, 0.05);
+  border: 1px solid var(--primary);
+}
+
+.export-note-content {
+  color: var(--text-dark);
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .data-export-page {
+    padding: 24px 16px;
   }
 
-  .export-actions .btn {
-    width: 100%;
-    justify-content: center;
+  .data-export-page h1 {
+    font-size: 2rem; /* Responsive: 32px / 2rem for H2 */
   }
 }

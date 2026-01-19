@@ -1,26 +1,43 @@
+/* Privacy Page - Brand-Aligned Design */
+
+:root {
+  --primary: #0D9488;
+  --primary-dark: #0f766e;
+  --secondary: #F97316;
+  --bg-light: #F8FAFC;
+  --bg-white: #FFFFFF;
+  --text-dark: #1E293B;
+  --text-gray: #4b5b76;
+  --border: #E2E8F0;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
 .privacy-page {
   min-height: 100vh;
-  background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
+  background: var(--bg-light);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 .privacy-hero {
   text-align: center;
-  padding: 80px 20px 40px;
-  max-width: 800px;
+  padding: 80px 24px 60px;
+  max-width: 1200px;
   margin: 0 auto;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
   border-radius: 0 0 24px 24px;
 }
 
 .privacy-hero h1 {
-  font-size: 3rem;
-  font-weight: 700;
+  font-size: 3rem; /* Brand guideline: 48px / 3rem for H1 */
+  font-weight: 700; /* Brand guideline: Bold */
   color: white;
   margin-bottom: 16px;
+  line-height: 1.2;
+  letter-spacing: -0.5px;
 }
 
 .last-updated {
-  font-size: 1rem;
+  font-size: 1rem; /* Brand guideline: 16px Body */
   color: rgba(255, 255, 255, 0.9);
   font-style: italic;
   margin: 0;
@@ -29,126 +46,66 @@
 .privacy-container {
   max-width: 900px;
   margin: 0 auto;
-  padding: 60px 20px;
+  padding: 60px 24px;
 }
 
 .privacy-section {
-  background: white;
+  background: var(--bg-white);
   padding: 40px;
-  border-radius: 16px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+  border-radius: 12px; /* Brand guideline: 12px for cards */
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
   margin-bottom: 32px;
   transition: all 0.3s ease;
 }
 
 .privacy-section:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.15);
+  border-color: var(--primary);
 }
 
 .privacy-section h2 {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: #2d3748;
+  font-size: 1.5rem; /* Brand guideline: 24px / 1.5rem for H3 */
+  font-weight: 600; /* Brand guideline: Semibold */
+  color: var(--text-dark);
   margin-bottom: 20px;
-  padding-bottom: 12px;
-  border-bottom: 3px solid #667eea;
-}
-
-.privacy-section h3 {
-  font-size: 1.35rem;
-  font-weight: 600;
-  color: #4a5568;
-  margin-top: 24px;
-  margin-bottom: 12px;
+  line-height: 1.4;
 }
 
 .privacy-section p {
-  font-size: 1.0625rem;
-  color: #4a5568;
-  line-height: 1.8;
+  font-size: 1rem; /* Brand guideline: 16px Body */
+  color: var(--text-gray);
+  line-height: 1.6;
   margin-bottom: 16px;
 }
 
-.privacy-section ul,
-.privacy-section ol {
+.privacy-section ul {
   margin: 16px 0;
   padding-left: 24px;
 }
 
 .privacy-section li {
-  font-size: 1.0625rem;
-  color: #4a5568;
-  line-height: 1.8;
-  margin-bottom: 12px;
-}
-
-.privacy-section strong {
-  color: #2d3748;
-  font-weight: 600;
-}
-
-.delete-button,
-.contact-button {
-  display: inline-block;
-  padding: 14px 32px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  font-size: 1.0625rem;
-  font-weight: 600;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 16px;
-  text-decoration: none;
-}
-
-.delete-button:hover,
-.contact-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 16px rgba(102, 126, 234, 0.4);
-}
-
-.delete-button {
-  background: linear-gradient(135deg, #fc8181 0%, #e53e3e 100%);
-}
-
-.delete-button:hover {
-  box-shadow: 0 8px 16px rgba(252, 129, 129, 0.4);
-}
-
-#delete {
-  border: 2px solid #fc8181;
+  font-size: 1rem;
+  color: var(--text-gray);
+  line-height: 1.6;
+  margin-bottom: 8px;
 }
 
 @media (max-width: 768px) {
   .privacy-hero {
-    padding: 60px 20px 32px;
+    padding: 60px 16px 40px;
   }
-  
+
   .privacy-hero h1 {
-    font-size: 2rem;
+    font-size: 2rem; /* Responsive: 32px / 2rem for H2 */
   }
-  
+
   .privacy-container {
     padding: 40px 16px;
   }
-  
+
   .privacy-section {
-    padding: 28px 20px;
-  }
-  
-  .privacy-section h2 {
-    font-size: 1.5rem;
-  }
-  
-  .privacy-section h3 {
-    font-size: 1.2rem;
-  }
-  
-  .privacy-section p,
-  .privacy-section li {
-    font-size: 1rem;
+    padding: 32px 24px;
   }
 }

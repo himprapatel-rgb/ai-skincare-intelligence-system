@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { IconSun, IconMoon, IconBell, IconArrowUp, IconArrowDown, IconX, IconCheck, IconInfo } from '../components/Icons';
 import './RoutineBuilderPage.css';
 
 interface RoutineStep {
@@ -9,6 +10,13 @@ interface RoutineStep {
   productId?: string;
   productName?: string;
   category: string;
+}
+
+interface ReminderSettings {
+  enabled: boolean;
+  morningTime: string;
+  eveningTime: string;
+  days: string[];
 }
 
 const RoutineBuilderPage: React.FC = () => {
@@ -29,9 +37,46 @@ const RoutineBuilderPage: React.FC = () => {
   ]);
 
   const categories = ['Cleanser', 'Toner', 'Essence', 'Serum', 'Treatment', 'Eye Cream', 'Moisturizer', 'Oil', 'Sunscreen'];
+  
+  // Suggested order based on category (lower number = apply first)
+  const categoryOrder: Record<string, number> = {
+    'Cleanser': 1,
+    'Toner': 2,
+    'Essence': 3,
+    'Serum': 4,
+    'Treatment': 5,
+    'Eye Cream': 6,
+    'Moisturizer': 7,
+    'Oil': 8,
+    'Sunscreen': 9
+  };
+
+  const [reminderSettings, setReminderSettings] = useState<ReminderSettings>({
+    enabled: false,
+    morningTime: '08:00',
+    eveningTime: '20:00',
+    days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+  });
+
+  const [showReminderSettings, setShowReminderSettings] = useState(false);
 
   const currentRoutine = activeTime === 'morning' ? morningRoutine : eveningRoutine;
   const setCurrentRoutine = activeTime === 'morning' ? setMorningRoutine : setEveningRoutine;
+
+  // Auto-suggest product order based on category
+  const suggestOrder = () => {
+    const sorted = [...currentRoutine].sort((a, b) => {
+      const orderA = categoryOrder[a.category] || 999;
+      const orderB = categoryOrder[b.category] || 999;
+      return orderA - orderB;
+    });
+    
+    sorted.forEach((step, index) => {
+      step.order = index + 1;
+    });
+    
+    setCurrentRoutine(sorted);
+  };
 
   const handleAddStep = () => {
     const newStep: RoutineStep = {
@@ -89,15 +134,33 @@ const RoutineBuilderPage: React.FC = () => {
           className={`time-btn ${activeTime === 'morning' ? 'active' : ''}`}
           onClick={() => setActiveTime('morning')}
         >
-          ☀ Morning Routine
+          <IconSun size={20} strokeWidth={2} style={{ marginRight: '8px' }} />
+          Morning Routine
         </button>
         <button 
           className={`time-btn ${activeTime === 'evening' ? 'active' : ''}`}
           onClick={() => setActiveTime('evening')}
         >
-          ☽ Evening Routine
+          <IconMoon size={20} strokeWidth={2} style={{ marginRight: '8px' }} />
+          Evening Routine
         </button>
       </div>
+
+      {/* Product Order Suggestions */}
+      {currentRoutine.length > 1 && (
+        <div className="routine-suggestions">
+          <div className="suggestion-card">
+            <IconInfo size={20} strokeWidth={2} />
+            <div className="suggestion-content">
+              <h4>Optimize Product Order</h4>
+              <p>Reorder your products based on skincare best practices (thinnest to thickest)</p>
+            </div>
+            <button onClick={suggestOrder} className="btn-suggest">
+              Auto-Order
+            </button>
+          </div>
+        </div>
+      )}
 
       <div className="routine-steps">
         {currentRoutine.length === 0 ? (
@@ -140,22 +203,24 @@ const RoutineBuilderPage: React.FC = () => {
                     onClick={() => handleMoveStep(index, 'up')}
                     disabled={index === 0}
                     title="Move up"
+                    className="btn-icon-action"
                   >
-                    ↑
+                    <IconArrowUp size={18} strokeWidth={2} />
                   </button>
                   <button 
                     onClick={() => handleMoveStep(index, 'down')}
                     disabled={index === currentRoutine.length - 1}
                     title="Move down"
+                    className="btn-icon-action"
                   >
-                    ↓
+                    <IconArrowDown size={18} strokeWidth={2} />
                   </button>
                   <button 
                     onClick={() => handleRemoveStep(step.id)}
-                    className="btn-remove"
+                    className="btn-icon-action btn-remove"
                     title="Remove"
                   >
-                    ×
+                    <IconX size={18} strokeWidth={2} />
                   </button>
                 </div>
               </div>
@@ -177,11 +242,101 @@ const RoutineBuilderPage: React.FC = () => {
         </ul>
       </div>
 
+      {/* Reminder Settings */}
+      <div className="routine-reminders">
+        <div className="reminder-header">
+          <div className="reminder-title">
+            <IconBell size={20} strokeWidth={2} />
+            <h3>Reminder Notifications</h3>
+          </div>
+          <button 
+            onClick={() => setShowReminderSettings(!showReminderSettings)}
+            className="btn-toggle"
+          >
+            {showReminderSettings ? 'Hide' : 'Show'} Settings
+          </button>
+        </div>
+        
+        {showReminderSettings && (
+          <div className="reminder-settings-card">
+            <div className="reminder-setting-item">
+              <label>
+                <input
+                  type="checkbox"
+                  checked={reminderSettings.enabled}
+                  onChange={(e) => setReminderSettings({...reminderSettings, enabled: e.target.checked})}
+                />
+                Enable reminders
+              </label>
+            </div>
+            
+            {reminderSettings.enabled && (
+              <>
+                <div className="reminder-time-settings">
+                  <div className="time-setting">
+                    <label>
+                      <IconSun size={16} strokeWidth={2} />
+                      Morning Time:
+                    </label>
+                    <input
+                      type="time"
+                      value={reminderSettings.morningTime}
+                      onChange={(e) => setReminderSettings({...reminderSettings, morningTime: e.target.value})}
+                    />
+                  </div>
+                  <div className="time-setting">
+                    <label>
+                      <IconMoon size={16} strokeWidth={2} />
+                      Evening Time:
+                    </label>
+                    <input
+                      type="time"
+                      value={reminderSettings.eveningTime}
+                      onChange={(e) => setReminderSettings({...reminderSettings, eveningTime: e.target.value})}
+                    />
+                  </div>
+                </div>
+                
+                <div className="reminder-days">
+                  <label>Remind me on:</label>
+                  <div className="days-grid">
+                    {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, idx) => (
+                      <label key={day} className="day-checkbox">
+                        <input
+                          type="checkbox"
+                          checked={reminderSettings.days.includes(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'][idx])}
+                          onChange={(e) => {
+                            const fullDay = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'][idx];
+                            if (e.target.checked) {
+                              setReminderSettings({
+                                ...reminderSettings,
+                                days: [...reminderSettings.days, fullDay]
+                              });
+                            } else {
+                              setReminderSettings({
+                                ...reminderSettings,
+                                days: reminderSettings.days.filter((d: string) => d !== fullDay)
+                              });
+                            }
+                          }}
+                        />
+                        {day}
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+        )}
+      </div>
+
       <div className="routine-actions">
         <button onClick={() => navigate('/myshelf')} className="btn-secondary">
           View My Shelf
         </button>
         <button onClick={handleSaveRoutine} className="btn-primary">
+          <IconCheck size={18} strokeWidth={2} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
           Save Routine
         </button>
       </div>

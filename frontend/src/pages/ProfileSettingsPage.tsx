@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { IconBarChart, IconCamera, IconPackage, IconSparkles, IconTrendingUp, IconScan } from '../components/Icons';
 import './ProfileSettingsPage.css';
 
 interface UserProfile {
@@ -576,22 +577,30 @@ const ProfileSettingsPage: React.FC = () => {
               
               <div className="stats-grid">
                 <div className="stat-card">
-                  <div className="stat-icon">📊</div>
+                  <div className="stat-icon">
+                    <IconBarChart size={32} strokeWidth={2} />
+                  </div>
                   <div className="stat-value">{stats.skinHealthScore}%</div>
                   <div className="stat-label">Skin Health Score</div>
                 </div>
                 <div className="stat-card">
-                  <div className="stat-icon">📷</div>
+                  <div className="stat-icon">
+                    <IconCamera size={32} strokeWidth={2} />
+                  </div>
                   <div className="stat-value">{stats.totalScans}</div>
                   <div className="stat-label">Total Scans</div>
                 </div>
                 <div className="stat-card">
-                  <div className="stat-icon">🧴</div>
+                  <div className="stat-icon">
+                    <IconPackage size={32} strokeWidth={2} />
+                  </div>
                   <div className="stat-value">{stats.productsInShelf}</div>
                   <div className="stat-label">Products in Shelf</div>
                 </div>
                 <div className="stat-card">
-                  <div className="stat-icon">✨</div>
+                  <div className="stat-icon">
+                    <IconSparkles size={32} strokeWidth={2} />
+                  </div>
                   <div className="stat-value">{stats.activeRoutines}</div>
                   <div className="stat-label">Active Routines</div>
                 </div>
@@ -600,7 +609,10 @@ const ProfileSettingsPage: React.FC = () => {
               <div className="progress-section">
                 <h3>Progress Over Time</h3>
                 <div className="progress-chart-placeholder">
-                  <p>📈 Progress chart will be displayed here</p>
+                  <p>
+                    <IconTrendingUp size={20} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '8px' }} />
+                    Progress chart will be displayed here
+                  </p>
                   <p className="help-text">Track your skin improvements over time</p>
                 </div>
               </div>
@@ -608,7 +620,10 @@ const ProfileSettingsPage: React.FC = () => {
               <div className="comparison-section">
                 <h3>Before/After Comparison</h3>
                 <div className="comparison-placeholder">
-                  <p>📸 Upload photos to see your transformation</p>
+                  <p>
+                    <IconScan size={20} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '8px' }} />
+                    Upload photos to see your transformation
+                  </p>
                   <button type="button" className="btn-secondary">View Comparison</button>
                 </div>
               </div>

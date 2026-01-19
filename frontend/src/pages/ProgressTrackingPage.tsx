@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Line } from 'recharts';
+import { IconTrendingUp, IconCheckCircle, IconCircle, IconDownload } from '../components/Icons';
 import './CommonStyles.css';
 import './ProgressTrackingPage.css';
 
@@ -52,7 +54,10 @@ const ProgressTrackingPage: React.FC = () => {
     <div className="progress-tracking-page">
       <div className="progress-container">
         <div className="page-header">
-          <h1>📈 Progress Tracking</h1>
+          <h1>
+            <IconTrendingUp size={32} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '12px' }} />
+            Progress Tracking
+          </h1>
           <p>Monitor your skin health journey over time</p>
         </div>
 
@@ -76,28 +81,107 @@ const ProgressTrackingPage: React.FC = () => {
         <div className="chart-section">
           <div className="chart-header">
             <h2>Progress Chart</h2>
-            <select value={timeRange} onChange={(e) => setTimeRange(e.target.value as 'week' | 'month' | '3months')}>
-              <option value="week">Last Week</option>
-              <option value="month">Last Month</option>
-              <option value="3months">Last 3 Months</option>
-            </select>
+            <div className="chart-controls">
+              <select value={timeRange} onChange={(e) => setTimeRange(e.target.value as 'week' | 'month' | '3months')}>
+                <option value="week">Last Week</option>
+                <option value="month">Last Month</option>
+                <option value="3months">Last 3 Months</option>
+              </select>
+              <button onClick={() => alert('Export chart feature coming soon!')} className="btn-export-chart">
+                <IconDownload size={16} strokeWidth={2} />
+                Export
+              </button>
+            </div>
           </div>
-          <div className="chart-bars">
-            {progressData.map((data, index) => (
-              <div key={index} className="chart-bar-group">
-                <div className="chart-bar" style={{ height: `${data.overallScore * 1.5}px` }} />
-                <div className="chart-bar-label">{data.date.slice(5)}</div>
+          <div className="chart-container">
+            <ResponsiveContainer width="100%" height={400}>
+              <AreaChart data={progressData}>
+                <defs>
+                  <linearGradient id="colorScore" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="var(--primary)" stopOpacity={0.1}/>
+                  </linearGradient>
+                  <linearGradient id="colorAcne" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="var(--secondary)" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="var(--secondary)" stopOpacity={0.1}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="date" />
+                <YAxis domain={[0, 100]} />
+                <Tooltip />
+                <Legend />
+                <Area 
+                  type="monotone" 
+                  dataKey="overallScore" 
+                  stroke="var(--primary)" 
+                  fillOpacity={1}
+                  fill="url(#colorScore)"
+                  name="Overall Score"
+                />
+                <Line 
+                  type="monotone" 
+                  dataKey="acne" 
+                  stroke="var(--secondary)" 
+                  strokeWidth={2}
+                  name="Acne"
+                  strokeDasharray="5 5"
+                />
+                <Line 
+                  type="monotone" 
+                  dataKey="hydration" 
+                  stroke="#10b981" 
+                  strokeWidth={2}
+                  name="Hydration"
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+          
+          {/* Trend Analysis */}
+          <div className="trend-analysis">
+            <h3>Trend Analysis</h3>
+            <div className="trend-cards">
+              <div className="trend-card">
+                <div className="trend-label">Overall Trend</div>
+                <div className="trend-value positive">
+                  <IconTrendingUp size={24} strokeWidth={2} />
+                  Improving
+                </div>
+                <div className="trend-description">Your skin health is improving steadily</div>
               </div>
-            ))}
+              <div className="trend-card">
+                <div className="trend-label">Acne Trend</div>
+                <div className="trend-value positive">
+                  <IconTrendingUp size={24} strokeWidth={2} />
+                  Decreasing
+                </div>
+                <div className="trend-description">Acne concerns reduced by 15%</div>
+              </div>
+              <div className="trend-card">
+                <div className="trend-label">Hydration Trend</div>
+                <div className="trend-value positive">
+                  <IconTrendingUp size={24} strokeWidth={2} />
+                  Increasing
+                </div>
+                <div className="trend-description">Hydration improved by 10%</div>
+              </div>
+            </div>
           </div>
         </div>
 
         <div className="milestones-section">
-          <h2>🏆 Milestones</h2>
+          <h2>Milestones</h2>
           <div className="milestones-list">
             {milestones.map(milestone => (
               <div key={milestone.id} className={`milestone-item${milestone.achieved ? ' achieved' : ''}`}>
-                <span className="milestone-icon">{milestone.achieved ? '✅' : '⭕'}</span>
+                <span className="milestone-icon">
+                  {milestone.achieved ? (
+                    <IconCheckCircle size={24} strokeWidth={2} />
+                  ) : (
+                    <IconCircle size={24} strokeWidth={2} />
+                  )}
+                </span>
                 <div className="milestone-content">
                   <h4>{milestone.title}</h4>
                   {milestone.date && <p>Achieved: {milestone.date}</p>}

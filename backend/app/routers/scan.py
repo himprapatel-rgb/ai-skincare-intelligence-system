@@ -24,9 +24,9 @@ from app.models import ScanSession, SkinAnalysis, User
 from app.schemas.scan_schemas import (ScanHistoryItem, ScanHistoryResponse,
                                       ScanInitResponse, ScanResultResponse,
                                       ScanStatusResponse, ScanUploadResponse)
-from services.youcam_service import (YouCamError,
-                                     get_default_skin_analysis_actions,
-                                     get_youcam_client)
+from app.services.youcam_service import (YouCamError,
+                                         get_default_skin_analysis_actions,
+                                         get_youcam_client)
 
 router = APIRouter(prefix="/api/v1/scan", tags=["Face Scan"])
 logger = logging.getLogger(__name__)

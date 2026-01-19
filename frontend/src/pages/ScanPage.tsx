@@ -1,13 +1,14 @@
 // src/pages/ScanPage.tsx
 import React, { useState, useCallback } from "react";
 import { initScan, uploadScanImage, getScanStatus, getScanResult } from "../services/scanApi";
+import type { ScanResultResponse } from "../services/scanApi";
 import './ScanPage.css';
 
 export default function ScanPage() {
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [scanning, setScanning] = useState(false);
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<ScanResultResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {

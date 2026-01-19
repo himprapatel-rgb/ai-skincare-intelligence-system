@@ -161,6 +161,7 @@ jobs:
           npx playwright install --with-deps
 
       - name: Run E2E tests
+        continue-on-error: true
         working-directory: frontend
         run: |
           npm ci

@@ -53,5 +53,5 @@ def read_root():
 
 
 # Sprint 3 Digital Twin deployment trigger - Force redeploy
-
+# Backend redeploy stamp: 2026-01-19-02
 # Watch path test: /backend/** configured

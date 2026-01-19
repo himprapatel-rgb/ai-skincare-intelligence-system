@@ -12,6 +12,8 @@ from app.api.v1.routines import router as routines_router
 from app.config import settings
 from app.database import Base, SessionLocal, engine
 from app.core.security import encrypt_sensitive_data
+from sqlalchemy.exc import ProgrammingError
+
 from app.models.user import PolicyVersion, User, UserConsent, UserProfile
 from app.models.twin_models import *  # Import Digital Twin models for table creation# Create database tables if needed (safe for local dev)
 from app.routers import (admin, consent,  # GDPR & User Management
@@ -56,47 +58,53 @@ def ensure_test_user() -> None:
             db.refresh(user)
             logger.info("Seeded static test user: %s", email)
 
-        terms = (
-            db.query(PolicyVersion)
-            .filter(
-                PolicyVersion.policy_type == "terms_of_service",
-                PolicyVersion.is_active == True,
+        terms = None
+        privacy = None
+        try:
+            terms = (
+                db.query(PolicyVersion)
+                .filter(
+                    PolicyVersion.policy_type == "terms_of_service",
+                    PolicyVersion.is_active == True,
+                )
+                .first()
             )
-            .first()
-        )
-        privacy = (
-            db.query(PolicyVersion)
-            .filter(
-                PolicyVersion.policy_type == "privacy_policy",
-                PolicyVersion.is_active == True,
+            privacy = (
+                db.query(PolicyVersion)
+                .filter(
+                    PolicyVersion.policy_type == "privacy_policy",
+                    PolicyVersion.is_active == True,
+                )
+                .first()
             )
-            .first()
-        )
-        policies_changed = False
-        if not terms:
-            terms = PolicyVersion(
-                policy_type="terms_of_service",
-                version="1.0.0",
-                effective_date=datetime(2025, 1, 1),
-                content_url="/terms",
-                summary="Terms of Service - Version 1.0.0",
-                is_active=True,
-            )
-            db.add(terms)
-            policies_changed = True
-        if not privacy:
-            privacy = PolicyVersion(
-                policy_type="privacy_policy",
-                version="1.0.0",
-                effective_date=datetime(2025, 1, 1),
-                content_url="/privacy",
-                summary="Privacy Policy - Version 1.0.0",
-                is_active=True,
-            )
-            db.add(privacy)
-            policies_changed = True
-        if policies_changed:
-            db.commit()
+            policies_changed = False
+            if not terms:
+                terms = PolicyVersion(
+                    policy_type="terms_of_service",
+                    version="1.0.0",
+                    effective_date=datetime(2025, 1, 1),
+                    content_url="/terms",
+                    summary="Terms of Service - Version 1.0.0",
+                    is_active=True,
+                )
+                db.add(terms)
+                policies_changed = True
+            if not privacy:
+                privacy = PolicyVersion(
+                    policy_type="privacy_policy",
+                    version="1.0.0",
+                    effective_date=datetime(2025, 1, 1),
+                    content_url="/privacy",
+                    summary="Privacy Policy - Version 1.0.0",
+                    is_active=True,
+                )
+                db.add(privacy)
+                policies_changed = True
+            if policies_changed:
+                db.commit()
+        except ProgrammingError:
+            db.rollback()
+            logger.warning("Policy tables not available yet; skipping seed.")
 
         profile = db.query(UserProfile).filter(UserProfile.user_id == user.id).first()
         if not profile:

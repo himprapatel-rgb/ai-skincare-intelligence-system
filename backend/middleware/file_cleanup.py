@@ -1,12 +1,13 @@
 # File Cleanup Middleware for Sprint 2 Phase 3
-from fastapi import Request
-from starlette.middleware.base import BaseHTTPMiddleware
+import atexit
+import logging
 import os
 import tempfile
 from pathlib import Path
-import logging
 from typing import Set
-import atexit
+
+from fastapi import Request
+from starlette.middleware.base import BaseHTTPMiddleware
 
 logger = logging.getLogger(__name__)
 

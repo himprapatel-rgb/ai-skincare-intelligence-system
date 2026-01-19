@@ -13,12 +13,13 @@ Includes:
 - normalization for DB ingestion
 """
 
-import httpx
 import asyncio
-from typing import Any, Dict, List, Optional
 from datetime import datetime
-from uuid import uuid4
 from functools import wraps
+from typing import Any, Dict, List, Optional
+from uuid import uuid4
+
+import httpx
 
 BASE_URL = "https://world.openbeautyfacts.org/api/v2"
 

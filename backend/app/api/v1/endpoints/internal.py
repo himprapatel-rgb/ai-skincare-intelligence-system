@@ -1,12 +1,13 @@
 from __future__ import annotations
 
+import os
+from typing import Any
+
 from fastapi import APIRouter, Header, HTTPException, status
 from pydantic import BaseModel
-from typing import Any
-import os
 
 from app.config import settings
-from app.services.gpt_service import get_default_service, GPTService
+from app.services.gpt_service import GPTService, get_default_service
 
 router = APIRouter()
 
@@ -105,8 +106,8 @@ def upload_scin_sample(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized"
         )
     
-    from app.models.scin import SCINSample
     from app.database import SessionLocal
+    from app.models.scin import SCINSample
     
     db = SessionLocal()
     try:
@@ -154,8 +155,8 @@ def upload_scin_batch(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized"
         )
     
-    from app.models.scin import SCINSample
     from app.database import SessionLocal
+    from app.models.scin import SCINSample
     
     db = SessionLocal()
     created_count = 0
@@ -215,8 +216,8 @@ def get_scin_count(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized"
         )
     
-    from app.models.scin import SCINSample
     from app.database import SessionLocal
+    from app.models.scin import SCINSample
     
     db = SessionLocal()
     try:

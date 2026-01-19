@@ -6,11 +6,13 @@ Status: Sprint 3 Implementation
 Created: December 8, 2025
 """
 
-from sqlalchemy import Column, String, DateTime, Integer, Float, ForeignKey, Text, Index
-from sqlalchemy.dialects.postgresql import UUID, JSONB
-from sqlalchemy.orm import relationship
-from datetime import datetime
 import uuid
+from datetime import datetime
+
+from sqlalchemy import (Column, DateTime, Float, ForeignKey, Index, Integer,
+                        String, Text)
+from sqlalchemy.dialects.postgresql import JSONB, UUID
+from sqlalchemy.orm import relationship
 
 from ..database import Base
 

@@ -6,12 +6,13 @@ Target: ≥ 95% normalization accuracy
 
 """
 
+import logging
 import os
 import re
-from typing import List, Optional, Dict, Tuple
-import psycopg2
 from functools import lru_cache
-import logging
+from typing import Dict, List, Optional, Tuple
+
+import psycopg2
 
 logger = logging.getLogger(__name__)
 

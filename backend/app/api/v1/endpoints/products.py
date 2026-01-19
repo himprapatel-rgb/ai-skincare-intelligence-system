@@ -3,16 +3,17 @@
 Provides ML-powered product suitability scoring and recommendations.
 """
 
+import logging
+from typing import Any, Dict, List, Optional
+
 from fastapi import APIRouter, Depends, HTTPException, status
-from typing import Dict, Any, List, Optional
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
-import logging
 
 from app.database import get_db
+from app.models.user import User
 from app.services.auth_service import get_current_user
 from app.services.ml_service import get_ml_service
-from app.models.user import User
 
 logger = logging.getLogger(__name__)
 

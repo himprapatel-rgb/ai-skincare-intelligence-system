@@ -6,12 +6,15 @@ Status: Phase 1 Implementation - Foundation Layer
 Created: December 6, 2025
 """
 
-from sqlalchemy import Column, String, DateTime, JSON, Enum as SQLEnum, Float, Integer, ForeignKey, Text
-from sqlalchemy.dialects.postgresql import UUID, JSONB
-from sqlalchemy.orm import relationship
-from datetime import datetime
-import uuid
 import enum
+import uuid
+from datetime import datetime
+
+from sqlalchemy import JSON, Column, DateTime
+from sqlalchemy import Enum as SQLEnum
+from sqlalchemy import Float, ForeignKey, Integer, String, Text
+from sqlalchemy.dialects.postgresql import JSONB, UUID
+from sqlalchemy.orm import relationship
 
 from ..database import Base
 

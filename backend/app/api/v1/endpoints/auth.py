@@ -3,12 +3,12 @@ Authentication API endpoints.
 """
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.orm import Session
-from app.database import get_db
-from app.schemas.user import UserCreate, UserResponse, UserLogin, AuthResponse
-from app.services.auth_service import auth_service, get_current_user
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import Session
 
+from app.database import get_db
+from app.schemas.user import AuthResponse, UserCreate, UserLogin, UserResponse
+from app.services.auth_service import auth_service, get_current_user
 
 router = APIRouter()
 

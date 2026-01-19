@@ -1,15 +1,14 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.orm import Session
 from uuid import UUID
 
+from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy.orm import Session
+
 from app.database import get_db
-from app.models.saved_routine import SavedRoutine
 from app.models.routine_product import RoutineProduct
-from app.schemas.routine_schemas import (
-    SavedRoutineCreate,
-    SavedRoutineUpdate,
-    SavedRoutineResponse,
-)
+from app.models.saved_routine import SavedRoutine
+from app.schemas.routine_schemas import (SavedRoutineCreate,
+                                         SavedRoutineResponse,
+                                         SavedRoutineUpdate)
 
 router = APIRouter(prefix="/routines", tags=["routines"])
 

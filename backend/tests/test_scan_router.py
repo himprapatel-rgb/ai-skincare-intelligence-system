@@ -1,8 +1,9 @@
 # Unit tests for Face Scan Router - Sprint 2 Phase 3
+import base64
+from io import BytesIO
+
 import pytest
 from fastapi import status
-from io import BytesIO
-import base64
 
 
 class TestScanRouter:

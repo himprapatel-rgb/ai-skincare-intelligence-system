@@ -4,6 +4,7 @@ Generated from Sprint 3 specifications
 """
 
 from __future__ import annotations
+
 import logging
 from dataclasses import dataclass
 from datetime import datetime, timedelta
@@ -13,16 +14,12 @@ from uuid import UUID
 from sqlalchemy import func
 from sqlalchemy.orm import Session, joinedload, selectinload
 
-from app.models.digital_twin import (
-    EnvironmentSnapshot,
-    RegionName,
-    RoutineInstance,
-    RoutineProductUsage,
-    SkinMood,
-    SkinRegionState,
-    SkinStateSnapshot,
-)
-from app.services.twin_builder_service import twin_builder_service, TwinBuilderError
+from app.models.digital_twin import (EnvironmentSnapshot, RegionName,
+                                     RoutineInstance, RoutineProductUsage,
+                                     SkinMood, SkinRegionState,
+                                     SkinStateSnapshot)
+from app.services.twin_builder_service import (TwinBuilderError,
+                                               twin_builder_service)
 
 logger = logging.getLogger(__name__)
 

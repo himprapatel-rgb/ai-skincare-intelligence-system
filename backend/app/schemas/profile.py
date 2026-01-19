@@ -8,9 +8,10 @@ SRS Traceability:
 
 Sprint: 1.2 - Story 1.2, 1.6
 """
-from pydantic import BaseModel, Field, field_validator
-from datetime import datetime, date
+from datetime import date, datetime
 from typing import List, Optional
+
+from pydantic import BaseModel, Field, field_validator
 
 
 class ProfileCreate(BaseModel):

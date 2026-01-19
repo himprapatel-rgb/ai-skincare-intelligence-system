@@ -9,9 +9,9 @@ Replace `BASE_URL` with the provider's real base URL.
 
 from __future__ import annotations
 
-import requests
 from typing import Any
 
+import requests
 from app.config import settings
 
 # Set to the provided project URL (treated as API base for workflow and wrapper)

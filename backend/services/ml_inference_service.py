@@ -3,15 +3,16 @@ ML Inference Service for PyTorch Models
 Handles loading and inference for acne detection and skin condition models
 """
 
+import io
 import logging
-import torch
-import torch.nn as nn
-import numpy as np
 from pathlib import Path
 from typing import Dict, Optional, Tuple
+
 import cv2
+import numpy as np
+import torch
+import torch.nn as nn
 from PIL import Image
-import io
 
 logger = logging.getLogger(__name__)
 

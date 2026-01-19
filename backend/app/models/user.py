@@ -1,11 +1,14 @@
 """ 
 User database model with comprehensive profile fields.
 """
-from sqlalchemy import Column, ForeignKey, String, Boolean, DateTime, Integer, Date, Text, Float, JSON
+import uuid
+
+from sqlalchemy import (JSON, Boolean, Column, Date, DateTime, Float,
+                        ForeignKey, Integer, String, Text)
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
+
 from app.database import Base
-import uuid
 
 
 class User(Base):

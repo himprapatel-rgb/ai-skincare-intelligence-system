@@ -5,17 +5,19 @@ Story 20.3: Import 100k+ products from Open Beauty Facts
 Target: < 30 min import time, < 5% missing ingredients
 """
 
+import gzip
+import json
+import logging
 import os
 import sys
-import json
-import gzip
-import logging
-import requests
 from datetime import datetime, timedelta
 from pathlib import Path
+from typing import Dict, List, Optional
+
 import psycopg2
 from psycopg2.extras import execute_values
-from typing import Dict, List, Optional
+
+import requests
 
 # Setup logging
 logging.basicConfig(

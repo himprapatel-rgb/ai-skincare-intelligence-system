@@ -7,33 +7,26 @@ Status: Phase 1 Implementation - Foundation Layer
 Created: December 6, 2025
 """
 
-from typing import List, Optional
-from datetime import datetime
-import os
-import uuid
 import json
 import logging
+import os
+import uuid
+from datetime import datetime
+from typing import List, Optional
 
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, status
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
 from sqlalchemy.orm import Session
 
 from app.config import settings
-from app.database import get_db
-from app.models import User, ScanSession, SkinAnalysis
-from app.schemas.scan_schemas import (
-    ScanInitResponse,
-    ScanUploadResponse,
-    ScanStatusResponse,
-    ScanResultResponse,
-    ScanHistoryItem,
-    ScanHistoryResponse,
-)
 from app.core.security import get_current_user
-from services.youcam_service import (
-    get_youcam_client,
-    get_default_skin_analysis_actions,
-    YouCamError,
-)
+from app.database import get_db
+from app.models import ScanSession, SkinAnalysis, User
+from app.schemas.scan_schemas import (ScanHistoryItem, ScanHistoryResponse,
+                                      ScanInitResponse, ScanResultResponse,
+                                      ScanStatusResponse, ScanUploadResponse)
+from services.youcam_service import (YouCamError,
+                                     get_default_skin_analysis_actions,
+                                     get_youcam_client)
 
 router = APIRouter(prefix="/api/v1/scan", tags=["Face Scan"])
 logger = logging.getLogger(__name__)

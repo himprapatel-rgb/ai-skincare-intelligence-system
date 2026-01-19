@@ -7,11 +7,12 @@ Status: Phase 1 Implementation - Foundation Layer
 Created: December 6, 2025
 """
 
-from pydantic import BaseModel, Field, validator
-from typing import List, Optional, Dict, Any
 from datetime import datetime
-from uuid import UUID
 from enum import Enum
+from typing import Any, Dict, List, Optional
+from uuid import UUID
+
+from pydantic import BaseModel, Field, validator
 
 
 # Enums

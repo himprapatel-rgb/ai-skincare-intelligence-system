@@ -3,20 +3,18 @@
 FastAPI router for product search, recommendations, and ingredient analysis.
 Created: December 13, 2025
 """
-from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlalchemy.orm import Session
 from typing import List, Optional
 from uuid import UUID
 
+from fastapi import APIRouter, Depends, HTTPException, Query
+from sqlalchemy.orm import Session
+
 from app.database import get_db
-from app.schemas.product_schemas import (
-    ProductResponse,
-    ProductSearch,
-    ProductRecommendation,
-    IngredientAnalysisRequest,
-    SafetyAnalysis
-)
-from app.models.product_models import Product, Ingredient
+from app.models.product_models import Ingredient, Product
+from app.schemas.product_schemas import (IngredientAnalysisRequest,
+                                         ProductRecommendation,
+                                         ProductResponse, ProductSearch,
+                                         SafetyAnalysis)
 
 router = APIRouter(
     prefix="/api/v1/products",

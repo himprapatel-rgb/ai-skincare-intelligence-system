@@ -1,18 +1,17 @@
 
-from app.api.v1.routines import router as routines_router
-from app.api.v1.progress import router as progress_router
-from app.api.v1.products import router as external_products_router
-from app.routers import products
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.config import settings
+
 from app.api.v1 import api_router
-from app.database import engine, Base
-from app.routers import scan, digital_twin
-from app.routers import admin
-from app.routers import consent, profile  # GDPR & User Management
+from app.api.v1.products import router as external_products_router
+from app.api.v1.progress import router as progress_router
+from app.api.v1.routines import router as routines_router
+from app.config import settings
+from app.database import Base, engine
 from app.models.twin_models import *  # Import Digital Twin models for table creation# Create database tables if needed (safe for local dev)
-    
+from app.routers import (admin, consent,  # GDPR & User Management
+                         digital_twin, products, profile, scan)
+
 app = FastAPI(
     title=settings.APP_NAME,
     version=settings.APP_VERSION,

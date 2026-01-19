@@ -13,14 +13,15 @@ Created: December 6, 2025
 Updated: December 6, 2025 - Added multi-provider support
 """
 
-import os
 import hashlib
-import requests
-from pathlib import Path
-from typing import Optional, Dict, Any
-import threading
-import logging
 import json
+import logging
+import os
+import threading
+from pathlib import Path
+from typing import Any, Dict, Optional
+
+import requests
 
 logger = logging.getLogger(__name__)
 
@@ -360,13 +361,14 @@ Handles loading pre-trained ML models from:
 Implements singleton pattern to avoid repeated loads.
 Thread-safe lazy initialization.
 """
-import os
 import hashlib
-import requests
+import logging
+import os
+import threading
 from pathlib import Path
 from typing import Optional
-import threading
-import logging
+
+import requests
 
 logger = logging.getLogger(__name__)
 

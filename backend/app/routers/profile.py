@@ -1,18 +1,17 @@
+import logging
+from datetime import datetime
+from typing import Optional
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from typing import Optional
-from datetime import datetime
-import logging
 
-from app.models.user import User, UserProfile
-from app.schemas.profile import ProfileCreate, ProfileUpdate, ProfileResponse
-from app.core.security import (
-    get_current_user,
-    encrypt_sensitive_data,
-    decrypt_sensitive_data,
-)
-from app.dependencies import get_db
 from app.core.audit import log_profile_event
+from app.core.security import (decrypt_sensitive_data, encrypt_sensitive_data,
+                               get_current_user)
+from app.dependencies import get_db
+from app.models.user import User, UserProfile
+from app.schemas.profile import ProfileCreate, ProfileResponse, ProfileUpdate
+
 router = APIRouter(prefix="/profile", tags=["profile"])
 logger = logging.getLogger(__name__)
 

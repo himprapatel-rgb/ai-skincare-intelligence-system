@@ -1,19 +1,23 @@
 """Face scan API endpoints."""
-from typing import Optional
-from uuid import UUID
-import sys
 import os
-from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File
-from sqlalchemy.orm import Session
-from app.database import get_db
-from app.models.scan import ScanSession
 # Add backend directory to path to import services
 import pathlib
+import sys
+from typing import Optional
+from uuid import UUID
+
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
+from sqlalchemy.orm import Session
+
+from app.database import get_db
+from app.models.scan import ScanSession
+
 backend_dir = pathlib.Path(__file__).parent.parent.parent.parent.parent.parent
 sys.path.insert(0, str(backend_dir))
-from app.services.ml_service import get_ml_service
 from app.core.security import get_current_user
 from app.models.user import User
+from app.services.ml_service import get_ml_service
+
 router = APIRouter()
 
 @router.post(

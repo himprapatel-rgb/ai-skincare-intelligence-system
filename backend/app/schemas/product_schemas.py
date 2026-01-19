@@ -3,10 +3,11 @@
 Pydantic models for product-related API requests/responses.
 Created: December 13, 2025
 """
-from pydantic import BaseModel, Field, validator
-from typing import List, Optional, Dict, Any
-from uuid import UUID
 from datetime import datetime
+from typing import Any, Dict, List, Optional
+from uuid import UUID
+
+from pydantic import BaseModel, Field, validator
 
 
 class IngredientBase(BaseModel):

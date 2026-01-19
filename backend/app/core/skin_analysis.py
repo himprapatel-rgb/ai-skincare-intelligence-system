@@ -1,6 +1,9 @@
-from sqlalchemy import Column, Integer, String, Float, JSON, ForeignKey, DateTime
+from sqlalchemy import (JSON, Column, DateTime, Float, ForeignKey, Integer,
+                        String)
 from sqlalchemy.sql import func
+
 from app.database import Base
+
 
 class SkinAnalysis(Base):
     __tablename__ = "skin_analyses"

@@ -1,18 +1,16 @@
 """Digital Twin API Router for Sprint 3."""
 from datetime import datetime
-from typing import Optional, Dict, Any
-from fastapi import APIRouter, Depends, Query, status, HTTPException
+from typing import Any, Dict, Optional
+
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from pydantic import BaseModel
 
-from app.schemas.twin_schemas import (
-    DigitalTwinSnapshot,
-    DigitalTwinTimelineResponse,
-    DigitalTwinQueryResponse,
-    ScenarioSimulationRequest,
-    ScenarioSimulationResponse,
-    EnvironmentContext,
-    RoutineContext,
-)
+from app.schemas.twin_schemas import (DigitalTwinQueryResponse,
+                                      DigitalTwinSnapshot,
+                                      DigitalTwinTimelineResponse,
+                                      EnvironmentContext, RoutineContext,
+                                      ScenarioSimulationRequest,
+                                      ScenarioSimulationResponse)
 
 router = APIRouter(prefix="/digital-twin", tags=["digital_twin"])
 

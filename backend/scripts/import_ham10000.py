@@ -16,14 +16,15 @@ Categories:
 - df: Dermatofibroma
 """
 
-import os
-import sys
 import json
 import logging
-import zipfile
+import os
 import shutil
+import sys
+import zipfile
 from pathlib import Path
 from typing import Dict, List
+
 import pandas as pd
 
 # Setup logging
@@ -199,8 +200,8 @@ Next steps:
 
 if __name__ == '__main__':
     try:
-        import sklearn
         import pandas as pd
+        import sklearn
     except ImportError:
         logger.error("Required packages missing. Run: pip install scikit-learn pandas")
         sys.exit(1)

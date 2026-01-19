@@ -2,10 +2,11 @@
 Pydantic schemas for user data validation.
 """
 
-from pydantic import BaseModel, EmailStr, Field, field_validator
+import re
 from datetime import datetime
 from typing import Optional
-import re
+
+from pydantic import BaseModel, EmailStr, Field, field_validator
 
 
 class UserCreate(BaseModel):

@@ -3,6 +3,7 @@
 Populates database with validated INCI ingredients from open-source data.
 """
 import os
+
 import psycopg2
 from psycopg2.extras import execute_values
 

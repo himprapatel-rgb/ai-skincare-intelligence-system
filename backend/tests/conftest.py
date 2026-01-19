@@ -1,17 +1,18 @@
 # Test configuration and fixtures for Sprint 2 Phase 3
 import os
+
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
-from sqlalchemy.ext.compiler import compiles
 from sqlalchemy.dialects.postgresql import ARRAY, JSONB
+from sqlalchemy.ext.compiler import compiles
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
 from app.database import Base
-from app.main import app
-from app.dependencies import get_db
 from app.database import get_db as app_db_get_db
+from app.dependencies import get_db
+from app.main import app
 
 # Use DATABASE_URL from environment if available (PostgreSQL in CI),
 # otherwise fall back to SQLite for local testing
@@ -76,8 +77,8 @@ def client(test_db):
 @pytest.fixture
 def test_user(test_db):
     """Create a test user in the database"""
-    from app.models.user import User
     from app.core.security import hash_password
+    from app.models.user import User
     
     user = User(
         email="testuser@example.com",
@@ -93,9 +94,10 @@ def test_user(test_db):
 @pytest.fixture
 def auth_headers(client, test_user):
     """Create auth headers with real JWT token"""
-    from app.core.security import create_access_token
     from datetime import timedelta
-    
+
+    from app.core.security import create_access_token
+
     # Create a real JWT token for the test user
     access_token = create_access_token(
         data={"sub": test_user.email},

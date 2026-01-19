@@ -6,15 +6,17 @@ Links hazardous ingredients to CosIng database via CAS numbers.
 Target: < 5 min import time, 100% hazard linkage
 """
 
-import os
-import sys
 import csv
 import logging
-import requests
+import os
+import sys
 from pathlib import Path
+from typing import Dict, List, Optional
+
 import psycopg2
 from psycopg2.extras import execute_values
-from typing import Dict, List, Optional
+
+import requests
 
 # Setup logging
 logging.basicConfig(

@@ -1,12 +1,13 @@
-from fastapi import APIRouter, UploadFile, File, HTTPException, Depends, status
-from sqlalchemy.orm import Session
-from typing import List
 import uuid
+from typing import List
+
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
+from sqlalchemy.orm import Session
 
 # Internal imports
 from app.core import skin_analysis as models
-from app.schemas import analysis_schemas as schemas
 from app.database import get_db
+from app.schemas import analysis_schemas as schemas
 from services.ml_engine import analyze_skin_image
 
 router = APIRouter(prefix="/analysis", tags=["Skin Analysis"])
@@ -60,6 +61,7 @@ async def create_skin_analysis(
 
         # Add recommendation endpoint
 from services import recommendation as rec_service
+
 
 @router.get("/{analysis_id}/recommendations", response_model=List[schemas.AnalysisResponse])
 def get_analysis_recommendations(

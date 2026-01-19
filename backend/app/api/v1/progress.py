@@ -1,10 +1,12 @@
+from uuid import UUID
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from uuid import UUID
 
 from app.database import get_db
 from app.models.progress_photo import ProgressPhoto
-from app.schemas.progress_schemas import ProgressPhotoCreate, ProgressPhotoResponse
+from app.schemas.progress_schemas import (ProgressPhotoCreate,
+                                          ProgressPhotoResponse)
 
 router = APIRouter(prefix="/progress", tags=["progress"])
 

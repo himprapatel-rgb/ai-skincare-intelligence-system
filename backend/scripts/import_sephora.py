@@ -8,16 +8,17 @@ Target: < 5 min import time, 100% data coverage
 Data Source: Kaggle Sephora Products Dataset (CC0 / CC BY-SA)
 """
 
-import os
-import sys
 import csv
 import json
 import logging
+import os
+import sys
+from decimal import Decimal
 from pathlib import Path
+from typing import Dict, List, Optional
+
 import psycopg2
 from psycopg2.extras import execute_values
-from typing import Dict, List, Optional
-from decimal import Decimal
 
 # Setup logging
 logging.basicConfig(

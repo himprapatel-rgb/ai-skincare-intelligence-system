@@ -9,8 +9,8 @@ Revision ID: sprint0_001
 Date: December 9, 2025
 """
 
-from alembic import op
 import sqlalchemy as sa
+from alembic import op
 from sqlalchemy.dialects import postgresql
 
 

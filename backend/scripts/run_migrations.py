@@ -8,7 +8,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 import psycopg2
-from migrations.sprint0_database_integration import upgrade, downgrade
+
+from migrations.sprint0_database_integration import downgrade, upgrade
 
 DATABASE_URL = os.getenv('DATABASE_URL')
 

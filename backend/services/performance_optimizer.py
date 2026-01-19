@@ -1,11 +1,12 @@
 # Performance Optimization Service for Sprint 2 Phase 3
 import asyncio
 import functools
-import time
-from typing import Dict, Any, Callable, Optional
-from PIL import Image
 import io
 import logging
+import time
+from typing import Any, Callable, Dict, Optional
+
+from PIL import Image
 
 logger = logging.getLogger(__name__)
 

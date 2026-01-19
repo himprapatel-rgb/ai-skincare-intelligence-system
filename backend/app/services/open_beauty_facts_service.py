@@ -16,13 +16,14 @@ Fix: Properly manages httpx.AsyncClient lifecycle to prevent 500 errors
 # Deployment: This fix resolves the 500 Internal Server Error in external products search
 """
 
-import httpx
 import asyncio
 import logging
-from typing import Any, Dict, List, Optional
 from datetime import datetime
-from uuid import uuid4
 from functools import wraps
+from typing import Any, Dict, List, Optional
+from uuid import uuid4
+
+import httpx
 
 logger = logging.getLogger(__name__)
 

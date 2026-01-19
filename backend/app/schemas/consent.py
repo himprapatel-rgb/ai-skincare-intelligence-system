@@ -6,10 +6,12 @@ SRS Traceability:
 
 Sprint: 1.2 - Story 1.9
 """
-from pydantic import BaseModel, Field
 from datetime import datetime
-from typing import Optional, Dict
+from typing import Dict, Optional
 from uuid import UUID
+
+from pydantic import BaseModel, Field
+
 
 class ConsentCreate(BaseModel):
     """Schema for creating/updating consent."""

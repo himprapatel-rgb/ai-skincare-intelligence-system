@@ -5,10 +5,10 @@ Audit logs track metadata only - sensitive data changes stored in encrypted DB.
 
 Based on Gemini AI code review recommendations.
 """
-import logging
 import json
-from typing import Any, Optional
+import logging
 from datetime import datetime, timezone
+from typing import Any, Optional
 
 # Configure audit logger
 audit_logger = logging.getLogger("audit")

@@ -3,14 +3,15 @@ Production-ready Skin Analysis Service
 Implements MediaPipe face detection and comprehensive skin analysis
 """
 
-import logging
-from typing import Dict, List, Optional, Tuple
-import cv2
-import numpy as np
-import mediapipe as mp
-from PIL import Image
 import io
+import logging
 from dataclasses import dataclass
+from typing import Dict, List, Optional, Tuple
+
+import cv2
+import mediapipe as mp
+import numpy as np
+from PIL import Image
 
 logger = logging.getLogger(__name__)
 

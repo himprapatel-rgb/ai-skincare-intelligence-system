@@ -1,7 +1,7 @@
 import pytest
 
-from services.youcam_service import YouCamClient, YouCamError
 import services.youcam_service as youcam_service
+from services.youcam_service import YouCamClient, YouCamError
 
 
 @pytest.mark.unit

@@ -1,7 +1,9 @@
 """Database dependency injection for FastAPI."""
 
 from typing import Generator
+
 from sqlalchemy.orm import Session
+
 from app.database import SessionLocal
 
 

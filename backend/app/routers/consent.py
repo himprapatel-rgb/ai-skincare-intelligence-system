@@ -8,16 +8,17 @@ SRS Traceability:
 
 Sprint: 1.2 - Story 1.9
 """
-from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.orm import Session
+import logging
 from datetime import datetime
 from typing import Optional
-import logging
 
-from app.models.user import User, UserConsent, PolicyVersion
-from app.schemas.consent import ConsentCreate, ConsentResponse, PolicyResponse
+from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy.orm import Session
+
 from app.core.security import get_current_user
 from app.dependencies import get_db
+from app.models.user import PolicyVersion, User, UserConsent
+from app.schemas.consent import ConsentCreate, ConsentResponse, PolicyResponse
 
 router = APIRouter(prefix="/consent", tags=["consent"])
 logger = logging.getLogger(__name__)

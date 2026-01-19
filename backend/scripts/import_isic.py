@@ -7,15 +7,16 @@ License: CC BY-NC-SA
 Target: High-quality dermoscopic images with masks & metadata
 """
 
-import os
-import sys
 import json
 import logging
-import requests
+import os
+import sys
+import time
 import zipfile
 from pathlib import Path
 from typing import Dict, List, Optional
-import time
+
+import requests
 
 # Setup logging
 logging.basicConfig(

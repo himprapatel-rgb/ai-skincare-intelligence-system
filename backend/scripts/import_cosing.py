@@ -5,17 +5,19 @@ Imports 26,000+ standardized INCI ingredient names from EU CosIng database.
 Target: < 10 min import time, 100% data coverage
 """
 
-import os
-import sys
 import csv
 import logging
-import requests
+import os
+import sys
 import xml.etree.ElementTree as ET
+from io import StringIO
 from pathlib import Path
+from typing import Dict, List, Optional
+
 import psycopg2
 from psycopg2.extras import execute_values
-from typing import Dict, List, Optional
-from io import StringIO
+
+import requests
 
 # Setup logging
 logging.basicConfig(

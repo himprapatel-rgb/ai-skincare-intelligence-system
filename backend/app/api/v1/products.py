@@ -1,8 +1,10 @@
-from fastapi import APIRouter, Depends, HTTPException, Query
-from typing import List
-from app.services.open_beauty_facts_service import open_beauty_facts_service
-from app.schemas.external_product_schemas import ExternalProduct
 import logging
+from typing import List
+
+from fastapi import APIRouter, Depends, HTTPException, Query
+
+from app.schemas.external_product_schemas import ExternalProduct
+from app.services.open_beauty_facts_service import open_beauty_facts_service
 
 logger = logging.getLogger(__name__)
 

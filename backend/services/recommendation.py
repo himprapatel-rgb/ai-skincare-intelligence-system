@@ -1,6 +1,8 @@
 from sqlalchemy.orm import Session
-from app.models import product_models as models
+
 from app.core import skin_analysis
+from app.models import product_models as models
+
 
 def get_recommended_products(db: Session, analysis_id: int):
     # 1. Fetch the analysis results

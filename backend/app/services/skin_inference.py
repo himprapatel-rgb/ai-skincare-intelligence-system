@@ -3,15 +3,16 @@
 Provides stable inference interface independent of model implementation.
 Returns consistent JSON schema for API responses.
 """
-from typing import Dict, List
-from pathlib import Path
 import logging
 from datetime import datetime
-from PIL import Image
-import numpy as np
+from pathlib import Path
+from typing import Dict, List
 
-from app.services.ml_model_loader import model_loader
+import numpy as np
+from PIL import Image
+
 from app.config import settings
+from app.services.ml_model_loader import model_loader
 
 logger = logging.getLogger(__name__)
 

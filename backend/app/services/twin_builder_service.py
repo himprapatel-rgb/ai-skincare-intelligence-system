@@ -7,6 +7,7 @@ This service implements FR1, FR2, and FR5 of EPIC 3:
 """
 
 from __future__ import annotations
+
 import logging
 from datetime import datetime, timedelta
 from typing import Any, Dict, Optional
@@ -14,13 +15,9 @@ from uuid import UUID
 
 from sqlalchemy.orm import Session, selectinload
 
-from app.models.digital_twin import (
-    EnvironmentSnapshot,
-    RegionName,
-    RoutineInstance,
-    SkinRegionState,
-    SkinStateSnapshot,
-)
+from app.models.digital_twin import (EnvironmentSnapshot, RegionName,
+                                     RoutineInstance, SkinRegionState,
+                                     SkinStateSnapshot)
 from app.models.user import User
 
 logger = logging.getLogger(__name__)

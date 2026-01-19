@@ -1,13 +1,14 @@
+import base64
+import json
+import os
+from typing import List, Union
+
 from argon2 import PasswordHasher
 from argon2.exceptions import VerifyMismatchError
-import os
-import json
-import base64
 from cryptography.fernet import Fernet
+from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
-from cryptography.hazmat.backends import default_backend
-from typing import Union, List
 
 ph = PasswordHasher(
     time_cost=2, memory_cost=65536, parallelism=4, hash_len=32, salt_len=16
@@ -30,9 +31,10 @@ def verify_password(password: str, hashed: str) -> bool:
 # JWT and Authentication imports
 from datetime import datetime, timedelta
 from typing import Optional
-from jose import JWTError, jwt
+
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
+from jose import JWTError, jwt
 from sqlalchemy.orm import Session
 
 from app.database import get_db

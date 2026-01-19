@@ -1,4 +1,6 @@
 
+import logging
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -7,10 +9,14 @@ from app.api.v1.products import router as external_products_router
 from app.api.v1.progress import router as progress_router
 from app.api.v1.routines import router as routines_router
 from app.config import settings
-from app.database import Base, engine
+from app.database import Base, SessionLocal, engine
+from app.models.user import User
 from app.models.twin_models import *  # Import Digital Twin models for table creation# Create database tables if needed (safe for local dev)
 from app.routers import (admin, consent,  # GDPR & User Management
                          digital_twin, products, profile, scan)
+from app.services.auth_service import auth_service
+
+logger = logging.getLogger(__name__)
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -26,6 +32,30 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.on_event("startup")
+def ensure_test_user() -> None:
+    """Create a static test user if missing."""
+    db = SessionLocal()
+    try:
+        email = "dhimanshu@example.com"
+        existing_user = db.query(User).filter(User.email == email).first()
+        if existing_user:
+            return
+        hashed_password = auth_service.hash_password("Test1234!")
+        db_user = User(
+            email=email,
+            hashed_password=hashed_password,
+            full_name="Dhimanshu",
+            is_active=True,
+            is_verified=True,
+        )
+        db.add(db_user)
+        db.commit()
+        db.refresh(db_user)
+        logger.info("Seeded static test user: %s", email)
+    finally:
+        db.close()
 
 
 @app.get("/api/health")

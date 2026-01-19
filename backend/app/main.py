@@ -106,90 +106,102 @@ def ensure_test_user() -> None:
             db.rollback()
             logger.warning("Policy tables not available yet; skipping seed.")
 
-        profile = db.query(UserProfile).filter(UserProfile.user_id == user.id).first()
-        if not profile:
-            profile = UserProfile(
-                user_id=user.id,
-                first_name="Dhimanshu",
-                last_name="Patel",
-                date_of_birth=date(1990, 6, 15),
-                gender="male",
-                location="Dublin, IE",
-                timezone="Europe/Dublin",
-                phone_number="+353-1-555-0199",
-                profile_photo_url="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d",
-                skin_type=encrypt_sensitive_data("combination"),
-                skin_tone="medium",
-                skin_texture="uneven",
-                pore_size="medium",
-                moisture_level="normal",
-                oil_production="normal",
-                sensitivity_level="low",
-                primary_concern="fine_lines",
-                secondary_concerns=["dryness", "dullness", "dark_spots"],
-                sun_exposure="moderate",
-                outdoor_activity_level="moderate",
-                water_intake=8,
-                sleep_hours=7.5,
-                diet_type="balanced",
-                stress_level="moderate",
-                exercise_frequency="3-5x/week",
-                smoking_status="never",
-                alcohol_consumption="occasional",
-                climate="temperate",
-                known_allergies=["fragrance", "lanolin"],
-                current_medications=["vitamin_d", "omega_3"],
-                skin_conditions=["mild_acne"],
-                previous_treatments="Topical retinoid and glycolic acid.",
-                preferred_ingredients=["niacinamide", "hyaluronic_acid", "ceramides"],
-                ingredients_to_avoid=["alcohol_denat", "fragrance"],
-                product_texture_preference="serum",
-                fragrance_preference="fragrance-free",
-                budget_range="mid-range",
-                brand_preferences=["CeraVe", "La Roche-Posay", "The Ordinary"],
-                routine_frequency="twice_daily",
-                current_routine_products=[
-                    "gentle_cleanser",
-                    "hydrating_serum",
-                    "moisturizer",
-                    "broad_spectrum_spf",
-                ],
-                goals=encrypt_sensitive_data(["anti_aging", "hydration", "brightening"]),
-                email_notifications=True,
-                push_notifications=True,
-                sms_notifications=False,
-                marketing_emails=False,
-                profile_visibility="private",
-                share_progress=True,
-                allow_data_analysis=True,
-                profile_complete=True,
-                completion_percentage=100,
-                last_profile_update=datetime.utcnow(),
-                created_at=datetime.utcnow(),
-                updated_at=datetime.utcnow(),
+        try:
+            profile = (
+                db.query(UserProfile).filter(UserProfile.user_id == user.id).first()
             )
-            db.add(profile)
-            db.commit()
-            db.refresh(profile)
+            if not profile:
+                profile = UserProfile(
+                    user_id=user.id,
+                    first_name="Dhimanshu",
+                    last_name="Patel",
+                    date_of_birth=date(1990, 6, 15),
+                    gender="male",
+                    location="Dublin, IE",
+                    timezone="Europe/Dublin",
+                    phone_number="+353-1-555-0199",
+                    profile_photo_url="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d",
+                    skin_type=encrypt_sensitive_data("combination"),
+                    skin_tone="medium",
+                    skin_texture="uneven",
+                    pore_size="medium",
+                    moisture_level="normal",
+                    oil_production="normal",
+                    sensitivity_level="low",
+                    primary_concern="fine_lines",
+                    secondary_concerns=["dryness", "dullness", "dark_spots"],
+                    sun_exposure="moderate",
+                    outdoor_activity_level="moderate",
+                    water_intake=8,
+                    sleep_hours=7.5,
+                    diet_type="balanced",
+                    stress_level="moderate",
+                    exercise_frequency="3-5x/week",
+                    smoking_status="never",
+                    alcohol_consumption="occasional",
+                    climate="temperate",
+                    known_allergies=["fragrance", "lanolin"],
+                    current_medications=["vitamin_d", "omega_3"],
+                    skin_conditions=["mild_acne"],
+                    previous_treatments="Topical retinoid and glycolic acid.",
+                    preferred_ingredients=["niacinamide", "hyaluronic_acid", "ceramides"],
+                    ingredients_to_avoid=["alcohol_denat", "fragrance"],
+                    product_texture_preference="serum",
+                    fragrance_preference="fragrance-free",
+                    budget_range="mid-range",
+                    brand_preferences=["CeraVe", "La Roche-Posay", "The Ordinary"],
+                    routine_frequency="twice_daily",
+                    current_routine_products=[
+                        "gentle_cleanser",
+                        "hydrating_serum",
+                        "moisturizer",
+                        "broad_spectrum_spf",
+                    ],
+                    goals=encrypt_sensitive_data(
+                        ["anti_aging", "hydration", "brightening"]
+                    ),
+                    email_notifications=True,
+                    push_notifications=True,
+                    sms_notifications=False,
+                    marketing_emails=False,
+                    profile_visibility="private",
+                    share_progress=True,
+                    allow_data_analysis=True,
+                    profile_complete=True,
+                    completion_percentage=100,
+                    last_profile_update=datetime.utcnow(),
+                    created_at=datetime.utcnow(),
+                    updated_at=datetime.utcnow(),
+                )
+                db.add(profile)
+                db.commit()
+                db.refresh(profile)
+        except ProgrammingError:
+            db.rollback()
+            logger.warning("Profile tables not available yet; skipping seed.")
 
-        consent_record = (
-            db.query(UserConsent).filter(UserConsent.user_id == user.id).first()
-        )
-        if not consent_record:
-            terms_version = terms.version if terms else "1.0.0"
-            privacy_version = privacy.version if privacy else "1.0.0"
-            consent_record = UserConsent(
-                user_id=user.id,
-                terms_accepted=True,
-                privacy_accepted=True,
-                terms_version=terms_version,
-                privacy_version=privacy_version,
-                accepted_at=datetime.utcnow(),
-                ip_address="127.0.0.1",
+        try:
+            consent_record = (
+                db.query(UserConsent).filter(UserConsent.user_id == user.id).first()
             )
-            db.add(consent_record)
-            db.commit()
-            db.refresh(consent_record)
+            if not consent_record:
+                terms_version = terms.version if terms else "1.0.0"
+                privacy_version = privacy.version if privacy else "1.0.0"
+                consent_record = UserConsent(
+                    user_id=user.id,
+                    terms_accepted=True,
+                    privacy_accepted=True,
+                    terms_version=terms_version,
+                    privacy_version=privacy_version,
+                    accepted_at=datetime.utcnow(),
+                    ip_address="127.0.0.1",
+                )
+                db.add(consent_record)
+                db.commit()
+                db.refresh(consent_record)
+        except ProgrammingError:
+            db.rollback()
+            logger.warning("Consent tables not available yet; skipping seed.")
     finally:
         db.close()
 

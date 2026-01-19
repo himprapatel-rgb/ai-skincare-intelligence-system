@@ -1,5 +1,6 @@
 
 import logging
+from datetime import date, datetime
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -10,7 +11,8 @@ from app.api.v1.progress import router as progress_router
 from app.api.v1.routines import router as routines_router
 from app.config import settings
 from app.database import Base, SessionLocal, engine
-from app.models.user import User
+from app.core.security import encrypt_sensitive_data
+from app.models.user import PolicyVersion, User, UserConsent, UserProfile
 from app.models.twin_models import *  # Import Digital Twin models for table creation# Create database tables if needed (safe for local dev)
 from app.routers import (admin, consent,  # GDPR & User Management
                          digital_twin, products, profile, scan)
@@ -35,25 +37,151 @@ app.add_middleware(
 
 @app.on_event("startup")
 def ensure_test_user() -> None:
-    """Create a static test user if missing."""
+    """Create a static test user and full profile if missing."""
     db = SessionLocal()
     try:
         email = "dhimanshu@example.com"
-        existing_user = db.query(User).filter(User.email == email).first()
-        if existing_user:
-            return
-        hashed_password = auth_service.hash_password("Test1234!")
-        db_user = User(
-            email=email,
-            hashed_password=hashed_password,
-            full_name="Dhimanshu",
-            is_active=True,
-            is_verified=True,
+        user = db.query(User).filter(User.email == email).first()
+        if not user:
+            hashed_password = auth_service.hash_password("Test1234!")
+            user = User(
+                email=email,
+                hashed_password=hashed_password,
+                full_name="Dhimanshu",
+                is_active=True,
+                is_verified=True,
+            )
+            db.add(user)
+            db.commit()
+            db.refresh(user)
+            logger.info("Seeded static test user: %s", email)
+
+        terms = (
+            db.query(PolicyVersion)
+            .filter(
+                PolicyVersion.policy_type == "terms_of_service",
+                PolicyVersion.is_active == True,
+            )
+            .first()
         )
-        db.add(db_user)
-        db.commit()
-        db.refresh(db_user)
-        logger.info("Seeded static test user: %s", email)
+        privacy = (
+            db.query(PolicyVersion)
+            .filter(
+                PolicyVersion.policy_type == "privacy_policy",
+                PolicyVersion.is_active == True,
+            )
+            .first()
+        )
+        policies_changed = False
+        if not terms:
+            terms = PolicyVersion(
+                policy_type="terms_of_service",
+                version="1.0.0",
+                effective_date=datetime(2025, 1, 1),
+                content_url="/terms",
+                summary="Terms of Service - Version 1.0.0",
+                is_active=True,
+            )
+            db.add(terms)
+            policies_changed = True
+        if not privacy:
+            privacy = PolicyVersion(
+                policy_type="privacy_policy",
+                version="1.0.0",
+                effective_date=datetime(2025, 1, 1),
+                content_url="/privacy",
+                summary="Privacy Policy - Version 1.0.0",
+                is_active=True,
+            )
+            db.add(privacy)
+            policies_changed = True
+        if policies_changed:
+            db.commit()
+
+        profile = db.query(UserProfile).filter(UserProfile.user_id == user.id).first()
+        if not profile:
+            profile = UserProfile(
+                user_id=user.id,
+                first_name="Dhimanshu",
+                last_name="Patel",
+                date_of_birth=date(1990, 6, 15),
+                gender="male",
+                location="Dublin, IE",
+                timezone="Europe/Dublin",
+                phone_number="+353-1-555-0199",
+                profile_photo_url="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d",
+                skin_type=encrypt_sensitive_data("combination"),
+                skin_tone="medium",
+                skin_texture="uneven",
+                pore_size="medium",
+                moisture_level="normal",
+                oil_production="normal",
+                sensitivity_level="low",
+                primary_concern="fine_lines",
+                secondary_concerns=["dryness", "dullness", "dark_spots"],
+                sun_exposure="moderate",
+                outdoor_activity_level="moderate",
+                water_intake=8,
+                sleep_hours=7.5,
+                diet_type="balanced",
+                stress_level="moderate",
+                exercise_frequency="3-5x/week",
+                smoking_status="never",
+                alcohol_consumption="occasional",
+                climate="temperate",
+                known_allergies=["fragrance", "lanolin"],
+                current_medications=["vitamin_d", "omega_3"],
+                skin_conditions=["mild_acne"],
+                previous_treatments="Topical retinoid and glycolic acid.",
+                preferred_ingredients=["niacinamide", "hyaluronic_acid", "ceramides"],
+                ingredients_to_avoid=["alcohol_denat", "fragrance"],
+                product_texture_preference="serum",
+                fragrance_preference="fragrance-free",
+                budget_range="mid-range",
+                brand_preferences=["CeraVe", "La Roche-Posay", "The Ordinary"],
+                routine_frequency="twice_daily",
+                current_routine_products=[
+                    "gentle_cleanser",
+                    "hydrating_serum",
+                    "moisturizer",
+                    "broad_spectrum_spf",
+                ],
+                goals=encrypt_sensitive_data(["anti_aging", "hydration", "brightening"]),
+                email_notifications=True,
+                push_notifications=True,
+                sms_notifications=False,
+                marketing_emails=False,
+                profile_visibility="private",
+                share_progress=True,
+                allow_data_analysis=True,
+                profile_complete=True,
+                completion_percentage=100,
+                last_profile_update=datetime.utcnow(),
+                created_at=datetime.utcnow(),
+                updated_at=datetime.utcnow(),
+            )
+            db.add(profile)
+            db.commit()
+            db.refresh(profile)
+
+        consent_record = (
+            db.query(UserConsent).filter(UserConsent.user_id == user.id).first()
+        )
+        if not consent_record:
+            terms_version = terms.version if terms else "1.0.0"
+            privacy_version = privacy.version if privacy else "1.0.0"
+            consent_record = UserConsent(
+                user_id=user.id,
+                terms_accepted=True,
+                privacy_accepted=True,
+                terms_version=terms_version,
+                privacy_version=privacy_version,
+                accepted_at=datetime.utcnow(),
+                ip_address="127.0.0.1",
+            )
+            db.add(consent_record)
+            db.commit()
+            db.refresh(consent_record)
     finally:
         db.close()
 

@@ -165,7 +165,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: himprapatel/ai-skincare-backend
+          images: ${{ secrets.DOCKER_USERNAME }}/ai-skincare-backend
           tags: |
             type=ref,event=branch
             type=sha,prefix={{branch}}-

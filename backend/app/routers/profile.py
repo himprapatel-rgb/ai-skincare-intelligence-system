@@ -63,7 +63,8 @@ async def create_baseline_profile(
         user_profile = UserProfile(
             user_id=current_user.id,
             goals=encrypted_goals,
-            concerns=encrypted_concerns,
+            primary_concern=profile_data.concerns[0],
+            secondary_concerns=encrypted_concerns,
             skin_type=encrypted_skin_type,
             routine_frequency=profile_data.routine_frequency,
             climate=profile_data.climate,
@@ -138,7 +139,7 @@ async def get_profile(
         id=profile.id,
         user_id=profile.user_id,
         goals=decrypt_sensitive_data(profile.goals),
-        concerns=decrypt_sensitive_data(profile.concerns),
+        concerns=decrypt_sensitive_data(profile.secondary_concerns),
         skin_type=decrypt_sensitive_data(profile.skin_type),
         routine_frequency=profile.routine_frequency,
         climate=profile.climate,
@@ -170,7 +171,7 @@ async def update_profile(
     # Store old values for audit log
     old_values = {
         "goals": decrypt_sensitive_data(profile.goals),
-        "concerns": decrypt_sensitive_data(profile.concerns),
+        "concerns": decrypt_sensitive_data(profile.secondary_concerns),
         "skin_type": decrypt_sensitive_data(profile.skin_type),
         "routine_frequency": profile.routine_frequency,
         "climate": profile.climate,
@@ -189,7 +190,8 @@ async def update_profile(
             raise HTTPException(
                 status_code=400, detail="Concerns must be 1-5 selections"
             )
-        profile.concerns = encrypt_sensitive_data(update_data["concerns"])
+        profile.secondary_concerns = encrypt_sensitive_data(update_data["concerns"])
+        profile.primary_concern = update_data["concerns"][0]
 
     if "skin_type" in update_data:
         profile.skin_type = encrypt_sensitive_data(update_data["skin_type"])
@@ -220,7 +222,7 @@ async def update_profile(
         id=profile.id,
         user_id=profile.user_id,
         goals=decrypt_sensitive_data(profile.goals),
-        concerns=decrypt_sensitive_data(profile.concerns),
+        concerns=decrypt_sensitive_data(profile.secondary_concerns),
         skin_type=decrypt_sensitive_data(profile.skin_type),
         routine_frequency=profile.routine_frequency,
         climate=profile.climate,
@@ -255,7 +257,7 @@ async def export_profile_data(
         },
         "profile": {
             "goals": decrypt_sensitive_data(profile.goals),
-            "concerns": decrypt_sensitive_data(profile.concerns),
+            "concerns": decrypt_sensitive_data(profile.secondary_concerns),
             "skin_type": decrypt_sensitive_data(profile.skin_type),
             "routine_frequency": profile.routine_frequency,
             "climate": profile.climate,

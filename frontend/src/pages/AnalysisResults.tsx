@@ -30,7 +30,7 @@ const AnalysisResults: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [previousScans, setPreviousScans] = useState<ScanHistoryItem[]>([]);
 
-  const buildAnalysisFromScan = (scanResult: Record<string, unknown>): SkinAnalysis => {
+  const buildAnalysisFromScan = useCallback((scanResult: Record<string, unknown>): SkinAnalysis => {
     const result = (scanResult as { result?: Record<string, unknown> }).result || {};
     const summary = (result as { summary?: Record<string, unknown> }).summary || {};
     const youcam = (result as { youcam?: Record<string, unknown> }).youcam || {};
@@ -96,7 +96,7 @@ const AnalysisResults: React.FC = () => {
       timestamp: new Date().toISOString(),
       recommendations: [],
     };
-  };
+  }, [analysisId]);
 
   const fetchAnalysisResults = useCallback(async () => {
     try {
@@ -117,7 +117,7 @@ const AnalysisResults: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }, [analysisId]);
+  }, [analysisId, buildAnalysisFromScan]);
 
   useEffect(() => {
     fetchAnalysisResults();

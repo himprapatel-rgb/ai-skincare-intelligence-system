@@ -49,7 +49,7 @@ jobs:
       - name: Run MyPy (type checking)
         run: |
           cd backend
-          mypy app/ --ignore-missing-imports
+          mypy app/ --ignore-missing-imports --explicit-package-bases
 
   # Job 2: Test Suite
   test:

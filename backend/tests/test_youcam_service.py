@@ -1,6 +1,6 @@
 import pytest
 
-import app.services.youcam_service as youcam_service
+from app.services import youcam_service
 from app.services.youcam_service import YouCamClient, YouCamError, build_youcam_summary
 
 

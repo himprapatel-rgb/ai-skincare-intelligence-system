@@ -4,20 +4,18 @@ from datetime import date, datetime
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
 from sqlalchemy import text
+from sqlalchemy.exc import IntegrityError, ProgrammingError
 
 from app.api.v1 import api_router
 from app.api.v1.products import router as external_products_router
 from app.api.v1.progress import router as progress_router
 from app.api.v1.routines import router as routines_router
 from app.config import settings
-from app.database import Base, SessionLocal, engine
 from app.core.security import encrypt_sensitive_data
-from sqlalchemy.exc import IntegrityError, ProgrammingError
-
-from app.models.user import PolicyVersion, User, UserConsent, UserProfile
+from app.database import Base, SessionLocal, engine
 from app.models.twin_models import *  # Import Digital Twin models for table creation# Create database tables if needed (safe for local dev)
+from app.models.user import PolicyVersion, User, UserConsent, UserProfile
 from app.routers import (admin, consent,  # GDPR & User Management
                          digital_twin, products, profile, scan)
 from app.services.auth_service import auth_service

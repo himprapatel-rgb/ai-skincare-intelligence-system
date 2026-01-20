@@ -3,8 +3,8 @@
 Seed a small set of sample products for local testing.
 """
 
-from datetime import datetime, timezone
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 from sqlalchemy.exc import SQLAlchemyError

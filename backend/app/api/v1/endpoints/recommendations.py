@@ -7,10 +7,8 @@ from app.core.security import decrypt_sensitive_data, get_current_user
 from app.database import get_db
 from app.models.product_models import Product
 from app.models.user import User, UserProfile
-from app.schemas.product_schemas import (
-    RecommendationItem,
-    RecommendationsResponse,
-)
+from app.schemas.product_schemas import (RecommendationItem,
+                                         RecommendationsResponse)
 
 router = APIRouter()
 

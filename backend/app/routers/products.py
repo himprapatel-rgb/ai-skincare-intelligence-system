@@ -11,10 +11,13 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.models.product_models import Ingredient, Product
-from app.schemas.product_schemas import (IngredientAnalysisRequest,
-                                         ProductRecommendation,
-                                         ProductResponse, ProductSearch,
-                                         SafetyAnalysis)
+from app.schemas.product_schemas import (
+    IngredientAnalysisRequest,
+    ProductRecommendation,
+    ProductResponse,
+    ProductSearch,
+    SafetyAnalysis,
+)
 
 router = APIRouter(
     prefix="/api/v1/products",

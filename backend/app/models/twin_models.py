@@ -9,8 +9,7 @@ Created: December 8, 2025
 import uuid
 from datetime import datetime
 
-from sqlalchemy import (Column, DateTime, Float, ForeignKey, Index, Integer,
-                        String, Text)
+from sqlalchemy import Column, DateTime, Float, ForeignKey, Index, Integer, String, Text
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import relationship
 

@@ -8,9 +8,11 @@ from app.database import get_db
 from app.models.routine_product import RoutineProduct
 from app.models.saved_routine import SavedRoutine
 from app.models.user import User
-from app.schemas.routine_schemas import (SavedRoutineCreate,
-                                         SavedRoutineResponse,
-                                         SavedRoutineUpdate)
+from app.schemas.routine_schemas import (
+    SavedRoutineCreate,
+    SavedRoutineResponse,
+    SavedRoutineUpdate,
+)
 
 router = APIRouter(prefix="/routines", tags=["routines"])
 

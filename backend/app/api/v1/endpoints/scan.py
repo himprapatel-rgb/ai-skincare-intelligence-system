@@ -16,10 +16,13 @@ backend_dir = pathlib.Path(__file__).parent.parent.parent.parent.parent.parent
 sys.path.insert(0, str(backend_dir))
 from app.core.security import get_current_user
 from app.models.user import User
-from app.services.youcam_service import (YouCamError, build_youcam_summary,
-                                         get_default_skin_analysis_actions,
-                                         get_supported_skin_actions,
-                                         get_youcam_client)
+from app.services.youcam_service import (
+    YouCamError,
+    build_youcam_summary,
+    get_default_skin_analysis_actions,
+    get_supported_skin_actions,
+    get_youcam_client,
+)
 
 router = APIRouter()
 logger = logging.getLogger(__name__)

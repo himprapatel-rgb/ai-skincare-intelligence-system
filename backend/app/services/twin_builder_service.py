@@ -15,9 +15,13 @@ from uuid import UUID
 
 from sqlalchemy.orm import Session, selectinload
 
-from app.models.digital_twin import (EnvironmentSnapshot, RegionName,
-                                     RoutineInstance, SkinRegionState,
-                                     SkinStateSnapshot)
+from app.models.digital_twin import (
+    EnvironmentSnapshot,
+    RegionName,
+    RoutineInstance,
+    SkinRegionState,
+    SkinStateSnapshot,
+)
 from app.models.user import User
 
 logger = logging.getLogger(__name__)

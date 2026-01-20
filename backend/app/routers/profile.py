@@ -6,8 +6,11 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.core.audit import log_profile_event
-from app.core.security import (decrypt_sensitive_data, encrypt_sensitive_data,
-                               get_current_user)
+from app.core.security import (
+    decrypt_sensitive_data,
+    encrypt_sensitive_data,
+    get_current_user,
+)
 from app.dependencies import get_db
 from app.models.scan import ScanSession
 from app.models.user import User, UserProfile

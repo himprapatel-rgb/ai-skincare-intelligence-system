@@ -3,8 +3,18 @@ User database model with comprehensive profile fields.
 """
 import uuid
 
-from sqlalchemy import (JSON, Boolean, Column, Date, DateTime, Float,
-                        ForeignKey, Integer, String, Text)
+from sqlalchemy import (
+    JSON,
+    Boolean,
+    Column,
+    Date,
+    DateTime,
+    Float,
+    ForeignKey,
+    Integer,
+    String,
+    Text,
+)
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 

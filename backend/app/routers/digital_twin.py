@@ -5,12 +5,15 @@ from typing import Any, Dict, Optional
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from pydantic import BaseModel
 
-from app.schemas.twin_schemas import (DigitalTwinQueryResponse,
-                                      DigitalTwinSnapshot,
-                                      DigitalTwinTimelineResponse,
-                                      EnvironmentContext, RoutineContext,
-                                      ScenarioSimulationRequest,
-                                      ScenarioSimulationResponse)
+from app.schemas.twin_schemas import (
+    DigitalTwinQueryResponse,
+    DigitalTwinSnapshot,
+    DigitalTwinTimelineResponse,
+    EnvironmentContext,
+    RoutineContext,
+    ScenarioSimulationRequest,
+    ScenarioSimulationResponse,
+)
 
 router = APIRouter(prefix="/digital-twin", tags=["digital_twin"])
 

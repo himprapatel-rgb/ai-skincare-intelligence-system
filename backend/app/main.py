@@ -16,8 +16,14 @@ from app.core.security import encrypt_sensitive_data
 from app.database import Base, SessionLocal, engine
 from app.models.twin_models import *  # Import Digital Twin models for table creation# Create database tables if needed (safe for local dev)
 from app.models.user import PolicyVersion, User, UserConsent, UserProfile
-from app.routers import (admin, consent,  # GDPR & User Management
-                         digital_twin, products, profile, scan)
+from app.routers import (  # GDPR & User Management
+    admin,
+    consent,
+    digital_twin,
+    products,
+    profile,
+    scan,
+)
 from app.services.auth_service import auth_service
 
 logger = logging.getLogger(__name__)

@@ -21,14 +21,21 @@ from app.config import settings
 from app.core.security import get_current_user
 from app.database import get_db
 from app.models import ScanSession, SkinAnalysis, User
-from app.schemas.scan_schemas import (ScanActionsResponse, ScanHistoryItem,
-                                      ScanHistoryResponse, ScanInitResponse,
-                                      ScanResultResponse, ScanStatusResponse,
-                                      ScanUploadResponse)
-from app.services.youcam_service import (YouCamError,
-                                         get_default_skin_analysis_actions,
-                                         get_supported_skin_actions,
-                                         get_youcam_client)
+from app.schemas.scan_schemas import (
+    ScanActionsResponse,
+    ScanHistoryItem,
+    ScanHistoryResponse,
+    ScanInitResponse,
+    ScanResultResponse,
+    ScanStatusResponse,
+    ScanUploadResponse,
+)
+from app.services.youcam_service import (
+    YouCamError,
+    get_default_skin_analysis_actions,
+    get_supported_skin_actions,
+    get_youcam_client,
+)
 
 router = APIRouter(prefix="/api/v1/scan", tags=["Face Scan"])
 logger = logging.getLogger(__name__)

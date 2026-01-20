@@ -3,9 +3,11 @@ from uuid import UUID
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
+from app.core.security import get_current_user
 from app.database import get_db
 from app.models.routine_product import RoutineProduct
 from app.models.saved_routine import SavedRoutine
+from app.models.user import User
 from app.schemas.routine_schemas import (SavedRoutineCreate,
                                          SavedRoutineResponse,
                                          SavedRoutineUpdate)
@@ -14,9 +16,13 @@ router = APIRouter(prefix="/routines", tags=["routines"])
 
 
 @router.post("/", response_model=SavedRoutineResponse)
-def create_routine(payload: SavedRoutineCreate, db: Session = Depends(get_db), current_user_id: int = 1):
+def create_routine(
+    payload: SavedRoutineCreate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
     routine = SavedRoutine(
-        user_id=current_user_id,
+        user_id=current_user.id,
         name=payload.name,
         description=payload.description,
         routine_type=payload.routine_type,
@@ -42,16 +48,23 @@ def create_routine(payload: SavedRoutineCreate, db: Session = Depends(get_db), c
 
 
 @router.get("/", response_model=list[SavedRoutineResponse])
-def list_routines(db: Session = Depends(get_db), current_user_id: int = 1):
-    items = db.query(SavedRoutine).filter(SavedRoutine.user_id == current_user_id).all()
+def list_routines(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    items = db.query(SavedRoutine).filter(SavedRoutine.user_id == current_user.id).all()
     return items
 
 
 @router.get("/{routine_id}", response_model=SavedRoutineResponse)
-def get_routine(routine_id: UUID, db: Session = Depends(get_db), current_user_id: int = 1):
+def get_routine(
+    routine_id: UUID,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
     routine = db.query(SavedRoutine).filter(
         SavedRoutine.id == routine_id,
-        SavedRoutine.user_id == current_user_id
+        SavedRoutine.user_id == current_user.id
     ).first()
     if not routine:
         raise HTTPException(status_code=404, detail="Routine not found")
@@ -59,10 +72,15 @@ def get_routine(routine_id: UUID, db: Session = Depends(get_db), current_user_id
 
 
 @router.put("/{routine_id}", response_model=SavedRoutineResponse)
-def update_routine(routine_id: UUID, payload: SavedRoutineUpdate, db: Session = Depends(get_db), current_user_id: int = 1):
+def update_routine(
+    routine_id: UUID,
+    payload: SavedRoutineUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
     routine = db.query(SavedRoutine).filter(
         SavedRoutine.id == routine_id,
-        SavedRoutine.user_id == current_user_id
+        SavedRoutine.user_id == current_user.id
     ).first()
     if not routine:
         raise HTTPException(status_code=404, detail="Routine not found")
@@ -76,10 +94,14 @@ def update_routine(routine_id: UUID, payload: SavedRoutineUpdate, db: Session = 
 
 
 @router.delete("/{routine_id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_routine(routine_id: UUID, db: Session = Depends(get_db), current_user_id: int = 1):
+def delete_routine(
+    routine_id: UUID,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
     routine = db.query(SavedRoutine).filter(
         SavedRoutine.id == routine_id,
-        SavedRoutine.user_id == current_user_id
+        SavedRoutine.user_id == current_user.id
     ).first()
     if not routine:
         raise HTTPException(status_code=404, detail="Routine not found")

@@ -21,25 +21,33 @@ const DataExportPage: React.FC = () => {
     setExportComplete(false);
     
     try {
-      // TODO: API call to /api/v1/profile/export
-      // For now, generate mock data
-      await new Promise(r => setTimeout(r, 2000));
-      
+      const API_BASE = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
+      const token = localStorage.getItem('auth_token');
+      const response = await fetch(`${API_BASE}/profile/export`, {
+        headers: {
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to export data');
+      }
+
+      const data = await response.json();
+      const favoriteIds = (() => {
+        try {
+          return JSON.parse(localStorage.getItem('favorites') || '[]');
+        } catch {
+          return [];
+        }
+      })();
+
       const exportData = {
-        profile: includeProfile ? {
-          name: 'User Name',
-          email: 'user@example.com',
-          skinType: 'Combination',
-          goals: ['Clear Acne', 'Hydration']
-        } : null,
-        analysis: includeAnalysis ? [
-          { id: '1', date: '2026-01-14', score: 75 },
-          { id: '2', date: '2026-01-07', score: 72 }
-        ] : null,
-        products: includeProducts ? [
-          { id: '1', name: 'Product 1', brand: 'Brand A' },
-          { id: '2', name: 'Product 2', brand: 'Brand B' }
-        ] : null
+        user: data.user,
+        profile: includeProfile ? data.profile : null,
+        analysis: includeAnalysis ? (data.scans || []) : null,
+        products: includeProducts ? { favorites: favoriteIds } : null,
+        export_timestamp: data.export_timestamp,
       };
 
       if (exportFormat === 'json') {
@@ -71,7 +79,7 @@ const DataExportPage: React.FC = () => {
   const dataCategories = [
     { key: 'profile', label: 'Profile Information', description: 'Name, email, skin type, goals', size: '~2 KB', checked: includeProfile, onChange: setIncludeProfile },
     { key: 'analysis', label: 'Analysis History', description: 'All skin analysis results and images', size: '~15 MB', checked: includeAnalysis, onChange: setIncludeAnalysis },
-    { key: 'products', label: 'Product Data', description: 'Favorites, routines, recommendations', size: '~5 KB', checked: includeProducts, onChange: setIncludeProducts },
+    { key: 'products', label: 'Product Data', description: 'Favorites and routine-related data', size: '~5 KB', checked: includeProducts, onChange: setIncludeProducts },
   ];
 
   return (

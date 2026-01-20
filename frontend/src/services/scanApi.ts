@@ -37,13 +37,16 @@ function trimTrailingSlash(input: string): string {
 
 function buildUrl(path: string): string {
   const base = trimTrailingSlash(API_BASE);
-  const p = path.startsWith("/") ? path : `/${path}`;
+  let p = path.startsWith("/") ? path : `/${path}`;
+  if (base.endsWith("/api/v1") && p.startsWith("/api/v1")) {
+    p = p.slice("/api/v1".length) || "/";
+  }
   return `${base}${p}`;
 }
 
 async function fetchJson<T>(path: string, init?: RequestInit): Promise<T> {
   const headers = new Headers(init?.headers || {});
-  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  const token = typeof window !== "undefined" ? localStorage.getItem("auth_token") : null;
   if (token && !headers.has("Authorization")) {
     headers.set("Authorization", `Bearer ${token}`);
   }

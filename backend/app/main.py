@@ -47,10 +47,11 @@ def ensure_test_user() -> None:
         PolicyVersion.__table__.create(bind=engine, checkfirst=True)
         UserProfile.__table__.create(bind=engine, checkfirst=True)
         UserConsent.__table__.create(bind=engine, checkfirst=True)
-        with engine.begin() as conn:
-            conn.execute(
-                text("ALTER TABLE user_profiles ALTER COLUMN skin_type TYPE TEXT")
-            )
+        if engine.dialect.name != "sqlite":
+            with engine.begin() as conn:
+                conn.execute(
+                    text("ALTER TABLE user_profiles ALTER COLUMN skin_type TYPE TEXT")
+                )
     except ProgrammingError:
         logger.warning("Unable to create auth tables; skipping seed.")
         return
@@ -234,6 +235,7 @@ app.include_router(digital_twin.router, prefix="/api/v1", tags=["digital_twin"])
 app.include_router(routines_router, prefix="/api/v1", tags=["routines"])
 app.include_router(progress_router, prefix="/api/v1", tags=["progress"])
 app.include_router(external_products_router, prefix="/api/v1", tags=["external_products"])
+app.include_router(products.router)  # Router already includes /api/v1/products prefix
 app.include_router(admin.router, prefix="/api/v1/admin", tags=["admin"])  # Admin endpoints
 app.include_router(consent.router, prefix="/api/v1", tags=["consent"])  # GDPR Compliance (FR44-FR46)
 app.include_router(profile.router, prefix="/api/v1", tags=["profile"])  # User Profile Management

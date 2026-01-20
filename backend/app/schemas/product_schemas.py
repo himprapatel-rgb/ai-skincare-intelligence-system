@@ -73,6 +73,25 @@ class ProductRecommendation(BaseModel):
     reason: str = Field(..., description="Why recommended")
 
 
+class RecommendationItem(BaseModel):
+    """Simplified product payload for recommendations UI."""
+    id: UUID
+    name: str
+    brand: str
+    category: str
+    price: Optional[float] = None
+    rating: Optional[float] = None
+    ingredients: List[str] = []
+    concerns: List[str] = []
+    image_url: Optional[str] = None
+    purchase_url: Optional[str] = None
+
+
+class RecommendationsResponse(BaseModel):
+    """Recommendations list response."""
+    recommendations: List[RecommendationItem]
+
+
 class IngredientAnalysisRequest(BaseModel):
     """Ingredient analysis request"""
     ingredients: List[str] = Field(..., min_items=1)

@@ -8,12 +8,12 @@ interface Product {
   name: string;
   brand: string;
   category: string;
-  price: number;
-  rating: number;
+  price?: number | null;
+  rating?: number | null;
   ingredients: string[];
   concerns: string[];
-  imageUrl: string;
-  purchaseUrl: string;
+  imageUrl?: string | null;
+  purchaseUrl?: string | null;
 }
 
 const Recommendations: React.FC = () => {
@@ -36,11 +36,12 @@ const Recommendations: React.FC = () => {
   const fetchRecommendations = async () => {
     try {
       setLoading(true);
-      const API_BASE = import.meta.env.VITE_API_BASE_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app';
-      
-      const response = await fetch(`${API_BASE}/api/v1/recommendations`, {
+      const API_BASE = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
+      const token = localStorage.getItem('auth_token');
+
+      const response = await fetch(`${API_BASE}/recommendations`, {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
       });
 
@@ -49,7 +50,19 @@ const Recommendations: React.FC = () => {
       }
 
       const data = await response.json();
-      setProducts(data.recommendations || []);
+      const items = (data.recommendations || []).map((item: Record<string, unknown>) => ({
+        id: String(item.id || ''),
+        name: String(item.name || ''),
+        brand: String(item.brand || ''),
+        category: String(item.category || ''),
+        price: typeof item.price === 'number' ? item.price : (typeof item.price_usd === 'number' ? item.price_usd : null),
+        rating: typeof item.rating === 'number' ? item.rating : (typeof item.average_rating === 'number' ? item.average_rating : null),
+        ingredients: Array.isArray(item.ingredients) ? item.ingredients.filter((value) => typeof value === 'string') : [],
+        concerns: Array.isArray(item.concerns) ? item.concerns.filter((value) => typeof value === 'string') : [],
+        imageUrl: typeof item.image_url === 'string' ? item.image_url : (typeof item.imageUrl === 'string' ? item.imageUrl : null),
+        purchaseUrl: typeof item.purchase_url === 'string' ? item.purchase_url : (typeof item.purchaseUrl === 'string' ? item.purchaseUrl : null),
+      }));
+      setProducts(items);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
@@ -76,9 +89,15 @@ const Recommendations: React.FC = () => {
   };
 
   const filteredProducts = products.filter(product => {
-    if (filters.category !== 'all' && product.category !== filters.category) return false;
-    if (filters.concern !== 'all' && !product.concerns.includes(filters.concern)) return false;
+    if (filters.category !== 'all' && product.category.toLowerCase() !== filters.category) return false;
+    if (
+      filters.concern !== 'all' &&
+      !product.concerns.map((concern) => concern.toLowerCase()).includes(filters.concern)
+    ) {
+      return false;
+    }
     if (filters.priceRange !== 'all') {
+      if (product.price == null) return false;
       const [min, max] = filters.priceRange.split('-').map(Number);
       if (max && (product.price < min || product.price > max)) return false;
       if (!max && product.price < min) return false;
@@ -207,11 +226,17 @@ const Recommendations: React.FC = () => {
             filteredProducts.map((product) => (
               <div key={product.id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition">
                 <div className="relative">
-                  <img
-                    src={product.imageUrl}
-                    alt={product.name}
-                    className="w-full h-48 object-cover"
-                  />
+                  {product.imageUrl ? (
+                    <img
+                      src={product.imageUrl}
+                      alt={product.name}
+                      className="w-full h-48 object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-48 bg-gray-100 flex items-center justify-center text-gray-400">
+                      No image
+                    </div>
+                  )}
                   <button
                     onClick={() => toggleFavorite(product.id)}
                     className={`absolute top-3 right-3 p-2 rounded-full ${favorites.has(product.id) ? 'bg-red-500 text-white' : 'bg-white text-gray-600'} hover:scale-110 transition flex items-center justify-center`}
@@ -230,7 +255,7 @@ const Recommendations: React.FC = () => {
                     <span className="text-xs font-semibold text-purple-600 uppercase">{product.category}</span>
                     <div className="flex items-center">
                       <IconStar size={16} strokeWidth={2} className="text-yellow-500" fill="currentColor" />
-                      <span className="text-sm font-semibold ml-1">{product.rating}</span>
+                      <span className="text-sm font-semibold ml-1">{product.rating ?? 'N/A'}</span>
                     </div>
                   </div>
 
@@ -249,15 +274,27 @@ const Recommendations: React.FC = () => {
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <span className="text-2xl font-bold text-gray-800">${product.price}</span>
-                    <a
-                      href={product.purchaseUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition text-sm font-semibold"
-                    >
-                      Buy Now
-                    </a>
+                    <span className="text-2xl font-bold text-gray-800">
+                      {product.price != null ? `$${product.price}` : 'Price N/A'}
+                    </span>
+                    {product.purchaseUrl ? (
+                      <a
+                        href={product.purchaseUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition text-sm font-semibold"
+                      >
+                        Buy Now
+                      </a>
+                    ) : (
+                      <button
+                        type="button"
+                        className="bg-gray-200 text-gray-600 px-4 py-2 rounded-lg text-sm font-semibold cursor-not-allowed"
+                        disabled
+                      >
+                        Unavailable
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>

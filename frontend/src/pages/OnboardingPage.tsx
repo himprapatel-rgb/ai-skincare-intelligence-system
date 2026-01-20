@@ -62,13 +62,27 @@ const OnboardingPage: React.FC = () => {
     setError('');
 
     try {
-      const response = await fetch('/api/v1/auth/onboarding', {
+      if (formData.goals.length === 0 || formData.concerns.length === 0 || !formData.skinType) {
+        throw new Error('Please complete all required fields.');
+      }
+
+      const API_BASE = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
+      const token = localStorage.getItem('auth_token');
+      const payload = {
+        goals: formData.goals.map((goal) => goal.toLowerCase().replace(/\s+/g, '_')),
+        concerns: formData.concerns.map((concern) => concern.toLowerCase().replace(/\s+/g, '_')),
+        skin_type: formData.skinType.toLowerCase(),
+        routine_frequency: 'twice_daily',
+        climate: 'temperate',
+      };
+
+      const response = await fetch(`${API_BASE}/profile/baseline`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(payload)
       });
 
       if (!response.ok) throw new Error('Onboarding failed');

@@ -115,10 +115,43 @@ const RoutineBuilderPage: React.FC = () => {
 
   const handleSaveRoutine = async () => {
     try {
-      // TODO: API call to save routine
+      const API_BASE = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
+      const token = localStorage.getItem('auth_token');
+      const steps = currentRoutine;
+      const description = steps
+        .map((step, index) => `${index + 1}. ${step.category}${step.productName ? ` - ${step.productName}` : ''}`)
+        .join('\n');
+      const payload = {
+        name: activeTime === 'morning' ? 'Morning Routine' : 'Evening Routine',
+        description,
+        routine_type: activeTime,
+        is_active: true,
+        products: steps
+          .filter((step) => step.productId)
+          .map((step, index) => ({
+            product_id: step.productId,
+            step_order: index + 1,
+            notes: step.category,
+          })),
+      };
+
+      const response = await fetch(`${API_BASE}/routines`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to save routine');
+      }
+
       alert('Routine saved successfully!');
     } catch (error) {
       console.error('Failed to save routine:', error);
+      alert('Failed to save routine. Please try again.');
     }
   };
 

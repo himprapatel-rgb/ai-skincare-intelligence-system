@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { IconDownload, IconShare2, IconTrendingUp, IconTrendingDown } from '../components/Icons';
+import { getScanHistory } from '../services/scanApi';
 import './CommonStyles.css';
 import './ComparisonPage.css';
 
@@ -33,26 +34,52 @@ const ComparisonPage: React.FC = () => {
   const [allAnalysesForChart, setAllAnalysesForChart] = useState<Analysis[]>([]);
 
   useEffect(() => {
-    // Mock data - replace with API call
-    const mockAnalyses: Analysis[] = [
-      {
-        id: '1', date: '2026-01-14', thumbnail: '/placeholder.jpg', imageUrl: '/placeholder.jpg',
-        skinType: 'Combination', overallScore: 72,
-        concerns: { acne: 35, wrinkles: 20, darkSpots: 25, hydration: 65, redness: 30 }
-      },
-      {
-        id: '2', date: '2026-01-07', thumbnail: '/placeholder.jpg', imageUrl: '/placeholder.jpg',
-        skinType: 'Combination', overallScore: 68,
-        concerns: { acne: 45, wrinkles: 22, darkSpots: 30, hydration: 58, redness: 35 }
-      },
-      {
-        id: '3', date: '2025-12-28', thumbnail: '/placeholder.jpg', imageUrl: '/placeholder.jpg',
-        skinType: 'Oily', overallScore: 62,
-        concerns: { acne: 55, wrinkles: 18, darkSpots: 28, hydration: 52, redness: 40 }
-      },
-    ];
-    setAnalyses(mockAnalyses);
-    setAllAnalysesForChart(mockAnalyses);
+    const fetchAnalyses = async () => {
+      try {
+        const historyData = await getScanHistory();
+        const scans = (historyData as { scans?: Array<Record<string, unknown>> }).scans || [];
+
+        const mapped = scans.map((scan) => {
+          const summary = (scan.summary || {}) as Record<string, unknown>;
+          const scores = (summary.scores || {}) as Record<string, unknown>;
+
+          const getScore = (keys: string[]) => {
+            for (const key of keys) {
+              const value = scores[key];
+              if (typeof value === 'number') {
+                return Math.round(value);
+              }
+            }
+            return 0;
+          };
+
+          return {
+            id: String(scan.scan_id || ''),
+            date: String(scan.created_at || ''),
+            thumbnail: typeof scan.image_url === 'string' ? scan.image_url : '/placeholder.jpg',
+            imageUrl: typeof scan.image_url === 'string' ? scan.image_url : undefined,
+            skinType: typeof summary.skin_type === 'string' ? summary.skin_type : 'Unknown',
+            overallScore: typeof summary.overall_score === 'number' ? Math.round(summary.overall_score) : 0,
+            concerns: {
+              acne: getScore(['acne', 'hd_acne']),
+              wrinkles: getScore(['wrinkle', 'hd_wrinkle']),
+              darkSpots: getScore(['age_spot', 'hd_age_spot']),
+              hydration: getScore(['moisture', 'hd_moisture']),
+              redness: getScore(['redness', 'hd_redness']),
+            },
+          } as Analysis;
+        }).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+        setAnalyses(mapped);
+        setAllAnalysesForChart(mapped);
+      } catch (error) {
+        console.error('Failed to load analyses:', error);
+        setAnalyses([]);
+        setAllAnalysesForChart([]);
+      }
+    };
+
+    fetchAnalyses();
   }, []);
 
   const getComparison = (key: keyof Analysis['concerns']) => {

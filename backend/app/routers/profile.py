@@ -9,6 +9,7 @@ from app.core.audit import log_profile_event
 from app.core.security import (decrypt_sensitive_data, encrypt_sensitive_data,
                                get_current_user)
 from app.dependencies import get_db
+from app.models.scan import ScanSession
 from app.models.user import User, UserProfile
 from app.schemas.profile import ProfileCreate, ProfileResponse, ProfileUpdate
 
@@ -249,6 +250,27 @@ async def export_profile_data(
     if not profile:
         return {"message": "No profile data found"}
 
+    scans = (
+        db.query(ScanSession)
+        .filter(ScanSession.user_id == current_user.id)
+        .order_by(ScanSession.created_at.desc())
+        .all()
+    )
+
+    scan_export = []
+    for scan in scans:
+        metadata = scan.scan_metadata or {}
+        scan_export.append(
+            {
+                "scan_id": str(scan.id),
+                "status": scan.status.value if scan.status else None,
+                "image_url": scan.image_url,
+                "created_at": scan.created_at.isoformat() if scan.created_at else None,
+                "completed_at": scan.completed_at.isoformat() if scan.completed_at else None,
+                "summary": metadata.get("summary"),
+            }
+        )
+
     export_data = {
         "user": {
             "id": str(current_user.id),
@@ -264,6 +286,7 @@ async def export_profile_data(
             "created_at": profile.created_at.isoformat(),
             "updated_at": profile.updated_at.isoformat(),
         },
+        "scans": scan_export,
         "export_timestamp": datetime.utcnow().isoformat(),
     }
 

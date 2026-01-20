@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Line } from 'recharts';
 import { IconTrendingUp, IconCheckCircle, IconCircle, IconDownload } from '../components/Icons';
+import { getScanHistory } from '../services/scanApi';
 import './CommonStyles.css';
 import './ProgressTrackingPage.css';
 
@@ -24,16 +25,59 @@ const ProgressTrackingPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Mock data - replace with API call
-    const mockData: ProgressData[] = [
-      { date: '2026-01-14', overallScore: 75, acne: 30, wrinkles: 20, hydration: 70, darkSpots: 25 },
-      { date: '2026-01-07', overallScore: 72, acne: 35, wrinkles: 22, hydration: 65, darkSpots: 28 },
-      { date: '2025-12-31', overallScore: 68, acne: 40, wrinkles: 20, hydration: 60, darkSpots: 30 },
-      { date: '2025-12-24', overallScore: 65, acne: 45, wrinkles: 18, hydration: 55, darkSpots: 32 },
-      { date: '2025-12-17', overallScore: 62, acne: 50, wrinkles: 22, hydration: 50, darkSpots: 35 },
-    ];
-    setProgressData(mockData);
-    setIsLoading(false);
+    const fetchProgress = async () => {
+      try {
+        setIsLoading(true);
+        const historyData = await getScanHistory();
+        const scans = (historyData as { scans?: Array<Record<string, unknown>> }).scans || [];
+
+        const now = new Date();
+        const rangeDays = timeRange === 'week' ? 7 : timeRange === 'month' ? 30 : 90;
+        const filtered = scans.filter((scan) => {
+          const createdAt = new Date(String(scan.created_at || ''));
+          if (Number.isNaN(createdAt.getTime())) return false;
+          const diffDays = Math.floor((now.getTime() - createdAt.getTime()) / (1000 * 60 * 60 * 24));
+          return diffDays <= rangeDays;
+        });
+
+        const mapped = filtered.map((scan) => {
+          const summary = (scan.summary || {}) as Record<string, unknown>;
+          const scores = (summary.scores || {}) as Record<string, unknown>;
+
+          const getScore = (keys: string[]) => {
+            for (const key of keys) {
+              const value = scores[key];
+              if (typeof value === 'number') {
+                return Math.round(value);
+              }
+            }
+            return 0;
+          };
+
+          const overall = typeof summary.overall_score === 'number'
+            ? Math.round(summary.overall_score)
+            : 0;
+
+          return {
+            date: String(scan.created_at || ''),
+            overallScore: overall,
+            acne: getScore(['acne', 'hd_acne']),
+            wrinkles: getScore(['wrinkle', 'hd_wrinkle']),
+            hydration: getScore(['moisture', 'hd_moisture']),
+            darkSpots: getScore(['age_spot', 'hd_age_spot']),
+          } as ProgressData;
+        }).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+        setProgressData(mapped);
+      } catch (error) {
+        console.error('Failed to load progress data:', error);
+        setProgressData([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProgress();
   }, [timeRange]);
 
   const getImprovement = () => {
@@ -42,10 +86,10 @@ const ProgressTrackingPage: React.FC = () => {
   };
 
   const milestones = [
-    { id: 1, title: 'First Scan Completed', achieved: true, date: '2025-12-17' },
-    { id: 2, title: '5 Scans Milestone', achieved: true, date: '2026-01-07' },
-    { id: 3, title: '10% Improvement', achieved: getImprovement() >= 10, date: getImprovement() >= 10 ? '2026-01-14' : null },
-    { id: 4, title: '30-Day Streak', achieved: false, date: null },
+    { id: 1, title: 'First Scan Completed', achieved: progressData.length > 0, date: progressData[progressData.length - 1]?.date || null },
+    { id: 2, title: '5 Scans Milestone', achieved: progressData.length >= 5, date: progressData[0]?.date || null },
+    { id: 3, title: '10% Improvement', achieved: getImprovement() >= 10, date: getImprovement() >= 10 ? progressData[0]?.date || null : null },
+    { id: 4, title: '30-Day Streak', achieved: progressData.length >= 30, date: null },
   ];
 
   if (isLoading) return <div className="page-container"><p>Loading progress data...</p></div>;

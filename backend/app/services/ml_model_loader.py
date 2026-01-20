@@ -19,9 +19,12 @@ import logging
 import os
 import threading
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import TYPE_CHECKING, Any, Dict, Optional
 
 import requests
+
+if TYPE_CHECKING:
+    from app.config.storage import StorageConfig
 
 logger = logging.getLogger(__name__)
 

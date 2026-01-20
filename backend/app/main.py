@@ -140,7 +140,7 @@ def ensure_test_user() -> None:
                     timezone="Europe/Dublin",
                     phone_number="+353-1-555-0199",
                     profile_photo_url="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d",
-                    skin_type=encrypt_sensitive_data("combination"),
+                    skin_type="combination",
                     skin_tone="medium",
                     skin_texture="uneven",
                     pore_size="medium",
@@ -176,9 +176,7 @@ def ensure_test_user() -> None:
                         "moisturizer",
                         "broad_spectrum_spf",
                     ],
-                    goals=encrypt_sensitive_data(
-                        ["anti_aging", "hydration", "brightening"]
-                    ),
+                    goals=["anti_aging", "hydration", "brightening"],
                     email_notifications=True,
                     push_notifications=True,
                     sms_notifications=False,

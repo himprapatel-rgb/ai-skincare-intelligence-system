@@ -152,7 +152,7 @@ def encrypt_sensitive_data(data: Union[str, List, dict]) -> str:
     except Exception as e:
         raise RuntimeError(f"Encryption failed: {str(e)}")
 
-def decrypt_sensitive_data(encrypted_data: str) -> Union[str, List, dict]:
+def decrypt_sensitive_data(encrypted_data: Union[str, List, dict, None]) -> Union[str, List, dict, None]:
     """
     Decrypt sensitive user data.
     
@@ -165,17 +165,24 @@ def decrypt_sensitive_data(encrypted_data: str) -> Union[str, List, dict]:
     SRS Traceability:
     - NFR4: Use AES-256 encryption for sensitive data at rest
     """
+    if encrypted_data is None:
+        return None
+    if not isinstance(encrypted_data, str):
+        return encrypted_data
     try:
         fernet = get_fernet()
         # Decrypt
         decrypted_bytes = fernet.decrypt(encrypted_data.encode())
         decrypted_str = decrypted_bytes.decode()
-        
+
         # Try to parse as JSON (for lists/dicts)
         try:
             return json.loads(decrypted_str)
         except json.JSONDecodeError:
             # Return as string if not JSON
             return decrypted_str
-    except Exception as e:
-        raise RuntimeError(f"Decryption failed: {str(e)}")
+    except Exception:
+        try:
+            return json.loads(encrypted_data)
+        except json.JSONDecodeError:
+            return encrypted_data

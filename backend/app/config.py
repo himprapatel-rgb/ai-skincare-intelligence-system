@@ -69,7 +69,7 @@ class Settings(BaseSettings):
         default="json", description="YouCam skin analysis response format"
     )
     YOUCAM_SKIN_ANALYSIS_ACTIONS: str = Field(
-        default="wrinkle,pore,texture,acne",
+        default="wrinkle,texture,acne,redness,age_spot,pore",
         description="Comma-separated YouCam skin analysis actions",
     )
 

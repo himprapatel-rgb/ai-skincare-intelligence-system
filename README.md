@@ -87,6 +87,13 @@ For detailed CI/CD completion report, see [SPRINT-3-PHASE-3-CI-CD-COMPLETION.md]
    CLOUDINARY_API_KEY=your-cloudinary-api-key
    CLOUDINARY_API_SECRET=your-cloudinary-api-secret
    GPTGPT_API_KEY=your-openai-api-key
+   YOUCAM_API_KEY=your-youcam-api-key
+   YOUCAM_API_BASE=https://yce-api-01.makeupar.com
+   YOUCAM_SKIN_ANALYSIS_ACTIONS=wrinkle,texture,acne,redness,age_spot,pore
+   YOUCAM_SKIN_ANALYSIS_FORMAT=json
+   YOUCAM_TIMEOUT_SECONDS=30
+   YOUCAM_POLL_INTERVAL_SECONDS=2
+   YOUCAM_MAX_POLL_SECONDS=120
    ```
 
 4. **Database Setup & SCIN Data Pipeline**

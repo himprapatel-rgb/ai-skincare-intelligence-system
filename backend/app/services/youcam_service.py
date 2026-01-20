@@ -15,6 +15,39 @@ from app.config import settings
 
 logger = logging.getLogger(__name__)
 
+SD_ACTIONS = [
+    "wrinkle",
+    "pore",
+    "texture",
+    "acne",
+    "oiliness",
+    "radiance",
+    "age_spot",
+    "dark_circle_v2",
+    "droopy_upper_eyelid",
+    "droopy_lower_eyelid",
+    "firmness",
+    "moisture",
+    "redness",
+]
+HD_ACTIONS = [
+    "hd_wrinkle",
+    "hd_pore",
+    "hd_texture",
+    "hd_acne",
+    "hd_oiliness",
+    "hd_radiance",
+    "hd_age_spot",
+    "hd_dark_circle",
+    "hd_eye_bag",
+    "hd_droopy_upper_eyelid",
+    "hd_droopy_lower_eyelid",
+    "hd_firmness",
+    "hd_moisture",
+    "hd_redness",
+]
+ALL_ACTIONS = set(SD_ACTIONS + HD_ACTIONS)
+
 
 class YouCamError(Exception):
     """Raised when YouCam API returns an error."""
@@ -47,6 +80,13 @@ class YouCamClient:
         status_value = payload.get("status")
         if status_value != 200:
             error_code = payload.get("error_code") or payload.get("error")
+            logger.warning(
+                "YouCam API error in %s: status=%s error_code=%s payload=%s",
+                context,
+                status_value,
+                error_code,
+                payload,
+            )
             raise YouCamError(
                 f"YouCam API {context} failed with status={status_value}.",
                 error_code=error_code,
@@ -227,7 +267,21 @@ def _parse_actions(actions_value: Optional[str]) -> List[str]:
     if not actions_value:
         return ["wrinkle", "pore", "texture", "acne"]
     parts = [item.strip() for item in actions_value.split(",")]
-    return [item for item in parts if item]
+    actions = [item for item in parts if item]
+    _validate_actions(actions)
+    return actions
+
+
+def _validate_actions(actions: List[str]) -> None:
+    if not actions:
+        return
+    invalid = [action for action in actions if action not in ALL_ACTIONS]
+    if invalid:
+        raise YouCamError(f"Unsupported YouCam dst_actions: {', '.join(invalid)}")
+    has_hd = any(action.startswith("hd_") for action in actions)
+    has_sd = any(not action.startswith("hd_") for action in actions)
+    if has_hd and has_sd:
+        raise YouCamError("YouCam dst_actions cannot mix HD and SD in one request.")
 
 
 def get_youcam_client() -> YouCamClient:
@@ -247,3 +301,7 @@ def get_youcam_client() -> YouCamClient:
 
 def get_default_skin_analysis_actions() -> List[str]:
     return _parse_actions(settings.YOUCAM_SKIN_ANALYSIS_ACTIONS)
+
+
+def get_supported_skin_actions() -> Dict[str, List[str]]:
+    return {"sd": SD_ACTIONS, "hd": HD_ACTIONS}

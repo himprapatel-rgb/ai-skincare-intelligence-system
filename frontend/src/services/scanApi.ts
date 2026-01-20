@@ -9,6 +9,13 @@ export type ScanStatusResponse = {
 };
 
 export type ScanResultResponse = Record<string, unknown>;
+export type ScanActionsResponse = {
+  default_actions: string[];
+  supported_actions: {
+    sd: string[];
+    hd: string[];
+  };
+};
 
 /**
  * IMPORTANT:
@@ -105,6 +112,15 @@ export async function getScanStatus(sessionId: string): Promise<ScanStatusRespon
  */
 export async function getScanResult(sessionId: string): Promise<ScanResultResponse> {
   return fetchJson<ScanResultResponse>(`/api/v1/scan/${encodeURIComponent(sessionId)}/result`, {
+    method: "GET",
+  });
+}
+
+/**
+ * GET /api/v1/scan/actions
+ */
+export async function getScanActions(): Promise<ScanActionsResponse> {
+  return fetchJson<ScanActionsResponse>("/api/v1/scan/actions", {
     method: "GET",
   });
 }

@@ -186,6 +186,25 @@ class ScanHistoryResponse(BaseModel):
         }
 
 
+class ScanActionsResponse(BaseModel):
+    """Supported and default YouCam skin analysis actions"""
+    default_actions: List[str] = Field(..., description="Active YouCam actions")
+    supported_actions: Dict[str, List[str]] = Field(
+        ..., description="Supported actions grouped by mode (sd/hd)"
+    )
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "default_actions": ["wrinkle", "pore", "texture", "acne"],
+                "supported_actions": {
+                    "sd": ["wrinkle", "pore", "texture", "acne"],
+                    "hd": ["hd_wrinkle", "hd_pore", "hd_texture", "hd_acne"],
+                },
+            }
+        }
+
+
 # Error Response Schema
 class ErrorResponse(BaseModel):
     """Standard error response"""

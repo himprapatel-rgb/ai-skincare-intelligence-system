@@ -1,7 +1,12 @@
 from fastapi import APIRouter
 
-from app.api.v1.endpoints import (auth, internal, products, recommendations,
-                                  scan)
+from app.api.v1.endpoints import (
+    auth,
+    internal,
+    products,
+    recommendations,
+    scan,
+)
 
 api_router = APIRouter()
 

@@ -1,8 +1,11 @@
 import pytest
 
 from app.services import youcam_service
-from app.services.youcam_service import (YouCamClient, YouCamError,
-                                         build_youcam_summary)
+from app.services.youcam_service import (
+    YouCamClient,
+    YouCamError,
+    build_youcam_summary,
+)
 
 
 @pytest.mark.unit

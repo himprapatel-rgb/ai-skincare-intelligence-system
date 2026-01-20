@@ -12,6 +12,12 @@
   background: rgba(255, 255, 255, 0.92);
   border-bottom: 1px solid var(--border-color);
   backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.app-header.scrolled {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .app-header-container {
@@ -56,11 +62,31 @@
   color: var(--text-secondary);
   text-decoration: none;
   font-weight: 500;
+  position: relative;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.app-nav-link:hover {
+  color: var(--primary);
+  background: rgba(31, 111, 235, 0.05);
 }
 
 .app-nav-link.active {
   color: var(--primary);
   font-weight: 600;
+}
+
+.app-nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 12px;
+  right: 12px;
+  height: 2px;
+  background: var(--primary);
+  border-radius: 2px;
 }
 
 .app-nav-cta {
@@ -70,7 +96,30 @@
   border-radius: 999px;
   font-weight: 600;
   text-decoration: none;
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 4px 12px rgba(31, 111, 235, 0.25);
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.app-nav-cta::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.app-nav-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(31, 111, 235, 0.35);
+}
+
+.app-nav-cta:hover::before {
+  left: 100%;
 }
 
 .app-main {

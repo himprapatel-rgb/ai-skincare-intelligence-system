@@ -29,6 +29,83 @@
   display: none;
 }
 
+/* ==========================================
+   PREMIUM POLISH - 2026 Loading States
+   ========================================== */
+
+/* Smooth page entrance */
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.scan-page {
+  animation: pageEnter 0.5s ease-out;
+}
+
+/* Pulse animation for scanning */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+/* Shimmer loading effect */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.loading-shimmer {
+  background: linear-gradient(
+    90deg,
+    #f0f0f0 25%,
+    #e0e0e0 50%,
+    #f0f0f0 75%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Progress bar glow */
+@keyframes progressGlow {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(13, 148, 136, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(13, 148, 136, 0.6);
+  }
+}
+
+.progress-bar {
+  animation: progressGlow 2s ease-in-out infinite;
+}
+
+/* Scan button hover effect */
+.btn-scan:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(13, 148, 136, 0.3);
+}
+
+.btn-scan:active:not(:disabled) {
+  transform: translateY(0);
+}
+
 /* Main content area */
 .scan-container {
   max-width: 900px;

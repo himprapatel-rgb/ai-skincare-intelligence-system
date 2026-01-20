@@ -93,7 +93,7 @@ class UserProfile(Base):
     profile_photo_url = Column(String(500), nullable=True)
     
     # ===== SKIN PROFILE =====
-    skin_type = Column(String(50), nullable=True)  # oily, dry, combination, normal, sensitive
+    skin_type = Column(Text, nullable=True)  # oily, dry, combination, normal, sensitive
     skin_tone = Column(String(50), nullable=True)  # fair, light, medium, olive, tan, deep
     skin_texture = Column(String(50), nullable=True)  # smooth, rough, bumpy, uneven
     pore_size = Column(String(20), nullable=True)  # small, medium, large

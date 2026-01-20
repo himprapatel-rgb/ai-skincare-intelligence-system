@@ -5,6 +5,8 @@ from datetime import date, datetime
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from sqlalchemy import text
+
 from app.api.v1 import api_router
 from app.api.v1.products import router as external_products_router
 from app.api.v1.progress import router as progress_router
@@ -45,6 +47,10 @@ def ensure_test_user() -> None:
         PolicyVersion.__table__.create(bind=engine, checkfirst=True)
         UserProfile.__table__.create(bind=engine, checkfirst=True)
         UserConsent.__table__.create(bind=engine, checkfirst=True)
+        with engine.begin() as conn:
+            conn.execute(
+                text("ALTER TABLE user_profiles ALTER COLUMN skin_type TYPE TEXT")
+            )
     except ProgrammingError:
         logger.warning("Unable to create auth tables; skipping seed.")
         return

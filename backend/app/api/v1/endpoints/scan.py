@@ -16,7 +16,7 @@ backend_dir = pathlib.Path(__file__).parent.parent.parent.parent.parent.parent
 sys.path.insert(0, str(backend_dir))
 from app.core.security import get_current_user
 from app.models.user import User
-from app.services.youcam_service import (YouCamError,
+from app.services.youcam_service import (YouCamError, build_youcam_summary,
                                          get_default_skin_analysis_actions,
                                          get_supported_skin_actions,
                                          get_youcam_client)
@@ -51,6 +51,19 @@ def _run_mock_analysis(scan_id: UUID) -> dict:
                 "Apply moisturizer twice daily.",
                 "Use broad-spectrum SPF 30+ every morning.",
             ],
+        },
+        "summary": {
+            "overall_score": (base_score + 50) % 100,
+            "concerns": ["redness", "acne", "pigmentation", "dehydration", "sensitivity"],
+            "scores": {
+                "redness": (base_score + 15) % 100,
+                "acne": (base_score + 30) % 100,
+                "pigmentation": (base_score + 45) % 100,
+                "dehydration": (base_score + 60) % 100,
+                "sensitivity": (base_score + 75) % 100,
+            },
+            "mask_urls": {},
+            "image_url": None,
         },
     }
 
@@ -164,6 +177,7 @@ async def upload_scan(
                 "provider": "youcam",
                 "youcam": youcam_result,
             }
+            analysis_result["summary"] = build_youcam_summary(youcam_result)
         else:
             analysis_result = _run_mock_analysis(scan_session.id)
 
@@ -305,13 +319,21 @@ def get_scan_history(
         ScanSession.user_id == user_id
     ).all()
     
-    return {
-        "scans": [
+    items = []
+    for scan in scans:
+        summary = None
+        image_url = None
+        if isinstance(scan.scan_metadata, dict):
+            summary = scan.scan_metadata.get("summary")
+            image_url = (summary or {}).get("image_url") if isinstance(summary, dict) else None
+        items.append(
             {
                 "scan_id": str(scan.id),
                 "status": _status_value(scan.status),
-                "created_at": scan.created_at.isoformat() if scan.created_at else None
+                "created_at": scan.created_at.isoformat() if scan.created_at else None,
+                "summary": summary,
+                "image_url": image_url,
             }
-            for scan in scans
-        ]
-    }
+        )
+
+    return {"scans": items}

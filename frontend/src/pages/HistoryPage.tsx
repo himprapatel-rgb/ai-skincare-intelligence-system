@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IconCamera, IconStar, IconZap, IconBarChart, IconScan } from '../components/Icons';
+import { getScanHistory } from '../services/scanApi';
 import './HistoryPage.css';
 
 interface ScanHistory {
@@ -10,6 +11,7 @@ interface ScanHistory {
   concerns: string[];
   score: number;
   recommendations: number;
+  status?: string;
 }
 
 const HistoryPage: React.FC = () => {
@@ -25,13 +27,27 @@ const HistoryPage: React.FC = () => {
   const fetchHistory = async () => {
     try {
       setLoading(true);
-      const mockHistory: ScanHistory[] = [
-        { id: '1', date: '2025-01-11', concerns: ['Acne', 'Redness'], score: 78, recommendations: 5 },
-        { id: '2', date: '2025-01-05', concerns: ['Dryness', 'Fine Lines'], score: 72, recommendations: 6 },
-        { id: '3', date: '2024-12-28', concerns: ['Acne'], score: 85, recommendations: 3 },
-        { id: '4', date: '2024-12-15', concerns: ['Redness', 'Sensitivity'], score: 68, recommendations: 7 }
-      ];
-      setHistory(mockHistory);
+      const historyData = await getScanHistory();
+      const scans = (historyData as { scans?: Array<Record<string, unknown>> }).scans || [];
+      const mapped = scans.map((scan) => {
+        const summary = (scan.summary || {}) as Record<string, unknown>;
+        const concerns = Array.isArray(summary.concerns)
+          ? summary.concerns.filter((value) => typeof value === 'string') as string[]
+          : [];
+        const overallScore = typeof summary.overall_score === 'number'
+          ? Math.round(summary.overall_score)
+          : 0;
+        return {
+          id: String(scan.scan_id || ''),
+          date: String(scan.created_at || ''),
+          imageUrl: typeof scan.image_url === 'string' ? scan.image_url : undefined,
+          concerns,
+          score: overallScore,
+          recommendations: 0,
+          status: typeof scan.status === 'string' ? scan.status : undefined,
+        } as ScanHistory;
+      });
+      setHistory(mapped);
     } catch (error) {
       console.error('Error fetching history:', error);
     } finally {
@@ -137,6 +153,9 @@ const HistoryPage: React.FC = () => {
                     </div>
                     <div className="history-title">Skin Analysis</div>
                     <div className="history-score">Score: {item.score}%</div>
+                  {item.status && (
+                    <div className="history-score">Status: {item.status}</div>
+                  )}
                     <div className="history-concerns">
                       {item.concerns.map((concern, idx) => (
                         <span key={idx} className="concern-tag">{concern}</span>

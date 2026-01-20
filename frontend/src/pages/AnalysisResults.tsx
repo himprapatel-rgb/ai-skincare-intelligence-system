@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { IconScan, IconHome, IconCheck, IconAlertTriangle, IconArrowLeft } from '../components/Icons';
+import { getScanHistory, getScanResult } from '../services/scanApi';
 import './AnalysisResults.css';
 
 interface SkinAnalysis {
@@ -8,18 +9,18 @@ interface SkinAnalysis {
   userId: string;
   skinType: string;
   concerns: string[];
-  severity: {
-    acne?: number;
-    wrinkles?: number;
-    darkSpots?: number;
-    dryness?: number;
-    oiliness?: number;
-  };
+  severity: Record<string, number>;
   confidence: number;
   imageUrl: string;
   timestamp: string;
   recommendations?: string[];
 }
+
+type ScanHistoryItem = {
+  scan_id: string;
+  status: string;
+  created_at?: string | null;
+};
 
 const AnalysisResults: React.FC = () => {
   const { analysisId } = useParams<{ analysisId: string }>();
@@ -27,38 +28,90 @@ const AnalysisResults: React.FC = () => {
   const [analysis, setAnalysis] = useState<SkinAnalysis | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [previousAnalyses, setPreviousAnalyses] = useState<SkinAnalysis[]>([]);
+  const [previousScans, setPreviousScans] = useState<ScanHistoryItem[]>([]);
+
+  const buildAnalysisFromScan = (scanResult: Record<string, unknown>): SkinAnalysis => {
+    const result = (scanResult as { result?: Record<string, unknown> }).result || {};
+    const summary = (result as { summary?: Record<string, unknown> }).summary || {};
+    const youcam = (result as { youcam?: Record<string, unknown> }).youcam || {};
+    const output = (((youcam as { data?: Record<string, unknown> }).data || {}).results as { output?: unknown[] } | undefined)?.output || [];
+
+    const scores: Record<string, number> = {};
+    const concerns: string[] = [];
+    let overallScore: number | null = typeof summary.overall_score === 'number' ? summary.overall_score : null;
+    let imageUrl: string | null = typeof summary.image_url === 'string' ? summary.image_url : null;
+
+    if (summary.scores && typeof summary.scores === 'object') {
+      Object.entries(summary.scores as Record<string, number>).forEach(([key, value]) => {
+        if (typeof value === 'number') scores[key] = value;
+      });
+    }
+
+    if (Array.isArray(summary.concerns)) {
+      summary.concerns.forEach((value) => {
+        if (typeof value === 'string') concerns.push(value);
+      });
+    }
+
+    if (!overallScore || concerns.length === 0 || Object.keys(scores).length === 0 || !imageUrl) {
+      output.forEach((item) => {
+        if (!item || typeof item !== 'object') return;
+        const entry = item as Record<string, unknown>;
+        const type = entry.type as string | undefined;
+        if (!type) return;
+
+        if (type === 'all') {
+          const score = entry.score ?? entry.ui_score ?? entry.raw_score;
+          if (typeof score === 'number') overallScore = score;
+          return;
+        }
+
+        if (type === 'resize_image') {
+          const mask = entry.mask_urls ?? entry.url;
+          if (typeof mask === 'string') imageUrl = mask;
+          return;
+        }
+
+        const score = entry.ui_score ?? entry.raw_score ?? entry.score;
+        if (typeof score === 'number') scores[type] = score;
+        if (!concerns.includes(type)) concerns.push(type);
+      });
+    }
+
+    if (!overallScore && Object.keys(scores).length > 0) {
+      const values = Object.values(scores);
+      overallScore = values.reduce((sum, value) => sum + value, 0) / values.length;
+    }
+
+    return {
+      id: analysisId || 'unknown',
+      userId: '',
+      skinType: 'Not provided',
+      concerns,
+      severity: Object.fromEntries(
+        Object.entries(scores).map(([key, value]) => [key, Math.round(value)])
+      ),
+      confidence: overallScore ? Math.round(overallScore) : 0,
+      imageUrl: imageUrl || '',
+      timestamp: new Date().toISOString(),
+      recommendations: [],
+    };
+  };
 
   const fetchAnalysisResults = useCallback(async () => {
     try {
       setLoading(true);
-      const API_BASE = import.meta.env.VITE_API_BASE_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app';
-      
-      // Fetch current analysis
-      const response = await fetch(`${API_BASE}/api/v1/analysis/${analysisId}`, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch analysis results');
+      if (!analysisId) {
+        throw new Error('Missing scan id');
       }
 
-      const data = await response.json();
-      setAnalysis(data);
+      const scanResult = await getScanResult(analysisId);
+      const mapped = buildAnalysisFromScan(scanResult as Record<string, unknown>);
+      setAnalysis(mapped);
 
-      // Fetch previous analyses for comparison
-      const historyResponse = await fetch(`${API_BASE}/api/v1/analysis/history`, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
-
-      if (historyResponse.ok) {
-        const historyData = await historyResponse.json();
-        setPreviousAnalyses(historyData.analyses || []);
-      }
+      const historyData = await getScanHistory();
+      const scans = (historyData as { scans?: ScanHistoryItem[] }).scans || [];
+      setPreviousScans(scans);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
@@ -148,7 +201,11 @@ const AnalysisResults: React.FC = () => {
           <div className="result-card">
             <h2>Analyzed Image</h2>
             <div className="analysis-image">
-              <img src={analysis.imageUrl} alt="Skin analysis" />
+              {analysis.imageUrl ? (
+                <img src={analysis.imageUrl} alt="Skin analysis" />
+              ) : (
+                <div className="analysis-image-fallback">No image available</div>
+              )}
             </div>
           </div>
 
@@ -206,7 +263,7 @@ const AnalysisResults: React.FC = () => {
           </div>
         )}
 
-        {previousAnalyses.length > 0 && (
+        {previousScans.length > 0 && (
           <div className="result-card">
             <h2>Historical Comparison</h2>
             <div className="history-table-wrapper">
@@ -214,21 +271,17 @@ const AnalysisResults: React.FC = () => {
                 <thead>
                   <tr>
                     <th>Date</th>
-                    <th>Skin Type</th>
-                    <th>Concerns</th>
-                    <th>Confidence</th>
+                    <th>Status</th>
                     <th className="right">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {previousAnalyses.slice(0, 5).map((prev) => (
-                    <tr key={prev.id}>
-                      <td>{new Date(prev.timestamp).toLocaleDateString()}</td>
-                      <td>{prev.skinType}</td>
-                      <td>{prev.concerns.length} concern(s)</td>
-                      <td>{prev.confidence}%</td>
+                  {previousScans.slice(0, 5).map((prev) => (
+                    <tr key={prev.scan_id}>
+                      <td>{prev.created_at ? new Date(prev.created_at).toLocaleDateString() : '—'}</td>
+                      <td>{prev.status}</td>
                       <td className="right">
-                        <button onClick={() => navigate(`/analysis/${prev.id}`)} className="link-button">
+                        <button onClick={() => navigate(`/analysis/${prev.scan_id}`)} className="link-button">
                           View
                         </button>
                       </td>

@@ -95,7 +95,7 @@ class DigitalTwinResponse(DigitalTwinBase):
     updated_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True
         schema_extra = {
             "example": {
                 "id": "550e8400-e29b-41d4-a716-446655440000",
@@ -139,7 +139,7 @@ class TwinSnapshotResponse(BaseModel):
     created_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class TwinTimelineRequest(BaseModel):

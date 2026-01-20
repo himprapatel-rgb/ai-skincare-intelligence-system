@@ -51,6 +51,8 @@ class SuitabilityResponse(BaseModel):
     model_version: str = Field(..., description="Model version used")
     timestamp: str = Field(..., description="Prediction timestamp")
 
+    model_config = {"protected_namespaces": ()}
+
 
 class ModelInfoResponse(BaseModel):
     """ML model information."""

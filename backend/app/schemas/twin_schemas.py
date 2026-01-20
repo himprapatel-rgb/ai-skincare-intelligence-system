@@ -69,7 +69,7 @@ class RegionMetrics(BaseModel):
     notes: Optional[str] = Field(None, description="Optional human-readable notes or explanation for this region.")
 
     class Config:
-        orm_mode = True
+        from_attributes = True
         use_enum_values = True
 
 # ---------------------------------------------------------------------------
@@ -84,7 +84,7 @@ class EnvironmentContext(BaseModel):
     humidity_percent: Optional[confloat(ge=0.0, le=100.0)] = None
     uv_index: Optional[confloat(ge=0.0)] = None
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class RoutineContext(BaseModel):
     last_routine_at: Optional[datetime] = None
@@ -93,7 +93,7 @@ class RoutineContext(BaseModel):
     spf_used: Optional[bool] = None
     average_sleep_hours: Optional[confloat(ge=0.0, le=24.0)] = None
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class SkinStateVector(BaseModel):
     hydration_level: confloat(ge=0.0, le=1.0) = Field(...)
@@ -105,7 +105,7 @@ class SkinStateVector(BaseModel):
     aging_signs: confloat(ge=0.0, le=1.0) = Field(...)
     congestion_level: confloat(ge=0.0, le=1.0) = Field(...)
     class Config:
-        orm_mode = True
+        from_attributes = True
         use_enum_values = True
 
 class DigitalTwinSnapshot(BaseModel):
@@ -120,7 +120,7 @@ class DigitalTwinSnapshot(BaseModel):
     image_id: Optional[str] = None
     meta: Dict[str, Any] = Field(default_factory=dict)
     class Config:
-        orm_mode = True
+        from_attributes = True
         use_enum_values = True
 
 class TimelinePoint(BaseModel):
@@ -131,7 +131,7 @@ class TimelinePoint(BaseModel):
     state_vector: Optional[SkinStateVector] = None
     markers: List[str] = Field(default_factory=list)
     class Config:
-        orm_mode = True
+        from_attributes = True
         use_enum_values = True
 
 class DigitalTwinTimelineResponse(BaseModel):
@@ -140,7 +140,7 @@ class DigitalTwinTimelineResponse(BaseModel):
     total_points: int
     summary_insights: Dict[str, Any] = Field(default_factory=dict)
     class Config:
-        orm_mode = True
+        from_attributes = True
         use_enum_values = True
 
 class DigitalTwinQueryResponse(BaseModel):
@@ -150,7 +150,7 @@ class DigitalTwinQueryResponse(BaseModel):
     timeline: Optional[DigitalTwinTimelineResponse] = None
     insights: Dict[str, Any] = Field(default_factory=dict)
     class Config:
-        orm_mode = True
+        from_attributes = True
         use_enum_values = True
 
 class ScenarioChanges(BaseModel):
@@ -159,7 +159,7 @@ class ScenarioChanges(BaseModel):
     target_skin_mood: Optional[SkinMood] = None
     state_vector_overrides: Dict[str, float] = Field(default_factory=dict)
     class Config:
-        orm_mode = True
+        from_attributes = True
         use_enum_values = True
 
 class ScenarioSimulationRequest(BaseModel):
@@ -169,7 +169,7 @@ class ScenarioSimulationRequest(BaseModel):
     horizon_days: conint(ge=1, le=365) = 30
     include_timeline: bool = True
     class Config:
-        orm_mode = True
+        from_attributes = True
         use_enum_values = True
 
 class ScenarioSimulationResponse(BaseModel):
@@ -182,5 +182,5 @@ class ScenarioSimulationResponse(BaseModel):
     expected_final_mood: Optional[SkinMood] = None
     insights: Dict[str, Any] = Field(default_factory=dict)
     class Config:
-        orm_mode = True
+        from_attributes = True
         use_enum_values = True

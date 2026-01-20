@@ -305,3 +305,54 @@ def get_default_skin_analysis_actions() -> List[str]:
 
 def get_supported_skin_actions() -> Dict[str, List[str]]:
     return {"sd": SD_ACTIONS, "hd": HD_ACTIONS}
+
+
+def build_youcam_summary(payload: Dict[str, Any]) -> Dict[str, Any]:
+    data = payload.get("data") or {}
+    results = data.get("results") or {}
+    output = results.get("output") or []
+
+    summary: Dict[str, Any] = {
+        "overall_score": None,
+        "concerns": [],
+        "scores": {},
+        "mask_urls": {},
+        "image_url": None,
+    }
+
+    if not isinstance(output, list):
+        return summary
+
+    for item in output:
+        if not isinstance(item, dict):
+            continue
+        item_type = item.get("type")
+        if not item_type:
+            continue
+
+        if item_type == "all":
+            summary["overall_score"] = (
+                item.get("score") or item.get("ui_score") or item.get("raw_score")
+            )
+            continue
+
+        if item_type == "resize_image":
+            summary["image_url"] = item.get("mask_urls") or item.get("url")
+            continue
+
+        score = item.get("ui_score") or item.get("raw_score") or item.get("score")
+        if score is not None:
+            summary["scores"][item_type] = score
+
+        mask_url = item.get("mask_urls") or item.get("url")
+        if mask_url:
+            summary["mask_urls"][item_type] = mask_url
+
+        if item_type not in summary["concerns"]:
+            summary["concerns"].append(item_type)
+
+    if summary["overall_score"] is None and summary["scores"]:
+        scores = list(summary["scores"].values())
+        summary["overall_score"] = sum(scores) / len(scores)
+
+    return summary

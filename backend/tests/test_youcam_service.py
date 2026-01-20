@@ -1,7 +1,7 @@
 import pytest
 
 import app.services.youcam_service as youcam_service
-from app.services.youcam_service import YouCamClient, YouCamError
+from app.services.youcam_service import YouCamClient, YouCamError, build_youcam_summary
 
 
 @pytest.mark.unit
@@ -85,3 +85,36 @@ async def test_poll_task_times_out(monkeypatch):
         )
 
     assert "timed out" in str(exc_info.value).lower()
+
+
+@pytest.mark.unit
+def test_build_youcam_summary_extracts_scores():
+    payload = {
+        "data": {
+            "results": {
+                "output": [
+                    {"type": "wrinkle", "ui_score": 80, "mask_urls": "https://example.com/wrinkle.png"},
+                    {"type": "acne", "raw_score": 65.5, "mask_urls": "https://example.com/acne.png"},
+                    {"type": "all", "score": 72.5},
+                    {"type": "resize_image", "mask_urls": "https://example.com/resize.jpg"},
+                ]
+            }
+        }
+    }
+
+    summary = build_youcam_summary(payload)
+
+    assert summary["overall_score"] == 72.5
+    assert summary["image_url"] == "https://example.com/resize.jpg"
+    assert summary["scores"]["wrinkle"] == 80
+    assert summary["scores"]["acne"] == 65.5
+    assert "wrinkle" in summary["concerns"]
+    assert "acne" in summary["concerns"]
+    assert summary["mask_urls"]["wrinkle"] == "https://example.com/wrinkle.png"
+
+
+@pytest.mark.unit
+def test_build_youcam_summary_handles_missing_output():
+    summary = build_youcam_summary({"data": {"results": {"output": None}}})
+    assert summary["overall_score"] is None
+    assert summary["concerns"] == []

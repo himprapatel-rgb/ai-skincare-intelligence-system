@@ -42,7 +42,13 @@ function buildUrl(path: string): string {
 }
 
 async function fetchJson<T>(path: string, init?: RequestInit): Promise<T> {
-  const res = await fetch(buildUrl(path), init);
+  const headers = new Headers(init?.headers || {});
+  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  if (token && !headers.has("Authorization")) {
+    headers.set("Authorization", `Bearer ${token}`);
+  }
+
+  const res = await fetch(buildUrl(path), { ...init, headers });
 
   if (!res.ok) {
     // Read error details safely (no regex, no api)
@@ -112,6 +118,15 @@ export async function getScanStatus(sessionId: string): Promise<ScanStatusRespon
  */
 export async function getScanResult(sessionId: string): Promise<ScanResultResponse> {
   return fetchJson<ScanResultResponse>(`/api/v1/scan/${encodeURIComponent(sessionId)}/result`, {
+    method: "GET",
+  });
+}
+
+/**
+ * GET /api/v1/scan/history
+ */
+export async function getScanHistory(): Promise<Record<string, unknown>> {
+  return fetchJson<Record<string, unknown>>("/api/v1/scan/history", {
     method: "GET",
   });
 }

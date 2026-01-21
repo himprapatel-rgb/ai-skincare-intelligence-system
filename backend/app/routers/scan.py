@@ -268,7 +268,7 @@ async def upload_scan_image(
     scan.image_hash = image_hash
     scan.image_content_type = image_content_type
     scan.image_filename = image_filename
-        scan = _update_scan_status(
+    scan = _update_scan_status(
         db=db,
         scan=scan,
         status_value="processing",
@@ -313,7 +313,7 @@ async def upload_scan_image(
         else:
             analysis_result = _run_mock_analysis(scan)
 
-        scan = _update_scan_status(
+    scan = _update_scan_status(
             db=db,
             scan=scan,
             status_value="completed",
@@ -321,7 +321,7 @@ async def upload_scan_image(
         )
     except OpenAIVisionError as exc:
         logger.warning("OpenAI API failure: %s", exc)
-        scan = _update_scan_status(
+    scan = _update_scan_status(
             db=db,
             scan=scan,
             status_value="failed",
@@ -331,7 +331,7 @@ async def upload_scan_image(
             detail=f"OpenAI API error: {exc}",
         )
     except Exception:
-        scan = _update_scan_status(
+    scan = _update_scan_status(
             db=db,
             scan=scan,
             status_value="failed",

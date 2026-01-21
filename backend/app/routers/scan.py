@@ -134,11 +134,11 @@ def _run_mock_analysis(scan: ScanSession) -> dict:
     - Calculate confidence scores
     - Generate personalized recommendations
     """
-    # Simple deterministic mock based on scan id
-    base_score = (scan.id % 10) * 10
+    # Simple deterministic mock based on scan id (use hash of UUID for randomness)
+    base_score = (hash(scan.id) % 10) * 10
     
     mock_results = {
-        "scan_id": scan.id,
+        "scan_id": str(scan.id),  # Convert UUID to string for JSON
         "status": "completed",
         "skin_mood": "balanced",
         "scores": {

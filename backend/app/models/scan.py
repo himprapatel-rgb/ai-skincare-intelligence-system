@@ -13,6 +13,7 @@ from datetime import datetime
 from sqlalchemy import (
     Column,
     DateTime,
+    Enum as SQLEnum,
     Float,
     ForeignKey,
     Integer,
@@ -20,7 +21,6 @@ from sqlalchemy import (
     String,
     Text,
 )
-from sqlalchemy import Enum as SQLEnum
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import relationship
 

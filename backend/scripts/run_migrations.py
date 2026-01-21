@@ -96,6 +96,9 @@ def run_migrations():
             cur.execute(
                 "ALTER TABLE products ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ DEFAULT NOW()"
             )
+            cur.execute(
+                "CREATE UNIQUE INDEX IF NOT EXISTS idx_products_id_unique ON products (id)"
+            )
 
             print("  - Aligning ingredients table schema...")
             cur.execute("ALTER TABLE ingredients ADD COLUMN IF NOT EXISTS id UUID")
@@ -129,6 +132,9 @@ def run_migrations():
             )
             cur.execute(
                 "ALTER TABLE ingredients ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ DEFAULT NOW()"
+            )
+            cur.execute(
+                "CREATE UNIQUE INDEX IF NOT EXISTS idx_ingredients_id_unique ON ingredients (id)"
             )
 
             # Add supporting indexes without breaking existing schemas

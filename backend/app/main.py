@@ -235,6 +235,7 @@ async def health_check():
     
 # Mount all routers under /api/v1 for consistency
 app.include_router(api_router, prefix="/api/v1")
+app.include_router(scan.router, prefix="/api/v1", tags=["scan"])  # Face Scan API - CRITICAL!
 app.include_router(digital_twin.router, prefix="/api/v1", tags=["digital_twin"])  # Sprint 3: Digital Twin
 app.include_router(routines_router, prefix="/api/v1", tags=["routines"])
 app.include_router(progress_router, prefix="/api/v1", tags=["progress"])

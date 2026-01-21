@@ -22,7 +22,6 @@ from app.routers import (  # GDPR & User Management
     digital_twin,
     products,
     profile,
-    scan,
 )
 from app.services.auth_service import auth_service
 

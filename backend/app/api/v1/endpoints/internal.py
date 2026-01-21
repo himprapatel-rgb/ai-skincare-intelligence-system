@@ -3,6 +3,8 @@ from __future__ import annotations
 import os
 from typing import Any
 
+import httpx
+
 from fastapi import APIRouter, Header, HTTPException, status
 from pydantic import BaseModel
 
@@ -14,6 +16,12 @@ router = APIRouter()
 
 class SummaryRequest(BaseModel):
     prompt: str | None = None
+
+
+class OpenAIHealthResponse(BaseModel):
+    ok: bool
+    status_code: int | None = None
+    detail: str | None = None
 
 
 @router.post("/summary")
@@ -66,6 +74,32 @@ def generate_summary(
         return {"summary": out}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"LLM call failed: {str(e)}")
+
+
+@router.get("/openai/health", response_model=OpenAIHealthResponse)
+def openai_health_check(x_summary_token: str | None = Header(None)) -> OpenAIHealthResponse:
+    """Check OpenAI availability (internal use only)."""
+    if not settings.SUMMARY_TOKEN or x_summary_token != settings.SUMMARY_TOKEN:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized"
+        )
+
+    if not settings.OPENAI_API_KEY:
+        return OpenAIHealthResponse(ok=False, detail="OPENAI_API_KEY not configured")
+
+    try:
+        headers = {"Authorization": f"Bearer {settings.OPENAI_API_KEY}"}
+        with httpx.Client(timeout=10) as client:
+            response = client.get(f"{settings.OPENAI_API_BASE}/models", headers=headers)
+        if response.status_code == 200:
+            return OpenAIHealthResponse(ok=True, status_code=200)
+        return OpenAIHealthResponse(
+            ok=False,
+            status_code=response.status_code,
+            detail="OpenAI API returned non-200 status",
+        )
+    except Exception as exc:
+        return OpenAIHealthResponse(ok=False, detail=f"OpenAI check failed: {exc}")
 
 
 # ========== SCIN Dataset Endpoints ==========

@@ -32,14 +32,20 @@ const AnalysisResults: React.FC = () => {
 
   const buildAnalysisFromScan = useCallback((scanResult: Record<string, unknown>): SkinAnalysis => {
     const result = (scanResult as { result?: Record<string, unknown> }).result || {};
-    const summary = (result as { summary?: Record<string, unknown> }).summary || {};
-    const youcam = (result as { youcam?: Record<string, unknown> }).youcam || {};
-    const output = (((youcam as { data?: Record<string, unknown> }).data || {}).results as { output?: unknown[] } | undefined)?.output || [];
+    const summary =
+      (result as { summary?: Record<string, unknown> }).summary ||
+      ((result as { analysis?: Record<string, unknown> }).analysis || {}).summary ||
+      {};
 
     const scores: Record<string, number> = {};
     const concerns: string[] = [];
     let overallScore: number | null = typeof summary.overall_score === 'number' ? summary.overall_score : null;
-    let imageUrl: string | null = typeof summary.image_url === 'string' ? summary.image_url : null;
+    let imageUrl: string | null =
+      typeof summary.image_url === 'string'
+        ? summary.image_url
+        : typeof (result as { image_url?: string }).image_url === 'string'
+        ? (result as { image_url?: string }).image_url || null
+        : null;
 
     if (summary.scores && typeof summary.scores === 'object') {
       Object.entries(summary.scores as Record<string, number>).forEach(([key, value]) => {
@@ -53,35 +59,15 @@ const AnalysisResults: React.FC = () => {
       });
     }
 
-    if (!overallScore || concerns.length === 0 || Object.keys(scores).length === 0 || !imageUrl) {
-      output.forEach((item) => {
-        if (!item || typeof item !== 'object') return;
-        const entry = item as Record<string, unknown>;
-        const type = entry.type as string | undefined;
-        if (!type) return;
-
-        if (type === 'all') {
-          const score = entry.score ?? entry.ui_score ?? entry.raw_score;
-          if (typeof score === 'number') overallScore = score;
-          return;
-        }
-
-        if (type === 'resize_image') {
-          const mask = entry.mask_urls ?? entry.url;
-          if (typeof mask === 'string') imageUrl = mask;
-          return;
-        }
-
-        const score = entry.ui_score ?? entry.raw_score ?? entry.score;
-        if (typeof score === 'number') scores[type] = score;
-        if (!concerns.includes(type)) concerns.push(type);
-      });
-    }
-
     if (!overallScore && Object.keys(scores).length > 0) {
       const values = Object.values(scores);
       overallScore = values.reduce((sum, value) => sum + value, 0) / values.length;
     }
+
+    const recommendations =
+      (result as { recommendations?: string[] }).recommendations ||
+      ((result as { analysis?: Record<string, unknown> }).analysis as { recommendations?: string[] } | undefined)?.recommendations ||
+      [];
 
     return {
       id: analysisId || 'unknown',
@@ -94,7 +80,7 @@ const AnalysisResults: React.FC = () => {
       confidence: overallScore ? Math.round(overallScore) : 0,
       imageUrl: imageUrl || '',
       timestamp: new Date().toISOString(),
-      recommendations: [],
+      recommendations,
     };
   }, [analysisId]);
 

@@ -16,12 +16,10 @@ backend_dir = pathlib.Path(__file__).parent.parent.parent.parent.parent.parent
 sys.path.insert(0, str(backend_dir))
 from app.core.security import get_current_user_optional
 from app.models.user import User
-from app.services.youcam_service import (
-    YouCamError,
-    build_youcam_summary,
-    get_default_skin_analysis_actions,
-    get_supported_skin_actions,
-    get_youcam_client,
+from app.services.openai_vision_service import (
+    OpenAIVisionError,
+    get_openai_client,
+    get_supported_signals,
 )
 
 router = APIRouter()
@@ -81,7 +79,7 @@ def init_scan_session(
     current_user: Optional[User] = Depends(get_current_user_optional)
 ):
     """Initialize a new scan session."""
-    user_id = current_user.id if current_user else 1
+    user_id = current_user.id if current_user else None
     scan_session = ScanSession(
         user_id=user_id,
         status=ScanStatus.PENDING,
@@ -103,10 +101,10 @@ def init_scan_session(
     summary="Get supported skin analysis actions",
 )
 def get_scan_actions():
-    """Return supported YouCam skin analysis actions and current defaults."""
+    """Return supported OpenAI skin analysis signals."""
     return {
-        "default_actions": get_default_skin_analysis_actions(),
-        "supported_actions": get_supported_skin_actions(),
+        "default_actions": get_supported_signals(),
+        "supported_actions": {"signals": get_supported_signals()},
     }
 
 @router.post(
@@ -136,7 +134,7 @@ async def upload_scan(
             detail="Scan session not found"
         )
     
-    user_id = current_user.id if current_user else 1
+    user_id = current_user.id if current_user else None
     scan_session = db.query(ScanSession).filter(
         ScanSession.id == uuid_obj,
         ScanSession.user_id == user_id
@@ -163,24 +161,24 @@ async def upload_scan(
     
     # Get skin analysis service and perform analysis
     try:
-        if settings.YOUCAM_API_KEY:
-            youcam_client = get_youcam_client()
-            youcam_result = await youcam_client.run_skin_analysis(
+        if settings.OPENAI_API_KEY:
+            openai_client = get_openai_client()
+            openai_result = await openai_client.analyze_skin(
                 image_bytes=image_data,
                 filename=file.filename or "scan.jpg",
                 content_type=file.content_type or "image/jpeg",
-                dst_actions=get_default_skin_analysis_actions(),
-                response_format=settings.YOUCAM_SKIN_ANALYSIS_FORMAT,
-                poll_interval_seconds=settings.YOUCAM_POLL_INTERVAL_SECONDS,
-                max_wait_seconds=settings.YOUCAM_MAX_POLL_SECONDS,
             )
             analysis_result = {
                 "scan_id": str(scan_session.id),
                 "status": "completed",
-                "provider": "youcam",
-                "youcam": youcam_result,
+                "provider": "openai",
+                "model_version": settings.OPENAI_MODEL,
+                "analysis": openai_result,
+                "summary": openai_result.get("summary"),
+                "recommendations": openai_result.get("recommendations"),
+                "notes": openai_result.get("notes"),
+                "processing_time_ms": openai_result.get("processing_time_ms"),
             }
-            analysis_result["summary"] = build_youcam_summary(youcam_result)
         else:
             analysis_result = _run_mock_analysis(scan_session.id)
 
@@ -189,19 +187,17 @@ async def upload_scan(
     except ValueError as e:
         scan_session.status = ScanStatus.FAILED
         scan_session.scan_metadata = {"error": str(e)}
-    except YouCamError as exc:
+    except OpenAIVisionError as exc:
         logger.warning(
-            "YouCam analysis failed: status=%s error_code=%s payload=%s",
+            "OpenAI analysis failed: status=%s payload=%s",
             getattr(exc, "status_code", None),
-            getattr(exc, "error_code", None),
             getattr(exc, "payload", None),
         )
         scan_session.status = ScanStatus.FAILED
         scan_session.scan_metadata = {
-            "error": f"YouCam API error: {exc}",
-            "youcam_status": getattr(exc, "status_code", None),
-            "youcam_error_code": getattr(exc, "error_code", None),
-            "youcam_payload": getattr(exc, "payload", None),
+            "error": f"OpenAI API error: {exc}",
+            "openai_status": getattr(exc, "status_code", None),
+            "openai_payload": getattr(exc, "payload", None),
         }
     except Exception as e:
         logger.exception("Scan analysis failed unexpectedly.")
@@ -237,7 +233,7 @@ def get_scan_status(
             detail="Scan session not found"
         )
 
-    user_id = current_user.id if current_user else 1
+    user_id = current_user.id if current_user else None
     scan_session = db.query(ScanSession).filter(
         ScanSession.id == uuid_obj,
         ScanSession.user_id == user_id
@@ -317,7 +313,9 @@ def get_scan_history(
     current_user: Optional[User] = Depends(get_current_user_optional)
 ):
     """Get user's scan history."""
-    user_id = current_user.id if current_user else 1
+    if not current_user:
+        return {"scans": []}
+    user_id = current_user.id
     scans = db.query(ScanSession).filter(
         ScanSession.user_id == user_id
     ).all()

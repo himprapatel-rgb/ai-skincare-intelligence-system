@@ -1,10 +1,8 @@
 # Skinive API Integration (Working Notes)
 
-Status: Deprecated (migrated to YouCam API)
+Status: Deprecated (replaced by OpenAI Vision analysis)
 
-This integration plan is no longer active. See:
-
-- `docs/11-working/youcam-api-integration.md`
+This integration plan is no longer active. OpenAI Vision is the current implementation.
 
 ## Goal
 

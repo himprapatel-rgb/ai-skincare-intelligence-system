@@ -1,4 +1,3 @@
-
 # AI Skincare Intelligence System
 ## Master External API Integration Document
 ### (Detailed – Implementation Ready)
@@ -19,8 +18,7 @@ This document fully aligns with:
 
 User → Mobile/Web App  
 → Backend (FastAPI)  
-→ External APIs (Signals)  
-→ OpenAI (Reasoning & Personalization)  
+→ OpenAI Vision (Signals + Reasoning)  
 → Database (ML Training Store)  
 → Frontend Output
 
@@ -32,10 +30,10 @@ User → Mobile/Web App
 
 ---
 
-# 2. OpenAI API (Core Intelligence Layer)
+# 2. OpenAI API (Core Intelligence + Vision Layer)
 
 ## Purpose
-OpenAI is used as the **reasoning engine**, not as a diagnostic tool.
+OpenAI is used as the **reasoning engine** and **vision-based signal extractor**, not as a diagnostic tool.
 
 ### Responsibilities
 - Generate AM/PM skincare routines
@@ -43,48 +41,62 @@ OpenAI is used as the **reasoning engine**, not as a diagnostic tool.
 - Explain ingredient logic
 - Detect conflicts in routines/products
 - Adjust routines over time
+- Extract **numeric skin signals** from selfies
 
 ### NOT used for
 - Medical diagnosis
 - Disease detection
 - Facial recognition
-- Raw image processing
 
 ---
 
-## How OpenAI Is Used
+## How OpenAI Vision Is Used (Selfie Analysis)
 
 ### Inputs
-```json
-{
-  "user_profile": {
-    "skin_type": "dry-sensitive",
-    "concerns": ["pigmentation", "dryness"],
-    "climate": "cold_humid"
-  },
-  "skin_signals": {
-    "acne_score": 12,
-    "redness_score": 40,
-    "dryness_score": 78
-  },
-  "context": "routine_generation"
-}
-```
+- User selfie (temporary or stored with consent)
+- Analysis task config
 
 ### Outputs (STRICT JSON)
 ```json
 {
-  "routine_am": [...],
-  "routine_pm": [...],
-  "ingredients_to_use": [...],
-  "ingredients_to_avoid": [...],
-  "warnings": ["Patch test required"]
+  "summary": {
+    "overall_score": 72,
+    "scores": {
+      "acne": 30,
+      "redness": 22,
+      "pigmentation": 45,
+      "dehydration": 61,
+      "sensitivity": 38,
+      "wrinkles": 20,
+      "pores": 33,
+      "dark_circles": 28,
+      "texture": 40,
+      "oiliness": 25
+    },
+    "concerns": ["dehydration", "pigmentation", "redness"]
+  },
+  "skin_type": "combination",
+  "fitzpatrick_scale": 3,
+  "confidence_score": 0.82,
+  "concerns_detail": [
+    {
+      "concern_type": "pigmentation",
+      "severity": "moderate",
+      "confidence": 0.84,
+      "affected_areas": ["cheeks", "forehead"]
+    }
+  ],
+  "recommendations": [
+    "Use a gentle cleanser twice daily",
+    "Apply broad-spectrum SPF 30+ every morning"
+  ],
+  "notes": "Signals are cosmetic estimates only."
 }
 ```
 
 ### Storage
-- Save full JSON response
-- Store routine version ID
+- Store full JSON response
+- Store model version + inference time
 - Link to analysis session
 
 ### Cost Control
@@ -93,63 +105,14 @@ OpenAI is used as the **reasoning engine**, not as a diagnostic tool.
 - Caching by profile hash
 
 ### Replacement Plan
-- Later replaced by your **Routine Recommendation ML model**
-- LLM retained only for explanation layer
+- Later replaced by your **Internal CV Model**
+- OpenAI retained only for explanation layer
 
 ---
 
-# 3. Skin Analysis (Selfie) APIs – Signal Providers
+# 3. Product Scan & Shelf APIs
 
-## Purpose
-Convert face image into **numeric skin signals**.
-
-## Providers (MVP Options)
-
-### Perfect Corp (YouCam)
-- Acne score
-- Wrinkle score
-- Moisture level
-- Redness
-
-### Revieve
-- Skin type classification
-- Concern severity scoring
-
-### Skinive
-- Broad signal extraction
-- Must avoid medical phrasing
-
----
-
-## How Used
-
-### Inputs
-- User selfie (temporary)
-- Analysis task config
-
-### Outputs (Signals Only)
-```json
-{
-  "acne_score": 30,
-  "redness_score": 22,
-  "moisture_score": 45
-}
-```
-
-### Storage
-- Store signals only
-- DO NOT store raw image (default)
-- Optional image storage only with consent
-
-### Replacement Plan
-- Phase 3: internal CV model
-
----
-
-# 4. Product Scan & Shelf APIs
-
-## 4.1 Barcode Scanning
-
+## 3.1 Barcode Scanning
 ### Purpose
 Identify product uniquely
 
@@ -167,7 +130,7 @@ Identify product uniquely
 
 ---
 
-## 4.2 OCR (Ingredient Reading)
+## 3.2 OCR (Ingredient Reading)
 
 ### Purpose
 Extract ingredient list from product photo
@@ -187,7 +150,7 @@ Extract ingredient list from product photo
 
 ---
 
-## 4.3 Ingredient Intelligence
+## 3.3 Ingredient Intelligence
 
 ### Data Source
 - EU CosIng Database
@@ -203,7 +166,7 @@ Extract ingredient list from product photo
 
 ---
 
-# 5. Product Suitability Analysis (OpenAI)
+# 4. Product Suitability Analysis (OpenAI)
 
 ### Input
 - User profile
@@ -225,9 +188,9 @@ Extract ingredient list from product photo
 
 ---
 
-# 6. Geo Store Locator (FREE STACK)
+# 5. Geo Store Locator (FREE STACK)
 
-## 6.1 OpenStreetMap + Overpass API
+## 5.1 OpenStreetMap + Overpass API
 
 ### Purpose
 Find nearby stores
@@ -244,7 +207,7 @@ node["amenity"="pharmacy"](around:2000, LAT, LNG);
 
 ---
 
-## 6.2 Nominatim
+## 5.2 Nominatim
 
 ### Purpose
 Geocoding & reverse-geocoding
@@ -260,7 +223,7 @@ Search: "pharmacy near Dublin"
 
 ---
 
-# 7. Weather & UV APIs
+# 6. Weather & UV APIs
 
 ## Open-Meteo
 
@@ -278,7 +241,7 @@ Climate-aware routines
 
 ---
 
-# 8. Notifications & Engagement
+# 7. Notifications & Engagement
 
 ## Firebase Cloud Messaging
 
@@ -288,7 +251,7 @@ Climate-aware routines
 
 ---
 
-# 9. Payments
+# 8. Payments
 
 ## Stripe
 
@@ -298,7 +261,7 @@ Climate-aware routines
 
 ---
 
-# 10. Analytics & Monitoring
+# 9. Analytics & Monitoring
 
 - Sentry – error tracking
 - PostHog – product analytics
@@ -306,7 +269,7 @@ Climate-aware routines
 
 ---
 
-# 11. Database Design (ML Ready)
+# 10. Database Design (ML Ready)
 
 ## Core Tables
 - users
@@ -324,7 +287,7 @@ Climate-aware routines
 
 ---
 
-# 12. Security & Compliance
+# 11. Security & Compliance
 
 - No medical diagnosis
 - Consent for images
@@ -333,13 +296,12 @@ Climate-aware routines
 
 ---
 
-# 13. Roadmap Summary
+# 12. Roadmap Summary
 
 ### MVP
-- OpenAI + Product Scan + Free Geo Locator
+- OpenAI Vision + Product Scan + Free Geo Locator
 
 ### V1
-- Selfie analysis API
 - Weather personalization
 
 ### V2
@@ -355,4 +317,3 @@ This architecture:
 - Is legally safe
 - Is ML-first
 - Is investor-ready
-

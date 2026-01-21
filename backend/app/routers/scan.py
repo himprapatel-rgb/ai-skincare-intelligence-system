@@ -30,11 +30,10 @@ from app.schemas.scan_schemas import (
     ScanStatusResponse,
     ScanUploadResponse,
 )
-from app.services.youcam_service import (
-    YouCamError,
-    get_default_skin_analysis_actions,
-    get_supported_skin_actions,
-    get_youcam_client,
+from app.services.openai_vision_service import (
+    OpenAIVisionError,
+    get_openai_client,
+    get_supported_signals,
 )
 
 router = APIRouter(prefix="/api/v1/scan", tags=["Face Scan"])
@@ -51,8 +50,8 @@ def _create_scan(db: Session, user: Optional[User]) -> ScanSession:
     scan = ScanSession(
         user_id=user.id if user else None,  # Guest users have no user_id
         status="pending",
-        image_path=None,
-        result=None,
+        image_url=None,
+        scan_metadata=None,
         created_at=datetime.utcnow(),
         updated_at=datetime.utcnow(),
     )
@@ -141,6 +140,22 @@ def _run_mock_analysis(scan: ScanSession) -> dict:
         "scan_id": str(scan.id),  # Convert UUID to string for JSON
         "status": "completed",
         "skin_mood": "balanced",
+        "summary": {
+            "overall_score": (base_score + 50) % 100,
+            "concerns": ["redness", "acne", "pigmentation", "dehydration", "sensitivity"],
+            "scores": {
+                "redness": (base_score + 15) % 100,
+                "acne": (base_score + 30) % 100,
+                "pigmentation": (base_score + 45) % 100,
+                "dehydration": (base_score + 60) % 100,
+                "sensitivity": (base_score + 75) % 100,
+                "wrinkles": (base_score + 20) % 100,
+                "pores": (base_score + 35) % 100,
+                "dark_circles": (base_score + 40) % 100,
+                "texture": (base_score + 55) % 100,
+                "oiliness": (base_score + 25) % 100,
+            },
+        },
         "scores": {
             "redness": (base_score + 15) % 100,
             "acne": (base_score + 30) % 100,
@@ -167,16 +182,16 @@ def _update_scan_status(
     scan: ScanSession,
     status_value: str,
     result: Optional[dict] = None,
-    image_path: Optional[str] = None,
+    image_url: Optional[str] = None,
 ) -> ScanSession:
     scan.status = status_value
     scan.updated_at = datetime.utcnow()
     
-    if image_path is not None:
-        scan.image_path = image_path
+    if image_url is not None:
+        scan.image_url = image_url
     
     if result is not None:
-        scan.result = result
+        scan.scan_metadata = result
     
     db.add(scan)
     db.commit()
@@ -212,11 +227,11 @@ def init_scan_session(
 )
 def get_scan_actions():
     """
-    Return supported YouCam skin analysis actions and current defaults.
+    Return supported OpenAI skin analysis signals.
     """
     return ScanActionsResponse(
-        default_actions=get_default_skin_analysis_actions(),
-        supported_actions=get_supported_skin_actions(),
+        default_actions=get_supported_signals(),
+        supported_actions={"signals": get_supported_signals()},
     )
 
 
@@ -249,30 +264,31 @@ async def upload_scan_image(
         db=db,
         scan=scan,
         status_value="processing",
-        image_path=image_path,
+        image_url=image_path,
     )
     
     # Run analysis synchronously (TODO: move to background worker)
     try:
-        if settings.YOUCAM_API_KEY:
+        if settings.OPENAI_API_KEY:
             with open(image_path, "rb") as image_file:
                 image_bytes = image_file.read()
 
-            youcam_client = get_youcam_client()
-            youcam_result = await youcam_client.run_skin_analysis(
+            openai_client = get_openai_client()
+            openai_result = await openai_client.analyze_skin(
                 image_bytes=image_bytes,
                 filename=file.filename or os.path.basename(image_path),
                 content_type=file.content_type or "image/jpeg",
-                dst_actions=get_default_skin_analysis_actions(),
-                response_format=settings.YOUCAM_SKIN_ANALYSIS_FORMAT,
-                poll_interval_seconds=settings.YOUCAM_POLL_INTERVAL_SECONDS,
-                max_wait_seconds=settings.YOUCAM_MAX_POLL_SECONDS,
             )
             analysis_result = {
-                "scan_id": scan.id,
+                "scan_id": str(scan.id),
                 "status": "completed",
-                "provider": "youcam",
-                "youcam": youcam_result,
+                "provider": "openai",
+                "model_version": settings.OPENAI_MODEL,
+                "analysis": openai_result,
+                "summary": openai_result.get("summary"),
+                "recommendations": openai_result.get("recommendations"),
+                "notes": openai_result.get("notes"),
+                "processing_time_ms": openai_result.get("processing_time_ms"),
                 "generated_at": datetime.utcnow().isoformat(),
             }
         else:
@@ -284,8 +300,8 @@ async def upload_scan_image(
             status_value="completed",
             result=analysis_result,
         )
-    except YouCamError as exc:
-        logger.warning("YouCam API failure: %s", exc)
+    except OpenAIVisionError as exc:
+        logger.warning("OpenAI API failure: %s", exc)
         scan = _update_scan_status(
             db=db,
             scan=scan,
@@ -293,7 +309,7 @@ async def upload_scan_image(
         )
         raise HTTPException(
             status_code=status.HTTP_502_BAD_GATEWAY,
-            detail=f"YouCam API error: {exc}",
+            detail=f"OpenAI API error: {exc}",
         )
     except Exception:
         scan = _update_scan_status(
@@ -309,7 +325,7 @@ async def upload_scan_image(
     return ScanUploadResponse(
         scan_id=str(scan.id),
         status=scan.status,
-        image_url=scan.image_path,
+        image_url=scan.image_url,
         message="Image uploaded successfully. Processing completed.",
     )
 
@@ -356,14 +372,14 @@ def get_scan_results(
             detail=f"Scan is not completed yet. Current status: '{scan.status}'.",
         )
     
-    if not scan.result:
+    if not scan.scan_metadata:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Scan result is missing. Please try re-running the scan.",
         )
     
     # If result is stored as text JSON in DB, handle parsing
-    result_data = scan.result
+    result_data = scan.scan_metadata
     if isinstance(result_data, str):
         try:
             result_data = json.loads(result_data)
@@ -410,7 +426,7 @@ def get_scan_history(
             status=s.status,
             created_at=s.created_at,
             updated_at=s.updated_at,
-            image_path=getattr(s, "image_path", None),
+            image_path=getattr(s, "image_url", None),
         )
         for s in scans
     ]

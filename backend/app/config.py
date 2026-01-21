@@ -48,29 +48,20 @@ class Settings(BaseSettings):
         description="Optional base URL for GPTGPT API (overrides built-in default)",
     )
 
-    # YouCam API settings
-    YOUCAM_API_BASE: str = Field(
-        default="https://yce-api-01.makeupar.com",
-        description="Base URL for YouCam API",
+    # OpenAI Vision API settings
+    OPENAI_API_KEY: str | None = Field(
+        default=None, description="OpenAI API key for vision analysis"
     )
-    YOUCAM_API_KEY: str | None = Field(
-        default=None, description="YouCam API key"
+    OPENAI_API_BASE: str = Field(
+        default="https://api.openai.com/v1",
+        description="Base URL for OpenAI API",
     )
-    YOUCAM_TIMEOUT_SECONDS: int = Field(
-        default=30, description="YouCam API timeout in seconds"
+    OPENAI_MODEL: str = Field(
+        default="gpt-4o-mini",
+        description="OpenAI model for vision analysis",
     )
-    YOUCAM_POLL_INTERVAL_SECONDS: int = Field(
-        default=2, description="YouCam polling interval in seconds"
-    )
-    YOUCAM_MAX_POLL_SECONDS: int = Field(
-        default=120, description="YouCam max polling wait in seconds"
-    )
-    YOUCAM_SKIN_ANALYSIS_FORMAT: str = Field(
-        default="json", description="YouCam skin analysis response format"
-    )
-    YOUCAM_SKIN_ANALYSIS_ACTIONS: str = Field(
-        default="wrinkle,texture,acne,redness,age_spot,pore",
-        description="Comma-separated YouCam skin analysis actions",
+    OPENAI_TIMEOUT_SECONDS: int = Field(
+        default=60, description="OpenAI API timeout in seconds"
     )
 
     # Skinive API settings

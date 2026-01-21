@@ -187,8 +187,8 @@ class ScanHistoryResponse(BaseModel):
 
 
 class ScanActionsResponse(BaseModel):
-    """Supported and default YouCam skin analysis actions"""
-    default_actions: List[str] = Field(..., description="Active YouCam actions")
+    """Supported and default OpenAI skin analysis signals"""
+    default_actions: List[str] = Field(..., description="Active OpenAI signals")
     supported_actions: Dict[str, List[str]] = Field(
         ..., description="Supported actions grouped by mode (sd/hd)"
     )

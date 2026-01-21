@@ -11,17 +11,14 @@ Required secrets
 - `SECRET_KEY` — Application secret used for JWT signing and other cryptographic operations.
 - `GPTGPT_API_KEY` — API key for the external LLM provider used by `GPTService`.
 - `SUMMARY_TOKEN` — Shared secret used to protect the internal `/api/v1/internal/summary` endpoint.
-- `YOUCAM_API_KEY` — API key for YouCam skin analysis (required to enable live analysis).
+- `OPENAI_API_KEY` — API key for OpenAI vision analysis (required to enable live analysis).
 - `SKINIVE_API_TOKEN` — Deprecated. Previously used for Skinive skin analysis.
 
 Optional / Environment-specific
 - `GPTGPT_API_BASE` — Custom base URL for the LLM provider API (if your provider requires a custom host).
-- `YOUCAM_API_BASE` — Override for YouCam API base URL (default `https://yce-api-01.makeupar.com`).
-- `YOUCAM_TIMEOUT_SECONDS` — YouCam request timeout in seconds (default `30`).
-- `YOUCAM_POLL_INTERVAL_SECONDS` — YouCam polling interval in seconds (default `2`).
-- `YOUCAM_MAX_POLL_SECONDS` — YouCam max polling wait in seconds (default `120`).
-- `YOUCAM_SKIN_ANALYSIS_FORMAT` — Response format (`json` or `zip`, default `json`).
-- `YOUCAM_SKIN_ANALYSIS_ACTIONS` — Comma-separated actions (default `wrinkle,pore,texture,acne`).
+- `OPENAI_API_BASE` — Override for OpenAI API base URL (default `https://api.openai.com/v1`).
+- `OPENAI_MODEL` — OpenAI model used for vision analysis (default `gpt-4o-mini`).
+- `OPENAI_TIMEOUT_SECONDS` — OpenAI request timeout in seconds (default `60`).
 - `SKINIVE_API_BASE` — Override for Skinive API base URL (default `https://api.skiniver.com`).
 - `SKINIVE_LOCALE` — Locale for Skinive responses (default `en`).
 - `SKINIVE_TIMEOUT_SECONDS` — Skinive request timeout in seconds (default `30`).

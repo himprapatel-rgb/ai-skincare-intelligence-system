@@ -46,6 +46,7 @@ ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login")
+oauth2_scheme_optional = OAuth2PasswordBearer(tokenUrl="/api/auth/login", auto_error=False)
 
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
@@ -85,6 +86,29 @@ async def get_current_user(
     if user is None:
         raise credentials_exception
     return user
+
+
+async def get_current_user_optional(
+    token: Optional[str] = Depends(oauth2_scheme_optional),
+    db: Session = Depends(get_db)
+) -> Optional[User]:
+    """Get current user if authenticated, otherwise return None (allows guest access)"""
+    if token is None:
+        return None
+    
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        subject: str | None = payload.get("sub")
+        if subject is None:
+            return None
+            
+        if subject.isdigit():
+            user = db.query(User).filter(User.id == int(subject)).first()
+        else:
+            user = db.query(User).filter(User.email == subject).first()
+        return user
+    except JWTError:
+        return None
 
 
 # Sensitive Data Encryption (NFR4: AES-256)

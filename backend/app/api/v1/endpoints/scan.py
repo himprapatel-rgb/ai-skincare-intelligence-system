@@ -14,7 +14,7 @@ from app.models.scan import ScanSession, ScanStatus
 
 backend_dir = pathlib.Path(__file__).parent.parent.parent.parent.parent.parent
 sys.path.insert(0, str(backend_dir))
-from app.core.security import get_current_user
+from app.core.security import get_current_user_optional
 from app.models.user import User
 from app.services.youcam_service import (
     YouCamError,
@@ -74,11 +74,11 @@ def _run_mock_analysis(scan_id: UUID) -> dict:
     "/init",
     status_code=status.HTTP_201_CREATED,
     summary="Init Scan Session",
-    description="Initialize a new face scan session for the authenticated user."
+    description="Initialize a new face scan session for the authenticated user or guest."
 )
 def init_scan_session(
     db: Session = Depends(get_db),
-    current_user: Optional[User] = Depends(get_current_user)
+    current_user: Optional[User] = Depends(get_current_user_optional)
 ):
     """Initialize a new scan session."""
     user_id = current_user.id if current_user else 1
@@ -118,7 +118,7 @@ async def upload_scan(
     scan_id: str,
     file: UploadFile = File(...),
     db: Session = Depends(get_db),
-    current_user: Optional[User] = Depends(get_current_user)
+    current_user: Optional[User] = Depends(get_current_user_optional)
 ):
     """Upload image for scan session."""
     if file.content_type not in ALLOWED_IMAGE_TYPES:
@@ -225,7 +225,7 @@ async def upload_scan(
 def get_scan_status(
     scan_id: str,
     db: Session = Depends(get_db),
-    current_user: Optional[User] = Depends(get_current_user)
+    current_user: Optional[User] = Depends(get_current_user_optional)
 ):
     """Get scan status."""
     # Validate UUID format
@@ -263,7 +263,7 @@ def get_scan_status(
 def get_scan_results(
     scan_id: str,
     db: Session = Depends(get_db),
-    current_user: Optional[User] = Depends(get_current_user)
+    current_user: Optional[User] = Depends(get_current_user_optional)
 ):
     """Get scan results."""
     # Validate UUID format
@@ -302,7 +302,7 @@ def get_scan_results(
 def get_scan_result_alias(
     scan_id: str,
     db: Session = Depends(get_db),
-    current_user: Optional[User] = Depends(get_current_user)
+    current_user: Optional[User] = Depends(get_current_user_optional)
 ):
     """Alias for get scan results to support older clients."""
     return get_scan_results(scan_id=scan_id, db=db, current_user=current_user)
@@ -314,7 +314,7 @@ def get_scan_result_alias(
 )
 def get_scan_history(
     db: Session = Depends(get_db),
-    current_user: Optional[User] = Depends(get_current_user)
+    current_user: Optional[User] = Depends(get_current_user_optional)
 ):
     """Get user's scan history."""
     user_id = current_user.id if current_user else 1

@@ -45,7 +45,7 @@ const AnalysisResults: React.FC = () => {
     const scores: Record<string, number> = {};
     const concerns: string[] = [];
     let overallScore: number | null = typeof summary.overall_score === 'number' ? summary.overall_score : null;
-    let imageUrl: string | null =
+    const imageUrl: string | null =
       typeof summary.image_url === 'string'
         ? summary.image_url
         : typeof (result as { image_url?: string }).image_url === 'string'

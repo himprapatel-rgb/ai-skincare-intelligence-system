@@ -62,21 +62,21 @@ def ensure_test_user() -> None:
 
     db = SessionLocal()
     try:
-        email = "dhimanshu@example.com"
+        email = "himanshu@test.com"
         user = db.query(User).filter(User.email == email).first()
         if not user:
             hashed_password = auth_service.hash_password("Test1234!")
             user = User(
                 email=email,
                 hashed_password=hashed_password,
-                full_name="Dhimanshu",
+                full_name="Himanshu Patel",
                 is_active=True,
                 is_verified=True,
             )
             db.add(user)
             db.commit()
             db.refresh(user)
-            logger.info("Seeded static test user: %s", email)
+            logger.info("✅ Seeded test user: Himanshu (%s)", email)
 
         terms = None
         privacy = None
@@ -137,7 +137,7 @@ def ensure_test_user() -> None:
             if not profile:
                 profile = UserProfile(
                     user_id=user.id,
-                    first_name="Dhimanshu",
+                    first_name="Himanshu",
                     last_name="Patel",
                     date_of_birth=date(1990, 6, 15),
                     gender="male",

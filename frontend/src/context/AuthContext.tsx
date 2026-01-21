@@ -1,6 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import axios from 'axios';
+import { devAutoLogin } from '../utils/devAutoLogin';
 
 // Types
 export interface User {
@@ -47,7 +48,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   useEffect(() => {
     const initAuth = async () => {
-      const storedToken = localStorage.getItem('auth_token');
+      // Try auto-login in development (if no token exists)
+      await devAutoLogin();
+      
+      const storedToken = localStorage.getItem('auth_token') || localStorage.getItem('access_token');
       if (storedToken) {
         try {
           axios.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`;
@@ -56,6 +60,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           setToken(storedToken);
         } catch {
           localStorage.removeItem('auth_token');
+          localStorage.removeItem('access_token');
           delete axios.defaults.headers.common['Authorization'];
         }
       }

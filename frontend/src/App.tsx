@@ -2,6 +2,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import AppLayout from "./components/AppLayout";
+import DevBanner from "./components/DevBanner";
 
 // Page Imports - Epic 1: Core Authentication
 import { AuthPage } from "./pages/AuthPage";
@@ -43,6 +44,7 @@ import TermsPage from "./pages/TermsPage";
 export default function App() {
   return (
     <AuthProvider>
+      <DevBanner />
       <BrowserRouter>
         <AppLayout>
           <Routes>

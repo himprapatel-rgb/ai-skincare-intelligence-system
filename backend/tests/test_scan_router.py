@@ -48,10 +48,14 @@ class TestScanRouter:
         assert "status" in data
 
     def test_upload_scan_no_auth(self, client):
-        """Test scan upload without authentication"""
-        # Try to init without auth
+        """Test scan upload without authentication - guest users allowed"""
+        # Guest users can now initialize scans (returns 201, not 401)
         response = client.post("/api/v1/scan/init")
-        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+        assert response.status_code == status.HTTP_201_CREATED
+        data = response.json()
+        assert "scan_id" in data
+        assert "status" in data
+        assert data["status"] == "pending"
 
     def test_upload_scan_invalid_file_type(self, client, auth_headers):
         """Test scan upload with invalid file type"""

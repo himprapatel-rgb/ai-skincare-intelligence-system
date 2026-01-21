@@ -35,6 +35,7 @@ export { History as IconHistory } from 'lucide-react';
 export { ChevronRight as IconChevronRight } from 'lucide-react';
 export { ArrowLeft as IconArrowLeft } from 'lucide-react';
 export { AlertTriangle as IconAlertTriangle } from 'lucide-react';
+export { RefreshCw as IconRefresh } from 'lucide-react';
 
 // Feature Icons
 export { Zap as IconZap } from 'lucide-react';

@@ -49,7 +49,7 @@ class ScanSession(Base):
     
     # Primary identification
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=True, index=True)  # Nullable for guest users
     
     # Scan status tracking
     status = Column(SQLEnum(ScanStatus), default=ScanStatus.PENDING, nullable=False, index=True)

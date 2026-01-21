@@ -51,11 +51,23 @@ def ensure_test_user() -> None:
         PolicyVersion.__table__.create(bind=engine, checkfirst=True)
         UserProfile.__table__.create(bind=engine, checkfirst=True)
         UserConsent.__table__.create(bind=engine, checkfirst=True)
+        
+        # Import ScanSession to ensure table creation
+        from app.models.scan import ScanSession
+        ScanSession.__table__.create(bind=engine, checkfirst=True)
+        
         if engine.dialect.name != "sqlite":
             with engine.begin() as conn:
                 conn.execute(
                     text("ALTER TABLE user_profiles ALTER COLUMN skin_type TYPE TEXT")
                 )
+                # Allow NULL user_id for guest scans
+                try:
+                    conn.execute(
+                        text("ALTER TABLE scan_sessions ALTER COLUMN user_id DROP NOT NULL")
+                    )
+                except ProgrammingError:
+                    pass  # Column might already be nullable
     except ProgrammingError:
         logger.warning("Unable to create auth tables; skipping seed.")
         return

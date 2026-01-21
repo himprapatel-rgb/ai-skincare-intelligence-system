@@ -18,7 +18,7 @@ from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
 from sqlalchemy.orm import Session
 
 from app.config import settings
-from app.core.security import get_current_user
+from app.core.security import get_current_user_optional
 from app.database import get_db
 from app.models import ScanSession, SkinAnalysis, User
 from app.schemas.scan_schemas import (
@@ -47,9 +47,9 @@ SCAN_MEDIA_ROOT = "media/face_scans"  # adjust if you have a different media roo
 
 # ---------- Helper functions ----------
 
-def _create_scan(db: Session, user: User) -> ScanSession:
+def _create_scan(db: Session, user: Optional[User]) -> ScanSession:
     scan = ScanSession(
-        user_id=user.id,
+        user_id=user.id if user else None,  # Guest users have no user_id
         status="pending",
         image_path=None,
         result=None,
@@ -62,22 +62,24 @@ def _create_scan(db: Session, user: User) -> ScanSession:
     return scan
 
 
-def _get_user_scan_or_404(db: Session, scan_id: int, user: User) -> ScanSession:
+def _get_user_scan_or_404(db: Session, scan_id: int, user: Optional[User]) -> ScanSession:
     scan = db.query(ScanSession).filter(ScanSession.id == scan_id).first()
     if not scan:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Scan not found",
         )
-    if scan.user_id != user.id:
+    # For authenticated users, verify ownership
+    if user and scan.user_id != user.id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="You do not have access to this scan",
         )
+    # For guest users, allow access to any scan (or you could add session-based auth later)
     return scan
 
 
-async def _validate_and_save_image(scan: ScanSession, image: UploadFile, user: User) -> str:
+async def _validate_and_save_image(scan: ScanSession, image: UploadFile, user: Optional[User]) -> str:
     # Validate content type
     if image.content_type not in ALLOWED_IMAGE_TYPES:
         raise HTTPException(
@@ -93,9 +95,10 @@ async def _validate_and_save_image(scan: ScanSession, image: UploadFile, user: U
             detail=f"Image too large. Maximum size is {MAX_IMAGE_SIZE // (1024 * 1024)} MB.",
         )
     
-    # Build safe file path
+    # Build safe file path (use "guest" folder for unauthenticated users)
     ext = {"image/jpeg": "jpg", "image/png": "png", "image/webp": "webp"}.get(image.content_type, "jpg")
-    user_dir = os.path.join(SCAN_MEDIA_ROOT, str(user.id))
+    user_id_str = str(user.id) if user else "guest"
+    user_dir = os.path.join(SCAN_MEDIA_ROOT, user_id_str)
     os.makedirs(user_dir, exist_ok=True)
     filename = f"{scan.id}_{uuid.uuid4().hex}.{ext}"
     file_path = os.path.join(user_dir, filename)
@@ -183,10 +186,10 @@ def _update_scan_status(
 )
 def init_scan_session(
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: Optional[User] = Depends(get_current_user_optional),
 ):
     """
-    Initialize a new face scan session for the authenticated user.
+    Initialize a new face scan session (works for both authenticated and guest users).
     """
     scan = _create_scan(db=db, user=current_user)
     return ScanInitResponse(
@@ -219,10 +222,10 @@ async def upload_scan_image(
     scan_id: int,
     file: UploadFile = File(...),
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: Optional[User] = Depends(get_current_user_optional),
 ):
     """
-    Upload face image for an existing scan session.
+    Upload face image for an existing scan session (works for both authenticated and guest users).
     Performs image validation and runs mock analysis.
     """
     scan = _get_user_scan_or_404(db=db, scan_id=scan_id, user=current_user)
@@ -311,10 +314,10 @@ async def upload_scan_image(
 def get_scan_status(
     scan_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: Optional[User] = Depends(get_current_user_optional),
 ):
     """
-    Get the current status of a face scan.
+    Get the current status of a face scan (works for both authenticated and guest users).
     """
     scan = _get_user_scan_or_404(db=db, scan_id=scan_id, user=current_user)
     
@@ -333,10 +336,10 @@ def get_scan_status(
 def get_scan_results(
     scan_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: Optional[User] = Depends(get_current_user_optional),
 ):
     """
-    Get analysis results for a completed face scan.
+    Get analysis results for a completed face scan (works for both authenticated and guest users).
     """
     scan = _get_user_scan_or_404(db=db, scan_id=scan_id, user=current_user)
     
@@ -378,11 +381,15 @@ def get_scan_results(
 )
 def get_scan_history(
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: Optional[User] = Depends(get_current_user_optional),
 ):
     """
-    Get the authenticated user's face scan history.
+    Get the user's face scan history (returns empty list for guest users).
     """
+    # Guest users have no history
+    if not current_user:
+        return ScanHistoryResponse(scans=[])
+    
     scans: List[ScanSession] = (
         db.query(ScanSession)
         .filter(ScanSession.user_id == current_user.id)

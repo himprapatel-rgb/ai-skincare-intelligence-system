@@ -11,6 +11,7 @@ import json
 import logging
 import os
 import uuid
+import hashlib
 from datetime import datetime
 from typing import List, Optional
 
@@ -85,8 +86,7 @@ def _get_user_scan_or_404(db: Session, scan_id: str, user: Optional[User]) -> Sc
     return scan
 
 
-async def _validate_and_save_image(scan: ScanSession, image: UploadFile, user: Optional[User]) -> str:
-    # Validate content type
+async def _validate_and_save_image(scan: ScanSession, image: UploadFile, user: Optional[User]) -> tuple[str, bytes, str, str]:    # Validate content type
     if image.content_type not in ALLOWED_IMAGE_TYPES:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -119,8 +119,7 @@ async def _validate_and_save_image(scan: ScanSession, image: UploadFile, user: O
             detail=f"Failed to save image: {e}",
         )
     
-    return file_path
-
+    return file_path, contents, filename, image.content_type
 
 def _run_mock_analysis(scan: ScanSession) -> dict:
     """
@@ -259,8 +258,17 @@ async def upload_scan_image(
         )
     
     # Save image and update scan to 'processing'
-    image_path = await _validate_and_save_image(scan, file, current_user)
-    scan = _update_scan_status(
+    image_path, image_bytes, image_filename, image_content_type = await _validate_and_save_image(scan, file, current_user)
+    
+    # Compute image hash for deduplication and ML training
+    image_hash = hashlib.sha256(image_bytes).hexdigest()
+    
+    # Store image data in database for ML training
+    scan.image_data = image_bytes
+    scan.image_hash = image_hash
+    scan.image_content_type = image_content_type
+    scan.image_filename = image_filename
+        scan = _update_scan_status(
         db=db,
         scan=scan,
         status_value="processing",
@@ -291,6 +299,17 @@ async def upload_scan_image(
                 "processing_time_ms": openai_result.get("processing_time_ms"),
                 "generated_at": datetime.utcnow().isoformat(),
             }
+
+                    # Populate skin_analyses table for normalized ML training data
+            skin_analysis = SkinAnalysis(
+                scan_session_id=scan.id,
+                skin_type=openai_result.get("skin_type"),
+                fitzpatrick_scale=openai_result.get("fitzpatrick_scale"),
+                concerns=openai_result.get("concerns_detail"),
+                confidence_scores=openai_result.get("summary", {}).get("scores"),
+                overall_confidence=openai_result.get("confidence_score"),
+            )
+            db.add(skin_analysis)
         else:
             analysis_result = _run_mock_analysis(scan)
 

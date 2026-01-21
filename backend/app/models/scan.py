@@ -10,9 +10,8 @@ import enum
 import uuid
 from datetime import datetime
 
-from sqlalchemy import Column, DateTime, LargeBinary
+from sqlalchemy import Column, DateTime, Float, ForeignKey, Integer, LargeBinary, String, Text
 from sqlalchemy import Enum as SQLEnum
-from sqlalchemy import Float, ForeignKey, Integer, String, Text
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import relationship
 

@@ -62,8 +62,15 @@ def _create_scan(db: Session, user: Optional[User]) -> ScanSession:
     return scan
 
 
-def _get_user_scan_or_404(db: Session, scan_id: int, user: Optional[User]) -> ScanSession:
-    scan = db.query(ScanSession).filter(ScanSession.id == scan_id).first()
+def _get_user_scan_or_404(db: Session, scan_id: str, user: Optional[User]) -> ScanSession:
+    try:
+        scan_uuid = uuid.UUID(scan_id)
+    except ValueError:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid scan ID format",
+        )
+    scan = db.query(ScanSession).filter(ScanSession.id == scan_uuid).first()
     if not scan:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -193,7 +200,7 @@ def init_scan_session(
     """
     scan = _create_scan(db=db, user=current_user)
     return ScanInitResponse(
-        scan_id=scan.id,
+        scan_id=str(scan.id),
         status=scan.status,
         created_at=scan.created_at,
     )
@@ -219,7 +226,7 @@ def get_scan_actions():
     status_code=status.HTTP_200_OK,
 )
 async def upload_scan_image(
-    scan_id: int,
+    scan_id: str,
     file: UploadFile = File(...),
     db: Session = Depends(get_db),
     current_user: Optional[User] = Depends(get_current_user_optional),
@@ -300,7 +307,7 @@ async def upload_scan_image(
         )
     
     return ScanUploadResponse(
-        scan_id=scan.id,
+        scan_id=str(scan.id),
         status=scan.status,
         image_url=scan.image_path,
         message="Image uploaded successfully. Processing completed.",
@@ -312,7 +319,7 @@ async def upload_scan_image(
     response_model=ScanStatusResponse,
 )
 def get_scan_status(
-    scan_id: int,
+    scan_id: str,
     db: Session = Depends(get_db),
     current_user: Optional[User] = Depends(get_current_user_optional),
 ):
@@ -322,7 +329,7 @@ def get_scan_status(
     scan = _get_user_scan_or_404(db=db, scan_id=scan_id, user=current_user)
     
     return ScanStatusResponse(
-        scan_id=scan.id,
+        scan_id=str(scan.id),
         status=scan.status,
         created_at=scan.created_at,
         updated_at=scan.updated_at,
@@ -334,7 +341,7 @@ def get_scan_status(
     response_model=ScanResultResponse,
 )
 def get_scan_results(
-    scan_id: int,
+    scan_id: str,
     db: Session = Depends(get_db),
     current_user: Optional[User] = Depends(get_current_user_optional),
 ):
@@ -367,7 +374,7 @@ def get_scan_results(
             )
     
     return ScanResultResponse(
-        scan_id=scan.id,
+        scan_id=str(scan.id),
         status=scan.status,
         result=result_data,
         created_at=scan.created_at,

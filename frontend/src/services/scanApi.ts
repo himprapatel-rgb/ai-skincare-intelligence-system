@@ -117,10 +117,10 @@ export async function getScanStatus(sessionId: string): Promise<ScanStatusRespon
 }
 
 /**
- * GET /api/v1/scan/{session_id}/result
+ * GET /api/v1/scan/{session_id}/results
  */
 export async function getScanResult(sessionId: string): Promise<ScanResultResponse> {
-  return fetchJson<ScanResultResponse>(`/api/v1/scan/${encodeURIComponent(sessionId)}/result`, {
+  return fetchJson<ScanResultResponse>(`/api/v1/scan/${encodeURIComponent(sessionId)}/results`, {
     method: "GET",
   });
 }

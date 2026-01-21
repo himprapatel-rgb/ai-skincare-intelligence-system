@@ -1,5 +1,6 @@
 """Tests for ML Inference Service."""
 import pytest
+
 from app.services.ml_service import MLInferenceService, get_ml_service
 
 

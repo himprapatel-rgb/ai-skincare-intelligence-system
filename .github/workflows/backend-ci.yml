@@ -141,12 +141,12 @@ jobs:
           name: security-reports
           path: backend/bandit-report.json
 
-  # Job 4: Build Docker Image
+  # Job 4: Build Docker Image (DISABLED - Railway builds directly)
   build:
     name: Build Docker Image
     runs-on: ubuntu-latest
     needs: [test, security]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: false  # Disabled - Railway doesn't need Docker Hub
 
     steps:
       - name: Checkout code
@@ -181,12 +181,12 @@ jobs:
           cache-from: type=registry,ref=himprapatel/ai-skincare-backend:buildcache
           cache-to: type=registry,ref=himprapatel/ai-skincare-backend:buildcache,mode=max
 
-  # Job 5: Deploy to Staging (optional)
+  # Job 5: Deploy to Staging (DISABLED - Railway auto-deploys)
   deploy-staging:
     name: Deploy to Staging
     runs-on: ubuntu-latest
     needs: build
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: false  # Disabled - Railway handles deployment automatically
     environment:
       name: staging
       url: https://staging-api.skincare-ai.com
@@ -210,7 +210,7 @@ jobs:
   notify:
     name: Notify Team
     runs-on: ubuntu-latest
-    needs: [lint, test, security, build, deploy-staging]
+    needs: [lint, test, security]
     if: always()
 
     steps:

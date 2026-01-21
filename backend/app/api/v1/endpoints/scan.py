@@ -1,4 +1,5 @@
 """Face scan API endpoints."""
+import hashlib
 import logging
 import pathlib
 import sys
@@ -157,6 +158,12 @@ async def upload_scan(
             detail=f"Image too large. Maximum size is {MAX_IMAGE_SIZE // (1024 * 1024)} MB.",
         )
     
+    # Persist raw image data and metadata in DB
+    scan_session.image_data = image_data
+    scan_session.image_content_type = file.content_type
+    scan_session.image_filename = file.filename
+    scan_session.image_hash = hashlib.sha256(image_data).hexdigest()
+
     # Get skin analysis service and perform analysis
     try:
         if settings.OPENAI_API_KEY:

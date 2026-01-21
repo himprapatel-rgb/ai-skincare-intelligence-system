@@ -18,6 +18,37 @@ router = APIRouter()
 
 
 @router.post(
+    "/register",
+    response_model=AuthResponse,
+    status_code=status.HTTP_201_CREATED,
+    summary="User registration",
+    description="Create a new user account and return access token",
+)
+def register(user_data: UserCreate, db: Session = Depends(get_db)):
+    """Register a new user."""
+    existing_user = auth_service.get_user_by_email(db, user_data.email)
+    if existing_user:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="User already exists",
+        )
+
+    try:
+        user = auth_service.create_user(db, user_data)
+    except IntegrityError:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="User already exists",
+        )
+
+    token = create_access_token(
+        data={"sub": user.email},
+        expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
+    )
+    return AuthResponse(token=token, user=UserResponse.model_validate(user))
+
+
+@router.post(
     "/login",
     status_code=status.HTTP_200_OK,
     summary="User login",

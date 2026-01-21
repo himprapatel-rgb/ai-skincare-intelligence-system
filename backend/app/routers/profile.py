@@ -20,6 +20,67 @@ router = APIRouter(prefix="/profile", tags=["profile"])
 logger = logging.getLogger(__name__)
 
 
+def _build_profile_response(profile: UserProfile) -> ProfileResponse:
+    """Build a full profile response with decrypted fields."""
+    return ProfileResponse(
+        id=profile.id,
+        user_id=profile.user_id,
+        first_name=profile.first_name,
+        last_name=profile.last_name,
+        date_of_birth=profile.date_of_birth,
+        gender=profile.gender,
+        location=profile.location,
+        timezone=profile.timezone,
+        phone_number=profile.phone_number,
+        profile_photo_url=profile.profile_photo_url,
+        skin_type=decrypt_sensitive_data(profile.skin_type),
+        skin_tone=profile.skin_tone,
+        skin_texture=profile.skin_texture,
+        pore_size=profile.pore_size,
+        moisture_level=profile.moisture_level,
+        oil_production=profile.oil_production,
+        sensitivity_level=profile.sensitivity_level,
+        primary_concern=profile.primary_concern,
+        secondary_concerns=profile.secondary_concerns,
+        sun_exposure=profile.sun_exposure,
+        outdoor_activity_level=profile.outdoor_activity_level,
+        water_intake=profile.water_intake,
+        sleep_hours=profile.sleep_hours,
+        diet_type=profile.diet_type,
+        stress_level=profile.stress_level,
+        exercise_frequency=profile.exercise_frequency,
+        smoking_status=profile.smoking_status,
+        alcohol_consumption=profile.alcohol_consumption,
+        climate=profile.climate,
+        known_allergies=profile.known_allergies,
+        current_medications=profile.current_medications,
+        skin_conditions=profile.skin_conditions,
+        previous_treatments=profile.previous_treatments,
+        preferred_ingredients=profile.preferred_ingredients,
+        ingredients_to_avoid=profile.ingredients_to_avoid,
+        product_texture_preference=profile.product_texture_preference,
+        fragrance_preference=profile.fragrance_preference,
+        budget_range=profile.budget_range,
+        brand_preferences=profile.brand_preferences,
+        routine_frequency=profile.routine_frequency,
+        current_routine_products=profile.current_routine_products,
+        goals=decrypt_sensitive_data(profile.goals),
+        concerns=decrypt_sensitive_data(profile.secondary_concerns),
+        email_notifications=profile.email_notifications,
+        push_notifications=profile.push_notifications,
+        sms_notifications=profile.sms_notifications,
+        marketing_emails=profile.marketing_emails,
+        profile_visibility=profile.profile_visibility,
+        share_progress=profile.share_progress,
+        allow_data_analysis=profile.allow_data_analysis,
+        profile_complete=profile.profile_complete,
+        completion_percentage=profile.completion_percentage,
+        last_profile_update=profile.last_profile_update,
+        created_at=profile.created_at,
+        updated_at=profile.updated_at,
+    )
+
+
 @router.post("/baseline", response_model=ProfileResponse)
 async def create_baseline_profile(
     profile_data: ProfileCreate,
@@ -99,18 +160,7 @@ async def create_baseline_profile(
             },
         )
 
-        return ProfileResponse(
-            id=user_profile.id,
-            user_id=user_profile.user_id,
-            goals=profile_data.goals,  # Return decrypted for response
-            concerns=profile_data.concerns,
-            skin_type=profile_data.skin_type,
-            routine_frequency=profile_data.routine_frequency,
-            climate=profile_data.climate,
-            profile_complete=True,
-            created_at=user_profile.created_at,
-            updated_at=user_profile.updated_at,
-        )
+        return _build_profile_response(user_profile)
 
     except HTTPException:
         raise
@@ -139,18 +189,7 @@ async def get_profile(
         )
 
     # Decrypt sensitive fields
-    return ProfileResponse(
-        id=profile.id,
-        user_id=profile.user_id,
-        goals=decrypt_sensitive_data(profile.goals),
-        concerns=decrypt_sensitive_data(profile.secondary_concerns),
-        skin_type=decrypt_sensitive_data(profile.skin_type),
-        routine_frequency=profile.routine_frequency,
-        climate=profile.climate,
-        profile_complete=profile.profile_complete,
-        created_at=profile.created_at,
-        updated_at=profile.updated_at,
-    )
+    return _build_profile_response(profile)
 
 
 @router.patch("", response_model=ProfileResponse)
@@ -206,6 +245,108 @@ async def update_profile(
     if "climate" in update_data:
         profile.climate = update_data["climate"]
 
+    # Personal information
+    if "first_name" in update_data:
+        profile.first_name = update_data["first_name"]
+    if "last_name" in update_data:
+        profile.last_name = update_data["last_name"]
+    if "date_of_birth" in update_data:
+        profile.date_of_birth = update_data["date_of_birth"]
+    if "gender" in update_data:
+        profile.gender = update_data["gender"]
+    if "location" in update_data:
+        profile.location = update_data["location"]
+    if "timezone" in update_data:
+        profile.timezone = update_data["timezone"]
+    if "phone_number" in update_data:
+        profile.phone_number = update_data["phone_number"]
+    if "profile_photo_url" in update_data:
+        profile.profile_photo_url = update_data["profile_photo_url"]
+
+    # Skin profile
+    if "skin_tone" in update_data:
+        profile.skin_tone = update_data["skin_tone"]
+    if "skin_texture" in update_data:
+        profile.skin_texture = update_data["skin_texture"]
+    if "pore_size" in update_data:
+        profile.pore_size = update_data["pore_size"]
+    if "moisture_level" in update_data:
+        profile.moisture_level = update_data["moisture_level"]
+    if "oil_production" in update_data:
+        profile.oil_production = update_data["oil_production"]
+    if "sensitivity_level" in update_data:
+        profile.sensitivity_level = update_data["sensitivity_level"]
+    if "primary_concern" in update_data:
+        profile.primary_concern = update_data["primary_concern"]
+    if "secondary_concerns" in update_data:
+        profile.secondary_concerns = update_data["secondary_concerns"]
+
+    # Lifestyle & environmental
+    if "sun_exposure" in update_data:
+        profile.sun_exposure = update_data["sun_exposure"]
+    if "outdoor_activity_level" in update_data:
+        profile.outdoor_activity_level = update_data["outdoor_activity_level"]
+    if "water_intake" in update_data:
+        profile.water_intake = update_data["water_intake"]
+    if "sleep_hours" in update_data:
+        profile.sleep_hours = update_data["sleep_hours"]
+    if "diet_type" in update_data:
+        profile.diet_type = update_data["diet_type"]
+    if "stress_level" in update_data:
+        profile.stress_level = update_data["stress_level"]
+    if "exercise_frequency" in update_data:
+        profile.exercise_frequency = update_data["exercise_frequency"]
+    if "smoking_status" in update_data:
+        profile.smoking_status = update_data["smoking_status"]
+    if "alcohol_consumption" in update_data:
+        profile.alcohol_consumption = update_data["alcohol_consumption"]
+
+    # Medical & history
+    if "known_allergies" in update_data:
+        profile.known_allergies = update_data["known_allergies"]
+    if "current_medications" in update_data:
+        profile.current_medications = update_data["current_medications"]
+    if "skin_conditions" in update_data:
+        profile.skin_conditions = update_data["skin_conditions"]
+    if "previous_treatments" in update_data:
+        profile.previous_treatments = update_data["previous_treatments"]
+
+    # Preferences
+    if "preferred_ingredients" in update_data:
+        profile.preferred_ingredients = update_data["preferred_ingredients"]
+    if "ingredients_to_avoid" in update_data:
+        profile.ingredients_to_avoid = update_data["ingredients_to_avoid"]
+    if "product_texture_preference" in update_data:
+        profile.product_texture_preference = update_data["product_texture_preference"]
+    if "fragrance_preference" in update_data:
+        profile.fragrance_preference = update_data["fragrance_preference"]
+    if "budget_range" in update_data:
+        profile.budget_range = update_data["budget_range"]
+    if "brand_preferences" in update_data:
+        profile.brand_preferences = update_data["brand_preferences"]
+
+    # Skincare routine
+    if "current_routine_products" in update_data:
+        profile.current_routine_products = update_data["current_routine_products"]
+
+    # Notification preferences
+    if "email_notifications" in update_data:
+        profile.email_notifications = update_data["email_notifications"]
+    if "push_notifications" in update_data:
+        profile.push_notifications = update_data["push_notifications"]
+    if "sms_notifications" in update_data:
+        profile.sms_notifications = update_data["sms_notifications"]
+    if "marketing_emails" in update_data:
+        profile.marketing_emails = update_data["marketing_emails"]
+
+    # Privacy settings
+    if "profile_visibility" in update_data:
+        profile.profile_visibility = update_data["profile_visibility"]
+    if "share_progress" in update_data:
+        profile.share_progress = update_data["share_progress"]
+    if "allow_data_analysis" in update_data:
+        profile.allow_data_analysis = update_data["allow_data_analysis"]
+
     profile.updated_at = datetime.utcnow()
 
     db.commit()
@@ -222,18 +363,7 @@ async def update_profile(
     )
 
     # Return decrypted profile
-    return ProfileResponse(
-        id=profile.id,
-        user_id=profile.user_id,
-        goals=decrypt_sensitive_data(profile.goals),
-        concerns=decrypt_sensitive_data(profile.secondary_concerns),
-        skin_type=decrypt_sensitive_data(profile.skin_type),
-        routine_frequency=profile.routine_frequency,
-        climate=profile.climate,
-        profile_complete=profile.profile_complete,
-        created_at=profile.created_at,
-        updated_at=profile.updated_at,
-    )
+    return _build_profile_response(profile)
 
 
 @router.get("/export")
@@ -268,9 +398,13 @@ async def export_profile_data(
                 "scan_id": str(scan.id),
                 "status": scan.status.value if scan.status else None,
                 "image_url": scan.image_url,
+                "image_content_type": scan.image_content_type,
+                "image_filename": scan.image_filename,
                 "created_at": scan.created_at.isoformat() if scan.created_at else None,
                 "completed_at": scan.completed_at.isoformat() if scan.completed_at else None,
                 "summary": metadata.get("summary"),
+                "recommendations": metadata.get("recommendations"),
+                "result": metadata,
             }
         )
 

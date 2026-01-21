@@ -68,6 +68,23 @@ def ensure_test_user() -> None:
                     )
                 except ProgrammingError:
                     pass  # Column might already be nullable
+                # Ensure scan image storage columns exist (Railway/Postgres)
+                try:
+                    conn.execute(
+                        text("ALTER TABLE scan_sessions ADD COLUMN IF NOT EXISTS image_data BYTEA")
+                    )
+                    conn.execute(
+                        text(
+                            "ALTER TABLE scan_sessions ADD COLUMN IF NOT EXISTS image_content_type VARCHAR(100)"
+                        )
+                    )
+                    conn.execute(
+                        text(
+                            "ALTER TABLE scan_sessions ADD COLUMN IF NOT EXISTS image_filename VARCHAR(255)"
+                        )
+                    )
+                except ProgrammingError:
+                    pass
     except ProgrammingError:
         logger.warning("Unable to create auth tables; skipping seed.")
         return

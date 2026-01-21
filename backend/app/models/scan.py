@@ -10,7 +10,7 @@ import enum
 import uuid
 from datetime import datetime
 
-from sqlalchemy import JSON, Column, DateTime
+from sqlalchemy import JSON, Column, DateTime, LargeBinary
 from sqlalchemy import Enum as SQLEnum
 from sqlalchemy import Float, ForeignKey, Integer, String, Text
 from sqlalchemy.dialects.postgresql import JSONB, UUID
@@ -57,6 +57,9 @@ class ScanSession(Base):
     # Image information
     image_url = Column(String(500), nullable=True)  # Cloud storage URL
     image_hash = Column(String(64), nullable=True)  # SHA-256 hash for deduplication
+    image_data = Column(LargeBinary, nullable=True)  # Raw image bytes (stored in DB)
+    image_content_type = Column(String(100), nullable=True)
+    image_filename = Column(String(255), nullable=True)
     
     # scan_metadata
     scan_metadata = Column(JSONB, nullable=True)  # lighting_quality, image_dimensions, device_info

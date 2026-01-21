@@ -8,6 +8,7 @@ Welcome to the AI Skincare Intelligence System documentation. This index is the 
 - **[Current State](../06-operations/Current-State.md)** - Up-to-date system snapshot
 - **[Baseline Healthcheck](../06-operations/Baseline-Healthcheck.md)** - Health verification
 - **[Action Plan Today](../06-operations/Action-Plan-Today.md)** - Daily priorities
+- **[Agile Iteration Log](../11-working/AI-AGILE-ITERATION-LOG.md)** - What changed per iteration
 
 ### Requirements & Architecture
 - **[SRS V5.3](../01-requirements/SRS-V5.3-External-Pretrained-ML.md)** - Requirements baseline

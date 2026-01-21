@@ -79,9 +79,8 @@ def init_scan_session(
     current_user: Optional[User] = Depends(get_current_user_optional)
 ):
     """Initialize a new scan session."""
-    user_id = current_user.id if current_user else None
     scan_session = ScanSession(
-        user_id=user_id,
+        user_id=current_user.id if current_user else None,
         status=ScanStatus.PENDING,
     )
     db.add(scan_session)
@@ -134,11 +133,10 @@ async def upload_scan(
             detail="Scan session not found"
         )
     
-    user_id = current_user.id if current_user else None
-    scan_session = db.query(ScanSession).filter(
-        ScanSession.id == uuid_obj,
-        ScanSession.user_id == user_id
-    ).first()
+    scan_query = db.query(ScanSession).filter(ScanSession.id == uuid_obj)
+    if current_user:
+        scan_query = scan_query.filter(ScanSession.user_id == current_user.id)
+    scan_session = scan_query.first()
     
     if not scan_session:
         raise HTTPException(
@@ -233,11 +231,10 @@ def get_scan_status(
             detail="Scan session not found"
         )
 
-    user_id = current_user.id if current_user else None
-    scan_session = db.query(ScanSession).filter(
-        ScanSession.id == uuid_obj,
-        ScanSession.user_id == user_id
-    ).first()
+    scan_query = db.query(ScanSession).filter(ScanSession.id == uuid_obj)
+    if current_user:
+        scan_query = scan_query.filter(ScanSession.user_id == current_user.id)
+    scan_session = scan_query.first()
 
     if not scan_session:
         raise HTTPException(
@@ -271,11 +268,10 @@ def get_scan_results(
             detail="Scan session not found"
         )
     
-    user_id = current_user.id if current_user else 1
-    scan_session = db.query(ScanSession).filter(
-        ScanSession.id == uuid_obj,
-        ScanSession.user_id == user_id
-    ).first()
+    scan_query = db.query(ScanSession).filter(ScanSession.id == uuid_obj)
+    if current_user:
+        scan_query = scan_query.filter(ScanSession.user_id == current_user.id)
+    scan_session = scan_query.first()
     
     if not scan_session:
         raise HTTPException(

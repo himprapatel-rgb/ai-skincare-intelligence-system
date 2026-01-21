@@ -1,4 +1,18 @@
 # Sprint 3: Product Intelligence models
+from app.models.analysis_outputs import (
+    DailySkinGuidance,
+    EnvironmentalReading,
+    GeoLocation,
+    ProductRecommendation,
+    ProductStoreAvailability,
+    ScanCondition,
+    ScanOutput,
+    ScanRecommendation,
+    SkinCondition,
+    Store,
+    UserEvent,
+    UserProgressSnapshot,
+)
 from app.models.product_models import Ingredient, Product, ProductIngredient
 from app.models.scan import ScanSession, SkinAnalysis
 
@@ -23,5 +37,17 @@ __all__ = [
     "RoutineProductUsage",
     "Ingredient",
     "Product",
-    "ProductIngredient"
+    "ProductIngredient",
+    "ScanOutput",
+    "SkinCondition",
+    "ScanCondition",
+    "ScanRecommendation",
+    "ProductRecommendation",
+    "GeoLocation",
+    "EnvironmentalReading",
+    "DailySkinGuidance",
+    "Store",
+    "ProductStoreAvailability",
+    "UserEvent",
+    "UserProgressSnapshot",
 ]

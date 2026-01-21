@@ -86,6 +86,14 @@ class ScanSession(Base):
     # Relationships
     user = relationship("User", back_populates="scan_sessions")
     analysis = relationship("SkinAnalysis", back_populates="scan_session", uselist=False)
+    outputs = relationship("ScanOutput", back_populates="scan_session", cascade="all, delete-orphan")
+    conditions = relationship("ScanCondition", back_populates="scan_session", cascade="all, delete-orphan")
+    recommendations = relationship("ScanRecommendation", back_populates="scan_session", cascade="all, delete-orphan")
+    product_recommendations = relationship(
+        "ProductRecommendation",
+        back_populates="scan_session",
+        cascade="all, delete-orphan",
+    )
     
     def __repr__(self):
         return f"<ScanSession(id={self.id}, user_id={self.user_id}, status={self.status})>"

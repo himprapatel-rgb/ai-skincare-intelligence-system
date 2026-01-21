@@ -2,6 +2,7 @@
 import hashlib
 import logging
 import pathlib
+import re
 import sys
 from typing import Optional
 from uuid import UUID
@@ -11,6 +12,12 @@ from sqlalchemy.orm import Session
 
 from app.config import settings
 from app.database import get_db
+from app.models.analysis_outputs import (
+    ScanCondition,
+    ScanOutput,
+    ScanRecommendation,
+    SkinCondition,
+)
 from app.models.scan import ScanSession, ScanStatus
 
 backend_dir = pathlib.Path(__file__).parent.parent.parent.parent.parent.parent
@@ -68,6 +75,11 @@ def _run_mock_analysis(scan_id: UUID) -> dict:
             "image_url": None,
         },
     }
+
+
+def _slugify(value: str) -> str:
+    slug = re.sub(r"[^a-z0-9]+", "_", value.lower()).strip("_")
+    return slug or "unknown"
 
 @router.post(
     "/init",
@@ -189,6 +201,61 @@ async def upload_scan(
 
         scan_session.scan_metadata = analysis_result
         scan_session.status = ScanStatus.COMPLETED
+
+        raw_result = openai_result if settings.OPENAI_API_KEY else analysis_result
+        output_record = ScanOutput(
+            scan_session_id=scan_session.id,
+            raw_result=raw_result,
+            normalized_result=analysis_result,
+            model_name="openai" if settings.OPENAI_API_KEY else "mock",
+            model_version=settings.OPENAI_MODEL if settings.OPENAI_API_KEY else "mock",
+            confidence_score=(
+                openai_result.get("confidence_score") if settings.OPENAI_API_KEY else None
+            ),
+        )
+        db.add(output_record)
+
+        if settings.OPENAI_API_KEY:
+            concerns = openai_result.get("concerns_detail") or []
+            if isinstance(concerns, list):
+                for concern in concerns:
+                    if not isinstance(concern, dict):
+                        continue
+                    concern_type = str(concern.get("concern_type") or "unknown")
+                    slug = _slugify(concern_type)
+                    condition = (
+                        db.query(SkinCondition)
+                        .filter(SkinCondition.slug == slug)
+                        .first()
+                    )
+                    if not condition:
+                        condition = SkinCondition(
+                            slug=slug,
+                            name=concern_type,
+                            category="skin_condition",
+                        )
+                        db.add(condition)
+                        db.flush()
+                    scan_condition = ScanCondition(
+                        scan_session_id=scan_session.id,
+                        condition_id=condition.id,
+                        severity_label=concern.get("severity"),
+                        confidence=concern.get("confidence"),
+                        affected_regions=concern.get("affected_areas"),
+                        details=concern,
+                    )
+                    db.add(scan_condition)
+
+            recommendations = openai_result.get("recommendations") or []
+            if isinstance(recommendations, list) and recommendations:
+                db.add(
+                    ScanRecommendation(
+                        scan_session_id=scan_session.id,
+                        recommendation_type="general",
+                        payload={"items": recommendations},
+                        source="openai",
+                    )
+                )
     except ValueError as e:
         scan_session.status = ScanStatus.FAILED
         scan_session.scan_metadata = {"error": str(e)}

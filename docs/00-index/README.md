@@ -14,6 +14,7 @@ Welcome to the AI Skincare Intelligence System documentation. This index is the 
 - **[SRS V5.3](../01-requirements/SRS-V5.3-External-Pretrained-ML.md)** - Requirements baseline
 - **[Traceability Matrix](../01-requirements/Traceability-Matrix.md)** - Requirements → implementation mapping
 - **[Architecture Decisions](../02-architecture/Architecture-Decisions.md)** - ADR index
+- **[Extensible Database Design](../02-architecture/Database-Design-Extensible.md)** - Future-proof schema
 
 ### Product & Agile Planning
 - **[Product Backlog](../03-product/Product-Backlog-V5.md)** - Canonical backlog

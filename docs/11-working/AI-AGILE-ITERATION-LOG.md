@@ -86,6 +86,33 @@ Ensure registration, profile updates, and scan data are fully persisted in Railw
 
 ---
 
+## Iteration 2026-01-21 (Extensible Database Foundations)
+
+### Goal
+Design and implement an extensible schema to store all scan outputs, future skin conditions, geo data, and recommendations.
+
+### Scope (Completed)
+- Added models to store raw/normalized scan outputs, conditions, and recommendations.
+- Added geo, environment, guidance, and store availability tables for future expansion.
+- Updated scan pipeline to persist raw OpenAI outputs and condition details.
+- Updated migration runner to be non-destructive and create new tables safely.
+- Documented the extensible schema in architecture docs.
+
+### Key Changes (Code)
+- New models: `backend/app/models/analysis_outputs.py`
+- Scan persistence updates: `backend/app/api/v1/endpoints/scan.py`
+- Non-destructive schema creation: `backend/scripts/run_migrations.py`
+- Model registry: `backend/app/models/__init__.py`
+
+### Key Changes (Docs)
+- Extensible schema design: `docs/02-architecture/Database-Design-Extensible.md`
+- Index update: `docs/00-index/README.md`
+
+### Verification / Tests
+- `python -m pytest backend/tests/test_scan_model.py` (fails coverage threshold: 44% < 50%).
+
+---
+
 ## Backlog (Next Iteration Suggestions)
 1. Add structured persistence for OpenAI fields (model_version, processing_time_ms) in DB schema.
 2. Add optional image storage retention policy + cleanup job.

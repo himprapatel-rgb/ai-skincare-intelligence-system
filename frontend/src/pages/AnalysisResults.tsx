@@ -31,11 +31,16 @@ const AnalysisResults: React.FC = () => {
   const [previousScans, setPreviousScans] = useState<ScanHistoryItem[]>([]);
 
   const buildAnalysisFromScan = useCallback((scanResult: Record<string, unknown>): SkinAnalysis => {
+    type Summary = {
+      overall_score?: number;
+      scores?: Record<string, number>;
+      concerns?: string[];
+      image_url?: string;
+    };
+
     const result = (scanResult as { result?: Record<string, unknown> }).result || {};
-    const summary =
-      (result as { summary?: Record<string, unknown> }).summary ||
-      ((result as { analysis?: Record<string, unknown> }).analysis || {}).summary ||
-      {};
+    const analysis = (result as { analysis?: Record<string, unknown> }).analysis || {};
+    const summary = ((result as { summary?: Summary }).summary || (analysis as { summary?: Summary }).summary || {}) as Summary;
 
     const scores: Record<string, number> = {};
     const concerns: string[] = [];
@@ -48,13 +53,13 @@ const AnalysisResults: React.FC = () => {
         : null;
 
     if (summary.scores && typeof summary.scores === 'object') {
-      Object.entries(summary.scores as Record<string, number>).forEach(([key, value]) => {
+      Object.entries(summary.scores).forEach(([key, value]) => {
         if (typeof value === 'number') scores[key] = value;
       });
     }
 
     if (Array.isArray(summary.concerns)) {
-      summary.concerns.forEach((value) => {
+      summary.concerns.forEach((value: string) => {
         if (typeof value === 'string') concerns.push(value);
       });
     }
@@ -66,7 +71,7 @@ const AnalysisResults: React.FC = () => {
 
     const recommendations =
       (result as { recommendations?: string[] }).recommendations ||
-      ((result as { analysis?: Record<string, unknown> }).analysis as { recommendations?: string[] } | undefined)?.recommendations ||
+      (analysis as { recommendations?: string[] }).recommendations ||
       [];
 
     return {

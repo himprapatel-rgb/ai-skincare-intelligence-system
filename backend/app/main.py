@@ -258,8 +258,20 @@ def ensure_test_user() -> None:
 
 @app.get("/api/health")
 async def health_check():
-    """Simple health check endpoint - always returns 200 OK"""
-    return {"status": "healthy", "service": "ai-skincare-intelligence-system"}
+    """Health check endpoint with DB status."""
+    database_status = "ok"
+    status = "healthy"
+    try:
+        with engine.connect() as conn:
+            conn.execute(text("SELECT 1"))
+    except Exception:
+        database_status = "error"
+        status = "degraded"
+    return {
+        "status": status,
+        "service": "ai-skincare-intelligence-system",
+        "database": database_status,
+    }
     
 # Mount all routers under /api/v1 for consistency
 app.include_router(api_router, prefix="/api/v1")

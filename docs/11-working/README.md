@@ -17,4 +17,5 @@ Living documentation created during active implementation work.
 
 ## Current working docs
 - `AI-AGILE-ITERATION-LOG.md` (single source for iteration history)
+- `AGILE-ITERATION-PROTOCOL.md` (strict rules for documentation)
 

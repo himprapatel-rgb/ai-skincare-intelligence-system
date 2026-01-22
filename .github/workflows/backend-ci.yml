@@ -80,6 +80,10 @@ jobs:
           pip install pytest pytest-cov pytest-asyncio
 
       - name: Run tests with coverage
+        env:
+          PYTHONPATH: .
+          DATABASE_URL: "sqlite:///:memory:"
+          SECRET_KEY: "test-secret-key-for-ci"
         run: |
           cd backend
           pytest tests/ -v --cov=app --cov-report=xml --cov-report=html --cov-report=term

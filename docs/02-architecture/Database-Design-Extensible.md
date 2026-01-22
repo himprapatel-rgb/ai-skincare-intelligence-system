@@ -51,6 +51,8 @@ and product discovery.
   - store metadata + geo location
 - `product_store_availability`
   - product pricing and availability in nearby stores
+- `product_offers`
+  - discounts + promo pricing metadata
 
 ### Analytics & Audit
 
@@ -58,6 +60,23 @@ and product discovery.
   - login, scan, routine changes, etc.
 - `user_progress_snapshots`
   - lightweight trends for charts and reports
+
+### Product Scan + Notifications
+
+- `product_scan_sessions`
+  - at-home product scan inputs + outputs
+- `product_scan_items`
+  - resolved products per scan
+- `routine_recommendations`
+  - routine payloads derived from scans/products
+- `routine_checkins`
+  - user confirmations (AM/PM complete)
+- `user_notifications`
+  - scheduled reminders and alerts
+- `notification_events`
+  - delivery/open/ack events
+- `geo_alerts`
+  - UV/heat alerts derived from location
 
 ## Design Principles
 

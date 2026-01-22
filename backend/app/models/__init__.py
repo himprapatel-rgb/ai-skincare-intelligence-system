@@ -13,6 +13,16 @@ from app.models.analysis_outputs import (
     UserEvent,
     UserProgressSnapshot,
 )
+from app.models.engagement import (
+    GeoAlert,
+    NotificationEvent,
+    ProductOffer,
+    ProductScanItem,
+    ProductScanSession,
+    RoutineCheckin,
+    RoutineRecommendation,
+    UserNotification,
+)
 from app.models.product_models import Ingredient, Product, ProductIngredient
 from app.models.scan import ScanSession, SkinAnalysis
 
@@ -38,6 +48,14 @@ __all__ = [
     "Ingredient",
     "Product",
     "ProductIngredient",
+    "ProductScanSession",
+    "ProductScanItem",
+    "RoutineRecommendation",
+    "RoutineCheckin",
+    "UserNotification",
+    "NotificationEvent",
+    "GeoAlert",
+    "ProductOffer",
     "ScanOutput",
     "SkinCondition",
     "ScanCondition",

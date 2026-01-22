@@ -94,6 +94,7 @@ Design and implement an extensible schema to store all scan outputs, future skin
 ### Scope (Completed)
 - Added models to store raw/normalized scan outputs, conditions, and recommendations.
 - Added geo, environment, guidance, and store availability tables for future expansion.
+- Added product scan, routine check-in, notification, and offer tables for roadmap features.
 - Updated scan pipeline to persist raw OpenAI outputs and condition details.
 - Updated migration runner to be non-destructive and create new tables safely.
 - Documented the extensible schema in architecture docs.

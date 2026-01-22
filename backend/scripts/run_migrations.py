@@ -379,6 +379,161 @@ def run_migrations():
                 "CREATE INDEX IF NOT EXISTS idx_user_progress_snapshots_user "
                 "ON user_progress_snapshots (user_id, snapshot_date)"
             )
+
+            print("  - Ensuring product scan + notification tables exist...")
+            cur.execute(
+                """
+                CREATE TABLE IF NOT EXISTS product_scan_sessions (
+                    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                    user_id INTEGER REFERENCES users(id),
+                    status VARCHAR(30) NOT NULL DEFAULT 'pending',
+                    image_data BYTEA,
+                    image_content_type VARCHAR(100),
+                    image_filename VARCHAR(255),
+                    image_hash VARCHAR(64),
+                    image_url VARCHAR(500),
+                    scan_metadata JSONB,
+                    result JSONB,
+                    created_at TIMESTAMPTZ DEFAULT NOW(),
+                    updated_at TIMESTAMPTZ DEFAULT NOW()
+                )
+                """
+            )
+            cur.execute(
+                "CREATE INDEX IF NOT EXISTS idx_product_scan_sessions_user "
+                "ON product_scan_sessions (user_id)"
+            )
+            cur.execute(
+                """
+                CREATE TABLE IF NOT EXISTS product_scan_items (
+                    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                    scan_session_id UUID NOT NULL REFERENCES product_scan_sessions(id),
+                    product_id UUID REFERENCES products(id),
+                    matched_name VARCHAR(300),
+                    match_confidence DOUBLE PRECISION,
+                    metadata JSONB,
+                    created_at TIMESTAMPTZ DEFAULT NOW()
+                )
+                """
+            )
+            cur.execute(
+                "CREATE INDEX IF NOT EXISTS idx_product_scan_items_session "
+                "ON product_scan_items (scan_session_id)"
+            )
+
+            cur.execute(
+                """
+                CREATE TABLE IF NOT EXISTS routine_recommendations (
+                    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                    user_id INTEGER NOT NULL REFERENCES users(id),
+                    scan_session_id UUID REFERENCES scan_sessions(id),
+                    product_scan_id UUID REFERENCES product_scan_sessions(id),
+                    payload JSONB,
+                    created_at TIMESTAMPTZ DEFAULT NOW()
+                )
+                """
+            )
+            cur.execute(
+                "CREATE INDEX IF NOT EXISTS idx_routine_recommendations_user "
+                "ON routine_recommendations (user_id)"
+            )
+
+            cur.execute(
+                """
+                CREATE TABLE IF NOT EXISTS routine_checkins (
+                    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                    user_id INTEGER NOT NULL REFERENCES users(id),
+                    routine_instance_id UUID REFERENCES routine_instances(id),
+                    status VARCHAR(20) NOT NULL DEFAULT 'completed',
+                    notes TEXT,
+                    checked_in_at TIMESTAMPTZ DEFAULT NOW()
+                )
+                """
+            )
+            cur.execute(
+                "CREATE INDEX IF NOT EXISTS idx_routine_checkins_user "
+                "ON routine_checkins (user_id)"
+            )
+
+            cur.execute(
+                """
+                CREATE TABLE IF NOT EXISTS user_notifications (
+                    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                    user_id INTEGER NOT NULL REFERENCES users(id),
+                    notification_type VARCHAR(50) NOT NULL,
+                    title VARCHAR(200),
+                    body TEXT,
+                    channel VARCHAR(20),
+                    status VARCHAR(20) NOT NULL DEFAULT 'scheduled',
+                    scheduled_for TIMESTAMPTZ,
+                    timezone VARCHAR(50),
+                    metadata JSONB,
+                    created_at TIMESTAMPTZ DEFAULT NOW(),
+                    sent_at TIMESTAMPTZ,
+                    acknowledged_at TIMESTAMPTZ
+                )
+                """
+            )
+            cur.execute(
+                "CREATE INDEX IF NOT EXISTS idx_user_notifications_user "
+                "ON user_notifications (user_id)"
+            )
+            cur.execute(
+                """
+                CREATE TABLE IF NOT EXISTS notification_events (
+                    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                    notification_id UUID NOT NULL REFERENCES user_notifications(id),
+                    event_type VARCHAR(30) NOT NULL,
+                    metadata JSONB,
+                    created_at TIMESTAMPTZ DEFAULT NOW()
+                )
+                """
+            )
+            cur.execute(
+                "CREATE INDEX IF NOT EXISTS idx_notification_events_notification "
+                "ON notification_events (notification_id)"
+            )
+
+            cur.execute(
+                """
+                CREATE TABLE IF NOT EXISTS geo_alerts (
+                    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                    user_id INTEGER NOT NULL REFERENCES users(id),
+                    location_id UUID REFERENCES geo_locations(id),
+                    alert_type VARCHAR(50) NOT NULL,
+                    message TEXT,
+                    severity VARCHAR(20),
+                    uv_index DOUBLE PRECISION,
+                    temperature_celsius DOUBLE PRECISION,
+                    metadata JSONB,
+                    created_at TIMESTAMPTZ DEFAULT NOW()
+                )
+                """
+            )
+            cur.execute(
+                "CREATE INDEX IF NOT EXISTS idx_geo_alerts_user "
+                "ON geo_alerts (user_id)"
+            )
+
+            cur.execute(
+                """
+                CREATE TABLE IF NOT EXISTS product_offers (
+                    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                    product_id UUID NOT NULL REFERENCES products(id),
+                    store_id UUID REFERENCES stores(id),
+                    price DOUBLE PRECISION,
+                    currency VARCHAR(10),
+                    discount_percent DOUBLE PRECISION,
+                    offer_url VARCHAR(500),
+                    valid_until TIMESTAMPTZ,
+                    created_at TIMESTAMPTZ DEFAULT NOW()
+                )
+                """
+            )
+            cur.execute(
+                "CREATE INDEX IF NOT EXISTS idx_product_offers_product "
+                "ON product_offers (product_id)"
+            )
             
         conn.commit()
         print("  ✓ Migration completed successfully!")

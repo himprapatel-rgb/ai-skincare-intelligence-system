@@ -19,6 +19,13 @@ what changed, why it changed, and how it was verified.
 12. **Backward compatibility**: avoid breaking API changes without versioning.
 13. **Performance budget**: document any heavy operations and acceptable latency.
 14. **Feature flags** for risky changes; default off until verified.
+15. **API contract discipline**: request/response schemas must be versioned and validated.
+16. **Idempotency**: critical write endpoints must be safe to retry.
+17. **Rollback ready**: document a rollback path for schema and release changes.
+18. **Data minimization**: collect only necessary PII and explain why.
+19. **Error taxonomy**: use consistent error codes/messages across APIs.
+20. **Dependency hygiene**: new dependencies require security review and justification.
+21. **Deploy and verify on data changes**: any change that touches frontend, backend, or database must be deployed, followed by CLI login to Railway/GitHub and a full log review; do not stop until logs are clean and any errors are resolved.
 
 ### Required entry format (every iteration)
 
@@ -42,11 +49,21 @@ what changed, why it changed, and how it was verified.
 - Security review completed (PII, auth, secrets)
 - Monitoring/logging added for new flows
 - Mobile clients unaffected or versioned
+### Code quality rules
+
+- Lint + format checks must pass
+- Avoid hidden side effects in request handlers
+- Prefer typed schemas over ad‑hoc dictionaries
 ### Data quality rules
 
 - Store raw and normalized outputs for ML training
 - Require schema validation on AI outputs
 - Maintain deduplication hashes for media and scans
+### Operational rules
+
+- Rate limits for costly endpoints (scan, product scan)
+- Job retries with backoff for external APIs
+- Alerting on error rate or latency regression
 
 ### Enforcement checklist (before merge)
 
@@ -54,4 +71,3 @@ what changed, why it changed, and how it was verified.
 - Tests run or explicitly waived with reason
 - DB changes documented
 - API behavior consistent for web + mobile
-*** End Patch}']]],

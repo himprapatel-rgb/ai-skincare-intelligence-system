@@ -48,7 +48,8 @@ const DashboardPage: React.FC = () => {
       setLoading(true);
       const historyData = await getScanHistory();
       const scans = (historyData as { scans?: Array<Record<string, unknown>> }).scans || [];
-      const scores = scans
+      const completedScans = scans.filter((scan) => String(scan.status || '') !== 'failed');
+      const scores = completedScans
         .map((scan) => {
           const summary = (scan.summary || {}) as Record<string, unknown>;
           const overallScore = typeof summary.overall_score === 'number'
@@ -157,7 +158,7 @@ const DashboardPage: React.FC = () => {
           </div>
           <div className="stat-content">
             <h3>{data.productsInShelf}</h3>
-            <p>Products in Shelf</p>
+            <p>My Products</p>
           </div>
         </button>
 
@@ -236,7 +237,7 @@ const DashboardPage: React.FC = () => {
           </div>
           <div className="reminder-content">
             <h3>Next Scan Reminder</h3>
-            <p>Schedule your next skin analysis on {new Date(data.nextScanDue).toLocaleDateString('en', { month: 'long', day: 'numeric' })}</p>
+            <p>Schedule your next skin analysis on {new Date(data.nextScanDue).toLocaleDateString('en', { month: 'short', day: 'numeric', year: 'numeric' })}</p>
             <button className="btn-primary" onClick={() => navigate('/scan')}>Scan Now</button>
           </div>
         </div>

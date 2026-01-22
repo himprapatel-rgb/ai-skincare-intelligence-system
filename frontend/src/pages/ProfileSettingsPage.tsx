@@ -595,7 +595,7 @@ const ProfileSettingsPage: React.FC = () => {
                     <IconPackage size={32} strokeWidth={2} />
                   </div>
                   <div className="stat-value">{stats.productsInShelf}</div>
-                  <div className="stat-label">Products in Shelf</div>
+                <div className="stat-label">My Products</div>
                 </div>
                 <div className="stat-card">
                   <div className="stat-icon">

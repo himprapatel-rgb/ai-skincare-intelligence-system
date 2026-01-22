@@ -72,7 +72,10 @@ const HistoryPage: React.FC = () => {
 
   const filteredHistory = filterHistory();
   const totalScans = filteredHistory.length;
-  const avgScore = totalScans > 0 ? Math.round(filteredHistory.reduce((acc, item) => acc + item.score, 0) / totalScans) : 0;
+  const completedHistory = filteredHistory.filter((item) => item.status !== 'failed');
+  const avgScore = completedHistory.length > 0
+    ? Math.round(completedHistory.reduce((acc, item) => acc + item.score, 0) / completedHistory.length)
+    : 0;
   const totalRecs = filteredHistory.reduce((acc, item) => acc + item.recommendations, 0);
 
   return (
@@ -116,7 +119,7 @@ const HistoryPage: React.FC = () => {
                   <IconStar size={32} strokeWidth={2} />
                 </div>
                 <div className="stat-value">{avgScore}%</div>
-                <div className="stat-label">Avg Score</div>
+                <div className="stat-label">Avg Score (completed)</div>
               </div>
               <div className="stat-card">
                 <div className="stat-icon">

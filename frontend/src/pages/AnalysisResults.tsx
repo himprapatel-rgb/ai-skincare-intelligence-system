@@ -182,10 +182,8 @@ const AnalysisResults: React.FC = () => {
             <p>
               Analysis Date: {new Date(analysis.timestamp).toLocaleDateString('en-US', {
                 year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
+                month: 'short',
+                day: 'numeric'
               })}
             </p>
           </div>
@@ -201,6 +199,9 @@ const AnalysisResults: React.FC = () => {
             <div>
               <h3>Scan failed</h3>
               <p>{failureMessage}</p>
+              <button onClick={() => navigate('/scan')} className="btn btn-primary">
+                Retry Scan
+              </button>
             </div>
           </div>
         )}
@@ -220,7 +221,13 @@ const AnalysisResults: React.FC = () => {
               {analysis.imageUrl ? (
                 <img src={analysis.imageUrl} alt="Skin analysis" />
               ) : (
-                <div className="analysis-image-fallback">No image available</div>
+                <div className="analysis-image-fallback">
+                  <IconScan size={32} strokeWidth={2} />
+                  <div>
+                    <strong>No image available</strong>
+                    <span>We do not store images when scans fail.</span>
+                  </div>
+                </div>
               )}
             </div>
           </div>

@@ -46,7 +46,9 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
                 <Link className="app-nav-link" to="/auth?mode=register">Register</Link>
               </>
             )}
-            <Link className="app-nav-cta" to="/scan">Start Free Scan</Link>
+            {!location.pathname.startsWith('/scan') && !location.pathname.startsWith('/analysis') && (
+              <Link className="app-nav-cta" to="/scan">Start Free Scan</Link>
+            )}
           </nav>
         </div>
       </header>

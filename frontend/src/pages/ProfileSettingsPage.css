@@ -54,6 +54,7 @@
   margin-bottom: 32px;
   padding-bottom: 16px;
   border-bottom: 2px solid var(--border);
+  overflow-x: auto;
 }
 
 .tabs button {
@@ -66,6 +67,7 @@
   font-weight: 500;
   color: var(--text-gray);
   transition: all 0.2s ease;
+  flex: 0 0 auto;
 }
 
 .tabs button:hover {
@@ -233,5 +235,11 @@
 
   .profile-container h1 {
     font-size: 2rem; /* Responsive: 32px / 2rem for H2 */
+  }
+
+  .tabs {
+    flex-wrap: nowrap;
+    gap: 6px;
+    padding-bottom: 12px;
   }
 }

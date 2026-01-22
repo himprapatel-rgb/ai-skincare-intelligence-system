@@ -63,8 +63,10 @@ export default function App() {
           
           {/* Product Recommendation Routes */}
           <Route path="/recommendations" element={<Recommendations />} />
+          <Route path="/discover" element={<Recommendations />} />
           <Route path="/product/:id" element={<ProductDetailsPage />} />
           <Route path="/routine-builder" element={<RoutineBuilderPage />} />
+          <Route path="/routines" element={<RoutineBuilderPage />} />
           <Route path="/favorites" element={<FavoritesPage />} />
           <Route path="/myshelf" element={<MyShelfPage />} />
           <Route path="/scanner" element={<ProductScannerPage />} />

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import './AppLayout.css';
 
 type AppLayoutProps = {
@@ -8,6 +9,9 @@ type AppLayoutProps = {
 
 const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, isAuthenticated, logout } = useAuth();
+  const displayName = user?.full_name || user?.email || 'Account';
 
   return (
     <div className="app-layout">
@@ -22,8 +26,26 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
             <Link className={`app-nav-link${location.pathname.startsWith('/scan') ? ' active' : ''}`} to="/scan">Analysis</Link>
             <Link className={`app-nav-link${location.pathname.startsWith('/dashboard') ? ' active' : ''}`} to="/dashboard">Dashboard</Link>
             <Link className={`app-nav-link${location.pathname.startsWith('/about') ? ' active' : ''}`} to="/about">About</Link>
-            <Link className={`app-nav-link${location.pathname.startsWith('/auth') ? ' active' : ''}`} to="/auth">Login</Link>
-            <Link className="app-nav-link" to="/auth">Register</Link>
+            {isAuthenticated ? (
+              <div className="app-nav-user">
+                <Link className="app-nav-link" to="/profile">{displayName}</Link>
+                <button
+                  type="button"
+                  className="app-nav-link app-nav-logout"
+                  onClick={() => {
+                    logout();
+                    navigate('/');
+                  }}
+                >
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <>
+                <Link className={`app-nav-link${location.pathname.startsWith('/auth') ? ' active' : ''}`} to="/auth">Login</Link>
+                <Link className="app-nav-link" to="/auth?mode=register">Register</Link>
+              </>
+            )}
             <Link className="app-nav-cta" to="/scan">Start Free Scan</Link>
           </nav>
         </div>

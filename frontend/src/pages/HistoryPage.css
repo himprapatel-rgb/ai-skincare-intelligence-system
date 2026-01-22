@@ -222,6 +222,16 @@
   flex-wrap: wrap;
 }
 
+.history-status-note {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: #9b1c1c;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+
 .concern-tag {
   padding: 4px 12px;
   background: var(--bg-light);

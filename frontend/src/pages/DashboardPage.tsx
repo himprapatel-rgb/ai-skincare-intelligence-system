@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { getScanHistory } from '../services/scanApi';
+import { mockProducts } from '../data/mockProducts';
 import { 
   IconTrendingUp, 
   IconCamera, 
@@ -44,23 +46,56 @@ const DashboardPage: React.FC = () => {
   const fetchDashboardData = async () => {
     try {
       setLoading(true);
-      // Mock data
-      const mockData: DashboardData = {
-        recentScans: 12,
-        skinScore: 78,
-        productsInShelf: 8,
-        activeRoutines: 2,
-        nextScanDue: '2025-01-15',
-        recentActivity: [
-          { id: '1', type: 'scan', title: 'Completed skin scan', date: '2025-01-11' },
-          { id: '2', type: 'product', title: 'Added Vitamin C Serum', date: '2025-01-10' },
-          { id: '3', type: 'routine', title: 'Updated morning routine', date: '2025-01-08' }
-        ],
-        skinTrend: 'improving'
+      const historyData = await getScanHistory();
+      const scans = (historyData as { scans?: Array<Record<string, unknown>> }).scans || [];
+      const scores = scans
+        .map((scan) => {
+          const summary = (scan.summary || {}) as Record<string, unknown>;
+          const overallScore = typeof summary.overall_score === 'number'
+            ? Math.round(summary.overall_score)
+            : null;
+          return overallScore ?? null;
+        })
+        .filter((score): score is number => typeof score === 'number' && !Number.isNaN(score));
+      const avgScore = scores.length > 0
+        ? Math.round(scores.reduce((sum, score) => sum + score, 0) / scores.length)
+        : 0;
+
+      const sortedScans = scans
+        .filter((scan) => typeof scan.created_at === 'string')
+        .sort((a, b) => new Date(String(b.created_at)).getTime() - new Date(String(a.created_at)).getTime());
+      const latestScanDate = sortedScans.length > 0 ? new Date(String(sortedScans[0].created_at)) : null;
+      const nextScanDue = new Date(latestScanDate || new Date());
+      nextScanDue.setDate(nextScanDue.getDate() + 14);
+
+      const recentActivity = sortedScans.slice(0, 3).map((scan, index) => ({
+        id: String(scan.scan_id || index),
+        type: 'scan' as const,
+        title: 'Completed skin scan',
+        date: String(scan.created_at || new Date().toISOString()),
+      }));
+
+      const dashboardData: DashboardData = {
+        recentScans: scans.length,
+        skinScore: avgScore,
+        productsInShelf: mockProducts.length,
+        activeRoutines: 0,
+        nextScanDue: nextScanDue.toISOString(),
+        recentActivity,
+        skinTrend: avgScore >= 70 ? 'improving' : avgScore >= 40 ? 'stable' : 'declining',
       };
-      setData(mockData);
+      setData(dashboardData);
     } catch (error) {
       console.error('Failed to fetch dashboard data:', error);
+      setData({
+        recentScans: 0,
+        skinScore: 0,
+        productsInShelf: mockProducts.length,
+        activeRoutines: 0,
+        nextScanDue: new Date().toISOString(),
+        recentActivity: [],
+        skinTrend: 'stable',
+      });
     } finally {
       setLoading(false);
     }
@@ -73,7 +108,8 @@ const DashboardPage: React.FC = () => {
   return (
     <div className="dashboard-page">
       <div className="dashboard-header">
-            <h1>Welcome back, {user?.full_name || 'User'}!</h1>        <p className="subtitle">Here's your skincare overview</p>
+        <h1>Welcome back, {user?.full_name || 'User'}!</h1>
+        <p className="subtitle">Here's your skincare overview</p>
       </div>
 
       <div className="dashboard-stats">

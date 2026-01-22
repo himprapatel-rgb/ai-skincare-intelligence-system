@@ -28,6 +28,7 @@ const AnalysisResults: React.FC = () => {
   const [analysis, setAnalysis] = useState<SkinAnalysis | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [failureMessage, setFailureMessage] = useState<string | null>(null);
   const [previousScans, setPreviousScans] = useState<ScanHistoryItem[]>([]);
 
   const buildAnalysisFromScan = useCallback((scanResult: Record<string, unknown>): SkinAnalysis => {
@@ -84,7 +85,7 @@ const AnalysisResults: React.FC = () => {
       ),
       confidence: overallScore ? Math.round(overallScore) : 0,
       imageUrl: imageUrl || '',
-      timestamp: new Date().toISOString(),
+      timestamp: String((scanResult as { created_at?: string }).created_at || new Date().toISOString()),
       recommendations,
     };
   }, [analysisId]);
@@ -97,7 +98,21 @@ const AnalysisResults: React.FC = () => {
       }
 
       const scanResult = await getScanResult(analysisId);
+      const status = typeof (scanResult as { status?: string }).status === 'string'
+        ? String((scanResult as { status?: string }).status)
+        : null;
+      if (status === 'failed') {
+        const message = (scanResult as { message?: string; detail?: string }).message
+          || (scanResult as { message?: string; detail?: string }).detail
+          || 'Scan failed. Please retry with a clear, well-lit selfie.';
+        setFailureMessage(message);
+      } else {
+        setFailureMessage(null);
+      }
       const mapped = buildAnalysisFromScan(scanResult as Record<string, unknown>);
+      if (!status && mapped.confidence === 0 && mapped.concerns.length === 0 && Object.keys(mapped.severity).length === 0) {
+        setFailureMessage('No analysis data returned. Please retry the scan with a clear, front-facing selfie.');
+      }
       setAnalysis(mapped);
 
       const historyData = await getScanHistory();
@@ -180,6 +195,16 @@ const AnalysisResults: React.FC = () => {
           </button>
         </div>
 
+        {failureMessage && (
+          <div className="analysis-inline-warning">
+            <IconAlertTriangle size={24} strokeWidth={2} />
+            <div>
+              <h3>Scan failed</h3>
+              <p>{failureMessage}</p>
+            </div>
+          </div>
+        )}
+
         <div className="confidence-row">
           <span>Confidence Score:</span>
           <div className="confidence-bar">
@@ -209,9 +234,13 @@ const AnalysisResults: React.FC = () => {
             <div className="overview-section">
               <h3>Identified Concerns</h3>
               <div className="concern-tags">
-                {analysis.concerns.map((concern, index) => (
-                  <span key={index} className="concern-tag">{concern}</span>
-                ))}
+                {analysis.concerns.length > 0 ? (
+                  analysis.concerns.map((concern, index) => (
+                    <span key={index} className="concern-tag">{concern}</span>
+                  ))
+                ) : (
+                  <span className="concern-tag">No concerns detected</span>
+                )}
               </div>
             </div>
           </div>
@@ -220,20 +249,24 @@ const AnalysisResults: React.FC = () => {
         <div className="result-card">
           <h2>Severity Analysis</h2>
           <div className="severity-grid">
-            {Object.entries(analysis.severity).map(([concern, value]) => (
-              <div key={concern} className="severity-card">
-                <div className="severity-header">
-                  <h3 className="severity-title">{concern}</h3>
-                  <span className={`severity-pill ${getSeverityColor(value)}`}>
-                    {getSeverityLabel(value)}
-                  </span>
+            {Object.keys(analysis.severity).length > 0 ? (
+              Object.entries(analysis.severity).map(([concern, value]) => (
+                <div key={concern} className="severity-card">
+                  <div className="severity-header">
+                    <h3 className="severity-title">{concern}</h3>
+                    <span className={`severity-pill ${getSeverityColor(value)}`}>
+                      {getSeverityLabel(value)}
+                    </span>
+                  </div>
+                  <div className="severity-bar">
+                    <div className={`severity-fill ${getSeverityColor(value)}`} style={{ width: `${value}%` }}></div>
+                  </div>
+                  <div className="severity-value">{value}%</div>
                 </div>
-                <div className="severity-bar">
-                  <div className={`severity-fill ${getSeverityColor(value)}`} style={{ width: `${value}%` }}></div>
-                </div>
-                <div className="severity-value">{value}%</div>
-              </div>
-            ))}
+              ))
+            ) : (
+              <p className="analysis-empty">No severity metrics available for this scan.</p>
+            )}
           </div>
         </div>
 

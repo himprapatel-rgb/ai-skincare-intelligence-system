@@ -59,8 +59,10 @@ const HistoryPage: React.FC = () => {
     const now = new Date();
     return history.filter(item => {
       const itemDate = new Date(item.date);
+      const isValidDate = !Number.isNaN(itemDate.getTime());
       const daysDiff = Math.floor((now.getTime() - itemDate.getTime()) / (1000 * 60 * 60 * 24));
       if (filter === 'all') return true;
+      if (!isValidDate) return false;
       if (filter === '7days') return daysDiff <= 7;
       if (filter === '30days') return daysDiff <= 30;
       if (filter === '90days') return daysDiff <= 90;
@@ -161,6 +163,11 @@ const HistoryPage: React.FC = () => {
                         <span key={idx} className="concern-tag">{concern}</span>
                       ))}
                     </div>
+                    {item.status === 'failed' && (
+                      <div className="history-status-note">
+                        Scan failed. Open details for troubleshooting tips.
+                      </div>
+                    )}
                   </div>
                   <div className="history-actions">
                     <button className="view-btn">View Details</button>

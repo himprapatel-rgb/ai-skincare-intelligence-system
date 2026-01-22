@@ -61,6 +61,23 @@
   border: 1px solid var(--border);
 }
 
+.add-product-btn {
+  background: linear-gradient(135deg, var(--primary) 0%, #5a8bff 100%);
+  color: #ffffff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(13, 148, 136, 0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.add-product-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(13, 148, 136, 0.3);
+}
+
 .search-bar input {
   min-width: 240px;
   padding: 12px 16px; /* Brand guideline: 12px 16px */

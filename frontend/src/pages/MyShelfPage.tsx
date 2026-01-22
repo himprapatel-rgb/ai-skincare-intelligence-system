@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IconStar } from '../components/Icons';
+import { mockProducts } from '../data/mockProducts';
 import './MyShelfPage.css';
 
 interface Product {
@@ -34,41 +35,6 @@ const MyShelfPage: React.FC = () => {
       //   headers: { 'Authorization': `Bearer ${token}` }
       // });
       // const data = await response.json();
-      
-      // Mock data
-      const mockProducts: Product[] = [
-        {
-          id: '1',
-          name: 'Hydrating Serum',
-          brand: 'CeraVe',
-          category: 'Serum',
-          rating: 4.5,
-          status: 'using',
-          notes: 'Great for morning routine',
-          addedDate: '2025-01-01',
-          imageUrl: '/placeholder.jpg'
-        },
-        {
-          id: '2',
-          name: 'Retinol Cream',
-          brand: 'The Ordinary',
-          category: 'Treatment',
-          rating: 4.8,
-          status: 'using',
-          notes: 'Use only at night',
-          addedDate: '2025-01-05'
-        },
-        {
-          id: '3',
-          name: 'Vitamin C Serum',
-          brand: 'Skinceuticals',
-          category: 'Serum',
-          rating: 4.9,
-          status: 'wishlist',
-          notes: 'Want to try',
-          addedDate: '2025-01-10'
-        }
-      ];
       
       setProducts(mockProducts);
     } catch (error) {
@@ -119,6 +85,20 @@ const MyShelfPage: React.FC = () => {
     );
   }
 
+  const placeholderImage =
+    'data:image/svg+xml;utf8,' +
+    encodeURIComponent(
+      '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300">' +
+        '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">' +
+        '<stop offset="0%" stop-color="#e2e8f0"/><stop offset="100%" stop-color="#f8fafc"/>' +
+        '</linearGradient></defs>' +
+        '<rect width="100%" height="100%" fill="url(#g)"/>' +
+        '<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#64748b" font-size="20" font-family="Arial, sans-serif">' +
+        'No Image' +
+        '</text>' +
+      '</svg>'
+    );
+
   return (
     <div className="myshelf-page">
       <div className="myshelf-header">
@@ -162,6 +142,9 @@ const MyShelfPage: React.FC = () => {
             Discontinued ({products.filter(p => p.status === 'discontinued').length})
           </button>
         </div>
+        <button className="add-product-btn" onClick={() => navigate('/scan')}>
+          Add Product
+        </button>
       </div>
 
       {filteredProducts.length === 0 ? (
@@ -182,11 +165,16 @@ const MyShelfPage: React.FC = () => {
                 onClick={() => handleProductClick(product.id)}
                 aria-label={`Open ${product.name}`}
               >
-                {product.imageUrl ? (
-                  <img src={product.imageUrl} alt={product.name} />
-                ) : (
-                  <div className="placeholder-image">No Image</div>
-                )}
+                <img
+                  src={product.imageUrl || placeholderImage}
+                  alt={product.name}
+                  onError={(event) => {
+                    const target = event.currentTarget;
+                    if (target.src !== placeholderImage) {
+                      target.src = placeholderImage;
+                    }
+                  }}
+                />
               </button>
               
               <div className="product-info">
@@ -241,9 +229,6 @@ const MyShelfPage: React.FC = () => {
         </div>
       )}
 
-      <button className="fab" onClick={() => navigate('/scan')} title="Scan new product">
-        +
-      </button>
     </div>
   );
 };

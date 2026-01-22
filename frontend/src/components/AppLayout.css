@@ -58,6 +58,21 @@
   flex-wrap: wrap;
 }
 
+.app-nav-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(31, 111, 235, 0.08);
+}
+
+.app-nav-logout {
+  border: 1px solid rgba(31, 111, 235, 0.2);
+  background: #ffffff;
+  cursor: pointer;
+}
+
 .app-nav-link {
   color: var(--text-secondary);
   text-decoration: none;

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { LoginForm } from '../components/LoginForm';
 import { RegisterForm } from '../components/RegisterForm';
 import { IconCamera, IconSparkles, IconBarChart } from '../components/Icons';
@@ -8,9 +8,20 @@ import './AuthPage.css';
 export const AuthPage: React.FC = () => {
   const [mode, setMode] = useState<'login' | 'register'>('login');
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const requestedMode = params.get('mode');
+    if (requestedMode === 'register') {
+      setMode('register');
+    } else if (requestedMode === 'login') {
+      setMode('login');
+    }
+  }, [location.search]);
 
   const handleAuthSuccess = () => {
-    navigate('/dashboard')
+    navigate('/dashboard');
   };
   return (
     <div className="auth-page">

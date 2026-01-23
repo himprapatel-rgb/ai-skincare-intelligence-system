@@ -71,6 +71,8 @@ def run_migrations():
                 cur.execute(
                     "UPDATE products SET id = COALESCE(id, product_id) WHERE id IS NULL"
                 )
+            cur.execute("UPDATE products SET id = gen_random_uuid() WHERE id IS NULL")
+            cur.execute("ALTER TABLE products ALTER COLUMN id SET NOT NULL")
             cur.execute("ALTER TABLE products ADD COLUMN IF NOT EXISTS brand VARCHAR(200)")
             cur.execute("ALTER TABLE products ADD COLUMN IF NOT EXISTS name VARCHAR(300)")
             cur.execute("ALTER TABLE products ADD COLUMN IF NOT EXISTS category VARCHAR(100)")
@@ -97,7 +99,19 @@ def run_migrations():
                 "ALTER TABLE products ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ DEFAULT NOW()"
             )
             cur.execute(
-                "CREATE UNIQUE INDEX IF NOT EXISTS idx_products_id_unique ON products (id)"
+                """
+                DO $$
+                BEGIN
+                    IF NOT EXISTS (
+                        SELECT 1
+                        FROM information_schema.table_constraints
+                        WHERE table_name = 'products'
+                          AND constraint_type = 'PRIMARY KEY'
+                    ) THEN
+                        ALTER TABLE products ADD CONSTRAINT products_pkey PRIMARY KEY (id);
+                    END IF;
+                END $$;
+                """
             )
 
             print("  - Aligning ingredients table schema...")
@@ -107,6 +121,8 @@ def run_migrations():
                 cur.execute(
                     "UPDATE ingredients SET id = COALESCE(id, ingredient_id) WHERE id IS NULL"
                 )
+            cur.execute("UPDATE ingredients SET id = gen_random_uuid() WHERE id IS NULL")
+            cur.execute("ALTER TABLE ingredients ALTER COLUMN id SET NOT NULL")
             cur.execute("ALTER TABLE ingredients ADD COLUMN IF NOT EXISTS name_inci VARCHAR(255)")
             if column_exists(cur, "ingredients", "inci_name"):
                 cur.execute(
@@ -134,7 +150,19 @@ def run_migrations():
                 "ALTER TABLE ingredients ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ DEFAULT NOW()"
             )
             cur.execute(
-                "CREATE UNIQUE INDEX IF NOT EXISTS idx_ingredients_id_unique ON ingredients (id)"
+                """
+                DO $$
+                BEGIN
+                    IF NOT EXISTS (
+                        SELECT 1
+                        FROM information_schema.table_constraints
+                        WHERE table_name = 'ingredients'
+                          AND constraint_type = 'PRIMARY KEY'
+                    ) THEN
+                        ALTER TABLE ingredients ADD CONSTRAINT ingredients_pkey PRIMARY KEY (id);
+                    END IF;
+                END $$;
+                """
             )
 
             # Add supporting indexes without breaking existing schemas

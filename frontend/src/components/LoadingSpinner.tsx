@@ -28,9 +28,7 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
         className={`loading-spinner__spinner ${sizeClasses[size]}`}
         role="status"
         aria-label="Loading"
-      >
-        <div className="loading-spinner__circle"></div>
-      </div>
+      />
       {message && (
         <p className="loading-spinner__message">{message}</p>
       )}

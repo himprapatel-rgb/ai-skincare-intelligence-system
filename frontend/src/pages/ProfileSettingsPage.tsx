@@ -1,6 +1,11 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { useAuth } from '../context/AuthContext';
+import Toast, { ToastType } from '../components/Toast';
 import { IconBarChart, IconCamera, IconPackage, IconSparkles, IconTrendingUp, IconScan } from '../components/Icons';
+import { mockProducts } from '../data/mockProducts';
+import { getScanHistory } from '../services/scanApi';
 import './ProfileSettingsPage.css';
 
 interface UserProfile {
@@ -61,9 +66,15 @@ interface UserProfile {
 
 const ProfileSettingsPage: React.FC = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const initialProfileRef = useRef<UserProfile | null>(null);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+  const [fieldErrors, setFieldErrors] = useState<{ name?: string; email?: string }>({});
+  const [toast, setToast] = useState<{ type: ToastType; message: string } | null>(null);
+  const [isDirty, setIsDirty] = useState(false);
   const [activeTab, setActiveTab] = useState<'personal' | 'skin' | 'goals' | 'lifestyle' | 'notifications' | 'privacy' | 'stats'>('personal');
   
   const [profile, setProfile] = useState<UserProfile>({
@@ -112,12 +123,13 @@ const ProfileSettingsPage: React.FC = () => {
   });
 
   // Stats data
-  const [stats] = useState({
-    skinHealthScore: 78,
-    totalScans: 12,
-    productsInShelf: 8,
-    activeRoutines: 2
+  const [stats, setStats] = useState({
+    skinHealthScore: 0,
+    totalScans: 0,
+    productsInShelf: mockProducts.length,
+    activeRoutines: 0
   });
+  const [progressData, setProgressData] = useState<Array<{ date: string; score: number }>>([]);
 
   // Options
   const skinTypes = ['Normal', 'Dry', 'Oily', 'Combination', 'Sensitive'];
@@ -140,8 +152,16 @@ const ProfileSettingsPage: React.FC = () => {
   ];
   
   const ingredientOptions = [
-    'Vitamin C', 'Hyaluronic Acid', 'Retinol', 'Niacinamide', 'Salicylic Acid',
-    'Glycolic Acid', 'Ceramides', 'Peptides', 'Squalane', 'Tea Tree Oil'
+    'Vitamin C',
+    'Hyaluronic Acid',
+    'Retinol',
+    'Niacinamide',
+    'Salicylic Acid',
+    'Glycolic Acid',
+    'Ceramides',
+    'Peptides',
+    'Squalane',
+    'Tea Tree Oil'
   ];
   
   const budgetOptions = [
@@ -160,10 +180,16 @@ const ProfileSettingsPage: React.FC = () => {
 
   const fetchUserProfile = useCallback(async () => {
     try {
-      setProfile(prev => ({
-        ...prev,
-        name: user?.full_name || 'User',        email: user?.email || 'user@example.com'
-      }));
+      setProfile((prev) => {
+        const nextProfile = {
+          ...prev,
+          name: user?.full_name || 'User',
+          email: user?.email || 'user@example.com'
+        };
+        initialProfileRef.current = nextProfile;
+        return nextProfile;
+      });
+      setIsDirty(false);
     } catch (err) {
       console.error('Failed to fetch profile:', err);
     }
@@ -173,17 +199,89 @@ const ProfileSettingsPage: React.FC = () => {
     fetchUserProfile();
   }, [fetchUserProfile]);
 
+  useEffect(() => {
+    const loadStats = async () => {
+      try {
+        const historyData = await getScanHistory();
+        const scans = (historyData as { scans?: Array<Record<string, unknown>> }).scans || [];
+        const completedScans = scans.filter((scan) => String(scan.status || '') !== 'failed');
+        const scores = completedScans
+          .map((scan) => {
+            const summary = (scan.summary || {}) as Record<string, unknown>;
+            const overallScore = typeof summary.overall_score === 'number'
+              ? Math.round(summary.overall_score)
+              : null;
+            return overallScore ?? null;
+          })
+          .filter((score): score is number => typeof score === 'number' && !Number.isNaN(score));
+        const avgScore = scores.length > 0
+          ? Math.round(scores.reduce((sum, score) => sum + score, 0) / scores.length)
+          : 0;
+        const sorted = completedScans
+          .filter((scan) => typeof scan.created_at === 'string')
+          .sort((a, b) => new Date(String(a.created_at)).getTime() - new Date(String(b.created_at)).getTime());
+        const progress = sorted.slice(-8).map((scan) => {
+          const summary = (scan.summary || {}) as Record<string, unknown>;
+          const rawScore = typeof summary.overall_score === 'number'
+            ? Math.round(summary.overall_score)
+            : avgScore;
+          return {
+            date: new Date(String(scan.created_at)).toLocaleDateString('en', { month: 'short', day: 'numeric' }),
+            score: rawScore
+          };
+        });
+        setStats({
+          skinHealthScore: avgScore,
+          totalScans: scans.length,
+          productsInShelf: mockProducts.length,
+          activeRoutines: 0
+        });
+        setProgressData(progress);
+      } catch (err) {
+        console.error('Failed to load stats:', err);
+      }
+    };
+
+    loadStats();
+  }, []);
+
+  useEffect(() => {
+    if (!initialProfileRef.current) {
+      return;
+    }
+    const current = JSON.stringify(profile);
+    const initial = JSON.stringify(initialProfileRef.current);
+    setIsDirty(current !== initial);
+  }, [profile]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const nextErrors: { name?: string; email?: string } = {};
+    if (!profile.name.trim()) {
+      nextErrors.name = 'Full name is required.';
+    }
+    if (!profile.email.trim()) {
+      nextErrors.email = 'Email address is required.';
+    }
+    setFieldErrors(nextErrors);
+    if (Object.keys(nextErrors).length > 0) {
+      setError('Please fix the highlighted fields.');
+      return;
+    }
+
     setLoading(true);
     setError('');
     setSuccess(false);
     try {
       await new Promise(resolve => setTimeout(resolve, 1000));
       setSuccess(true);
+      setToast({ type: 'success', message: 'Profile updated successfully.' });
+      initialProfileRef.current = profile;
+      setIsDirty(false);
       setTimeout(() => setSuccess(false), 3000);
     } catch (err) {
       setError('Failed to update profile. Please try again.');
+      setToast({ type: 'error', message: 'Failed to update profile.' });
     } finally {
       setLoading(false);
     }
@@ -207,9 +305,14 @@ const ProfileSettingsPage: React.FC = () => {
       const reader = new FileReader();
       reader.onloadend = () => {
         setProfile(prev => ({ ...prev, profilePhoto: reader.result as string }));
+        setToast({ type: 'success', message: 'Profile photo updated.' });
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  const handleProtectedAction = (message: string) => {
+    setToast({ type: 'info', message });
   };
 
   return (
@@ -241,20 +344,61 @@ const ProfileSettingsPage: React.FC = () => {
                     <div className="photo-placeholder">No Photo</div>
                   )}
                 </div>
-                <label className="upload-btn">
+                <button
+                  type="button"
+                  className="btn-upload"
+                  onClick={() => fileInputRef.current?.click()}
+                >
                   Upload Photo
-                  <input type="file" accept="image/*" onChange={handlePhotoUpload} hidden />
-                </label>
+                </button>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handlePhotoUpload}
+                  className="visually-hidden"
+                />
+                <p className="help-text">Recommended: 200x200px square image.</p>
               </div>
 
               <div className="form-row">
                 <div className="form-group">
-                  <label htmlFor="name">Full Name</label>
-                  <input type="text" id="name" value={profile.name} onChange={(e) => setProfile({ ...profile, name: e.target.value })} required />
+                  <label htmlFor="name">Full Name *</label>
+                  <input
+                    type="text"
+                    id="name"
+                    value={profile.name}
+                    onChange={(e) => {
+                      setProfile({ ...profile, name: e.target.value });
+                      if (fieldErrors.name) {
+                        setFieldErrors((prev) => ({ ...prev, name: undefined }));
+                      }
+                    }}
+                    required
+                    aria-invalid={Boolean(fieldErrors.name)}
+                  />
+                  {fieldErrors.name && <span className="field-error">{fieldErrors.name}</span>}
                 </div>
                 <div className="form-group">
-                  <label htmlFor="email">Email Address</label>
-                  <input type="email" id="email" value={profile.email} onChange={(e) => setProfile({ ...profile, email: e.target.value })} required />
+                  <label htmlFor="email">Email Address *</label>
+                  <input
+                    type="email"
+                    id="email"
+                    value={profile.email}
+                    readOnly
+                    aria-invalid={Boolean(fieldErrors.email)}
+                  />
+                  {fieldErrors.email && <span className="field-error">{fieldErrors.email}</span>}
+                  <div className="inline-action">
+                    <p className="help-text">Email changes require verification.</p>
+                    <button
+                      type="button"
+                      className="btn-secondary btn-inline"
+                      onClick={() => handleProtectedAction('Email change requests are handled via support.')}
+                    >
+                      Request Email Change
+                    </button>
+                  </div>
                 </div>
               </div>
 
@@ -551,21 +695,50 @@ const ProfileSettingsPage: React.FC = () => {
 
               <h3>Account Security</h3>
               <div className="action-buttons">
-                <button type="button" className="btn-secondary">Change Password</button>
-                <button type="button" className="btn-secondary">Connected Accounts</button>
+                <button
+                  type="button"
+                  className="btn-secondary"
+                  onClick={() => navigate('/password-reset')}
+                >
+                  Change Password
+                </button>
+                <button
+                  type="button"
+                  className="btn-secondary"
+                  onClick={() => handleProtectedAction('Connected accounts are coming soon.')}
+                >
+                  Connected Accounts
+                </button>
               </div>
 
               <div className="section-divider"></div>
 
               <h3>Data Management</h3>
               <div className="action-buttons">
-                <button type="button" className="btn-secondary">Export My Data</button>
-                <button type="button" className="btn-danger">Delete Account</button>
+                <button
+                  type="button"
+                  className="btn-secondary"
+                  onClick={() => navigate('/export')}
+                >
+                  Export My Data
+                </button>
+                <button
+                  type="button"
+                  className="btn-danger"
+                  onClick={() => {
+                    const confirmed = window.confirm('Are you sure you want to delete your account?');
+                    if (confirmed) {
+                      navigate('/privacy#delete');
+                    }
+                  }}
+                >
+                  Delete Account
+                </button>
               </div>
 
               <div className="privacy-info">
                 <p>We take your privacy seriously. Your data is encrypted and never sold.</p>
-                <a href="#" className="privacy-link">Read our Privacy Policy</a>
+                <Link to="/privacy" className="privacy-link">Read our Privacy Policy</Link>
               </div>
             </div>
           )}
@@ -608,12 +781,25 @@ const ProfileSettingsPage: React.FC = () => {
 
               <div className="progress-section">
                 <h3>Progress Over Time</h3>
-                <div className="progress-chart-placeholder">
-                  <p>
-                    <IconTrendingUp size={20} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '8px' }} />
-                    Progress chart will be displayed here
-                  </p>
-                  <p className="help-text">Track your skin improvements over time</p>
+                <div className="progress-chart-card">
+                  {progressData.length > 0 ? (
+                    <ResponsiveContainer width="100%" height={240}>
+                      <LineChart data={progressData}>
+                        <XAxis dataKey="date" tickLine={false} axisLine={false} />
+                        <YAxis domain={[0, 100]} tickLine={false} axisLine={false} />
+                        <Tooltip />
+                        <Line type="monotone" dataKey="score" stroke="var(--primary)" strokeWidth={3} dot={false} />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  ) : (
+                    <div className="progress-chart-placeholder">
+                      <p>
+                        <IconTrendingUp size={20} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '8px' }} />
+                        No progress data yet
+                      </p>
+                      <p className="help-text">Complete a scan to see your trend line.</p>
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -624,7 +810,7 @@ const ProfileSettingsPage: React.FC = () => {
                     <IconScan size={20} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '8px' }} />
                     Upload photos to see your transformation
                   </p>
-                  <button type="button" className="btn-secondary">View Comparison</button>
+                  <button type="button" className="btn-secondary" onClick={() => navigate('/comparison')}>View Comparison</button>
                 </div>
               </div>
             </div>
@@ -634,6 +820,7 @@ const ProfileSettingsPage: React.FC = () => {
           {success && <div className="success-message">Profile updated successfully!</div>}
           
           <div className="form-actions">
+            {isDirty && <span className="unsaved-indicator">Unsaved changes</span>}
             <button type="submit" className="btn-primary" disabled={loading}>
               {loading ? 'Saving...' : 'Save Changes'}
             </button>
@@ -642,6 +829,13 @@ const ProfileSettingsPage: React.FC = () => {
             </button>
           </div>
         </form>
+        {toast && (
+          <Toast
+            type={toast.type}
+            message={toast.message}
+            onClose={() => setToast(null)}
+          />
+        )}
       </div>
     </div>
   );

@@ -69,7 +69,11 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
               <Link to="/scan">Skin Analysis</Link>
               <Link to="/dashboard">Dashboard</Link>
               <Link to="/history">History</Link>
-              <Link to="/auth">Login / Register</Link>
+              {isAuthenticated ? (
+                <Link to="/profile">My Account</Link>
+              ) : (
+                <Link to="/auth">Login / Register</Link>
+              )}
             </div>
             <div>
               <h4>Company</h4>

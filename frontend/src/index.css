@@ -221,7 +221,8 @@ input, textarea, select {
   display: inline-block;
   border-radius: 50%;
   border-style: solid;
-  border-color: var(--primary) transparent transparent transparent;
+  border-color: rgba(31, 111, 235, 0.2);
+  border-top-color: var(--primary);
   animation: spinner-rotate 1s linear infinite;
 }
 
@@ -243,10 +244,6 @@ input, textarea, select {
   border-width: 4px;
 }
 
-.loading-spinner__circle {
-  display: none;
-}
-
 .loading-spinner__message {
   color: var(--text-secondary);
   font-size: var(--font-size-sm);
@@ -263,8 +260,8 @@ input, textarea, select {
 
 /* Button Loading State */
 .btn-primary .loading-spinner__spinner {
-  border-color: rgba(255, 255, 255, 0.3) transparent transparent transparent;
-  border-top-color: white;
+  border-color: rgba(255, 255, 255, 0.35);
+  border-top-color: #ffffff;
 }
 
 

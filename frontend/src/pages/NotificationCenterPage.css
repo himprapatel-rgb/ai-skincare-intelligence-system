@@ -1,22 +1,9 @@
 /* Notification Center Page - Brand-Aligned Design */
 
-:root {
-  --primary: #0D9488;
-  --primary-dark: #0f766e;
-  --secondary: #F97316;
-  --bg-light: #F8FAFC;
-  --bg-white: #FFFFFF;
-  --text-dark: #1E293B;
-  --text-gray: #4b5b76;
-  --border: #E2E8F0;
-  --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
 .notification-center-page {
   min-height: 100vh;
-  background: var(--bg-light);
+  background: var(--bg-secondary);
   padding: 40px 24px;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 .notification-container {
@@ -42,7 +29,7 @@
 .page-header h1 {
   font-size: 3rem;
   font-weight: 700;
-  color: var(--text-dark);
+  color: var(--text-primary);
   margin: 0;
   line-height: 1.2;
   letter-spacing: -0.5px;
@@ -65,10 +52,10 @@
 
 .btn-mark-all {
   padding: 8px 16px;
-  background: var(--bg-white);
-  border: 1px solid var(--border);
+  background: var(--white);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
-  color: var(--text-dark);
+  color: var(--text-primary);
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -82,10 +69,10 @@
 
 .btn-settings {
   padding: 8px;
-  background: var(--bg-white);
-  border: 1px solid var(--border);
+  background: var(--white);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
-  color: var(--text-gray);
+  color: var(--text-secondary);
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
@@ -100,17 +87,17 @@
 }
 
 .settings-card {
-  background: var(--bg-white);
+  background: var(--white);
   border-radius: 12px;
   padding: 24px;
-  box-shadow: var(--shadow);
-  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
   margin-bottom: 24px;
 }
 
 .setting-item {
   padding: 12px 0;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .setting-item:last-child {
@@ -122,7 +109,7 @@
   align-items: center;
   gap: 12px;
   font-weight: 500;
-  color: var(--text-dark);
+  color: var(--text-primary);
   cursor: pointer;
 }
 
@@ -141,10 +128,10 @@
 
 .filter-btn {
   padding: 8px 16px;
-  background: var(--bg-white);
-  border: 1px solid var(--border);
+  background: var(--white);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
-  color: var(--text-gray);
+  color: var(--text-secondary);
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -168,11 +155,11 @@
 }
 
 .notification-item {
-  background: var(--bg-white);
+  background: var(--white);
   border-radius: 12px;
   padding: 20px;
-  box-shadow: var(--shadow);
-  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
   display: grid;
   grid-template-columns: 48px 1fr auto;
   gap: 16px;
@@ -196,7 +183,7 @@
   justify-content: center;
   width: 48px;
   height: 48px;
-  background: var(--bg-light);
+  background: var(--bg-tertiary);
   border-radius: 12px;
   flex-shrink: 0;
 }
@@ -216,18 +203,18 @@
 .notification-header h3 {
   font-size: 1.125rem;
   font-weight: 600;
-  color: var(--text-dark);
+  color: var(--text-primary);
   margin: 0;
 }
 
 .notification-time {
   font-size: 0.75rem;
-  color: var(--text-gray);
+  color: var(--text-secondary);
   white-space: nowrap;
 }
 
 .notification-message {
-  color: var(--text-gray);
+  color: var(--text-secondary);
   line-height: 1.6;
   margin: 0 0 8px 0;
 }
@@ -241,7 +228,7 @@
 }
 
 .notification-action:hover {
-  color: var(--primary-dark);
+  color: var(--primary-hover);
   text-decoration: underline;
 }
 
@@ -253,11 +240,11 @@
 
 .btn-action {
   background: transparent;
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-color);
   border-radius: 6px;
   padding: 6px;
   cursor: pointer;
-  color: var(--text-gray);
+  color: var(--text-secondary);
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
@@ -265,7 +252,7 @@
 }
 
 .btn-action:hover {
-  background: var(--bg-light);
+  background: var(--bg-tertiary);
   border-color: var(--primary);
   color: var(--primary);
 }
@@ -279,13 +266,13 @@
 .empty-state {
   text-align: center;
   padding: 64px 32px;
-  background: var(--bg-white);
+  background: var(--white);
   border-radius: 12px;
-  border: 2px dashed var(--border);
+  border: 2px dashed var(--border-color);
 }
 
 .empty-state svg {
-  color: var(--text-gray);
+  color: var(--text-secondary);
   margin-bottom: 16px;
   opacity: 0.5;
 }
@@ -293,12 +280,12 @@
 .empty-state h3 {
   font-size: 1.5rem;
   font-weight: 600;
-  color: var(--text-dark);
+  color: var(--text-primary);
   margin-bottom: 8px;
 }
 
 .empty-state p {
-  color: var(--text-gray);
+  color: var(--text-secondary);
 }
 
 @media (max-width: 768px) {

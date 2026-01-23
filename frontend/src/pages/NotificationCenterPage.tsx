@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { IconBell, IconCheck, IconX, IconSettings, IconClock, IconTrendingUp, IconAlertCircle, IconInfo, IconChevronRight } from '../components/Icons';
 import './NotificationCenterPage.css';
 
@@ -112,11 +113,11 @@ const NotificationCenterPage: React.FC = () => {
       case 'progress':
         return 'var(--primary)';
       case 'alert':
-        return 'var(--secondary)';
+        return 'var(--warning)';
       case 'info':
-        return 'var(--text-gray)';
+        return 'var(--text-secondary)';
       default:
-        return 'var(--text-gray)';
+        return 'var(--text-secondary)';
     }
   };
 
@@ -259,9 +260,9 @@ const NotificationCenterPage: React.FC = () => {
                   </div>
                   <p className="notification-message">{notification.message}</p>
                   {notification.actionUrl && (
-                    <a href={notification.actionUrl} className="notification-action">
+                    <Link to={notification.actionUrl} className="notification-action">
                       View details <IconChevronRight size={16} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginLeft: '4px' }} />
-                    </a>
+                    </Link>
                   )}
                 </div>
                 <div className="notification-actions">

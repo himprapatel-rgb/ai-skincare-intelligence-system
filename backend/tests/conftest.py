@@ -14,9 +14,16 @@ from app.database import get_db as app_db_get_db
 from app.dependencies import get_db
 from app.main import app
 
-# Use DATABASE_URL from environment if available (PostgreSQL in CI),
-# otherwise fall back to SQLite for local testing
-SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///:memory:")
+# Use TEST_DATABASE_URL for test runs; default to SQLite to avoid
+# accidental use of production DATABASE_URL.
+SQLALCHEMY_DATABASE_URL = os.getenv("TEST_DATABASE_URL", "sqlite:///:memory:")
+if not SQLALCHEMY_DATABASE_URL.startswith("sqlite"):
+    allow_test_db = os.getenv("ALLOW_TEST_DB", "").lower() in {"1", "true", "yes"}
+    if not allow_test_db:
+        raise RuntimeError(
+            "Refusing to run tests against a non-SQLite database. "
+            "Set TEST_DATABASE_URL and ALLOW_TEST_DB=true to override."
+        )
 
 
 @compiles(JSONB, "sqlite")

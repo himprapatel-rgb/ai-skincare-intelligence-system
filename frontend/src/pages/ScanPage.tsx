@@ -44,32 +44,6 @@ export default function ScanPage() {
   const lastCountdownRef = useRef<number | null>(null);
   // const [faceDetected, setFaceDetected] = useState(false); // Reserved for future face detection feature
 
-  // Initialize camera when camera mode is selected
-  useEffect(() => {
-    if (uploadMode === 'camera' && videoRef.current && !cameraActive) {
-      initializeCamera();
-    } else if (uploadMode === 'file' && cameraActive) {
-      stopCamera();
-    }
-
-    return () => {
-      if (uploadMode === 'file' && cameraActive) {
-        stopCamera();
-      }
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [uploadMode]);
-
-  useEffect(() => {
-    if (uploadMode !== "camera" || !cameraActive) {
-      stopFaceTracking();
-      return;
-    }
-    if (videoRef.current?.readyState && videoRef.current.readyState >= 2) {
-      void startFaceTracking();
-    }
-  }, [cameraActive, startFaceTracking, stopFaceTracking, uploadMode]);
-
   const initializeCamera = async () => {
     try {
       if (!videoRef.current) return;
@@ -87,6 +61,53 @@ export default function ScanPage() {
     setCameraActive(false);
     // setFaceDetected(false); // Reserved for future face detection feature
   };
+
+  const getFriendlyError = (code: string) => {
+    switch (code) {
+      case "no_face":
+        return "No face found. Please upload a clear selfie with your full face visible.";
+      case "multiple_faces":
+        return "Multiple faces detected. Please upload a photo with only your face.";
+      case "face_too_small":
+        return "Face too small in the photo. Move closer so your face fills most of the frame.";
+      case "face_off_center":
+        return "Face is off-center. Please align your face within the guide.";
+      case "face_angle":
+        return "Face turned too much. Look straight at the camera and try again.";
+      case "landmarks_missing":
+        return "We couldn't detect facial landmarks. Try better lighting and a front-facing pose.";
+      default:
+        return "We couldn't validate this photo. Please try another clear selfie.";
+    }
+  };
+
+  const handleValidatedFile = useCallback(async (selectedFile: File) => {
+    setValidating(true);
+    setValidationMessage("Validating selfie...");
+    setFaceLocked(false);
+    setError(null);
+    setResult(null);
+
+    try {
+      const { croppedBlob, previewUrl: croppedPreview } = await validateAndCropFace(selectedFile);
+      const croppedFile = new File([croppedBlob], "face-crop.png", { type: "image/png" });
+      setFile(croppedFile);
+      setPreviewUrl(croppedPreview);
+      setScanStep("upload");
+      setValidationMessage("Selfie validated.");
+      setFaceLocked(true);
+    } catch (err) {
+      const message =
+        err instanceof Error ? getFriendlyError(err.message) : "Unable to validate the selfie.";
+      setError(message);
+      setFile(null);
+      setPreviewUrl(null);
+      setFaceLocked(false);
+    } finally {
+      setValidating(false);
+      setTimeout(() => setValidationMessage(null), 2000);
+    }
+  }, []);
 
   const stopFaceTracking = useCallback(() => {
     trackingActiveRef.current = false;
@@ -120,6 +141,22 @@ export default function ScanPage() {
     });
     return landmarkerRef.current;
   }, []);
+
+  // Initialize camera when camera mode is selected
+  useEffect(() => {
+    if (uploadMode === 'camera' && videoRef.current && !cameraActive) {
+      initializeCamera();
+    } else if (uploadMode === 'file' && cameraActive) {
+      stopCamera();
+    }
+
+    return () => {
+      if (uploadMode === 'file' && cameraActive) {
+        stopCamera();
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [uploadMode]);
 
   const captureFromVideo = useCallback(async () => {
     if (!videoRef.current || !canvasRef.current || validating) return;
@@ -182,7 +219,6 @@ export default function ScanPage() {
 
       let isOptimal = false;
       let statusText = "No face detected";
-      let roiColor = "#ef4444";
       if (results.faceLandmarks && results.faceLandmarks.length === 1) {
         statusText = "Align your face in the oval";
         const lm = results.faceLandmarks[0];
@@ -193,7 +229,6 @@ export default function ScanPage() {
         const minY = Math.min(...ys) * overlayCanvas.height;
         const maxY = Math.max(...ys) * overlayCanvas.height;
 
-        const boxWidth = maxX - minX;
         const boxHeight = maxY - minY;
 
         const roi = {
@@ -229,27 +264,20 @@ export default function ScanPage() {
 
         if (!bigEnough) {
           statusText = "Move closer to the camera";
-          roiColor = "#f59e0b";
         } else if (tooClose) {
           statusText = "Move back slightly";
-          roiColor = "#f59e0b";
         } else if (!centered) {
           statusText = "Center your face in the oval";
-          roiColor = "#f59e0b";
         } else if (!smallTilt) {
           statusText = "Hold straight - reduce tilt";
-          roiColor = "#f59e0b";
         } else if (!smallYaw) {
           statusText = "Look straight at the camera";
-          roiColor = "#f59e0b";
         } else {
           isOptimal = true;
-          roiColor = "#22c55e";
           statusText = "Hold still...";
         }
       } else if (results.faceLandmarks && results.faceLandmarks.length > 1) {
         statusText = "Only one face in frame";
-        roiColor = "#ef4444";
       }
 
       if (isOptimal) {
@@ -292,52 +320,15 @@ export default function ScanPage() {
     rafRef.current = requestAnimationFrame(render);
   }, [autoCaptureEnabled, captureFromVideo, initFaceLandmarker]);
 
-  const getFriendlyError = (code: string) => {
-    switch (code) {
-      case "no_face":
-        return "No face found. Please upload a clear selfie with your full face visible.";
-      case "multiple_faces":
-        return "Multiple faces detected. Please upload a photo with only your face.";
-      case "face_too_small":
-        return "Face too small in the photo. Move closer so your face fills most of the frame.";
-      case "face_off_center":
-        return "Face is off-center. Please align your face within the guide.";
-      case "face_angle":
-        return "Face turned too much. Look straight at the camera and try again.";
-      case "landmarks_missing":
-        return "We couldn't detect facial landmarks. Try better lighting and a front-facing pose.";
-      default:
-        return "We couldn't validate this photo. Please try another clear selfie.";
+  useEffect(() => {
+    if (uploadMode !== "camera" || !cameraActive) {
+      stopFaceTracking();
+      return;
     }
-  };
-
-  const handleValidatedFile = useCallback(async (selectedFile: File) => {
-    setValidating(true);
-    setValidationMessage("Validating selfie...");
-    setFaceLocked(false);
-    setError(null);
-    setResult(null);
-
-    try {
-      const { croppedBlob, previewUrl: croppedPreview } = await validateAndCropFace(selectedFile);
-      const croppedFile = new File([croppedBlob], "face-crop.png", { type: "image/png" });
-      setFile(croppedFile);
-      setPreviewUrl(croppedPreview);
-      setScanStep("upload");
-      setValidationMessage("Selfie validated.");
-      setFaceLocked(true);
-    } catch (err) {
-      const message =
-        err instanceof Error ? getFriendlyError(err.message) : "Unable to validate the selfie.";
-      setError(message);
-      setFile(null);
-      setPreviewUrl(null);
-      setFaceLocked(false);
-    } finally {
-      setValidating(false);
-      setTimeout(() => setValidationMessage(null), 2000);
+    if (videoRef.current?.readyState && videoRef.current.readyState >= 2) {
+      void startFaceTracking();
     }
-  }, []);
+  }, [cameraActive, startFaceTracking, stopFaceTracking, uploadMode]);
 
   const handleFileChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {

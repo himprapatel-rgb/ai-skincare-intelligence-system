@@ -6,6 +6,30 @@ Use that workflow doc for checklists and templates to avoid duplication here.
 
 ---
 
+## Iteration 2026-01-24 (Profile Export Reliability + Tests)
+
+### Goal
+Stabilize profile export responses and add automated coverage for profile actions.
+
+### Scope (Completed)
+- Fixed profile response serialization for encrypted concerns.
+- Guarded export timestamps when profile dates are null.
+- Added Playwright coverage for profile actions (upload + navigation).
+- Added backend tests for profile export, baseline, and update flows.
+- Added frontend unit test for authenticated footer link state.
+
+### Key Changes (Code)
+- Profile export/response fixes: `backend/app/routers/profile.py`
+- Backend tests: `backend/tests/test_profile_export.py`
+- Playwright flow: `frontend/tests/e2e/navigation.spec.ts`
+- AppLayout test: `frontend/src/tests/AppLayout.test.tsx`
+
+### Verification / Tests
+- Backend: `python -m pytest tests/test_profile_export.py -v`
+- Frontend: `npm run test -- --run`
+
+---
+
 ## Iteration 2026-01-23 (Profile UX + DB Safety Guard)
 
 ### Goal

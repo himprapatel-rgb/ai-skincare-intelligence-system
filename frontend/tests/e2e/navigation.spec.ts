@@ -1,3 +1,4 @@
+import { Buffer } from "buffer";
 import { expect, test } from "@playwright/test";
 
 const email = process.env.E2E_EMAIL ?? "";
@@ -54,8 +55,6 @@ test.describe("manual UX navigation flow", () => {
       { name: "Analysis", path: "/scan" },
       { name: "Dashboard", path: "/dashboard" },
       { name: "About", path: "/about" },
-      { name: "Login", path: "/auth" },
-      { name: "Register", path: "/auth" },
       { name: "Start Free Scan", path: "/scan" },
     ];
 
@@ -68,7 +67,7 @@ test.describe("manual UX navigation flow", () => {
       { name: "Skin Analysis", path: "/scan" },
       { name: "Dashboard", path: "/dashboard" },
       { name: "History", path: "/history" },
-      { name: "Login / Register", path: "/auth" },
+      { name: "My Account", path: "/profile" },
       { name: "About Us", path: "/about" },
       { name: "Contact", path: "/contact" },
       { name: "Privacy Policy", path: "/privacy" },
@@ -105,5 +104,48 @@ test.describe("manual UX navigation flow", () => {
       await page.waitForLoadState("domcontentloaded");
       await expect(page.locator("body")).not.toContainText("Not Found");
     }
+  });
+
+  test("profile actions and upload flow", async ({ page }) => {
+    if (!email || !password) {
+      test.skip(true, "E2E_EMAIL and E2E_PASSWORD must be set");
+    }
+    await login(page);
+
+    await page.goto("/profile");
+    await page.waitForLoadState("domcontentloaded");
+
+    await page.setInputFiles('input[type="file"]', {
+      name: "avatar.png",
+      mimeType: "image/png",
+      buffer: Buffer.from(
+        "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Y3TvjQAAAAASUVORK5CYII=",
+        "base64"
+      ),
+    });
+    await expect(page.locator(".photo-preview img")).toBeVisible();
+
+    await page.getByRole("button", { name: "Privacy" }).click();
+    await page.getByRole("button", { name: "Change Password" }).click();
+    await expect(page).toHaveURL(/\/password-reset$/);
+
+    await page.goto("/profile");
+    await page.getByRole("button", { name: "Privacy" }).click();
+    await page.getByRole("button", { name: "Connected Accounts" }).click();
+    await expect(page.locator(".toast")).toContainText("Connected accounts");
+
+    await page.getByRole("button", { name: "Export My Data" }).click();
+    await expect(page).toHaveURL(/\/export$/);
+
+    await page.goto("/profile");
+    await page.getByRole("button", { name: "Privacy" }).click();
+    page.once("dialog", (dialog) => dialog.accept());
+    await page.getByRole("button", { name: "Delete Account" }).click();
+    await expect(page).toHaveURL(/\/privacy#delete$/);
+
+    await page.goto("/profile");
+    await page.getByRole("button", { name: "Statistics" }).click();
+    await page.getByRole("button", { name: "View Comparison" }).click();
+    await expect(page).toHaveURL(/\/comparison$/);
   });
 });

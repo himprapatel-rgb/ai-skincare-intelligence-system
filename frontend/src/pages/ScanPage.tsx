@@ -50,7 +50,10 @@ export default function ScanPage() {
     lastCheck: 0,
     ok: true,
     reason: "",
+    goodStreak: 0,
+    badStreak: 0,
   });
+  const ENABLE_LIVE_QUALITY_CHECKS = false;
   // const [faceDetected, setFaceDetected] = useState(false); // Reserved for future face detection feature
 
   const setCapturePreview = useCallback((url: string | null) => {
@@ -294,13 +297,13 @@ export default function ScanPage() {
     const variance = sumSq / count - mean * mean;
     const stdDev = Math.sqrt(Math.max(0, variance));
 
-    if (mean < 70) {
+    if (mean < 80) {
       return { ok: false, reason: "lighting_low" };
     }
-    if (mean > 200) {
+    if (mean > 210) {
       return { ok: false, reason: "lighting_high" };
     }
-    if (stdDev < 22) {
+    if (stdDev < 28) {
       return { ok: false, reason: "low_contrast" };
     }
 
@@ -320,7 +323,7 @@ export default function ScanPage() {
     }
 
     const laplacianAvg = laplacianSum / count;
-    if (laplacianAvg < 12) {
+    if (laplacianAvg < 18) {
       return { ok: false, reason: "image_blurry" };
     }
 
@@ -407,19 +410,45 @@ export default function ScanPage() {
         const yawRatio = (noseTip.x - eyeCenterX) / eyeDistance;
         const smallYaw = Math.abs(yawRatio) < YAW_RATIO_MAX;
 
-        const qualityNow = performance.now();
-        if (qualityNow - qualityStateRef.current.lastCheck > 450) {
-          const quality = checkFrameQuality(video);
-          qualityStateRef.current = {
-            lastCheck: qualityNow,
-            ok: quality.ok,
-            reason: quality.reason,
-          };
+        if (ENABLE_LIVE_QUALITY_CHECKS) {
+          const qualityNow = performance.now();
+          if (qualityNow - qualityStateRef.current.lastCheck > 450) {
+            const quality = checkFrameQuality(video);
+            let { ok, reason, goodStreak, badStreak } = qualityStateRef.current;
+
+            if (quality.ok) {
+              goodStreak += 1;
+              badStreak = 0;
+              if (!ok && goodStreak >= 2) {
+                ok = true;
+                reason = "";
+              }
+            } else {
+              badStreak += 1;
+              goodStreak = 0;
+              reason = quality.reason;
+              if (ok && badStreak >= 2) {
+                ok = false;
+              }
+            }
+
+            qualityStateRef.current = {
+              lastCheck: qualityNow,
+              ok,
+              reason,
+              goodStreak,
+              badStreak,
+            };
+          }
+
+          if (!qualityStateRef.current.ok) {
+            statusText = getFriendlyError(qualityStateRef.current.reason);
+            isOptimal = false;
+          }
         }
 
-        if (!qualityStateRef.current.ok) {
-          statusText = getFriendlyError(qualityStateRef.current.reason);
-        } else if (!bigEnough) {
+        if (!ENABLE_LIVE_QUALITY_CHECKS || qualityStateRef.current.ok) {
+          if (!bigEnough) {
           statusText = "Move closer to the camera";
         } else if (tooClose) {
           statusText = "Move back slightly";
@@ -432,6 +461,7 @@ export default function ScanPage() {
         } else {
           isOptimal = true;
           statusText = "Hold still...";
+        }
         }
       } else if (results.faceLandmarks && results.faceLandmarks.length > 1) {
         statusText = "Only one face in frame";
@@ -710,7 +740,7 @@ export default function ScanPage() {
                       {validating ? "Validating..." : "Capture Photo"}
                     </button>
                   )}
-                  {cameraActive && (
+                  {cameraActive && false && (
                     <div className="scan-camera-status" role="status">
                       <span>{cameraStatus}</span>
                       {cameraCountdown !== null && (

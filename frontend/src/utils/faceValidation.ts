@@ -18,6 +18,8 @@ type ValidationError =
   | "lighting_high"
   | "low_contrast";
 
+const ENABLE_QUALITY_CHECKS = false;
+
 const MODEL_OPTIONS = {
   maxFaces: 2,
   inputWidth: 128,
@@ -86,13 +88,13 @@ function analyzeImageQuality(image: HTMLImageElement): ValidationError | null {
   const variance = sumSq / count - mean * mean;
   const stdDev = Math.sqrt(Math.max(0, variance));
 
-  if (mean < 70) {
+  if (mean < 80) {
     return "lighting_low";
   }
-  if (mean > 200) {
+  if (mean > 210) {
     return "lighting_high";
   }
-  if (stdDev < 22) {
+  if (stdDev < 28) {
     return "low_contrast";
   }
 
@@ -112,7 +114,7 @@ function analyzeImageQuality(image: HTMLImageElement): ValidationError | null {
   }
 
   const laplacianAvg = laplacianSum / count;
-  if (laplacianAvg < 12) {
+  if (laplacianAvg < 18) {
     return "image_blurry";
   }
 
@@ -148,8 +150,8 @@ function createOvalCrop(
   ctx.ellipse(
     crop.width / 2,
     crop.height / 2,
-    crop.width * 0.45,
-    crop.height * 0.6,
+    crop.width * 0.48,
+    crop.height * 0.68,
     0,
     0,
     Math.PI * 2
@@ -247,9 +249,11 @@ export async function validateAndCropFace(
   file: File
 ): Promise<FaceValidationResult> {
   const image = await loadImageFromFile(file);
-  const qualityError = analyzeImageQuality(image);
-  if (qualityError) {
-    throw new Error(qualityError);
+  if (ENABLE_QUALITY_CHECKS) {
+    const qualityError = analyzeImageQuality(image);
+    if (qualityError) {
+      throw new Error(qualityError);
+    }
   }
   const model = await loadModel();
   const predictions = await model.estimateFaces(image, false);
@@ -277,11 +281,11 @@ export async function validateAndCropFace(
     throw new Error(validationError);
   }
 
-  const padding = 0.2;
+  const padding = 0.35;
   const paddedWidth = width * (1 + padding);
   const paddedHeight = height * (1 + padding);
   const paddedX = Math.max(topLeft[0] - width * padding * 0.5, 0);
-  const paddedY = Math.max(topLeft[1] - height * padding * 0.6, 0);
+  const paddedY = Math.max(topLeft[1] - height * padding * 0.8, 0);
 
   const cropWidth = Math.min(paddedWidth, image.width - paddedX);
   const cropHeight = Math.min(paddedHeight, image.height - paddedY);

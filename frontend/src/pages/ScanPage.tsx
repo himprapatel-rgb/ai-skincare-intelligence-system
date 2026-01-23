@@ -532,10 +532,14 @@ export default function ScanPage() {
                         <div className="scan-sweep-line" aria-hidden="true"></div>
                         <div className={`face-guide-circle ${faceLocked ? "face-locked" : ""}`}></div>
                         <div className="face-guide-text">
-                          Position your face within the guide
+                          {cameraStatus}
                         </div>
                         <div className="scan-hud-status">
-                          {faceLocked ? "Face locked" : "Tracking alignment..."}
+                          {cameraCountdown !== null
+                            ? `Hold still: ${cameraCountdown}s`
+                            : faceLocked
+                            ? "Face locked"
+                            : "Tracking alignment..."}
                         </div>
                       </div>
                     )}

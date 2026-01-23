@@ -155,11 +155,11 @@ export default function ScanPage() {
     lastTimeRef.current = performance.now();
 
     const REQUIRED_STABLE_MS = 5000;
-    const ROI = { xMin: 0.25, xMax: 0.75, yMin: 0.2, yMax: 0.8 };
-    const MIN_FACE_RATIO = 0.35;
-    const MAX_FACE_RATIO = 0.75;
-    const TILT_DEG_MAX = 8;
-    const YAW_RATIO_MAX = 0.08;
+    const ROI = { xMin: 0.2, xMax: 0.8, yMin: 0.18, yMax: 0.82 };
+    const MIN_FACE_RATIO = 0.28;
+    const MAX_FACE_RATIO = 0.85;
+    const TILT_DEG_MAX = 12;
+    const YAW_RATIO_MAX = 0.12;
     const render = () => {
       if (!trackingActiveRef.current || !videoRef.current || !overlayCanvasRef.current) {
         return;
@@ -198,12 +198,14 @@ export default function ScanPage() {
           yMax: overlayCanvas.height * ROI.yMax,
         };
 
-        const insideROI =
-          minX > roi.xMin &&
-          maxX < roi.xMax &&
-          minY > roi.yMin &&
-          maxY < roi.yMax &&
-          boxHeight > overlayCanvas.height * MIN_FACE_RATIO;
+        const centerX = (minX + maxX) / 2;
+        const centerY = (minY + maxY) / 2;
+        const centered =
+          centerX > roi.xMin &&
+          centerX < roi.xMax &&
+          centerY > roi.yMin &&
+          centerY < roi.yMax;
+        const bigEnough = boxHeight > overlayCanvas.height * MIN_FACE_RATIO;
         const tooClose = boxHeight > overlayCanvas.height * MAX_FACE_RATIO;
 
         const leftEye = lm[33];
@@ -220,10 +222,13 @@ export default function ScanPage() {
         const yawRatio = (noseTip.x - eyeCenterX) / eyeDistance;
         const smallYaw = Math.abs(yawRatio) < YAW_RATIO_MAX;
 
-        if (tooClose) {
+        if (!bigEnough) {
+          statusText = "Move closer to the camera";
+          roiColor = "#f59e0b";
+        } else if (tooClose) {
           statusText = "Move back slightly";
           roiColor = "#f59e0b";
-        } else if (!insideROI) {
+        } else if (!centered) {
           statusText = "Center your face in the frame";
           roiColor = "#f59e0b";
         } else if (!smallTilt) {

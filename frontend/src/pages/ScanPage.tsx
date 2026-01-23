@@ -445,6 +445,9 @@ export default function ScanPage() {
             statusText = getFriendlyError(qualityStateRef.current.reason);
             isOptimal = false;
           }
+        } else {
+          qualityStateRef.current.ok = true;
+          qualityStateRef.current.reason = "";
         }
 
         if (!ENABLE_LIVE_QUALITY_CHECKS || qualityStateRef.current.ok) {

@@ -14,7 +14,7 @@ type ValidationError =
   | "face_angle"
   | "landmarks_missing";
 
-const MODEL_OPTIONS: blazeface.BlazeFaceModelConfig = {
+const MODEL_OPTIONS = {
   maxFaces: 2,
   inputWidth: 128,
   inputHeight: 128,
@@ -161,6 +161,19 @@ function validateFaceGeometry(
   return null;
 }
 
+function normalizeLandmarks(raw: unknown): number[][] {
+  if (!raw) {
+    return [];
+  }
+  if (raw instanceof tf.Tensor) {
+    return raw.arraySync() as number[][];
+  }
+  if (Array.isArray(raw)) {
+    return raw as number[][];
+  }
+  return [];
+}
+
 export async function validateAndCropFace(
   file: File
 ): Promise<FaceValidationResult> {
@@ -185,7 +198,7 @@ export async function validateAndCropFace(
     image.width,
     image.height,
     { x: topLeft[0], y: topLeft[1], width, height },
-    face.landmarks || []
+    normalizeLandmarks(face.landmarks)
   );
   if (validationError) {
     throw new Error(validationError);

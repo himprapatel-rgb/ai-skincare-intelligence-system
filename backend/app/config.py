@@ -25,6 +25,7 @@ class Settings(BaseSettings):
     )
     APP_VERSION: str = Field(default="1.0.0", description="Application version")
     DEBUG: bool = Field(default=False, description="Debug mode")
+    ENV: str = Field(default="development", description="Runtime environment")
 
     # CORS Settings
     ALLOWED_ORIGINS: list[str] = Field(
@@ -37,6 +38,11 @@ class Settings(BaseSettings):
                         "https://frontend-production-0415.up.railway.app",  # Railway frontend
         ],
         description="List of allowed CORS origins",
+    )
+
+    ALLOWED_HOSTS: list[str] = Field(
+        default=["*"],
+        description="Allowed hostnames for TrustedHostMiddleware",
     )
 
     # External AI provider keys

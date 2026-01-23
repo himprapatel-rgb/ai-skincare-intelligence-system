@@ -37,16 +37,20 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from sqlalchemy.orm import Session
 
+from app.config import settings
 from app.database import get_db
 from app.models.user import User
 
 # JWT Configuration
-SECRET_KEY = "your-secret-key-here"  # TODO: Move to environment variables
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+SECRET_KEY = settings.SECRET_KEY
+ALGORITHM = settings.ALGORITHM
+ACCESS_TOKEN_EXPIRE_MINUTES = settings.ACCESS_TOKEN_EXPIRE_MINUTES
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login")
-oauth2_scheme_optional = OAuth2PasswordBearer(tokenUrl="/api/auth/login", auto_error=False)
+if settings.ENV == "production" and SECRET_KEY == "dev-secret-key-change-in-production":
+    raise RuntimeError("SECRET_KEY must be set for production.")
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
+oauth2_scheme_optional = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login", auto_error=False)
 
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):

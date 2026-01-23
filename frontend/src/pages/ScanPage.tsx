@@ -283,10 +283,18 @@ export default function ScanPage() {
                     )}
                     {cameraActive && (
                       <div className="face-guide-overlay">
+                        <div className="scan-hud">
+                          <span className="hud-corner top-left"></span>
+                          <span className="hud-corner top-right"></span>
+                          <span className="hud-corner bottom-left"></span>
+                          <span className="hud-corner bottom-right"></span>
+                        </div>
+                        <div className="scan-sweep-line" aria-hidden="true"></div>
                         <div className="face-guide-circle"></div>
                         <div className="face-guide-text">
-                          Position your face within the circle
+                          Position your face within the guide
                         </div>
+                        <div className="scan-hud-status">Tracking alignment...</div>
                       </div>
                     )}
                   </div>

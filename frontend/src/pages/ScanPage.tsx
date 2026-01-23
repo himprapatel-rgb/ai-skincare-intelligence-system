@@ -155,6 +155,11 @@ export default function ScanPage() {
     lastTimeRef.current = performance.now();
 
     const REQUIRED_STABLE_MS = 5000;
+    const ROI = { xMin: 0.25, xMax: 0.75, yMin: 0.2, yMax: 0.8 };
+    const MIN_FACE_RATIO = 0.35;
+    const MAX_FACE_RATIO = 0.75;
+    const TILT_DEG_MAX = 8;
+    const YAW_RATIO_MAX = 0.08;
     const render = () => {
       if (!trackingActiveRef.current || !videoRef.current || !overlayCanvasRef.current) {
         return;
@@ -187,10 +192,10 @@ export default function ScanPage() {
         const boxHeight = maxY - minY;
 
         const roi = {
-          xMin: overlayCanvas.width * 0.25,
-          xMax: overlayCanvas.width * 0.75,
-          yMin: overlayCanvas.height * 0.2,
-          yMax: overlayCanvas.height * 0.8,
+          xMin: overlayCanvas.width * ROI.xMin,
+          xMax: overlayCanvas.width * ROI.xMax,
+          yMin: overlayCanvas.height * ROI.yMin,
+          yMax: overlayCanvas.height * ROI.yMax,
         };
 
         const insideROI =
@@ -198,21 +203,34 @@ export default function ScanPage() {
           maxX < roi.xMax &&
           minY > roi.yMin &&
           maxY < roi.yMax &&
-          boxHeight > overlayCanvas.height * 0.35;
+          boxHeight > overlayCanvas.height * MIN_FACE_RATIO;
+        const tooClose = boxHeight > overlayCanvas.height * MAX_FACE_RATIO;
 
         const leftEye = lm[33];
         const rightEye = lm[263];
+        const noseTip = lm[1];
         const dx = rightEye.x - leftEye.x;
         const dy = rightEye.y - leftEye.y;
         const rollRad = Math.atan2(dy, dx);
         const rollDeg = (rollRad * 180) / Math.PI;
-        const smallTilt = Math.abs(rollDeg) < 10;
+        const smallTilt = Math.abs(rollDeg) < TILT_DEG_MAX;
 
-        if (!insideROI) {
+        const eyeCenterX = (leftEye.x + rightEye.x) / 2;
+        const eyeDistance = Math.max(0.0001, Math.abs(rightEye.x - leftEye.x));
+        const yawRatio = (noseTip.x - eyeCenterX) / eyeDistance;
+        const smallYaw = Math.abs(yawRatio) < YAW_RATIO_MAX;
+
+        if (tooClose) {
+          statusText = "Move back slightly";
+          roiColor = "#f59e0b";
+        } else if (!insideROI) {
           statusText = "Center your face in the frame";
           roiColor = "#f59e0b";
         } else if (!smallTilt) {
           statusText = "Hold straight - reduce tilt";
+          roiColor = "#f59e0b";
+        } else if (!smallYaw) {
+          statusText = "Look straight at the camera";
           roiColor = "#f59e0b";
         } else {
           isOptimal = true;

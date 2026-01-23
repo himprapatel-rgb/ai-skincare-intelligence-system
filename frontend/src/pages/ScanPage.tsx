@@ -40,9 +40,32 @@ export default function ScanPage() {
   const [autoCaptureEnabled] = useState(true);
   const [cameraStatus, setCameraStatus] = useState("Initializing camera...");
   const [cameraCountdown, setCameraCountdown] = useState<number | null>(null);
+  const [capturePreviewUrl, setCapturePreviewUrl] = useState<string | null>(null);
+  const [trackingRestartTick, setTrackingRestartTick] = useState(0);
   const lastStatusRef = useRef("");
   const lastCountdownRef = useRef<number | null>(null);
+  const capturePreviewRef = useRef<string | null>(null);
   // const [faceDetected, setFaceDetected] = useState(false); // Reserved for future face detection feature
+
+  const setCapturePreview = useCallback((url: string | null) => {
+    if (capturePreviewRef.current) {
+      URL.revokeObjectURL(capturePreviewRef.current);
+      capturePreviewRef.current = null;
+    }
+    if (url) {
+      capturePreviewRef.current = url;
+    }
+    setCapturePreviewUrl(url);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (capturePreviewRef.current) {
+        URL.revokeObjectURL(capturePreviewRef.current);
+        capturePreviewRef.current = null;
+      }
+    };
+  }, []);
 
   const initializeCamera = async () => {
     try {
@@ -158,9 +181,52 @@ export default function ScanPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [uploadMode]);
 
+  const handleCapturedFile = useCallback(
+    async (selectedFile: File, rawPreviewUrl: string) => {
+      setValidating(true);
+      setValidationMessage("Validating selfie...");
+      setFaceLocked(false);
+      setError(null);
+      setResult(null);
+      setCameraStatus("Validating selfie...");
+      setCameraCountdown(null);
+      setCapturePreview(rawPreviewUrl);
+
+      try {
+        const { croppedBlob, previewUrl: croppedPreview } = await validateAndCropFace(selectedFile);
+        const croppedFile = new File([croppedBlob], "face-crop.png", { type: "image/png" });
+        setFile(croppedFile);
+        setPreviewUrl(croppedPreview);
+        setScanStep("upload");
+        setValidationMessage("Selfie validated.");
+        setFaceLocked(true);
+        setCapturePreview(null);
+        stopFaceTracking();
+        stopCamera();
+        setUploadMode("file");
+      } catch (err) {
+        const message =
+          err instanceof Error ? getFriendlyError(err.message) : "Unable to validate the selfie.";
+        setError(message);
+        setCameraStatus(message);
+        autoCaptureRef.current = false;
+        stableMsRef.current = 0;
+        setTimeout(() => {
+          setCapturePreview(null);
+          setTrackingRestartTick((value) => value + 1);
+        }, 1200);
+      } finally {
+        setValidating(false);
+        setTimeout(() => setValidationMessage(null), 2000);
+      }
+    },
+    [getFriendlyError, setCapturePreview, stopCamera, stopFaceTracking]
+  );
+
   const captureFromVideo = useCallback(async () => {
     if (!videoRef.current || !canvasRef.current || validating) return;
     try {
+      stopFaceTracking();
       const canvas = canvasRef.current;
       const video = videoRef.current;
       canvas.width = video.videoWidth;
@@ -171,16 +237,14 @@ export default function ScanPage() {
       canvas.toBlob(async (blob) => {
         if (blob) {
           const file = new File([blob], "camera-capture.jpg", { type: "image/jpeg" });
-          stopFaceTracking();
-          stopCamera();
-          setUploadMode("file");
-          await handleValidatedFile(file);
+          const previewUrl = URL.createObjectURL(blob);
+          await handleCapturedFile(file, previewUrl);
         }
       }, "image/jpeg", 0.95);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to capture image");
     }
-  }, [handleValidatedFile, stopCamera, stopFaceTracking, validating]);
+  }, [handleCapturedFile, stopFaceTracking, validating]);
 
   const startFaceTracking = useCallback(async () => {
     if (!videoRef.current || !overlayCanvasRef.current || trackingActiveRef.current) return;
@@ -328,7 +392,7 @@ export default function ScanPage() {
     if (videoRef.current?.readyState && videoRef.current.readyState >= 2) {
       void startFaceTracking();
     }
-  }, [cameraActive, startFaceTracking, stopFaceTracking, uploadMode]);
+  }, [cameraActive, startFaceTracking, stopFaceTracking, trackingRestartTick, uploadMode]);
 
   const handleFileChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -344,6 +408,7 @@ export default function ScanPage() {
     if (!videoRef.current || !canvasRef.current) return;
 
     try {
+      stopFaceTracking();
       const canvas = canvasRef.current;
       const video = videoRef.current;
       
@@ -357,10 +422,8 @@ export default function ScanPage() {
       canvas.toBlob(async (blob) => {
         if (blob) {
           const file = new File([blob], 'camera-capture.jpg', { type: 'image/jpeg' });
-          stopFaceTracking();
-          stopCamera();
-          setUploadMode('file');
-          await handleValidatedFile(file);
+          const previewUrl = URL.createObjectURL(blob);
+          await handleCapturedFile(file, previewUrl);
         }
       }, 'image/jpeg', 0.95);
     } catch (err) {
@@ -448,6 +511,7 @@ export default function ScanPage() {
     setStatusMessage("Initializing scan...");
     setError(null);
     setFaceLocked(false);
+    setCapturePreview(null);
     stopFaceTracking();
     if (cameraActive) {
       stopCamera();
@@ -494,6 +558,7 @@ export default function ScanPage() {
                     <video
                       ref={videoRef}
                       className="camera-video"
+                      style={capturePreviewUrl ? { opacity: 0 } : undefined}
                       autoPlay
                       playsInline
                       muted
@@ -503,6 +568,13 @@ export default function ScanPage() {
                         }
                       }}
                     />
+                    {capturePreviewUrl && (
+                      <img
+                        className="camera-preview"
+                        src={capturePreviewUrl}
+                        alt="Captured preview"
+                      />
+                    )}
                     <canvas ref={overlayCanvasRef} className="camera-overlay" />
                     {!cameraActive && (
                       <div className="camera-placeholder">

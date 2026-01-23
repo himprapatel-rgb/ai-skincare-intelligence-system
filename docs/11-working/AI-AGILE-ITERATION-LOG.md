@@ -6,6 +6,27 @@ Use that workflow doc for checklists and templates to avoid duplication here.
 
 ---
 
+## Iteration 2026-01-23 (Selfie Validation + Oval Crop)
+
+### Goal
+Ensure scans only accept a clear, front-facing face and crop to an oval face image.
+
+### Scope (Completed)
+- Added face validation (single face, size threshold, centered, minimal tilt).
+- Implemented oval face crop and replaced uploaded file with cropped image.
+- Added friendly, actionable error messaging for rejected selfies.
+- Added validation status messaging in the scan UI.
+
+### Key Changes (Code)
+- Face validation + oval crop: `frontend/src/utils/faceValidation.ts`
+- Scan flow integration: `frontend/src/pages/ScanPage.tsx`
+- Validation UI styles: `frontend/src/pages/ScanPage.css`
+
+### Verification / Tests
+- Manual: pending (requires live camera/upload validation)
+
+---
+
 ## Iteration 2026-01-24 (Profile Export Reliability + Tests)
 
 ### Goal

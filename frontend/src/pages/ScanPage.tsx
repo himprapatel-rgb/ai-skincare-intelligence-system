@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { initScan, uploadScanImage, getScanStatus, getScanResult } from "../services/scanApi";
 import { cameraService } from "../services/cameraService";
 import type { ScanResultResponse } from "../services/scanApi";
+import { validateAndCropFace } from "../utils/faceValidation";
 import { IconCamera, IconScan, IconUpload, IconSearch, IconCheckCircle, IconAlertTriangle, IconFileText, IconCheck, IconX } from '../components/Icons';
 import './ScanPage.css';
 
@@ -25,6 +26,8 @@ export default function ScanPage() {
   const [result, setResult] = useState<ScanResultResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [cameraActive, setCameraActive] = useState(false);
+  const [validating, setValidating] = useState(false);
+  const [validationMessage, setValidationMessage] = useState<string | null>(null);
   // const [faceDetected, setFaceDetected] = useState(false); // Reserved for future face detection feature
 
   // Initialize camera when camera mode is selected
@@ -61,16 +64,59 @@ export default function ScanPage() {
     // setFaceDetected(false); // Reserved for future face detection feature
   };
 
-  const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0];
-    if (selectedFile) {
-      setFile(selectedFile);
-      setPreviewUrl(URL.createObjectURL(selectedFile));
-      setError(null);
-      setResult(null);
-      setScanStep('upload');
+  const getFriendlyError = (code: string) => {
+    switch (code) {
+      case "no_face":
+        return "No face found. Please upload a clear selfie with your full face visible.";
+      case "multiple_faces":
+        return "Multiple faces detected. Please upload a photo with only your face.";
+      case "face_too_small":
+        return "Face too small in the photo. Move closer so your face fills most of the frame.";
+      case "face_off_center":
+        return "Face is off-center. Please align your face within the guide.";
+      case "face_angle":
+        return "Face turned too much. Look straight at the camera and try again.";
+      case "landmarks_missing":
+        return "We couldn't detect facial landmarks. Try better lighting and a front-facing pose.";
+      default:
+        return "We couldn't validate this photo. Please try another clear selfie.";
+    }
+  };
+
+  const handleValidatedFile = useCallback(async (selectedFile: File) => {
+    setValidating(true);
+    setValidationMessage("Validating selfie...");
+    setError(null);
+    setResult(null);
+
+    try {
+      const { croppedBlob, previewUrl: croppedPreview } = await validateAndCropFace(selectedFile);
+      const croppedFile = new File([croppedBlob], "face-crop.png", { type: "image/png" });
+      setFile(croppedFile);
+      setPreviewUrl(croppedPreview);
+      setScanStep("upload");
+      setValidationMessage("Selfie validated.");
+    } catch (err) {
+      const message =
+        err instanceof Error ? getFriendlyError(err.message) : "Unable to validate the selfie.";
+      setError(message);
+      setFile(null);
+      setPreviewUrl(null);
+    } finally {
+      setValidating(false);
+      setTimeout(() => setValidationMessage(null), 2000);
     }
   }, []);
+
+  const handleFileChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const selectedFile = e.target.files?.[0];
+      if (selectedFile) {
+        handleValidatedFile(selectedFile);
+      }
+    },
+    [handleValidatedFile]
+  );
 
   const captureFromCamera = async () => {
     if (!videoRef.current || !canvasRef.current) return;
@@ -89,10 +135,9 @@ export default function ScanPage() {
       canvas.toBlob(async (blob) => {
         if (blob) {
           const file = new File([blob], 'camera-capture.jpg', { type: 'image/jpeg' });
-          setFile(file);
-          setPreviewUrl(canvas.toDataURL('image/jpeg'));
           stopCamera();
           setUploadMode('file');
+          await handleValidatedFile(file);
         }
       }, 'image/jpeg', 0.95);
     } catch (err) {
@@ -101,7 +146,7 @@ export default function ScanPage() {
   };
 
   const handleScan = async () => {
-    if (!file) return;
+    if (!file || validating) return;
     
     setScanning(true);
     setScanStep('scanning');
@@ -249,9 +294,10 @@ export default function ScanPage() {
                     <button
                       onClick={captureFromCamera}
                       className="scan-btn-primary capture-btn"
+                      disabled={validating}
                     >
                       <IconScan size={20} strokeWidth={2} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
-                      Capture Photo
+                      {validating ? "Validating..." : "Capture Photo"}
                     </button>
                   )}
                   <canvas ref={canvasRef} style={{ display: 'none' }} />
@@ -291,6 +337,7 @@ export default function ScanPage() {
                         </div>
                         <div className="scan-upload-text">Click to upload or drag and drop</div>
                         <div className="scan-upload-hint">JPG, PNG, or WEBP (Max 10MB)</div>
+                        <div className="scan-upload-hint">Face only: close-up selfie, centered, no group shots.</div>
                       </div>
                     )}
                   </label>
@@ -334,10 +381,10 @@ export default function ScanPage() {
                 <div className="scan-actions">
                   <button
                     onClick={handleScan}
-                    disabled={scanning}
+                    disabled={scanning || validating}
                     className="scan-btn-primary"
                   >
-                    {scanning ? "Analyzing..." : (
+                    {scanning ? "Analyzing..." : validating ? "Validating..." : (
                       <>
                         <IconSearch size={18} strokeWidth={2} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
                         Start Analysis
@@ -347,10 +394,16 @@ export default function ScanPage() {
                   <button
                     onClick={resetScan}
                     className="scan-btn-secondary"
-                    disabled={scanning}
+                    disabled={scanning || validating}
                   >
                     Cancel
                   </button>
+                </div>
+              )}
+
+              {validationMessage && (
+                <div className="scan-info">
+                  <div className="info-content">{validationMessage}</div>
                 </div>
               )}
 

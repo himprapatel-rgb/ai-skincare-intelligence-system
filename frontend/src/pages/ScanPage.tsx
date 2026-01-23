@@ -158,12 +158,12 @@ export default function ScanPage() {
     autoCaptureRef.current = false;
     lastTimeRef.current = performance.now();
 
-    const REQUIRED_STABLE_MS = 2000;
-    const ROI = { xMin: 0.2, xMax: 0.8, yMin: 0.18, yMax: 0.82 };
-    const MIN_FACE_RATIO = 0.28;
-    const MAX_FACE_RATIO = 0.85;
-    const TILT_DEG_MAX = 12;
-    const YAW_RATIO_MAX = 0.12;
+    const REQUIRED_STABLE_MS = 1500;
+    const ROI = { xMin: 0.15, xMax: 0.85, yMin: 0.15, yMax: 0.85 };
+    const MIN_FACE_RATIO = 0.22;
+    const MAX_FACE_RATIO = 0.9;
+    const TILT_DEG_MAX = 15;
+    const YAW_RATIO_MAX = 0.18;
     const render = () => {
       if (!trackingActiveRef.current || !videoRef.current || !overlayCanvasRef.current) {
         return;
@@ -184,6 +184,7 @@ export default function ScanPage() {
       let statusText = "No face detected";
       let roiColor = "#ef4444";
       if (results.faceLandmarks && results.faceLandmarks.length === 1) {
+        statusText = "Align your face in the oval";
         const lm = results.faceLandmarks[0];
         const xs = lm.map((p) => p.x);
         const ys = lm.map((p) => p.y);
@@ -233,7 +234,7 @@ export default function ScanPage() {
           statusText = "Move back slightly";
           roiColor = "#f59e0b";
         } else if (!centered) {
-          statusText = "Center your face in the frame";
+          statusText = "Center your face in the oval";
           roiColor = "#f59e0b";
         } else if (!smallTilt) {
           statusText = "Hold straight - reduce tilt";
@@ -257,28 +258,14 @@ export default function ScanPage() {
         stableMsRef.current = 0;
       }
 
-      const roiX = overlayCanvas.width * 0.25;
-      const roiY = overlayCanvas.height * 0.2;
-      const roiW = overlayCanvas.width * 0.5;
-      const roiH = overlayCanvas.height * 0.6;
-      ctx.strokeStyle = roiColor;
-      ctx.lineWidth = 4;
-      ctx.strokeRect(roiX, roiY, roiW, roiH);
-
-      ctx.fillStyle = "rgba(15, 23, 42, 0.7)";
-      ctx.fillRect(16, 16, 320, 40);
-      ctx.fillStyle = "#fff";
-      ctx.font = "16px Inter, system-ui, sans-serif";
-      ctx.fillText(statusText, 28, 42);
-
+      // We keep the existing HUD/oval overlay (CSS) and only use the canvas
+      // for future drawing to avoid visual overlap.
       let remainingSeconds: number | null = null;
       if (stableMsRef.current > 0) {
         remainingSeconds = Math.max(
           0,
           Math.ceil((REQUIRED_STABLE_MS - stableMsRef.current) / 1000)
         );
-        ctx.fillStyle = "#22c55e";
-        ctx.fillText(`Hold still: ${remainingSeconds}s`, 28, 68);
       }
 
       if (statusText !== lastStatusRef.current) {

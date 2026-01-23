@@ -38,6 +38,10 @@ export default function ScanPage() {
   const [validationMessage, setValidationMessage] = useState<string | null>(null);
   const [faceLocked, setFaceLocked] = useState(false);
   const [autoCaptureEnabled] = useState(true);
+  const [cameraStatus, setCameraStatus] = useState("Initializing camera...");
+  const [cameraCountdown, setCameraCountdown] = useState<number | null>(null);
+  const lastStatusRef = useRef("");
+  const lastCountdownRef = useRef<number | null>(null);
   // const [faceDetected, setFaceDetected] = useState(false); // Reserved for future face detection feature
 
   // Initialize camera when camera mode is selected
@@ -154,7 +158,7 @@ export default function ScanPage() {
     autoCaptureRef.current = false;
     lastTimeRef.current = performance.now();
 
-    const REQUIRED_STABLE_MS = 5000;
+    const REQUIRED_STABLE_MS = 2000;
     const ROI = { xMin: 0.2, xMax: 0.8, yMin: 0.18, yMax: 0.82 };
     const MIN_FACE_RATIO = 0.28;
     const MAX_FACE_RATIO = 0.85;
@@ -177,7 +181,7 @@ export default function ScanPage() {
       ctx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
 
       let isOptimal = false;
-      let statusText = "Align your face in the guide";
+      let statusText = "No face detected";
       let roiColor = "#ef4444";
       if (results.faceLandmarks && results.faceLandmarks.length === 1) {
         const lm = results.faceLandmarks[0];
@@ -267,13 +271,23 @@ export default function ScanPage() {
       ctx.font = "16px Inter, system-ui, sans-serif";
       ctx.fillText(statusText, 28, 42);
 
+      let remainingSeconds: number | null = null;
       if (stableMsRef.current > 0) {
-        const remaining = Math.max(
+        remainingSeconds = Math.max(
           0,
           Math.ceil((REQUIRED_STABLE_MS - stableMsRef.current) / 1000)
         );
         ctx.fillStyle = "#22c55e";
-        ctx.fillText(`Hold still: ${remaining}s`, 28, 68);
+        ctx.fillText(`Hold still: ${remainingSeconds}s`, 28, 68);
+      }
+
+      if (statusText !== lastStatusRef.current) {
+        lastStatusRef.current = statusText;
+        setCameraStatus(statusText);
+      }
+      if (remainingSeconds !== lastCountdownRef.current) {
+        lastCountdownRef.current = remainingSeconds;
+        setCameraCountdown(remainingSeconds);
       }
 
       if (
@@ -548,6 +562,16 @@ export default function ScanPage() {
                       <IconScan size={20} strokeWidth={2} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
                       {validating ? "Validating..." : "Capture Photo"}
                     </button>
+                  )}
+                  {cameraActive && (
+                    <div className="scan-camera-status" role="status">
+                      <span>{cameraStatus}</span>
+                      {cameraCountdown !== null && (
+                        <span className="scan-camera-countdown">
+                          Hold still: {cameraCountdown}s
+                        </span>
+                      )}
+                    </div>
                   )}
                   <canvas ref={canvasRef} style={{ display: 'none' }} />
                 </div>

@@ -43,8 +43,26 @@ from app.models.user import User
 
 # JWT Configuration
 SECRET_KEY = settings.SECRET_KEY
-ALGORITHM = settings.ALGORITHM
 ACCESS_TOKEN_EXPIRE_MINUTES = settings.ACCESS_TOKEN_EXPIRE_MINUTES
+
+_raw_algorithm = settings.ALGORITHM
+_allowed_algorithms = {
+    "HS256",
+    "HS384",
+    "HS512",
+    "RS256",
+    "RS384",
+    "RS512",
+    "ES256",
+    "ES384",
+    "ES512",
+}
+if not _raw_algorithm or _raw_algorithm.strip().startswith("${"):
+    ALGORITHM = "HS256"
+elif _raw_algorithm not in _allowed_algorithms:
+    raise RuntimeError(f"Unsupported JWT algorithm: {_raw_algorithm}")
+else:
+    ALGORITHM = _raw_algorithm
 
 if settings.ENV == "production" and SECRET_KEY == "dev-secret-key-change-in-production":
     raise RuntimeError("SECRET_KEY must be set for production.")

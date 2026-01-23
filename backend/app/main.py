@@ -4,9 +4,9 @@ from datetime import date, datetime
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from starlette.middleware.trustedhost import TrustedHostMiddleware
 from sqlalchemy import text
 from sqlalchemy.exc import IntegrityError, ProgrammingError
+from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 from app.api.v1 import api_router
 from app.api.v1.products import router as external_products_router

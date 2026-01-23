@@ -1,7 +1,7 @@
-import React from "react";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import AuthContext, { User } from "../context/AuthContext";
+import { describe, expect, it } from "vitest";
+import AuthContext, { AuthResponse, User } from "../context/AuthContext";
 import AppLayout from "../components/AppLayout";
 
 const renderWithAuth = (authValue: {
@@ -10,7 +10,7 @@ const renderWithAuth = (authValue: {
   isAuthenticated: boolean;
   isLoading: boolean;
   login: () => Promise<void>;
-  register: () => Promise<unknown>;
+  register: () => Promise<AuthResponse>;
   logout: () => void;
   updateUser: () => void;
 }) => {
@@ -33,7 +33,7 @@ describe("AppLayout footer auth links", () => {
       isAuthenticated: true,
       isLoading: false,
       login: async () => {},
-      register: async () => ({}),
+      register: async () => ({ token: "token", user: { id: 1, email: "test@example.com" } }),
       logout: () => {},
       updateUser: () => {},
     });
@@ -49,7 +49,7 @@ describe("AppLayout footer auth links", () => {
       isAuthenticated: false,
       isLoading: false,
       login: async () => {},
-      register: async () => ({}),
+      register: async () => ({ token: "token", user: { id: 1, email: "test@example.com" } }),
       logout: () => {},
       updateUser: () => {},
     });

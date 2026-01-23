@@ -195,7 +195,7 @@ export default function ScanPage() {
     autoCaptureRef.current = false;
     lastTimeRef.current = performance.now();
 
-    const REQUIRED_STABLE_MS = 1500;
+    const REQUIRED_STABLE_MS = 10000;
     const ROI = { xMin: 0.15, xMax: 0.85, yMin: 0.15, yMax: 0.85 };
     const MIN_FACE_RATIO = 0.22;
     const MAX_FACE_RATIO = 0.9;

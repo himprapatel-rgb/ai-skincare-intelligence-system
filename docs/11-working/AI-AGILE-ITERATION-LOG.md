@@ -6,6 +6,41 @@ Use that workflow doc for checklists and templates to avoid duplication here.
 
 ---
 
+## Iteration 2026-01-23 (Profile UX + DB Safety Guard)
+
+### Goal
+Resolve Profile Settings UX bugs, align stats, and prevent tests from touching production DB.
+
+### Scope (Completed)
+- Fixed Profile Settings actions: password reset, connected accounts notice, export data, delete flow, and comparison navigation.
+- Enabled profile photo upload with clear CTA, help text, and preview.
+- Added inline validation, unsaved changes indicator, and success/error toast feedback.
+- Implemented progress chart with scan history data and aligned stats with dashboard.
+- Updated footer auth link to show "My Account" when logged in.
+- Hardened test DB config to require explicit `TEST_DATABASE_URL` and `ALLOW_TEST_DB=true`.
+- Strengthened migrations to enforce PK constraints on `products` and `ingredients`.
+
+### Key Changes (Code)
+- Profile UX + stats: `frontend/src/pages/ProfileSettingsPage.tsx`, `frontend/src/pages/ProfileSettingsPage.css`
+- Navigation state: `frontend/src/components/AppLayout.tsx`
+- Recommendations polish: `frontend/src/pages/Recommendations.tsx`, `frontend/src/pages/Recommendations.css`
+- Notifications UI consistency: `frontend/src/pages/NotificationCenterPage.tsx`, `frontend/src/pages/NotificationCenterPage.css`
+- Spinner cleanup: `frontend/src/components/LoadingSpinner.tsx`, `frontend/src/index.css`
+- Loading rings theme alignment: `frontend/src/components/LoadingScreen.css`
+- Test DB safety guard: `backend/tests/conftest.py`
+- Migration PK enforcement: `backend/scripts/run_migrations.py`
+
+### Key Changes (Docs)
+- Manual UX checklist: `docs/11-working/UX-MANUAL-SMOKE-CHECKLIST.md`
+- Design updates recorded in `frontend/DESIGN-CHANGELOG.md` and `frontend/GUI-POLISH-SUMMARY.md`
+
+### Verification / Tests
+- Playwright navigation suite: ✅
+- Railway deploys: ✅ Frontend + Backend
+- Postgres logs: historical noise only (no new errors after deploy)
+
+---
+
 ## Iteration 2026-01-21 (OpenAI Vision Cutover)
 
 ### Goal

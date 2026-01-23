@@ -1,5 +1,22 @@
 # 🎨 GUI Polish Summary - 2026 Premium Edition
 
+## ✅ January 23, 2026 Additions
+
+### Profile Settings UX
+- Functional actions: Change Password, Export, Delete, Comparison.
+- Upload photo with visible CTA + preview + sizing hint.
+- Inline required-field validation with error messaging.
+- Unsaved changes indicator + toast feedback on save.
+- Progress chart implemented using scan history.
+- Stats aligned with dashboard data.
+
+### Consistency Fixes
+- Footer auth link switches to “My Account” when logged in.
+- Notifications + Recommendations pages aligned to global tokens.
+- Spinner rendering corrected (true circular loader).
+
+---
+
 ## ✅ What Was Polished
 
 ### 1. **HomePage** (`src/pages/HomePage.tsx` & `.css`)

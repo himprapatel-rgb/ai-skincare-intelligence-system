@@ -1,5 +1,24 @@
 # 🎨 Design Changelog - Premium GUI Polish
 
+## January 23, 2026 - Profile UX + Recommendation Refresh
+
+### ✅ UX Fixes & Improvements
+- **Profile Settings**: action buttons now functional (password reset, export, delete, comparison).
+- **Photo Upload**: real file picker, preview, and helper guidance.
+- **Validation & Feedback**: inline errors, unsaved indicator, toast feedback.
+- **Progress Chart**: implemented line chart using real scan history.
+- **Stats Consistency**: aligned profile stats with dashboard + mock product count.
+- **Footer**: Login/Register becomes “My Account” when authenticated.
+
+### 🧩 Component Updates
+- `ProfileSettingsPage.tsx` + `.css` (primary UX fixes)
+- `Recommendations.tsx` + `.css` (layout + empty states + filter polish)
+- `NotificationCenterPage.tsx` + `.css` (token‑aligned styles)
+- `LoadingSpinner.tsx` + `index.css` (true circular spinner)
+- `LoadingScreen.css` (ring colors aligned to global tokens)
+
+---
+
 ## January 20, 2026 - Premium Polish Update
 
 ### 🆕 New Components

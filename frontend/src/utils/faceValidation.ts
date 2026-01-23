@@ -12,7 +12,11 @@ type ValidationError =
   | "face_too_small"
   | "face_off_center"
   | "face_angle"
-  | "landmarks_missing";
+  | "landmarks_missing"
+  | "image_blurry"
+  | "lighting_low"
+  | "lighting_high"
+  | "low_contrast";
 
 const MODEL_OPTIONS = {
   maxFaces: 2,
@@ -48,6 +52,71 @@ function loadImageFromFile(file: File): Promise<HTMLImageElement> {
     };
     img.src = url;
   });
+}
+
+function analyzeImageQuality(image: HTMLImageElement): ValidationError | null {
+  const canvas = document.createElement("canvas");
+  const maxSide = 160;
+  const scale = Math.min(1, maxSide / Math.max(image.width, image.height));
+  canvas.width = Math.max(1, Math.round(image.width * scale));
+  canvas.height = Math.max(1, Math.round(image.height * scale));
+  const ctx = canvas.getContext("2d");
+  if (!ctx) {
+    return null;
+  }
+
+  ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+  const { data, width, height } = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+  let sum = 0;
+  let sumSq = 0;
+  const gray = new Float32Array(width * height);
+  for (let i = 0, j = 0; i < data.length; i += 4, j += 1) {
+    const r = data[i];
+    const g = data[i + 1];
+    const b = data[i + 2];
+    const value = 0.299 * r + 0.587 * g + 0.114 * b;
+    gray[j] = value;
+    sum += value;
+    sumSq += value * value;
+  }
+
+  const count = gray.length;
+  const mean = sum / count;
+  const variance = sumSq / count - mean * mean;
+  const stdDev = Math.sqrt(Math.max(0, variance));
+
+  if (mean < 70) {
+    return "lighting_low";
+  }
+  if (mean > 200) {
+    return "lighting_high";
+  }
+  if (stdDev < 22) {
+    return "low_contrast";
+  }
+
+  let laplacianSum = 0;
+  for (let y = 1; y < height - 1; y += 1) {
+    for (let x = 1; x < width - 1; x += 1) {
+      const idx = y * width + x;
+      const center = gray[idx];
+      const laplacian =
+        4 * center -
+        gray[idx - 1] -
+        gray[idx + 1] -
+        gray[idx - width] -
+        gray[idx + width];
+      laplacianSum += Math.abs(laplacian);
+    }
+  }
+
+  const laplacianAvg = laplacianSum / count;
+  if (laplacianAvg < 12) {
+    return "image_blurry";
+  }
+
+  return null;
 }
 
 function createOvalCrop(
@@ -178,6 +247,10 @@ export async function validateAndCropFace(
   file: File
 ): Promise<FaceValidationResult> {
   const image = await loadImageFromFile(file);
+  const qualityError = analyzeImageQuality(image);
+  if (qualityError) {
+    throw new Error(qualityError);
+  }
   const model = await loadModel();
   const predictions = await model.estimateFaces(image, false);
 

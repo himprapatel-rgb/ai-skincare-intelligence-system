@@ -45,6 +45,12 @@ export default function ScanPage() {
   const lastStatusRef = useRef("");
   const lastCountdownRef = useRef<number | null>(null);
   const capturePreviewRef = useRef<string | null>(null);
+  const qualityCanvasRef = useRef<HTMLCanvasElement | null>(null);
+  const qualityStateRef = useRef({
+    lastCheck: 0,
+    ok: true,
+    reason: "",
+  });
   // const [faceDetected, setFaceDetected] = useState(false); // Reserved for future face detection feature
 
   const setCapturePreview = useCallback((url: string | null) => {
@@ -99,6 +105,14 @@ export default function ScanPage() {
         return "Face turned too much. Look straight at the camera and try again.";
       case "landmarks_missing":
         return "We couldn't detect facial landmarks. Try better lighting and a front-facing pose.";
+      case "image_blurry":
+        return "Image is blurry. Hold still and keep the camera steady.";
+      case "lighting_low":
+        return "Lighting is too low. Move to brighter light.";
+      case "lighting_high":
+        return "Lighting is too harsh. Avoid glare or backlight.";
+      case "low_contrast":
+        return "Lighting is flat. Use more even, brighter light.";
       default:
         return "We couldn't validate this photo. Please try another clear selfie.";
     }
@@ -246,6 +260,73 @@ export default function ScanPage() {
     }
   }, [handleCapturedFile, stopFaceTracking, validating]);
 
+  const checkFrameQuality = useCallback((video: HTMLVideoElement) => {
+    const canvas = qualityCanvasRef.current ?? document.createElement("canvas");
+    if (!qualityCanvasRef.current) {
+      qualityCanvasRef.current = canvas;
+    }
+    const maxSide = 160;
+    const scale = Math.min(1, maxSide / Math.max(video.videoWidth, video.videoHeight));
+    canvas.width = Math.max(1, Math.round(video.videoWidth * scale));
+    canvas.height = Math.max(1, Math.round(video.videoHeight * scale));
+    const ctx = canvas.getContext("2d");
+    if (!ctx) {
+      return { ok: true, reason: "" };
+    }
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    const { data, width, height } = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+    let sum = 0;
+    let sumSq = 0;
+    const gray = new Float32Array(width * height);
+    for (let i = 0, j = 0; i < data.length; i += 4, j += 1) {
+      const r = data[i];
+      const g = data[i + 1];
+      const b = data[i + 2];
+      const value = 0.299 * r + 0.587 * g + 0.114 * b;
+      gray[j] = value;
+      sum += value;
+      sumSq += value * value;
+    }
+
+    const count = gray.length;
+    const mean = sum / count;
+    const variance = sumSq / count - mean * mean;
+    const stdDev = Math.sqrt(Math.max(0, variance));
+
+    if (mean < 70) {
+      return { ok: false, reason: "lighting_low" };
+    }
+    if (mean > 200) {
+      return { ok: false, reason: "lighting_high" };
+    }
+    if (stdDev < 22) {
+      return { ok: false, reason: "low_contrast" };
+    }
+
+    let laplacianSum = 0;
+    for (let y = 1; y < height - 1; y += 1) {
+      for (let x = 1; x < width - 1; x += 1) {
+        const idx = y * width + x;
+        const center = gray[idx];
+        const laplacian =
+          4 * center -
+          gray[idx - 1] -
+          gray[idx + 1] -
+          gray[idx - width] -
+          gray[idx + width];
+        laplacianSum += Math.abs(laplacian);
+      }
+    }
+
+    const laplacianAvg = laplacianSum / count;
+    if (laplacianAvg < 12) {
+      return { ok: false, reason: "image_blurry" };
+    }
+
+    return { ok: true, reason: "" };
+  }, []);
+
   const startFaceTracking = useCallback(async () => {
     if (!videoRef.current || !overlayCanvasRef.current || trackingActiveRef.current) return;
     const landmarker = await initFaceLandmarker();
@@ -326,7 +407,19 @@ export default function ScanPage() {
         const yawRatio = (noseTip.x - eyeCenterX) / eyeDistance;
         const smallYaw = Math.abs(yawRatio) < YAW_RATIO_MAX;
 
-        if (!bigEnough) {
+        const qualityNow = performance.now();
+        if (qualityNow - qualityStateRef.current.lastCheck > 450) {
+          const quality = checkFrameQuality(video);
+          qualityStateRef.current = {
+            lastCheck: qualityNow,
+            ok: quality.ok,
+            reason: quality.reason,
+          };
+        }
+
+        if (!qualityStateRef.current.ok) {
+          statusText = getFriendlyError(qualityStateRef.current.reason);
+        } else if (!bigEnough) {
           statusText = "Move closer to the camera";
         } else if (tooClose) {
           statusText = "Move back slightly";
@@ -382,7 +475,7 @@ export default function ScanPage() {
     };
 
     rafRef.current = requestAnimationFrame(render);
-  }, [autoCaptureEnabled, captureFromVideo, initFaceLandmarker]);
+  }, [autoCaptureEnabled, captureFromVideo, checkFrameQuality, getFriendlyError, initFaceLandmarker]);
 
   useEffect(() => {
     if (uploadMode !== "camera" || !cameraActive) {

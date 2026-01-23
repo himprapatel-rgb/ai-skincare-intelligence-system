@@ -1,5 +1,6 @@
 // src/pages/ScanPage.tsx - Enhanced Face Scan Analysis Page
 import React, { useState, useCallback, useRef, useEffect } from "react";
+import { FaceLandmarker, FilesetResolver } from "@mediapipe/tasks-vision";
 import { useNavigate } from "react-router-dom";
 import { initScan, uploadScanImage, getScanStatus, getScanResult } from "../services/scanApi";
 import { cameraService } from "../services/cameraService";
@@ -15,6 +16,13 @@ export default function ScanPage() {
   const navigate = useNavigate();
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const overlayCanvasRef = useRef<HTMLCanvasElement>(null);
+  const landmarkerRef = useRef<FaceLandmarker | null>(null);
+  const rafRef = useRef<number | null>(null);
+  const stableMsRef = useRef(0);
+  const lastTimeRef = useRef(performance.now());
+  const autoCaptureRef = useRef(false);
+  const trackingActiveRef = useRef(false);
   
   const [uploadMode, setUploadMode] = useState<UploadMode>('file');
   const [file, setFile] = useState<File | null>(null);
@@ -29,6 +37,7 @@ export default function ScanPage() {
   const [validating, setValidating] = useState(false);
   const [validationMessage, setValidationMessage] = useState<string | null>(null);
   const [faceLocked, setFaceLocked] = useState(false);
+  const [autoCaptureEnabled] = useState(true);
   // const [faceDetected, setFaceDetected] = useState(false); // Reserved for future face detection feature
 
   // Initialize camera when camera mode is selected
@@ -47,6 +56,16 @@ export default function ScanPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [uploadMode]);
 
+  useEffect(() => {
+    if (uploadMode !== "camera" || !cameraActive) {
+      stopFaceTracking();
+      return;
+    }
+    if (videoRef.current?.readyState && videoRef.current.readyState >= 2) {
+      void startFaceTracking();
+    }
+  }, [cameraActive, startFaceTracking, stopFaceTracking, uploadMode]);
+
   const initializeCamera = async () => {
     try {
       if (!videoRef.current) return;
@@ -64,6 +83,190 @@ export default function ScanPage() {
     setCameraActive(false);
     // setFaceDetected(false); // Reserved for future face detection feature
   };
+
+  const stopFaceTracking = useCallback(() => {
+    trackingActiveRef.current = false;
+    if (rafRef.current) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+    }
+    const overlayCanvas = overlayCanvasRef.current;
+    if (overlayCanvas) {
+      const ctx = overlayCanvas.getContext("2d");
+      ctx?.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
+    }
+    stableMsRef.current = 0;
+    autoCaptureRef.current = false;
+  }, []);
+
+  const initFaceLandmarker = useCallback(async () => {
+    if (landmarkerRef.current) {
+      return landmarkerRef.current;
+    }
+    const vision = await FilesetResolver.forVisionTasks(
+      "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm"
+    );
+    landmarkerRef.current = await FaceLandmarker.createFromOptions(vision, {
+      baseOptions: {
+        modelAssetPath:
+          "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/latest/face_landmarker.task",
+      },
+      runningMode: "VIDEO",
+      numFaces: 1,
+    });
+    return landmarkerRef.current;
+  }, []);
+
+  const captureFromVideo = useCallback(async () => {
+    if (!videoRef.current || !canvasRef.current || validating) return;
+    try {
+      const canvas = canvasRef.current;
+      const video = videoRef.current;
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) throw new Error("Failed to get canvas context");
+      ctx.drawImage(video, 0, 0);
+      canvas.toBlob(async (blob) => {
+        if (blob) {
+          const file = new File([blob], "camera-capture.jpg", { type: "image/jpeg" });
+          stopFaceTracking();
+          stopCamera();
+          setUploadMode("file");
+          await handleValidatedFile(file);
+        }
+      }, "image/jpeg", 0.95);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to capture image");
+    }
+  }, [handleValidatedFile, stopCamera, stopFaceTracking, validating]);
+
+  const startFaceTracking = useCallback(async () => {
+    if (!videoRef.current || !overlayCanvasRef.current || trackingActiveRef.current) return;
+    const landmarker = await initFaceLandmarker();
+    const video = videoRef.current;
+    const overlayCanvas = overlayCanvasRef.current;
+    const ctx = overlayCanvas.getContext("2d");
+    if (!ctx) return;
+
+    trackingActiveRef.current = true;
+    stableMsRef.current = 0;
+    autoCaptureRef.current = false;
+    lastTimeRef.current = performance.now();
+
+    const REQUIRED_STABLE_MS = 5000;
+    const render = () => {
+      if (!trackingActiveRef.current || !videoRef.current || !overlayCanvasRef.current) {
+        return;
+      }
+      const now = performance.now();
+      const dt = now - lastTimeRef.current;
+      lastTimeRef.current = now;
+
+      if (overlayCanvas.width !== video.videoWidth || overlayCanvas.height !== video.videoHeight) {
+        overlayCanvas.width = video.videoWidth;
+        overlayCanvas.height = video.videoHeight;
+      }
+
+      const results = landmarker.detectForVideo(video, now);
+      ctx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
+
+      let isOptimal = false;
+      let statusText = "Align your face in the guide";
+      let roiColor = "#ef4444";
+      if (results.faceLandmarks && results.faceLandmarks.length === 1) {
+        const lm = results.faceLandmarks[0];
+        const xs = lm.map((p) => p.x);
+        const ys = lm.map((p) => p.y);
+        const minX = Math.min(...xs) * overlayCanvas.width;
+        const maxX = Math.max(...xs) * overlayCanvas.width;
+        const minY = Math.min(...ys) * overlayCanvas.height;
+        const maxY = Math.max(...ys) * overlayCanvas.height;
+
+        const boxWidth = maxX - minX;
+        const boxHeight = maxY - minY;
+
+        const roi = {
+          xMin: overlayCanvas.width * 0.25,
+          xMax: overlayCanvas.width * 0.75,
+          yMin: overlayCanvas.height * 0.2,
+          yMax: overlayCanvas.height * 0.8,
+        };
+
+        const insideROI =
+          minX > roi.xMin &&
+          maxX < roi.xMax &&
+          minY > roi.yMin &&
+          maxY < roi.yMax &&
+          boxHeight > overlayCanvas.height * 0.35;
+
+        const leftEye = lm[33];
+        const rightEye = lm[263];
+        const dx = rightEye.x - leftEye.x;
+        const dy = rightEye.y - leftEye.y;
+        const rollRad = Math.atan2(dy, dx);
+        const rollDeg = (rollRad * 180) / Math.PI;
+        const smallTilt = Math.abs(rollDeg) < 10;
+
+        if (!insideROI) {
+          statusText = "Center your face in the frame";
+          roiColor = "#f59e0b";
+        } else if (!smallTilt) {
+          statusText = "Hold straight - reduce tilt";
+          roiColor = "#f59e0b";
+        } else {
+          isOptimal = true;
+          roiColor = "#22c55e";
+          statusText = "Hold still...";
+        }
+      } else if (results.faceLandmarks && results.faceLandmarks.length > 1) {
+        statusText = "Only one face in frame";
+        roiColor = "#ef4444";
+      }
+
+      if (isOptimal) {
+        stableMsRef.current += dt;
+      } else {
+        stableMsRef.current = 0;
+      }
+
+      const roiX = overlayCanvas.width * 0.25;
+      const roiY = overlayCanvas.height * 0.2;
+      const roiW = overlayCanvas.width * 0.5;
+      const roiH = overlayCanvas.height * 0.6;
+      ctx.strokeStyle = roiColor;
+      ctx.lineWidth = 4;
+      ctx.strokeRect(roiX, roiY, roiW, roiH);
+
+      ctx.fillStyle = "rgba(15, 23, 42, 0.7)";
+      ctx.fillRect(16, 16, 320, 40);
+      ctx.fillStyle = "#fff";
+      ctx.font = "16px Inter, system-ui, sans-serif";
+      ctx.fillText(statusText, 28, 42);
+
+      if (stableMsRef.current > 0) {
+        const remaining = Math.max(
+          0,
+          Math.ceil((REQUIRED_STABLE_MS - stableMsRef.current) / 1000)
+        );
+        ctx.fillStyle = "#22c55e";
+        ctx.fillText(`Hold still: ${remaining}s`, 28, 68);
+      }
+
+      if (
+        autoCaptureEnabled &&
+        stableMsRef.current >= REQUIRED_STABLE_MS &&
+        !autoCaptureRef.current
+      ) {
+        autoCaptureRef.current = true;
+        void captureFromVideo();
+      } else if (trackingActiveRef.current) {
+        rafRef.current = requestAnimationFrame(render);
+      }
+    };
+
+    rafRef.current = requestAnimationFrame(render);
+  }, [autoCaptureEnabled, captureFromVideo, initFaceLandmarker]);
 
   const getFriendlyError = (code: string) => {
     switch (code) {
@@ -139,6 +342,7 @@ export default function ScanPage() {
       canvas.toBlob(async (blob) => {
         if (blob) {
           const file = new File([blob], 'camera-capture.jpg', { type: 'image/jpeg' });
+          stopFaceTracking();
           stopCamera();
           setUploadMode('file');
           await handleValidatedFile(file);
@@ -229,6 +433,7 @@ export default function ScanPage() {
     setStatusMessage("Initializing scan...");
     setError(null);
     setFaceLocked(false);
+    stopFaceTracking();
     if (cameraActive) {
       stopCamera();
     }
@@ -277,7 +482,13 @@ export default function ScanPage() {
                       autoPlay
                       playsInline
                       muted
+                      onLoadedMetadata={() => {
+                        if (cameraActive) {
+                          void startFaceTracking();
+                        }
+                      }}
                     />
+                    <canvas ref={overlayCanvasRef} className="camera-overlay" />
                     {!cameraActive && (
                       <div className="camera-placeholder">
                         <div className="camera-icon">

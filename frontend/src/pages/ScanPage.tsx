@@ -28,6 +28,7 @@ export default function ScanPage() {
   const [cameraActive, setCameraActive] = useState(false);
   const [validating, setValidating] = useState(false);
   const [validationMessage, setValidationMessage] = useState<string | null>(null);
+  const [faceLocked, setFaceLocked] = useState(false);
   // const [faceDetected, setFaceDetected] = useState(false); // Reserved for future face detection feature
 
   // Initialize camera when camera mode is selected
@@ -86,6 +87,7 @@ export default function ScanPage() {
   const handleValidatedFile = useCallback(async (selectedFile: File) => {
     setValidating(true);
     setValidationMessage("Validating selfie...");
+    setFaceLocked(false);
     setError(null);
     setResult(null);
 
@@ -96,12 +98,14 @@ export default function ScanPage() {
       setPreviewUrl(croppedPreview);
       setScanStep("upload");
       setValidationMessage("Selfie validated.");
+      setFaceLocked(true);
     } catch (err) {
       const message =
         err instanceof Error ? getFriendlyError(err.message) : "Unable to validate the selfie.";
       setError(message);
       setFile(null);
       setPreviewUrl(null);
+      setFaceLocked(false);
     } finally {
       setValidating(false);
       setTimeout(() => setValidationMessage(null), 2000);
@@ -224,6 +228,7 @@ export default function ScanPage() {
     setProgress(0);
     setStatusMessage("Initializing scan...");
     setError(null);
+    setFaceLocked(false);
     if (cameraActive) {
       stopCamera();
     }
@@ -290,11 +295,13 @@ export default function ScanPage() {
                           <span className="hud-corner bottom-right"></span>
                         </div>
                         <div className="scan-sweep-line" aria-hidden="true"></div>
-                        <div className="face-guide-circle"></div>
+                        <div className={`face-guide-circle ${faceLocked ? "face-locked" : ""}`}></div>
                         <div className="face-guide-text">
                           Position your face within the guide
                         </div>
-                        <div className="scan-hud-status">Tracking alignment...</div>
+                        <div className="scan-hud-status">
+                          {faceLocked ? "Face locked" : "Tracking alignment..."}
+                        </div>
                       </div>
                     )}
                   </div>
@@ -325,7 +332,11 @@ export default function ScanPage() {
                   <label htmlFor="file-upload" className="scan-upload-label">
                     {previewUrl ? (
                       <div className="preview-container">
-                        <img src={previewUrl} alt="Preview" className="scan-preview" />
+                        <img
+                          src={previewUrl}
+                          alt="Preview"
+                          className={`scan-preview ${faceLocked ? "scan-preview-locked" : ""}`}
+                        />
                         <button
                           className="preview-remove"
                           onClick={(e) => {

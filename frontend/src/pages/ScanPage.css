@@ -252,12 +252,12 @@
   inset: 0;
   background: repeating-linear-gradient(
     to bottom,
-    rgba(13, 148, 136, 0.07) 0px,
-    rgba(13, 148, 136, 0.07) 1px,
+    rgba(13, 148, 136, 0.1) 0px,
+    rgba(13, 148, 136, 0.1) 1px,
     rgba(0, 0, 0, 0) 3px,
     rgba(0, 0, 0, 0) 6px
   );
-  opacity: 0.5;
+  opacity: 0.65;
 }
 
 .scan-hud {
@@ -317,7 +317,7 @@
     rgba(13, 148, 136, 0.7) 55%,
     transparent 100%
   );
-  animation: scanSweep 3.2s ease-in-out infinite;
+  animation: scanSweep 2.6s ease-in-out infinite;
   opacity: 0.8;
   z-index: 2;
 }
@@ -345,6 +345,13 @@
   box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.4);
   opacity: 0.9;
   z-index: 3;
+}
+
+.face-guide-circle.face-locked {
+  border-color: #22c55e;
+  box-shadow:
+    0 0 0 9999px rgba(0, 0, 0, 0.4),
+    0 0 18px rgba(34, 197, 94, 0.85);
 }
 
 .face-guide-text {
@@ -436,6 +443,13 @@
   display: block;
   margin: 0 auto;
   border: 1px solid var(--border);
+}
+
+.scan-preview-locked {
+  border-color: #22c55e;
+  box-shadow:
+    0 0 0 2px rgba(34, 197, 94, 0.45),
+    0 12px 28px rgba(34, 197, 94, 0.25);
 }
 
 .preview-remove {

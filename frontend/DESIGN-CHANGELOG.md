@@ -23,6 +23,7 @@
 - **Profile Summary**: avatar + name/email in a dedicated profile card.
 - **Quick Stats**: scan stats surfaced in the sidebar for context.
 - **Header Clarity**: clearer page subtitle and unsaved-change badge.
+- **Section Cards**: grouped content blocks with descriptive subtitles.
 
 ### 🧩 Component Updates
 - `ProfileSettingsPage.tsx` (layout + navigation)

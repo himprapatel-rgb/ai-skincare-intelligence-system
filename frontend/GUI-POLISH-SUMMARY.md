@@ -13,6 +13,7 @@
 - Sidebar navigation with a profile summary card.
 - Quick stats surfaced next to settings.
 - Cleaner header with unsaved-change status.
+- Section cards with descriptive subtitles for modern settings UX.
 
 ---
 

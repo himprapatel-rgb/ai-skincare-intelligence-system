@@ -398,7 +398,11 @@ const ProfileSettingsPage: React.FC = () => {
           {/* PERSONAL INFORMATION TAB */}
           {activeTab === 'personal' && (
             <div className="tab-content">
-              <h2>Personal Information</h2>
+              <div className="section-card">
+                <div className="section-card-header">
+                  <h2>Personal Information</h2>
+                  <p className="section-subtitle">Keep your profile details accurate for tailored recommendations.</p>
+                </div>
 
               <div className="form-row">
                 <div className="form-group">
@@ -476,13 +480,18 @@ const ProfileSettingsPage: React.FC = () => {
                   <option value="America/Los_Angeles">America/Los_Angeles (PST)</option>
                 </select>
               </div>
+              </div>
             </div>
           )}
 
           {/* SKIN PROFILE TAB */}
           {activeTab === 'skin' && (
             <div className="tab-content">
-              <h2>Skin Profile</h2>
+              <div className="section-card">
+                <div className="section-card-header">
+                  <h2>Skin Profile</h2>
+                  <p className="section-subtitle">Help us understand your skin to refine analysis quality.</p>
+                </div>
               
               <div className="form-row">
                 <div className="form-group">
@@ -517,13 +526,18 @@ const ProfileSettingsPage: React.FC = () => {
                   ))}
                 </div>
               </div>
+              </div>
             </div>
           )}
 
           {/* SKIN GOALS TAB */}
           {activeTab === 'goals' && (
             <div className="tab-content">
-              <h2>Skin Goals</h2>
+              <div className="section-card">
+                <div className="section-card-header">
+                  <h2>Skin Goals</h2>
+                  <p className="section-subtitle">Set priorities so we can personalize routines and insights.</p>
+                </div>
               
               <div className="form-group">
                 <label>Priority Goals (Select your top goals)</label>
@@ -544,13 +558,18 @@ const ProfileSettingsPage: React.FC = () => {
                 </select>
                 <p className="help-text">Set a realistic timeline to achieve your skin goals</p>
               </div>
+              </div>
             </div>
           )}
 
           {/* LIFESTYLE TAB */}
           {activeTab === 'lifestyle' && (
             <div className="tab-content">
-              <h2>Lifestyle & Preferences</h2>
+              <div className="section-card">
+                <div className="section-card-header">
+                  <h2>Lifestyle & Preferences</h2>
+                  <p className="section-subtitle">Let us know what products and routines fit your life.</p>
+                </div>
               
               <div className="form-group">
                 <label>Allergies / Sensitivities (Ingredients to avoid)</label>
@@ -636,13 +655,18 @@ const ProfileSettingsPage: React.FC = () => {
                   </select>
                 </div>
               </div>
+              </div>
             </div>
           )}
 
           {/* NOTIFICATIONS TAB */}
           {activeTab === 'notifications' && (
             <div className="tab-content">
-              <h2>Notification Preferences</h2>
+              <div className="section-card">
+                <div className="section-card-header">
+                  <h2>Notification Preferences</h2>
+                  <p className="section-subtitle">Choose how and when you want to hear from us.</p>
+                </div>
               
               <div className="form-group">
                 <label className="switch-label">
@@ -698,13 +722,18 @@ const ProfileSettingsPage: React.FC = () => {
                   )}
                 </div>
               </div>
+              </div>
             </div>
           )}
 
           {/* PRIVACY TAB */}
           {activeTab === 'privacy' && (
             <div className="tab-content">
-              <h2>Privacy & Account Settings</h2>
+              <div className="section-card">
+                <div className="section-card-header">
+                  <h2>Privacy & Account Settings</h2>
+                  <p className="section-subtitle">Control visibility, data sharing, and account security.</p>
+                </div>
               
               <div className="form-group">
                 <label className="switch-label">
@@ -779,13 +808,18 @@ const ProfileSettingsPage: React.FC = () => {
                 <p>We take your privacy seriously. Your data is encrypted and never sold.</p>
                 <Link to="/privacy" className="privacy-link">Read our Privacy Policy</Link>
               </div>
+              </div>
             </div>
           )}
 
           {/* STATISTICS TAB */}
           {activeTab === 'stats' && (
             <div className="tab-content">
-              <h2>Your Statistics</h2>
+              <div className="section-card">
+                <div className="section-card-header">
+                  <h2>Your Statistics</h2>
+                  <p className="section-subtitle">Track your progress and scan history at a glance.</p>
+                </div>
               
               <div className="stats-grid">
                 <div className="stat-card">
@@ -852,6 +886,7 @@ const ProfileSettingsPage: React.FC = () => {
                   <button type="button" className="btn-secondary" onClick={() => navigate('/comparison')}>View Comparison</button>
                 </div>
               </div>
+              </div>
             </div>
           )}
             </section>
@@ -860,13 +895,15 @@ const ProfileSettingsPage: React.FC = () => {
           {error && <div className="error-message">{error}</div>}
           {success && <div className="success-message">Profile updated successfully!</div>}
           
-          <div className="form-actions">
+          <div className="form-actions-bar">
+            <div className="form-actions">
             <button type="submit" className="btn-primary" disabled={loading}>
               {loading ? 'Saving...' : 'Save Changes'}
             </button>
             <button type="button" className="btn-secondary" onClick={fetchUserProfile}>
               Reset
             </button>
+            </div>
           </div>
         </form>
         {toast && (

@@ -3,6 +3,7 @@
 **Status:** ✅ **PROFILE UI REFRESH + CAMERA UX IMPROVEMENTS**
 
 - Modernized Profile Settings layout (sidebar, card layout, quick stats).
+- Added section cards and subtitles for a modern settings experience.
 - Camera capture flow tightened with validation freeze-frame.
 - Background removal segmentation applied to captured selfie.
 - Documentation updated per agile protocol (iteration log, backlog, traceability, design docs).

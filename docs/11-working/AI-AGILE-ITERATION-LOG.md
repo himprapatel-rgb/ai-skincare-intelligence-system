@@ -16,6 +16,7 @@ Modernize the profile settings experience while keeping the existing color syste
 - Added quick stats and clearer header with unsaved status.
 - Simplified the personal tab by moving avatar controls to the sidebar.
 - Updated layout styling to match current SaaS settings patterns.
+- Added section cards and clearer subtitles per 2026 UI patterns.
 
 ### Key Changes (Code)
 - Profile layout + navigation: `frontend/src/pages/ProfileSettingsPage.tsx`
@@ -28,10 +29,11 @@ Modernize the profile settings experience while keeping the existing color syste
 - Design changelog: `frontend/DESIGN-CHANGELOG.md`
 - GUI polish summary: `frontend/GUI-POLISH-SUMMARY.md`
 - Current state addendum: `docs/06-operations/Current-State.md`
+- Index entry confirmed: `docs/00-index/README.md`
 
 ### Verification / Tests
 - Manual: profile layout checked in browser.
-- Deploy: pending.
+- Deploy: Railway frontend deployed; logs reviewed.
 
 ### Risks / Follow-ups
 - Validate mobile layout spacing for sidebar collapse.

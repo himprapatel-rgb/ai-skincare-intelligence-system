@@ -45,17 +45,17 @@ This matrix provides a single source of truth mapping every documented requireme
 | UR1 | Email/Password Login | EPIC-1.1.1 | 1 | ✅ | ✅ | ❌ | ⚠️ | ❓ | ❓ | 🟡 PARTIAL |
 | UR1 | Social Auth (Google/Apple) | EPIC-1.1.2 | 1 | ✅ | ✅ | ❌ | ⚠️ | ❓ | ❓ | 🟡 PARTIAL |
 | UR2 | Password Reset Flow | EPIC-1.1.3 | 1 | ✅ | ✅ | ❌ | ⚠️ | ❓ | ❓ | 🟡 PARTIAL |
-| UR3 | Email Verification | EPIC-1.1.4 | 1 | ❌ | ❌ | ❌ | N/A | ❌ | ❌ | 🔴 NOT IMPL |
+| UR3 | Email Verification | EPIC-1.1.4 | 1 | ✅ | ✅ | ❌ | ⚠️ | ❓ | ❓ | 🟡 PARTIAL |
 | UR4 | Profile Setup | EPIC-1.2 | 1 | ✅ | ✅ | ❌ | ⚠️ | ❓ | ❓ | 🟡 PARTIAL |
-| UR5 | Skin Type Questionnaire | EPIC-1.2.1 | 1 | ❌ | ❌ | ❌ | N/A | ❌ | ❌ | 🔴 NOT IMPL |
+| UR5 | Skin Type Questionnaire | EPIC-1.2.1 | 1 | ✅ | ✅ | ❌ | ⚠️ | ❓ | ❓ | 🟡 PARTIAL |
 | UR6 | Consent Management | EPIC-1.3 | 1 | ✅ | ✅ | ❌ | ⚠️ | ❓ | ❓ | 🟡 PARTIAL |
 
 **EPIC 1 Summary:**  
 - **Total Requirements:** 7  
 - **Complete:** 0  
-- **Partial:** 5  
-- **Not Implemented:** 2  
-- **Completion:** 14% (1/7)
+- **Partial:** 7  
+- **Not Implemented:** 0  
+- **Completion:** 0% (0/7 complete)
 
 ---
 

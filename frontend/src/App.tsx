@@ -8,6 +8,7 @@ import DevBanner from "./components/DevBanner";
 import { AuthPage } from "./pages/AuthPage";
 import HomePage from "./pages/HomePage";
 import PasswordResetPage from "./pages/PasswordResetPage";
+import EmailVerificationPage from "./pages/EmailVerificationPage";
 
 // Page Imports - Epic 2: Skin Analysis Engine
 import ScanPage from "./pages/ScanPage";
@@ -52,6 +53,7 @@ export default function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/password-reset" element={<PasswordResetPage />} />
+          <Route path="/verify-email" element={<EmailVerificationPage />} />
           
           {/* Skin Analysis Routes */}
           <Route path="/scan" element={<ScanPage />} />

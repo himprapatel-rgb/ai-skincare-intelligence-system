@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { LoginForm } from '../components/LoginForm';
 import { RegisterForm } from '../components/RegisterForm';
@@ -9,6 +10,7 @@ export const AuthPage: React.FC = () => {
   const [mode, setMode] = useState<'login' | 'register'>('login');
   const navigate = useNavigate();
   const location = useLocation();
+  const API_URL = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -20,8 +22,17 @@ export const AuthPage: React.FC = () => {
     }
   }, [location.search]);
 
-  const handleAuthSuccess = () => {
-    navigate('/dashboard');
+  const handleAuthSuccess = async () => {
+    try {
+      await axios.get(`${API_URL}/profile`);
+      navigate('/dashboard');
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err) && err.response?.status === 404) {
+        navigate('/onboarding');
+      } else {
+        navigate('/dashboard');
+      }
+    }
   };
   return (
     <div className="auth-page">

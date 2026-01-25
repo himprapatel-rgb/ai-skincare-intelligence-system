@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { ErrorMessage } from './ErrorMessage';
 import { LoadingSpinner } from './LoadingSpinner';
@@ -11,14 +12,17 @@ interface LoginFormProps {
 
 export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegister }) => {
   const { login } = useAuth();
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [showVerifyLink, setShowVerifyLink] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setShowVerifyLink(false);
     setLoading(true);
 
     try {
@@ -26,7 +30,12 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegis
       onSuccess();
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
-        setError(err.response?.data?.detail || err.response?.data?.message || 'Login failed. Please try again.');
+        const detail = err.response?.data?.detail || err.response?.data?.message;
+        const message = detail || 'Login failed. Please try again.';
+        setError(message);
+        if (typeof message === 'string' && message.toLowerCase().includes('verify')) {
+          setShowVerifyLink(true);
+        }
       } else if (err instanceof Error) {
         setError(err.message);
       } else {
@@ -70,6 +79,15 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegis
           {loading ? <LoadingSpinner size="small" /> : 'Sign In'}
         </button>
       </form>
+      {showVerifyLink && (
+        <button
+          type="button"
+          className="btn-link"
+          onClick={() => navigate(`/verify-email?email=${encodeURIComponent(email)}`)}
+        >
+          Verify your email
+        </button>
+      )}
       <p className="switch-form">
         Don't have an account?{' '}
         <button onClick={onSwitchToRegister} className="btn-link">

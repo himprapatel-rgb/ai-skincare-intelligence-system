@@ -1,3 +1,17 @@
+### Update - January 25, 2026, 21:10 GMT
+
+**Status:** ✅ **EMAIL VERIFICATION + SKIN QUESTIONNAIRE**
+
+- Added email verification flow with resend + verify endpoints.
+- Enforced verification before authenticated access.
+- Routed users to onboarding skin questionnaire if profile missing.
+
+**Next Focus**:
+- Verify onboarding questionnaire completion metrics.
+- Add verification email delivery integration.
+
+---
+
 ### Update - January 25, 2026, 18:30 GMT
 
 **Status:** ✅ **PROFILE UI REFRESH + CAMERA UX IMPROVEMENTS**

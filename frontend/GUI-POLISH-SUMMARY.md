@@ -15,6 +15,10 @@
 - Cleaner header with unsaved-change status.
 - Section cards with descriptive subtitles for modern settings UX.
 
+### Email Verification UX
+- Dedicated verification screen with resend support.
+- Clear success/error states for confirmation.
+
 ---
 
 ## ✅ January 23, 2026 Additions

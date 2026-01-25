@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { ErrorMessage } from './ErrorMessage';
 import { LoadingSpinner } from './LoadingSpinner';
@@ -11,6 +12,7 @@ interface RegisterFormProps {
 
 export const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onSwitchToLogin }) => {
   const { register } = useAuth();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -57,7 +59,11 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onSwitchT
 
     try {
       const { name, email, password } = formData;
-      await register(name, email, password);
+      const response = await register(name, email, password);
+      if (response.verification_required) {
+        navigate(`/verify-email?email=${encodeURIComponent(email)}`);
+        return;
+      }
       onSuccess();
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {

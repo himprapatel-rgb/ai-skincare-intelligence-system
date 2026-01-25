@@ -25,6 +25,18 @@
 - **Header Clarity**: clearer page subtitle and unsaved-change badge.
 - **Section Cards**: grouped content blocks with descriptive subtitles.
 
+---
+
+## January 25, 2026 - Email Verification UX
+
+### ✅ UX Fixes & Improvements
+- **Verification Flow**: dedicated verify email screen with resend support.
+- **Status Messaging**: clear verification states and guidance.
+
+### 🧩 Component Updates
+- `EmailVerificationPage.tsx` (verification UI)
+- `EmailVerificationPage.css` (layout + state styling)
+
 ### 🧩 Component Updates
 - `ProfileSettingsPage.tsx` (layout + navigation)
 - `ProfileSettingsPage.css` (modern card styling)

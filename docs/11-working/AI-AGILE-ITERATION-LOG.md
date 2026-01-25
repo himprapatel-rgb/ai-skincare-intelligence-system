@@ -25,6 +25,35 @@ Clear hook lint warnings and complete requested test runs.
 
 ---
 
+## Iteration 2026-01-25 (Email Verification + Skin Questionnaire)
+
+### Goal
+Ship email verification and ensure onboarding captures skin questionnaire data.
+
+### Scope (Completed)
+- Added email verification tokens and verification endpoints.
+- Enforced verification before authenticated access.
+- Routed authenticated users without a profile to onboarding.
+
+### Key Changes (Code)
+- Auth verification endpoints: `backend/app/api/v1/endpoints/auth.py`
+- User model verification fields: `backend/app/models/user.py`
+- Auth guard for unverified users: `backend/app/core/security.py`
+- Verification UI: `frontend/src/pages/EmailVerificationPage.tsx`
+- Auth flow routing: `frontend/src/pages/AuthPage.tsx`
+
+### Key Changes (Docs)
+- Iteration log update: `docs/11-working/AI-AGILE-ITERATION-LOG.md`
+- Product tracker: `docs/03-product/Product-Tracker.md`
+- Traceability matrix: `docs/01-requirements/Traceability-Matrix.md`
+- Current state addendum: `docs/06-operations/Current-State.md`
+
+### Verification / Tests
+- Manual: verify email request + confirm flow.
+- Manual: onboarding questionnaire route after login/register.
+
+---
+
 ## Iteration 2026-01-25 (Profile Settings Modernization)
 
 ### Goal

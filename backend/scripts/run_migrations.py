@@ -46,6 +46,18 @@ def run_migrations():
             )
             cur.execute(
                 """
+                ALTER TABLE users
+                ADD COLUMN IF NOT EXISTS email_verification_token VARCHAR(255)
+                """
+            )
+            cur.execute(
+                """
+                ALTER TABLE users
+                ADD COLUMN IF NOT EXISTS email_verification_expires_at TIMESTAMPTZ
+                """
+            )
+            cur.execute(
+                """
                 CREATE TABLE IF NOT EXISTS ingredients (
                     id UUID DEFAULT gen_random_uuid()
                 )

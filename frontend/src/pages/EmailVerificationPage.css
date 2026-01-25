@@ -1,0 +1,81 @@
+.email-verification-page {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background: var(--bg-secondary);
+}
+
+.email-verification-card {
+  width: 100%;
+  max-width: 480px;
+  background: var(--bg-white);
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.12);
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.email-verification-card h1 {
+  font-size: 1.8rem;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.email-verification-card .subtitle {
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.email-verification-card label {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.email-verification-card input {
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  padding: 12px 14px;
+  font-size: 1rem;
+}
+
+.status-message {
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-size: 0.95rem;
+}
+
+.status-message.verifying {
+  background: rgba(59, 130, 246, 0.1);
+  color: #1d4ed8;
+}
+
+.status-message.verified {
+  background: rgba(34, 197, 94, 0.1);
+  color: #15803d;
+}
+
+.status-message.error {
+  background: rgba(239, 68, 68, 0.1);
+  color: #b91c1c;
+}
+
+.dev-token {
+  padding: 12px;
+  background: rgba(15, 23, 42, 0.04);
+  border-radius: 12px;
+  font-size: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.dev-token code {
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  word-break: break-all;
+  color: #0f172a;
+}

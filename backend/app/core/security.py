@@ -107,6 +107,11 @@ async def get_current_user(
         user = db.query(User).filter(User.email == subject).first()
     if user is None:
         raise credentials_exception
+    if not user.is_verified:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Email not verified. Please verify your email.",
+        )
     return user
 
 
@@ -128,6 +133,11 @@ async def get_current_user_optional(
             user = db.query(User).filter(User.id == int(subject)).first()
         else:
             user = db.query(User).filter(User.email == subject).first()
+        if user and not user.is_verified:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Email not verified. Please verify your email.",
+            )
         return user
     except JWTError:
         return None

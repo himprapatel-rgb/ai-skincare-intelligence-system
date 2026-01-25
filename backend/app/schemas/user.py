@@ -67,3 +67,23 @@ class AuthResponse(BaseModel):
     """Authentication response with token and user."""
     token: str
     user: UserResponse
+    message: Optional[str] = None
+    verification_required: bool = False
+    verification_token: Optional[str] = None
+
+
+class EmailVerificationRequest(BaseModel):
+    """Request email verification for a user."""
+    email: EmailStr = Field(..., description="User email address")
+
+
+class EmailVerificationConfirm(BaseModel):
+    """Confirm email verification using a token."""
+    token: str = Field(..., min_length=16, description="Email verification token")
+
+
+class EmailVerificationResponse(BaseModel):
+    """Response for email verification actions."""
+    message: str
+    verified: bool = False
+    verification_token: Optional[str] = None

@@ -21,6 +21,8 @@ export interface AuthResponse {
   token: string;
   user: User;
   message?: string;
+  verification_required?: boolean;
+  verification_token?: string | null;
 }
 
 interface AuthContextType {
@@ -79,13 +81,20 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const register = async (name: string, email: string, password: string): Promise<AuthResponse> => {
-    const response = await axios.post(`${API_URL}/auth/register`, { name, email, password });
-    const { token: newToken, user: userData } = response.data;
-    localStorage.setItem('auth_token', newToken);
-    axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
-    setToken(newToken);
-    setUser(userData);
-    return response.data;
+    const response = await axios.post(`${API_URL}/auth/register`, {
+      full_name: name,
+      email,
+      password,
+    });
+    const data: AuthResponse = response.data;
+    if (!data.verification_required) {
+      const { token: newToken, user: userData } = data;
+      localStorage.setItem('auth_token', newToken);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
+      setToken(newToken);
+      setUser(userData);
+    }
+    return data;
   };
 
   const logout = () => {

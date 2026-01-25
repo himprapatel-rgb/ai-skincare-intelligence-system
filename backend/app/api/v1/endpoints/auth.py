@@ -5,7 +5,7 @@ Authentication API endpoints.
 from datetime import datetime, timedelta
 import uuid
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
@@ -23,6 +23,7 @@ from app.schemas.user import (
 )
 from app.services.auth_service import auth_service
 from app.models.user import User
+from app.services.email_service import send_verification_email
 
 router = APIRouter()
 
@@ -34,7 +35,11 @@ router = APIRouter()
     summary="User registration",
     description="Create a new user account and return access token",
 )
-def register(user_data: UserCreate, db: Session = Depends(get_db)):
+def register(
+    user_data: UserCreate,
+    background_tasks: BackgroundTasks,
+    db: Session = Depends(get_db),
+):
     """Register a new user."""
     existing_user = auth_service.get_user_by_email(db, user_data.email)
     if existing_user:
@@ -68,6 +73,16 @@ def register(user_data: UserCreate, db: Session = Depends(get_db)):
         message="Verification email sent. Please verify your email to complete setup.",
         verification_required=True,
     )
+    try:
+        if settings.SMTP_HOST and settings.SMTP_FROM_EMAIL:
+            background_tasks.add_task(send_verification_email, user.email, verification_token)
+        elif settings.ENV == "production":
+            raise RuntimeError("SMTP settings missing.")
+    except Exception as exc:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to send verification email: {exc}",
+        )
     if settings.ENV != "production":
         response.verification_token = verification_token
     return response
@@ -118,7 +133,9 @@ def login(user_data: UserLogin, db: Session = Depends(get_db)):
     description="Send or re-send a verification email to the user",
 )
 def request_email_verification(
-    payload: EmailVerificationRequest, db: Session = Depends(get_db)
+    payload: EmailVerificationRequest,
+    background_tasks: BackgroundTasks,
+    db: Session = Depends(get_db),
 ):
     user = auth_service.get_user_by_email(db, payload.email)
     if not user:
@@ -140,6 +157,16 @@ def request_email_verification(
         message="Verification email sent. Please check your inbox.",
         verified=False,
     )
+    try:
+        if settings.SMTP_HOST and settings.SMTP_FROM_EMAIL:
+            background_tasks.add_task(send_verification_email, user.email, verification_token)
+        elif settings.ENV == "production":
+            raise RuntimeError("SMTP settings missing.")
+    except Exception as exc:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to send verification email: {exc}",
+        )
     if settings.ENV != "production":
         response.verification_token = verification_token
     return response

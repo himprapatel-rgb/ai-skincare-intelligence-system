@@ -13,6 +13,12 @@ Required secrets
 - `SUMMARY_TOKEN` — Shared secret used to protect the internal `/api/v1/internal/summary` endpoint.
 - `OPENAI_API_KEY` — API key for OpenAI vision analysis (required to enable live analysis).
 - `SKINIVE_API_TOKEN` — Deprecated. Previously used for Skinive skin analysis.
+- `SMTP_HOST` — SMTP server host for email verification.
+- `SMTP_PORT` — SMTP server port (default `587`).
+- `SMTP_USERNAME` — SMTP username (if required by provider).
+- `SMTP_PASSWORD` — SMTP password (if required by provider).
+- `SMTP_FROM_EMAIL` — Sender address for verification emails.
+- `FRONTEND_URL` — Frontend base URL for verification links.
 
 Optional / Environment-specific
 - `GPTGPT_API_BASE` — Custom base URL for the LLM provider API (if your provider requires a custom host).

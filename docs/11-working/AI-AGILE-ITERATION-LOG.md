@@ -34,11 +34,13 @@ Ship email verification and ensure onboarding captures skin questionnaire data.
 - Added email verification tokens and verification endpoints.
 - Enforced verification before authenticated access.
 - Routed authenticated users without a profile to onboarding.
+- Added SMTP delivery for verification emails.
 
 ### Key Changes (Code)
 - Auth verification endpoints: `backend/app/api/v1/endpoints/auth.py`
 - User model verification fields: `backend/app/models/user.py`
 - Auth guard for unverified users: `backend/app/core/security.py`
+- SMTP email service: `backend/app/services/email_service.py`
 - Verification UI: `frontend/src/pages/EmailVerificationPage.tsx`
 - Auth flow routing: `frontend/src/pages/AuthPage.tsx`
 

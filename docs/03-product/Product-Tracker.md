@@ -5,6 +5,7 @@
 - Added email verification flow with resend + verify endpoints.
 - Enforced verification before authenticated access.
 - Routed users to onboarding skin questionnaire if profile missing.
+- Added SMTP email delivery for verification links.
 
 **Next Focus**:
 - Verify onboarding questionnaire completion metrics.

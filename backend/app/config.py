@@ -26,6 +26,10 @@ class Settings(BaseSettings):
     APP_VERSION: str = Field(default="1.0.0", description="Application version")
     DEBUG: bool = Field(default=False, description="Debug mode")
     ENV: str = Field(default="development", description="Runtime environment")
+    FRONTEND_URL: str = Field(
+        default="http://localhost:3000",
+        description="Frontend base URL for email verification links",
+    )
 
     # CORS Settings
     ALLOWED_ORIGINS: list[str] = Field(
@@ -90,6 +94,14 @@ class Settings(BaseSettings):
         default=None,
         description="Shared secret token required by internal summary endpoint",
     )
+
+    # SMTP settings for email verification
+    SMTP_HOST: str | None = Field(default=None, description="SMTP server host")
+    SMTP_PORT: int = Field(default=587, description="SMTP server port")
+    SMTP_USERNAME: str | None = Field(default=None, description="SMTP username")
+    SMTP_PASSWORD: str | None = Field(default=None, description="SMTP password")
+    SMTP_FROM_EMAIL: str | None = Field(default=None, description="Default sender email")
+    SMTP_USE_TLS: bool = Field(default=True, description="Enable STARTTLS")
 
         # ML Model Configuration
     MODEL_SOURCE: str = Field(

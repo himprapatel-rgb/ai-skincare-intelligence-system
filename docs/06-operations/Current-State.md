@@ -24,6 +24,7 @@ This document captures the comprehensive analysis of the current AI Skincare Int
 - Profile settings UI modernized with sidebar navigation, summary card, and section blocks.
 - Email verification flow added with resend/confirm endpoints and verification gating.
 - Onboarding skin questionnaire enforced when profile baseline is missing.
+- SMTP delivery added for verification emails.
 
 ### Key Findings
 ✅ **Strong Foundation:** Core authentication, encryption, GDPR compliance, and ML integration operational

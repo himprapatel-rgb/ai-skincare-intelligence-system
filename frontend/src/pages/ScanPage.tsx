@@ -11,6 +11,7 @@ import './ScanPage.css';
 
 type UploadMode = 'camera' | 'file';
 type ScanStep = 'upload' | 'scanning' | 'complete';
+const ENABLE_LIVE_QUALITY_CHECKS = false;
 
 export default function ScanPage() {
   const navigate = useNavigate();
@@ -53,7 +54,6 @@ export default function ScanPage() {
     goodStreak: 0,
     badStreak: 0,
   });
-  const ENABLE_LIVE_QUALITY_CHECKS = false;
   // const [faceDetected, setFaceDetected] = useState(false); // Reserved for future face detection feature
 
   const setCapturePreview = useCallback((url: string | null) => {
@@ -88,13 +88,13 @@ export default function ScanPage() {
     }
   };
 
-  const stopCamera = () => {
+  const stopCamera = useCallback(() => {
     cameraService.stopCamera();
     setCameraActive(false);
     // setFaceDetected(false); // Reserved for future face detection feature
-  };
+  }, []);
 
-  const getFriendlyError = (code: string) => {
+  const getFriendlyError = useCallback((code: string) => {
     switch (code) {
       case "no_face":
         return "No face found. Please upload a clear selfie with your full face visible.";
@@ -119,7 +119,7 @@ export default function ScanPage() {
       default:
         return "We couldn't validate this photo. Please try another clear selfie.";
     }
-  };
+  }, []);
 
   const handleValidatedFile = useCallback(async (selectedFile: File) => {
     setValidating(true);
@@ -147,7 +147,7 @@ export default function ScanPage() {
       setValidating(false);
       setTimeout(() => setValidationMessage(null), 2000);
     }
-  }, []);
+  }, [getFriendlyError]);
 
   const stopFaceTracking = useCallback(() => {
     trackingActiveRef.current = false;

@@ -6,6 +6,25 @@ Use that workflow doc for checklists and templates to avoid duplication here.
 
 ---
 
+## Iteration 2026-01-25 (ScanPage Hook Cleanup + Test Run)
+
+### Goal
+Clear hook lint warnings and complete requested test runs.
+
+### Scope (Completed)
+- Memoized camera helper callbacks to stabilize hook dependencies.
+- Updated hook dependency arrays for `getFriendlyError`.
+- Ran frontend lint and Playwright suites.
+
+### Key Changes (Code)
+- Hook dependency cleanup: `frontend/src/pages/ScanPage.tsx`
+
+### Verification / Tests
+- Frontend lint: `npm run lint`
+- Frontend e2e: `npm run e2e` (3 skipped, 1 passed)
+
+---
+
 ## Iteration 2026-01-25 (Profile Settings Modernization)
 
 ### Goal

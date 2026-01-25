@@ -7,6 +7,7 @@
 - Capture freezes the frame before validation.
 - Oval crop expanded to keep full face in frame.
 - Desktop quality gating disabled to reduce user friction.
+- Background removal uses segmentation mask before analysis.
 
 ---
 

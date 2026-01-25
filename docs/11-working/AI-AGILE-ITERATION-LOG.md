@@ -22,6 +22,7 @@ Improve camera capture UX so only usable face images proceed, without blocking d
 - Camera capture flow + live guidance: `frontend/src/pages/ScanPage.tsx`
 - Capture UI and overlay updates: `frontend/src/pages/ScanPage.css`
 - Face crop + validation updates: `frontend/src/utils/faceValidation.ts`
+- Background segmentation helper: `frontend/src/utils/backgroundSegmentation.ts`
 
 ### Key Changes (Docs)
 - Iteration protocol rule: `docs/11-working/AGILE-ITERATION-PROTOCOL.md`

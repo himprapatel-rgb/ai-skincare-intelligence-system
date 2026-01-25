@@ -1,5 +1,6 @@
 import * as blazeface from "@tensorflow-models/blazeface";
 import * as tf from "@tensorflow/tfjs";
+import { removeBackground } from "./backgroundSegmentation";
 
 type FaceValidationResult = {
   croppedBlob: Blob;
@@ -297,5 +298,10 @@ export async function validateAndCropFace(
     height: cropHeight,
   });
 
-  return { croppedBlob: blob, previewUrl: dataUrl };
+  try {
+    const segmented = await removeBackground(dataUrl);
+    return { croppedBlob: segmented.blob, previewUrl: segmented.dataUrl };
+  } catch {
+    return { croppedBlob: blob, previewUrl: dataUrl };
+  }
 }

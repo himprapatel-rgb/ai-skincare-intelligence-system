@@ -19,6 +19,7 @@ This document captures the comprehensive analysis of the current AI Skincare Int
 - Capture validation now freezes the frame before accepting a selfie.
 - Face crop expanded with oval background masking to keep full face in-frame.
 - Desktop quality gating disabled to avoid user friction; mobile gating planned.
+- Background removal now applies a segmentation mask before analysis.
 - Frontend deployed to Railway and logs verified clean.
 
 ### Key Findings

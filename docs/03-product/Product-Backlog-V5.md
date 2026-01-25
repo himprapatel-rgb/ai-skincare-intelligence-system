@@ -178,8 +178,9 @@
 - [x] Auto-capture only triggers when face is centered and front-facing
 - [x] Capture freezes the frame for validation before acceptance
 - [x] Cropped output keeps full face inside oval mask
+- [x] Background segmentation applied before analysis
 - [ ] Optional quality gating can be enabled for mobile (future)
-- [ ] Background removal improved beyond oval mask (future)
+- [ ] Refine segmentation quality for mobile (future)
 
 ---
 

@@ -10,6 +10,7 @@ Welcome to the AI Skincare Intelligence System documentation. This index is the 
 - **[Action Plan Today](../06-operations/Action-Plan-Today.md)** - Daily priorities
 - **[Agile Iteration Log](../11-working/AI-AGILE-ITERATION-LOG.md)** - What changed per iteration
 - **[Agile Iteration Protocol](../11-working/AGILE-ITERATION-PROTOCOL.md)** - Strict process rules
+- **[Design Changelog](../../frontend/DESIGN-CHANGELOG.md)** - Frontend visual updates
 
 ### Requirements & Architecture
 - **[SRS V5.3](../01-requirements/SRS-V5.3-External-Pretrained-ML.md)** - Requirements baseline

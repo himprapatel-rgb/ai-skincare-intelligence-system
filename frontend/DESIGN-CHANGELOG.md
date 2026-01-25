@@ -7,6 +7,7 @@
 - **Capture Flow**: freeze-frame validation before acceptance.
 - **Face Framing**: expanded crop padding and larger oval mask to keep full face.
 - **Friction Control**: live quality blocking disabled for desktop sessions.
+- **Background Removal**: segmentation mask applied to keep only the face area.
 
 ### 🧩 Component Updates
 - `ScanPage.tsx` (camera flow + live guidance)

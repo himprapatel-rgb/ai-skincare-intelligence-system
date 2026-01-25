@@ -14,6 +14,13 @@
 
 This document captures the comprehensive analysis of the current AI Skincare Intelligence System implementation, identifying what exists, what works, and what gaps need addressing in upcoming sprints.
 
+### Addendum (2026-01-25)
+- Camera capture UX refined: auto-capture + live alignment guidance with a 10s hold.
+- Capture validation now freezes the frame before accepting a selfie.
+- Face crop expanded with oval background masking to keep full face in-frame.
+- Desktop quality gating disabled to avoid user friction; mobile gating planned.
+- Frontend deployed to Railway and logs verified clean.
+
 ### Key Findings
 ✅ **Strong Foundation:** Core authentication, encryption, GDPR compliance, and ML integration operational
 ✅ **Database Models:** 10+ models covering users, products, routines, scans, digital twin

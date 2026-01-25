@@ -6,6 +6,39 @@ Use that workflow doc for checklists and templates to avoid duplication here.
 
 ---
 
+## Iteration 2026-01-25 (Camera Capture UX + Background Masking)
+
+### Goal
+Improve camera capture UX so only usable face images proceed, without blocking desktop users.
+
+### Scope (Completed)
+- Tuned auto-capture alignment + hold timer with live guidance.
+- Added pre-validation flow that freezes the capture frame before accepting.
+- Expanded face crop padding and oval mask to keep full face in-frame.
+- Disabled live quality blocking on desktop to avoid user friction.
+- Maintained alignment checks (single face, centered, front-facing).
+
+### Key Changes (Code)
+- Camera capture flow + live guidance: `frontend/src/pages/ScanPage.tsx`
+- Capture UI and overlay updates: `frontend/src/pages/ScanPage.css`
+- Face crop + validation updates: `frontend/src/utils/faceValidation.ts`
+
+### Key Changes (Docs)
+- Iteration protocol rule: `docs/11-working/AGILE-ITERATION-PROTOCOL.md`
+- Iteration log update: `docs/11-working/AI-AGILE-ITERATION-LOG.md`
+- Backlog update: `docs/03-product/Product-Backlog-V5.md`
+- Current state addendum: `docs/06-operations/Current-State.md`
+
+### Verification / Tests
+- Manual: camera capture flow validated in production.
+- Deploy: Railway frontend deploys verified; logs checked.
+
+### Risks / Follow-ups
+- True background removal requires segmentation (mobile-focused).
+- Re-enable stricter quality checks for mobile/tablet app.
+
+---
+
 ## Iteration 2026-01-23 (Selfie Validation + Oval Crop)
 
 ### Goal

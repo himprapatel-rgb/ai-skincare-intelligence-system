@@ -167,6 +167,22 @@
 
 ---
 
+### US-206: Camera Capture UX + Background Masking
+**Priority:** P1 | **Points:** 5 | **Status:** In Progress
+
+**As a** user  
+**I want to** capture a usable face photo with minimal friction  
+**So that** the analysis starts with a high-quality face image
+
+**Acceptance Criteria:**
+- [x] Auto-capture only triggers when face is centered and front-facing
+- [x] Capture freezes the frame for validation before acceptance
+- [x] Cropped output keeps full face inside oval mask
+- [ ] Optional quality gating can be enabled for mobile (future)
+- [ ] Background removal improved beyond oval mask (future)
+
+---
+
 ## Epic 3: Product Recommendations (P1) - IN PROGRESS
 
 ### US-301: Generate Recommendations
@@ -318,6 +334,7 @@
 | US-303 | 8 | Frontend Team | In Progress |
 | US-403 | 8 | Frontend Team | In Progress |
 | US-205 | 8 | Frontend Team | In Progress |
+| US-206 | 5 | Frontend Team | In Progress |
 
 ### Next Sprint (Sprint 7)
 **Goal:** Admin dashboard MVP
@@ -351,6 +368,7 @@
 | 3.0 | 2024-Q3 | Reprioritization |
 | 4.0 | 2024-Q4 | Added admin stories |
 | 5.0 | 2026-01 | Current state update |
+| 5.1 | 2026-01 | Added camera capture UX story |
 
 ---
 

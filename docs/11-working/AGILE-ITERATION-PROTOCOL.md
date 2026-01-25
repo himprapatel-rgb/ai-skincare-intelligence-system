@@ -26,6 +26,7 @@ what changed, why it changed, and how it was verified.
 19. **Error taxonomy**: use consistent error codes/messages across APIs.
 20. **Dependency hygiene**: new dependencies require security review and justification.
 21. **Deploy and verify on data changes**: any change that touches frontend, backend, or database must be deployed, followed by CLI login to Railway/GitHub and a full log review; do not stop until logs are clean and any errors are resolved.
+22. **Docs before done**: work is not complete until the iteration log and relevant backlog/ops docs are updated to reflect the change.
 
 ### Required entry format (every iteration)
 

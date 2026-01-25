@@ -1,5 +1,15 @@
 # 🎨 GUI Polish Summary - 2026 Premium Edition
 
+## ✅ January 25, 2026 Additions
+
+### Scan Camera UX
+- Live alignment guidance connected to face tracking.
+- Capture freezes the frame before validation.
+- Oval crop expanded to keep full face in frame.
+- Desktop quality gating disabled to reduce user friction.
+
+---
+
 ## ✅ January 23, 2026 Additions
 
 ### Profile Settings UX

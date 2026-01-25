@@ -1,5 +1,20 @@
 # 🎨 Design Changelog - Premium GUI Polish
 
+## January 25, 2026 - Camera Capture UX Refinement
+
+### ✅ UX Fixes & Improvements
+- **Live Guidance**: alignment messaging tied to face tracking status.
+- **Capture Flow**: freeze-frame validation before acceptance.
+- **Face Framing**: expanded crop padding and larger oval mask to keep full face.
+- **Friction Control**: live quality blocking disabled for desktop sessions.
+
+### 🧩 Component Updates
+- `ScanPage.tsx` (camera flow + live guidance)
+- `ScanPage.css` (overlay + preview styling)
+- `faceValidation.ts` (crop + validation tuning)
+
+---
+
 ## January 23, 2026 - Profile UX + Recommendation Refresh
 
 ### ✅ UX Fixes & Improvements

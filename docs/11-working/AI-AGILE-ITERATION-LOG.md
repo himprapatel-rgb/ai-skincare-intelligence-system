@@ -6,6 +6,39 @@ Use that workflow doc for checklists and templates to avoid duplication here.
 
 ---
 
+## Iteration 2026-01-25 (Profile Settings Modernization)
+
+### Goal
+Modernize the profile settings experience while keeping the existing color system.
+
+### Scope (Completed)
+- Rebuilt profile layout with sidebar navigation and summary card.
+- Added quick stats and clearer header with unsaved status.
+- Simplified the personal tab by moving avatar controls to the sidebar.
+- Updated layout styling to match current SaaS settings patterns.
+
+### Key Changes (Code)
+- Profile layout + navigation: `frontend/src/pages/ProfileSettingsPage.tsx`
+- Profile styling refresh: `frontend/src/pages/ProfileSettingsPage.css`
+
+### Key Changes (Docs)
+- Iteration log update: `docs/11-working/AI-AGILE-ITERATION-LOG.md`
+- Product tracker: `docs/03-product/Product-Tracker.md`
+- Traceability matrix: `docs/01-requirements/Traceability-Matrix.md`
+- Design changelog: `frontend/DESIGN-CHANGELOG.md`
+- GUI polish summary: `frontend/GUI-POLISH-SUMMARY.md`
+- Current state addendum: `docs/06-operations/Current-State.md`
+
+### Verification / Tests
+- Manual: profile layout checked in browser.
+- Deploy: pending.
+
+### Risks / Follow-ups
+- Validate mobile layout spacing for sidebar collapse.
+- Accessibility review for sidebar navigation focus states.
+
+---
+
 ## Iteration 2026-01-25 (Camera Capture UX + Background Masking)
 
 ### Goal

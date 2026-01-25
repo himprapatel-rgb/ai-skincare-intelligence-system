@@ -9,6 +9,11 @@
 - Desktop quality gating disabled to reduce user friction.
 - Background removal uses segmentation mask before analysis.
 
+### Profile Settings Refresh
+- Sidebar navigation with a profile summary card.
+- Quick stats surfaced next to settings.
+- Cleaner header with unsaved-change status.
+
 ---
 
 ## ✅ January 23, 2026 Additions

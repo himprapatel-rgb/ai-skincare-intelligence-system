@@ -63,20 +63,20 @@ This matrix provides a single source of truth mapping every documented requireme
 
 | SRS ID | Requirement | Backlog ID | Sprint | Code | Router | Tests | CI | Deployed | Verified | Status |
 |--------|-------------|-----------|--------|------|--------|-------|----|---------|---------|--------|
-| FR6 | Camera Access & Guidance | EPIC-2.1 | 2 | ❌ | ❌ | ❌ | N/A | ❌ | ❌ | 🔴 NOT IMPL |
+| FR6 | Camera Access & Guidance | EPIC-2.1 | 2 | ✅ | ✅ | ❌ | ⚠️ | ✅ | ✅ | 🟡 PARTIAL |
 | FR7 | Capture Multiple Angles | EPIC-2.2 | 2 | ❌ | ❌ | ❌ | N/A | ❌ | ❌ | 🔴 NOT IMPL |
-| FR8 | AI Skin Analysis | EPIC-2.3 | 2 | ⚠️ Model | ❌ | ❌ | N/A | ❌ | ❌ | 🔴 NOT IMPL |
-| FR9 | Concern Detection | EPIC-2.4 | 2 | ❌ | ❌ | ❌ | N/A | ❌ | ❌ | 🔴 NOT IMPL |
-| FR9A | Severity Scoring | EPIC-2.5 | 2 | ❌ | ❌ | ❌ | N/A | ❌ | ❌ | 🔴 NOT IMPL |
-| FR9B | Analysis Results Display | EPIC-2.6 | 2 | ❌ | ❌ | ❌ | N/A | ❌ | ❌ | 🔴 NOT IMPL |
+| FR8 | AI Skin Analysis | EPIC-2.3 | 2 | ✅ | ✅ | ❌ | ⚠️ | ✅ | ✅ | 🟡 PARTIAL |
+| FR9 | Concern Detection | EPIC-2.4 | 2 | ✅ | ✅ | ❌ | ⚠️ | ✅ | ✅ | 🟡 PARTIAL |
+| FR9A | Severity Scoring | EPIC-2.5 | 2 | ✅ | ✅ | ❌ | ⚠️ | ✅ | ✅ | 🟡 PARTIAL |
+| FR9B | Analysis Results Display | EPIC-2.6 | 2 | ✅ | ✅ | ❌ | ⚠️ | ✅ | ✅ | 🟡 PARTIAL |
 
 **EPIC 2 Summary:**  
 - **Total Requirements:** 53 (Product Backlog)  
 - **Complete:** 0  
-- **Partial:** 0 (Model only, not usable)  
-- **Not Implemented:** 53  
-- **Completion:** 0% (0/53)  
-- **CRITICAL:** Core product value proposition not implemented
+- **Partial:** 5 (camera guidance + analysis flow live)  
+- **Not Implemented:** 48  
+- **Completion:** ~9% (5/53)  
+- **CRITICAL:** Multi-angle capture + advanced analysis gaps remain
 
 ---
 

@@ -16,6 +16,20 @@
 
 ---
 
+## January 25, 2026 - Profile Settings Modernization
+
+### ✅ UX Fixes & Improvements
+- **Layout Refresh**: sidebar navigation with a card-based main panel.
+- **Profile Summary**: avatar + name/email in a dedicated profile card.
+- **Quick Stats**: scan stats surfaced in the sidebar for context.
+- **Header Clarity**: clearer page subtitle and unsaved-change badge.
+
+### 🧩 Component Updates
+- `ProfileSettingsPage.tsx` (layout + navigation)
+- `ProfileSettingsPage.css` (modern card styling)
+
+---
+
 ## January 23, 2026 - Profile UX + Recommendation Refresh
 
 ### ✅ UX Fixes & Improvements

@@ -178,6 +178,16 @@ const ProfileSettingsPage: React.FC = () => {
     { value: '1year', label: '1 Year' }
   ];
 
+  const tabs = [
+    { id: 'personal', label: 'Personal' },
+    { id: 'skin', label: 'Skin Profile' },
+    { id: 'goals', label: 'Goals' },
+    { id: 'lifestyle', label: 'Lifestyle' },
+    { id: 'notifications', label: 'Notifications' },
+    { id: 'privacy', label: 'Privacy' },
+    { id: 'stats', label: 'Statistics' }
+  ] as const;
+
   const fetchUserProfile = useCallback(async () => {
     try {
       setProfile((prev) => {
@@ -318,25 +328,18 @@ const ProfileSettingsPage: React.FC = () => {
   return (
     <div className="profile-settings-page">
       <div className="profile-container">
-        <h1>Profile Settings</h1>
-        
-        <div className="tabs">
-          <button className={activeTab === 'personal' ? 'active' : ''} onClick={() => setActiveTab('personal')}>Personal</button>
-          <button className={activeTab === 'skin' ? 'active' : ''} onClick={() => setActiveTab('skin')}>Skin Profile</button>
-          <button className={activeTab === 'goals' ? 'active' : ''} onClick={() => setActiveTab('goals')}>Goals</button>
-          <button className={activeTab === 'lifestyle' ? 'active' : ''} onClick={() => setActiveTab('lifestyle')}>Lifestyle</button>
-          <button className={activeTab === 'notifications' ? 'active' : ''} onClick={() => setActiveTab('notifications')}>Notifications</button>
-          <button className={activeTab === 'privacy' ? 'active' : ''} onClick={() => setActiveTab('privacy')}>Privacy</button>
-          <button className={activeTab === 'stats' ? 'active' : ''} onClick={() => setActiveTab('stats')}>Statistics</button>
+        <div className="profile-header">
+          <div>
+            <h1>Profile Settings</h1>
+            <p className="profile-subtitle">Manage your personal details, skin profile, and privacy preferences.</p>
+          </div>
+          {isDirty && <span className="unsaved-pill">Unsaved changes</span>}
         </div>
 
         <form onSubmit={handleSubmit} className="settings-form">
-          {/* PERSONAL INFORMATION TAB */}
-          {activeTab === 'personal' && (
-            <div className="tab-content">
-              <h2>Personal Information</h2>
-              
-              <div className="photo-upload-section">
+          <div className="profile-layout">
+            <aside className="profile-sidebar">
+              <div className="profile-card">
                 <div className="photo-preview">
                   {profile.profilePhoto ? (
                     <img src={profile.profilePhoto} alt="Profile" />
@@ -344,12 +347,17 @@ const ProfileSettingsPage: React.FC = () => {
                     <div className="photo-placeholder">No Photo</div>
                   )}
                 </div>
+                <div className="profile-identity">
+                  <div className="profile-name">{profile.name || 'Your Name'}</div>
+                  <div className="profile-email">{profile.email || 'email@example.com'}</div>
+                </div>
                 <button
                   type="button"
                   className="btn-upload"
                   onClick={() => fileInputRef.current?.click()}
                 >
-                  Upload Photo
+                  <IconCamera size={18} strokeWidth={2} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+                  Update Photo
                 </button>
                 <input
                   ref={fileInputRef}
@@ -360,6 +368,37 @@ const ProfileSettingsPage: React.FC = () => {
                 />
                 <p className="help-text">Recommended: 200x200px square image.</p>
               </div>
+
+              <div className="profile-quick-stats">
+                <div className="quick-stat">
+                  <span className="stat-label">Skin Score</span>
+                  <span className="stat-value">{stats.skinHealthScore}%</span>
+                </div>
+                <div className="quick-stat">
+                  <span className="stat-label">Total Scans</span>
+                  <span className="stat-value">{stats.totalScans}</span>
+                </div>
+              </div>
+
+              <nav className="profile-nav">
+                {tabs.map((tab) => (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    className={activeTab === tab.id ? 'active' : ''}
+                    onClick={() => setActiveTab(tab.id)}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </nav>
+            </aside>
+
+            <section className="profile-content">
+          {/* PERSONAL INFORMATION TAB */}
+          {activeTab === 'personal' && (
+            <div className="tab-content">
+              <h2>Personal Information</h2>
 
               <div className="form-row">
                 <div className="form-group">
@@ -815,12 +854,13 @@ const ProfileSettingsPage: React.FC = () => {
               </div>
             </div>
           )}
+            </section>
+          </div>
 
           {error && <div className="error-message">{error}</div>}
           {success && <div className="success-message">Profile updated successfully!</div>}
           
           <div className="form-actions">
-            {isDirty && <span className="unsaved-indicator">Unsaved changes</span>}
             <button type="submit" className="btn-primary" disabled={loading}>
               {loading ? 'Saving...' : 'Save Changes'}
             </button>

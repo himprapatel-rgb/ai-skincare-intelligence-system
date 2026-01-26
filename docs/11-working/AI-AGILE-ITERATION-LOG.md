@@ -6,6 +6,28 @@ Use that workflow doc for checklists and templates to avoid duplication here.
 
 ---
 
+## Iteration 2026-01-26 (Admin UI Lint Fix + Deploy + Test Pass)
+
+### Goal
+Clear frontend lint warnings, deploy the fix, and re-validate production with E2E.
+
+### Scope (Completed)
+- Fixed admin page hook dependencies to satisfy lint rules.
+- Deployed frontend to Railway.
+- Re-ran frontend lint/unit/E2E against production.
+- Re-ran backend test suite.
+
+### Key Changes (Code)
+- Hook deps memoization: `frontend/src/pages/AdminProductsPage.tsx`, `frontend/src/pages/AdminUsersPage.tsx`
+
+### Verification / Tests
+- Backend: `python -m pytest` (23 passed, 4 skipped; coverage 52.72%)
+- Frontend lint: `npm run lint`
+- Frontend unit: `npm run test -- --run`
+- Frontend e2e (prod): `npm run e2e` with `PLAYWRIGHT_BASE_URL=https://frontend-production-0415.up.railway.app`
+
+---
+
 ## Iteration 2026-01-26 (Digital Twin + Routine + Progress + Admin MVP)
 
 ### Goal

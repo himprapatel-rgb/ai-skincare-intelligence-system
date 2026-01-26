@@ -12,6 +12,18 @@ interface RoutineStep {
   category: string;
 }
 
+type ApiRoutineProduct = {
+  product_id: string;
+  step_order?: number | null;
+  notes?: string | null;
+};
+
+type ApiRoutine = {
+  id: string;
+  routine_type?: string;
+  products?: ApiRoutineProduct[];
+};
+
 interface ReminderSettings {
   enabled: boolean;
   morningTime: string;
@@ -79,22 +91,23 @@ const RoutineBuilderPage: React.FC = () => {
         if (!response.ok) {
           throw new Error('Failed to load routines');
         }
-        const routines = await response.json();
-        const mapRoutineSteps = (routine: { routine_type?: string; products?: Array<{ product_id: string; step_order?: number; notes?: string }> }) => {
+        const routines: ApiRoutine[] = await response.json();
+        const mapRoutineSteps = (routine: ApiRoutine): RoutineStep[] => {
           const products = routine.products || [];
+          const routineTime: RoutineStep['time'] = routine.routine_type === 'evening' ? 'evening' : 'morning';
           return products
             .sort((a, b) => (a.step_order || 0) - (b.step_order || 0))
             .map((product, index) => ({
               id: `${product.product_id}-${index}`,
-              time: routine.routine_type === 'evening' ? 'evening' : 'morning',
+              time: routineTime,
               order: index + 1,
               productId: product.product_id,
               category: product.notes || 'Serum',
             }));
         };
 
-        const morning = routines.find((item: { routine_type?: string }) => item.routine_type === 'morning');
-        const evening = routines.find((item: { routine_type?: string }) => item.routine_type === 'evening');
+        const morning = routines.find((item) => item.routine_type === 'morning');
+        const evening = routines.find((item) => item.routine_type === 'evening');
 
         if (morning) {
           setMorningRoutine(mapRoutineSteps(morning));

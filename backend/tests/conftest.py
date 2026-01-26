@@ -4,7 +4,7 @@ import os
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
-from sqlalchemy.dialects.postgresql import ARRAY, JSONB
+from sqlalchemy.dialects.postgresql import ARRAY, JSONB, UUID
 from sqlalchemy.ext.compiler import compiles
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
@@ -34,6 +34,11 @@ def _compile_jsonb_sqlite(_type, _compiler, **_kwargs):
 @compiles(ARRAY, "sqlite")
 def _compile_array_sqlite(_type, _compiler, **_kwargs):
     return "JSON"
+
+
+@compiles(UUID, "sqlite")
+def _compile_uuid_sqlite(_type, _compiler, **_kwargs):
+    return "CHAR(36)"
 
 # Configure engine based on database type
 if SQLALCHEMY_DATABASE_URL.startswith("sqlite"):

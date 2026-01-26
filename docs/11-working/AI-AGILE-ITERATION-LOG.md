@@ -33,6 +33,25 @@ Apply quick global UI polish across all pages within the 1-hour timebox.
 
 ---
 
+## Iteration 2026-01-26 (CI SQLite UUID Compile Fix)
+
+### Goal
+Unblock CI tests by ensuring UUID columns compile under SQLite.
+
+### Scope (Completed)
+- Added SQLite UUID compilation override in test setup.
+
+### Key Changes (Code)
+- SQLite UUID compiler shim: `backend/tests/conftest.py`
+
+### Verification / Tests
+- Backend: `python -m pytest tests -k digital_twin` (failed coverage gate at 47% on partial run)
+
+### Risks / Follow-ups
+- CI will re-run full suite; verify coverage and UUID compilation there.
+
+---
+
 ## Iteration 2026-01-26 (Digital Twin MVP Completion)
 
 ### Goal

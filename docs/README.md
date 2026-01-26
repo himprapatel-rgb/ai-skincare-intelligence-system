@@ -12,9 +12,10 @@
 ## 📋 Core Documentation
 
 ### Requirements & Architecture
-- **[SRS V5.3](./01-requirements/SRS-V5.3-External-Pretrained-ML.md)**
-- **[Traceability Matrix](./01-requirements/Traceability-Matrix.md)**
-- **[Architecture Decisions](./02-architecture/Architecture-Decisions.md)**
+- **[SRS V5.3](./01-requirements/SRS-V5.3-External-Pretrained-ML.md)** - Software requirements specification
+- **[Feature Implementation Traceability (Jan 26, 2026)](./01-requirements/Feature-Implementation-Traceability-2026-01-26.md)** - Maps SRS to code
+- **[Traceability Matrix](./01-requirements/Traceability-Matrix.md)** - Original traceability
+- **[Architecture Decisions](./02-architecture/Architecture-Decisions.md)** - ADRs and design decisions
 
 ### Product & Agile
 - **[Product Backlog](./03-product/Product-Backlog-V5.md)**
@@ -22,7 +23,9 @@
 - **[Sprint Index](./07-sprints/README.md)**
 
 ### Operations (Living Docs)
-- **[Current State](./06-operations/Current-State.md)**
+- **[Implementation Status (Jan 26, 2026)](./06-operations/Implementation-Status-2026-01-26.md)** - Latest comprehensive status
+- **[Current State](./06-operations/Current-State.md)** - Living document with addendums
+- **[Pages Status](./06-operations/Pages-Created-Status.md)** - All 31 pages inventory
 - **[Baseline Healthcheck](./06-operations/Baseline-Healthcheck.md)**
 - **[Action Plan](./06-operations/Action-Plan-Today.md)**
 
@@ -56,10 +59,13 @@
 
 | I want to... | Go to |
 |--------------|-------|
+| See what's implemented NOW | [Implementation Status (Jan 26)](./06-operations/Implementation-Status-2026-01-26.md) |
+| Check which features are complete | [Feature Traceability](./01-requirements/Feature-Implementation-Traceability-2026-01-26.md) |
 | Understand system requirements | [SRS V5.3](./01-requirements/SRS-V5.3-External-Pretrained-ML.md) |
-| See current priorities | [Product Backlog](./03-product/Product-Backlog-V5.md) |
+| See all 31 frontend pages | [Pages Status](./06-operations/Pages-Created-Status.md) |
 | Review sprint history | [Sprint Index](./07-sprints/README.md) |
-| Check production status | [Baseline Healthcheck](./06-operations/Baseline-Healthcheck.md) |
+| See current priorities | [Product Backlog](./03-product/Product-Backlog-V5.md) |
+| Check production URLs | [README (root)](../README.md#live-production-urls) |
 | Set up development environment | [Quick Start](./00-index/Quick-Start.md) |
 | Deploy to production | [Deployment Guide](./05-deployment/Deployment-Guide.md) |
 | Run tests | [Testing Guide](./04-testing/Testing-Guide.md) |
@@ -80,5 +86,5 @@
 
 ---
 
-**Last Updated:** January 2026  
+**Last Updated:** January 26, 2026  
 **Maintained by:** AI Skincare Intelligence System Team

@@ -1,5 +1,11 @@
 # AI Skincare Intelligence System - Deployment URLs
-**Last Updated**: December 5, 2025, 11:00 AM GMT
+
+> **ℹ️ NOTE:** This document contains historical deployment information. For current status, see:
+> - [Implementation Status (Jan 26, 2026)](docs/06-operations/Implementation-Status-2026-01-26.md)
+> - [Deployment Guide](docs/05-deployment/Deployment-Guide.md)
+
+**Last Updated**: December 5, 2025, 11:00 AM GMT  
+**Current Status (Jan 26, 2026):** Frontend ✅ Live | Backend ✅ Live | Database ✅ Operational
 
 ## 🌐 Production Environments
 

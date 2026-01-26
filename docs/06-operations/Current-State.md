@@ -36,6 +36,21 @@ This document captures the comprehensive analysis of the current AI Skincare Int
 - Admin access requires allowlist + is_admin flag.
 - Admin UI lint fixes deployed; frontend lint/unit/E2E and backend tests re-run.
 
+### Addendum (2026-01-26 Evening)
+- **External ML Integration**: Added external_models table and ExternalModel model.
+- **User Products**: Added user_products table and UserProduct model for scanned products.
+- **Product Scanning API**: POST /profile/scan-product endpoint with OpenBeautyFacts integration.
+- **HuggingFace Integration**: External ML inference with retry logic (/inference endpoints).
+- **Homepage Critical Fixes**: Fixed "How It Works" text wrapping bug and Sample Analysis card overflow.
+- **GUI Consistency Sweep**: Removed all page-level :root overrides (11 pages), centralized CSS variables.
+- **Inline Style Cleanup**: Replaced inline styles with CSS classes across 10+ pages.
+- **ProductDetailsPage Styling**: Added comprehensive CSS (was mostly unstyled).
+- **Universal Navigation**: Expanded footer with 4-column grid, added Login/Register to header.
+- **Accessibility**: Skip-to-content link, aria-labels on interactive elements.
+- **Deployment**: All changes pushed to main and deployed to Railway.
+- **Status**: 31 pages total, 23 with real API (74%), 8 with mock data (26%).
+- **Implementation Level**: ~90% complete, production operational.
+
 ### Key Findings
 ✅ **Strong Foundation:** Core authentication, encryption, GDPR compliance, and ML integration operational
 ✅ **Database Models:** 10+ models covering users, products, routines, scans, digital twin

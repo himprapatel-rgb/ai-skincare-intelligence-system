@@ -53,6 +53,21 @@ interface DigitalTwinSnapshot {
   improvements: string[];
 }
 
+const moodScoreMap: Record<string, number> = {
+  happy: 90,
+  balanced: 75,
+  dry: 45,
+  oily: 55,
+  combination: 60,
+  sensitive: 50,
+  stressed: 45,
+  irritated: 40,
+  breakout_prone: 40,
+  recovering: 60,
+  aggravated: 35,
+  unknown: 50,
+};
+
 /**
  * Digital Twin Timeline Page (FR1-FR9 from SRS)
  * Showcase user's skin improvement over time with timeline visualization
@@ -64,21 +79,6 @@ const DigitalTwinTimelinePage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [insights, setInsights] = useState<ApiInsights | null>(null);
-
-  const moodScoreMap: Record<string, number> = {
-    happy: 90,
-    balanced: 75,
-    dry: 45,
-    oily: 55,
-    combination: 60,
-    sensitive: 50,
-    stressed: 45,
-    irritated: 40,
-    breakout_prone: 40,
-    recovering: 60,
-    aggravated: 35,
-    unknown: 50,
-  };
 
   const formatMoodLabel = (mood: string) => mood.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
   const formatConcernLabel = (concern: string) => concern.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
@@ -166,7 +166,7 @@ const DigitalTwinTimelinePage: React.FC = () => {
     };
 
     fetchSnapshots();
-  }, []);
+  }, [selectedSnapshot]);
 
   const chartData = [...snapshots]
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())

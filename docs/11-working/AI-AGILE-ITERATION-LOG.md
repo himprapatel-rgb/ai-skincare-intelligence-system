@@ -46,6 +46,7 @@ Unblock CI tests by ensuring UUID columns compile under SQLite.
 
 ### Verification / Tests
 - Backend: `python -m pytest tests -k digital_twin` (failed coverage gate at 47% on partial run)
+- CI - Tests (GitHub Actions): succeeded; warnings for Pydantic deprecations.
 
 ### Risks / Follow-ups
 - CI will re-run full suite; verify coverage and UUID compilation there.

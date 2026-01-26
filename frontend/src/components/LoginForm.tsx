@@ -29,9 +29,15 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegis
       await login(email, password);
       onSuccess();
     } catch (err: unknown) {
+      console.error('Login error:', err);
       if (axios.isAxiosError(err)) {
         const detail = err.response?.data?.detail || err.response?.data?.message;
         const message = detail || 'Login failed. Please try again.';
+        console.error('Login API error:', {
+          status: err.response?.status,
+          data: err.response?.data,
+          message
+        });
         setError(message);
         if (typeof message === 'string' && message.toLowerCase().includes('verify')) {
           setShowVerifyLink(true);

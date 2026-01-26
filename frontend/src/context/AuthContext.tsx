@@ -73,12 +73,17 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   }, []);
 
   const login = async (email: string, password: string): Promise<void> => {
-    const response = await axios.post(`${API_URL}/auth/login`, { email, password });
-    const { token: newToken, user: userData } = response.data;
-    localStorage.setItem('auth_token', newToken);
-    axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
-    setToken(newToken);
-    setUser(userData);
+    try {
+      const response = await axios.post(`${API_URL}/auth/login`, { email, password });
+      const { token: newToken, user: userData } = response.data;
+      localStorage.setItem('auth_token', newToken);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
+      setToken(newToken);
+      setUser(userData);
+    } catch (error) {
+      console.error('AuthContext login error:', error);
+      throw error; // Re-throw to let LoginForm handle it
+    }
   };
 
   const register = async (name: string, email: string, password: string): Promise<AuthResponse> => {

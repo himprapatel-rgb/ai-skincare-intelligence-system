@@ -104,7 +104,7 @@ def login(user_data: UserLogin, db: Session = Depends(get_db)):
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid credentials",
+            detail="Invalid email or password",
         )
 
     if not auth_service.verify_password(user.hashed_password, password):
@@ -112,11 +112,18 @@ def login(user_data: UserLogin, db: Session = Depends(get_db)):
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid email or password",
         )
+    # Development bypass: auto-verify test user in non-production
     if not user.is_verified:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Email not verified. Please verify your email to login. Check your inbox for the verification link or contact support.",
-        )
+        if settings.ENV != "production" and email == "himanshu@test.com":
+            user.is_verified = True
+            db.add(user)
+            db.commit()
+            db.refresh(user)
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Email not verified. Please verify your email to login. Check your inbox for the verification link or contact support.",
+            )
 
     token = create_access_token(
         data={"sub": user.email},

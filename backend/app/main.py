@@ -74,6 +74,15 @@ def ensure_test_user() -> None:
         
         if engine.dialect.name != "sqlite":
             with engine.begin() as conn:
+                # Ensure admin flag exists on users table (production safety)
+                try:
+                    conn.execute(
+                        text(
+                            "ALTER TABLE users ADD COLUMN IF NOT EXISTS is_admin BOOLEAN DEFAULT FALSE"
+                        )
+                    )
+                except ProgrammingError:
+                    pass
                 conn.execute(
                     text("ALTER TABLE user_profiles ALTER COLUMN skin_type TYPE TEXT")
                 )

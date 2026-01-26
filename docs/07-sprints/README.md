@@ -22,13 +22,18 @@ This folder contains **canonical sprint summaries** - the single source of truth
 
 | Sprint | Summary | Status | Date |
 |--------|---------|--------|------|
-| Sprint 0 | Foundation Setup | ✅ Complete | Dec 2025 |
-| Sprint 1 | Core MVP Development | ✅ Complete | Dec 2025 |
-| Sprint 3 | Digital Twin Engine | ✅ Complete | Dec 2025 |
-| Sprint 4 | AI/ML Implementation | ✅ Complete | Dec 2025 |
-| Sprint 5 | Current | 🔄 In Progress | Dec 2025 |
-| Sprint 6 | Current | 🔄 In Progress | Dec 2025 |
-| Sprint HP-1 | Home Page Refresh | ✅ Complete | Jan 2026 |
+| Sprint 0 | [Summary](./sprint-0/Summary.md) | ✅ Complete | Dec 2025 |
+| Sprint 1 | [Summary](./sprint-1/Summary.md) | ✅ Complete | Dec 2025 |
+| Sprint 1.1 | [Folder](./sprint-1.1/) | ✅ Complete | Dec 2025 |
+| Sprint 1.2 | [Folder](./sprint-1.2/) | ✅ Complete | Dec 2025 |
+| Sprint 2 | [Folder](./sprint-2/) | ✅ Complete | Dec 2025 |
+| Sprint 3 | [Folder](./sprint-3/) | ✅ Complete | Dec 2025 |
+| Sprint 4 | [Folder](./sprint-4/) | ✅ Complete | Dec 2025 |
+| Sprint 5 | [Folder](./sprint-5/) | ✅ Complete | Dec 2025 |
+| Sprint 6 | [Folder](./sprint-6/) | ✅ Complete | Dec 2025 |
+| Sprint 7 | [Folder](./sprint-7/) | ✅ Complete | Jan 2026 |
+| Sprint F2 | [Folder](./sprint-f2/) | ✅ Complete | Jan 2026 |
+| Sprint HP-1 | [Summary](./sprint-hp-1/Summary.md) | ✅ Complete | Jan 2026 |
 
 ## Rules
 

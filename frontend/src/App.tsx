@@ -35,6 +35,9 @@ import ProgressTrackingPage from "./pages/ProgressTrackingPage";
 import DataExportPage from "./pages/DataExportPage";
 import DashboardPage from "./pages/DashboardPage";
 import NotificationCenterPage from "./pages/NotificationCenterPage";
+import AdminDashboardPage from "./pages/AdminDashboardPage";
+import AdminUsersPage from "./pages/AdminUsersPage";
+import AdminProductsPage from "./pages/AdminProductsPage";
 
 // Page Imports - Epic 5: Legal & Information Pages
 import AboutPage from "./pages/AboutPage";
@@ -82,6 +85,9 @@ export default function App() {
           <Route path="/export" element={<DataExportPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/notifications" element={<NotificationCenterPage />} />
+          <Route path="/admin" element={<AdminDashboardPage />} />
+          <Route path="/admin/users" element={<AdminUsersPage />} />
+          <Route path="/admin/products" element={<AdminProductsPage />} />
 
                   {/* Legal & Information Pages */}
         <Route path="/about" element={<AboutPage />} />

@@ -17,6 +17,21 @@ export type ScanActionsResponse = {
   };
 };
 
+export type ProgressSummaryPoint = {
+  date: string;
+  overall_score: number;
+  acne: number;
+  wrinkles: number;
+  hydration: number;
+  dark_spots: number;
+};
+
+export type ProgressSummaryResponse = {
+  points: ProgressSummaryPoint[];
+  total_scans: number;
+  improvement: number;
+};
+
 /**
  * IMPORTANT:
  * - This file intentionally DOES NOT use any `api` axios instance (so “Cannot find name 'api'” is impossible).
@@ -139,6 +154,16 @@ export async function getScanHistory(): Promise<Record<string, unknown>> {
  */
 export async function getScanActions(): Promise<ScanActionsResponse> {
   return fetchJson<ScanActionsResponse>("/api/v1/scan/actions", {
+    method: "GET",
+  });
+}
+
+/**
+ * GET /api/v1/progress/summary
+ */
+export async function getProgressSummary(range: "week" | "month" | "3months"): Promise<ProgressSummaryResponse> {
+  const params = new URLSearchParams({ range });
+  return fetchJson<ProgressSummaryResponse>(`/api/v1/progress/summary?${params.toString()}`, {
     method: "GET",
   });
 }

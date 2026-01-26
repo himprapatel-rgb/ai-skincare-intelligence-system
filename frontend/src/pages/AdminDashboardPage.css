@@ -1,0 +1,36 @@
+.admin-dashboard-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.admin-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.admin-card {
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: var(--shadow-md);
+}
+
+.admin-metric {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.admin-label {
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+.admin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}

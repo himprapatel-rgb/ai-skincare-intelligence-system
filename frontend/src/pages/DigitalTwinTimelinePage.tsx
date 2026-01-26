@@ -4,12 +4,34 @@ import { XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Area
 import { IconCamera, IconTrendingUp, IconCalendar, IconSparkles, IconTarget } from '../components/Icons';
 import './DigitalTwinTimelinePage.css';
 
+interface ApiStateVector {
+  hydration_level: number;
+  oiliness_level: number;
+  sensitivity_level: number;
+  barrier_impairment: number;
+  inflammation_level: number;
+  pigmentation_issues: number;
+  aging_signs: number;
+  congestion_level: number;
+}
+
+interface ApiSnapshot {
+  snapshot_id: string;
+  created_at: string;
+  skin_mood: string;
+  global_state_vector: ApiStateVector;
+  meta: {
+    overall_score?: number;
+    image_url?: string;
+  };
+}
+
 interface DigitalTwinSnapshot {
   id: string;
   date: string;
   imageUrl: string;
   overallScore: number;
-  skinMood: number; // 0-100
+  skinMood: number;
   concerns: {
     acne: number;
     wrinkles: number;
@@ -29,52 +51,79 @@ const DigitalTwinTimelinePage: React.FC = () => {
   const [snapshots, setSnapshots] = useState<DigitalTwinSnapshot[]>([]);
   const [selectedSnapshot, setSelectedSnapshot] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
-    // Mock data - replace with API call to /api/v1/digital_twin/timeline
-    const mockSnapshots: DigitalTwinSnapshot[] = [
-      {
-        id: '1',
-        date: '2026-01-14',
-        imageUrl: '/placeholder.jpg',
-        overallScore: 75,
-        skinMood: 78,
-        concerns: { acne: 30, wrinkles: 20, darkSpots: 25, hydration: 70, redness: 30 },
-        improvements: ['Acne reduced by 15%', 'Hydration improved by 10%']
-      },
-      {
-        id: '2',
-        date: '2026-01-07',
-        imageUrl: '/placeholder.jpg',
-        overallScore: 72,
-        skinMood: 72,
-        concerns: { acne: 35, wrinkles: 22, darkSpots: 28, hydration: 65, redness: 32 },
-        improvements: ['Acne reduced by 10%']
-      },
-      {
-        id: '3',
-        date: '2025-12-31',
-        imageUrl: '/placeholder.jpg',
-        overallScore: 68,
-        skinMood: 68,
-        concerns: { acne: 40, wrinkles: 20, darkSpots: 30, hydration: 60, redness: 35 },
-        improvements: []
-      },
-      {
-        id: '4',
-        date: '2025-12-24',
-        imageUrl: '/placeholder.jpg',
-        overallScore: 65,
-        skinMood: 65,
-        concerns: { acne: 45, wrinkles: 18, darkSpots: 32, hydration: 55, redness: 38 },
-        improvements: []
-      },
-    ];
-    setSnapshots(mockSnapshots);
-    setIsLoading(false);
+    const fetchSnapshots = async () => {
+      try {
+        setIsLoading(true);
+        setHasError(false);
+        const API_BASE = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
+        const token = localStorage.getItem('auth_token');
+        const response = await fetch(`${API_BASE}/digital-twin/query?limit=200`, {
+          headers: {
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          },
+        });
+        if (!response.ok) {
+          throw new Error('Failed to load digital twin timeline');
+        }
+        const data = await response.json();
+        const apiSnapshots: ApiSnapshot[] = data.snapshots || [];
+        const mapped: DigitalTwinSnapshot[] = apiSnapshots.map((snapshot, index) => {
+          const state = snapshot.global_state_vector || {
+            hydration_level: 0,
+            oiliness_level: 0,
+            sensitivity_level: 0,
+            barrier_impairment: 0,
+            inflammation_level: 0,
+            pigmentation_issues: 0,
+            aging_signs: 0,
+            congestion_level: 0,
+          };
+          const overallScore = Math.round(snapshot.meta?.overall_score ?? 0);
+          const concernScores = {
+            acne: Math.round((state.inflammation_level || 0) * 100),
+            wrinkles: Math.round((state.aging_signs || 0) * 100),
+            darkSpots: Math.round((state.pigmentation_issues || 0) * 100),
+            hydration: Math.round((state.hydration_level || 0) * 100),
+            redness: Math.round((state.barrier_impairment || 0) * 100),
+          };
+          const previous = index > 0 ? apiSnapshots[index - 1] : null;
+          const improvements: string[] = [];
+          if (previous?.meta?.overall_score != null) {
+            const diff = Math.round(overallScore - (previous.meta?.overall_score || 0));
+            if (diff > 0) {
+              improvements.push(`Overall score improved by ${diff}`);
+            }
+          }
+          if (concernScores.hydration >= 70) {
+            improvements.push('Hydration levels looking strong');
+          }
+          return {
+            id: snapshot.snapshot_id,
+            date: snapshot.created_at,
+            imageUrl: snapshot.meta?.image_url || '/placeholder.jpg',
+            overallScore,
+            skinMood: Math.round((overallScore / 100) * 100),
+            concerns: concernScores,
+            improvements,
+          };
+        });
+        setSnapshots(mapped);
+      } catch (error) {
+        console.error('Failed to load digital twin timeline:', error);
+        setHasError(true);
+        setSnapshots([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchSnapshots();
   }, []);
 
-  const chartData = snapshots
+  const chartData = [...snapshots]
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
     .map(s => ({
       date: new Date(s.date).toLocaleDateString('en', { month: 'short', day: 'numeric' }),
@@ -84,12 +133,38 @@ const DigitalTwinTimelinePage: React.FC = () => {
       hydration: s.concerns.hydration
     }));
 
-  const selectedData = snapshots.find(s => s.id === selectedSnapshot) || snapshots[0];
+  const selectedData = snapshots.find(s => s.id === selectedSnapshot) || snapshots[0] || null;
 
   if (isLoading) {
     return (
       <div className="digital-twin-page">
         <div className="loading-spinner">Loading timeline...</div>
+      </div>
+    );
+  }
+
+  if (hasError) {
+    return (
+      <div className="digital-twin-page">
+        <div className="digital-twin-container">
+          <div className="page-header">
+            <h1>Digital Twin Timeline</h1>
+            <p>We couldn't load your digital twin timeline. Please try again.</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (snapshots.length === 0) {
+    return (
+      <div className="digital-twin-page">
+        <div className="digital-twin-container">
+          <div className="page-header">
+            <h1>Digital Twin Timeline</h1>
+            <p>Complete a scan to generate your first digital twin snapshot.</p>
+          </div>
+        </div>
       </div>
     );
   }

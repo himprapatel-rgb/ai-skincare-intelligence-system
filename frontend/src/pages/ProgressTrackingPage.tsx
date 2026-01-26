@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Line } from 'recharts';
 import { IconTrendingUp, IconCheckCircle, IconCircle, IconDownload } from '../components/Icons';
-import { getScanHistory } from '../services/scanApi';
+import { getProgressSummary } from '../services/scanApi';
 import './CommonStyles.css';
 import './ProgressTrackingPage.css';
 
@@ -28,46 +28,15 @@ const ProgressTrackingPage: React.FC = () => {
     const fetchProgress = async () => {
       try {
         setIsLoading(true);
-        const historyData = await getScanHistory();
-        const scans = (historyData as { scans?: Array<Record<string, unknown>> }).scans || [];
-
-        const now = new Date();
-        const rangeDays = timeRange === 'week' ? 7 : timeRange === 'month' ? 30 : 90;
-        const filtered = scans.filter((scan) => {
-          const createdAt = new Date(String(scan.created_at || ''));
-          if (Number.isNaN(createdAt.getTime())) return false;
-          const diffDays = Math.floor((now.getTime() - createdAt.getTime()) / (1000 * 60 * 60 * 24));
-          return diffDays <= rangeDays;
-        });
-
-        const mapped = filtered.map((scan) => {
-          const summary = (scan.summary || {}) as Record<string, unknown>;
-          const scores = (summary.scores || {}) as Record<string, unknown>;
-
-          const getScore = (keys: string[]) => {
-            for (const key of keys) {
-              const value = scores[key];
-              if (typeof value === 'number') {
-                return Math.round(value);
-              }
-            }
-            return 0;
-          };
-
-          const overall = typeof summary.overall_score === 'number'
-            ? Math.round(summary.overall_score)
-            : 0;
-
-          return {
-            date: String(scan.created_at || ''),
-            overallScore: overall,
-            acne: getScore(['acne', 'hd_acne']),
-            wrinkles: getScore(['wrinkle', 'hd_wrinkle']),
-            hydration: getScore(['moisture', 'hd_moisture']),
-            darkSpots: getScore(['age_spot', 'hd_age_spot']),
-          } as ProgressData;
-        }).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-
+        const summary = await getProgressSummary(timeRange);
+        const mapped = summary.points.map((point) => ({
+          date: point.date,
+          overallScore: Math.round(point.overall_score),
+          acne: Math.round(point.acne),
+          wrinkles: Math.round(point.wrinkles),
+          hydration: Math.round(point.hydration),
+          darkSpots: Math.round(point.dark_spots),
+        })).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
         setProgressData(mapped);
       } catch (error) {
         console.error('Failed to load progress data:', error);

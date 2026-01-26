@@ -28,9 +28,8 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 16px 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .sample-report-logo {
@@ -84,6 +83,9 @@
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 24px;
   margin-bottom: 40px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .sample-card {
@@ -92,6 +94,7 @@
   border-radius: 16px;
   padding: 24px;
   box-shadow: var(--shadow);
+  min-width: 0;
 }
 
 .sample-card h2 {
@@ -147,5 +150,11 @@
 
   .sample-report-hero h1 {
     font-size: 2rem; /* Responsive: 32px / 2rem for H2 */
+  }
+}
+
+@media (max-width: 480px) {
+  .sample-report-grid {
+    grid-template-columns: 1fr;
   }
 }

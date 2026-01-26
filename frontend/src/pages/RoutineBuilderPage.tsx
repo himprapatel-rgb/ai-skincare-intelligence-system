@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IconSun, IconMoon, IconBell, IconArrowUp, IconArrowDown, IconX, IconCheck, IconInfo } from '../components/Icons';
 import './RoutineBuilderPage.css';
@@ -35,6 +35,8 @@ const RoutineBuilderPage: React.FC = () => {
     { id: '8', time: 'evening', order: 3, category: 'Treatment', productName: 'Retinol' },
     { id: '9', time: 'evening', order: 4, category: 'Moisturizer', productName: 'Night Cream' }
   ]);
+  const [routineIds, setRoutineIds] = useState<{ morning?: string; evening?: string }>({});
+  const [isLoading, setIsLoading] = useState(true);
 
   const categories = ['Cleanser', 'Toner', 'Essence', 'Serum', 'Treatment', 'Eye Cream', 'Moisturizer', 'Oil', 'Sunscreen'];
   
@@ -62,6 +64,55 @@ const RoutineBuilderPage: React.FC = () => {
 
   const currentRoutine = activeTime === 'morning' ? morningRoutine : eveningRoutine;
   const setCurrentRoutine = activeTime === 'morning' ? setMorningRoutine : setEveningRoutine;
+
+  useEffect(() => {
+    const fetchRoutines = async () => {
+      try {
+        setIsLoading(true);
+        const API_BASE = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
+        const token = localStorage.getItem('auth_token');
+        const response = await fetch(`${API_BASE}/routines`, {
+          headers: {
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          },
+        });
+        if (!response.ok) {
+          throw new Error('Failed to load routines');
+        }
+        const routines = await response.json();
+        const mapRoutineSteps = (routine: { routine_type?: string; products?: Array<{ product_id: string; step_order?: number; notes?: string }> }) => {
+          const products = routine.products || [];
+          return products
+            .sort((a, b) => (a.step_order || 0) - (b.step_order || 0))
+            .map((product, index) => ({
+              id: `${product.product_id}-${index}`,
+              time: routine.routine_type === 'evening' ? 'evening' : 'morning',
+              order: index + 1,
+              productId: product.product_id,
+              category: product.notes || 'Serum',
+            }));
+        };
+
+        const morning = routines.find((item: { routine_type?: string }) => item.routine_type === 'morning');
+        const evening = routines.find((item: { routine_type?: string }) => item.routine_type === 'evening');
+
+        if (morning) {
+          setMorningRoutine(mapRoutineSteps(morning));
+          setRoutineIds((prev) => ({ ...prev, morning: morning.id }));
+        }
+        if (evening) {
+          setEveningRoutine(mapRoutineSteps(evening));
+          setRoutineIds((prev) => ({ ...prev, evening: evening.id }));
+        }
+      } catch (error) {
+        console.error('Failed to load routines:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchRoutines();
+  }, []);
 
   // Auto-suggest product order based on category
   const suggestOrder = () => {
@@ -135,8 +186,9 @@ const RoutineBuilderPage: React.FC = () => {
           })),
       };
 
-      const response = await fetch(`${API_BASE}/routines`, {
-        method: 'POST',
+      const existingId = routineIds[activeTime];
+      const response = await fetch(`${API_BASE}/routines${existingId ? `/${existingId}` : ''}`, {
+        method: existingId ? 'PUT' : 'POST',
         headers: {
           'Content-Type': 'application/json',
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -148,6 +200,10 @@ const RoutineBuilderPage: React.FC = () => {
         throw new Error('Failed to save routine');
       }
 
+      if (!existingId) {
+        const saved = await response.json();
+        setRoutineIds((prev) => ({ ...prev, [activeTime]: saved.id }));
+      }
       alert('Routine saved successfully!');
     } catch (error) {
       console.error('Failed to save routine:', error);
@@ -196,7 +252,11 @@ const RoutineBuilderPage: React.FC = () => {
       )}
 
       <div className="routine-steps">
-        {currentRoutine.length === 0 ? (
+        {isLoading ? (
+          <div className="empty-state">
+            <p>Loading your routines...</p>
+          </div>
+        ) : currentRoutine.length === 0 ? (
           <div className="empty-state">
             <p>No steps in your {activeTime} routine yet</p>
             <button onClick={handleAddStep} className="btn-primary">Add First Step</button>

@@ -26,6 +26,9 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
             <Link className={`app-nav-link${location.pathname.startsWith('/scan') ? ' active' : ''}`} to="/scan">Analysis</Link>
             <Link className={`app-nav-link${location.pathname.startsWith('/dashboard') ? ' active' : ''}`} to="/dashboard">Dashboard</Link>
             <Link className={`app-nav-link${location.pathname.startsWith('/about') ? ' active' : ''}`} to="/about">About</Link>
+            {isAuthenticated && user?.is_admin && (
+              <Link className={`app-nav-link${location.pathname.startsWith('/admin') ? ' active' : ''}`} to="/admin">Admin</Link>
+            )}
             {isAuthenticated ? (
               <div className="app-nav-user">
                 <Link className="app-nav-link" to="/profile">{displayName}</Link>

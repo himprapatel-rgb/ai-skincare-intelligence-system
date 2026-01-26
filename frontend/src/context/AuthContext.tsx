@@ -14,6 +14,7 @@ export interface User {
   preferences?: Record<string, unknown>;
   is_active?: boolean;
   is_verified?: boolean;
+  is_admin?: boolean;
   created_at?: string;
 }
 

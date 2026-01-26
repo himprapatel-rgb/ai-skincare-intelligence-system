@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { IconBrain, IconShield, IconBookOpen, IconZap, IconAlertTriangle } from '../components/Icons';
+import { IconBrain, IconShield, IconBookOpen, IconZap, IconAlertTriangle, IconTarget, IconHeart, IconCheckCircle } from '../components/Icons';
 import './AboutPage.css';
 
 const AboutPage: React.FC = () => {
@@ -11,7 +11,7 @@ const AboutPage: React.FC = () => {
       <div className="about-container">
         {/* Hero Section */}
         <section className="about-hero">
-          <div className="hero-content">
+          <div className="about-hero-content">
             <h1 className="about-title">About SkinCareAI</h1>
             <p className="about-subtitle">
               AI-powered skin analysis for everyone, everywhere
@@ -87,34 +87,54 @@ const AboutPage: React.FC = () => {
         {/* Values Section */}
         <section className="about-section">
           <h2 className="section-title">Our Values</h2>
-          <div className="values-list">
-            <div className="value-item">
-              <h4>Accessibility</h4>
-              <p>
-                Professional skincare insights should be available to everyone,
-                regardless of location or income.
-              </p>
+          <div className="values-grid">
+            <div className="value-card">
+              <div className="value-icon">
+                <IconTarget size={24} strokeWidth={2} />
+              </div>
+              <div>
+                <h4>Accessibility</h4>
+                <p>
+                  Professional skincare insights should be available to everyone,
+                  regardless of location or income.
+                </p>
+              </div>
             </div>
-            <div className="value-item">
-              <h4>Transparency</h4>
-              <p>
-                We're clear about what our technology can and cannot do. We're not
-                a replacement for dermatologists—we're a helpful first step.
-              </p>
+            <div className="value-card">
+              <div className="value-icon">
+                <IconCheckCircle size={24} strokeWidth={2} />
+              </div>
+              <div>
+                <h4>Transparency</h4>
+                <p>
+                  We're clear about what our technology can and cannot do. We're not
+                  a replacement for dermatologists—we're a helpful first step.
+                </p>
+              </div>
             </div>
-            <div className="value-item">
-              <h4>Continuous Improvement</h4>
-              <p>
-                We constantly refine our AI models, incorporate user feedback, and
-                stay updated with the latest dermatology research.
-              </p>
+            <div className="value-card">
+              <div className="value-icon">
+                <IconHeart size={24} strokeWidth={2} />
+              </div>
+              <div>
+                <h4>Continuous Improvement</h4>
+                <p>
+                  We constantly refine our AI models, incorporate user feedback, and
+                  stay updated with the latest dermatology research.
+                </p>
+              </div>
             </div>
-            <div className="value-item">
-              <h4>User Privacy</h4>
-              <p>
-                Your data is yours. We never sell personal information and follow
-                strict GDPR and privacy regulations.
-              </p>
+            <div className="value-card">
+              <div className="value-icon">
+                <IconShield size={24} strokeWidth={2} />
+              </div>
+              <div>
+                <h4>User Privacy</h4>
+                <p>
+                  Your data is yours. We never sell personal information and follow
+                  strict GDPR and privacy regulations.
+                </p>
+              </div>
             </div>
           </div>
         </section>

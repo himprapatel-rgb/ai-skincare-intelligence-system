@@ -40,8 +40,13 @@ const DashboardPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!user) {
+      setLoading(false);
+      setData(null);
+      return;
+    }
     fetchDashboardData();
-  }, []);
+  }, [user]);
 
   const fetchDashboardData = async () => {
     try {
@@ -101,6 +106,20 @@ const DashboardPage: React.FC = () => {
       setLoading(false);
     }
   };
+
+  if (!user) {
+    return (
+      <div className="dashboard-page">
+        <div className="dashboard-empty empty-state">
+          <h2>Your Dashboard</h2>
+          <p>Sign in to view your skin analysis history and track your progress.</p>
+          <button className="btn-primary" onClick={() => navigate('/auth')}>
+            Sign In
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   if (loading || !data) {
     return <div className="dashboard-page"><div className="loading-spinner">Loading dashboard...</div></div>;

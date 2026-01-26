@@ -31,6 +31,13 @@
   margin: 0 auto;
 }
 
+.about-hero-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+
 .about-hero h1 {
   font-size: 3rem; /* Brand guideline: 48px / 3rem for H1 */
   font-weight: 700; /* Brand guideline: Bold */
@@ -100,6 +107,10 @@
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
   text-align: center;
+  min-height: 240px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .tech-icon {
@@ -119,8 +130,66 @@
   height: 32px;
 }
 
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(240px, 1fr));
+  gap: 24px;
+}
+
+.value-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 24px;
+  background: var(--bg-white);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+.value-card h4 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--text-dark);
+}
+
+.value-card p {
+  color: var(--text-gray);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.value-icon {
+  width: 48px;
+  height: 48px;
+  background: rgba(13, 148, 136, 0.1);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
 .disclaimer-box h3 svg {
   color: var(--secondary);
+}
+
+.about-cta {
+  text-align: center;
+  padding: 60px 24px 20px;
+}
+
+.about-cta h2 {
+  font-size: 2rem;
+  margin-bottom: 12px;
+  color: var(--text-dark);
+}
+
+.about-cta p {
+  color: var(--text-gray);
+  margin-bottom: 24px;
 }
 
 @media (max-width: 768px) {
@@ -138,5 +207,9 @@
 
   .mission-content {
     padding: 32px 24px;
+  }
+
+  .values-grid {
+    grid-template-columns: 1fr;
   }
 }

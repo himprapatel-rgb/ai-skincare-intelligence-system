@@ -15,41 +15,42 @@ const HomePage: React.FC = () => {
       {/* Hero Section - Updated with safer claims */}
       <section className="hero">
         <div className="hero-content">
-          <div className="hero-badge">
-            <span className="badge-icon">
-              <IconZap size={20} strokeWidth={2} />
-            </span>
-            Premium Skin Intelligence
-          </div>
-          <h1 className="hero-title">
-            AI Skin Analysis<br />
-            <span className="gradient-text">From a Single Photo</span>
-          </h1>
-          <p className="hero-subtitle">
-            Upload a selfie to get instant insights on acne, spots, redness, and skin texture — plus personalized skincare recommendations.
-          </p>
-          <div className="hero-cta">
-            <button className="btn-primary" onClick={() => navigate('/scan')}>
-              <span className="btn-icon">
-                <IconScan size={20} strokeWidth={2} />
+          <div className="hero-text">
+            <div className="hero-badge">
+              <span className="badge-icon">
+                <IconZap size={20} strokeWidth={2} />
               </span>
-              Start Free Skin Scan
-            </button>
-            <button className="btn-secondary" onClick={() => navigate('/analysis/demo')}>
-              See Sample Report
-            </button>
-            <button className="btn-secondary" onClick={() => navigate('/digital-twin')}>
-              <span className="btn-icon">
-                <IconTrendingUp size={20} strokeWidth={2} />
-              </span>
-              View Digital Twin
-            </button>
+              Premium Skin Intelligence
+            </div>
+            <h1 className="hero-title">
+              AI Skin Analysis<br />
+              <span className="gradient-text">From a Single Photo</span>
+            </h1>
+            <p className="hero-subtitle">
+              Upload a selfie to get instant insights on acne, spots, redness, and skin texture — plus personalized skincare recommendations.
+            </p>
+            <div className="hero-cta">
+              <button className="btn-primary" onClick={() => navigate('/scan')}>
+                <span className="btn-icon">
+                  <IconScan size={20} strokeWidth={2} />
+                </span>
+                Start Free Skin Scan
+              </button>
+              <button className="btn-secondary" onClick={() => navigate('/analysis/demo')}>
+                See Sample Report
+              </button>
+              <button className="btn-secondary" onClick={() => navigate('/digital-twin')}>
+                <span className="btn-icon">
+                  <IconTrendingUp size={20} strokeWidth={2} />
+                </span>
+                View Digital Twin
+              </button>
+            </div>
+            <p className="hero-reassurance">
+              <IconClock size={16} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '6px' }} />
+              Takes ~30 seconds &bull; No signup required &bull; Delete your photo anytime
+            </p>
           </div>
-          <p className="hero-reassurance">
-            <IconClock size={16} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '6px' }} />
-            Takes ~30 seconds &bull; No signup required &bull; Delete your photo anytime
-          </p>
-        </div>
         <div className="hero-visual">
           <div className="sample-report-preview">
             <div className="preview-header">Sample Analysis Result</div>

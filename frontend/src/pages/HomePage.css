@@ -1732,3 +1732,96 @@
     justify-content: center;
   }
 }
+
+/* =============================================
+   HOME PAGE AUDIT FIXES (2026-01-26)
+============================================= */
+.hero-content {
+  align-items: center;
+}
+
+.hero-text {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 560px;
+}
+
+.hero-cta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.hero-cta .btn-primary,
+.hero-cta .btn-secondary {
+  min-height: 48px;
+}
+
+.hero-reassurance {
+  color: var(--text-gray);
+  font-size: 0.95rem;
+}
+
+.results-grid {
+  grid-template-columns: repeat(2, minmax(240px, 1fr));
+  max-width: 960px;
+}
+
+.result-card {
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.steps-container {
+  grid-template-columns: repeat(3, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.how-it-works .step-card p {
+  white-space: normal;
+  word-break: normal;
+  overflow-wrap: break-word;
+  line-height: 1.6;
+}
+
+.faq-item {
+  position: relative;
+  padding-right: 56px;
+}
+
+.faq-item::after {
+  content: '+';
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 1.25rem;
+  color: var(--primary);
+}
+
+.cta-reassurance {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+@media (max-width: 1024px) {
+  .results-grid {
+    grid-template-columns: repeat(2, minmax(220px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-text {
+    max-width: 100%;
+  }
+
+  .results-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .steps-container {
+    grid-template-columns: 1fr;
+  }
+}

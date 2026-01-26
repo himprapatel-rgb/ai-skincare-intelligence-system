@@ -51,6 +51,7 @@ const HomePage: React.FC = () => {
               Takes ~30 seconds &bull; No signup required &bull; Delete your photo anytime
             </p>
           </div>
+        </div>
         <div className="hero-visual">
           <div className="sample-report-preview">
             <div className="preview-header">Sample Analysis Result</div>

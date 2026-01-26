@@ -6,6 +6,33 @@ Use that workflow doc for checklists and templates to avoid duplication here.
 
 ---
 
+## Iteration 2026-01-26 (Global GUI Polish)
+
+### Goal
+Apply quick global UI polish across all pages within the 1-hour timebox.
+
+### Scope (Completed)
+- Added Digital Twin navigation access in header/footer.
+- Standardized empty-state styling and added Digital Twin empty CTA.
+- Tightened shared UI spacing and utility styling for page headers/buttons.
+
+### Key Changes (Code)
+- Global layout polish + empty state styles: `frontend/src/components/AppLayout.css`
+- Navigation links: `frontend/src/components/AppLayout.tsx`
+- Digital Twin empty state CTA: `frontend/src/pages/DigitalTwinTimelinePage.tsx`
+
+### Key Changes (Docs)
+- Iteration log update: `docs/11-working/AI-AGILE-ITERATION-LOG.md`
+
+### Verification / Tests
+- Frontend: `npm run test -- --run`
+- Frontend e2e: `npm run e2e` (6 skipped: login requires valid E2E credentials)
+
+### Risks / Follow-ups
+- Re-check nav density on small screens if more links are added.
+
+---
+
 ## Iteration 2026-01-26 (Digital Twin MVP Completion)
 
 ### Goal

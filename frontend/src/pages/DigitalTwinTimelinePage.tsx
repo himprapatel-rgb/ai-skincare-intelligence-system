@@ -210,6 +210,18 @@ const DigitalTwinTimelinePage: React.FC = () => {
             <h1>Digital Twin Timeline</h1>
             <p>Complete a scan to generate your first digital twin snapshot.</p>
           </div>
+          <div className="empty-state">
+            <h2>No snapshots yet</h2>
+            <p>Your digital twin will appear after you complete a skin scan.</p>
+            <div className="empty-state-actions">
+              <button type="button" className="btn-primary" onClick={() => navigate('/scan')}>
+                Start a Scan
+              </button>
+              <button type="button" className="btn-secondary" onClick={() => navigate('/dashboard')}>
+                Go to Dashboard
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     );

@@ -278,6 +278,11 @@
   color: var(--text-secondary);
 }
 
+.app-layout .page-header .page-subtitle {
+  margin-top: 6px;
+  color: var(--text-secondary);
+}
+
 .app-layout .card,
 .app-layout .card-content {
   background: #ffffff;
@@ -327,4 +332,36 @@
 .app-layout .btn-primary:hover,
 .app-layout .btn-secondary:hover {
   transform: translateY(-2px);
+}
+
+.app-layout .btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-layout .empty-state {
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 32px;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+}
+
+.app-layout .empty-state h2 {
+  margin-bottom: 8px;
+}
+
+.app-layout .empty-state p {
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.app-layout .empty-state-actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
 }

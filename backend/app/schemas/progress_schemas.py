@@ -23,3 +23,18 @@ class ProgressPhotoResponse(ProgressPhotoBase):
 
     class Config:
         from_attributes = True
+
+
+class ProgressSummaryPoint(BaseModel):
+    date: datetime
+    overall_score: float
+    acne: float
+    wrinkles: float
+    hydration: float
+    dark_spots: float
+
+
+class ProgressSummaryResponse(BaseModel):
+    points: list[ProgressSummaryPoint]
+    total_scans: int
+    improvement: float

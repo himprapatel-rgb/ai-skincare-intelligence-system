@@ -224,10 +224,10 @@
 **So that** I have a daily regimen
 
 **Acceptance Criteria:**
-- [ ] AM/PM routine separation
-- [ ] Product order suggestions
-- [ ] Save routine
-- [ ] Reminder notifications
+- [x] AM/PM routine separation
+- [x] Product order suggestions
+- [x] Save routine
+- [ ] Reminder notifications (UI only; delivery pending)
 
 ---
 
@@ -284,8 +284,8 @@
 **So that** I see improvement over time
 
 **Acceptance Criteria:**
-- [ ] Progress charts
-- [ ] Trend analysis
+- [x] Progress charts
+- [x] Trend analysis
 - [ ] Milestone notifications
 - [ ] Weekly summary emails
 
@@ -306,19 +306,19 @@
 
 ---
 
-## Epic 5: Admin Dashboard (P2) - PLANNED
+## Epic 5: Admin Dashboard (P2) - IN PROGRESS
 
 ### US-501: Admin Login
 **Priority:** P0 | **Points:** 3 | **Status:** Done
 
 ### US-502: User Management
-**Priority:** P1 | **Points:** 8 | **Status:** Planned
+**Priority:** P1 | **Points:** 8 | **Status:** In Progress
 
 ### US-503: Product Catalog Management
-**Priority:** P1 | **Points:** 8 | **Status:** Planned
+**Priority:** P1 | **Points:** 8 | **Status:** In Progress
 
 ### US-504: Analytics Dashboard
-**Priority:** P2 | **Points:** 8 | **Status:** Planned
+**Priority:** P2 | **Points:** 8 | **Status:** In Progress
 
 ### US-505: Report Generation
 **Priority:** P2 | **Points:** 5 | **Status:** Backlog

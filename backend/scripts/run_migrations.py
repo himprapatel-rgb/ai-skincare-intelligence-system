@@ -58,6 +58,12 @@ def run_migrations():
             )
             cur.execute(
                 """
+                ALTER TABLE users
+                ADD COLUMN IF NOT EXISTS is_admin BOOLEAN DEFAULT FALSE
+                """
+            )
+            cur.execute(
+                """
                 CREATE TABLE IF NOT EXISTS ingredients (
                     id UUID DEFAULT gen_random_uuid()
                 )

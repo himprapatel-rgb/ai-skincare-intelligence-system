@@ -95,6 +95,12 @@ class Settings(BaseSettings):
         description="Shared secret token required by internal summary endpoint",
     )
 
+    # Admin access control
+    ADMIN_EMAIL_ALLOWLIST: str = Field(
+        default="",
+        description="Comma-separated list of admin emails (must also have is_admin flag)",
+    )
+
     # SMTP settings for email verification
     SMTP_HOST: str | None = Field(default=None, description="SMTP server host")
     SMTP_PORT: int = Field(default=587, description="SMTP server port")

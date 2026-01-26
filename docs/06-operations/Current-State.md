@@ -26,6 +26,13 @@ This document captures the comprehensive analysis of the current AI Skincare Int
 - Onboarding skin questionnaire enforced when profile baseline is missing.
 - SMTP delivery added for verification emails.
 
+### Addendum (2026-01-26)
+- Digital Twin timeline now uses live API data instead of mock snapshots.
+- Routine builder now loads/saves routines via the API (AM/PM).
+- Progress tracking now uses backend summary metrics.
+- Admin dashboard MVP added with user/product management and analytics summary.
+- Admin access requires allowlist + is_admin flag.
+
 ### Key Findings
 ✅ **Strong Foundation:** Core authentication, encryption, GDPR compliance, and ML integration operational
 ✅ **Database Models:** 10+ models covering users, products, routines, scans, digital twin

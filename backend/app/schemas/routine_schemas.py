@@ -37,6 +37,7 @@ class SavedRoutineUpdate(BaseModel):
     description: Optional[str]
     routine_type: Optional[str]
     is_active: Optional[bool]
+    products: Optional[List[RoutineProductCreate]] = None
 
 
 class SavedRoutineResponse(SavedRoutineBase):

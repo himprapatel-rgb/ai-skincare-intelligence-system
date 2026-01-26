@@ -6,6 +6,36 @@ Use that workflow doc for checklists and templates to avoid duplication here.
 
 ---
 
+## Iteration 2026-01-26 (Digital Twin + Routine + Progress + Admin MVP)
+
+### Goal
+Ship MVP functionality for Digital Twin, Routine Builder, Progress Tracking, and Admin Dashboard.
+
+### Scope (Completed)
+- Digital Twin timeline now pulls from backend snapshots.
+- Routine builder loads and saves AM/PM routines via API.
+- Progress tracking uses backend summary metrics.
+- Admin dashboard added with user/product management and analytics summary.
+- Admin access control via allowlist + is_admin flag.
+
+### Key Changes (Code)
+- Digital twin API integration: `frontend/src/pages/DigitalTwinTimelinePage.tsx`
+- Progress summary endpoint: `backend/app/api/v1/progress.py`
+- Routine updates with products: `backend/app/api/v1/routines.py`
+- Admin APIs + summary counts: `backend/app/routers/admin.py`
+- Admin UI pages/routes: `frontend/src/pages/AdminDashboardPage.tsx`, `AdminUsersPage.tsx`, `AdminProductsPage.tsx`, `frontend/src/App.tsx`
+
+### Key Changes (Docs)
+- Backlog updates: `docs/03-product/Product-Backlog-V5.md`
+- Traceability updates: `docs/01-requirements/Traceability-Matrix.md`
+- Current state addendum: `docs/06-operations/Current-State.md`
+- Required secrets update: `docs/05-deployment/Required-Secrets.md`
+
+### Verification / Tests
+- Not run in this iteration (manual verification pending).
+
+---
+
 ## Iteration 2026-01-25 (ScanPage Hook Cleanup + Test Run)
 
 ### Goal

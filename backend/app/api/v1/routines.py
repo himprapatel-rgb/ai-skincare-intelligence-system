@@ -87,8 +87,22 @@ def update_routine(
     if not routine:
         raise HTTPException(status_code=404, detail="Routine not found")
 
-    for field, value in payload.dict(exclude_unset=True).items():
+    update_data = payload.dict(exclude_unset=True)
+    products = update_data.pop("products", None)
+    for field, value in update_data.items():
         setattr(routine, field, value)
+
+    if products is not None:
+        db.query(RoutineProduct).filter(RoutineProduct.routine_id == routine.id).delete()
+        for p in products:
+            db.add(
+                RoutineProduct(
+                    routine_id=routine.id,
+                    product_id=p.product_id,
+                    step_order=p.step_order,
+                    notes=p.notes,
+                )
+            )
 
     db.commit()
     db.refresh(routine)

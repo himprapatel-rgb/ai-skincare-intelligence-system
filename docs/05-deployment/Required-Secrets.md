@@ -19,6 +19,7 @@ Required secrets
 - `SMTP_PASSWORD` — SMTP password (if required by provider).
 - `SMTP_FROM_EMAIL` — Sender address for verification emails.
 - `FRONTEND_URL` — Frontend base URL for verification links.
+- `ADMIN_EMAIL_ALLOWLIST` — Comma-separated admin emails (must also have is_admin flag).
 
 Optional / Environment-specific
 - `GPTGPT_API_BASE` — Custom base URL for the LLM provider API (if your provider requires a custom host).

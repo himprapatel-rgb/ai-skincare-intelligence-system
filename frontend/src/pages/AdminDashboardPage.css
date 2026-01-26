@@ -34,3 +34,41 @@
   flex-wrap: wrap;
   gap: 12px;
 }
+
+@media (max-width: 768px) {
+  .admin-summary-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .admin-card {
+    padding: 20px 16px;
+  }
+
+  .admin-metric {
+    font-size: 1.4rem;
+  }
+
+  .admin-label {
+    font-size: 0.85rem;
+  }
+
+  .admin-actions {
+    flex-direction: column;
+  }
+
+  .admin-actions button {
+    width: 100%;
+    min-height: 44px;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-card {
+    padding: 24px 20px;
+  }
+}

@@ -675,11 +675,20 @@
 /* Responsive */
 @media (max-width: 768px) {
   .routine-builder-page {
-    padding: 24px 16px;
+    padding: 32px 20px;
   }
 
   .routine-builder-page h1 {
-    font-size: 2rem; /* Responsive: 32px / 2rem for H2 */
+    font-size: 2.2rem;
+  }
+
+  .routine-tabs {
+    gap: 12px;
+  }
+
+  .tab-btn {
+    min-height: 48px;
+    padding: 10px 20px;
   }
 
   .routine-step,
@@ -689,9 +698,9 @@
   }
 
   .step-number {
-    width: 32px;
-    height: 32px;
-    font-size: 1rem;
+    width: 40px;
+    height: 40px;
+    font-size: 1.1rem;
   }
 
   .time-selector {
@@ -706,7 +715,65 @@
     grid-template-columns: repeat(4, 1fr);
   }
 
+  .day-btn {
+    min-height: 44px;
+    padding: 10px;
+  }
+
   .routine-actions {
     flex-direction: column;
+    gap: 12px;
+  }
+
+  .routine-actions .btn-primary,
+  .routine-actions .btn-secondary {
+    width: 100%;
+    min-height: 48px;
+  }
+}
+
+@media (max-width: 480px) {
+  .routine-builder-page {
+    padding: 24px 16px;
+  }
+
+  .routine-builder-page h1 {
+    font-size: 1.8rem;
+  }
+
+  .routine-tabs {
+    flex-direction: column;
+  }
+
+  .tab-btn {
+    width: 100%;
+  }
+
+  .days-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .step-time {
+    font-size: 0.85rem;
+  }
+
+  .product-item {
+    padding: 12px;
+  }
+
+  .btn-icon-action {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+  }
+
+  .routine-tips,
+  .routine-reminders {
+    padding: 20px 16px;
+  }
+
+  .empty-state {
+    padding: 40px 20px;
   }
 }

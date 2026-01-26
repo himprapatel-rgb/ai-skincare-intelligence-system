@@ -86,10 +86,62 @@
 
 @media (max-width: 768px) {
   .consent-page {
+    padding: 32px 20px;
+  }
+
+  .consent-page h1 {
+    font-size: 2.2rem;
+  }
+
+  .consent-header .subtitle {
+    font-size: 1rem;
+  }
+
+  .consent-item {
+    padding: 20px;
+  }
+
+  .consent-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .consent-actions button {
+    width: 100%;
+    min-height: 48px;
+  }
+}
+
+@media (max-width: 480px) {
+  .consent-page {
     padding: 24px 16px;
   }
 
   .consent-page h1 {
-    font-size: 2rem; /* Responsive: 32px / 2rem for H2 */
+    font-size: 1.8rem;
+  }
+
+  .consent-item {
+    padding: 16px;
+  }
+
+  .consent-title h3 {
+    font-size: 1.1rem;
+  }
+
+  .consent-description {
+    font-size: 0.9rem;
+  }
+
+  .consent-details {
+    font-size: 0.85rem;
+  }
+
+  .privacy-info {
+    padding: 20px 16px;
+  }
+
+  .consent-footer {
+    padding: 20px 16px;
   }
 }

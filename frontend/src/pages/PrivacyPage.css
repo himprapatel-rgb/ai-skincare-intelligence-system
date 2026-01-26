@@ -82,11 +82,37 @@
 
 @media (max-width: 768px) {
   .privacy-hero {
-    padding: 60px 16px 40px;
+    padding: 60px 20px 40px;
   }
 
   .privacy-hero h1 {
-    font-size: 2rem; /* Responsive: 32px / 2rem for H2 */
+    font-size: 2.2rem;
+  }
+
+  .privacy-container {
+    padding: 48px 20px;
+  }
+
+  .privacy-section {
+    padding: 28px 20px;
+  }
+
+  .privacy-section h2 {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .privacy-hero {
+    padding: 48px 16px 32px;
+  }
+
+  .privacy-hero h1 {
+    font-size: 1.8rem;
+  }
+
+  .privacy-hero p {
+    font-size: 1rem;
   }
 
   .privacy-container {
@@ -94,6 +120,15 @@
   }
 
   .privacy-section {
-    padding: 32px 24px;
+    padding: 24px 16px;
+  }
+
+  .privacy-section h2 {
+    font-size: 1.2rem;
+  }
+
+  .privacy-section p,
+  .privacy-section li {
+    font-size: 0.95rem;
   }
 }

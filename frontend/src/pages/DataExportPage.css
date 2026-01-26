@@ -1,18 +1,5 @@
 /* Data Export Page - Brand-Aligned Design */
 
-:root {
-  --primary: #0D9488;
-  --primary-dark: #0f766e;
-  --bg-light: #F8FAFC;
-  --bg-white: #FFFFFF;
-  --text-dark: #1E293B;
-  --text-gray: #4b5b76;
-  --text-secondary: #4b5b76;
-  --border: #E2E8F0;
-  --bg-secondary: #F8FAFC;
-  --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
 .data-export-page {
   min-height: 100vh;
   background: var(--bg-light);
@@ -182,10 +169,62 @@
 
 @media (max-width: 768px) {
   .data-export-page {
+    padding: 32px 20px;
+  }
+
+  .data-export-page h1 {
+    font-size: 2.2rem;
+  }
+
+  .export-format-grid {
+    flex-direction: column;
+  }
+
+  .export-format-card {
+    width: 100%;
+  }
+
+  .export-card {
+    padding: 24px 20px;
+  }
+
+  .export-actions {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .export-actions button {
+    width: 100%;
+    min-height: 48px;
+  }
+
+  .export-category {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .data-export-page {
     padding: 24px 16px;
   }
 
   .data-export-page h1 {
-    font-size: 2rem; /* Responsive: 32px / 2rem for H2 */
+    font-size: 1.8rem;
+  }
+
+  .export-card {
+    padding: 20px 16px;
+  }
+
+  .export-format-card {
+    padding: 16px;
+  }
+
+  .export-complete {
+    padding: 32px 20px;
+  }
+
+  .export-category {
+    padding: 16px;
   }
 }

@@ -376,16 +376,25 @@
 
 @media (max-width: 768px) {
   .recommendations-page {
-    padding: 24px 16px;
+    padding: 32px 20px;
   }
 
   .recommendations-header h1 {
-    font-size: 2rem; /* Responsive: 32px / 2rem for H2 */
+    font-size: 2.2rem;
   }
 
   .recommendations-header {
     flex-direction: column;
     align-items: flex-start;
+    margin-bottom: 32px;
+  }
+
+  .recommendations-filters {
+    padding: 20px;
+  }
+
+  .filters-grid {
+    grid-template-columns: 1fr;
   }
 
   .product-grid {
@@ -396,5 +405,49 @@
   .filters-header {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .favorite-button {
+    width: 44px;
+    height: 44px;
+  }
+
+  .btn-add {
+    padding: 12px 20px;
+    min-height: 44px;
+  }
+}
+
+@media (max-width: 480px) {
+  .recommendations-page {
+    padding: 24px 16px;
+  }
+
+  .recommendations-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .recommendations-filters {
+    padding: 16px;
+  }
+
+  .product-card {
+    padding: 0;
+  }
+
+  .product-content {
+    padding: 20px;
+  }
+
+  .product-image {
+    height: 200px;
+  }
+
+  .empty-recommendations {
+    padding: 60px 24px;
+  }
+
+  .recommendations-error {
+    padding: 28px 20px;
   }
 }

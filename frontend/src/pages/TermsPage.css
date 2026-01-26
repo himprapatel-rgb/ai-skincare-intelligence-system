@@ -82,11 +82,37 @@
 
 @media (max-width: 768px) {
   .terms-hero {
-    padding: 60px 16px 40px;
+    padding: 60px 20px 40px;
   }
 
   .terms-hero h1 {
-    font-size: 2rem; /* Responsive: 32px / 2rem for H2 */
+    font-size: 2.2rem;
+  }
+
+  .terms-container {
+    padding: 48px 20px;
+  }
+
+  .terms-section {
+    padding: 28px 20px;
+  }
+
+  .terms-section h2 {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .terms-hero {
+    padding: 48px 16px 32px;
+  }
+
+  .terms-hero h1 {
+    font-size: 1.8rem;
+  }
+
+  .terms-hero p {
+    font-size: 1rem;
   }
 
   .terms-container {
@@ -94,6 +120,15 @@
   }
 
   .terms-section {
-    padding: 32px 24px;
+    padding: 24px 16px;
+  }
+
+  .terms-section h2 {
+    font-size: 1.2rem;
+  }
+
+  .terms-section p,
+  .terms-section li {
+    font-size: 0.95rem;
   }
 }

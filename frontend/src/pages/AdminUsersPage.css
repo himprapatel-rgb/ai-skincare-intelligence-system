@@ -91,3 +91,55 @@
     grid-template-rows: auto auto;
   }
 }
+
+@media (max-width: 768px) {
+  .admin-users-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-users-toolbar input {
+    width: 100%;
+    font-size: 16px; /* Prevent iOS zoom */
+    min-height: 44px;
+  }
+
+  .admin-users-toolbar button {
+    width: 100%;
+    min-height: 44px;
+  }
+
+  .admin-users-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 16px;
+  }
+
+  .admin-users-header {
+    display: none; /* Hide header row on mobile */
+  }
+
+  .admin-toggle input {
+    width: 44px;
+    height: 26px;
+  }
+
+  .admin-toggle input::after {
+    width: 20px;
+    height: 20px;
+  }
+
+  .admin-toggle input:checked::after {
+    transform: translateX(18px);
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-card {
+    padding: 12px;
+  }
+
+  .admin-users-row {
+    padding: 12px;
+  }
+}

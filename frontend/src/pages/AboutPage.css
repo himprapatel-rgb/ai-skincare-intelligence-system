@@ -182,22 +182,73 @@
 
 @media (max-width: 768px) {
   .about-hero {
-    padding: 60px 16px 40px;
+    padding: 60px 20px 40px;
   }
 
   .about-hero h1 {
-    font-size: 2rem; /* Responsive: 32px / 2rem for H2 */
+    font-size: 2.2rem;
   }
 
   .about-section {
-    padding: 40px 16px;
+    padding: 48px 20px;
+  }
+
+  .about-section h2 {
+    font-size: 1.75rem;
   }
 
   .mission-content {
     padding: 32px 24px;
   }
 
+  .tech-grid,
   .values-grid {
     grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .tech-card,
+  .value-card {
+    padding: 28px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-hero {
+    padding: 48px 16px 32px;
+  }
+
+  .about-hero h1 {
+    font-size: 1.8rem;
+  }
+
+  .about-hero p {
+    font-size: 1rem;
+  }
+
+  .about-section {
+    padding: 40px 16px;
+  }
+
+  .about-section h2 {
+    font-size: 1.5rem;
+  }
+
+  .mission-content {
+    padding: 28px 20px;
+  }
+
+  .tech-card,
+  .value-card {
+    padding: 24px 16px;
+    min-height: auto;
+  }
+
+  .disclaimer {
+    padding: 24px 16px;
+  }
+
+  .about-cta {
+    padding: 32px 16px;
   }
 }

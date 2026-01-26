@@ -1,19 +1,5 @@
 /* Skin Goals Page - Brand-Aligned Design */
 
-:root {
-  --primary: #0D9488;
-  --primary-dark: #0f766e;
-  --bg-light: #F8FAFC;
-  --bg-white: #FFFFFF;
-  --text-dark: #1E293B;
-  --text-gray: #4b5b76;
-  --text-primary: #1E293B;
-  --border: #E2E8F0;
-  --border-color: #E2E8F0;
-  --bg-secondary: #F8FAFC;
-  --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
 .skin-goals-page {
   min-height: 100vh;
   background: var(--bg-light);
@@ -117,14 +103,52 @@
 
 @media (max-width: 768px) {
   .skin-goals-page {
-    padding: 24px 16px;
+    padding: 32px 20px;
   }
 
   .skin-goals-page h1 {
-    font-size: 2rem; /* Responsive: 32px / 2rem for H2 */
+    font-size: 2.2rem;
   }
 
   .skin-goals-grid {
     grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .skin-goals-item {
+    padding: 18px;
+    min-height: 70px;
+  }
+
+  .skin-goals-title {
+    font-size: 1rem;
+  }
+
+  .skin-goals-desc {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .skin-goals-page {
+    padding: 24px 16px;
+  }
+
+  .skin-goals-page h1 {
+    font-size: 1.8rem;
+  }
+
+  .skin-goals-item {
+    padding: 16px;
+  }
+
+  .skin-goals-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .skin-goals-toggle svg {
+    width: 18px;
+    height: 18px;
   }
 }

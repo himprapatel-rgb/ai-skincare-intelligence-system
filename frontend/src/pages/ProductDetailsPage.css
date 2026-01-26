@@ -313,18 +313,88 @@
 
 @media (max-width: 768px) {
   .product-details-page {
-    padding: 24px 16px;
+    padding: 32px 20px;
+  }
+
+  .back-button {
+    margin-bottom: 20px;
+  }
+
+  .product-header {
+    gap: 24px;
   }
 
   .product-info-section h1 {
     font-size: 2rem;
   }
 
-  .product-details-tabs {
-    margin-bottom: 48px;
+  .brand {
+    font-size: 1rem;
+  }
+
+  .price {
+    font-size: 1.3rem;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .action-buttons button {
+    width: 100%;
+    min-height: 48px;
+  }
+
+  .tabs-header {
+    padding: 8px;
+  }
+
+  .tabs-header button {
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    min-height: 44px;
   }
 
   .tab-content {
     padding: 20px;
+  }
+
+  .key-ingredients {
+    grid-template-columns: 1fr;
+  }
+
+  .product-details-tabs {
+    margin-bottom: 48px;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-details-page {
+    padding: 24px 16px;
+  }
+
+  .product-info-section h1 {
+    font-size: 1.75rem;
+  }
+
+  .product-image-section {
+    padding: 16px;
+  }
+
+  .rating-section {
+    flex-wrap: wrap;
+  }
+
+  .tab-content {
+    padding: 16px;
+  }
+
+  .ingredient-item {
+    font-size: 0.8rem;
+    padding: 5px 10px;
+  }
+
+  .overview-tab section {
+    margin-bottom: 20px;
   }
 }

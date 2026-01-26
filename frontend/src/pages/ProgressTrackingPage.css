@@ -185,14 +185,70 @@
 
 @media (max-width: 768px) {
   .progress-tracking-page {
+    padding: 32px 20px;
+  }
+
+  .progress-tracking-page h1 {
+    font-size: 2.2rem;
+  }
+
+  .stats-summary {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .summary-card {
+    padding: 24px 20px;
+  }
+
+  .chart-section {
+    padding: 24px 20px;
+  }
+
+  .chart-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .chart-controls {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .chart-controls select,
+  .btn-export-chart {
+    width: 100%;
+    min-height: 44px;
+  }
+
+  .trend-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .progress-tracking-page {
     padding: 24px 16px;
   }
 
   .progress-tracking-page h1 {
-    font-size: 2rem; /* Responsive: 32px / 2rem for H2 */
+    font-size: 1.8rem;
   }
 
   .stats-summary {
     grid-template-columns: 1fr;
+  }
+
+  .summary-card {
+    padding: 20px 16px;
+  }
+
+  .chart-section {
+    padding: 20px 16px;
+  }
+
+  .chart-header h2 {
+    font-size: 1.3rem;
   }
 }

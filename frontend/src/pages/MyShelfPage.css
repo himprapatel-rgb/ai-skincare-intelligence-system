@@ -288,11 +288,11 @@
 
 @media (max-width: 768px) {
   .myshelf-page {
-    padding: 24px 16px;
+    padding: 32px 20px;
   }
 
   .myshelf-header h1 {
-    font-size: 2rem; /* Responsive: 32px / 2rem for H2 */
+    font-size: 2.2rem;
   }
 
   .myshelf-controls {
@@ -303,19 +303,68 @@
 
   .search-bar input {
     width: 100%;
+    font-size: 16px; /* Prevent iOS zoom */
+  }
+
+  .filter-tabs {
+    flex-wrap: wrap;
+  }
+
+  .filter-tab {
+    min-height: 44px;
+    padding: 10px 16px;
   }
 
   .products-grid {
     grid-template-columns: 1fr;
+    gap: 20px;
   }
 
   .product-actions {
     flex-direction: column;
     align-items: stretch;
+    gap: 10px;
   }
 
   .status-select,
   .btn-remove {
     width: 100%;
+    min-height: 44px;
+  }
+}
+
+@media (max-width: 480px) {
+  .myshelf-page {
+    padding: 24px 16px;
+  }
+
+  .myshelf-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .myshelf-controls {
+    padding: 16px;
+  }
+
+  .filter-tabs {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .filter-tab {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .shelf-empty {
+    padding: 60px 24px;
+  }
+
+  .product-card {
+    padding: 16px;
+  }
+
+  .product-info h3 {
+    font-size: 1.1rem;
   }
 }

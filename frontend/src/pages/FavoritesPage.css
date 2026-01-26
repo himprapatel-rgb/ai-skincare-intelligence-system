@@ -1,17 +1,5 @@
 /* Favorites Page - Brand-Aligned Design */
 
-:root {
-  --primary: #0D9488;
-  --primary-dark: #0f766e;
-  --secondary: #F97316;
-  --bg-light: #F8FAFC;
-  --bg-white: #FFFFFF;
-  --text-dark: #1E293B;
-  --text-gray: #4b5b76;
-  --border: #E2E8F0;
-  --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
 .favorites-page {
   min-height: 100vh;
   background: var(--bg-light);
@@ -84,14 +72,50 @@
 
 @media (max-width: 768px) {
   .favorites-page {
-    padding: 24px 16px;
+    padding: 32px 20px;
   }
 
   .favorites-page h1 {
-    font-size: 2rem; /* Responsive: 32px / 2rem for H2 */
+    font-size: 2.2rem;
+  }
+
+  .favorites-toolbar {
+    padding: 20px;
   }
 
   .favorites-grid {
     grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .favorite-card {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .favorites-page {
+    padding: 24px 16px;
+  }
+
+  .favorites-page h1 {
+    font-size: 1.8rem;
+  }
+
+  .favorites-toolbar {
+    padding: 16px;
+  }
+
+  .favorites-toolbar-content {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .favorites-sort select {
+    width: 100%;
+  }
+
+  .empty-state {
+    padding: 60px 24px;
   }
 }

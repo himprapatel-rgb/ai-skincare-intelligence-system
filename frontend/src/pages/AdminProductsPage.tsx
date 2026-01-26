@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './AdminProductsPage.css';
 
@@ -27,7 +27,7 @@ const AdminProductsPage: React.FC = () => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [search, setSearch] = useState('');
 
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     try {
       const API_BASE = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
       const token = localStorage.getItem('auth_token');
@@ -47,11 +47,11 @@ const AdminProductsPage: React.FC = () => {
       console.error('Admin products error:', error);
       setProducts([]);
     }
-  };
+  }, [search]);
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [fetchProducts]);
 
   const handleChange = (field: keyof typeof form) => (event: React.ChangeEvent<HTMLInputElement>) => {
     setForm((prev) => ({ ...prev, [field]: event.target.value }));

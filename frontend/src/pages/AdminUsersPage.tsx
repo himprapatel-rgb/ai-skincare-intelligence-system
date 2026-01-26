@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './AdminUsersPage.css';
 
@@ -17,7 +17,7 @@ const AdminUsersPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState('');
 
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     try {
       setIsLoading(true);
       const API_BASE = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
@@ -40,11 +40,11 @@ const AdminUsersPage: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [search]);
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [fetchUsers]);
 
   const updateUser = async (userId: number, updates: Partial<AdminUser>) => {
     try {

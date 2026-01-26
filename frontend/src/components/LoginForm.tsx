@@ -55,7 +55,20 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegis
   return (
     <div className="login-form">
       <h2>Sign In</h2>
-      {error && <ErrorMessage message={error} onDismiss={() => setError('')} />}
+      {error && (
+        <ErrorMessage 
+          message={error} 
+          onDismiss={() => setError('')}
+        />
+      )}
+      {import.meta.env.DEV && error && (
+        <details style={{ marginTop: '8px', fontSize: '0.875rem', color: 'var(--text-gray)' }}>
+          <summary style={{ cursor: 'pointer' }}>Debug Info</summary>
+          <pre style={{ marginTop: '8px', padding: '8px', background: 'var(--bg-light)', borderRadius: '4px', overflow: 'auto' }}>
+            {JSON.stringify({ error, email: email ? '***' : 'empty' }, null, 2)}
+          </pre>
+        </details>
+      )}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="email">Email</label>

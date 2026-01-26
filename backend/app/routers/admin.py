@@ -3,10 +3,9 @@
 import logging
 import subprocess
 import sys
+from datetime import datetime
 from pathlib import Path
 from typing import Optional
-
-from datetime import datetime
 
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query
 from pydantic import BaseModel

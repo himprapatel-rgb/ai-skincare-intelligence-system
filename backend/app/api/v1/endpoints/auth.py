@@ -1,9 +1,8 @@
 """
 Authentication API endpoints.
 """
-
-from datetime import datetime, timedelta
 import uuid
+from datetime import datetime, timedelta
 
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
 from sqlalchemy.exc import IntegrityError
@@ -12,6 +11,7 @@ from sqlalchemy.orm import Session
 from app.config import settings
 from app.core.security import create_access_token, get_current_user
 from app.database import get_db
+from app.models.user import User
 from app.schemas.user import (
     AuthResponse,
     EmailVerificationConfirm,
@@ -22,7 +22,6 @@ from app.schemas.user import (
     UserResponse,
 )
 from app.services.auth_service import auth_service
-from app.models.user import User
 from app.services.email_service import send_verification_email
 
 router = APIRouter()

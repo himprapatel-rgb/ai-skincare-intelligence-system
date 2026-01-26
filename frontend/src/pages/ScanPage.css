@@ -1,27 +1,31 @@
 /* Scan Page - Brand-Aligned Design */
 
-:root {
-  /* Brand Colors - From Visual Identity Guidelines */
-  --primary: #0D9488; /* Intelligent Teal - Primary brand color */
-  --primary-dark: #0f766e; /* Darker teal for hover states */
-  --secondary: #F97316; /* Warm Coral - Accents, highlights */
-  --accent: #a9c7ff; /* Light accent */
-  --bg-light: #F8FAFC; /* Light Gray - Secondary backgrounds */
-  --bg-white: #FFFFFF; /* Pure White - Backgrounds */
-  --text-dark: #1E293B; /* Deep Navy - Primary text */
-  --text-gray: #4b5b76; /* Gray text */
-  --text-light: #8a9ab7; /* Light gray text */
-  --border: #E2E8F0; /* Border color */
-  --shadow: 0 4px 12px rgba(13, 148, 136, 0.08);
-  --success: #D1FAE5; /* Soft Sage - Success states */
-}
-
 /* Main page container */
 .scan-page {
   min-height: 100vh;
   background: var(--bg-light);
   padding: 0;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.inline-icon {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+.inline-icon-sm {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+
+.camera-video.is-hidden {
+  opacity: 0;
+}
+
+.hidden-canvas {
+  display: none;
 }
 
 /* Remove particles */
@@ -702,6 +706,7 @@
   border-radius: 8px;
   transition: width 0.4s ease;
   box-shadow: 0 2px 8px rgba(13, 148, 136, 0.3);
+  width: var(--progress-width, 0%);
 }
 
 .progress-percentage {

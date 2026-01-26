@@ -98,7 +98,7 @@ const ProductDetailsPage: React.FC = () => {
   return (
     <div className="product-details-page">
       <button className="back-button" onClick={() => navigate(-1)}>
-        <IconArrowLeft size={16} strokeWidth={2} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
+        <IconArrowLeft size={16} strokeWidth={2} className="icon-inline" />
         Back
       </button>
       
@@ -124,7 +124,7 @@ const ProductDetailsPage: React.FC = () => {
                   size={16}
                   strokeWidth={2}
                   fill={index < Math.floor(product.rating) ? 'currentColor' : 'none'}
-                  style={{ marginRight: '4px' }}
+                  className="star-icon"
                 />
               ))}
             </div>

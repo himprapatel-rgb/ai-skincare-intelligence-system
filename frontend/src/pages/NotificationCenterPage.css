@@ -6,6 +6,18 @@
   padding: 40px 24px;
 }
 
+.icon-inline-lg {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 12px;
+}
+
+.icon-inline-right {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 4px;
+}
+
 .notification-container {
   max-width: 900px;
   margin: 0 auto;
@@ -186,6 +198,7 @@
   background: var(--bg-tertiary);
   border-radius: 12px;
   flex-shrink: 0;
+  color: var(--notification-color, var(--primary));
 }
 
 .notification-content {

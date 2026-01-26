@@ -137,6 +137,7 @@ const HistoryPage: React.FC = () => {
                   role="button"
                   tabIndex={0}
                   className="history-item"
+                  aria-label={`Open analysis from ${new Date(item.date).toLocaleDateString('en', { month: 'short', day: 'numeric', year: 'numeric' })}`}
                   onClick={() => navigate(`/analysis/${item.id}`)}
                   onKeyDown={(event) => {
                     if (event.key === 'Enter' || event.key === ' ') {

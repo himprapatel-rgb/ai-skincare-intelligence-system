@@ -44,6 +44,17 @@
   --text-primary: var(--gray-900);
   --text-secondary: var(--gray-600);
   --text-muted: var(--gray-400);
+
+  /* Legacy aliases (page-level styles) */
+  --primary-dark: var(--primary-hover);
+  --secondary: var(--warning);
+  --bg-light: var(--bg-secondary);
+  --bg-white: var(--white);
+  --text-dark: var(--text-primary);
+  --text-gray: var(--text-secondary);
+  --text-light: var(--text-muted);
+  --border: var(--border-color);
+  --shadow: var(--shadow-sm);
   
   /* Border */
   --border-color: var(--gray-200);

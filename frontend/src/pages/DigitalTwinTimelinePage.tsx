@@ -152,9 +152,7 @@ const DigitalTwinTimelinePage: React.FC = () => {
         });
         setSnapshots(mapped);
         setInsights(mergedInsights);
-        if (!selectedSnapshot && latestSnapshot?.snapshot_id) {
-          setSelectedSnapshot(latestSnapshot.snapshot_id);
-        }
+        setSelectedSnapshot((current) => current ?? latestSnapshot?.snapshot_id ?? null);
       } catch (error) {
         console.error('Failed to load digital twin timeline:', error);
         setHasError(true);
@@ -166,7 +164,7 @@ const DigitalTwinTimelinePage: React.FC = () => {
     };
 
     fetchSnapshots();
-  }, [selectedSnapshot]);
+  }, []);
 
   const chartData = [...snapshots]
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
@@ -232,7 +230,7 @@ const DigitalTwinTimelinePage: React.FC = () => {
       <div className="digital-twin-container">
         <div className="page-header">
           <h1>
-            <IconTarget size={32} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '12px' }} />
+            <IconTarget size={32} strokeWidth={2} className="icon-inline-lg" />
             Digital Twin Timeline
           </h1>
           <p>Track your skin's journey and see how it evolves over time</p>
@@ -361,7 +359,7 @@ const DigitalTwinTimelinePage: React.FC = () => {
           <div className="card-header">
             <h2>Timeline Snapshots</h2>
             <button onClick={() => navigate('/scan')} className="btn-primary">
-              <IconCamera size={18} strokeWidth={2} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+              <IconCamera size={18} strokeWidth={2} className="icon-inline" />
               Take New Snapshot
             </button>
           </div>
@@ -441,7 +439,7 @@ const DigitalTwinTimelinePage: React.FC = () => {
                   <ul className="improvements-list">
                     {selectedData.improvements.map((improvement, idx) => (
                       <li key={idx}>
-                        <IconTrendingUp size={16} strokeWidth={2} style={{ marginRight: '8px', color: 'var(--primary)' }} />
+                        <IconTrendingUp size={16} strokeWidth={2} className="icon-inline trend-icon" />
                         {improvement}
                       </li>
                     ))}

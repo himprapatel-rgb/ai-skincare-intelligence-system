@@ -355,6 +355,7 @@ const ProfileSettingsPage: React.FC = () => {
                   type="button"
                   className="btn-upload"
                   onClick={() => fileInputRef.current?.click()}
+                  aria-label="Upload profile photo"
                 >
                   <IconCamera size={18} strokeWidth={2} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
                   Update Photo

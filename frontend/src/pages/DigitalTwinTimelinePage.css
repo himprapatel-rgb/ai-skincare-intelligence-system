@@ -1,22 +1,26 @@
 /* Digital Twin Timeline Page - Brand-Aligned Design */
 
-:root {
-  --primary: #0D9488;
-  --primary-dark: #0f766e;
-  --secondary: #F97316;
-  --bg-light: #F8FAFC;
-  --bg-white: #FFFFFF;
-  --text-dark: #1E293B;
-  --text-gray: #4b5b76;
-  --border: #E2E8F0;
-  --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
 .digital-twin-page {
   min-height: 100vh;
   background: var(--bg-light);
   padding: 40px 24px;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.icon-inline {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+.icon-inline-lg {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 12px;
+}
+
+.trend-icon {
+  color: var(--primary);
 }
 
 .digital-twin-container {

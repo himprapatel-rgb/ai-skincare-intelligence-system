@@ -91,7 +91,7 @@ const ProductScannerPage: React.FC = () => {
       <div className="scanner-container">
         <div className="page-header">
           <h1>
-            <IconScan size={32} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '12px' }} />
+            <IconScan size={32} strokeWidth={2} className="icon-inline-lg" />
             Product Scanner
           </h1>
           <p>Scan product barcodes to analyze ingredients and safety</p>
@@ -142,12 +142,12 @@ const ProductScannerPage: React.FC = () => {
                   >
                     {scanning ? (
                       <>
-                        <IconScan size={20} strokeWidth={2} style={{ marginRight: '8px' }} />
+                        <IconScan size={20} strokeWidth={2} className="icon-inline" />
                         Scanning...
                       </>
                     ) : (
                       <>
-                        <IconScan size={20} strokeWidth={2} style={{ marginRight: '8px' }} />
+                        <IconScan size={20} strokeWidth={2} className="icon-inline" />
                         Capture & Scan
                       </>
                     )}
@@ -191,40 +191,38 @@ const ProductScannerPage: React.FC = () => {
                 </div>
 
                 <div className="safety-ratings">
-                  <div className="rating-card">
+                  <div
+                    className="rating-card"
+                    style={
+                      {
+                        '--rating-color': getSafetyColor(scannedProduct.safetyRating),
+                        '--rating-width': `${scannedProduct.safetyRating}%`,
+                      } as React.CSSProperties
+                    }
+                  >
                     <div className="rating-label">Safety Rating</div>
-                    <div 
-                      className="rating-value"
-                      style={{ color: getSafetyColor(scannedProduct.safetyRating) }}
-                    >
+                    <div className="rating-value">
                       {scannedProduct.safetyRating}/100
                     </div>
                     <div className="rating-bar">
-                      <div 
-                        className="rating-fill"
-                        style={{ 
-                          width: `${scannedProduct.safetyRating}%`,
-                          backgroundColor: getSafetyColor(scannedProduct.safetyRating)
-                        }}
-                      />
+                      <div className="rating-fill" />
                     </div>
                   </div>
-                  <div className="rating-card">
+                  <div
+                    className="rating-card"
+                    style={
+                      {
+                        '--rating-color': getSafetyColor(scannedProduct.suitabilityScore),
+                        '--rating-width': `${scannedProduct.suitabilityScore}%`,
+                      } as React.CSSProperties
+                    }
+                  >
                     <div className="rating-label">Suitability Score</div>
-                    <div 
-                      className="rating-value"
-                      style={{ color: getSafetyColor(scannedProduct.suitabilityScore) }}
-                    >
+                    <div className="rating-value">
                       {scannedProduct.suitabilityScore}/100
                     </div>
                     <div className="rating-bar">
-                      <div 
-                        className="rating-fill"
-                        style={{ 
-                          width: `${scannedProduct.suitabilityScore}%`,
-                          backgroundColor: getSafetyColor(scannedProduct.suitabilityScore)
-                        }}
-                      />
+                      <div className="rating-fill" />
                     </div>
                   </div>
                 </div>
@@ -243,13 +241,13 @@ const ProductScannerPage: React.FC = () => {
                 {scannedProduct.warnings.length > 0 && (
                   <div className="warnings-section">
                     <h3>
-                      <IconAlertTriangle size={20} strokeWidth={2} style={{ marginRight: '8px', color: 'var(--secondary)' }} />
+                      <IconAlertTriangle size={20} strokeWidth={2} className="icon-inline warning-icon" />
                       Warnings
                     </h3>
                     <ul className="warnings-list">
                       {scannedProduct.warnings.map((warning, idx) => (
                         <li key={idx}>
-                          <IconAlertTriangle size={16} strokeWidth={2} style={{ marginRight: '8px', verticalAlign: 'middle', color: 'var(--secondary)' }} />
+                          <IconAlertTriangle size={16} strokeWidth={2} className="icon-inline warning-icon" />
                           {warning}
                         </li>
                       ))}
@@ -259,7 +257,7 @@ const ProductScannerPage: React.FC = () => {
 
                 <div className="product-actions">
                   <button onClick={handleAddToShelf} className="btn-primary">
-                    <IconPackage size={18} strokeWidth={2} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+                    <IconPackage size={18} strokeWidth={2} className="icon-inline" />
                     Add to My Shelf
                   </button>
                   <button onClick={() => navigate(`/product/${scannedProduct.id}`)} className="btn-secondary">

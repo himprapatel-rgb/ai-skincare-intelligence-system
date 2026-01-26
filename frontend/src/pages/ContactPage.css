@@ -1,17 +1,5 @@
 /* Contact Page - Brand-Aligned Design */
 
-:root {
-  --primary: #0D9488;
-  --primary-dark: #0f766e;
-  --secondary: #F97316;
-  --bg-light: #F8FAFC;
-  --bg-white: #FFFFFF;
-  --text-dark: #1E293B;
-  --text-gray: #4b5b76;
-  --border: #E2E8F0;
-  --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
 .contact-page {
   min-height: 100vh;
   background: var(--bg-light);

@@ -135,7 +135,7 @@ const NotificationCenterPage: React.FC = () => {
         <div className="page-header">
           <div className="header-content">
             <h1>
-              <IconBell size={32} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '12px' }} />
+              <IconBell size={32} strokeWidth={2} className="icon-inline-lg" />
               Notifications
             </h1>
             {unreadCount > 0 && (
@@ -239,11 +239,13 @@ const NotificationCenterPage: React.FC = () => {
               <div
                 key={notification.id}
                 className={`notification-item ${notification.read ? 'read' : 'unread'}`}
+                style={
+                  {
+                    '--notification-color': getNotificationColor(notification.type),
+                  } as React.CSSProperties
+                }
               >
-                <div 
-                  className="notification-icon"
-                  style={{ color: getNotificationColor(notification.type) }}
-                >
+                <div className="notification-icon">
                   {getNotificationIcon(notification.type)}
                 </div>
                 <div className="notification-content">
@@ -261,7 +263,7 @@ const NotificationCenterPage: React.FC = () => {
                   <p className="notification-message">{notification.message}</p>
                   {notification.actionUrl && (
                     <Link to={notification.actionUrl} className="notification-action">
-                      View details <IconChevronRight size={16} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginLeft: '4px' }} />
+                      View details <IconChevronRight size={16} strokeWidth={2} className="icon-inline-right" />
                     </Link>
                   )}
                 </div>

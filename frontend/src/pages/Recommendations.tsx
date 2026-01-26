@@ -263,6 +263,7 @@ const Recommendations: React.FC = () => {
                     onClick={() => toggleFavorite(product.id)}
                     className={`favorite-button ${favorites.has(product.id) ? 'active' : ''}`}
                     title={favorites.has(product.id) ? 'Remove from favorites' : 'Add to favorites'}
+                    aria-label={`${favorites.has(product.id) ? 'Remove' : 'Add'} ${product.name} ${favorites.has(product.id) ? 'from' : 'to'} favorites`}
                     type="button"
                   >
                     <IconHeart

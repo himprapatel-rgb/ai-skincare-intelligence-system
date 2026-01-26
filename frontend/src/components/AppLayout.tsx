@@ -15,6 +15,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
 
   return (
     <div className="app-layout">
+      <a className="skip-link" href="#main-content">Skip to main content</a>
       <header className="app-header">
         <div className="app-header-container">
           <Link to="/" className="app-logo">
@@ -57,7 +58,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
         </div>
       </header>
 
-      <main className="app-main">
+      <main className="app-main" id="main-content">
         {children}
       </main>
 
@@ -71,6 +72,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
             <div>
               <h4>Product</h4>
               <Link to="/scan">Skin Analysis</Link>
+              <Link to="/recommendations">Recommendations</Link>
               <Link to="/digital-twin">Digital Twin</Link>
               <Link to="/dashboard">Dashboard</Link>
               <Link to="/history">History</Link>
@@ -79,6 +81,14 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
               ) : (
                 <Link to="/auth">Login / Register</Link>
               )}
+            </div>
+            <div>
+              <h4>Explore</h4>
+              <Link to="/routine-builder">Routine Builder</Link>
+              <Link to="/favorites">Favorites</Link>
+              <Link to="/myshelf">My Shelf</Link>
+              <Link to="/scanner">Product Scanner</Link>
+              <Link to="/notifications">Notifications</Link>
             </div>
             <div>
               <h4>Company</h4>

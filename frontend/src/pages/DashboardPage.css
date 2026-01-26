@@ -1,20 +1,5 @@
 /* Dashboard Page - Brand-Aligned Design */
 
-:root {
-  /* Brand Colors - From Visual Identity Guidelines */
-  --primary: #0D9488; /* Intelligent Teal - Primary brand color */
-  --primary-dark: #0f766e; /* Darker teal for hover states */
-  --secondary: #F97316; /* Warm Coral - Accents, highlights */
-  --bg-light: #F8FAFC; /* Light Gray - Secondary backgrounds */
-  --bg-white: #FFFFFF; /* Pure White - Backgrounds */
-  --text-dark: #1E293B; /* Deep Navy - Primary text */
-  --text-gray: #4b5b76; /* Gray text */
-  --text-light: #8a9ab7; /* Light gray text */
-  --border: #E2E8F0; /* Border color */
-  --shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Brand guideline */
-  --success: #D1FAE5; /* Soft Sage - Success states */
-}
-
 .dashboard-page {
   min-height: 100vh;
   background: var(--bg-light);

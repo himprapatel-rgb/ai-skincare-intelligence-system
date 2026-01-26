@@ -47,7 +47,7 @@ const HomePage: React.FC = () => {
               </button>
             </div>
             <p className="hero-reassurance">
-              <IconClock size={16} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '6px' }} />
+              <IconClock size={16} strokeWidth={2} className="inline-icon" />
               Takes ~30 seconds &bull; No signup required &bull; Delete your photo anytime
             </p>
           </div>
@@ -162,15 +162,15 @@ const HomePage: React.FC = () => {
             <p>Take or upload a clear selfie</p>
             <div className="step-tips">
               <span>
-                <IconCheck size={16} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '6px' }} />
+                <IconCheck size={16} strokeWidth={2} className="inline-icon" />
                 Good lighting
               </span>
               <span>
-                <IconCheck size={16} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '6px' }} />
+                <IconCheck size={16} strokeWidth={2} className="inline-icon" />
                 No makeup
               </span>
               <span>
-                <IconCheck size={16} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '6px' }} />
+                <IconCheck size={16} strokeWidth={2} className="inline-icon" />
                 Front-facing
               </span>
             </div>

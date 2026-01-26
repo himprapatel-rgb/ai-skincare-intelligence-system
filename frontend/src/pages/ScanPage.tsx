@@ -672,7 +672,7 @@ export default function ScanPage() {
                   className={`mode-btn ${uploadMode === 'camera' ? 'active' : ''}`}
                   onClick={() => setUploadMode('camera')}
                 >
-                  <IconCamera size={20} strokeWidth={2} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+                  <IconCamera size={20} strokeWidth={2} className="inline-icon" />
                   Use Camera
                 </button>
               </div>
@@ -683,8 +683,7 @@ export default function ScanPage() {
                   <div className="camera-container">
                     <video
                       ref={videoRef}
-                      className="camera-video"
-                      style={capturePreviewUrl ? { opacity: 0 } : undefined}
+                      className={`camera-video ${capturePreviewUrl ? 'is-hidden' : ''}`}
                       autoPlay
                       playsInline
                       muted
@@ -739,7 +738,7 @@ export default function ScanPage() {
                       className="scan-btn-primary capture-btn"
                       disabled={validating}
                     >
-                      <IconScan size={20} strokeWidth={2} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+                      <IconScan size={20} strokeWidth={2} className="inline-icon" />
                       {validating ? "Validating..." : "Capture Photo"}
                     </button>
                   )}
@@ -753,7 +752,7 @@ export default function ScanPage() {
                       )}
                     </div>
                   )}
-                  <canvas ref={canvasRef} style={{ display: 'none' }} />
+                  <canvas ref={canvasRef} className="hidden-canvas" />
                 </div>
               )}
 
@@ -805,28 +804,28 @@ export default function ScanPage() {
               {!previewUrl && (
                 <div className="scan-tips">
                   <h3>
-                    <IconFileText size={20} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '8px' }} />
+                    <IconFileText size={20} strokeWidth={2} className="inline-icon" />
                     Tips for Best Results
                   </h3>
                   <ul>
                     <li>
-                      <IconCheck size={16} strokeWidth={2} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+                      <IconCheck size={16} strokeWidth={2} className="inline-icon-sm" />
                       Use good, even lighting (natural light is best)
                     </li>
                     <li>
-                      <IconCheck size={16} strokeWidth={2} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+                      <IconCheck size={16} strokeWidth={2} className="inline-icon-sm" />
                       Remove glasses and face the camera directly
                     </li>
                     <li>
-                      <IconCheck size={16} strokeWidth={2} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+                      <IconCheck size={16} strokeWidth={2} className="inline-icon-sm" />
                       Keep hair away from your face
                     </li>
                     <li>
-                      <IconCheck size={16} strokeWidth={2} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+                      <IconCheck size={16} strokeWidth={2} className="inline-icon-sm" />
                       Take photo from shoulders up
                     </li>
                     <li>
-                      <IconCheck size={16} strokeWidth={2} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+                      <IconCheck size={16} strokeWidth={2} className="inline-icon-sm" />
                       Ensure your face is in focus
                     </li>
                   </ul>
@@ -843,7 +842,7 @@ export default function ScanPage() {
                   >
                     {scanning ? "Analyzing..." : validating ? "Validating..." : (
                       <>
-                        <IconSearch size={18} strokeWidth={2} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+                        <IconSearch size={18} strokeWidth={2} className="inline-icon" />
                         Start Analysis
                       </>
                     )}
@@ -885,9 +884,9 @@ export default function ScanPage() {
                 <h2 className="progress-title">Analyzing Your Skin</h2>
                 <p className="progress-message">{statusMessage}</p>
                 <div className="progress-bar">
-                  <div 
-                    className="progress-fill" 
-                    style={{ width: `${progress}%` }}
+                  <div
+                    className="progress-fill"
+                    style={{ '--progress-width': `${progress}%` } as React.CSSProperties}
                   ></div>
                 </div>
                 <div className="progress-percentage">{progress}%</div>

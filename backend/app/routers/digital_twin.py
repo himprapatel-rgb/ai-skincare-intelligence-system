@@ -1,7 +1,7 @@
 """Digital Twin API Router for Sprint 3."""
 from datetime import datetime
+import json
 from typing import Any, Dict, Optional
-from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from pydantic import BaseModel
@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 
 from app.core.security import get_current_user
 from app.database import get_db
-from app.models.digital_twin import SkinRegionState, SkinStateSnapshot
+from app.models.digital_twin import SkinStateSnapshot
 from app.models.scan import ScanSession
 from app.models.user import User
 from app.schemas.twin_schemas import (
@@ -97,20 +97,30 @@ async def query_digital_twin(
     current_user: User = Depends(get_current_user),
 ):
     """Query Digital Twin snapshots with filters."""
-    query = db.query(SkinStateSnapshot).filter(SkinStateSnapshot.user_id == current_user.id)
+    query = db.query(ScanSession).filter(
+        ScanSession.user_id == current_user.id,
+        ScanSession.status == "completed",
+    )
     if start_at:
-        query = query.filter(SkinStateSnapshot.snapshot_date >= start_at)
+        query = query.filter(ScanSession.created_at >= start_at)
     if end_at:
-        query = query.filter(SkinStateSnapshot.snapshot_date <= end_at)
-    snapshots = query.order_by(SkinStateSnapshot.snapshot_date.desc()).limit(limit).all()
-    latest = snapshots[0] if snapshots else None
-    timeline = _build_timeline_response(current_user.id, snapshots)
+        query = query.filter(ScanSession.created_at <= end_at)
+    scans = query.order_by(ScanSession.created_at.desc()).limit(limit).all()
+    scans_by_latest = sorted(
+        scans, key=lambda scan: scan.completed_at or scan.created_at, reverse=True
+    )
+    latest_scan = scans_by_latest[0] if scans_by_latest else None
+    timeline = _build_timeline_from_scans(current_user.id, scans)
+    insights = {
+        "snapshot_count": len(scans_by_latest),
+        **(timeline.summary_insights or {}),
+    }
     return DigitalTwinQueryResponse(
         user_id=str(current_user.id),
-        latest_snapshot=_build_snapshot_response(latest) if latest else None,
-        snapshots=[_build_snapshot_response(item) for item in snapshots],
+        latest_snapshot=_build_snapshot_from_scan(latest_scan) if latest_scan else None,
+        snapshots=[_build_snapshot_from_scan(item) for item in scans_by_latest],
         timeline=timeline,
-        insights={"count": len(snapshots)},
+        insights=insights,
     )
 
 
@@ -123,17 +133,20 @@ async def get_digital_twin_timeline(
     current_user: User = Depends(get_current_user),
 ):
     """Get Digital Twin timeline evolution."""
-    query = db.query(SkinStateSnapshot).filter(SkinStateSnapshot.user_id == current_user.id)
+    query = db.query(ScanSession).filter(
+        ScanSession.user_id == current_user.id,
+        ScanSession.status == "completed",
+    )
     if start_at:
-        query = query.filter(SkinStateSnapshot.snapshot_date >= start_at)
+        query = query.filter(ScanSession.created_at >= start_at)
     if end_at:
-        query = query.filter(SkinStateSnapshot.snapshot_date <= end_at)
-    snapshots = (
-        query.order_by(SkinStateSnapshot.snapshot_date.desc())
+        query = query.filter(ScanSession.created_at <= end_at)
+    scans = (
+        query.order_by(ScanSession.created_at.desc())
         .limit(max_points)
         .all()
     )
-    return _build_timeline_response(current_user.id, snapshots)
+    return _build_timeline_from_scans(current_user.id, scans)
 
 
 @router.post("/simulate", response_model=ScenarioSimulationResponse)
@@ -163,6 +176,238 @@ def _build_state_vector(snapshot: SkinStateSnapshot) -> SkinStateVector:
         aging_signs=_normalize_score(snapshot.wrinkle_severity),
         congestion_level=_normalize_score(snapshot.acne_severity),
     )
+
+
+def _parse_scan_payload(scan: ScanSession) -> Dict[str, Any]:
+    payload = scan.scan_metadata
+    if isinstance(payload, str):
+        try:
+            payload = json.loads(payload)
+        except json.JSONDecodeError:
+            return {}
+    return payload if isinstance(payload, dict) else {}
+
+
+def _extract_scan_summary(scan: ScanSession) -> tuple[Dict[str, Any], Dict[str, float], list[str]]:
+    payload = _parse_scan_payload(scan)
+    summary: Dict[str, Any] = {}
+    concerns: list[str] = []
+    scores: Dict[str, float] = {}
+
+    root_summary = payload.get("summary") if isinstance(payload, dict) else None
+    result = payload.get("result") if isinstance(payload, dict) else None
+    if isinstance(result, dict):
+        result_summary = result.get("summary")
+        analysis = result.get("analysis") if isinstance(result.get("analysis"), dict) else None
+        analysis_summary = analysis.get("summary") if isinstance(analysis, dict) else None
+        summary = (
+            result_summary if isinstance(result_summary, dict)
+            else analysis_summary if isinstance(analysis_summary, dict)
+            else summary
+        )
+    if not summary and isinstance(root_summary, dict):
+        summary = root_summary
+
+    if isinstance(summary.get("scores"), dict):
+        for key, value in summary.get("scores", {}).items():
+            if isinstance(value, (int, float)):
+                scores[key] = float(value)
+
+    raw_concerns = summary.get("concerns")
+    if isinstance(raw_concerns, list):
+        concerns = [item for item in raw_concerns if isinstance(item, str)]
+
+    return summary, scores, concerns
+
+
+def _get_score(scores: Dict[str, float], keys: list[str], fallback: Optional[float] = None) -> Optional[float]:
+    for key in keys:
+        value = scores.get(key)
+        if isinstance(value, (int, float)):
+            return float(value)
+    return fallback
+
+
+def _derive_overall_score(summary: Dict[str, Any], scores: Dict[str, float]) -> float:
+    if isinstance(summary.get("overall_score"), (int, float)):
+        return float(summary.get("overall_score"))
+    if scores:
+        return sum(scores.values()) / len(scores)
+    return 0.0
+
+
+def _derive_skin_mood(payload: Dict[str, Any], overall_score: float) -> SkinMood:
+    mood = payload.get("skin_mood")
+    if isinstance(mood, str):
+        try:
+            return SkinMood(mood)
+        except ValueError:
+            pass
+    if overall_score >= 80:
+        return SkinMood.HAPPY
+    if overall_score >= 65:
+        return SkinMood.BALANCED
+    if overall_score >= 45:
+        return SkinMood.SENSITIVE
+    return SkinMood.UNKNOWN
+
+
+def _build_state_vector_from_scores(scores: Dict[str, float]) -> SkinStateVector:
+    hydration = _get_score(scores, ["hydration", "moisture"], None)
+    dehydration = _get_score(scores, ["dehydration"], None)
+    hydration_score = hydration if hydration is not None else (100.0 - dehydration) if dehydration is not None else 50.0
+
+    oiliness_score = _get_score(scores, ["oiliness", "oil"], 50.0)
+    sensitivity_score = _get_score(scores, ["sensitivity"], 50.0)
+    redness_score = _get_score(scores, ["redness"], 50.0)
+    pigmentation_score = _get_score(scores, ["pigmentation", "age_spot"], 50.0)
+    wrinkle_score = _get_score(scores, ["wrinkles", "wrinkle"], 50.0)
+    acne_score = _get_score(scores, ["acne"], 50.0)
+    pores_score = _get_score(scores, ["pores"], 50.0)
+
+    return SkinStateVector(
+        hydration_level=_normalize_score(hydration_score),
+        oiliness_level=_normalize_score(oiliness_score),
+        sensitivity_level=_normalize_score(sensitivity_score),
+        barrier_impairment=_normalize_score(redness_score),
+        inflammation_level=_normalize_score(acne_score),
+        pigmentation_issues=_normalize_score(pigmentation_score),
+        aging_signs=_normalize_score(wrinkle_score),
+        congestion_level=_normalize_score(pores_score),
+    )
+
+
+def _build_snapshot_from_scan(scan: ScanSession) -> DigitalTwinSnapshot:
+    summary, scores, concerns = _extract_scan_summary(scan)
+    overall_score = _derive_overall_score(summary, scores)
+    payload = _parse_scan_payload(scan)
+
+    image_url = None
+    if isinstance(summary.get("image_url"), str):
+        image_url = summary.get("image_url")
+    elif isinstance(scan.image_url, str):
+        image_url = scan.image_url
+
+    return DigitalTwinSnapshot(
+        snapshot_id=str(scan.id),
+        user_id=str(scan.user_id),
+        created_at=scan.completed_at or scan.created_at,
+        skin_mood=_derive_skin_mood(payload, overall_score),
+        regions=[],
+        environment=None,
+        routine=None,
+        global_state_vector=_build_state_vector_from_scores(scores),
+        image_id=str(scan.id),
+        meta={
+            "overall_score": overall_score,
+            "image_url": image_url,
+            "concerns": concerns,
+            "score_count": len(scores),
+        },
+    )
+
+
+def _build_timeline_from_scans(user_id: int, scans: list[ScanSession]) -> DigitalTwinTimelineResponse:
+    points = []
+    ordered = sorted(scans, key=lambda scan: scan.completed_at or scan.created_at)
+    for scan in ordered:
+        summary, scores, _concerns = _extract_scan_summary(scan)
+        overall_score = _derive_overall_score(summary, scores)
+        state_vector = _build_state_vector_from_scores(scores)
+        payload = _parse_scan_payload(scan)
+        points.append(
+            TimelinePoint(
+                timestamp=scan.completed_at or scan.created_at,
+                snapshot_id=str(scan.id),
+                skin_mood=_derive_skin_mood(payload, overall_score),
+                overall_score=overall_score,
+                state_vector=state_vector,
+                markers=[],
+            )
+        )
+    summary_insights = _build_summary_insights(points, ordered)
+    return DigitalTwinTimelineResponse(
+        user_id=str(user_id),
+        points=points,
+        total_points=len(points),
+        summary_insights=summary_insights,
+    )
+
+
+def _build_summary_insights(points: list[TimelinePoint], scans: list[ScanSession]) -> Dict[str, Any]:
+    if not points:
+        return {
+            "latest_score": None,
+            "trend": "stable",
+            "delta_score": 0,
+            "best_improvement": None,
+            "top_concern": None,
+        }
+
+    latest_score = points[-1].overall_score or 0
+    first_score = points[0].overall_score or 0
+    delta_score = latest_score - first_score
+    trend = "stable"
+    if delta_score > 2:
+        trend = "improving"
+    elif delta_score < -2:
+        trend = "declining"
+
+    best_improvement = _find_best_improvement(scans)
+    top_concern = _find_top_concern(scans[-1] if scans else None)
+
+    return {
+        "latest_score": latest_score,
+        "trend": trend,
+        "delta_score": delta_score,
+        "best_improvement": best_improvement,
+        "top_concern": top_concern,
+    }
+
+
+def _find_best_improvement(scans: list[ScanSession]) -> Optional[str]:
+    if len(scans) < 2:
+        return None
+    oldest = scans[0]
+    newest = scans[-1]
+    _summary_old, scores_old, _ = _extract_scan_summary(oldest)
+    _summary_new, scores_new, _ = _extract_scan_summary(newest)
+    concern_keys = [
+        "acne",
+        "redness",
+        "pigmentation",
+        "dehydration",
+        "sensitivity",
+        "wrinkles",
+        "pores",
+        "dark_circles",
+        "texture",
+        "oiliness",
+    ]
+    best_key = None
+    best_delta = 0.0
+    for key in concern_keys:
+        if key in scores_old and key in scores_new:
+            delta = float(scores_old[key]) - float(scores_new[key])
+            if delta > best_delta:
+                best_delta = delta
+                best_key = key
+    if not best_key:
+        return None
+    return best_key.replace("_", " ").title()
+
+
+def _find_top_concern(scan: Optional[ScanSession]) -> Optional[str]:
+    if not scan:
+        return None
+    _summary, scores, concerns = _extract_scan_summary(scan)
+    if concerns:
+        return concerns[0].replace("_", " ").title()
+    if not scores:
+        return None
+    concern_scores = {key: value for key, value in scores.items()}
+    top_key = max(concern_scores, key=concern_scores.get)
+    return top_key.replace("_", " ").title()
 
 
 def _build_snapshot_response(snapshot: SkinStateSnapshot) -> DigitalTwinSnapshot:

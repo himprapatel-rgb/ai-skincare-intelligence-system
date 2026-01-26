@@ -28,6 +28,8 @@ This document captures the comprehensive analysis of the current AI Skincare Int
 
 ### Addendum (2026-01-26)
 - Digital Twin timeline now uses live API data instead of mock snapshots.
+- Digital Twin MVP complete with scan-based snapshots, timeline, and insights.
+- Digital Twin MVP tests added (backend query + frontend UI rendering).
 - Routine builder now loads/saves routines via the API (AM/PM).
 - Progress tracking now uses backend summary metrics.
 - Admin dashboard MVP added with user/product management and analytics summary.

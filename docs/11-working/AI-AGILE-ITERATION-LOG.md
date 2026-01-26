@@ -6,6 +6,30 @@ Use that workflow doc for checklists and templates to avoid duplication here.
 
 ---
 
+## Iteration 2026-01-26 (Digital Twin MVP Completion)
+
+### Goal
+Complete Epic 3 (Digital Twin) MVP using scan-based snapshots, summary insights, and UI polish.
+
+### Scope (Completed)
+- Digital Twin API now derives snapshots/timeline from scan sessions.
+- Summary insights added (trend, best improvement, top concern).
+- Digital Twin UI shows latest snapshot summary + insights, including top concerns.
+- Added backend and frontend tests for Digital Twin.
+
+### Key Changes (Code)
+- Scan-based Digital Twin mapping + insights: `backend/app/routers/digital_twin.py`
+- Digital Twin UI insights + mood mapping: `frontend/src/pages/DigitalTwinTimelinePage.tsx`
+- Backend test coverage: `backend/tests/test_digital_twin.py`
+- Frontend test coverage: `frontend/src/tests/DigitalTwinTimelinePage.test.tsx`
+
+### Verification / Tests
+- Backend: `python -m pytest backend/tests -k digital_twin`
+- Frontend: `npm run test -- --run`
+- Frontend e2e: `npm run e2e` (Digital Twin route)
+
+---
+
 ## Iteration 2026-01-26 (Admin UI Lint Fix + Deploy + Test Pass)
 
 ### Goal

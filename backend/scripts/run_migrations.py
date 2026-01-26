@@ -5,6 +5,9 @@ import os
 import psycopg2
 
 DATABASE_URL = os.getenv("DATABASE_URL")
+ENV = os.getenv("ENV", "development").lower()
+RUN_MIGRATIONS = os.getenv("RUN_MIGRATIONS", "").lower() in {"1", "true", "yes"}
+ALLOW_PROD_MIGRATIONS = os.getenv("ALLOW_PROD_MIGRATIONS", "").lower() in {"1", "true", "yes"}
 
 def column_exists(cur, table_name, column_name):
     cur.execute(
@@ -20,6 +23,17 @@ def column_exists(cur, table_name, column_name):
 
 def run_migrations():
     """Run all pending migrations"""
+    if not DATABASE_URL:
+        raise RuntimeError("DATABASE_URL is not set.")
+    if not RUN_MIGRATIONS:
+        raise RuntimeError(
+            "Refusing to run migrations without RUN_MIGRATIONS=true."
+        )
+    if ENV == "production" and not ALLOW_PROD_MIGRATIONS:
+        raise RuntimeError(
+            "Refusing to run migrations in production without ALLOW_PROD_MIGRATIONS=true."
+        )
+
     print("=" * 80)
     print("Running Database Migrations")
     print("=" * 80)
@@ -34,6 +48,26 @@ def run_migrations():
         with conn.cursor() as cur:
             # Ensure UUID generation is available
             cur.execute("CREATE EXTENSION IF NOT EXISTS pgcrypto")
+
+            # Guard against missing core tables for foreign keys
+            cur.execute(
+                """
+                SELECT table_name
+                FROM information_schema.tables
+                WHERE table_schema = 'public'
+                  AND table_name IN (
+                    'users',
+                    'scan_sessions',
+                    'routine_instances'
+                  )
+                """
+            )
+            existing = {row[0] for row in cur.fetchall()}
+            missing = {"users", "scan_sessions", "routine_instances"} - existing
+            if missing:
+                raise RuntimeError(
+                    f"Missing core tables required for FK constraints: {sorted(missing)}"
+                )
 
             # Create minimal tables if they do not exist (non-destructive)
             print("  - Ensuring core tables exist...")

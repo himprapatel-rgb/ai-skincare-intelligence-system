@@ -16,10 +16,11 @@
 | P0 | Skin Analysis Engine | 10 | 55 | Complete |
 | P1 | Product Recommendations | 8 | 42 | In Progress |
 | P1 | User Profile & History | 6 | 28 | In Progress |
+| P1 | Digital Twin | 4 | 20 | Complete |
 | P2 | Admin Dashboard | 7 | 38 | Planned |
 | P3 | Premium Features | 5 | 25 | Backlog |
 
-**Total Points:** 222  
+**Total Points:** 242  
 **Velocity:** ~20 points/sprint
 
 ---
@@ -149,6 +150,26 @@
 - [x] Date and thumbnail display
 - [x] Click to view details
 - [x] Delete analysis option
+
+---
+
+## Epic 3: Digital Twin (P1) - COMPLETE
+
+### US-301: Digital Twin Timeline
+**Priority:** P1 | **Points:** 8 | **Status:** Done
+
+**As a** user  
+**I want to** see my skin trend over time  
+**So that** I can track improvements
+
+**Acceptance Criteria:**
+- [x] Timeline chart rendered from live data
+- [x] Snapshot list and details display
+- [x] Summary insights (trend, best improvement, top concern)
+- [x] Empty state guidance if no scans exist
+- [x] Latest snapshot summary visible
+
+**Test Evidence:** `backend/tests/test_digital_twin.py`, `frontend/src/tests/DigitalTwinTimelinePage.test.tsx`
 
 ---
 

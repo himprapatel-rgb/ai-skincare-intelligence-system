@@ -23,7 +23,16 @@ interface ApiSnapshot {
   meta: {
     overall_score?: number;
     image_url?: string;
+    concerns?: string[];
   };
+}
+
+interface ApiInsights {
+  latest_score?: number;
+  trend?: string;
+  delta_score?: number;
+  best_improvement?: string;
+  top_concern?: string;
 }
 
 interface DigitalTwinSnapshot {
@@ -31,7 +40,9 @@ interface DigitalTwinSnapshot {
   date: string;
   imageUrl: string;
   overallScore: number;
-  skinMood: number;
+  skinMoodLabel: string;
+  skinMoodScore: number;
+  topConcerns: string[];
   concerns: {
     acne: number;
     wrinkles: number;
@@ -52,6 +63,25 @@ const DigitalTwinTimelinePage: React.FC = () => {
   const [selectedSnapshot, setSelectedSnapshot] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
+  const [insights, setInsights] = useState<ApiInsights | null>(null);
+
+  const moodScoreMap: Record<string, number> = {
+    happy: 90,
+    balanced: 75,
+    dry: 45,
+    oily: 55,
+    combination: 60,
+    sensitive: 50,
+    stressed: 45,
+    irritated: 40,
+    breakout_prone: 40,
+    recovering: 60,
+    aggravated: 35,
+    unknown: 50,
+  };
+
+  const formatMoodLabel = (mood: string) => mood.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
+  const formatConcernLabel = (concern: string) => concern.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
 
   useEffect(() => {
     const fetchSnapshots = async () => {
@@ -70,6 +100,11 @@ const DigitalTwinTimelinePage: React.FC = () => {
         }
         const data = await response.json();
         const apiSnapshots: ApiSnapshot[] = data.snapshots || [];
+        const latestSnapshot: ApiSnapshot | null = data.latest_snapshot || apiSnapshots[0] || null;
+        const mergedInsights: ApiInsights = {
+          ...(data.timeline?.summary_insights || {}),
+          ...(data.insights || {}),
+        };
         const mapped: DigitalTwinSnapshot[] = apiSnapshots.map((snapshot, index) => {
           const state = snapshot.global_state_vector || {
             hydration_level: 0,
@@ -82,6 +117,9 @@ const DigitalTwinTimelinePage: React.FC = () => {
             congestion_level: 0,
           };
           const overallScore = Math.round(snapshot.meta?.overall_score ?? 0);
+          const moodKey = (snapshot.skin_mood || 'unknown').toLowerCase();
+          const skinMoodScore = moodScoreMap[moodKey] ?? 50;
+          const skinMoodLabel = formatMoodLabel(moodKey || 'unknown');
           const concernScores = {
             acne: Math.round((state.inflammation_level || 0) * 100),
             wrinkles: Math.round((state.aging_signs || 0) * 100),
@@ -105,16 +143,23 @@ const DigitalTwinTimelinePage: React.FC = () => {
             date: snapshot.created_at,
             imageUrl: snapshot.meta?.image_url || '/placeholder.jpg',
             overallScore,
-            skinMood: Math.round((overallScore / 100) * 100),
+            skinMoodLabel,
+            skinMoodScore,
+            topConcerns: (snapshot.meta?.concerns || []).map(formatConcernLabel),
             concerns: concernScores,
             improvements,
           };
         });
         setSnapshots(mapped);
+        setInsights(mergedInsights);
+        if (!selectedSnapshot && latestSnapshot?.snapshot_id) {
+          setSelectedSnapshot(latestSnapshot.snapshot_id);
+        }
       } catch (error) {
         console.error('Failed to load digital twin timeline:', error);
         setHasError(true);
         setSnapshots([]);
+        setInsights(null);
       } finally {
         setIsLoading(false);
       }
@@ -128,12 +173,13 @@ const DigitalTwinTimelinePage: React.FC = () => {
     .map(s => ({
       date: new Date(s.date).toLocaleDateString('en', { month: 'short', day: 'numeric' }),
       score: s.overallScore,
-      mood: s.skinMood,
+      mood: s.skinMoodScore,
       acne: s.concerns.acne,
       hydration: s.concerns.hydration
     }));
 
   const selectedData = snapshots.find(s => s.id === selectedSnapshot) || snapshots[0] || null;
+  const latestSnapshot = snapshots[0] || null;
 
   if (isLoading) {
     return (
@@ -187,7 +233,7 @@ const DigitalTwinTimelinePage: React.FC = () => {
               <IconTrendingUp size={32} strokeWidth={2} />
             </div>
             <div className="summary-content">
-              <div className="summary-value">{snapshots[0]?.overallScore || 0}</div>
+              <div className="summary-value">{latestSnapshot?.overallScore || 0}</div>
               <div className="summary-label">Current Score</div>
             </div>
           </div>
@@ -196,7 +242,7 @@ const DigitalTwinTimelinePage: React.FC = () => {
               <IconSparkles size={32} strokeWidth={2} />
             </div>
             <div className="summary-content">
-              <div className="summary-value">{snapshots[0]?.skinMood || 0}</div>
+              <div className="summary-value">{latestSnapshot?.skinMoodLabel || 'Unknown'}</div>
               <div className="summary-label">Skin Mood</div>
             </div>
           </div>
@@ -209,7 +255,50 @@ const DigitalTwinTimelinePage: React.FC = () => {
               <div className="summary-label">Total Snapshots</div>
             </div>
           </div>
+          <div className="summary-card">
+            <div className="summary-icon">
+              <IconTarget size={32} strokeWidth={2} />
+            </div>
+            <div className="summary-content">
+              <div className="summary-value">
+                {latestSnapshot?.topConcerns?.length ? latestSnapshot.topConcerns.join(', ') : '—'}
+              </div>
+              <div className="summary-label">Top Concerns</div>
+            </div>
+          </div>
         </div>
+
+        {insights && (
+          <div className="progress-summary">
+            <div className="summary-card">
+              <div className="summary-icon">
+                <IconTrendingUp size={32} strokeWidth={2} />
+              </div>
+              <div className="summary-content">
+                <div className="summary-value">{insights.trend || 'stable'}</div>
+                <div className="summary-label">Trend</div>
+              </div>
+            </div>
+            <div className="summary-card">
+              <div className="summary-icon">
+                <IconTarget size={32} strokeWidth={2} />
+              </div>
+              <div className="summary-content">
+                <div className="summary-value">{insights.best_improvement || '—'}</div>
+                <div className="summary-label">Best Improvement</div>
+              </div>
+            </div>
+            <div className="summary-card">
+              <div className="summary-icon">
+                <IconSparkles size={32} strokeWidth={2} />
+              </div>
+              <div className="summary-content">
+                <div className="summary-value">{insights.top_concern || '—'}</div>
+                <div className="summary-label">Top Concern</div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Timeline Chart */}
         <div className="card timeline-chart-card">
@@ -280,7 +369,7 @@ const DigitalTwinTimelinePage: React.FC = () => {
                   </div>
                   <div className="snapshot-info">
                     <div className="snapshot-score">Score: {snapshot.overallScore}</div>
-                    <div className="snapshot-mood">Mood: {snapshot.skinMood}</div>
+                    <div className="snapshot-mood">Mood: {snapshot.skinMoodLabel}</div>
                   </div>
                 </div>
               ))}
@@ -308,7 +397,7 @@ const DigitalTwinTimelinePage: React.FC = () => {
                     </div>
                     <div className="metric-item">
                       <span className="metric-label">Skin Mood</span>
-                      <span className="metric-value">{selectedData.skinMood}</span>
+                      <span className="metric-value">{selectedData.skinMoodLabel}</span>
                     </div>
                     <div className="metric-item">
                       <span className="metric-label">Acne</span>

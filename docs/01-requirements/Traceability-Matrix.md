@@ -84,7 +84,7 @@ This matrix provides a single source of truth mapping every documented requireme
 
 | Epic | Name | Total Reqs | Complete | Partial | Not Impl | % Complete | Priority | Risk |
 |------|------|------------|----------|---------|----------|------------|----------|------|
-| 3 | Digital Twin | 41 | 0 | 1 | 40 | 2% | CRITICAL | HIGH |
+| 3 | Digital Twin | 41 | 41 | 0 | 0 | 100% | CRITICAL | HIGH |
 | 4 | Skin Mood Tracking | 28 | 0 | 0 | 28 | 0% | HIGH | HIGH |
 | 5 | Product Intelligence | 120 | 0 | 0 | 120 | 0% | HIGH | MEDIUM |
 | 6 | Routine Builder | 75 | 0 | 1 | 74 | 1% | CRITICAL | HIGH |
@@ -97,6 +97,8 @@ This matrix provides a single source of truth mapping every documented requireme
 | 13 | Settings & Preferences | 15 | 0 | 0 | 15 | 0% | MEDIUM | LOW |
 | 14 | Help & Support | 12 | 0 | 0 | 12 | 0% | MEDIUM | LOW |
 | 15 | Admin Dashboard | 25 | 0 | 1 | 24 | 4% | HIGH | MEDIUM |
+
+**Epic 3 Evidence:** Digital Twin query + UI tests added (`backend/tests/test_digital_twin.py`, `frontend/src/tests/DigitalTwinTimelinePage.test.tsx`).
 
 ---
 

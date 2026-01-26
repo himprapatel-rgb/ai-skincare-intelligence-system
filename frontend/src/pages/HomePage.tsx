@@ -38,6 +38,12 @@ const HomePage: React.FC = () => {
             <button className="btn-secondary" onClick={() => navigate('/analysis/demo')}>
               See Sample Report
             </button>
+            <button className="btn-secondary" onClick={() => navigate('/digital-twin')}>
+              <span className="btn-icon">
+                <IconTrendingUp size={20} strokeWidth={2} />
+              </span>
+              View Digital Twin
+            </button>
           </div>
           <p className="hero-reassurance">
             <IconClock size={16} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '6px' }} />

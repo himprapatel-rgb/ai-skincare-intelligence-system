@@ -117,6 +117,17 @@ body {
   line-height: 1.6;
   color: var(--text-primary);
   background-color: var(--bg-primary);
+  overflow-x: hidden; /* Prevent horizontal scroll on mobile */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Mobile: Safe area insets for notched phones */
+@supports (padding: max(0px)) {
+  body {
+    padding-left: max(0px, env(safe-area-inset-left));
+    padding-right: max(0px, env(safe-area-inset-right));
+  }
 }
 
 /* Typography */
@@ -142,10 +153,20 @@ a {
   color: var(--primary);
   text-decoration: none;
   transition: color 0.2s ease;
+  min-height: 24px; /* Improve tap target */
+  display: inline-block;
 }
 
 a:hover {
   color: var(--primary-hover);
+}
+
+/* Mobile: Better tap targets for links */
+@media (max-width: 768px) {
+  a {
+    min-height: 32px;
+    padding: 4px 0;
+  }
 }
 
 /* Images */
@@ -161,6 +182,8 @@ button {
   cursor: pointer;
   border: none;
   outline: none;
+  min-height: 44px; /* Mobile touch target minimum */
+  touch-action: manipulation; /* Prevent double-tap zoom */
 }
 
 /* Inputs */
@@ -169,11 +192,30 @@ input, textarea, select {
   font-size: var(--font-size-base);
 }
 
+/* Mobile: Prevent zoom on input focus (iOS) */
+@media (max-width: 768px) {
+  input, textarea, select {
+    font-size: 16px; /* iOS won't zoom if >= 16px */
+  }
+}
+
 /* Container */
 .container {
   max-width: var(--max-width-xl);
   margin: 0 auto;
   padding: 0 var(--spacing-lg);
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 16px;
+  }
 }
 
 /* Utility Classes */
@@ -188,6 +230,27 @@ input, textarea, select {
 .text-primary { color: var(--text-primary); }
 .text-secondary { color: var(--text-secondary); }
 .text-muted { color: var(--text-muted); }
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+  html {
+    font-size: 15px; /* Slightly smaller base on mobile */
+  }
+
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.75rem; }
+  h3 { font-size: 1.4rem; }
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: 14px;
+  }
+
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.25rem; }
+}
 
 /* Scrollbar */
 ::-webkit-scrollbar {

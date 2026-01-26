@@ -1021,26 +1021,22 @@
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 16px 24px;
+  padding: 12px 16px;
   background: var(--bg-white);
   box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
   z-index: 1000;
+  border-top: 1px solid var(--border);
 }
 
 .mobile-sticky-cta .btn-primary {
   width: 100%;
-  padding: 16px;
+  padding: 14px;
   font-size: 1rem;
-}
-
-@media (max-width: 768px) {
-  .mobile-sticky-cta {
-    display: block;
-  }
-  
-  .homepage {
-    padding-bottom: 80px;
-  }
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: manipulation;
 }
 
 /* =============================================
@@ -1803,15 +1799,174 @@
 }
 
 @media (max-width: 768px) {
+  .hero {
+    padding: 60px 20px 48px;
+  }
+
+  .hero-content {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    text-align: center;
+  }
+
+  .hero-title {
+    font-size: 2.2rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+
   .hero-text {
     max-width: 100%;
   }
 
+  .hero-cta {
+    justify-content: center;
+  }
+
+  .hero-cta .btn-primary,
+  .hero-cta .btn-secondary {
+    min-width: 200px;
+    padding: 12px 20px;
+    font-size: 0.95rem;
+  }
+
+  .hero-visual {
+    display: none; /* Hide sample card on mobile to save space */
+  }
+
+  .trust-badges {
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px 20px;
+    align-items: flex-start;
+  }
+
+  .badge-item {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .results-preview {
+    padding: 48px 20px;
+  }
+
   .results-grid {
     grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .result-card {
+    min-height: auto;
+  }
+
+  .how-it-works {
+    padding: 48px 20px;
   }
 
   .steps-container {
     grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .step-card {
+    padding: 32px 24px;
+  }
+
+  .faq-section {
+    padding: 48px 20px;
+  }
+
+  .faq-item {
+    padding: 20px;
+    padding-right: 48px;
+  }
+
+  .cta-section {
+    padding: 56px 20px;
+  }
+
+  .mobile-sticky-cta {
+    display: block;
+  }
+
+  .homepage {
+    padding-bottom: 80px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding: 48px 16px 40px;
+  }
+
+  .hero-title {
+    font-size: 1.8rem;
+  }
+
+  .hero-subtitle {
+    font-size: 0.95rem;
+  }
+
+  .hero-cta {
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+  }
+
+  .hero-cta .btn-primary,
+  .hero-cta .btn-secondary {
+    width: 100%;
+    min-width: auto;
+  }
+
+  .trust-badges {
+    padding: 20px 16px;
+  }
+
+  .badge-item {
+    font-size: 0.8rem;
+  }
+
+  .results-preview,
+  .how-it-works,
+  .faq-section,
+  .cta-section {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .section-header h2 {
+    font-size: 1.8rem;
+  }
+
+  .section-header p {
+    font-size: 0.95rem;
+  }
+
+  .step-card {
+    padding: 28px 20px;
+  }
+
+  .faq-item {
+    padding: 16px;
+    padding-right: 44px;
+  }
+
+  .faq-item h4 {
+    font-size: 0.95rem;
+  }
+
+  .faq-item p {
+    font-size: 0.85rem;
+  }
+
+  .cta-content h2 {
+    font-size: 1.8rem;
+  }
+
+  .cta-content p {
+    font-size: 1rem;
   }
 }

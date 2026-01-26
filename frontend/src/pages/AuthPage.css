@@ -305,13 +305,41 @@
   }
   
   .auth-right {
-    padding: 24px;
+    padding: 32px 20px;
+  }
+
+  .auth-card {
+    padding: 32px 24px;
   }
 }
 
 @media (max-width: 480px) {
+  .auth-right {
+    padding: 24px 16px;
+  }
+
   .auth-card {
-    padding: 24px;
+    padding: 28px 20px;
+  }
+
+  .auth-header h2 {
+    font-size: 1.6rem;
+  }
+
+  .form-group input {
+    font-size: 16px; /* Prevents zoom on iOS */
+    padding: 14px 16px;
+  }
+
+  .auth-submit {
+    padding: 14px 24px;
+    font-size: 1rem;
+    min-height: 48px;
+  }
+
+  .btn-link {
+    padding: 12px 24px;
+    min-height: 44px;
   }
 }
 

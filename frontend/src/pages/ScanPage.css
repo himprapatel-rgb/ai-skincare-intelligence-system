@@ -822,66 +822,128 @@
 /* Responsive design */
 @media (max-width: 768px) {
   .scan-container {
-    padding: 40px 16px 60px;
+    padding: 32px 16px 60px;
   }
 
   .scan-content {
-    padding: 40px 28px;
-    border-radius: 20px;
+    padding: 32px 24px;
+    border-radius: 16px;
   }
   
   .scan-title {
-    font-size: 2.2rem;
+    font-size: 2rem;
   }
 
   .scan-subtitle {
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
 
   .scan-mode-toggle {
-    flex-direction: column;
+    flex-direction: row; /* Keep horizontal on tablet */
+    gap: 8px;
   }
 
   .mode-btn {
-    width: 100%;
+    flex: 1;
+    min-height: 44px;
+    font-size: 0.9rem;
   }
 
   .camera-container {
     aspect-ratio: 3/4;
+    max-width: 500px;
+    margin: 0 auto;
   }
 
   .face-guide-circle {
-    width: 240px;
-    height: 320px;
+    width: 220px;
+    height: 300px;
   }
 
   .scan-upload-label {
-    padding: 40px 28px;
+    padding: 40px 24px;
     min-height: 280px;
   }
 
   .scan-actions {
     flex-direction: column;
+    gap: 12px;
   }
 
   .scan-btn-primary,
   .scan-btn-secondary {
     width: 100%;
+    min-height: 48px;
   }
 
   .scan-tips {
-    padding: 24px;
+    padding: 24px 20px;
+  }
+
+  .scan-tips h3 {
+    font-size: 1.2rem;
+  }
+
+  .scan-tips li {
+    font-size: 0.9rem;
+    padding: 10px 0;
   }
 }
 
 @media (max-width: 480px) {
+  .scan-container {
+    padding: 24px 12px 60px;
+  }
+
+  .scan-content {
+    padding: 28px 20px;
+  }
+
   .scan-title {
-    font-size: 1.9rem;
+    font-size: 1.75rem;
+    line-height: 1.2;
+  }
+
+  .scan-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .scan-mode-toggle {
+    flex-direction: column; /* Stack on small phones */
+    gap: 8px;
+  }
+
+  .mode-btn {
+    width: 100%;
+    min-height: 48px;
+    font-size: 0.95rem;
+  }
+
+  .camera-container {
+    max-width: 100%;
   }
 
   .face-guide-circle {
-    width: 200px;
-    height: 260px;
+    width: 180px;
+    height: 240px;
+  }
+
+  .face-guide-text {
+    font-size: 0.85rem;
+    padding: 8px 16px;
+    bottom: 16px;
+  }
+
+  .scan-hud-status {
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    top: 12px;
+    right: 12px;
+  }
+
+  .scan-upload-label {
+    padding: 32px 20px;
+    min-height: 240px;
   }
 
   .scan-upload-icon svg {
@@ -890,10 +952,59 @@
   }
 
   .scan-upload-text {
+    font-size: 1rem;
+  }
+
+  .scan-upload-hint {
+    font-size: 0.85rem;
+  }
+
+  .scan-tips {
+    padding: 20px 16px;
+  }
+
+  .scan-tips h3 {
     font-size: 1.1rem;
   }
 
+  .scan-tips li {
+    font-size: 0.85rem;
+  }
+
   .progress-title {
+    font-size: 1.5rem;
+  }
+
+  .progress-message {
+    font-size: 0.95rem;
+  }
+
+  .results-success {
+    padding: 32px 20px;
+  }
+
+  .results-success h2 {
     font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 375px) {
+  .scan-title {
+    font-size: 1.6rem;
+  }
+
+  .scan-content {
+    padding: 24px 16px;
+  }
+
+  .face-guide-circle {
+    width: 160px;
+    height: 220px;
+  }
+
+  .scan-btn-primary,
+  .scan-btn-secondary {
+    padding: 12px 20px;
+    font-size: 0.9rem;
   }
 }

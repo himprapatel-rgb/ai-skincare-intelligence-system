@@ -122,6 +122,24 @@ def ensure_test_user() -> None:
             db.commit()
             db.refresh(user)
             logger.info("✅ Seeded test user: Himanshu (%s)", email)
+        else:
+            # Ensure existing test user is verified and password is correct
+            needs_update = False
+            if not user.is_verified:
+                user.is_verified = True
+                needs_update = True
+            if not user.is_active:
+                user.is_active = True
+                needs_update = True
+            # Update password if it doesn't match
+            if not auth_service.verify_password(user.hashed_password, "Test1234!"):
+                user.hashed_password = auth_service.hash_password("Test1234!")
+                needs_update = True
+            if needs_update:
+                db.add(user)
+                db.commit()
+                db.refresh(user)
+                logger.info("✅ Updated test user: Himanshu (%s) - verified and password reset", email)
 
         terms = None
         privacy = None

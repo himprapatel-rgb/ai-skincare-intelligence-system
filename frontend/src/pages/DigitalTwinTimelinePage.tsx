@@ -606,7 +606,9 @@ const DigitalTwinTimelinePage: React.FC = () => {
                         }}
                       />
                     </div>
-                    <div className="slider-handle" style={{ left: `${compareSplit}%` }} />
+                    <div className="slider-handle" style={{ left: `${compareSplit}%` }}>
+                      <span className="slider-percent">{compareSplit}%</span>
+                    </div>
                   </div>
                   <input
                     className="compare-range"
@@ -617,6 +619,15 @@ const DigitalTwinTimelinePage: React.FC = () => {
                     onChange={(event) => setCompareSplit(Number(event.target.value))}
                     aria-label="Compare before and after"
                   />
+                  <div className="compare-actions">
+                    <button
+                      type="button"
+                      className="btn-secondary btn-reset"
+                      onClick={() => setCompareSplit(50)}
+                    >
+                      Reset
+                    </button>
+                  </div>
                   <div className="compare-meta">
                     <div className="compare-item">
                       <span className="compare-label">Before</span>

@@ -156,16 +156,7 @@ const HomePage: React.FC = () => {
           <div className="step-card">
             <div className="step-number">1</div>
             <div className="step-illustration step-illustration--primary" aria-hidden="true">
-              <svg viewBox="0 0 180 130" fill="none">
-                <rect x="44" y="10" width="76" height="110" rx="14" stroke="currentColor" strokeWidth="3" />
-                <rect x="54" y="22" width="56" height="86" rx="10" stroke="currentColor" strokeWidth="2" opacity="0.45" />
-                <circle cx="82" cy="62" r="18" stroke="currentColor" strokeWidth="2.5" />
-                <path d="M74 58c2-2.8 4.8-4.2 8-4.2s6 1.4 8 4.2" stroke="currentColor" strokeWidth="2.5" />
-                <path d="M72 68c3 3.6 6.6 5.4 10 5.4s7-1.8 10-5.4" stroke="currentColor" strokeWidth="2.5" />
-                <path d="M58 30h10M104 30h10M58 104h10M104 104h10" stroke="currentColor" strokeWidth="2.5" />
-                <path d="M18 32l12-6M18 64l12 0M18 96l12 6" stroke="currentColor" strokeWidth="2" opacity="0.6" />
-                <path d="M130 26l14 6M130 64h14M130 98l14-6" stroke="currentColor" strokeWidth="2" opacity="0.6" />
-              </svg>
+              <img src="/how-it-works-upload.svg" alt="" loading="lazy" />
             </div>
             <h3>Upload Photo</h3>
             <p>Take or upload a clear selfie</p>
@@ -187,15 +178,7 @@ const HomePage: React.FC = () => {
           <div className="step-card">
             <div className="step-number">2</div>
             <div className="step-illustration step-illustration--accent" aria-hidden="true">
-              <svg viewBox="0 0 180 130" fill="none">
-                <path d="M56 44c4-16 18-26 34-26 20 0 36 16 36 36 0 10-4 20-12 26" stroke="currentColor" strokeWidth="3" />
-                <path d="M52 64c0 18 14 32 32 32h18c10 0 18-8 18-18 0-6-3-12-8-15" stroke="currentColor" strokeWidth="3" />
-                <circle cx="74" cy="54" r="6" stroke="currentColor" strokeWidth="2" />
-                <circle cx="100" cy="52" r="6" stroke="currentColor" strokeWidth="2" />
-                <circle cx="90" cy="76" r="6" stroke="currentColor" strokeWidth="2" />
-                <path d="M26 52h18M136 52h18M26 80h18M136 80h18" stroke="currentColor" strokeWidth="2" opacity="0.6" />
-                <path d="M40 34l10 8M130 34l-10 8M40 96l10-8M130 96l-10-8" stroke="currentColor" strokeWidth="2" opacity="0.6" />
-              </svg>
+              <img src="/how-it-works-analysis.svg" alt="" loading="lazy" />
             </div>
             <h3>AI Analysis</h3>
             <p>Our model detects visible signs of acne, redness, pigmentation, and texture patterns</p>
@@ -203,15 +186,7 @@ const HomePage: React.FC = () => {
           <div className="step-card">
             <div className="step-number">3</div>
             <div className="step-illustration step-illustration--soft" aria-hidden="true">
-              <svg viewBox="0 0 180 130" fill="none">
-                <rect x="44" y="16" width="92" height="98" rx="14" stroke="currentColor" strokeWidth="3" />
-                <rect x="60" y="32" width="60" height="10" rx="5" stroke="currentColor" strokeWidth="2" />
-                <path d="M64 58h26M64 72h30M64 86h20" stroke="currentColor" strokeWidth="2" opacity="0.7" />
-                <path d="M114 58v28" stroke="currentColor" strokeWidth="2" opacity="0.6" />
-                <path d="M100 88l12-18 12 10" stroke="currentColor" strokeWidth="3" />
-                <circle cx="120" cy="90" r="6" stroke="currentColor" strokeWidth="2.5" />
-                <path d="M26 30l12 8M26 100l12-8M142 30l12 8M142 100l12-8" stroke="currentColor" strokeWidth="2" opacity="0.6" />
-              </svg>
+              <img src="/how-it-works-results.svg" alt="" loading="lazy" />
             </div>
             <h3>Get Results</h3>
             <p>Receive a skin summary, concern scores, and personalized routine suggestions</p>

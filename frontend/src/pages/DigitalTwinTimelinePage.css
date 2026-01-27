@@ -438,6 +438,9 @@
   background: white;
   box-shadow: 0 0 0 2px rgba(31, 111, 235, 0.25);
   transform: translateX(-1px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .slider-handle::after {
@@ -454,8 +457,32 @@
   box-shadow: 0 6px 14px rgba(15, 23, 42, 0.15);
 }
 
+.slider-percent {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(15, 23, 42, 0.8);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 999px;
+  pointer-events: none;
+}
+
 .compare-range {
   width: 100%;
+}
+
+.compare-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-reset {
+  padding: 8px 16px;
+  border-radius: 999px;
 }
 
 .compare-meta {

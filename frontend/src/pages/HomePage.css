@@ -2193,3 +2193,133 @@
     font-size: 1rem;
   }
 }
+
+/* =============================================
+   HOW IT WORKS: TEXT WRAP FIX + LAYOUT POLISH
+============================================= */
+.homepage .steps-container {
+  align-items: stretch;
+}
+
+.homepage .steps-container .step-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.homepage .steps-container .step-card h3,
+.homepage .steps-container .step-card p,
+.homepage .steps-container .step-tips {
+  width: 100%;
+  max-width: 100%;
+  writing-mode: horizontal-tb;
+}
+
+.homepage .steps-container .step-card p {
+  white-space: normal;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+
+.homepage .steps-container .step-illustration {
+  width: 100%;
+  max-width: 240px;
+  padding: 0;
+  border-radius: 0;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+}
+
+/* =============================================
+   HOW IT WORKS: ART-DIRECTED CARD LAYOUT
+============================================= */
+.homepage .how-it-works {
+  background: #ffffff;
+}
+
+.homepage .steps-container {
+  gap: 28px;
+}
+
+.homepage .steps-container .step-card {
+  background: #ffffff;
+  border: 1px solid rgba(31, 111, 235, 0.14);
+  border-radius: 22px;
+  padding: 32px 26px;
+  box-shadow: 0 18px 40px rgba(13, 27, 62, 0.08);
+  align-items: center;
+}
+
+.homepage .steps-container .step-number {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1rem;
+  box-shadow: 0 10px 22px rgba(31, 111, 235, 0.28);
+}
+
+.homepage .steps-container .step-illustration {
+  max-width: clamp(200px, 22vw, 240px);
+  color: var(--primary);
+}
+
+.homepage .steps-container .step-illustration img {
+  width: 100%;
+  height: auto;
+  display: block;
+  background: transparent;
+  filter: none;
+  mix-blend-mode: multiply;
+  opacity: 0.98;
+}
+
+.homepage .steps-container .step-card h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.homepage .steps-container .step-card p {
+  font-size: 0.95rem;
+  color: var(--text-gray);
+  max-width: 280px;
+  margin: 0 auto;
+}
+
+.homepage .steps-container .step-card:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: -20px;
+  top: 52px;
+  width: 32px;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(31, 111, 235, 0.4), rgba(31, 111, 235, 0.1));
+}
+
+@media (max-width: 1024px) {
+  .homepage .steps-container .step-card:not(:last-child)::after {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .homepage .steps-container {
+    gap: 20px;
+  }
+
+  .homepage .steps-container .step-card {
+    padding: 28px 22px;
+  }
+
+  .homepage .steps-container .step-illustration {
+    max-width: 220px;
+  }
+}

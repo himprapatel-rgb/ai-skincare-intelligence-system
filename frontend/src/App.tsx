@@ -1,53 +1,49 @@
 // src/App.tsx - Premium GUI v3 - Complete Frontend
+import React, { Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import AppLayout from "./components/AppLayout";
 import DevBanner from "./components/DevBanner";
+import LoadingScreen from "./components/LoadingScreen";
 
-// Page Imports - Epic 1: Core Authentication
-import { AuthPage } from "./pages/AuthPage";
-import HomePage from "./pages/HomePage";
-import PasswordResetPage from "./pages/PasswordResetPage";
-import EmailVerificationPage from "./pages/EmailVerificationPage";
-
-// Page Imports - Epic 2: Skin Analysis Engine
-import ScanPage from "./pages/ScanPage";
-import AnalysisResults from "./pages/AnalysisResults";
-import HistoryPage from "./pages/HistoryPage";
-import ComparisonPage from "./pages/ComparisonPage";
-import SampleReportPage from "./pages/SampleReportPage";
-import DigitalTwinTimelinePage from "./pages/DigitalTwinTimelinePage";
-
-// Page Imports - Epic 3: Product Recommendations
-import Recommendations from "./pages/Recommendations";
-import ProductDetailsPage from "./pages/ProductDetailsPage";
-import RoutineBuilderPage from "./pages/RoutineBuilderPage";
-import FavoritesPage from "./pages/FavoritesPage";
-import MyShelfPage from "./pages/MyShelfPage";
-import ProductScannerPage from "./pages/ProductScannerPage";
-
-// Page Imports - Epic 4: User Profile & History
-import ProfileSettingsPage from "./pages/ProfileSettingsPage";
-import OnboardingPage from "./pages/OnboardingPage";
-import ConsentPage from "./pages/ConsentPage";
-import SkinGoalsPage from "./pages/SkinGoalsPage";
-import ProgressTrackingPage from "./pages/ProgressTrackingPage";
-import DataExportPage from "./pages/DataExportPage";
-import DashboardPage from "./pages/DashboardPage";
-import NotificationCenterPage from "./pages/NotificationCenterPage";
-import AdminDashboardPage from "./pages/AdminDashboardPage";
-import AdminUsersPage from "./pages/AdminUsersPage";
-import AdminProductsPage from "./pages/AdminProductsPage";
-
-// Page Imports - Epic 5: Legal & Information Pages
-import AboutPage from "./pages/AboutPage";
-import ContactPage from "./pages/ContactPage";
-import PrivacyPage from "./pages/PrivacyPage";
-import TermsPage from "./pages/TermsPage";
-import BlogPage from "./pages/BlogPage";
-import IngredientDictionaryPage from "./pages/IngredientDictionaryPage";
-import SkinTypeGuidePage from "./pages/SkinTypeGuidePage";
-import VideoTutorialsPage from "./pages/VideoTutorialsPage";
+// Page Imports - Lazy loaded for faster initial load
+const HomePage = React.lazy(() => import("./pages/HomePage"));
+const AuthPage = React.lazy(() =>
+  import("./pages/AuthPage").then((module) => ({ default: module.AuthPage }))
+);
+const PasswordResetPage = React.lazy(() => import("./pages/PasswordResetPage"));
+const EmailVerificationPage = React.lazy(() => import("./pages/EmailVerificationPage"));
+const ScanPage = React.lazy(() => import("./pages/ScanPage"));
+const AnalysisResults = React.lazy(() => import("./pages/AnalysisResults"));
+const HistoryPage = React.lazy(() => import("./pages/HistoryPage"));
+const ComparisonPage = React.lazy(() => import("./pages/ComparisonPage"));
+const SampleReportPage = React.lazy(() => import("./pages/SampleReportPage"));
+const DigitalTwinTimelinePage = React.lazy(() => import("./pages/DigitalTwinTimelinePage"));
+const Recommendations = React.lazy(() => import("./pages/Recommendations"));
+const ProductDetailsPage = React.lazy(() => import("./pages/ProductDetailsPage"));
+const RoutineBuilderPage = React.lazy(() => import("./pages/RoutineBuilderPage"));
+const FavoritesPage = React.lazy(() => import("./pages/FavoritesPage"));
+const MyShelfPage = React.lazy(() => import("./pages/MyShelfPage"));
+const ProductScannerPage = React.lazy(() => import("./pages/ProductScannerPage"));
+const ProfileSettingsPage = React.lazy(() => import("./pages/ProfileSettingsPage"));
+const OnboardingPage = React.lazy(() => import("./pages/OnboardingPage"));
+const ConsentPage = React.lazy(() => import("./pages/ConsentPage"));
+const SkinGoalsPage = React.lazy(() => import("./pages/SkinGoalsPage"));
+const ProgressTrackingPage = React.lazy(() => import("./pages/ProgressTrackingPage"));
+const DataExportPage = React.lazy(() => import("./pages/DataExportPage"));
+const DashboardPage = React.lazy(() => import("./pages/DashboardPage"));
+const NotificationCenterPage = React.lazy(() => import("./pages/NotificationCenterPage"));
+const AdminDashboardPage = React.lazy(() => import("./pages/AdminDashboardPage"));
+const AdminUsersPage = React.lazy(() => import("./pages/AdminUsersPage"));
+const AdminProductsPage = React.lazy(() => import("./pages/AdminProductsPage"));
+const AboutPage = React.lazy(() => import("./pages/AboutPage"));
+const ContactPage = React.lazy(() => import("./pages/ContactPage"));
+const PrivacyPage = React.lazy(() => import("./pages/PrivacyPage"));
+const TermsPage = React.lazy(() => import("./pages/TermsPage"));
+const BlogPage = React.lazy(() => import("./pages/BlogPage"));
+const IngredientDictionaryPage = React.lazy(() => import("./pages/IngredientDictionaryPage"));
+const SkinTypeGuidePage = React.lazy(() => import("./pages/SkinTypeGuidePage"));
+const VideoTutorialsPage = React.lazy(() => import("./pages/VideoTutorialsPage"));
 
 export default function App() {
   return (
@@ -55,57 +51,59 @@ export default function App() {
       <DevBanner />
       <BrowserRouter>
         <AppLayout>
-          <Routes>
-          {/* Public Routes */}
-          <Route path="/" element={<HomePage />} />
-          <Route path="/auth" element={<AuthPage />} />
-          <Route path="/password-reset" element={<PasswordResetPage />} />
-          <Route path="/verify-email" element={<EmailVerificationPage />} />
-          
-          {/* Skin Analysis Routes */}
-          <Route path="/scan" element={<ScanPage />} />
-          <Route path="/analysis/:analysisId" element={<AnalysisResults />} />
-          <Route path="/analysis/demo" element={<SampleReportPage />} />
-          <Route path="/history" element={<HistoryPage />} />
-          <Route path="/comparison" element={<ComparisonPage />} />
-          <Route path="/digital-twin" element={<DigitalTwinTimelinePage />} />
-          
-          {/* Product Recommendation Routes */}
-          <Route path="/recommendations" element={<Recommendations />} />
-          <Route path="/discover" element={<Recommendations />} />
-          <Route path="/product/:id" element={<ProductDetailsPage />} />
-          <Route path="/routine-builder" element={<RoutineBuilderPage />} />
-          <Route path="/routines" element={<RoutineBuilderPage />} />
-          <Route path="/favorites" element={<FavoritesPage />} />
-          <Route path="/myshelf" element={<MyShelfPage />} />
-          <Route path="/scanner" element={<ProductScannerPage />} />
-          
-          {/* User Profile Routes */}
-          <Route path="/onboarding" element={<OnboardingPage />} />
-          <Route path="/profile" element={<ProfileSettingsPage />} />
-          <Route path="/consent" element={<ConsentPage />} />
-          <Route path="/skin-goals" element={<SkinGoalsPage />} />
-          <Route path="/progress" element={<ProgressTrackingPage />} />
-          <Route path="/export" element={<DataExportPage />} />
-          <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/notifications" element={<NotificationCenterPage />} />
-          <Route path="/admin" element={<AdminDashboardPage />} />
-          <Route path="/admin/users" element={<AdminUsersPage />} />
-          <Route path="/admin/products" element={<AdminProductsPage />} />
+          <Suspense fallback={<LoadingScreen message="Loading page..." fullscreen={false} />}>
+            <Routes>
+            {/* Public Routes */}
+            <Route path="/" element={<HomePage />} />
+            <Route path="/auth" element={<AuthPage />} />
+            <Route path="/password-reset" element={<PasswordResetPage />} />
+            <Route path="/verify-email" element={<EmailVerificationPage />} />
+            
+            {/* Skin Analysis Routes */}
+            <Route path="/scan" element={<ScanPage />} />
+            <Route path="/analysis/:analysisId" element={<AnalysisResults />} />
+            <Route path="/analysis/demo" element={<SampleReportPage />} />
+            <Route path="/history" element={<HistoryPage />} />
+            <Route path="/comparison" element={<ComparisonPage />} />
+            <Route path="/digital-twin" element={<DigitalTwinTimelinePage />} />
+            
+            {/* Product Recommendation Routes */}
+            <Route path="/recommendations" element={<Recommendations />} />
+            <Route path="/discover" element={<Recommendations />} />
+            <Route path="/product/:id" element={<ProductDetailsPage />} />
+            <Route path="/routine-builder" element={<RoutineBuilderPage />} />
+            <Route path="/routines" element={<RoutineBuilderPage />} />
+            <Route path="/favorites" element={<FavoritesPage />} />
+            <Route path="/myshelf" element={<MyShelfPage />} />
+            <Route path="/scanner" element={<ProductScannerPage />} />
+            
+            {/* User Profile Routes */}
+            <Route path="/onboarding" element={<OnboardingPage />} />
+            <Route path="/profile" element={<ProfileSettingsPage />} />
+            <Route path="/consent" element={<ConsentPage />} />
+            <Route path="/skin-goals" element={<SkinGoalsPage />} />
+            <Route path="/progress" element={<ProgressTrackingPage />} />
+            <Route path="/export" element={<DataExportPage />} />
+            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/notifications" element={<NotificationCenterPage />} />
+            <Route path="/admin" element={<AdminDashboardPage />} />
+            <Route path="/admin/users" element={<AdminUsersPage />} />
+            <Route path="/admin/products" element={<AdminProductsPage />} />
 
-                  {/* Legal & Information Pages */}
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/contact" element={<ContactPage />} />
-        <Route path="/privacy" element={<PrivacyPage />} />
-        <Route path="/terms" element={<TermsPage />} />
-          <Route path="/blog" element={<BlogPage />} />
-          <Route path="/ingredients" element={<IngredientDictionaryPage />} />
-          <Route path="/skin-type-guide" element={<SkinTypeGuidePage />} />
-          <Route path="/tutorials" element={<VideoTutorialsPage />} />
-          
-          {/* Fallback */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
+                    {/* Legal & Information Pages */}
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/privacy" element={<PrivacyPage />} />
+          <Route path="/terms" element={<TermsPage />} />
+            <Route path="/blog" element={<BlogPage />} />
+            <Route path="/ingredients" element={<IngredientDictionaryPage />} />
+            <Route path="/skin-type-guide" element={<SkinTypeGuidePage />} />
+            <Route path="/tutorials" element={<VideoTutorialsPage />} />
+            
+            {/* Fallback */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </Suspense>
         </AppLayout>
       </BrowserRouter>
     </AuthProvider>

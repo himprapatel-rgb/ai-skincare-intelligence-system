@@ -455,7 +455,16 @@ def get_scan_image(
 
     if scan_session.image_data:
         content_type = scan_session.image_content_type or "image/jpeg"
-        return Response(content=scan_session.image_data, media_type=content_type)
+        headers = {
+            "Cache-Control": "public, max-age=31536000, immutable",
+        }
+        if scan_session.image_hash:
+            headers["ETag"] = scan_session.image_hash
+        return Response(
+            content=scan_session.image_data,
+            media_type=content_type,
+            headers=headers,
+        )
 
     if scan_session.image_url:
         image_path = pathlib.Path(scan_session.image_url)
@@ -466,6 +475,7 @@ def get_scan_image(
                 image_path,
                 media_type=scan_session.image_content_type or "image/jpeg",
                 filename=scan_session.image_filename or image_path.name,
+                headers={"Cache-Control": "public, max-age=31536000, immutable"},
             )
 
     raise HTTPException(

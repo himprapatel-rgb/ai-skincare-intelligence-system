@@ -26,7 +26,12 @@ const SnapshotDetails: React.FC<SnapshotDetailsProps> = ({ snapshot, formatDate 
     </div>
     <div className="dt-card-body dt-details-grid">
       <div className="dt-details-image">
-        <img src={snapshot.imageUrl} alt="Selected snapshot" loading="lazy" />
+        <img
+          src={snapshot.imageUrl}
+          alt="Selected snapshot"
+          loading="lazy"
+          decoding="async"
+        />
       </div>
       <div className="dt-details-metrics">
         <h3>Metrics</h3>

@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area } from 'recharts';
-import { IconCamera, IconTrendingUp, IconCalendar, IconSparkles, IconTarget } from '../components/Icons';
-import './DigitalTwinTimelinePage.css';
+import HeroSection from '../components/digital-twin/HeroSection';
+import StatsCards from '../components/digital-twin/StatsCards';
+import ProgressChart from '../components/digital-twin/ProgressChart';
+import TimelineSnapshots from '../components/digital-twin/TimelineSnapshots';
+import SnapshotDetails from '../components/digital-twin/SnapshotDetails';
+import BeforeAfterCircle from '../components/digital-twin/BeforeAfterCircle';
+import '../components/digital-twin/styles/digital-twin.css';
 
 interface ApiStateVector {
   hydration_level: number;
@@ -90,7 +94,6 @@ const DigitalTwinTimelinePage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [insights, setInsights] = useState<ApiInsights | null>(null);
-
   const formatMoodLabel = (mood: string) => mood.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
   const formatConcernLabel = (concern: string) => concern.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
   const formatTrendLabel = (trend?: string) => (trend ? formatMoodLabel(trend) : 'Stable');
@@ -147,12 +150,6 @@ const DigitalTwinTimelinePage: React.FC = () => {
     }
     return `${apiOrigin}/${url}`;
   };
-  const getScoreTone = (score: number) => {
-    if (score >= 70) return 'score-good';
-    if (score >= 40) return 'score-medium';
-    return 'score-low';
-  };
-
   useEffect(() => {
     const fetchSnapshots = async () => {
       try {
@@ -297,20 +294,22 @@ const DigitalTwinTimelinePage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="digital-twin-page">
-        <div className="loading-spinner">Loading timeline...</div>
+      <div className="dt-page">
+        <div className="dt-container">
+          <div className="loading-spinner">Loading timeline...</div>
+        </div>
       </div>
     );
   }
 
   if (hasError) {
     return (
-      <div className="digital-twin-page">
-        <div className="digital-twin-container">
-          <div className="page-header">
-            <h1>Digital Twin Timeline</h1>
+      <div className="dt-page">
+        <div className="dt-container">
+          <section className="dt-card">
+            <h2>Digital Twin Timeline</h2>
             <p>We couldn't load your digital twin timeline. Please try again.</p>
-          </div>
+          </section>
         </div>
       </div>
     );
@@ -318,428 +317,66 @@ const DigitalTwinTimelinePage: React.FC = () => {
 
   if (snapshots.length === 0) {
     return (
-      <div className="digital-twin-page">
-        <div className="digital-twin-container">
-          <div className="page-header">
-            <h1>Digital Twin Timeline</h1>
+      <div className="dt-page">
+        <div className="dt-container">
+          <section className="dt-card">
+            <h2>Digital Twin Timeline</h2>
             <p>Complete a scan to generate your first digital twin snapshot.</p>
-          </div>
-          <div className="empty-state">
-            <h2>No snapshots yet</h2>
-            <p>Your digital twin will appear after you complete a skin scan.</p>
-            <div className="empty-state-actions">
+            <div className="dt-card-body">
               <button type="button" className="btn-primary" onClick={() => navigate('/scan')}>
                 Start a Scan
               </button>
-              <button type="button" className="btn-secondary" onClick={() => navigate('/dashboard')}>
-                Go to Dashboard
-              </button>
             </div>
-          </div>
+          </section>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="digital-twin-page">
-      <div className="digital-twin-container">
-        <div className="page-header">
-          <h1>
-            <IconTarget size={32} strokeWidth={2} className="icon-inline-lg" />
-            Digital Twin Timeline
-          </h1>
-          <p>Track your skin's journey and see how it evolves over time</p>
-        </div>
-
-        <div className="twin-explainer">
-          <div className="twin-explainer-card">
-            <h3>What is a Digital Twin?</h3>
-            <p>
-              Your Digital Twin is a living profile of your skin, created from each scan.
-              It summarizes your scores and makes progress easy to visualize over time.
-            </p>
-          </div>
-          <div className="twin-explainer-card">
-            <h3>How Tracking Works</h3>
-            <p>
-              Each scan adds a new snapshot. We chart your overall score, mood, and
-              concern metrics so you can spot trends and celebrate improvements.
-            </p>
-          </div>
-          <div className="twin-explainer-card">
-            <h3>Why It Matters</h3>
-            <p>
-              Consistent tracking helps you connect skincare choices with results,
-              making routines more intentional and measurable.
-            </p>
-          </div>
-        </div>
-
-        {/* Overall Progress Summary */}
-        <div className="progress-summary">
-          <div className="summary-card">
-            <div className="summary-icon">
-              <IconTrendingUp size={32} strokeWidth={2} />
-            </div>
-            <div className="summary-content">
-              <div className="summary-value">
-                {latestSnapshot?.overallScore || 0}
-                <span className="summary-unit">/100</span>
-              </div>
-              <div className="summary-label">Current Score</div>
-            </div>
-          </div>
-          <div className="summary-card">
-            <div className="summary-icon">
-              <IconSparkles size={32} strokeWidth={2} />
-            </div>
-            <div className="summary-content">
-              <div className="summary-value">{latestSnapshot?.skinMoodLabel || 'Unknown'}</div>
-              <div className="summary-label">Skin Mood</div>
-            </div>
-          </div>
-          <div className="summary-card">
-            <div className="summary-icon">
-              <IconCalendar size={32} strokeWidth={2} />
-            </div>
-            <div className="summary-content">
-              <div className="summary-value">{snapshots.length}</div>
-              <div className="summary-label">Total Snapshots</div>
-            </div>
-          </div>
-          <div className="summary-card">
-            <div className="summary-icon">
-              <IconTarget size={32} strokeWidth={2} />
-            </div>
-            <div className="summary-content">
-              <div className="summary-value summary-value--concerns">
-                {latestSnapshot?.topConcerns?.length ? latestSnapshot.topConcerns.join(', ') : '—'}
-              </div>
-              <div className="summary-label">Top Concerns</div>
-            </div>
-          </div>
-        </div>
-
-        {insights && (
-          <div className="progress-summary">
-            <div className={`summary-card summary-card--trend ${insights.trend === 'improving' ? 'tone-positive' : insights.trend === 'declining' ? 'tone-negative' : 'tone-neutral'}`}>
-              <div className="summary-icon">
-                <IconTrendingUp size={32} strokeWidth={2} />
-              </div>
-              <div className="summary-content">
-                <div className="summary-value">{formatTrendLabel(insights.trend)}</div>
-                <div className="summary-label">Trend</div>
-              </div>
-            </div>
-            <div className="summary-card summary-card--highlight">
-              <div className="summary-icon">
-                <IconTarget size={32} strokeWidth={2} />
-              </div>
-              <div className="summary-content">
-                <div className="summary-value">{insights.best_improvement || '—'}</div>
-                <div className="summary-label">Best Improvement</div>
-              </div>
-            </div>
-            <div className="summary-card summary-card--concern tone-negative">
-              <div className="summary-icon">
-                <IconSparkles size={32} strokeWidth={2} />
-              </div>
-              <div className="summary-content">
-                <div className="summary-value">{insights.top_concern || '—'}</div>
-                <div className="summary-label">Top Concern</div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Timeline Chart */}
-        <div className="card timeline-chart-card">
-          <div className="card-header">
-            <h2>Progress Over Time</h2>
-            <div className="chart-controls">
-              <label>
-                Range
-                <select value={dateRange} onChange={(event) => setDateRange(event.target.value as typeof dateRange)}>
-                  <option value="7d">Last 7 days</option>
-                  <option value="30d">Last 30 days</option>
-                  <option value="90d">Last 90 days</option>
-                  <option value="all">All time</option>
-                </select>
-              </label>
-            </div>
-          </div>
-          <div className="card-content">
-            <ResponsiveContainer width="100%" height={400}>
-              <AreaChart data={chartData}>
-                <defs>
-                  <linearGradient id="colorScore" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.8}/>
-                    <stop offset="95%" stopColor="var(--primary)" stopOpacity={0.1}/>
-                  </linearGradient>
-                  <linearGradient id="colorMood" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="var(--secondary)" stopOpacity={0.8}/>
-                    <stop offset="95%" stopColor="var(--secondary)" stopOpacity={0.1}/>
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="dateLabel" interval="preserveStartEnd" />
-                <YAxis domain={[0, 100]} tickFormatter={(value) => `${value}`} />
-                <Tooltip
-                  formatter={(value, name) => [`${value}`, name]}
-                  labelFormatter={(label, payload) => chartTooltipLabel(label, payload?.[0])}
-                />
-                <Legend />
-                <Area 
-                  type="monotone" 
-                  dataKey="score" 
-                  stroke="var(--primary)" 
-                  fillOpacity={1}
-                  fill="url(#colorScore)"
-                  name="Overall Score"
-                  dot={{ r: 3 }}
-                  activeDot={{ r: 5 }}
-                />
-                <Area 
-                  type="monotone" 
-                  dataKey="mood" 
-                  stroke="var(--secondary)" 
-                  fillOpacity={1}
-                  fill="url(#colorMood)"
-                  name="Skin Mood"
-                  dot={{ r: 3 }}
-                  activeDot={{ r: 5 }}
-                />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        {/* Timeline Snapshots */}
-        <div className="card timeline-snapshots-card">
-          <div className="card-header">
-            <h2>Timeline Snapshots</h2>
-            <button onClick={() => navigate('/scan')} className="btn-primary">
-              <IconCamera size={18} strokeWidth={2} className="icon-inline" />
-              Take New Snapshot
-            </button>
-          </div>
-          <div className="card-content">
-            <div className="timeline-snapshots">
-              {snapshots.map((snapshot, index) => (
-                <div
-                  key={snapshot.id}
-                  className={`snapshot-item ${selectedSnapshot === snapshot.id ? 'selected' : ''}`}
-                  onClick={() => setSelectedSnapshot(snapshot.id)}
-                >
-                  <div className="snapshot-image">
-                    <img
-                      src={snapshot.imageUrl}
-                      alt={`Snapshot ${index + 1}`}
-                      loading="lazy"
-                      onError={(event) => {
-                        const target = event.currentTarget;
-                        if (target.src !== fallbackImage) {
-                          target.src = fallbackImage;
-                        }
-                      }}
-                    />
-                    <div className="snapshot-date">
-                      {formatFullDate(snapshot.date)}
-                    </div>
-                  </div>
-                  <div className="snapshot-info">
-                    <div className={`snapshot-score ${getScoreTone(snapshot.overallScore)}`}>Score: {snapshot.overallScore}</div>
-                    <div className="snapshot-mood">Mood: {snapshot.skinMoodLabel}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Selected Snapshot Details */}
+    <div className="dt-page">
+      <div className="dt-container">
+        <HeroSection
+          currentScore={latestSnapshot?.overallScore ?? 0}
+          skinMood={latestSnapshot?.skinMoodLabel ?? 'Unknown'}
+          totalSnapshots={snapshots.length}
+        />
+        <StatsCards
+          stats={{
+            trend: formatTrendLabel(insights?.trend),
+            topConcerns: latestSnapshot?.topConcerns?.join(', ') || '—',
+            bestImprovement: insights?.best_improvement || '—',
+            topConcern: insights?.top_concern || '—',
+          }}
+        />
+        <ProgressChart
+          chartData={chartData}
+          dateRange={dateRange}
+          onRangeChange={setDateRange}
+          tooltipLabel={chartTooltipLabel}
+        />
+        <TimelineSnapshots
+          snapshots={snapshots}
+          selectedId={selectedSnapshot}
+          onSelect={setSelectedSnapshot}
+          onTakeNew={() => navigate('/scan')}
+          formatDate={formatFullDate}
+        />
         {selectedData && (
-          <div className="card snapshot-details-card">
-            <div className="card-header">
-              <h2>Snapshot Details - {new Date(selectedData.date).toLocaleDateString('en', { month: 'long', day: 'numeric', year: 'numeric' })}</h2>
-            </div>
-            <div className="card-content">
-              <div className="snapshot-details-grid">
-                <div className="detail-image">
-                  <img
-                    src={selectedData.imageUrl}
-                    alt="Selected snapshot"
-                    loading="lazy"
-                    onError={(event) => {
-                      const target = event.currentTarget;
-                      if (target.src !== fallbackImage) {
-                        target.src = fallbackImage;
-                      }
-                    }}
-                  />
-                </div>
-                <div className="detail-metrics">
-                  <h3>Metrics</h3>
-                  <div className="metrics-grid">
-                    <div className="metric-item">
-                      <span className="metric-label">Overall Score</span>
-                      <span className="metric-value">{selectedData.overallScore}</span>
-                    </div>
-                    <div className="metric-item">
-                      <span className="metric-label">Skin Mood</span>
-                      <span className="metric-value">{selectedData.skinMoodLabel}</span>
-                    </div>
-                    <div className="metric-item">
-                      <span className="metric-label">Acne</span>
-                      <span className="metric-value">{selectedData.concerns.acne}%</span>
-                    </div>
-                    <div className="metric-item">
-                      <span className="metric-label">Wrinkles</span>
-                      <span className="metric-value">{selectedData.concerns.wrinkles}%</span>
-                    </div>
-                    <div className="metric-item">
-                      <span className="metric-label">Dark Spots</span>
-                      <span className="metric-value">{selectedData.concerns.darkSpots}%</span>
-                    </div>
-                    <div className="metric-item">
-                      <span className="metric-label">Hydration</span>
-                      <span className="metric-value">{selectedData.concerns.hydration}%</span>
-                    </div>
-                      <div className="metric-item">
-                        <span className="metric-label">Oiliness</span>
-                        <span className="metric-value">{selectedData.concerns.oiliness}%</span>
-                      </div>
-                    <div className="metric-item">
-                      <span className="metric-label">Redness</span>
-                      <span className="metric-value">{selectedData.concerns.redness}%</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {selectedData.improvements.length > 0 && (
-                <div className="improvements-section">
-                  <h3>Key Improvements</h3>
-                  <ul className="improvements-list">
-                    {selectedData.improvements.map((improvement, idx) => (
-                      <li key={idx}>
-                        <IconTrendingUp size={16} strokeWidth={2} className="icon-inline trend-icon" />
-                        {improvement}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
-          </div>
+          <SnapshotDetails snapshot={selectedData} formatDate={formatFullDate} />
         )}
-
-        {/* Before/After Comparison */}
         {snapshots.length >= 2 && (
-          <div className="card comparison-card">
-            <div className="card-header">
-              <h2>Before & After</h2>
-              <div className="comparison-controls">
-                <label>
-                  Before
-                  <select value={beforeSnapshot?.id || ''} onChange={(event) => setComparisonBefore(event.target.value)}>
-                    {snapshots.map((snapshot) => (
-                      <option key={snapshot.id} value={snapshot.id}>
-                        {formatFullDateTime(snapshot.date)}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-                <label>
-                  After
-                  <select value={afterSnapshot?.id || ''} onChange={(event) => setComparisonAfter(event.target.value)}>
-                    {snapshots.map((snapshot) => (
-                      <option key={snapshot.id} value={snapshot.id}>
-                        {formatFullDateTime(snapshot.date)}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-              </div>
-            </div>
-            <div className="card-content">
-              {beforeSnapshot && afterSnapshot && (
-                <div className="before-after-slider">
-                  <div className="before-after-stack" aria-label="Before and after comparison">
-                    <img
-                      className="before-image"
-                      src={beforeSnapshot.imageUrl}
-                      alt="Before"
-                      loading="lazy"
-                      onError={(event) => {
-                        const target = event.currentTarget;
-                        if (target.src !== fallbackImage) {
-                          target.src = fallbackImage;
-                        }
-                      }}
-                    />
-                    <div className="after-layer" style={{ width: `${compareSplit}%` }}>
-                      <img
-                        className="after-image"
-                        src={afterSnapshot.imageUrl}
-                        alt="After"
-                        loading="lazy"
-                        onError={(event) => {
-                          const target = event.currentTarget;
-                          if (target.src !== fallbackImage) {
-                            target.src = fallbackImage;
-                          }
-                        }}
-                      />
-                    </div>
-                    <div className="slider-handle" style={{ left: `${compareSplit}%` }}>
-                      <span className="slider-percent">{compareSplit}%</span>
-                    </div>
-                  </div>
-                  <input
-                    className="compare-range"
-                    type="range"
-                    min={0}
-                    max={100}
-                    value={compareSplit}
-                    onChange={(event) => setCompareSplit(Number(event.target.value))}
-                    aria-label="Compare before and after"
-                  />
-                  <div className="compare-actions">
-                    <button
-                      type="button"
-                      className="btn-secondary btn-reset"
-                      onClick={() => setCompareSplit(50)}
-                    >
-                      Reset
-                    </button>
-                  </div>
-                  <div className="compare-meta">
-                    <div className="compare-item">
-                      <span className="compare-label">Before</span>
-                      <span className="compare-date">{formatFullDate(beforeSnapshot.date)}</span>
-                      <span className="compare-score">Score: {beforeSnapshot.overallScore}</span>
-                    </div>
-                    <div className="compare-item">
-                      <span className="compare-label">After</span>
-                      <span className="compare-date">{formatFullDate(afterSnapshot.date)}</span>
-                      <span className="compare-score">Score: {afterSnapshot.overallScore}</span>
-                    </div>
-                  </div>
-                </div>
-              )}
-              {beforeSnapshot && afterSnapshot && (
-                <div className="improvement-summary">
-                  <div className="improvement-value">
-                    {afterSnapshot.overallScore - beforeSnapshot.overallScore >= 0 ? '+' : ''}
-                    {afterSnapshot.overallScore - beforeSnapshot.overallScore} points
-                  </div>
-                  <div className="improvement-label">Overall Improvement</div>
-                </div>
-              )}
-            </div>
-          </div>
+          <BeforeAfterCircle
+            snapshots={snapshots}
+            beforeSnapshot={beforeSnapshot}
+            afterSnapshot={afterSnapshot}
+            compareSplit={compareSplit}
+            onBeforeChange={setComparisonBefore}
+            onAfterChange={setComparisonAfter}
+            onSplitChange={setCompareSplit}
+            formatDate={formatFullDate}
+            formatDateTime={formatFullDateTime}
+          />
         )}
       </div>
     </div>

@@ -235,6 +235,12 @@
   gap: 20px;
 }
 
+.snapshots-toggle {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
 .snapshot-item {
   cursor: pointer;
   border: 2px solid var(--border);

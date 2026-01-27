@@ -265,68 +265,98 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
       </main>
 
       <footer className="app-footer">
-        <div className="app-footer-container">
-          <div className="app-footer-brand">
-            <span className="app-logo-text">SkinCareAI</span>
-            <p>Clinical-grade skin insights, personalized for you.</p>
-            <div className="app-footer-socials">
-              <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram">
-                <IconInstagram size={18} strokeWidth={2} />
-              </a>
-              <a href="https://x.com" target="_blank" rel="noreferrer" aria-label="X">
-                <IconTwitter size={18} strokeWidth={2} />
-              </a>
-              <a href="https://tiktok.com" target="_blank" rel="noreferrer" aria-label="TikTok">
-                <IconTiktok size={18} strokeWidth={2} />
-              </a>
-              <a href="https://linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn">
-                <IconLinkedin size={18} strokeWidth={2} />
-              </a>
+        {/* Newsletter Section */}
+        <div className="app-footer-newsletter">
+          <div className="app-footer-newsletter-content">
+            <div className="app-footer-newsletter-text">
+              <h3>Get Personalized Skin Tips</h3>
+              <p>Join 50,000+ others getting weekly skincare insights powered by AI.</p>
             </div>
+            <form className="app-footer-newsletter-form" onSubmit={(e) => e.preventDefault()}>
+              <input type="email" placeholder="Enter your email" aria-label="Email for newsletter" />
+              <button type="submit">Subscribe</button>
+            </form>
           </div>
-          <div className="app-footer-links">
-            <div>
-              <h4>Product</h4>
-              <Link to="/scan">Skin Analysis</Link>
-              <Link to="/recommendations">Recommendations</Link>
-              <Link to="/digital-twin">Digital Twin</Link>
-              <Link to="/dashboard">Dashboard</Link>
-              <Link to="/history">History</Link>
-              {isAuthenticated ? (
-                <Link to="/profile">My Account</Link>
-              ) : (
-                <Link to="/auth">Login / Register</Link>
-              )}
+        </div>
+        
+        {/* Main Footer */}
+        <div className="app-footer-main">
+          <div className="app-footer-container">
+            {/* Brand Column */}
+            <div className="app-footer-brand">
+              <Link to="/" className="app-footer-logo">
+                <span className="app-footer-logo-mark">
+                  <IconScan size={16} strokeWidth={2.5} />
+                </span>
+                <span className="app-footer-logo-text">SkinCare<span className="app-logo-ai">AI</span></span>
+              </Link>
+              <p className="app-footer-tagline">Clinical-grade skin analysis powered by advanced AI. Your personalized path to healthier skin.</p>
+              <div className="app-footer-socials">
+                <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram">
+                  <IconInstagram size={18} strokeWidth={2} />
+                </a>
+                <a href="https://x.com" target="_blank" rel="noreferrer" aria-label="X">
+                  <IconTwitter size={18} strokeWidth={2} />
+                </a>
+                <a href="https://tiktok.com" target="_blank" rel="noreferrer" aria-label="TikTok">
+                  <IconTiktok size={18} strokeWidth={2} />
+                </a>
+                <a href="https://linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+                  <IconLinkedin size={18} strokeWidth={2} />
+                </a>
+              </div>
             </div>
-            <div>
-              <h4>Explore</h4>
-              <Link to="/routine-builder">Routine Builder</Link>
-              <Link to="/favorites">Favorites</Link>
-              <Link to="/myshelf">My Shelf</Link>
-              <Link to="/scanner">Product Scanner</Link>
-              <Link to="/notifications">Notifications</Link>
-              <Link to="/ingredients">Ingredient Dictionary</Link>
-              <Link to="/skin-type-guide">Skin Type Guide</Link>
-            </div>
-            <div>
-              <h4>Company</h4>
-              <Link to="/about">About Us</Link>
-              <Link to="/contact">Contact</Link>
-              <Link to="/blog">Blog</Link>
-              <Link to="/tutorials">Video Tutorials</Link>
-            </div>
-            <div>
-              <h4>Legal</h4>
-              <Link to="/privacy">Privacy Policy</Link>
-              <Link to="/terms">Terms of Service</Link>
-              <Link to="/privacy#delete">Delete My Data</Link>
+            
+            {/* Links Columns */}
+            <div className="app-footer-links">
+              <div className="app-footer-column">
+                <h4>Product</h4>
+                <Link to="/scan">Skin Analysis</Link>
+                <Link to="/recommendations">Recommendations</Link>
+                <Link to="/digital-twin">Digital Twin</Link>
+                <Link to="/dashboard">Dashboard</Link>
+                <Link to="/history">History</Link>
+                {isAuthenticated ? (
+                  <Link to="/profile">My Account</Link>
+                ) : (
+                  <Link to="/auth">Login / Register</Link>
+                )}
+              </div>
+              <div className="app-footer-column">
+                <h4>Features</h4>
+                <Link to="/routine-builder">Routine Builder</Link>
+                <Link to="/favorites">Favorites</Link>
+                <Link to="/myshelf">My Shelf</Link>
+                <Link to="/scanner">Product Scanner</Link>
+                <Link to="/ingredients">Ingredient Dictionary</Link>
+                <Link to="/skin-type-guide">Skin Type Guide</Link>
+              </div>
+              <div className="app-footer-column">
+                <h4>Company</h4>
+                <Link to="/about">About Us</Link>
+                <Link to="/contact">Contact</Link>
+                <Link to="/blog">Blog</Link>
+                <Link to="/tutorials">Video Tutorials</Link>
+              </div>
+              <div className="app-footer-column">
+                <h4>Legal</h4>
+                <Link to="/privacy">Privacy Policy</Link>
+                <Link to="/terms">Terms of Service</Link>
+                <Link to="/privacy#delete">Delete My Data</Link>
+              </div>
             </div>
           </div>
         </div>
+        
+        {/* Bottom Bar */}
         <div className="app-footer-bottom">
-          <p>© 2026 SkinCareAI. All rights reserved.</p>
-          <p className="app-footer-disclaimer">Not a medical device. For informational purposes only.</p>
-          <p className="app-footer-build">Build 2026-01-18-02</p>
+          <div className="app-footer-bottom-container">
+            <p className="app-footer-copyright">© 2026 SkinCareAI. All rights reserved.</p>
+            <p className="app-footer-disclaimer">
+              <span className="app-footer-disclaimer-icon">ℹ️</span>
+              Not a medical device. For informational purposes only.
+            </p>
+          </div>
         </div>
       </footer>
     </div>

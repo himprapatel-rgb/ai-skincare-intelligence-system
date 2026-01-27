@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { api } from '../services/api';
 import './ConsentPage.css';
 
 interface ConsentOptions {
@@ -7,6 +8,11 @@ interface ConsentOptions {
   analytics: boolean;
   marketing: boolean;
   thirdParty: boolean;
+}
+
+interface PolicyVersions {
+  termsVersion: string;
+  privacyVersion: string;
 }
 
 const ConsentPage: React.FC = () => {
@@ -17,8 +23,52 @@ const ConsentPage: React.FC = () => {
     marketing: false,
     thirdParty: false
   });
+  const [policyVersions, setPolicyVersions] = useState<PolicyVersions>({
+    termsVersion: 'terms-1.0.0',
+    privacyVersion: 'privacy-1.0.0'
+  });
+  const [hasExistingConsent, setHasExistingConsent] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(true);
   const [error, setError] = useState('');
+
+  // Fetch current policies and existing consent on mount
+  useEffect(() => {
+    const fetchConsentData = async () => {
+      try {
+        // Fetch current policy versions
+        const policiesResponse = await api.get('/consent/policies/current');
+        const policies = policiesResponse.data;
+        setPolicyVersions({
+          termsVersion: policies.terms_of_service?.version || 'terms-1.0.0',
+          privacyVersion: policies.privacy_policy?.version || 'privacy-1.0.0'
+        });
+
+        // Try to fetch existing consent status (will 404 if none)
+        try {
+          const statusResponse = await api.get('/consent/status');
+          if (statusResponse.data) {
+            setHasExistingConsent(true);
+            // Load any stored granular preferences
+            const stored = localStorage.getItem('userConsents');
+            if (stored) {
+              setConsents(JSON.parse(stored));
+            }
+          }
+        } catch {
+          // No existing consent - that's fine
+          setHasExistingConsent(false);
+        }
+      } catch (err) {
+        console.error('Failed to fetch consent data:', err);
+        // Use defaults if API fails
+      } finally {
+        setInitialLoading(false);
+      }
+    };
+
+    fetchConsentData();
+  }, []);
 
   const handleConsentChange = (key: keyof ConsentOptions) => {
     setConsents(prev => ({
@@ -51,31 +101,46 @@ const ConsentPage: React.FC = () => {
     setError('');
 
     try {
-      // TODO: Replace with actual API call
-      // await fetch('/api/consent', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //     'Authorization': `Bearer ${token}`
-      //   },
-      //   body: JSON.stringify(consents)
-      // });
-
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Call the real consent API
+      await api.post('/consent/accept', {
+        terms_accepted: true,
+        privacy_accepted: true,
+        terms_version: policyVersions.termsVersion,
+        privacy_version: policyVersions.privacyVersion
+      });
       
-      // Store consents in localStorage
+      // Store granular preferences in localStorage (for analytics, marketing, thirdParty)
       localStorage.setItem('userConsents', JSON.stringify(consents));
       localStorage.setItem('consentTimestamp', new Date().toISOString());
       
       // Navigate to next page (onboarding or home)
       navigate('/onboarding');
-    } catch (err) {
-      setError('Failed to save your preferences. Please try again.');
+    } catch (err: any) {
+      console.error('Failed to save consent:', err);
+      if (err.response?.status === 401) {
+        setError('Please log in to save your preferences.');
+      } else if (err.response?.status === 400) {
+        setError('Invalid policy versions. Please refresh and try again.');
+      } else {
+        setError('Failed to save your preferences. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
   };
+
+  if (initialLoading) {
+    return (
+      <div className="consent-page">
+        <div className="consent-container">
+          <div className="consent-header">
+            <h1>Loading...</h1>
+            <p className="subtitle">Fetching your consent preferences</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="consent-page">
@@ -83,6 +148,9 @@ const ConsentPage: React.FC = () => {
         <div className="consent-header">
           <h1>Your Privacy Matters</h1>
           <p className="subtitle">We value your privacy and want to be transparent about how we use your data</p>
+          {hasExistingConsent && (
+            <p className="consent-existing-notice">You have previously accepted our policies. You can update your preferences below.</p>
+          )}
         </div>
 
         <form onSubmit={handleSubmit} className="consent-form">
@@ -229,7 +297,7 @@ const ConsentPage: React.FC = () => {
         </form>
 
         <div className="consent-footer">
-          <p>Last updated: January 2025</p>
+          <p>Last updated: January 2026</p>
           <p>You can change these preferences at any time in your settings.</p>
         </div>
       </div>

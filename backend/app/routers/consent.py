@@ -119,6 +119,8 @@ async def accept_policies(
     ).first()
 
     if existing_consent:
+        existing_consent.terms_accepted = consent_data.terms_accepted
+        existing_consent.privacy_accepted = consent_data.privacy_accepted
         existing_consent.terms_version = consent_data.terms_version
         existing_consent.privacy_version = consent_data.privacy_version
         existing_consent.accepted_at = datetime.utcnow()
@@ -127,6 +129,8 @@ async def accept_policies(
     else:
         consent = UserConsent(
             user_id=current_user.id,
+            terms_accepted=consent_data.terms_accepted,
+            privacy_accepted=consent_data.privacy_accepted,
             terms_version=consent_data.terms_version,
             privacy_version=consent_data.privacy_version,
             ip_address=consent_data.ip_address
@@ -139,10 +143,11 @@ async def accept_policies(
     return ConsentResponse(
         id=consent.id,
         user_id=consent.user_id,
+        terms_accepted=consent.terms_accepted,
+        privacy_accepted=consent.privacy_accepted,
         terms_version=consent.terms_version,
         privacy_version=consent.privacy_version,
-        accepted_at=consent.accepted_at,
-        ip_address=consent.ip_address
+        accepted_at=consent.accepted_at
     )
 
 
@@ -168,10 +173,11 @@ async def get_consent_status(
     return ConsentResponse(
         id=consent.id,
         user_id=consent.user_id,
+        terms_accepted=consent.terms_accepted,
+        privacy_accepted=consent.privacy_accepted,
         terms_version=consent.terms_version,
         privacy_version=consent.privacy_version,
-        accepted_at=consent.accepted_at,
-        ip_address=consent.ip_address
+        accepted_at=consent.accepted_at
     )
 
 

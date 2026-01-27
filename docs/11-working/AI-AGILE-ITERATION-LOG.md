@@ -6,6 +6,38 @@ Use that workflow doc for checklists and templates to avoid duplication here.
 
 ---
 
+## Iteration 2026-01-27 (ConsentPage API Wiring)
+
+### Goal
+Wire ConsentPage frontend to real backend Consent API.
+
+### Scope (Completed)
+- ConsentPage now calls `GET /consent/policies/current` on mount to fetch policy versions.
+- ConsentPage now calls `GET /consent/status` to check for existing consent.
+- ConsentPage now calls `POST /consent/accept` on submit with `terms_accepted`, `privacy_accepted`, and version strings.
+- Backend `consent.py` fixed to properly set `terms_accepted` and `privacy_accepted` fields.
+- Backend `consent.py` returns proper `ConsentResponse` with boolean fields.
+- Added loading state and "existing consent" notice to ConsentPage.
+- Updated footer date to January 2026.
+- Added CSS for `.consent-existing-notice`.
+
+### Key Changes (Code)
+- Frontend consent wiring: `frontend/src/pages/ConsentPage.tsx`
+- Frontend CSS: `frontend/src/pages/ConsentPage.css`
+- Backend consent router fix: `backend/app/routers/consent.py`
+
+### Key Changes (Docs)
+- Iteration log: `docs/11-working/AI-AGILE-ITERATION-LOG.md`
+
+### Verification / Tests
+- No lint errors in ConsentPage.tsx or consent.py.
+- Manual test: visit `/consent`, verify policies load, submit, verify API called.
+
+### Risks / Follow-ups
+- Granular consents (analytics, marketing, thirdParty) still stored in localStorage; backend schema extension is optional future work.
+
+---
+
 ## Iteration 2026-01-27 (Email Verification + Docs Update)
 
 ### Goal

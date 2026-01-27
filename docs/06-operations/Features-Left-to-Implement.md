@@ -24,11 +24,10 @@
 - **Backend TODO:** `POST/GET /api/v1/products/{id}/reviews` (or equivalent), store in DB.
 - **Frontend TODO:** Wire ProductDetailsPage to reviews API; show/add reviews.
 
-### 1.2 ConsentPage frontend wiring
+### 1.2 ConsentPage frontend wiring — ✅ DONE (Jan 27, 2026)
 - **What:** Use existing Consent API from ConsentPage instead of localStorage.
 - **Where:** `frontend/src/pages/ConsentPage.tsx`.
-- **Backend:** Done — `GET/POST /api/v1/consent/policies/current`, `accept`, `status`, `withdraw`.
-- **Frontend TODO:** Replace mock/localStorage with real API calls.
+- **Status:** Complete. Frontend now calls `GET /consent/policies/current`, `GET /consent/status`, and `POST /consent/accept`.
 
 ### 1.3 Password reset end-to-end
 - **What:** Ensure request → email → reset link → new password works in production.

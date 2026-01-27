@@ -6,6 +6,44 @@ Use that workflow doc for checklists and templates to avoid duplication here.
 
 ---
 
+## Iteration 2026-01-27 (Product Reviews System)
+
+### Goal
+Implement product reviews system — backend API + frontend UI.
+
+### Scope (Completed)
+- **Backend model:** `ProductReview` in `product_models.py` with rating, title, comment, skin_type, would_recommend, verified_purchase, helpful_count.
+- **Backend schemas:** `ReviewCreate`, `ReviewResponse`, `ReviewsListResponse` in `product_schemas.py`.
+- **Backend endpoints:**
+  - `GET /api/v1/products/{product_id}/reviews` — paginated reviews with rating distribution
+  - `POST /api/v1/products/{product_id}/reviews` — create review (auth required, one per user per product)
+- **Frontend:** ProductDetailsPage Reviews tab now shows:
+  - Reviews list with user name, rating, title, comment, skin type, date
+  - Average rating and rating distribution bars
+  - Review submission form with star rating, title, comment, skin type, would_recommend
+- **CSS:** Full styling for review form, summary, and list.
+
+### Key Changes (Code)
+- `backend/app/models/product_models.py` — added `ProductReview`
+- `backend/app/schemas/product_schemas.py` — added review schemas
+- `backend/app/routers/products.py` — added reviews endpoints
+- `frontend/src/pages/ProductDetailsPage.tsx` — reviews fetch, display, submit
+- `frontend/src/pages/ProductDetailsPage.css` — review styling
+
+### Key Changes (Docs)
+- `docs/06-operations/Features-Left-to-Implement.md` — marked 1.1 done
+- `docs/11-working/AI-AGILE-ITERATION-LOG.md` — this entry
+
+### Verification / Tests
+- No lint errors in changed files.
+- Manual test: visit product page, click Reviews tab, submit review.
+
+### Risks / Follow-ups
+- Database migration needed in production to create `product_reviews` table.
+- `verified_purchase` not yet calculated from shelf (TODO).
+
+---
+
 ## Iteration 2026-01-27 (ConsentPage API Wiring)
 
 ### Goal

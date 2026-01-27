@@ -106,3 +106,55 @@ class SafetyAnalysis(BaseModel):
     pregnancy_safe: bool = True
     sensitive_skin_safe: bool = True
     flagged_ingredients: List[Dict[str, Any]] = []
+
+
+# ===== Product Reviews Schemas =====
+
+class ReviewCreate(BaseModel):
+    """Schema for creating a product review."""
+    rating: int = Field(..., ge=1, le=5, description="Rating from 1-5 stars")
+    title: Optional[str] = Field(None, max_length=200, description="Review title")
+    comment: Optional[str] = Field(None, max_length=2000, description="Review text")
+    skin_type: Optional[str] = Field(None, max_length=50, description="User's skin type")
+    would_recommend: bool = Field(True, description="Would recommend this product")
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "rating": 4,
+                "title": "Great moisturizer!",
+                "comment": "This serum really helped with my dry skin.",
+                "skin_type": "Dry",
+                "would_recommend": True
+            }
+        }
+
+
+class ReviewResponse(BaseModel):
+    """Schema for review response."""
+    id: UUID
+    product_id: UUID
+    user_id: int
+    rating: int
+    title: Optional[str] = None
+    comment: Optional[str] = None
+    skin_type: Optional[str] = None
+    would_recommend: bool = True
+    verified_purchase: bool = False
+    helpful_count: int = 0
+    created_at: datetime
+    # User display name (populated separately)
+    user_display_name: Optional[str] = None
+
+    class Config:
+        from_attributes = True
+
+
+class ReviewsListResponse(BaseModel):
+    """Schema for paginated reviews list."""
+    reviews: List[ReviewResponse]
+    total: int
+    average_rating: float
+    rating_distribution: Dict[int, int] = Field(
+        default_factory=lambda: {1: 0, 2: 0, 3: 0, 4: 0, 5: 0}
+    )

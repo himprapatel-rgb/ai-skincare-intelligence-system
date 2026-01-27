@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { api } from '../services/api';
 import { IconArrowLeft, IconStar } from '../components/Icons';
 import './ProductDetailsPage.css';
 
@@ -21,6 +22,27 @@ interface ProductDetails {
   benefits: string[];
 }
 
+interface Review {
+  id: string;
+  user_id: number;
+  rating: number;
+  title: string | null;
+  comment: string | null;
+  skin_type: string | null;
+  would_recommend: boolean;
+  verified_purchase: boolean;
+  helpful_count: number;
+  created_at: string;
+  user_display_name: string | null;
+}
+
+interface ReviewsData {
+  reviews: Review[];
+  total: number;
+  average_rating: number;
+  rating_distribution: { [key: number]: number };
+}
+
 const ProductDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -28,6 +50,20 @@ const ProductDetailsPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [inShelf, setInShelf] = useState(false);
   const [activeTab, setActiveTab] = useState<'overview' | 'ingredients' | 'reviews'>('overview');
+  
+  // Reviews state
+  const [reviewsData, setReviewsData] = useState<ReviewsData | null>(null);
+  const [reviewsLoading, setReviewsLoading] = useState(false);
+  const [showReviewForm, setShowReviewForm] = useState(false);
+  const [newReview, setNewReview] = useState({
+    rating: 5,
+    title: '',
+    comment: '',
+    skin_type: '',
+    would_recommend: true
+  });
+  const [submittingReview, setSubmittingReview] = useState(false);
+  const [reviewError, setReviewError] = useState('');
 
   const fetchProductDetails = useCallback(async () => {
     try {
@@ -65,9 +101,56 @@ const ProductDetailsPage: React.FC = () => {
     }
   }, [id]);
 
+  const fetchReviews = useCallback(async () => {
+    if (!id) return;
+    setReviewsLoading(true);
+    try {
+      const response = await api.get(`/products/${id}/reviews`);
+      setReviewsData(response.data);
+    } catch (error) {
+      console.error('Failed to fetch reviews:', error);
+    } finally {
+      setReviewsLoading(false);
+    }
+  }, [id]);
+
   useEffect(() => {
     fetchProductDetails();
   }, [fetchProductDetails]);
+
+  // Fetch reviews when reviews tab is active
+  useEffect(() => {
+    if (activeTab === 'reviews' && !reviewsData) {
+      fetchReviews();
+    }
+  }, [activeTab, reviewsData, fetchReviews]);
+
+  const handleSubmitReview = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!id) return;
+    
+    setSubmittingReview(true);
+    setReviewError('');
+    
+    try {
+      await api.post(`/products/${id}/reviews`, newReview);
+      setShowReviewForm(false);
+      setNewReview({ rating: 5, title: '', comment: '', skin_type: '', would_recommend: true });
+      // Refresh reviews
+      fetchReviews();
+    } catch (error: any) {
+      console.error('Failed to submit review:', error);
+      if (error.response?.status === 400) {
+        setReviewError('You have already reviewed this product.');
+      } else if (error.response?.status === 401) {
+        setReviewError('Please log in to submit a review.');
+      } else {
+        setReviewError('Failed to submit review. Please try again.');
+      }
+    } finally {
+      setSubmittingReview(false);
+    }
+  };
 
   const handleAddToShelf = async () => {
     try {
@@ -225,8 +308,179 @@ const ProductDetailsPage: React.FC = () => {
           
           {activeTab === 'reviews' && (
             <div className="reviews-tab">
-              <h3>Customer Reviews</h3>
-              <p className="coming-soon">Reviews coming soon...</p>
+              <div className="reviews-header">
+                <h3>Customer Reviews</h3>
+                <button 
+                  className="btn-primary write-review-btn"
+                  onClick={() => setShowReviewForm(!showReviewForm)}
+                >
+                  {showReviewForm ? 'Cancel' : 'Write a Review'}
+                </button>
+              </div>
+              
+              {showReviewForm && (
+                <form className="review-form" onSubmit={handleSubmitReview}>
+                  <div className="form-group">
+                    <label>Rating</label>
+                    <div className="star-rating-input">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <button
+                          key={star}
+                          type="button"
+                          className={`star-btn ${star <= newReview.rating ? 'active' : ''}`}
+                          onClick={() => setNewReview({ ...newReview, rating: star })}
+                        >
+                          <IconStar
+                            size={24}
+                            strokeWidth={2}
+                            fill={star <= newReview.rating ? 'currentColor' : 'none'}
+                          />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <div className="form-group">
+                    <label htmlFor="review-title">Title (optional)</label>
+                    <input
+                      id="review-title"
+                      type="text"
+                      value={newReview.title}
+                      onChange={(e) => setNewReview({ ...newReview, title: e.target.value })}
+                      placeholder="Summarize your experience"
+                      maxLength={200}
+                    />
+                  </div>
+                  
+                  <div className="form-group">
+                    <label htmlFor="review-comment">Your Review</label>
+                    <textarea
+                      id="review-comment"
+                      value={newReview.comment}
+                      onChange={(e) => setNewReview({ ...newReview, comment: e.target.value })}
+                      placeholder="Share your experience with this product..."
+                      rows={4}
+                      maxLength={2000}
+                    />
+                  </div>
+                  
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label htmlFor="skin-type">Your Skin Type</label>
+                      <select
+                        id="skin-type"
+                        value={newReview.skin_type}
+                        onChange={(e) => setNewReview({ ...newReview, skin_type: e.target.value })}
+                      >
+                        <option value="">Select...</option>
+                        <option value="Dry">Dry</option>
+                        <option value="Oily">Oily</option>
+                        <option value="Combination">Combination</option>
+                        <option value="Normal">Normal</option>
+                        <option value="Sensitive">Sensitive</option>
+                      </select>
+                    </div>
+                    
+                    <div className="form-group checkbox-group">
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={newReview.would_recommend}
+                          onChange={(e) => setNewReview({ ...newReview, would_recommend: e.target.checked })}
+                        />
+                        I would recommend this product
+                      </label>
+                    </div>
+                  </div>
+                  
+                  {reviewError && <div className="error-message">{reviewError}</div>}
+                  
+                  <button type="submit" className="btn-primary" disabled={submittingReview}>
+                    {submittingReview ? 'Submitting...' : 'Submit Review'}
+                  </button>
+                </form>
+              )}
+              
+              {reviewsLoading ? (
+                <div className="loading-spinner">Loading reviews...</div>
+              ) : reviewsData && reviewsData.reviews.length > 0 ? (
+                <>
+                  <div className="reviews-summary">
+                    <div className="avg-rating">
+                      <span className="big-rating">{reviewsData.average_rating}</span>
+                      <div className="rating-stars">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <IconStar
+                            key={star}
+                            size={16}
+                            strokeWidth={2}
+                            fill={star <= Math.round(reviewsData.average_rating) ? 'currentColor' : 'none'}
+                            className="star-icon"
+                          />
+                        ))}
+                      </div>
+                      <span className="total-reviews">{reviewsData.total} reviews</span>
+                    </div>
+                    <div className="rating-bars">
+                      {[5, 4, 3, 2, 1].map((rating) => (
+                        <div key={rating} className="rating-bar-row">
+                          <span>{rating} star</span>
+                          <div className="bar-bg">
+                            <div 
+                              className="bar-fill" 
+                              style={{ 
+                                width: `${reviewsData.total > 0 
+                                  ? (reviewsData.rating_distribution[rating] / reviewsData.total) * 100 
+                                  : 0}%` 
+                              }}
+                            />
+                          </div>
+                          <span>{reviewsData.rating_distribution[rating]}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <div className="reviews-list">
+                    {reviewsData.reviews.map((review) => (
+                      <div key={review.id} className="review-card">
+                        <div className="review-header">
+                          <div className="review-user">
+                            <span className="user-name">{review.user_display_name || 'Anonymous'}</span>
+                            {review.verified_purchase && (
+                              <span className="verified-badge">Verified</span>
+                            )}
+                          </div>
+                          <div className="review-rating">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                              <IconStar
+                                key={star}
+                                size={14}
+                                strokeWidth={2}
+                                fill={star <= review.rating ? 'currentColor' : 'none'}
+                                className="star-icon"
+                              />
+                            ))}
+                          </div>
+                        </div>
+                        {review.title && <h4 className="review-title">{review.title}</h4>}
+                        {review.comment && <p className="review-comment">{review.comment}</p>}
+                        <div className="review-meta">
+                          {review.skin_type && <span className="skin-type">Skin type: {review.skin_type}</span>}
+                          {review.would_recommend && <span className="would-recommend">Would recommend</span>}
+                          <span className="review-date">
+                            {new Date(review.created_at).toLocaleDateString()}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <div className="no-reviews">
+                  <p>No reviews yet. Be the first to review this product!</p>
+                </div>
+              )}
             </div>
           )}
         </div>

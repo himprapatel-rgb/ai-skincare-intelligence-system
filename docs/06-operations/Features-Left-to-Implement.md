@@ -18,11 +18,10 @@
 
 ## 1. High priority (next sprint)
 
-### 1.1 Product reviews system
+### 1.1 Product reviews system — ✅ DONE (Jan 27, 2026)
 - **What:** Backend + frontend for product reviews (ratings, comments).
-- **Where:** `ProductDetailsPage` — currently no reviews API.
-- **Backend TODO:** `POST/GET /api/v1/products/{id}/reviews` (or equivalent), store in DB.
-- **Frontend TODO:** Wire ProductDetailsPage to reviews API; show/add reviews.
+- **Where:** `ProductDetailsPage`, `backend/app/routers/products.py`.
+- **Status:** Complete. Backend has `GET/POST /api/v1/products/{id}/reviews`; frontend shows reviews list, rating distribution, and review submission form.
 
 ### 1.2 ConsentPage frontend wiring — ✅ DONE (Jan 27, 2026)
 - **What:** Use existing Consent API from ConsentPage instead of localStorage.

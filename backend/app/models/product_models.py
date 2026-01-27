@@ -69,3 +69,34 @@ class ProductIngredient(Base):
     created_at = Column(DateTime(timezone=True), default=datetime.utcnow, nullable=False)
     product = relationship("Product", back_populates="product_ingredients")
     ingredient = relationship("Ingredient", back_populates="product_ingredients")
+
+
+class ProductReview(Base):
+    """Product reviews submitted by users.
+    
+    SRS: FR-REVIEWS - User product reviews and ratings
+    Sprint: Post-MVP
+    """
+    __tablename__ = "product_reviews"
+    
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    product_id = Column(UUID(as_uuid=True), ForeignKey("products.id"), nullable=False, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    rating = Column(Integer, nullable=False)  # 1-5 stars
+    title = Column(String(200), nullable=True)
+    comment = Column(Text, nullable=True)
+    skin_type = Column(String(50), nullable=True)  # User's skin type for context
+    would_recommend = Column(Integer, default=1)  # 1 = yes, 0 = no
+    verified_purchase = Column(Integer, default=0)  # 1 if from shelf
+    helpful_count = Column(Integer, default=0)
+    created_at = Column(DateTime(timezone=True), default=datetime.utcnow, nullable=False)
+    updated_at = Column(DateTime(timezone=True), default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
+    
+    # Relationships
+    product = relationship("Product", backref="reviews")
+    user = relationship("User", backref="product_reviews")
+    
+    # Composite index for user+product uniqueness (one review per user per product)
+    __table_args__ = (
+        Index('ix_product_reviews_product_user', 'product_id', 'user_id', unique=True),
+    )

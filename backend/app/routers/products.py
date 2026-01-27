@@ -9,13 +9,18 @@ from uuid import UUID
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
+from app.core.security import get_current_user
 from app.database import get_db
-from app.models.product_models import Ingredient, Product
+from app.models.product_models import Ingredient, Product, ProductReview
+from app.models.user import User
 from app.schemas.product_schemas import (
     IngredientAnalysisRequest,
     ProductRecommendation,
     ProductResponse,
     ProductSearch,
+    ReviewCreate,
+    ReviewResponse,
+    ReviewsListResponse,
     SafetyAnalysis,
 )
 
@@ -138,6 +143,147 @@ async def analyze_ingredients(
         flagged_ingredients=flagged,
         pregnancy_safe=len(flagged) == 0,
         sensitive_skin_safe=avg_safety < 6.0
+    )
+
+
+# ===== Product Reviews Endpoints =====
+
+@router.get("/{product_id}/reviews", response_model=ReviewsListResponse)
+async def get_product_reviews(
+    product_id: UUID,
+    limit: int = Query(10, ge=1, le=50),
+    offset: int = Query(0, ge=0),
+    db: Session = Depends(get_db)
+):
+    """
+    Get reviews for a product with ratings distribution.
+    
+    SRS: FR-REVIEWS - Product reviews and ratings
+    """
+    # Verify product exists
+    product = db.query(Product).filter(Product.id == product_id).first()
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+    
+    # Get reviews with pagination
+    reviews_query = db.query(ProductReview).filter(
+        ProductReview.product_id == product_id
+    ).order_by(ProductReview.created_at.desc())
+    
+    total = reviews_query.count()
+    reviews = reviews_query.offset(offset).limit(limit).all()
+    
+    # Calculate rating distribution
+    rating_dist = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0}
+    all_reviews = db.query(ProductReview).filter(
+        ProductReview.product_id == product_id
+    ).all()
+    
+    total_rating = 0
+    for r in all_reviews:
+        rating_dist[r.rating] = rating_dist.get(r.rating, 0) + 1
+        total_rating += r.rating
+    
+    avg_rating = (total_rating / len(all_reviews)) if all_reviews else 0.0
+    
+    # Build response with user display names
+    review_responses = []
+    for review in reviews:
+        user = db.query(User).filter(User.id == review.user_id).first()
+        display_name = user.email.split('@')[0] if user else "Anonymous"
+        
+        review_responses.append(ReviewResponse(
+            id=review.id,
+            product_id=review.product_id,
+            user_id=review.user_id,
+            rating=review.rating,
+            title=review.title,
+            comment=review.comment,
+            skin_type=review.skin_type,
+            would_recommend=bool(review.would_recommend),
+            verified_purchase=bool(review.verified_purchase),
+            helpful_count=review.helpful_count or 0,
+            created_at=review.created_at,
+            user_display_name=display_name
+        ))
+    
+    return ReviewsListResponse(
+        reviews=review_responses,
+        total=total,
+        average_rating=round(avg_rating, 1),
+        rating_distribution=rating_dist
+    )
+
+
+@router.post("/{product_id}/reviews", response_model=ReviewResponse, status_code=201)
+async def create_product_review(
+    product_id: UUID,
+    review_data: ReviewCreate,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Create a review for a product. One review per user per product.
+    
+    SRS: FR-REVIEWS - Product reviews and ratings
+    """
+    # Verify product exists
+    product = db.query(Product).filter(Product.id == product_id).first()
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+    
+    # Check if user already reviewed this product
+    existing = db.query(ProductReview).filter(
+        ProductReview.product_id == product_id,
+        ProductReview.user_id == current_user.id
+    ).first()
+    
+    if existing:
+        raise HTTPException(
+            status_code=400,
+            detail="You have already reviewed this product. Use PUT to update."
+        )
+    
+    # Create review
+    review = ProductReview(
+        product_id=product_id,
+        user_id=current_user.id,
+        rating=review_data.rating,
+        title=review_data.title,
+        comment=review_data.comment,
+        skin_type=review_data.skin_type,
+        would_recommend=1 if review_data.would_recommend else 0,
+        verified_purchase=0  # TODO: Check if product is in user's shelf
+    )
+    
+    db.add(review)
+    db.commit()
+    db.refresh(review)
+    
+    # Update product average rating
+    all_reviews = db.query(ProductReview).filter(
+        ProductReview.product_id == product_id
+    ).all()
+    if all_reviews:
+        avg = sum(r.rating for r in all_reviews) / len(all_reviews)
+        product.average_rating = round(avg, 2)
+        db.commit()
+    
+    display_name = current_user.email.split('@')[0]
+    
+    return ReviewResponse(
+        id=review.id,
+        product_id=review.product_id,
+        user_id=review.user_id,
+        rating=review.rating,
+        title=review.title,
+        comment=review.comment,
+        skin_type=review.skin_type,
+        would_recommend=bool(review.would_recommend),
+        verified_purchase=bool(review.verified_purchase),
+        helpful_count=0,
+        created_at=review.created_at,
+        user_display_name=display_name
     )
 
 

@@ -51,6 +51,7 @@ The project documentation includes:
 - ✅ **GDPR Compliance**: Data export, consent management, audit trail
 - ✅ **External ML**: HuggingFace integration + model registry
 - ✅ **CI/CD Pipeline**: GitHub Actions passing
+- ✅ **UI/UX Polish**: Spacing, typography, and profile tab refinements
 - 🟡 **Production Status**: Frontend live; backend health should be re-verified after latest deploy
 
 **Implementation Level:** ~90% Complete

@@ -93,6 +93,12 @@ def run_migrations():
             cur.execute(
                 """
                 ALTER TABLE users
+                ADD COLUMN IF NOT EXISTS email_verification_sent_at TIMESTAMPTZ
+                """
+            )
+            cur.execute(
+                """
+                ALTER TABLE users
                 ADD COLUMN IF NOT EXISTS is_admin BOOLEAN DEFAULT FALSE
                 """
             )

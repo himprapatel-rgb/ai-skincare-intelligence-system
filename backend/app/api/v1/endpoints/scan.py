@@ -8,6 +8,7 @@ from typing import Optional
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
+from fastapi.responses import FileResponse, Response
 from sqlalchemy.orm import Session
 
 from app.config import settings
@@ -372,6 +373,56 @@ def get_scan_result_alias(
 ):
     """Alias for get scan results to support older clients."""
     return get_scan_results(scan_id=scan_id, db=db, current_user=current_user)
+
+@router.get(
+    "/{scan_id}/image",
+    status_code=status.HTTP_200_OK,
+    summary="Get Scan Image"
+)
+def get_scan_image(
+    scan_id: str,
+    db: Session = Depends(get_db),
+    current_user: Optional[User] = Depends(get_current_user_optional)
+):
+    """Return scan image bytes or stored file."""
+    try:
+        uuid_obj = UUID(scan_id)
+    except ValueError:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Scan session not found"
+        )
+
+    scan_query = db.query(ScanSession).filter(ScanSession.id == uuid_obj)
+    if current_user:
+        scan_query = scan_query.filter(ScanSession.user_id == current_user.id)
+    scan_session = scan_query.first()
+
+    if not scan_session:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Scan session not found"
+        )
+
+    if scan_session.image_data:
+        content_type = scan_session.image_content_type or "image/jpeg"
+        return Response(content=scan_session.image_data, media_type=content_type)
+
+    if scan_session.image_url:
+        image_path = pathlib.Path(scan_session.image_url)
+        if not image_path.is_absolute():
+            image_path = backend_dir / image_path
+        if image_path.exists() and image_path.is_file():
+            return FileResponse(
+                image_path,
+                media_type=scan_session.image_content_type or "image/jpeg",
+                filename=scan_session.image_filename or image_path.name,
+            )
+
+    raise HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail="Scan image not available"
+    )
 
 @router.get(
     "/history",

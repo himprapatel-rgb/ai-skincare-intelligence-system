@@ -188,6 +188,20 @@ def _parse_scan_payload(scan: ScanSession) -> Dict[str, Any]:
     return payload if isinstance(payload, dict) else {}
 
 
+def _resolve_scan_image_url(
+    image_url: Optional[str],
+    scan_id: Any,
+    has_image: bool,
+) -> Optional[str]:
+    if not image_url and not has_image:
+        return None
+    if isinstance(image_url, str):
+        trimmed = image_url.strip()
+        if trimmed.startswith(("http://", "https://", "data:", "/api/")):
+            return trimmed
+    return f"/api/v1/scan/{scan_id}/image"
+
+
 def _extract_scan_summary(scan: ScanSession) -> tuple[Dict[str, Any], Dict[str, float], list[str]]:
     payload = _parse_scan_payload(scan)
     summary: Dict[str, Any] = {}
@@ -287,6 +301,8 @@ def _build_snapshot_from_scan(scan: ScanSession) -> DigitalTwinSnapshot:
         image_url = summary.get("image_url")
     elif isinstance(scan.image_url, str):
         image_url = scan.image_url
+    has_image = bool(getattr(scan, "image_data", None) or scan.image_url)
+    image_url = _resolve_scan_image_url(image_url, scan.id, has_image)
 
     return DigitalTwinSnapshot(
         snapshot_id=str(scan.id),
@@ -433,7 +449,10 @@ def _build_snapshot_response(snapshot: SkinStateSnapshot) -> DigitalTwinSnapshot
     skin_mood = SkinMood.BALANCED if overall_score >= 70 else SkinMood.UNKNOWN
     image_url = None
     if getattr(snapshot, "scan_session", None) and snapshot.scan_session:
-        image_url = snapshot.scan_session.image_url
+        session = snapshot.scan_session
+        image_url = session.image_url
+        has_image = bool(getattr(session, "image_data", None) or session.image_url)
+        image_url = _resolve_scan_image_url(image_url, session.id, has_image)
 
     return DigitalTwinSnapshot(
         snapshot_id=str(snapshot.id),

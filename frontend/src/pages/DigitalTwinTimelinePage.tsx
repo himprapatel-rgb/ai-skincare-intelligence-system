@@ -79,7 +79,13 @@ const DigitalTwinTimelinePage: React.FC = () => {
   const [selectedSnapshot, setSelectedSnapshot] = useState<string | null>(null);
   const [comparisonBefore, setComparisonBefore] = useState<string | null>(null);
   const [comparisonAfter, setComparisonAfter] = useState<string | null>(null);
-  const [dateRange, setDateRange] = useState<'7d' | '30d' | '90d' | 'all'>('30d');
+  const [dateRange, setDateRange] = useState<'7d' | '30d' | '90d' | 'all'>(() => {
+    const stored = localStorage.getItem('digital_twin_range');
+    if (stored === '7d' || stored === '30d' || stored === '90d' || stored === 'all') {
+      return stored;
+    }
+    return '30d';
+  });
   const [compareSplit, setCompareSplit] = useState(50);
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
@@ -94,6 +100,19 @@ const DigitalTwinTimelinePage: React.FC = () => {
       return 'Unknown date';
     }
     return parsed.toLocaleDateString('en', { month: 'short', day: 'numeric', year: 'numeric' });
+  };
+  const formatFullDateTime = (dateValue: string) => {
+    const parsed = new Date(dateValue);
+    if (Number.isNaN(parsed.getTime())) {
+      return 'Unknown date';
+    }
+    return parsed.toLocaleDateString('en', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
   };
   const formatShortDate = (timestamp: number) => new Date(timestamp).toLocaleDateString('en', { month: 'short', day: 'numeric' });
   const fallbackImage = `data:image/svg+xml;utf8,${encodeURIComponent(
@@ -111,7 +130,23 @@ const DigitalTwinTimelinePage: React.FC = () => {
       <text x="50%" y="560" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="20" fill="#6b7c93">Snapshot image unavailable</text>
     </svg>`
   )}`;
-  const getSafeImageUrl = (url?: string) => (url && url.trim().length > 0 ? url : fallbackImage);
+  const apiBase = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
+  const apiOrigin = apiBase.replace(/\/api\/v1\/?$/, '');
+  const getSafeImageUrl = (url?: string) => {
+    if (!url || url.trim().length === 0) {
+      return fallbackImage;
+    }
+    if (url.startsWith('data:')) {
+      return url;
+    }
+    if (url.startsWith('http')) {
+      return url;
+    }
+    if (url.startsWith('/')) {
+      return `${apiOrigin}${url}`;
+    }
+    return `${apiOrigin}/${url}`;
+  };
   const getScoreTone = (score: number) => {
     if (score >= 70) return 'score-good';
     if (score >= 40) return 'score-medium';
@@ -123,7 +158,7 @@ const DigitalTwinTimelinePage: React.FC = () => {
       try {
         setIsLoading(true);
         setHasError(false);
-        const API_BASE = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
+        const API_BASE = apiBase;
         const token = localStorage.getItem('auth_token');
         const response = await fetch(`${API_BASE}/digital-twin/query?limit=200`, {
           headers: {
@@ -204,36 +239,58 @@ const DigitalTwinTimelinePage: React.FC = () => {
     fetchSnapshots();
   }, []);
 
-  const chartData = [...snapshots]
-    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
-    .map((s, index) => {
-      const timestamp = new Date(s.date).getTime();
-      return ({
-        timestamp: Number.isNaN(timestamp) ? index : timestamp,
-        dateLabel: formatFullDate(s.date),
-      score: s.overallScore,
-      mood: s.skinMoodScore,
-      acne: s.concerns.acne,
-      hydration: s.concerns.hydration
-      });
-    });
+  useEffect(() => {
+    localStorage.setItem('digital_twin_range', dateRange);
+  }, [dateRange]);
 
-  const filteredChartData = (() => {
+  const sortedSnapshots = [...snapshots].sort((a, b) => {
+    const aTime = new Date(a.date).getTime();
+    const bTime = new Date(b.date).getTime();
+    if (Number.isNaN(aTime) || Number.isNaN(bTime)) {
+      return 0;
+    }
+    return aTime - bTime;
+  });
+
+  const rangeSnapshots = (() => {
     if (dateRange === 'all') {
-      return chartData;
+      return sortedSnapshots;
     }
     const days = dateRange === '7d' ? 7 : dateRange === '30d' ? 30 : 90;
     const cutoff = Date.now() - days * 24 * 60 * 60 * 1000;
-    return chartData.filter((entry) => entry.timestamp >= cutoff);
+    const filtered = sortedSnapshots.filter((snapshot) => {
+      const parsed = new Date(snapshot.date);
+      const timestamp = parsed.getTime();
+      return Number.isNaN(timestamp) ? true : timestamp >= cutoff;
+    });
+    return filtered.length >= 2 ? filtered : sortedSnapshots;
   })();
+
+  const chartData = rangeSnapshots.map((snapshot, index) => {
+    const parsed = new Date(snapshot.date);
+    const timestamp = parsed.getTime();
+    const safeTimestamp = Number.isNaN(timestamp)
+      ? Date.now() - (rangeSnapshots.length - index) * 24 * 60 * 60 * 1000
+      : timestamp + index * 1000;
+    const labelSuffix = rangeSnapshots.length > 1 ? ` • ${index + 1}` : '';
+    return {
+      timestamp: safeTimestamp,
+      dateLabel: `${formatShortDate(safeTimestamp)}${labelSuffix}`,
+      fullLabel: formatFullDate(snapshot.date),
+      score: snapshot.overallScore,
+      mood: snapshot.skinMoodScore,
+      acne: snapshot.concerns.acne,
+      hydration: snapshot.concerns.hydration
+    };
+  });
 
   const selectedData = snapshots.find(s => s.id === selectedSnapshot) || snapshots[0] || null;
   const latestSnapshot = snapshots[0] || null;
   const beforeSnapshot = snapshots.find(s => s.id === comparisonBefore) || snapshots[snapshots.length - 1] || null;
   const afterSnapshot = snapshots.find(s => s.id === comparisonAfter) || snapshots[0] || null;
-  const chartTooltipLabel = (label: number, payload?: { payload?: { dateLabel?: string } }) => {
-    if (payload?.payload?.dateLabel) return payload.payload.dateLabel;
-    return formatShortDate(label);
+  const chartTooltipLabel = (label: string | number, payload?: { payload?: { fullLabel?: string } }) => {
+    if (payload?.payload?.fullLabel) return payload.payload.fullLabel;
+    return String(label);
   };
 
   if (isLoading) {
@@ -388,7 +445,7 @@ const DigitalTwinTimelinePage: React.FC = () => {
           </div>
           <div className="card-content">
             <ResponsiveContainer width="100%" height={400}>
-              <AreaChart data={filteredChartData}>
+              <AreaChart data={chartData}>
                 <defs>
                   <linearGradient id="colorScore" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.8}/>
@@ -400,11 +457,11 @@ const DigitalTwinTimelinePage: React.FC = () => {
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="timestamp" type="number" tickFormatter={formatShortDate} />
+                <XAxis dataKey="dateLabel" interval="preserveStartEnd" />
                 <YAxis domain={[0, 100]} tickFormatter={(value) => `${value}`} />
                 <Tooltip
                   formatter={(value, name) => [`${value}`, name]}
-                  labelFormatter={(label, payload) => chartTooltipLabel(label as number, payload?.[0])}
+                  labelFormatter={(label, payload) => chartTooltipLabel(label, payload?.[0])}
                 />
                 <Legend />
                 <Area 
@@ -414,6 +471,8 @@ const DigitalTwinTimelinePage: React.FC = () => {
                   fillOpacity={1}
                   fill="url(#colorScore)"
                   name="Overall Score"
+                  dot={{ r: 3 }}
+                  activeDot={{ r: 5 }}
                 />
                 <Area 
                   type="monotone" 
@@ -422,6 +481,8 @@ const DigitalTwinTimelinePage: React.FC = () => {
                   fillOpacity={1}
                   fill="url(#colorMood)"
                   name="Skin Mood"
+                  dot={{ r: 3 }}
+                  activeDot={{ r: 5 }}
                 />
               </AreaChart>
             </ResponsiveContainer>
@@ -559,7 +620,7 @@ const DigitalTwinTimelinePage: React.FC = () => {
                   <select value={beforeSnapshot?.id || ''} onChange={(event) => setComparisonBefore(event.target.value)}>
                     {snapshots.map((snapshot) => (
                       <option key={snapshot.id} value={snapshot.id}>
-                        {formatFullDate(snapshot.date)}
+                        {formatFullDateTime(snapshot.date)}
                       </option>
                     ))}
                   </select>
@@ -569,7 +630,7 @@ const DigitalTwinTimelinePage: React.FC = () => {
                   <select value={afterSnapshot?.id || ''} onChange={(event) => setComparisonAfter(event.target.value)}>
                     {snapshots.map((snapshot) => (
                       <option key={snapshot.id} value={snapshot.id}>
-                        {formatFullDate(snapshot.date)}
+                        {formatFullDateTime(snapshot.date)}
                       </option>
                     ))}
                   </select>

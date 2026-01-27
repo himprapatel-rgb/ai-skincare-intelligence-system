@@ -6,6 +6,36 @@ Use that workflow doc for checklists and templates to avoid duplication here.
 
 ---
 
+## Iteration 2026-01-27 (Database Tables & Startup Fix)
+
+### Goal
+Ensure all database tables are created at startup and fix potential registration issues.
+
+### Problem
+- Services returning 404 from Railway (deployment issue)
+- `ProductReview` table from recent commit not included in startup table creation
+- Individual table creation was fragmented, some tables missing
+
+### Scope (Completed)
+- **main.py**: Import ALL model files to ensure tables are registered with Base
+- **main.py**: Replace individual `__table__.create()` calls with `Base.metadata.create_all()`
+- **Database docs**: Updated with comprehensive table creation strategy and model file reference
+- **Database docs**: Added sections for adding new fields and external data integration
+
+### Key Changes (Code)
+- `backend/app/main.py` — comprehensive model imports + `create_all()` at startup
+- `docs/02-architecture/Database-Design-Extensible.md` — updated with table creation strategy
+
+### Verification / Tests
+- No lint errors in main.py
+- Deployment needed to verify tables are created
+
+### Risks / Follow-ups
+- Railway services currently showing 404 (deployment issue, not code)
+- After redeploy, all tables including `product_reviews` will be created automatically
+
+---
+
 ## Iteration 2026-01-27 (Password Reset E2E)
 
 ### Goal

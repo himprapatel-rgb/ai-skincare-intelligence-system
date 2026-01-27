@@ -16,8 +16,29 @@ from app.api.v1.routines import router as routines_router
 from app.config import settings
 from app.core.security import encrypt_sensitive_data
 from app.database import Base, SessionLocal, engine
-from app.models.twin_models import *  # Import Digital Twin models for table creation# Create database tables if needed (safe for local dev)
+
+# Import ALL models to ensure tables are created at startup
+from app.models.twin_models import *  # Digital Twin models
 from app.models.user import PolicyVersion, User, UserConsent, UserProfile
+from app.models.scan import ScanSession, SkinAnalysis, ConfidenceMetrics, FairnessMetrics
+from app.models.product_models import Product, Ingredient, ProductIngredient, ProductReview
+from app.models.analysis_outputs import (
+    ScanOutput, SkinCondition, ScanCondition, ScanRecommendation,
+    ProductRecommendation, GeoLocation, EnvironmentalReading,
+    DailySkinGuidance, Store, ProductStoreAvailability,
+    UserEvent, UserProgressSnapshot
+)
+from app.models.engagement import (
+    ProductScanSession, ProductScanItem, RoutineRecommendation,
+    RoutineCheckin, UserNotification, NotificationEvent,
+    GeoAlert, ProductOffer
+)
+from app.models.favorites import Favorite
+from app.models.goals import SkinGoal
+from app.models.notifications import Notification
+from app.models.shelf import ShelfItem
+from app.models.progress_photo import ProgressPhoto
+from app.models.saved_routine import SavedRoutine
 from app.routers import (  # GDPR & User Management
     admin,
     consent,
@@ -71,16 +92,12 @@ async def add_security_headers(request, call_next):
 
 @app.on_event("startup")
 def ensure_test_user() -> None:
-    """Create a static test user and full profile if missing."""
+    """Create all database tables and seed test user if missing."""
     try:
-        User.__table__.create(bind=engine, checkfirst=True)
-        PolicyVersion.__table__.create(bind=engine, checkfirst=True)
-        UserProfile.__table__.create(bind=engine, checkfirst=True)
-        UserConsent.__table__.create(bind=engine, checkfirst=True)
-        
-        # Import ScanSession to ensure table creation
-        from app.models.scan import ScanSession
-        ScanSession.__table__.create(bind=engine, checkfirst=True)
+        # Create all tables from SQLAlchemy models (non-destructive)
+        logger.info("Creating database tables (if not exist)...")
+        Base.metadata.create_all(bind=engine, checkfirst=True)
+        logger.info("✅ Database tables ensured")
         
         if engine.dialect.name != "sqlite":
             with engine.begin() as conn:

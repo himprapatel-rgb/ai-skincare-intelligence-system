@@ -52,6 +52,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
     });
     return crumbs;
   }, [location.pathname]);
+  const showBreadcrumbs = location.pathname !== '/';
 
   return (
     <div className="app-layout">
@@ -98,20 +99,22 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
         </div>
       </header>
 
-      <div className="app-breadcrumbs" aria-label="Breadcrumb">
-        <div className="app-breadcrumbs-container">
-          {breadcrumbs.map((crumb, index) => (
-            <span key={`${crumb.label}-${index}`} className="app-breadcrumb-item">
-              {crumb.to ? (
-                <Link to={crumb.to}>{crumb.label}</Link>
-              ) : (
-                <span className="app-breadcrumb-current">{crumb.label}</span>
-              )}
-              {index < breadcrumbs.length - 1 && <span className="app-breadcrumb-separator">/</span>}
-            </span>
-          ))}
+      {showBreadcrumbs && (
+        <div className="app-breadcrumbs" aria-label="Breadcrumb">
+          <div className="app-breadcrumbs-container">
+            {breadcrumbs.map((crumb, index) => (
+              <span key={`${crumb.label}-${index}`} className="app-breadcrumb-item">
+                {crumb.to ? (
+                  <Link to={crumb.to}>{crumb.label}</Link>
+                ) : (
+                  <span className="app-breadcrumb-current">{crumb.label}</span>
+                )}
+                {index < breadcrumbs.length - 1 && <span className="app-breadcrumb-separator">/</span>}
+              </span>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       <main className="app-main" id="main-content">
         {children}

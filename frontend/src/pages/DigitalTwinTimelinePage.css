@@ -192,6 +192,20 @@
   margin: 0;
 }
 
+.timeline-snapshots-card .card-header {
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+}
+
+.timeline-snapshots-card .card-header h2 {
+  margin: 0;
+}
+
+.timeline-snapshots-card .btn-primary {
+  flex-shrink: 0;
+}
+
 .chart-controls {
   display: flex;
   align-items: center;

@@ -303,15 +303,15 @@ const HomePage: React.FC = () => {
             <h2>FAQ</h2>
           </div>
           <div className="faq-container">
-            <details className="faq-item" open>
+            <details className="faq-item">
               <summary>Is this a medical diagnosis?</summary>
               <p>No. This tool provides informational insights only. It is not intended to diagnose, treat, or prevent any condition.</p>
             </details>
-            <details className="faq-item" open>
+            <details className="faq-item">
               <summary>Do you store my photos?</summary>
               <p>Photos are processed securely and can be deleted anytime from your account or automatically after analysis.</p>
             </details>
-            <details className="faq-item" open>
+            <details className="faq-item">
               <summary>Is this free to use?</summary>
               <p>Yes! Basic skin analysis scans are completely free with no signup required. Advanced features like progress tracking require a free account.</p>
             </details>

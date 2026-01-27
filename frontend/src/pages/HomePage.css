@@ -2413,3 +2413,88 @@
     max-width: 220px;
   }
 }
+
+/* =============================================
+   UI AUDIT FIXES (SPACING + CONSISTENCY)
+============================================= */
+.homepage section {
+  padding: 48px 24px;
+}
+
+.homepage .hero {
+  padding: 96px 24px 64px;
+}
+
+.homepage .hero-content {
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+
+.homepage .hero-visual {
+  justify-self: center;
+}
+
+.homepage .hero-cta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.homepage .hero-cta button,
+.homepage .hero-cta a {
+  padding: 12px 24px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 8px;
+  min-width: 160px;
+  text-align: center;
+}
+
+.homepage .trust-badges {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  max-width: 900px;
+  margin: 0 auto 32px;
+  padding: 32px 24px;
+}
+
+.homepage .badge-item {
+  padding: 12px 20px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.homepage .results-grid {
+  grid-template-columns: repeat(4, 1fr);
+  max-width: 1200px;
+}
+
+@media (max-width: 1024px) {
+  .homepage .results-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .homepage .results-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .homepage .hero-content {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .homepage .hero-cta {
+    justify-content: center;
+  }
+}

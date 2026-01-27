@@ -230,13 +230,16 @@ const ProfileSettingsPage: React.FC = () => {
         const sorted = completedScans
           .filter((scan) => typeof scan.created_at === 'string')
           .sort((a, b) => new Date(String(a.created_at)).getTime() - new Date(String(b.created_at)).getTime());
+        const labelCounts: Record<string, number> = {};
         const progress = sorted.slice(-8).map((scan) => {
           const summary = (scan.summary || {}) as Record<string, unknown>;
           const rawScore = typeof summary.overall_score === 'number'
             ? Math.round(summary.overall_score)
             : avgScore;
+          const baseLabel = new Date(String(scan.created_at)).toLocaleDateString('en', { month: 'short', day: 'numeric' });
+          labelCounts[baseLabel] = (labelCounts[baseLabel] || 0) + 1;
           return {
-            date: new Date(String(scan.created_at)).toLocaleDateString('en', { month: 'short', day: 'numeric' }),
+            date: labelCounts[baseLabel] > 1 ? `${baseLabel} • ${labelCounts[baseLabel]}` : baseLabel,
             score: rawScore
           };
         });
@@ -848,7 +851,7 @@ const ProfileSettingsPage: React.FC = () => {
                   <div className="stat-icon">
                     <IconSparkles size={32} strokeWidth={2} />
                   </div>
-                  <div className="stat-value">{stats.activeRoutines}</div>
+                  <div className={`stat-value${stats.activeRoutines === 0 ? ' zero' : ''}`}>{stats.activeRoutines}</div>
                   <div className="stat-label">Active Routines</div>
                 </div>
               </div>

@@ -1,6 +1,6 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { IconInstagram, IconTwitter, IconLinkedin, IconTiktok } from './Icons';
+import { IconInstagram, IconTwitter, IconLinkedin, IconTiktok, IconMenu, IconX, IconBell, IconUser, IconChevronDown, IconLogOut, IconSettings, IconScan } from './Icons';
 import { useAuth } from '../context/AuthContext';
 import './AppLayout.css';
 
@@ -12,7 +12,37 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, isAuthenticated, logout } = useAuth();
-  const displayName = user?.full_name || user?.email || 'Account';
+  const displayName = user?.full_name || user?.email?.split('@')[0] || 'Account';
+  const userInitial = (user?.full_name?.[0] || user?.email?.[0] || 'U').toUpperCase();
+  
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const userDropdownRef = useRef<HTMLDivElement>(null);
+  
+  // Handle scroll for header shadow
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+  
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (userDropdownRef.current && !userDropdownRef.current.contains(e.target as Node)) {
+        setUserDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+  
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileMenuOpen(false);
+    setUserDropdownOpen(false);
+  }, [location.pathname]);
   const breadcrumbs = useMemo(() => {
     const segments = location.pathname.split('/').filter(Boolean);
     const labelMap: Record<string, string> = {
@@ -57,46 +87,160 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   return (
     <div className="app-layout">
       <a className="skip-link" href="#main-content">Skip to main content</a>
-      <header className="app-header">
+      <header className={`app-header${scrolled ? ' scrolled' : ''}`}>
         <div className="app-header-container">
+          {/* Logo */}
           <Link to="/" className="app-logo">
-            <span className="app-logo-mark" />
-            <span className="app-logo-text">SkinCareAI</span>
+            <span className="app-logo-mark">
+              <IconScan size={18} strokeWidth={2.5} />
+            </span>
+            <span className="app-logo-text">SkinCare<span className="app-logo-ai">AI</span></span>
           </Link>
-          <nav className="app-nav">
-            <Link className={`app-nav-link${location.pathname === '/' ? ' active' : ''}`} to="/">Home</Link>
-            <Link className={`app-nav-link${location.pathname.startsWith('/scan') ? ' active' : ''}`} to="/scan">Analysis</Link>
-            <Link className={`app-nav-link${location.pathname.startsWith('/dashboard') ? ' active' : ''}`} to="/dashboard">Dashboard</Link>
-            <Link className={`app-nav-link${location.pathname.startsWith('/digital-twin') ? ' active' : ''}`} to="/digital-twin">Digital Twin</Link>
-            <Link className={`app-nav-link${location.pathname.startsWith('/about') ? ' active' : ''}`} to="/about">About</Link>
-            {isAuthenticated && user?.is_admin && (
-              <Link className={`app-nav-link${location.pathname.startsWith('/admin') ? ' active' : ''}`} to="/admin">Admin</Link>
-            )}
-            {isAuthenticated ? (
-              <div className="app-nav-user">
-                <Link className="app-nav-link" to="/profile">{displayName}</Link>
-                <button
-                  type="button"
-                  className="app-nav-link app-nav-logout"
-                  onClick={() => {
-                    logout();
-                    navigate('/');
-                  }}
-                >
-                  Logout
-                </button>
-              </div>
-            ) : (
-              <>
-                <Link className={`app-nav-link${location.pathname.startsWith('/auth') ? ' active' : ''}`} to="/auth">Login</Link>
-                <Link className="app-nav-link" to="/auth?mode=register">Register</Link>
-              </>
-            )}
-            {!location.pathname.startsWith('/scan') && !location.pathname.startsWith('/analysis') && (
-              <Link className="app-nav-cta" to="/scan">Start Free Scan</Link>
-            )}
+          
+          {/* Desktop Navigation */}
+          <nav className="app-nav app-nav-desktop">
+            <div className="app-nav-links">
+              <Link className={`app-nav-link${location.pathname === '/' ? ' active' : ''}`} to="/">Home</Link>
+              <Link className={`app-nav-link${location.pathname.startsWith('/scan') ? ' active' : ''}`} to="/scan">Skin Analysis</Link>
+              <Link className={`app-nav-link${location.pathname.startsWith('/dashboard') ? ' active' : ''}`} to="/dashboard">Dashboard</Link>
+              <Link className={`app-nav-link${location.pathname.startsWith('/digital-twin') ? ' active' : ''}`} to="/digital-twin">Digital Twin</Link>
+              <Link className={`app-nav-link${location.pathname.startsWith('/about') ? ' active' : ''}`} to="/about">About</Link>
+              {isAuthenticated && user?.is_admin && (
+                <Link className={`app-nav-link${location.pathname.startsWith('/admin') ? ' active' : ''}`} to="/admin">Admin</Link>
+              )}
+            </div>
+            
+            <div className="app-nav-actions">
+              {isAuthenticated ? (
+                <>
+                  {/* Notification Bell */}
+                  <Link to="/notifications" className="app-nav-icon-btn" aria-label="Notifications">
+                    <IconBell size={20} strokeWidth={2} />
+                    <span className="app-nav-notification-dot" />
+                  </Link>
+                  
+                  {/* User Dropdown */}
+                  <div className="app-nav-user-dropdown" ref={userDropdownRef}>
+                    <button 
+                      className="app-nav-user-trigger"
+                      onClick={() => setUserDropdownOpen(!userDropdownOpen)}
+                      aria-expanded={userDropdownOpen}
+                    >
+                      <span className="app-nav-avatar">{userInitial}</span>
+                      <span className="app-nav-user-name">{displayName}</span>
+                      <IconChevronDown size={16} strokeWidth={2} className={userDropdownOpen ? 'rotated' : ''} />
+                    </button>
+                    
+                    {userDropdownOpen && (
+                      <div className="app-nav-dropdown-menu">
+                        <div className="app-nav-dropdown-header">
+                          <span className="app-nav-avatar app-nav-avatar-lg">{userInitial}</span>
+                          <div>
+                            <p className="app-nav-dropdown-name">{displayName}</p>
+                            <p className="app-nav-dropdown-email">{user?.email}</p>
+                          </div>
+                        </div>
+                        <div className="app-nav-dropdown-divider" />
+                        <Link to="/profile" className="app-nav-dropdown-item">
+                          <IconUser size={18} strokeWidth={2} />
+                          <span>My Profile</span>
+                        </Link>
+                        <Link to="/profile?tab=settings" className="app-nav-dropdown-item">
+                          <IconSettings size={18} strokeWidth={2} />
+                          <span>Settings</span>
+                        </Link>
+                        <div className="app-nav-dropdown-divider" />
+                        <button
+                          className="app-nav-dropdown-item app-nav-dropdown-logout"
+                          onClick={() => {
+                            logout();
+                            navigate('/');
+                          }}
+                        >
+                          <IconLogOut size={18} strokeWidth={2} />
+                          <span>Sign Out</span>
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </>
+              ) : (
+                <>
+                  <Link className="app-nav-link" to="/auth">Sign In</Link>
+                  <Link className="app-nav-cta-secondary" to="/auth?mode=register">Get Started</Link>
+                </>
+              )}
+              
+              {!location.pathname.startsWith('/scan') && !location.pathname.startsWith('/analysis') && (
+                <Link className="app-nav-cta" to="/scan">
+                  <IconScan size={18} strokeWidth={2} />
+                  <span>Free Scan</span>
+                </Link>
+              )}
+            </div>
           </nav>
+          
+          {/* Mobile Menu Button */}
+          <button 
+            className="app-nav-mobile-toggle"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={mobileMenuOpen}
+          >
+            {mobileMenuOpen ? <IconX size={24} strokeWidth={2} /> : <IconMenu size={24} strokeWidth={2} />}
+          </button>
         </div>
+        
+        {/* Mobile Navigation */}
+        <nav className={`app-nav-mobile${mobileMenuOpen ? ' open' : ''}`}>
+          <div className="app-nav-mobile-links">
+            <Link className={`app-nav-mobile-link${location.pathname === '/' ? ' active' : ''}`} to="/">Home</Link>
+            <Link className={`app-nav-mobile-link${location.pathname.startsWith('/scan') ? ' active' : ''}`} to="/scan">Skin Analysis</Link>
+            <Link className={`app-nav-mobile-link${location.pathname.startsWith('/dashboard') ? ' active' : ''}`} to="/dashboard">Dashboard</Link>
+            <Link className={`app-nav-mobile-link${location.pathname.startsWith('/digital-twin') ? ' active' : ''}`} to="/digital-twin">Digital Twin</Link>
+            <Link className={`app-nav-mobile-link${location.pathname.startsWith('/about') ? ' active' : ''}`} to="/about">About</Link>
+            {isAuthenticated && user?.is_admin && (
+              <Link className={`app-nav-mobile-link${location.pathname.startsWith('/admin') ? ' active' : ''}`} to="/admin">Admin</Link>
+            )}
+          </div>
+          
+          <div className="app-nav-mobile-divider" />
+          
+          {isAuthenticated ? (
+            <div className="app-nav-mobile-user">
+              <div className="app-nav-mobile-user-info">
+                <span className="app-nav-avatar">{userInitial}</span>
+                <div>
+                  <p className="app-nav-mobile-user-name">{displayName}</p>
+                  <p className="app-nav-mobile-user-email">{user?.email}</p>
+                </div>
+              </div>
+              <Link className="app-nav-mobile-link" to="/profile">My Profile</Link>
+              <Link className="app-nav-mobile-link" to="/notifications">Notifications</Link>
+              <button
+                className="app-nav-mobile-link app-nav-mobile-logout"
+                onClick={() => {
+                  logout();
+                  navigate('/');
+                }}
+              >
+                Sign Out
+              </button>
+            </div>
+          ) : (
+            <div className="app-nav-mobile-auth">
+              <Link className="app-nav-mobile-btn-secondary" to="/auth">Sign In</Link>
+              <Link className="app-nav-mobile-btn-primary" to="/auth?mode=register">Get Started Free</Link>
+            </div>
+          )}
+          
+          {!location.pathname.startsWith('/scan') && (
+            <Link className="app-nav-mobile-cta" to="/scan">
+              <IconScan size={20} strokeWidth={2} />
+              <span>Start Free Skin Scan</span>
+            </Link>
+          )}
+        </nav>
       </header>
 
       {showBreadcrumbs && (

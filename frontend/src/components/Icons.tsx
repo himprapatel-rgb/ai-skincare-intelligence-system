@@ -35,9 +35,12 @@ export { User as IconUser } from 'lucide-react';
 export { Settings as IconSettings } from 'lucide-react';
 export { History as IconHistory } from 'lucide-react';
 export { ChevronRight as IconChevronRight } from 'lucide-react';
+export { ChevronDown as IconChevronDown } from 'lucide-react';
 export { ArrowLeft as IconArrowLeft } from 'lucide-react';
 export { AlertTriangle as IconAlertTriangle } from 'lucide-react';
 export { RefreshCw as IconRefresh } from 'lucide-react';
+export { Menu as IconMenu } from 'lucide-react';
+export { LogOut as IconLogOut } from 'lucide-react';
 
 // Feature Icons
 export { Zap as IconZap } from 'lucide-react';

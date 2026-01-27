@@ -19,15 +19,24 @@ GOOGLE_CERTS_URL = "https://www.googleapis.com/oauth2/v3/certs"
 class GoogleAuthService:
     """Service for Google OAuth authentication."""
     
-    def __init__(self):
-        self.client_id = settings.GOOGLE_CLIENT_ID
-        self.client_secret = settings.GOOGLE_CLIENT_SECRET
-        self.redirect_uri = f"{settings.FRONTEND_URL}/auth/google/callback"
+    @property
+    def client_id(self):
+        return settings.GOOGLE_CLIENT_ID
+    
+    @property
+    def client_secret(self):
+        return settings.GOOGLE_CLIENT_SECRET
+    
+    @property
+    def redirect_uri(self):
+        return f"{settings.FRONTEND_URL}/auth/google/callback"
     
     async def exchange_code_for_tokens(self, code: str) -> Optional[Dict[str, Any]]:
         """Exchange authorization code for access and ID tokens."""
+        logger.info(f"Google OAuth: client_id={self.client_id[:20] if self.client_id else 'None'}..., redirect_uri={self.redirect_uri}")
+        
         if not self.client_id or not self.client_secret:
-            logger.error("Google OAuth not configured")
+            logger.error("Google OAuth not configured - missing client_id or client_secret")
             return None
         
         async with httpx.AsyncClient() as client:
@@ -45,9 +54,10 @@ class GoogleAuthService:
                 )
                 
                 if response.status_code != 200:
-                    logger.error(f"Google token exchange failed: {response.text}")
+                    logger.error(f"Google token exchange failed (status={response.status_code}): {response.text}")
                     return None
                 
+                logger.info("Google token exchange successful")
                 return response.json()
             except Exception as e:
                 logger.error(f"Google token exchange error: {e}")

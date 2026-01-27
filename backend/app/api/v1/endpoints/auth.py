@@ -1,5 +1,7 @@
 """
 Authentication API endpoints.
+
+Handles user registration, login, email verification, and password reset.
 """
 import uuid
 from datetime import datetime, timedelta, timezone

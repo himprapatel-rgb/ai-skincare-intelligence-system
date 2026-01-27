@@ -30,6 +30,9 @@ const AnalysisResults: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [failureMessage, setFailureMessage] = useState<string | null>(null);
   const [previousScans, setPreviousScans] = useState<ScanHistoryItem[]>([]);
+  const apiBase = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
+  const apiOrigin = apiBase.replace(/\/api\/v1\/?$/, '');
+  const buildScanImageUrl = (scanId?: string) => (scanId ? `${apiOrigin}/api/v1/scan/${scanId}/image` : '');
 
   const buildAnalysisFromScan = useCallback((scanResult: Record<string, unknown>): SkinAnalysis => {
     type Summary = {
@@ -52,6 +55,7 @@ const AnalysisResults: React.FC = () => {
         : typeof (result as { image_url?: string }).image_url === 'string'
         ? (result as { image_url?: string }).image_url || null
         : null;
+    const resolvedImageUrl = imageUrl || buildScanImageUrl(analysisId);
 
     if (summary.scores && typeof summary.scores === 'object') {
       Object.entries(summary.scores).forEach(([key, value]) => {
@@ -84,7 +88,7 @@ const AnalysisResults: React.FC = () => {
         Object.entries(scores).map(([key, value]) => [key, Math.round(value)])
       ),
       confidence: overallScore ? Math.round(overallScore) : 0,
-      imageUrl: imageUrl || '',
+      imageUrl: resolvedImageUrl || '',
       timestamp: String((scanResult as { created_at?: string }).created_at || new Date().toISOString()),
       recommendations,
     };

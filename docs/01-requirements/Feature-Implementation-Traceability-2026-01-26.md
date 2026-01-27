@@ -469,6 +469,7 @@ This traceability matrix connects:
 - ✅ Missing skip-to-content → Fixed with accessibility link
 - ✅ UI audit fixes → CTA sizing, profile tab alignment, dashboard card height, and chart label de-duplication
 - ✅ QA test fixes → Education pages render, recommendations fallback, failed scans filtered
+- ✅ Scan image fallback → Analysis results use /scan/{id}/image when missing
 
 ### Active Issues (Non-Blocking)
 - 🟡 E2E tests continue-on-error → Stabilization ongoing
@@ -528,5 +529,5 @@ The AI Skincare Intelligence System is **90% complete** with all core features o
 
 **Prepared by:** Development Team  
 **Document Type:** Feature Traceability Matrix  
-**Last Updated:** January 27, 2026, 12:20 AM GMT  
+**Last Updated:** January 27, 2026, 12:35 AM GMT  
 **Next Update:** After Sprint GUI-2 completion

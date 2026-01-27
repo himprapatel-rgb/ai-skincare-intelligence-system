@@ -53,6 +53,7 @@ The project documentation includes:
 - ✅ **CI/CD Pipeline**: GitHub Actions passing
 - ✅ **UI/UX Polish**: Spacing, typography, and profile tab refinements
 - ✅ **QA Fixes**: Education pages, recommendations fallback, scan filtering
+- ✅ **Scan Images**: Results now fall back to scan image endpoint
 - 🟡 **Production Status**: Frontend live; backend health should be re-verified after latest deploy
 
 **Implementation Level:** ~90% Complete

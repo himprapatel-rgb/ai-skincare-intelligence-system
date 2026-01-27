@@ -45,13 +45,15 @@ def register(
     """Register a new user."""
     import logging
     logger = logging.getLogger(__name__)
+    request_id = uuid.uuid4().hex[:8]
+    logger.info(f"[{request_id}] REGISTER called for {user_data.email}")
     
     existing_user = auth_service.get_user_by_email(db, user_data.email)
     if existing_user:
         # If user exists but has a recent verification token, they may have double-submitted
         if existing_user.email_verification_token and existing_user.email_verification_expires_at:
             if existing_user.email_verification_expires_at > datetime.now(timezone.utc):
-                logger.warning(f"Duplicate registration attempt for {user_data.email} - user exists with valid token")
+                logger.warning(f"[{request_id}] Duplicate registration attempt for {user_data.email} - user exists with valid token")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="User already exists",
@@ -59,9 +61,10 @@ def register(
 
     try:
         user = auth_service.create_user(db, user_data)
+        logger.info(f"[{request_id}] User created: {user.email}")
     except IntegrityError:
         db.rollback()
-        logger.warning(f"IntegrityError during registration for {user_data.email}")
+        logger.warning(f"[{request_id}] IntegrityError during registration for {user_data.email}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="User already exists",
@@ -74,7 +77,7 @@ def register(
     db.commit()
     db.refresh(user)
     
-    logger.info(f"User registered: {user.email} with token expiry {user.email_verification_expires_at}")
+    logger.info(f"[{request_id}] Token generated for {user.email}: {verification_token[:8]}...")
 
     token = create_access_token(
         data={"sub": user.email},
@@ -88,6 +91,7 @@ def register(
     )
     try:
         if settings.SMTP_HOST and settings.SMTP_FROM_EMAIL:
+            logger.info(f"[{request_id}] Adding background task to send email")
             background_tasks.add_task(send_verification_email, user.email, verification_token)
         elif settings.ENV == "production":
             raise RuntimeError("SMTP settings missing.")
@@ -157,6 +161,11 @@ def request_email_verification(
     background_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
 ):
+    import logging
+    logger = logging.getLogger(__name__)
+    request_id = uuid.uuid4().hex[:8]
+    logger.info(f"[{request_id}] verify-email/request called for {payload.email}")
+    
     user = auth_service.get_user_by_email(db, payload.email)
     if not user:
         raise HTTPException(
@@ -164,6 +173,7 @@ def request_email_verification(
             detail="User not found",
         )
     if user.is_verified:
+        logger.info(f"[{request_id}] User {payload.email} already verified, skipping email")
         return EmailVerificationResponse(message="Email already verified.", verified=True)
 
     verification_token = uuid.uuid4().hex
@@ -172,6 +182,8 @@ def request_email_verification(
     db.add(user)
     db.commit()
     db.refresh(user)
+    
+    logger.info(f"[{request_id}] New token generated for {payload.email}: {verification_token[:8]}...")
 
     response = EmailVerificationResponse(
         message="Verification email sent. Please check your inbox.",
@@ -179,6 +191,7 @@ def request_email_verification(
     )
     try:
         if settings.SMTP_HOST and settings.SMTP_FROM_EMAIL:
+            logger.info(f"[{request_id}] Adding background task to send email to {payload.email}")
             background_tasks.add_task(send_verification_email, user.email, verification_token)
         elif settings.ENV == "production":
             raise RuntimeError("SMTP settings missing.")

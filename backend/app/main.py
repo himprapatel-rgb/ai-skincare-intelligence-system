@@ -33,7 +33,7 @@ from app.models.engagement import (
     RoutineCheckin, UserNotification, NotificationEvent,
     GeoAlert, ProductOffer
 )
-from app.models.favorites import Favorite
+from app.models.favorites import UserFavorite
 from app.models.goals import SkinGoal
 from app.models.notifications import Notification
 from app.models.shelf import ShelfItem

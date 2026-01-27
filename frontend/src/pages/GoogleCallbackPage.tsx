@@ -5,7 +5,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import api from '../services/api';
+import { api } from '../services/api';
 import './GoogleCallbackPage.css';
 
 const GoogleCallbackPage: React.FC = () => {

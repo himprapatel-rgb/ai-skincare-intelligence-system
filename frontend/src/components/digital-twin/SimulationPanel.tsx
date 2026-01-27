@@ -3,7 +3,7 @@
  * Sprint: Final Features - Trend-based predictions
  */
 import React, { useState } from 'react';
-import api from '../../services/api';
+import { api } from '../../services/api';
 import { IconSparkles, IconLoader, IconTrendingUp, IconTrendingDown } from '../Icons';
 
 interface SimulationResult {

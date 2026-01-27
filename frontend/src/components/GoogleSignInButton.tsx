@@ -7,7 +7,6 @@ import { IconBrandGoogle } from './Icons';
 import './GoogleSignInButton.css';
 
 interface GoogleSignInButtonProps {
-  onSuccess?: (code: string) => void;
   disabled?: boolean;
   loading?: boolean;
 }
@@ -17,7 +16,6 @@ const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 const REDIRECT_URI = `${window.location.origin}/auth/google/callback`;
 
 export const GoogleSignInButton: React.FC<GoogleSignInButtonProps> = ({
-  onSuccess,
   disabled = false,
   loading = false,
 }) => {

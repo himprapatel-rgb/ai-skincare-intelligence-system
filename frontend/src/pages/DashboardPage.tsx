@@ -16,6 +16,7 @@ import {
   IconTrendingDown,
   IconArrowRight
 } from '../components/Icons';
+import LoadingScreen from '../components/LoadingScreen';
 import './DashboardPage.css';
 
 interface DashboardData {
@@ -122,7 +123,7 @@ const DashboardPage: React.FC = () => {
   }
 
   if (loading || !data) {
-    return <div className="dashboard-page"><div className="loading-spinner">Loading dashboard...</div></div>;
+    return <div className="dashboard-page"><LoadingScreen message="Loading dashboard" fullscreen={false} /></div>;
   }
 
   return (

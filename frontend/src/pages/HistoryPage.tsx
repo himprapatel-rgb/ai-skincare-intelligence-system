@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IconCamera, IconStar, IconZap, IconBarChart, IconScan } from '../components/Icons';
 import { getScanHistory } from '../services/scanApi';
+import LoadingScreen from '../components/LoadingScreen';
 import './HistoryPage.css';
 
 interface ScanHistory {
@@ -102,7 +103,7 @@ const HistoryPage: React.FC = () => {
         </div>
 
         {loading ? (
-          <div className="loading-spinner">Loading history...</div>
+          <LoadingScreen message="Loading history" fullscreen={false} />
         ) : filteredHistory.length === 0 ? (
           <div className="empty-state">
             <div className="empty-state-icon">

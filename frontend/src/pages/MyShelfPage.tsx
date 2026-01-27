@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IconStar } from '../components/Icons';
 import { mockProducts } from '../data/mockProducts';
+import LoadingScreen from '../components/LoadingScreen';
 import './MyShelfPage.css';
 
 interface Product {
@@ -127,7 +128,7 @@ const MyShelfPage: React.FC = () => {
   if (loading) {
     return (
       <div className="myshelf-page">
-        <div className="loading-spinner">Loading your products...</div>
+        <LoadingScreen message="Loading your products" fullscreen={false} />
       </div>
     );
   }

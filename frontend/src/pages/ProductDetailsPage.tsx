@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { api } from '../services/api';
 import { IconArrowLeft, IconStar } from '../components/Icons';
+import LoadingScreen from '../components/LoadingScreen';
 import './ProductDetailsPage.css';
 
 interface ProductDetails {
@@ -402,7 +403,7 @@ const ProductDetailsPage: React.FC = () => {
               )}
               
               {reviewsLoading ? (
-                <div className="loading-spinner">Loading reviews...</div>
+                <LoadingScreen message="Loading reviews" fullscreen={false} />
               ) : reviewsData && reviewsData.reviews.length > 0 ? (
                 <>
                   <div className="reviews-summary">

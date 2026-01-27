@@ -7,6 +7,7 @@ import TimelineSnapshots from '../components/digital-twin/TimelineSnapshots';
 import SnapshotDetails from '../components/digital-twin/SnapshotDetails';
 import BeforeAfterCircle from '../components/digital-twin/BeforeAfterCircle';
 import SimulationPanel from '../components/digital-twin/SimulationPanel';
+import LoadingScreen from '../components/LoadingScreen';
 import '../components/digital-twin/styles/digital-twin.css';
 
 interface ApiStateVector {
@@ -296,9 +297,7 @@ const DigitalTwinTimelinePage: React.FC = () => {
   if (isLoading) {
     return (
       <div className="dt-page">
-        <div className="dt-container">
-          <div className="loading-spinner">Loading timeline...</div>
-        </div>
+        <LoadingScreen message="Loading your skin timeline" fullscreen={false} />
       </div>
     );
   }

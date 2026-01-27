@@ -10,6 +10,7 @@ const renderWithAuth = (authValue: {
   isAuthenticated: boolean;
   isLoading: boolean;
   login: () => Promise<void>;
+  loginWithToken: () => void;
   register: () => Promise<AuthResponse>;
   logout: () => void;
   updateUser: () => void;
@@ -33,6 +34,7 @@ describe("AppLayout footer auth links", () => {
       isAuthenticated: true,
       isLoading: false,
       login: async () => {},
+      loginWithToken: () => {},
       register: async () => ({ token: "token", user: { id: 1, email: "test@example.com" } }),
       logout: () => {},
       updateUser: () => {},
@@ -49,6 +51,7 @@ describe("AppLayout footer auth links", () => {
       isAuthenticated: false,
       isLoading: false,
       login: async () => {},
+      loginWithToken: () => {},
       register: async () => ({ token: "token", user: { id: 1, email: "test@example.com" } }),
       logout: () => {},
       updateUser: () => {},

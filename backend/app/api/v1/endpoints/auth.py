@@ -392,3 +392,98 @@ def confirm_password_reset(
         message="Password reset successfully. You can now login with your new password.",
         success=True,
     )
+
+
+# ===== Google OAuth =====
+
+class GoogleAuthRequest(BaseModel):
+    """Google OAuth authorization code."""
+    code: str
+
+
+@router.post(
+    "/google",
+    response_model=AuthResponse,
+    summary="Google OAuth login",
+    description="Authenticate with Google OAuth and return access token",
+)
+async def google_auth(
+    payload: GoogleAuthRequest,
+    db: Session = Depends(get_db),
+):
+    """
+    Authenticate with Google OAuth.
+    
+    1. Exchange authorization code for tokens
+    2. Verify and extract user info
+    3. Find or create user
+    4. Return JWT token
+    """
+    import logging
+    from app.services.google_auth_service import google_auth_service
+    
+    logger = logging.getLogger(__name__)
+    
+    if not settings.GOOGLE_CLIENT_ID or not settings.GOOGLE_CLIENT_SECRET:
+        raise HTTPException(
+            status_code=status.HTTP_501_NOT_IMPLEMENTED,
+            detail="Google OAuth is not configured",
+        )
+    
+    # Exchange code and get user info
+    user_info = await google_auth_service.verify_and_get_user(payload.code)
+    
+    if not user_info or not user_info.get("email"):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Failed to verify Google authentication",
+        )
+    
+    email = user_info["email"]
+    name = user_info.get("name", "")
+    
+    # Find or create user
+    user = auth_service.get_user_by_email(db, email)
+    
+    if not user:
+        # Create new user (auto-verified since Google verified the email)
+        user = User(
+            email=email,
+            full_name=name,
+            hashed_password=auth_service.hash_password(uuid.uuid4().hex),  # Random password
+            is_verified=True,  # Google verified the email
+            is_active=True,
+        )
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+        logger.info(f"Created new user via Google OAuth: {email}")
+    else:
+        # Update name if not set
+        if not user.full_name and name:
+            user.full_name = name
+            db.add(user)
+            db.commit()
+        
+        # Mark as verified if not already
+        if not user.is_verified:
+            user.is_verified = True
+            db.add(user)
+            db.commit()
+    
+    # Generate JWT token
+    token_data = {"sub": str(user.id)}
+    token = create_access_token(token_data)
+    
+    return AuthResponse(
+        token=token,
+        token_type="bearer",
+        user=UserResponse(
+            id=user.public_id,
+            email=user.email,
+            full_name=user.full_name,
+            is_verified=user.is_verified,
+            is_admin=user.is_admin,
+        ),
+        verification_required=False,
+    )

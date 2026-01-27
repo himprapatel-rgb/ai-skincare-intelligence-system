@@ -6,6 +6,7 @@ import ProgressChart from '../components/digital-twin/ProgressChart';
 import TimelineSnapshots from '../components/digital-twin/TimelineSnapshots';
 import SnapshotDetails from '../components/digital-twin/SnapshotDetails';
 import BeforeAfterCircle from '../components/digital-twin/BeforeAfterCircle';
+import SimulationPanel from '../components/digital-twin/SimulationPanel';
 import '../components/digital-twin/styles/digital-twin.css';
 
 interface ApiStateVector {
@@ -390,6 +391,9 @@ const DigitalTwinTimelinePage: React.FC = () => {
             formatDateTime={formatFullDateTime}
           />
         )}
+        
+        {/* What-If Simulation */}
+        <SimulationPanel />
       </div>
     </div>
   );

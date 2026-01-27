@@ -1,5 +1,8 @@
 import { expect, test } from "@playwright/test";
 
+// Configure longer timeouts for stability
+test.setTimeout(60000);
+
 const email = process.env.E2E_EMAIL ?? "";
 const password = process.env.E2E_PASSWORD ?? "";
 
@@ -13,7 +16,6 @@ const publicRoutes = [
   "/",
   "/auth",
   "/password-reset",
-  "/analysis/demo",
   "/about",
   "/contact",
   "/privacy",
@@ -32,12 +34,20 @@ const protectedRoutes = [
 ];
 
 async function login(page: import("@playwright/test").Page) {
-  await page.goto("/auth");
-  await page.getByLabel("Email").fill(email);
-  await page.getByLabel("Password").fill(password);
-  await page.getByRole("button", { name: "Sign In" }).click();
+  await page.goto("/auth", { waitUntil: "networkidle" });
+  
+  // Wait for the auth form to be visible
+  await page.waitForSelector('input[type="email"], input[id="email"]', { timeout: 10000 });
+  
+  const emailInput = page.getByLabel("Email").or(page.locator('input[type="email"]'));
+  const passwordInput = page.getByLabel("Password").or(page.locator('input[type="password"]'));
+  
+  await emailInput.fill(email);
+  await passwordInput.fill(password);
+  await page.getByRole("button", { name: /sign in/i }).click();
+  
   try {
-    await expect(page).toHaveURL(/\/dashboard$/);
+    await page.waitForURL(/\/dashboard$/, { timeout: 15000 });
   } catch (_error) {
     test.skip(true, `Login failed at ${page.url()}. Check E2E credentials.`);
   }

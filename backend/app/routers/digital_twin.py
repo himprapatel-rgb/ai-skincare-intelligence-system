@@ -150,10 +150,72 @@ async def get_digital_twin_timeline(
 
 
 @router.post("/simulate", response_model=ScenarioSimulationResponse)
-async def simulate_scenario(request: ScenarioSimulationRequest):
-    """Run what-if scenario simulation."""
-    # TODO: Implement scenario simulation with DigitalTwinService
-    raise HTTPException(status_code=501, detail="Scenario simulation - Coming soon in Sprint 3 Phase 2")
+async def simulate_scenario(
+    request: ScenarioSimulationRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """
+    Run what-if scenario simulation.
+    
+    Simulates how skin metrics might change based on:
+    - Current trends from historical data
+    - Expected effects of product ingredients
+    - Time horizon (weeks)
+    """
+    from app.services.simulation_service import SimulationService
+    
+    service = SimulationService(db)
+    
+    # Extract ingredient names from products if provided
+    ingredients = []
+    if hasattr(request, 'products') and request.products:
+        for product in request.products:
+            if hasattr(product, 'ingredients') and product.ingredients:
+                ingredients.extend(product.ingredients)
+    
+    # Default to 4 weeks if not specified
+    weeks = getattr(request, 'weeks', 4) or 4
+    
+    result = service.simulate(
+        user_id=current_user.id,
+        product_ingredients=ingredients,
+        simulation_weeks=weeks,
+    )
+    
+    if result.get("error"):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=result["error"],
+        )
+    
+    # Build response following the schema
+    current = result.get("current_scores", {})
+    projected = result.get("projected_scores", {})
+    
+    # Create state vectors from scores
+    def scores_to_vector(scores: dict) -> SkinStateVector:
+        return SkinStateVector(
+            hydration_level=scores.get("hydration", 50) / 100,
+            oiliness_level=scores.get("oiliness", 50) / 100,
+            sensitivity_level=scores.get("redness", 30) / 100,
+            barrier_impairment=0.3,
+            inflammation_level=scores.get("acne", 30) / 100,
+            pigmentation_issues=scores.get("dark_spots", 20) / 100,
+            aging_signs=scores.get("wrinkles", 25) / 100,
+            congestion_level=scores.get("acne", 30) / 100,
+        )
+    
+    return ScenarioSimulationResponse(
+        scenario_id=f"sim_{current_user.id}_{datetime.utcnow().strftime('%Y%m%d%H%M%S')}",
+        baseline_state=scores_to_vector(current),
+        simulated_state=scores_to_vector(projected),
+        confidence_score=result.get("confidence", 0.5),
+        recommendations=[
+            f"Projected improvements in: {', '.join(result.get('improvements', []))}" if result.get('improvements') else "Continue your current routine for best results",
+        ],
+        timeline_projection=[],  # Can be expanded to show weekly projections
+    )
 
 
 def _normalize_score(value: Optional[float], fallback: float = 0.5) -> float:

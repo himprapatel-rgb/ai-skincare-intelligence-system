@@ -18,6 +18,10 @@ class SavedRoutine(Base):
     description = Column(Text, nullable=True)
     routine_type = Column(String(32), default="custom")
     is_active = Column(Boolean, default=True)
+    
+    # Reminder settings
+    reminder_enabled = Column(Boolean, default=False)
+    reminder_time = Column(String(5), nullable=True)  # "08:00" or "21:00"
 
     created_at = Column(DateTime(timezone=True), default=datetime.utcnow)
     updated_at = Column(DateTime(timezone=True), default=datetime.utcnow, onupdate=datetime.utcnow)

@@ -330,3 +330,32 @@ async def update_notification_settings(
         quiet_hours_start=settings.quiet_hours_start,
         quiet_hours_end=settings.quiet_hours_end,
     )
+
+
+@router.get("/check-reminders")
+async def check_reminders(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """
+    Check and create routine reminders if due.
+    
+    Frontend should call this on app load to trigger in-app notifications.
+    """
+    from app.services.notification_service import NotificationService
+    
+    service = NotificationService(db)
+    created = service.check_and_create_routine_reminders(current_user.id)
+    
+    return {
+        "reminders_created": len(created),
+        "notifications": [
+            {
+                "id": n.id,
+                "type": n.type,
+                "title": n.title,
+                "message": n.message,
+            }
+            for n in created
+        ],
+    }

@@ -108,6 +108,10 @@ class Settings(BaseSettings):
     SMTP_PASSWORD: str | None = Field(default=None, description="SMTP password")
     SMTP_FROM_EMAIL: str | None = Field(default=None, description="Default sender email")
     SMTP_USE_TLS: bool = Field(default=True, description="Enable STARTTLS")
+    
+    # Google OAuth settings
+    GOOGLE_CLIENT_ID: str | None = Field(default=None, description="Google OAuth client ID")
+    GOOGLE_CLIENT_SECRET: str | None = Field(default=None, description="Google OAuth client secret")
 
         # ML Model Configuration
     MODEL_SOURCE: str = Field(

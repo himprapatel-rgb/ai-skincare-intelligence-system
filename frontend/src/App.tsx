@@ -14,6 +14,7 @@ const AuthPage = React.lazy(() =>
 const PasswordResetPage = React.lazy(() => import("./pages/PasswordResetPage"));
 const PasswordResetConfirmPage = React.lazy(() => import("./pages/PasswordResetConfirmPage"));
 const EmailVerificationPage = React.lazy(() => import("./pages/EmailVerificationPage"));
+const GoogleCallbackPage = React.lazy(() => import("./pages/GoogleCallbackPage"));
 const ScanPage = React.lazy(() => import("./pages/ScanPage"));
 const AnalysisResults = React.lazy(() => import("./pages/AnalysisResults"));
 const HistoryPage = React.lazy(() => import("./pages/HistoryPage"));
@@ -60,6 +61,7 @@ export default function App() {
             <Route path="/password-reset" element={<PasswordResetPage />} />
             <Route path="/password-reset/confirm" element={<PasswordResetConfirmPage />} />
             <Route path="/verify-email" element={<EmailVerificationPage />} />
+            <Route path="/auth/google/callback" element={<GoogleCallbackPage />} />
             
             {/* Skin Analysis Routes */}
             <Route path="/scan" element={<ScanPage />} />

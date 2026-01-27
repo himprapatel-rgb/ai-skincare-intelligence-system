@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { ErrorMessage } from './ErrorMessage';
 import { LoadingSpinner } from './LoadingSpinner';
+import { GoogleSignInButton } from './GoogleSignInButton';
 
 interface LoginFormProps {
   onSuccess: () => void;
@@ -98,6 +99,12 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegis
           {loading ? <LoadingSpinner size="small" /> : 'Sign In'}
         </button>
       </form>
+      
+      <div className="oauth-divider">
+        <span>or</span>
+      </div>
+      
+      <GoogleSignInButton disabled={loading} />
       {showVerifyLink && (
         <button
           type="button"

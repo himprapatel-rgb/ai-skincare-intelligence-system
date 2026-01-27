@@ -102,6 +102,22 @@ def run_migrations():
                 ADD COLUMN IF NOT EXISTS is_admin BOOLEAN DEFAULT FALSE
                 """
             )
+            
+            # Add reminder columns to saved_routines
+            print("  - Adding reminder columns to saved_routines...")
+            cur.execute(
+                """
+                ALTER TABLE saved_routines
+                ADD COLUMN IF NOT EXISTS reminder_enabled BOOLEAN DEFAULT FALSE
+                """
+            )
+            cur.execute(
+                """
+                ALTER TABLE saved_routines
+                ADD COLUMN IF NOT EXISTS reminder_time VARCHAR(5)
+                """
+            )
+            
             cur.execute(
                 """
                 CREATE TABLE IF NOT EXISTS ingredients (

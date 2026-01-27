@@ -16,12 +16,9 @@ export default defineConfig(({ mode }) => ({
       output: {
         manualChunks(id) {
           if (!id.includes('node_modules')) return;
-          if (id.includes('react-router')) return 'router';
-          if (id.includes('react')) return 'react-vendor';
-          if (id.includes('recharts')) return 'charts';
+          // Only split heavy ML libraries - keep React ecosystem together
           if (id.includes('@mediapipe')) return 'mediapipe';
           if (id.includes('@tensorflow')) return 'tensorflow';
-          return 'vendor';
         },
       },
     },

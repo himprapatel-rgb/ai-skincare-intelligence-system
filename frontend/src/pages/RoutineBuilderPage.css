@@ -103,6 +103,33 @@
   gap: 16px;
 }
 
+.routine-education {
+  margin-top: 32px;
+  padding: 24px;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+.education-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.education-grid h4 {
+  margin-bottom: 6px;
+  color: var(--text-dark);
+}
+
+.education-grid p {
+  margin: 0;
+  color: var(--text-gray);
+  line-height: 1.6;
+}
+
 /* Individual Step Card */
 .routine-step {
   background: var(--bg-light);

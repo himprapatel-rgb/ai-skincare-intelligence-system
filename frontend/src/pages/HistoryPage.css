@@ -298,6 +298,16 @@
   line-height: 1.6;
 }
 
+.empty-state-guidance {
+  margin-bottom: 20px;
+  color: var(--text-gray);
+  line-height: 1.6;
+}
+
+.empty-state-guidance p {
+  margin: 0 0 8px;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .history-page {

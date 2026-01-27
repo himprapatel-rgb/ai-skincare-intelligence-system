@@ -277,6 +277,32 @@ const AnalysisResults: React.FC = () => {
           </div>
         </div>
 
+        <div className="result-card metric-explanations">
+          <h2>How to Read Your Scores</h2>
+          <div className="metric-grid">
+            <div>
+              <h3>Acne</h3>
+              <p>Higher values indicate more visible breakouts or inflammation.</p>
+            </div>
+            <div>
+              <h3>Texture</h3>
+              <p>Measures surface smoothness. Lower scores suggest roughness.</p>
+            </div>
+            <div>
+              <h3>Hydration</h3>
+              <p>Reflects moisture balance. Higher is generally healthier.</p>
+            </div>
+            <div>
+              <h3>Redness</h3>
+              <p>Tracks visible irritation or sensitivity flare-ups.</p>
+            </div>
+            <div>
+              <h3>Score Ranges</h3>
+              <p>80–100 = strong, 60–79 = moderate, 40–59 = mild, below 40 = needs care.</p>
+            </div>
+          </div>
+        </div>
+
         {analysis.recommendations && analysis.recommendations.length > 0 && (
           <div className="result-card">
             <h2>Recommendations</h2>

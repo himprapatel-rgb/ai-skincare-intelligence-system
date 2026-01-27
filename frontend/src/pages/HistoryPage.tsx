@@ -101,7 +101,11 @@ const HistoryPage: React.FC = () => {
               <IconBarChart size={64} strokeWidth={2} />
             </div>
             <h3>No scans yet</h3>
-            <p>Start your skincare journey by scanning your skin</p>
+            <p>Start your skincare journey by scanning your skin and tracking improvements.</p>
+            <div className="empty-state-guidance">
+              <p><strong>Recommended frequency:</strong> 1 scan per week for consistent trends.</p>
+              <p>Regular scans help you see how routines, stress, and seasons affect results.</p>
+            </div>
             <button className="view-btn" onClick={() => navigate('/scan')}>Take Your First Scan</button>
           </div>
         ) : (

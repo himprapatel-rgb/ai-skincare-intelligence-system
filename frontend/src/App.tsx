@@ -44,6 +44,10 @@ import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
 import PrivacyPage from "./pages/PrivacyPage";
 import TermsPage from "./pages/TermsPage";
+import BlogPage from "./pages/BlogPage";
+import IngredientDictionaryPage from "./pages/IngredientDictionaryPage";
+import SkinTypeGuidePage from "./pages/SkinTypeGuidePage";
+import VideoTutorialsPage from "./pages/VideoTutorialsPage";
 
 export default function App() {
   return (
@@ -94,6 +98,10 @@ export default function App() {
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/privacy" element={<PrivacyPage />} />
         <Route path="/terms" element={<TermsPage />} />
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/ingredients" element={<IngredientDictionaryPage />} />
+          <Route path="/skin-type-guide" element={<SkinTypeGuidePage />} />
+          <Route path="/tutorials" element={<VideoTutorialsPage />} />
           
           {/* Fallback */}
           <Route path="*" element={<Navigate to="/" replace />} />

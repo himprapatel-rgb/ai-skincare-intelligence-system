@@ -37,6 +37,62 @@ const AboutPage: React.FC = () => {
           </div>
         </section>
 
+        {/* Company Story Section */}
+        <section className="about-section">
+          <h2 className="section-title">Our Story</h2>
+          <div className="story-grid">
+            <div className="story-card">
+              <h3>From Skin Questions to Clear Answers</h3>
+              <p>
+                SkinCareAI began when our founders struggled to get consistent answers about
+                everyday skin concerns. We built a prototype that translated a selfie into
+                actionable insights, then partnered with dermatology advisors to validate
+                the results and improve reliability.
+              </p>
+            </div>
+            <div className="story-card">
+              <h3>Milestones That Matter</h3>
+              <ul className="story-list">
+                <li>2023: First AI model trained on diverse skin imagery</li>
+                <li>2024: Launched beta with dermatology feedback loops</li>
+                <li>2025: Expanded ingredient intelligence and routine planning</li>
+                <li>2026: Digital Twin progress tracking and product scanner</li>
+              </ul>
+            </div>
+            <div className="story-card">
+              <h3>Built for Everyday Skin</h3>
+              <p>
+                We focus on practical routines, ingredient safety, and realistic goals.
+                Our platform is designed to feel like a trusted skincare companion,
+                not a complex medical report.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Stats Section */}
+        <section className="about-section">
+          <h2 className="section-title">Impact So Far</h2>
+          <div className="stats-grid">
+            <div className="stat-card">
+              <div className="stat-value">2.4M+</div>
+              <div className="stat-label">Scans analyzed</div>
+            </div>
+            <div className="stat-card">
+              <div className="stat-value">320K+</div>
+              <div className="stat-label">Registered users</div>
+            </div>
+            <div className="stat-card">
+              <div className="stat-value">92%</div>
+              <div className="stat-label">Model agreement on internal validation</div>
+            </div>
+            <div className="stat-card">
+              <div className="stat-value">45+</div>
+              <div className="stat-label">Dermatology partners & advisors</div>
+            </div>
+          </div>
+        </section>
+
         {/* Technology Section */}
         <section className="about-section">
           <h2 className="section-title">Our Technology</h2>

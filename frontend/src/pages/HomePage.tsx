@@ -3,12 +3,27 @@ import { useNavigate } from 'react-router-dom';
 import { 
   IconZap, IconScan, IconClock, IconShield, IconBookOpen, 
   IconTrash2, IconCheckCircle, IconBarChart, IconSearch, 
-  IconSparkles, IconTrendingUp, IconCheck
+  IconSparkles, IconTrendingUp, IconCheck, IconStar
 } from '../components/Icons';
 import './HomePage.css';
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
+  const avatarBase = (initials: string, color: string) =>
+    `data:image/svg+xml;utf8,${encodeURIComponent(
+      `<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96">
+        <defs>
+          <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="${color}" stop-opacity="0.15"/>
+            <stop offset="100%" stop-color="${color}" stop-opacity="0.35"/>
+          </linearGradient>
+        </defs>
+        <rect width="96" height="96" rx="48" fill="url(#g)"/>
+        <text x="50%" y="54%" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="28" fill="${color}" font-weight="700">
+          ${initials}
+        </text>
+      </svg>`
+    )}`;
 
   return (
     <div className="homepage">
@@ -106,6 +121,22 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
+      {/* As Featured In */}
+      <section className="featured-section">
+        <div className="section-header">
+          <span className="section-tag">As Featured In</span>
+          <h2>Trusted by Modern Skincare Communities</h2>
+          <p>Recognized by wellness and beauty publications worldwide</p>
+        </div>
+        <div className="featured-logos">
+          <span>Derm Journal</span>
+          <span>Glow Daily</span>
+          <span>SkinTech Review</span>
+          <span>BeautyLab</span>
+          <span>Healthy Routine</span>
+        </div>
+      </section>
+
       {/* What You'll Get Section - NEW */}
       <section className="results-preview">
         <div className="section-header">
@@ -194,6 +225,77 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
+      {/* Testimonials */}
+      <section className="testimonials-section">
+        <div className="section-header">
+          <span className="section-tag">Real Results</span>
+          <h2>Stories from Our Users</h2>
+          <p>See how people improved their routines with SkinCareAI</p>
+        </div>
+        <div className="testimonials-grid">
+          <div className="testimonial-card">
+            <div className="testimonial-header">
+              <div className="testimonial-avatar">
+                <img src={avatarBase('AP', '#1f6feb')} alt="Ananya P." />
+              </div>
+              <div>
+                <h3>Ananya P.</h3>
+                <span>Before/After: Redness control</span>
+              </div>
+            </div>
+            <div className="testimonial-stars">
+              {Array.from({ length: 5 }).map((_, index) => (
+                <IconStar key={index} size={16} strokeWidth={2} />
+              ))}
+            </div>
+            <p>
+              “The weekly scans helped me spot patterns and adjust my routine.
+              In six weeks, my redness score dropped and my skin felt calmer.”
+            </p>
+          </div>
+          <div className="testimonial-card">
+            <div className="testimonial-header">
+              <div className="testimonial-avatar">
+                <img src={avatarBase('JR', '#0f766e')} alt="James R." />
+              </div>
+              <div>
+                <h3>James R.</h3>
+                <span>Before/After: Texture improvements</span>
+              </div>
+            </div>
+            <div className="testimonial-stars">
+              {Array.from({ length: 5 }).map((_, index) => (
+                <IconStar key={index} size={16} strokeWidth={2} />
+              ))}
+            </div>
+            <p>
+              “I finally understood which products were working. The AI
+              flagged irritation early, and my texture score improved fast.”
+            </p>
+          </div>
+          <div className="testimonial-card">
+            <div className="testimonial-header">
+              <div className="testimonial-avatar">
+                <img src={avatarBase('SK', '#f97316')} alt="Sarah K." />
+              </div>
+              <div>
+                <h3>Sarah K.</h3>
+                <span>Before/After: Hydration + glow</span>
+              </div>
+            </div>
+            <div className="testimonial-stars">
+              {Array.from({ length: 5 }).map((_, index) => (
+                <IconStar key={index} size={16} strokeWidth={2} />
+              ))}
+            </div>
+            <p>
+              “The routine suggestions were spot on. My hydration went from
+              low to balanced, and the before/after view kept me motivated.”
+            </p>
+          </div>
+        </div>
+      </section>
+
         {/* FAQ Section */}
         <section className="faq-section">
           <div className="section-header">
@@ -201,15 +303,15 @@ const HomePage: React.FC = () => {
             <h2>FAQ</h2>
           </div>
           <div className="faq-container">
-            <details className="faq-item">
+            <details className="faq-item" open>
               <summary>Is this a medical diagnosis?</summary>
               <p>No. This tool provides informational insights only. It is not intended to diagnose, treat, or prevent any condition.</p>
             </details>
-            <details className="faq-item">
+            <details className="faq-item" open>
               <summary>Do you store my photos?</summary>
               <p>Photos are processed securely and can be deleted anytime from your account or automatically after analysis.</p>
             </details>
-            <details className="faq-item">
+            <details className="faq-item" open>
               <summary>Is this free to use?</summary>
               <p>Yes! Basic skin analysis scans are completely free with no signup required. Advanced features like progress tracking require a free account.</p>
             </details>

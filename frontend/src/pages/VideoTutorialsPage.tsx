@@ -1,0 +1,35 @@
+import React from 'react';
+import './VideoTutorialsPage.css';
+
+const VideoTutorialsPage: React.FC = () => {
+  return (
+    <div className="video-page">
+      <div className="video-container">
+        <div className="page-header">
+          <h1>Video Tutorials</h1>
+          <p>Short walkthroughs to help you use every feature with confidence.</p>
+        </div>
+
+        <div className="video-grid">
+          <div className="video-card">
+            <div className="video-thumb">3:12</div>
+            <h3>How to Capture a Great Scan</h3>
+            <p>Lighting, angles, and best practices for accurate results.</p>
+          </div>
+          <div className="video-card">
+            <div className="video-thumb">2:45</div>
+            <h3>Reading Your Digital Twin</h3>
+            <p>Understand progress charts, metrics, and before/after tools.</p>
+          </div>
+          <div className="video-card">
+            <div className="video-thumb">4:20</div>
+            <h3>Building a Routine</h3>
+            <p>Layering products safely and saving your personalized routine.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default VideoTutorialsPage;

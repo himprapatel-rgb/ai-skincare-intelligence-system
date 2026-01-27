@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { IconMail, IconClock, IconMessageCircle, IconMapPin, IconCheckCircle } from '../components/Icons';
+import { IconMail, IconClock, IconMessageCircle, IconMapPin, IconCheckCircle, IconInstagram, IconTwitter, IconLinkedin, IconTiktok } from '../components/Icons';
 import './ContactPage.css';
 
 const ContactPage: React.FC = () => {
@@ -69,6 +69,28 @@ const ContactPage: React.FC = () => {
             </div>
             <h3>Response Time</h3>
             <p>Within 24 hours</p>
+          </div>
+
+          <div className="info-card social-card">
+            <div className="info-icon">
+              <IconMessageCircle size={32} strokeWidth={2} />
+            </div>
+            <h3>Social Support</h3>
+            <p>Reach out on your favorite platform</p>
+            <div className="social-links">
+              <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram">
+                <IconInstagram size={18} strokeWidth={2} />
+              </a>
+              <a href="https://x.com" target="_blank" rel="noreferrer" aria-label="X">
+                <IconTwitter size={18} strokeWidth={2} />
+              </a>
+              <a href="https://tiktok.com" target="_blank" rel="noreferrer" aria-label="TikTok">
+                <IconTiktok size={18} strokeWidth={2} />
+              </a>
+              <a href="https://linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+                <IconLinkedin size={18} strokeWidth={2} />
+              </a>
+            </div>
           </div>
         </div>
 

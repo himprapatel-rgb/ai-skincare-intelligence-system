@@ -338,6 +338,24 @@ const RoutineBuilderPage: React.FC = () => {
         )}
       </div>
 
+      <div className="routine-education">
+        <h3>Ingredient Education</h3>
+        <div className="education-grid">
+          <div>
+            <h4>Why Order Matters</h4>
+            <p>Layering thin-to-thick helps actives absorb before occlusives seal them in.</p>
+          </div>
+          <div>
+            <h4>Interaction Warnings</h4>
+            <p>Avoid combining strong acids with retinol in the same routine to limit irritation.</p>
+          </div>
+          <div>
+            <h4>Time-of-Day Guidance</h4>
+            <p>Use antioxidants in the morning and retinoids at night for best results.</p>
+          </div>
+        </div>
+      </div>
+
       <div className="routine-tips">
         <h3>Skincare Tips</h3>
         <ul>

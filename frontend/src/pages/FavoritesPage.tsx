@@ -74,6 +74,16 @@ const FavoritesPage: React.FC = () => {
         </div>
       </div>
 
+      <div className="card favorites-explainer">
+        <div className="card-content">
+          <h3>What does Match % mean?</h3>
+          <p>
+            Match scores combine your skin goals, ingredient preferences, and past results.
+            Higher scores indicate a better fit for your routine and concern profile.
+          </p>
+        </div>
+      </div>
+
       {favorites.length === 0 ? (
         <div className="card favorites-empty">
           <div className="card-content favorites-empty-content">

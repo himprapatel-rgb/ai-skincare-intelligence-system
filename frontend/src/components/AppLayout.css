@@ -174,6 +174,42 @@
   padding: 24px 0 48px;
 }
 
+.app-breadcrumbs {
+  background: #ffffff;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.app-breadcrumbs-container {
+  max-width: var(--max-width-xl);
+  margin: 0 auto;
+  padding: 10px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.app-breadcrumb-item a {
+  color: var(--text-secondary);
+  text-decoration: none;
+}
+
+.app-breadcrumb-item a:hover {
+  color: var(--primary);
+}
+
+.app-breadcrumb-current {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.app-breadcrumb-separator {
+  margin: 0 6px;
+  color: var(--text-tertiary);
+}
+
 .app-footer {
   border-top: 1px solid var(--border-color);
   background: #ffffff;
@@ -191,6 +227,31 @@
 .app-footer-brand p {
   color: var(--text-secondary);
   margin-top: 12px;
+}
+
+.app-footer-socials {
+  margin-top: 16px;
+  display: flex;
+  gap: 12px;
+}
+
+.app-footer-socials a {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 1px solid var(--border-color);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  background: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.app-footer-socials a:hover {
+  color: var(--primary);
+  border-color: rgba(31, 111, 235, 0.4);
+  box-shadow: var(--shadow-sm);
 }
 
 .app-footer-links {

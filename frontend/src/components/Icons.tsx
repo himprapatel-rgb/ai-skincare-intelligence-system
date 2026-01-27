@@ -74,3 +74,7 @@ export { Phone as IconPhone } from 'lucide-react';
 export { MessageCircle as IconMessageCircle } from 'lucide-react';
 export { MapPin as IconMapPin } from 'lucide-react';
 export { Share2 as IconShare2 } from 'lucide-react';
+export { Instagram as IconInstagram } from 'lucide-react';
+export { Twitter as IconTwitter } from 'lucide-react';
+export { Linkedin as IconLinkedin } from 'lucide-react';
+export { Music2 as IconTiktok } from 'lucide-react';

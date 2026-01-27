@@ -269,6 +269,69 @@ const ProductScannerPage: React.FC = () => {
           </div>
         )}
       </div>
+
+      <section className="scanner-guide">
+        <div className="section-header">
+          <h2>How Product Scanner Works</h2>
+          <p>Scan any skincare barcode to decode ingredients and safety scores.</p>
+        </div>
+        <div className="guide-grid">
+          <div className="guide-card">
+            <h3>1. Capture the Barcode</h3>
+            <p>Point your camera at the product barcode and capture a clear image.</p>
+          </div>
+          <div className="guide-card">
+            <h3>2. Match the Product</h3>
+            <p>We cross-check the barcode against verified ingredient databases.</p>
+          </div>
+          <div className="guide-card">
+            <h3>3. Read the Insights</h3>
+            <p>View safety ratings, suitability, and ingredient warnings instantly.</p>
+          </div>
+        </div>
+
+        <div className="guide-grid">
+          <div className="guide-card">
+            <h3>Supported Barcode Types</h3>
+            <ul className="barcode-list">
+              <li>EAN-13 / EAN-8</li>
+              <li>UPC-A / UPC-E</li>
+              <li>GS1 DataBar (limited)</li>
+              <li>QR codes on packaging</li>
+            </ul>
+          </div>
+          <div className="guide-card">
+            <h3>Ingredient Analysis</h3>
+            <p>
+              Ingredients are parsed by function (hydration, exfoliation, soothing),
+              and flagged if they commonly irritate sensitive skin or clash with
+              your profile.
+            </p>
+          </div>
+          <div className="guide-card">
+            <h3>Safety Rating System</h3>
+            <p>
+              Scores blend ingredient risk, concentration patterns, and known sensitivities.
+              80–100 is low risk, 60–79 is moderate, below 60 needs caution.
+            </p>
+          </div>
+        </div>
+
+        <div className="example-card">
+          <h3>Example Scan Result</h3>
+          <div className="example-grid">
+            <div>
+              <p><strong>Product:</strong> Vitamin C Serum</p>
+              <p><strong>Safety:</strong> 85/100 (Low Risk)</p>
+              <p><strong>Suitability:</strong> 78/100 (Good Fit)</p>
+            </div>
+            <div>
+              <p><strong>Key Ingredients:</strong> Ascorbic Acid, Niacinamide</p>
+              <p><strong>Warnings:</strong> Contains fragrance; patch test recommended.</p>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };

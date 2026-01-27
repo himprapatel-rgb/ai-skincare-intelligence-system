@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { IconInstagram, IconTwitter, IconLinkedin, IconTiktok } from './Icons';
 import { useAuth } from '../context/AuthContext';
 import './AppLayout.css';
 
@@ -12,6 +13,45 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   const navigate = useNavigate();
   const { user, isAuthenticated, logout } = useAuth();
   const displayName = user?.full_name || user?.email || 'Account';
+  const breadcrumbs = useMemo(() => {
+    const segments = location.pathname.split('/').filter(Boolean);
+    const labelMap: Record<string, string> = {
+      'scan': 'Scan',
+      'analysis': 'Analysis',
+      'digital-twin': 'Digital Twin',
+      'routine-builder': 'Routine Builder',
+      'favorites': 'Favorites',
+      'myshelf': 'My Shelf',
+      'scanner': 'Product Scanner',
+      'notifications': 'Notifications',
+      'profile': 'Profile',
+      'dashboard': 'Dashboard',
+      'history': 'History',
+      'recommendations': 'Recommendations',
+      'about': 'About',
+      'contact': 'Contact',
+      'privacy': 'Privacy',
+      'terms': 'Terms',
+      'auth': 'Login',
+      'onboarding': 'Onboarding',
+      'export': 'Data Export',
+      'blog': 'Blog',
+      'ingredients': 'Ingredient Dictionary',
+      'skin-type-guide': 'Skin Type Guide',
+      'tutorials': 'Video Tutorials',
+    };
+    const crumbs = [{ label: 'Home', to: '/' }];
+    if (segments.length === 0) return crumbs;
+    let path = '';
+    segments.forEach((segment, index) => {
+      path += `/${segment}`;
+      const isLast = index === segments.length - 1;
+      const isDynamic = segment.length > 12 || /[0-9]/.test(segment);
+      const label = labelMap[segment] || (isDynamic ? 'Details' : segment.replace(/-/g, ' '));
+      crumbs.push({ label: label.replace(/\b\w/g, (char) => char.toUpperCase()), to: isLast ? '' : path });
+    });
+    return crumbs;
+  }, [location.pathname]);
 
   return (
     <div className="app-layout">
@@ -58,6 +98,21 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
         </div>
       </header>
 
+      <div className="app-breadcrumbs" aria-label="Breadcrumb">
+        <div className="app-breadcrumbs-container">
+          {breadcrumbs.map((crumb, index) => (
+            <span key={`${crumb.label}-${index}`} className="app-breadcrumb-item">
+              {crumb.to ? (
+                <Link to={crumb.to}>{crumb.label}</Link>
+              ) : (
+                <span className="app-breadcrumb-current">{crumb.label}</span>
+              )}
+              {index < breadcrumbs.length - 1 && <span className="app-breadcrumb-separator">/</span>}
+            </span>
+          ))}
+        </div>
+      </div>
+
       <main className="app-main" id="main-content">
         {children}
       </main>
@@ -67,6 +122,20 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
           <div className="app-footer-brand">
             <span className="app-logo-text">SkinCareAI</span>
             <p>Clinical-grade skin insights, personalized for you.</p>
+            <div className="app-footer-socials">
+              <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram">
+                <IconInstagram size={18} strokeWidth={2} />
+              </a>
+              <a href="https://x.com" target="_blank" rel="noreferrer" aria-label="X">
+                <IconTwitter size={18} strokeWidth={2} />
+              </a>
+              <a href="https://tiktok.com" target="_blank" rel="noreferrer" aria-label="TikTok">
+                <IconTiktok size={18} strokeWidth={2} />
+              </a>
+              <a href="https://linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+                <IconLinkedin size={18} strokeWidth={2} />
+              </a>
+            </div>
           </div>
           <div className="app-footer-links">
             <div>
@@ -89,11 +158,15 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
               <Link to="/myshelf">My Shelf</Link>
               <Link to="/scanner">Product Scanner</Link>
               <Link to="/notifications">Notifications</Link>
+              <Link to="/ingredients">Ingredient Dictionary</Link>
+              <Link to="/skin-type-guide">Skin Type Guide</Link>
             </div>
             <div>
               <h4>Company</h4>
               <Link to="/about">About Us</Link>
               <Link to="/contact">Contact</Link>
+              <Link to="/blog">Blog</Link>
+              <Link to="/tutorials">Video Tutorials</Link>
             </div>
             <div>
               <h4>Legal</h4>

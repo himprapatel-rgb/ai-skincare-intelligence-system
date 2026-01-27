@@ -350,6 +350,30 @@ const DigitalTwinTimelinePage: React.FC = () => {
           <p>Track your skin's journey and see how it evolves over time</p>
         </div>
 
+        <div className="twin-explainer">
+          <div className="twin-explainer-card">
+            <h3>What is a Digital Twin?</h3>
+            <p>
+              Your Digital Twin is a living profile of your skin, created from each scan.
+              It summarizes your scores and makes progress easy to visualize over time.
+            </p>
+          </div>
+          <div className="twin-explainer-card">
+            <h3>How Tracking Works</h3>
+            <p>
+              Each scan adds a new snapshot. We chart your overall score, mood, and
+              concern metrics so you can spot trends and celebrate improvements.
+            </p>
+          </div>
+          <div className="twin-explainer-card">
+            <h3>Why It Matters</h3>
+            <p>
+              Consistent tracking helps you connect skincare choices with results,
+              making routines more intentional and measurable.
+            </p>
+          </div>
+        </div>
+
         {/* Overall Progress Summary */}
         <div className="progress-summary">
           <div className="summary-card">

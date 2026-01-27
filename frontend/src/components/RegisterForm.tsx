@@ -121,6 +121,15 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onSwitchT
             disabled={loading}
             placeholder="Enter your password"
           />
+          <div className="password-requirements">
+            <span>Password must include:</span>
+            <ul>
+              <li>At least 8 characters</li>
+              <li>1 uppercase letter</li>
+              <li>1 number</li>
+              <li>1 special character</li>
+            </ul>
+          </div>
         </div>
         <div className="form-group">
           <label htmlFor="confirmPassword">Confirm Password</label>

@@ -106,6 +106,24 @@ const MyShelfPage: React.FC = () => {
         <p className="subtitle">Manage your skincare collection</p>
       </div>
 
+      <div className="myshelf-onboarding">
+        <h2>Build Your Shelf in Minutes</h2>
+        <div className="myshelf-onboarding-grid">
+          <div>
+            <h3>Add Products Fast</h3>
+            <p>Scan a barcode or pick from recommendations to populate your shelf.</p>
+          </div>
+          <div>
+            <h3>Track What Works</h3>
+            <p>Log what you are using to connect routine changes with progress.</p>
+          </div>
+          <div>
+            <h3>Expiry Reminders</h3>
+            <p>We help you keep track of open dates so you can replace products on time.</p>
+          </div>
+        </div>
+      </div>
+
       <div className="myshelf-controls">
         <div className="search-bar">
           <input

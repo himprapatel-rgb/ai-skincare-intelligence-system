@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { IconHeart, IconX, IconPackage, IconStar } from '../components/Icons';
-import api from '../services/api';
+import { api } from '../services/api';
 import './CommonStyles.css';
 import './FavoritesPage.css';
 
@@ -24,7 +24,7 @@ const FavoritesPage: React.FC = () => {
   const [favorites, setFavorites] = useState<FavoriteProduct[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [sortBy, setSortBy] = useState<'date' | 'name' | 'price'>('date');
-  const [error, setError] = useState<string | null>(null);
+  const [_error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchFavorites();

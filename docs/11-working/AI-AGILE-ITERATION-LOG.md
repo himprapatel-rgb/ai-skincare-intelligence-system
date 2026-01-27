@@ -6,6 +6,35 @@ Use that workflow doc for checklists and templates to avoid duplication here.
 
 ---
 
+## Iteration 2026-01-27 (Password Reset E2E)
+
+### Goal
+Complete password reset end-to-end flow with confirmation page.
+
+### Scope (Completed)
+- **New page:** `PasswordResetConfirmPage.tsx` — reads token from URL, lets user enter new password, calls confirm API.
+- **Route:** Added `/password-reset/confirm` route in App.tsx.
+- **CSS:** Added success/error icon states and form-hint styling.
+- **Flow:** Request → email sent → user clicks link → lands on confirm page → enters new password → redirected to login.
+
+### Key Changes (Code)
+- `frontend/src/pages/PasswordResetConfirmPage.tsx` — new file
+- `frontend/src/App.tsx` — added import and route
+- `frontend/src/pages/PasswordResetPage.css` — added success/error icon styles, form-hint
+
+### Key Changes (Docs)
+- `docs/06-operations/Features-Left-to-Implement.md` — marked 1.3 done
+- `docs/11-working/AI-AGILE-ITERATION-LOG.md` — this entry
+
+### Verification / Tests
+- No lint errors.
+- Manual test: request reset → check email → click link → enter password → success.
+
+### Risks / Follow-ups
+- Ensure SMTP is configured in production for emails to send.
+
+---
+
 ## Iteration 2026-01-27 (Product Reviews System)
 
 ### Goal

@@ -28,11 +28,10 @@
 - **Where:** `frontend/src/pages/ConsentPage.tsx`.
 - **Status:** Complete. Frontend now calls `GET /consent/policies/current`, `GET /consent/status`, and `POST /consent/accept`.
 
-### 1.3 Password reset end-to-end
+### 1.3 Password reset end-to-end — ✅ DONE (Jan 27, 2026)
 - **What:** Ensure request → email → reset link → new password works in production.
-- **Where:** `PasswordResetPage.tsx`, `auth.py` (password-reset endpoints).
-- **Backend:** Request/confirm endpoints exist; verify SMTP and token flow.
-- **Frontend TODO:** Wire PasswordResetPage to `/auth/password-reset/request` and `/auth/password-reset/confirm`; test full flow.
+- **Where:** `PasswordResetPage.tsx`, `PasswordResetConfirmPage.tsx`, `auth.py`.
+- **Status:** Complete. Frontend has request page and confirm page; backend has both endpoints; email sends reset link to `/password-reset/confirm?token=xxx`.
 
 ### 1.4 ProductDetailsPage full details API
 - **What:** Single product endpoint that returns full details (description, ingredients, reviews placeholder, etc.) for product detail view.

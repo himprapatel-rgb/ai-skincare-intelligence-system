@@ -52,6 +52,7 @@ The project documentation includes:
 - ✅ **External ML**: HuggingFace integration + model registry
 - ✅ **CI/CD Pipeline**: GitHub Actions passing
 - ✅ **UI/UX Polish**: Spacing, typography, and profile tab refinements
+- ✅ **QA Fixes**: Education pages, recommendations fallback, scan filtering
 - 🟡 **Production Status**: Frontend live; backend health should be re-verified after latest deploy
 
 **Implementation Level:** ~90% Complete
@@ -167,7 +168,7 @@ For inquiries about this project, please contact the development team.
 
 ---
 
-*Last Updated: January 26, 2026*
+*Last Updated: January 27, 2026*
 
 
 ## Live Production URLs

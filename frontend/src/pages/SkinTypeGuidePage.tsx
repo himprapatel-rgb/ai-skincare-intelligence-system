@@ -4,7 +4,7 @@ import './SkinTypeGuidePage.css';
 const SkinTypeGuidePage: React.FC = () => {
   return (
     <div className="skin-type-page">
-      <div className="skin-type-container">
+      <div className="page-container skin-type-container">
         <div className="page-header">
           <h1>Skin Type Guide</h1>
           <p>Identify your skin type and choose products with confidence.</p>

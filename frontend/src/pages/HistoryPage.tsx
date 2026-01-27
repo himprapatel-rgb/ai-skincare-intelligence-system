@@ -19,6 +19,7 @@ const HistoryPage: React.FC = () => {
   const [history, setHistory] = useState<ScanHistory[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<'all' | '7days' | '30days' | '90days'>('all');
+  const [showFailed, setShowFailed] = useState(false);
 
   useEffect(() => {
     fetchHistory();
@@ -71,6 +72,10 @@ const HistoryPage: React.FC = () => {
   };
 
   const filteredHistory = filterHistory();
+  const visibleHistory = showFailed
+    ? filteredHistory
+    : filteredHistory.filter((item) => item.status !== 'failed' && item.score > 0);
+  const failedCount = filteredHistory.length - visibleHistory.length;
   const totalScans = filteredHistory.length;
   const completedHistory = filteredHistory.filter((item) => item.status !== 'failed');
   const avgScore = completedHistory.length > 0
@@ -91,6 +96,9 @@ const HistoryPage: React.FC = () => {
           <button className={`filter-btn ${filter === '7days' ? 'active' : ''}`} onClick={() => setFilter('7days')}>Last 7 Days</button>
           <button className={`filter-btn ${filter === '30days' ? 'active' : ''}`} onClick={() => setFilter('30days')}>Last 30 Days</button>
           <button className={`filter-btn ${filter === '90days' ? 'active' : ''}`} onClick={() => setFilter('90days')}>Last 90 Days</button>
+          <button className={`filter-btn ${showFailed ? 'active' : ''}`} onClick={() => setShowFailed((prev) => !prev)}>
+            {showFailed ? 'Hide Failed' : 'Show Failed'}
+          </button>
         </div>
 
         {loading ? (
@@ -135,7 +143,13 @@ const HistoryPage: React.FC = () => {
             </div>
 
             <div className="history-list">
-              {filteredHistory.map(item => (
+              {visibleHistory.length === 0 ? (
+                <div className="empty-state">
+                  <h3>No completed scans in this range</h3>
+                  <p>{failedCount} failed scan{failedCount === 1 ? '' : 's'} hidden. Toggle to view failed scans.</p>
+                  <button className="view-btn" onClick={() => setShowFailed(true)}>Show Failed Scans</button>
+                </div>
+              ) : visibleHistory.map(item => (
                 <div
                   key={item.id}
                   role="button"

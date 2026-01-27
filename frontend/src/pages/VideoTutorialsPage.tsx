@@ -4,7 +4,7 @@ import './VideoTutorialsPage.css';
 const VideoTutorialsPage: React.FC = () => {
   return (
     <div className="video-page">
-      <div className="video-container">
+      <div className="page-container video-container">
         <div className="page-header">
           <h1>Video Tutorials</h1>
           <p>Short walkthroughs to help you use every feature with confidence.</p>

@@ -224,8 +224,8 @@ const AnalysisResults: React.FC = () => {
                 <div className="analysis-image-fallback">
                   <IconScan size={32} strokeWidth={2} />
                   <div>
-                    <strong>No image available</strong>
-                    <span>We do not store images when scans fail.</span>
+                    <strong>{failureMessage ? 'No image available' : 'Image processed but not stored'}</strong>
+                    <span>{failureMessage ? 'We do not store images when scans fail.' : 'Your analysis is complete, but the image was not saved.'}</span>
                   </div>
                 </div>
               )}

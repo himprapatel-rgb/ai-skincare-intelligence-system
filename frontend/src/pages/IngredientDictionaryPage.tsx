@@ -4,7 +4,7 @@ import './IngredientDictionaryPage.css';
 const IngredientDictionaryPage: React.FC = () => {
   return (
     <div className="ingredient-page">
-      <div className="ingredient-container">
+      <div className="page-container ingredient-container">
         <div className="page-header">
           <h1>Ingredient Dictionary</h1>
           <p>Search ingredients and learn how they support your skin goals.</p>

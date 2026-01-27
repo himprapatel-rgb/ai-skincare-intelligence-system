@@ -4,7 +4,7 @@ import './BlogPage.css';
 const BlogPage: React.FC = () => {
   return (
     <div className="blog-page">
-      <div className="blog-container">
+      <div className="page-container blog-container">
         <div className="page-header">
           <h1>SkinCareAI Blog</h1>
           <p>Skincare tips, routines, and science-backed insights.</p>

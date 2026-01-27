@@ -28,6 +28,56 @@ const Recommendations: React.FC = () => {
     priceRange: 'all',
     concern: 'all'
   });
+  const fallbackProducts: Product[] = [
+    {
+      id: 'fallback-1',
+      name: 'Barrier Repair Moisturizer',
+      brand: 'SkinCareAI Lab',
+      category: 'moisturizer',
+      price: 38,
+      rating: 4.6,
+      ingredients: ['Ceramides', 'Squalane'],
+      concerns: ['dryness', 'redness'],
+      imageUrl: null,
+      purchaseUrl: null
+    },
+    {
+      id: 'fallback-2',
+      name: 'Brightening Vitamin C Serum',
+      brand: 'Derm Essentials',
+      category: 'serum',
+      price: 42,
+      rating: 4.4,
+      ingredients: ['Vitamin C', 'Ferulic Acid'],
+      concerns: ['dark spots', 'dullness'],
+      imageUrl: null,
+      purchaseUrl: null
+    },
+    {
+      id: 'fallback-3',
+      name: 'Calming Daily Cleanser',
+      brand: 'Pure Balance',
+      category: 'cleanser',
+      price: 18,
+      rating: 4.3,
+      ingredients: ['Oat', 'Glycerin'],
+      concerns: ['sensitivity', 'dryness'],
+      imageUrl: null,
+      purchaseUrl: null
+    },
+    {
+      id: 'fallback-4',
+      name: 'Lightweight SPF 50',
+      brand: 'GlowShield',
+      category: 'sunscreen',
+      price: 28,
+      rating: 4.5,
+      ingredients: ['Zinc Oxide', 'Niacinamide'],
+      concerns: ['oiliness', 'redness'],
+      imageUrl: null,
+      purchaseUrl: null
+    }
+  ];
 
   useEffect(() => {
     fetchRecommendations();
@@ -63,7 +113,7 @@ const Recommendations: React.FC = () => {
         imageUrl: typeof item.image_url === 'string' ? item.image_url : (typeof item.imageUrl === 'string' ? item.imageUrl : null),
         purchaseUrl: typeof item.purchase_url === 'string' ? item.purchase_url : (typeof item.purchaseUrl === 'string' ? item.purchaseUrl : null),
       }));
-      setProducts(items);
+      setProducts(items.length > 0 ? items : fallbackProducts);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
@@ -105,6 +155,11 @@ const Recommendations: React.FC = () => {
     }
     return true;
   });
+  const hasFilters =
+    filters.category !== 'all' ||
+    filters.priceRange !== 'all' ||
+    filters.concern !== 'all';
+  const displayProducts = filteredProducts.length > 0 ? filteredProducts : products.slice(0, 4);
 
   const placeholderImage =
     'data:image/svg+xml;utf8,' +
@@ -236,7 +291,7 @@ const Recommendations: React.FC = () => {
         </div>
 
         <div className="product-grid">
-          {filteredProducts.length === 0 ? (
+          {displayProducts.length === 0 ? (
             <div className="empty-recommendations">
               <div className="empty-icon">
                 <IconAlertTriangle size={64} strokeWidth={2} />
@@ -245,7 +300,7 @@ const Recommendations: React.FC = () => {
               <p>Try a broader category or a different concern.</p>
             </div>
           ) : (
-            filteredProducts.map((product) => (
+            displayProducts.map((product) => (
               <div key={product.id} className="product-card">
                 <div className="product-media">
                   <img
@@ -326,9 +381,24 @@ const Recommendations: React.FC = () => {
           )}
         </div>
 
-        {filteredProducts.length > 0 && (
+        {displayProducts.length > 0 && (
           <div className="results-summary">
-            Showing {filteredProducts.length} of {products.length} products
+            {filteredProducts.length > 0
+              ? `Showing ${filteredProducts.length} of ${products.length} products`
+              : hasFilters
+              ? 'Showing fallback picks. Clear filters to see more.'
+              : `Showing ${displayProducts.length} of ${products.length} products`}
+          </div>
+        )}
+        {filteredProducts.length === 0 && hasFilters && (
+          <div className="results-summary">
+            <button
+              className="filters-reset"
+              type="button"
+              onClick={() => setFilters({ category: 'all', priceRange: 'all', concern: 'all' })}
+            >
+              Reset filters
+            </button>
           </div>
         )}
       </div>

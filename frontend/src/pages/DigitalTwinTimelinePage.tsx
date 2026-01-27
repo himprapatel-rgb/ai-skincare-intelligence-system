@@ -170,7 +170,6 @@ const DigitalTwinTimelinePage: React.FC = () => {
         }
         const data = await response.json();
         const apiSnapshots: ApiSnapshot[] = data.snapshots || [];
-        const latestSnapshot: ApiSnapshot | null = data.latest_snapshot || apiSnapshots[0] || null;
         const mergedInsights: ApiInsights = {
           ...(data.timeline?.summary_insights || {}),
           ...(data.insights || {}),
@@ -221,11 +220,14 @@ const DigitalTwinTimelinePage: React.FC = () => {
             improvements,
           };
         });
-        setSnapshots(mapped);
+        const filteredSnapshots = mapped.filter((snapshot) => snapshot.overallScore > 0 || snapshot.topConcerns.length > 0);
+        const finalSnapshots = filteredSnapshots.length > 0 ? filteredSnapshots : mapped;
+        const latestSnapshotId = finalSnapshots[0]?.id ?? null;
+        setSnapshots(finalSnapshots);
         setInsights(mergedInsights);
-        setSelectedSnapshot((current) => current ?? latestSnapshot?.snapshot_id ?? null);
-        setComparisonBefore((current) => current ?? mapped[mapped.length - 1]?.id ?? null);
-        setComparisonAfter((current) => current ?? mapped[0]?.id ?? null);
+        setSelectedSnapshot((current) => current ?? latestSnapshotId);
+        setComparisonBefore((current) => current ?? finalSnapshots[finalSnapshots.length - 1]?.id ?? null);
+        setComparisonAfter((current) => current ?? finalSnapshots[0]?.id ?? null);
       } catch (error) {
         console.error('Failed to load digital twin timeline:', error);
         setHasError(true);

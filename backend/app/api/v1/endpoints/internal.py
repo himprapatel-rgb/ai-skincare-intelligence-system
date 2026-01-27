@@ -1,12 +1,15 @@
 from __future__ import annotations
 
 from typing import Any
+from uuid import UUID
 
 import httpx
 from fastapi import APIRouter, Header, HTTPException, status
 from pydantic import BaseModel
 
 from app.config import settings
+from app.database import SessionLocal
+from app.models.scan import ScanSession
 from app.services.gpt_service import GPTService, get_default_service
 
 router = APIRouter()
@@ -98,6 +101,46 @@ def openai_health_check(x_summary_token: str | None = Header(None)) -> OpenAIHea
         )
     except Exception as exc:
         return OpenAIHealthResponse(ok=False, detail=f"OpenAI check failed: {exc}")
+
+
+@router.get("/scan/lookup")
+def lookup_scan(scan_id: str, x_summary_token: str | None = Header(None)) -> Any:
+    """Internal scan lookup (requires SUMMARY_TOKEN)."""
+    if not settings.SUMMARY_TOKEN or x_summary_token != settings.SUMMARY_TOKEN:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized"
+        )
+
+    try:
+        scan_uuid = UUID(scan_id)
+    except ValueError:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid scan ID format",
+        )
+
+    db = SessionLocal()
+    try:
+        scan = db.query(ScanSession).filter(ScanSession.id == scan_uuid).first()
+        if not scan:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Scan session not found",
+            )
+
+        return {
+            "scan_id": str(scan.id),
+            "user_id": scan.user_id,
+            "status": scan.status.value if hasattr(scan.status, "value") else str(scan.status),
+            "has_image_data": bool(scan.image_data),
+            "image_content_type": scan.image_content_type,
+            "image_filename": scan.image_filename,
+            "image_url": scan.image_url,
+            "created_at": scan.created_at.isoformat() if scan.created_at else None,
+            "updated_at": scan.updated_at.isoformat() if scan.updated_at else None,
+        }
+    finally:
+        db.close()
 
 
 # ========== SCIN Dataset Endpoints ==========

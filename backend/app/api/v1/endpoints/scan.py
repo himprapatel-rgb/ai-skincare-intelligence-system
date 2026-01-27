@@ -147,16 +147,26 @@ async def upload_scan(
             detail="Scan session not found"
         )
     
-    scan_query = db.query(ScanSession).filter(ScanSession.id == uuid_obj)
-    if current_user:
-        scan_query = scan_query.filter(ScanSession.user_id == current_user.id)
-    scan_session = scan_query.first()
-    
+    scan_session = (
+        db.query(ScanSession)
+        .filter(ScanSession.id == uuid_obj)
+        .first()
+    )
+
     if not scan_session:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Scan session not found"
         )
+
+    if current_user:
+        if scan_session.user_id is None:
+            scan_session.user_id = current_user.id
+        elif scan_session.user_id != current_user.id:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="You do not have access to this scan session"
+            )
     
     scan_session.status = ScanStatus.PROCESSING
         
@@ -306,16 +316,29 @@ def get_scan_status(
             detail="Scan session not found"
         )
 
-    scan_query = db.query(ScanSession).filter(ScanSession.id == uuid_obj)
-    if current_user:
-        scan_query = scan_query.filter(ScanSession.user_id == current_user.id)
-    scan_session = scan_query.first()
+    scan_session = (
+        db.query(ScanSession)
+        .filter(ScanSession.id == uuid_obj)
+        .first()
+    )
 
     if not scan_session:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Scan session not found"
         )
+
+    if current_user:
+        if scan_session.user_id is None:
+            scan_session.user_id = current_user.id
+            db.add(scan_session)
+            db.commit()
+            db.refresh(scan_session)
+        elif scan_session.user_id != current_user.id:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="You do not have access to this scan session"
+            )
 
     return {
         "scan_id": str(scan_session.id),
@@ -343,16 +366,29 @@ def get_scan_results(
             detail="Scan session not found"
         )
     
-    scan_query = db.query(ScanSession).filter(ScanSession.id == uuid_obj)
-    if current_user:
-        scan_query = scan_query.filter(ScanSession.user_id == current_user.id)
-    scan_session = scan_query.first()
-    
+    scan_session = (
+        db.query(ScanSession)
+        .filter(ScanSession.id == uuid_obj)
+        .first()
+    )
+
     if not scan_session:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Scan session not found"
         )
+
+    if current_user:
+        if scan_session.user_id is None:
+            scan_session.user_id = current_user.id
+            db.add(scan_session)
+            db.commit()
+            db.refresh(scan_session)
+        elif scan_session.user_id != current_user.id:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="You do not have access to this scan session"
+            )
     
     return {
         "scan_id": str(scan_session.id),
@@ -393,16 +429,29 @@ def get_scan_image(
             detail="Scan session not found"
         )
 
-    scan_query = db.query(ScanSession).filter(ScanSession.id == uuid_obj)
-    if current_user:
-        scan_query = scan_query.filter(ScanSession.user_id == current_user.id)
-    scan_session = scan_query.first()
+    scan_session = (
+        db.query(ScanSession)
+        .filter(ScanSession.id == uuid_obj)
+        .first()
+    )
 
     if not scan_session:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Scan session not found"
         )
+
+    if current_user:
+        if scan_session.user_id is None:
+            scan_session.user_id = current_user.id
+            db.add(scan_session)
+            db.commit()
+            db.refresh(scan_session)
+        elif scan_session.user_id != current_user.id:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="You do not have access to this scan session"
+            )
 
     if scan_session.image_data:
         content_type = scan_session.image_content_type or "image/jpeg"

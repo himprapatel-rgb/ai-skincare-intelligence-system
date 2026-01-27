@@ -64,7 +64,16 @@ const SimulationPanel: React.FC = () => {
         concerns: [],
       });
     } catch (err: any) {
-      setError(err.response?.data?.detail || 'Simulation failed');
+      const status = err.response?.status;
+      const detail = err.response?.data?.detail;
+      
+      if (status === 401) {
+        setError('Please log in to use the simulation feature');
+      } else if (status === 400 && detail?.includes('No historical data')) {
+        setError('Take at least one skin scan first to enable predictions');
+      } else {
+        setError(detail || 'Simulation failed. Please try again.');
+      }
     } finally {
       setLoading(false);
     }

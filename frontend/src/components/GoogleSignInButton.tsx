@@ -19,12 +19,12 @@ export const GoogleSignInButton: React.FC<GoogleSignInButtonProps> = ({
   disabled = false,
   loading = false,
 }) => {
-  const handleClick = () => {
-    if (!GOOGLE_CLIENT_ID) {
-      console.error('Google Client ID not configured');
-      return;
-    }
+  // Don't render if Google OAuth is not configured
+  if (!GOOGLE_CLIENT_ID) {
+    return null;
+  }
 
+  const handleClick = () => {
     // Build Google OAuth URL
     const params = new URLSearchParams({
       client_id: GOOGLE_CLIENT_ID,
@@ -44,7 +44,7 @@ export const GoogleSignInButton: React.FC<GoogleSignInButtonProps> = ({
       type="button"
       className="google-signin-btn"
       onClick={handleClick}
-      disabled={disabled || loading || !GOOGLE_CLIENT_ID}
+      disabled={disabled || loading}
     >
       {loading ? (
         <span className="loading-spinner" />

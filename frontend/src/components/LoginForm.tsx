@@ -100,10 +100,6 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegis
         </button>
       </form>
       
-      <div className="oauth-divider">
-        <span>or</span>
-      </div>
-      
       <GoogleSignInButton disabled={loading} />
       {showVerifyLink && (
         <button

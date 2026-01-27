@@ -374,8 +374,12 @@
 /* Help Button (subtle icon) */
 .dt-hero-title-row {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 12px;
+}
+
+.dt-hero-title-row > div:first-child {
+  flex: 1;
 }
 
 .dt-help-button {

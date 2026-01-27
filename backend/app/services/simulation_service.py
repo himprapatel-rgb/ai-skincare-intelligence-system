@@ -189,23 +189,27 @@ class SimulationService:
         # Get historical data
         snapshots = self.get_historical_snapshots(user_id, days=60)
         
-        if not snapshots:
-            return {
-                "error": "No historical data available",
-                "projected_scores": {},
-                "confidence": 0.0,
+        # Use default baseline if no snapshots available
+        if snapshots:
+            latest = snapshots[-1]
+            current_scores = {
+                "hydration": getattr(latest, 'hydration_level', 50) or 50,
+                "oiliness": getattr(latest, 'oil_level', 50) or 50,
+                "acne": getattr(latest, 'acne_severity', 30) or 30,
+                "wrinkles": getattr(latest, 'wrinkle_severity', 25) or 25,
+                "dark_spots": getattr(latest, 'pigmentation_severity', 20) or 20,
+                "redness": getattr(latest, 'redness_severity', 30) or 30,
             }
-        
-        # Get current scores from latest snapshot
-        latest = snapshots[-1]
-        current_scores = {
-            "hydration": getattr(latest, 'hydration', 50) or 50,
-            "oiliness": getattr(latest, 'oiliness', 50) or 50,
-            "acne": getattr(latest, 'acne', 30) or 30,
-            "wrinkles": getattr(latest, 'wrinkles', 25) or 25,
-            "dark_spots": getattr(latest, 'dark_spots', 20) or 20,
-            "redness": getattr(latest, 'redness', 30) or 30,
-        }
+        else:
+            # Default baseline scores for new users
+            current_scores = {
+                "hydration": 50,
+                "oiliness": 50,
+                "acne": 30,
+                "wrinkles": 25,
+                "dark_spots": 20,
+                "redness": 30,
+            }
         
         # Calculate trends
         trends = self.calculate_trends(snapshots)

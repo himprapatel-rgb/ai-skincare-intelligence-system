@@ -2,6 +2,7 @@
 Authentication API endpoints.
 
 Handles user registration, login, email verification, and password reset.
+Version: 2026-01-27-FIXED
 """
 import uuid
 from datetime import datetime, timedelta, timezone
@@ -25,6 +26,10 @@ from app.schemas.user import (
 )
 from app.services.auth_service import auth_service
 from app.services.email_service import send_verification_email
+
+import logging
+logger = logging.getLogger(__name__)
+logger.warning("=== AUTH MODULE LOADED - VERSION 2026-01-27-FIXED ===")
 
 router = APIRouter()
 

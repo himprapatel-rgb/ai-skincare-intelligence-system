@@ -139,3 +139,141 @@ async def analyze_ingredients(
         pregnancy_safe=len(flagged) == 0,
         sensitive_skin_safe=avg_safety < 6.0
     )
+
+
+# ===== Barcode Scanning Endpoint (FR28) =====
+from pydantic import BaseModel
+import httpx
+import logging
+
+logger = logging.getLogger(__name__)
+
+
+class BarcodeScanRequest(BaseModel):
+    """Request schema for barcode scan."""
+    barcode: str
+    image_data: Optional[str] = None  # Base64 image (optional)
+
+
+class BarcodeScanResponse(BaseModel):
+    """Response schema for barcode scan."""
+    found: bool
+    product: Optional[dict] = None
+    safety_rating: Optional[int] = None
+    suitability_score: Optional[int] = None
+    ingredients: Optional[List[str]] = None
+    warnings: Optional[List[str]] = None
+    source: str = "database"
+
+
+@router.post("/scan-barcode", response_model=BarcodeScanResponse)
+async def scan_barcode(
+    request: BarcodeScanRequest,
+    db: Session = Depends(get_db)
+):
+    """
+    Scan a product barcode and return product information with safety analysis.
+    
+    SRS: FR28 - Barcode Scanning
+    Sprint: GUI-2
+    
+    First checks local database, then falls back to OpenBeautyFacts API.
+    """
+    barcode = request.barcode.strip()
+    
+    # 1. Check local database first
+    product = db.query(Product).filter(Product.upc == barcode).first()
+    
+    if product:
+        # Analyze ingredients
+        ingredients = []
+        warnings = []
+        safety_score = 85  # Default good score
+        
+        if product.ingredients:
+            ingredients = [ing.strip() for ing in product.ingredients.split(",")[:10]]
+            
+            # Check for common allergens/irritants
+            irritants = ["fragrance", "alcohol denat", "sodium lauryl sulfate", "parabens"]
+            for ing in ingredients:
+                for irritant in irritants:
+                    if irritant.lower() in ing.lower():
+                        warnings.append(f"Contains {irritant}")
+                        safety_score -= 10
+        
+        return BarcodeScanResponse(
+            found=True,
+            product={
+                "id": str(product.id),
+                "name": product.name,
+                "brand": product.brand,
+                "barcode": barcode,
+                "category": product.category,
+                "image_url": product.image_url,
+            },
+            safety_rating=max(0, safety_score),
+            suitability_score=78,  # TODO: Calculate based on user profile
+            ingredients=ingredients,
+            warnings=list(set(warnings)),
+            source="database",
+        )
+    
+    # 2. Try OpenBeautyFacts API
+    try:
+        async with httpx.AsyncClient(timeout=10.0) as client:
+            response = await client.get(
+                f"https://world.openbeautyfacts.org/api/v0/product/{barcode}.json"
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                if data.get("status") == 1 and data.get("product"):
+                    obf_product = data["product"]
+                    
+                    ingredients = []
+                    if obf_product.get("ingredients_text"):
+                        ingredients = [
+                            ing.strip() 
+                            for ing in obf_product["ingredients_text"].split(",")[:10]
+                        ]
+                    
+                    # Basic safety analysis
+                    warnings = []
+                    safety_score = 80
+                    
+                    irritants = ["fragrance", "parfum", "alcohol denat", "sls"]
+                    for ing in ingredients:
+                        for irritant in irritants:
+                            if irritant.lower() in ing.lower():
+                                warnings.append(f"Contains {irritant}")
+                                safety_score -= 10
+                    
+                    return BarcodeScanResponse(
+                        found=True,
+                        product={
+                            "id": barcode,
+                            "name": obf_product.get("product_name", "Unknown Product"),
+                            "brand": obf_product.get("brands", "Unknown Brand"),
+                            "barcode": barcode,
+                            "category": obf_product.get("categories", "").split(",")[0] if obf_product.get("categories") else None,
+                            "image_url": obf_product.get("image_url"),
+                        },
+                        safety_rating=max(0, safety_score),
+                        suitability_score=70,
+                        ingredients=ingredients,
+                        warnings=list(set(warnings)),
+                        source="openbeautyfacts",
+                    )
+    except Exception as e:
+        logger.warning(f"OpenBeautyFacts API error: {e}")
+    
+    # 3. Product not found
+    return BarcodeScanResponse(
+        found=False,
+        product=None,
+        safety_rating=None,
+        suitability_score=None,
+        ingredients=None,
+        warnings=None,
+        source="not_found",
+    )

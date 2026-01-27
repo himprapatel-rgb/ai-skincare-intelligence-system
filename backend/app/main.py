@@ -22,8 +22,12 @@ from app.routers import (  # GDPR & User Management
     admin,
     consent,
     digital_twin,
+    favorites,
+    goals,
+    notifications,
     products,
     profile,
+    shelf,
 )
 from app.services.auth_service import auth_service
 
@@ -333,6 +337,12 @@ app.include_router(products.router)  # Router already includes /api/v1/products 
 app.include_router(admin.router, prefix="/api/v1/admin", tags=["admin"])  # Admin endpoints
 app.include_router(consent.router, prefix="/api/v1", tags=["consent"])  # GDPR Compliance (FR44-FR46)
 app.include_router(profile.router, prefix="/api/v1", tags=["profile"])  # User Profile Management
+
+# Sprint GUI-2: New API endpoints for mock-data pages
+app.include_router(favorites.router, prefix="/api/v1", tags=["favorites"])  # Favorites API
+app.include_router(notifications.router, prefix="/api/v1", tags=["notifications"])  # Notifications API
+app.include_router(shelf.router, prefix="/api/v1", tags=["shelf"])  # Product Shelf API
+app.include_router(goals.router, prefix="/api/v1", tags=["goals"])  # Skin Goals API
 
 @app.get("/", tags=["Root"])
 def read_root():

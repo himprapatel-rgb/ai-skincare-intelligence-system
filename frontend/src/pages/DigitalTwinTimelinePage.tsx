@@ -48,6 +48,7 @@ interface DigitalTwinSnapshot {
     wrinkles: number;
     darkSpots: number;
     hydration: number;
+    oiliness: number;
     redness: number;
   };
   improvements: string[];
@@ -76,12 +77,46 @@ const DigitalTwinTimelinePage: React.FC = () => {
   const navigate = useNavigate();
   const [snapshots, setSnapshots] = useState<DigitalTwinSnapshot[]>([]);
   const [selectedSnapshot, setSelectedSnapshot] = useState<string | null>(null);
+  const [comparisonBefore, setComparisonBefore] = useState<string | null>(null);
+  const [comparisonAfter, setComparisonAfter] = useState<string | null>(null);
+  const [dateRange, setDateRange] = useState<'7d' | '30d' | '90d' | 'all'>('30d');
+  const [compareSplit, setCompareSplit] = useState(50);
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [insights, setInsights] = useState<ApiInsights | null>(null);
 
   const formatMoodLabel = (mood: string) => mood.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
   const formatConcernLabel = (concern: string) => concern.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
+  const formatTrendLabel = (trend?: string) => (trend ? formatMoodLabel(trend) : 'Stable');
+  const formatFullDate = (dateValue: string) => {
+    const parsed = new Date(dateValue);
+    if (Number.isNaN(parsed.getTime())) {
+      return 'Unknown date';
+    }
+    return parsed.toLocaleDateString('en', { month: 'short', day: 'numeric', year: 'numeric' });
+  };
+  const formatShortDate = (timestamp: number) => new Date(timestamp).toLocaleDateString('en', { month: 'short', day: 'numeric' });
+  const fallbackImage = `data:image/svg+xml;utf8,${encodeURIComponent(
+    `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="750" viewBox="0 0 600 750">
+      <defs>
+        <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#f7f9fc"/>
+          <stop offset="100%" stop-color="#eef2f7"/>
+        </linearGradient>
+      </defs>
+      <rect width="600" height="750" rx="32" fill="url(#bg)"/>
+      <circle cx="300" cy="280" r="120" fill="#d9e4f5"/>
+      <rect x="170" y="430" width="260" height="26" rx="13" fill="#c7d3e6"/>
+      <rect x="210" y="470" width="180" height="18" rx="9" fill="#d5deed"/>
+      <text x="50%" y="560" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="20" fill="#6b7c93">Snapshot image unavailable</text>
+    </svg>`
+  )}`;
+  const getSafeImageUrl = (url?: string) => (url && url.trim().length > 0 ? url : fallbackImage);
+  const getScoreTone = (score: number) => {
+    if (score >= 70) return 'score-good';
+    if (score >= 40) return 'score-medium';
+    return 'score-low';
+  };
 
   useEffect(() => {
     const fetchSnapshots = async () => {
@@ -125,6 +160,7 @@ const DigitalTwinTimelinePage: React.FC = () => {
             wrinkles: Math.round((state.aging_signs || 0) * 100),
             darkSpots: Math.round((state.pigmentation_issues || 0) * 100),
             hydration: Math.round((state.hydration_level || 0) * 100),
+            oiliness: Math.round((state.oiliness_level || 0) * 100),
             redness: Math.round((state.barrier_impairment || 0) * 100),
           };
           const previous = index > 0 ? apiSnapshots[index - 1] : null;
@@ -141,7 +177,7 @@ const DigitalTwinTimelinePage: React.FC = () => {
           return {
             id: snapshot.snapshot_id,
             date: snapshot.created_at,
-            imageUrl: snapshot.meta?.image_url || '/placeholder.jpg',
+            imageUrl: getSafeImageUrl(snapshot.meta?.image_url),
             overallScore,
             skinMoodLabel,
             skinMoodScore,
@@ -153,6 +189,8 @@ const DigitalTwinTimelinePage: React.FC = () => {
         setSnapshots(mapped);
         setInsights(mergedInsights);
         setSelectedSnapshot((current) => current ?? latestSnapshot?.snapshot_id ?? null);
+        setComparisonBefore((current) => current ?? mapped[mapped.length - 1]?.id ?? null);
+        setComparisonAfter((current) => current ?? mapped[0]?.id ?? null);
       } catch (error) {
         console.error('Failed to load digital twin timeline:', error);
         setHasError(true);
@@ -168,16 +206,35 @@ const DigitalTwinTimelinePage: React.FC = () => {
 
   const chartData = [...snapshots]
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
-    .map(s => ({
-      date: new Date(s.date).toLocaleDateString('en', { month: 'short', day: 'numeric' }),
+    .map((s, index) => {
+      const timestamp = new Date(s.date).getTime();
+      return ({
+        timestamp: Number.isNaN(timestamp) ? index : timestamp,
+        dateLabel: formatFullDate(s.date),
       score: s.overallScore,
       mood: s.skinMoodScore,
       acne: s.concerns.acne,
       hydration: s.concerns.hydration
-    }));
+      });
+    });
+
+  const filteredChartData = (() => {
+    if (dateRange === 'all') {
+      return chartData;
+    }
+    const days = dateRange === '7d' ? 7 : dateRange === '30d' ? 30 : 90;
+    const cutoff = Date.now() - days * 24 * 60 * 60 * 1000;
+    return chartData.filter((entry) => entry.timestamp >= cutoff);
+  })();
 
   const selectedData = snapshots.find(s => s.id === selectedSnapshot) || snapshots[0] || null;
   const latestSnapshot = snapshots[0] || null;
+  const beforeSnapshot = snapshots.find(s => s.id === comparisonBefore) || snapshots[snapshots.length - 1] || null;
+  const afterSnapshot = snapshots.find(s => s.id === comparisonAfter) || snapshots[0] || null;
+  const chartTooltipLabel = (label: number, payload?: { payload?: { dateLabel?: string } }) => {
+    if (payload?.payload?.dateLabel) return payload.payload.dateLabel;
+    return formatShortDate(label);
+  };
 
   if (isLoading) {
     return (
@@ -243,7 +300,10 @@ const DigitalTwinTimelinePage: React.FC = () => {
               <IconTrendingUp size={32} strokeWidth={2} />
             </div>
             <div className="summary-content">
-              <div className="summary-value">{latestSnapshot?.overallScore || 0}</div>
+              <div className="summary-value">
+                {latestSnapshot?.overallScore || 0}
+                <span className="summary-unit">/100</span>
+              </div>
               <div className="summary-label">Current Score</div>
             </div>
           </div>
@@ -270,7 +330,7 @@ const DigitalTwinTimelinePage: React.FC = () => {
               <IconTarget size={32} strokeWidth={2} />
             </div>
             <div className="summary-content">
-              <div className="summary-value">
+              <div className="summary-value summary-value--concerns">
                 {latestSnapshot?.topConcerns?.length ? latestSnapshot.topConcerns.join(', ') : '—'}
               </div>
               <div className="summary-label">Top Concerns</div>
@@ -280,16 +340,16 @@ const DigitalTwinTimelinePage: React.FC = () => {
 
         {insights && (
           <div className="progress-summary">
-            <div className="summary-card">
+            <div className={`summary-card summary-card--trend ${insights.trend === 'improving' ? 'tone-positive' : insights.trend === 'declining' ? 'tone-negative' : 'tone-neutral'}`}>
               <div className="summary-icon">
                 <IconTrendingUp size={32} strokeWidth={2} />
               </div>
               <div className="summary-content">
-                <div className="summary-value">{insights.trend || 'stable'}</div>
+                <div className="summary-value">{formatTrendLabel(insights.trend)}</div>
                 <div className="summary-label">Trend</div>
               </div>
             </div>
-            <div className="summary-card">
+            <div className="summary-card summary-card--highlight">
               <div className="summary-icon">
                 <IconTarget size={32} strokeWidth={2} />
               </div>
@@ -298,7 +358,7 @@ const DigitalTwinTimelinePage: React.FC = () => {
                 <div className="summary-label">Best Improvement</div>
               </div>
             </div>
-            <div className="summary-card">
+            <div className="summary-card summary-card--concern tone-negative">
               <div className="summary-icon">
                 <IconSparkles size={32} strokeWidth={2} />
               </div>
@@ -314,10 +374,21 @@ const DigitalTwinTimelinePage: React.FC = () => {
         <div className="card timeline-chart-card">
           <div className="card-header">
             <h2>Progress Over Time</h2>
+            <div className="chart-controls">
+              <label>
+                Range
+                <select value={dateRange} onChange={(event) => setDateRange(event.target.value as typeof dateRange)}>
+                  <option value="7d">Last 7 days</option>
+                  <option value="30d">Last 30 days</option>
+                  <option value="90d">Last 90 days</option>
+                  <option value="all">All time</option>
+                </select>
+              </label>
+            </div>
           </div>
           <div className="card-content">
             <ResponsiveContainer width="100%" height={400}>
-              <AreaChart data={chartData}>
+              <AreaChart data={filteredChartData}>
                 <defs>
                   <linearGradient id="colorScore" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.8}/>
@@ -329,9 +400,12 @@ const DigitalTwinTimelinePage: React.FC = () => {
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
-                <YAxis domain={[0, 100]} />
-                <Tooltip />
+                <XAxis dataKey="timestamp" type="number" tickFormatter={formatShortDate} />
+                <YAxis domain={[0, 100]} tickFormatter={(value) => `${value}`} />
+                <Tooltip
+                  formatter={(value, name) => [`${value}`, name]}
+                  labelFormatter={(label, payload) => chartTooltipLabel(label as number, payload?.[0])}
+                />
                 <Legend />
                 <Area 
                   type="monotone" 
@@ -372,13 +446,23 @@ const DigitalTwinTimelinePage: React.FC = () => {
                   onClick={() => setSelectedSnapshot(snapshot.id)}
                 >
                   <div className="snapshot-image">
-                    <img src={snapshot.imageUrl} alt={`Snapshot ${index + 1}`} />
+                    <img
+                      src={snapshot.imageUrl}
+                      alt={`Snapshot ${index + 1}`}
+                      loading="lazy"
+                      onError={(event) => {
+                        const target = event.currentTarget;
+                        if (target.src !== fallbackImage) {
+                          target.src = fallbackImage;
+                        }
+                      }}
+                    />
                     <div className="snapshot-date">
-                      {new Date(snapshot.date).toLocaleDateString('en', { month: 'short', day: 'numeric' })}
+                      {formatFullDate(snapshot.date)}
                     </div>
                   </div>
                   <div className="snapshot-info">
-                    <div className="snapshot-score">Score: {snapshot.overallScore}</div>
+                    <div className={`snapshot-score ${getScoreTone(snapshot.overallScore)}`}>Score: {snapshot.overallScore}</div>
                     <div className="snapshot-mood">Mood: {snapshot.skinMoodLabel}</div>
                   </div>
                 </div>
@@ -396,7 +480,17 @@ const DigitalTwinTimelinePage: React.FC = () => {
             <div className="card-content">
               <div className="snapshot-details-grid">
                 <div className="detail-image">
-                  <img src={selectedData.imageUrl} alt="Selected snapshot" />
+                  <img
+                    src={selectedData.imageUrl}
+                    alt="Selected snapshot"
+                    loading="lazy"
+                    onError={(event) => {
+                      const target = event.currentTarget;
+                      if (target.src !== fallbackImage) {
+                        target.src = fallbackImage;
+                      }
+                    }}
+                  />
                 </div>
                 <div className="detail-metrics">
                   <h3>Metrics</h3>
@@ -425,6 +519,10 @@ const DigitalTwinTimelinePage: React.FC = () => {
                       <span className="metric-label">Hydration</span>
                       <span className="metric-value">{selectedData.concerns.hydration}%</span>
                     </div>
+                      <div className="metric-item">
+                        <span className="metric-label">Oiliness</span>
+                        <span className="metric-value">{selectedData.concerns.oiliness}%</span>
+                      </div>
                     <div className="metric-item">
                       <span className="metric-label">Redness</span>
                       <span className="metric-value">{selectedData.concerns.redness}%</span>
@@ -455,28 +553,93 @@ const DigitalTwinTimelinePage: React.FC = () => {
           <div className="card comparison-card">
             <div className="card-header">
               <h2>Before & After</h2>
+              <div className="comparison-controls">
+                <label>
+                  Before
+                  <select value={beforeSnapshot?.id || ''} onChange={(event) => setComparisonBefore(event.target.value)}>
+                    {snapshots.map((snapshot) => (
+                      <option key={snapshot.id} value={snapshot.id}>
+                        {formatFullDate(snapshot.date)}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label>
+                  After
+                  <select value={afterSnapshot?.id || ''} onChange={(event) => setComparisonAfter(event.target.value)}>
+                    {snapshots.map((snapshot) => (
+                      <option key={snapshot.id} value={snapshot.id}>
+                        {formatFullDate(snapshot.date)}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              </div>
             </div>
             <div className="card-content">
-              <div className="before-after-grid">
-                <div className="before-after-item">
-                  <div className="ba-label">Before</div>
-                  <img src={snapshots[snapshots.length - 1].imageUrl} alt="Before" />
-                  <div className="ba-date">{new Date(snapshots[snapshots.length - 1].date).toLocaleDateString()}</div>
-                  <div className="ba-score">Score: {snapshots[snapshots.length - 1].overallScore}</div>
+              {beforeSnapshot && afterSnapshot && (
+                <div className="before-after-slider">
+                  <div className="before-after-stack" aria-label="Before and after comparison">
+                    <img
+                      className="before-image"
+                      src={beforeSnapshot.imageUrl}
+                      alt="Before"
+                      loading="lazy"
+                      onError={(event) => {
+                        const target = event.currentTarget;
+                        if (target.src !== fallbackImage) {
+                          target.src = fallbackImage;
+                        }
+                      }}
+                    />
+                    <div className="after-layer" style={{ width: `${compareSplit}%` }}>
+                      <img
+                        className="after-image"
+                        src={afterSnapshot.imageUrl}
+                        alt="After"
+                        loading="lazy"
+                        onError={(event) => {
+                          const target = event.currentTarget;
+                          if (target.src !== fallbackImage) {
+                            target.src = fallbackImage;
+                          }
+                        }}
+                      />
+                    </div>
+                    <div className="slider-handle" style={{ left: `${compareSplit}%` }} />
+                  </div>
+                  <input
+                    className="compare-range"
+                    type="range"
+                    min={0}
+                    max={100}
+                    value={compareSplit}
+                    onChange={(event) => setCompareSplit(Number(event.target.value))}
+                    aria-label="Compare before and after"
+                  />
+                  <div className="compare-meta">
+                    <div className="compare-item">
+                      <span className="compare-label">Before</span>
+                      <span className="compare-date">{formatFullDate(beforeSnapshot.date)}</span>
+                      <span className="compare-score">Score: {beforeSnapshot.overallScore}</span>
+                    </div>
+                    <div className="compare-item">
+                      <span className="compare-label">After</span>
+                      <span className="compare-date">{formatFullDate(afterSnapshot.date)}</span>
+                      <span className="compare-score">Score: {afterSnapshot.overallScore}</span>
+                    </div>
+                  </div>
                 </div>
-                <div className="before-after-item">
-                  <div className="ba-label">After</div>
-                  <img src={snapshots[0].imageUrl} alt="After" />
-                  <div className="ba-date">{new Date(snapshots[0].date).toLocaleDateString()}</div>
-                  <div className="ba-score">Score: {snapshots[0].overallScore}</div>
+              )}
+              {beforeSnapshot && afterSnapshot && (
+                <div className="improvement-summary">
+                  <div className="improvement-value">
+                    {afterSnapshot.overallScore - beforeSnapshot.overallScore >= 0 ? '+' : ''}
+                    {afterSnapshot.overallScore - beforeSnapshot.overallScore} points
+                  </div>
+                  <div className="improvement-label">Overall Improvement</div>
                 </div>
-              </div>
-              <div className="improvement-summary">
-                <div className="improvement-value">
-                  +{snapshots[0].overallScore - snapshots[snapshots.length - 1].overallScore} points
-                </div>
-                <div className="improvement-label">Overall Improvement</div>
-              </div>
+              )}
             </div>
           </div>
         )}

@@ -30,16 +30,16 @@ const HomePage: React.FC = () => {
               Upload a selfie to get instant insights on acne, spots, redness, and skin texture — plus personalized skincare recommendations.
             </p>
             <div className="hero-cta">
-              <button className="btn-primary" onClick={() => navigate('/scan')}>
+              <button className="btn-primary btn-primary-hero" onClick={() => navigate('/scan')}>
                 <span className="btn-icon">
                   <IconScan size={20} strokeWidth={2} />
                 </span>
                 Start Free Skin Scan
               </button>
-              <button className="btn-secondary" onClick={() => navigate('/analysis/demo')}>
+              <button className="btn-secondary btn-ghost" onClick={() => navigate('/analysis/demo')}>
                 See Sample Report
               </button>
-              <button className="btn-secondary" onClick={() => navigate('/digital-twin')}>
+              <button className="btn-secondary btn-ghost" onClick={() => navigate('/digital-twin')}>
                 <span className="btn-icon">
                   <IconTrendingUp size={20} strokeWidth={2} />
                 </span>
@@ -116,28 +116,28 @@ const HomePage: React.FC = () => {
         <div className="results-grid">
           <div className="result-card">
             <div className="result-icon">
-              <IconBarChart size={32} strokeWidth={2} />
+              <IconBarChart size={48} strokeWidth={2} />
             </div>
             <h3>Skin Scores</h3>
             <p>Overall health, texture, hydration, and clarity scores from 0-100</p>
           </div>
           <div className="result-card">
             <div className="result-icon">
-              <IconSearch size={32} strokeWidth={2} />
+              <IconSearch size={48} strokeWidth={2} />
             </div>
             <h3>Concern Detection</h3>
             <p>Identifies visible signs of acne, redness, pigmentation, and fine lines</p>
           </div>
           <div className="result-card">
             <div className="result-icon">
-              <IconSparkles size={32} strokeWidth={2} />
+              <IconSparkles size={48} strokeWidth={2} />
             </div>
             <h3>Routine Suggestions</h3>
             <p>Personalized AM/PM skincare routine recommendations</p>
           </div>
           <div className="result-card">
             <div className="result-icon">
-              <IconTrendingUp size={32} strokeWidth={2} />
+              <IconTrendingUp size={48} strokeWidth={2} />
             </div>
             <h3>Progress Tracking</h3>
                         <p>Track improvements over time with scan history comparisons <span className="account-note">(Optional – requires account)</span></p>
@@ -226,38 +226,38 @@ const HomePage: React.FC = () => {
             <h2>FAQ</h2>
           </div>
           <div className="faq-container">
-            <div className="faq-item">
-              <h4>Is this a medical diagnosis?</h4>
+            <details className="faq-item">
+              <summary>Is this a medical diagnosis?</summary>
               <p>No. This tool provides informational insights only. It is not intended to diagnose, treat, or prevent any condition.</p>
-            </div>
-            <div className="faq-item">
-              <h4>Do you store my photos?</h4>
+            </details>
+            <details className="faq-item">
+              <summary>Do you store my photos?</summary>
               <p>Photos are processed securely and can be deleted anytime from your account or automatically after analysis.</p>
-            </div>
-            <div className="faq-item">
-              <h4>Is this free to use?</h4>
+            </details>
+            <details className="faq-item">
+              <summary>Is this free to use?</summary>
               <p>Yes! Basic skin analysis scans are completely free with no signup required. Advanced features like progress tracking require a free account.</p>
-            </div>
-          <div className="faq-item">
-            <h4>What skin types are supported?</h4>
-            <p>Our AI works with all skin types and tones. However, accuracy improves with clear, well-lit photos and front-facing angles.</p>
-          </div>
-          <div className="faq-item">
-            <h4>How long does analysis take?</h4>
-            <p>Most scans complete in 20-40 seconds. Complex images may take up to 60 seconds depending on server load.</p>
-          </div>
-          <div className="faq-item">
-            <h4>Can I use this for medical purposes?</h4>
-            <p>No. This is an informational tool only and should never replace professional medical advice from a qualified dermatologist or healthcare provider.</p>
-          </div>
-            <div className="faq-item">
-              <h4>Do you sell my data?</h4>
+            </details>
+            <details className="faq-item">
+              <summary>What skin types are supported?</summary>
+              <p>Our AI works with all skin types and tones. However, accuracy improves with clear, well-lit photos and front-facing angles.</p>
+            </details>
+            <details className="faq-item">
+              <summary>How long does analysis take?</summary>
+              <p>Most scans complete in 20-40 seconds. Complex images may take up to 60 seconds depending on server load.</p>
+            </details>
+            <details className="faq-item">
+              <summary>Can I use this for medical purposes?</summary>
+              <p>No. This is an informational tool only and should never replace professional medical advice from a qualified dermatologist or healthcare provider.</p>
+            </details>
+            <details className="faq-item">
+              <summary>Do you sell my data?</summary>
               <p>Never. We do not sell, share, or monetize your personal data or photos. Your privacy is our priority.</p>
-            </div>
-            <div className="faq-item">
-              <h4>What affects accuracy?</h4>
+            </details>
+            <details className="faq-item">
+              <summary>What affects accuracy?</summary>
               <p>Lighting, camera quality, image clarity, and whether makeup is present can all affect the analysis results.</p>
-            </div>
+            </details>
           </div>
         </section>
 

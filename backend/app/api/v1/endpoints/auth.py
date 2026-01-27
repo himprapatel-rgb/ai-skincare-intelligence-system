@@ -2,7 +2,7 @@
 Authentication API endpoints.
 """
 import uuid
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
 from sqlalchemy.exc import IntegrityError
@@ -57,7 +57,7 @@ def register(
 
     verification_token = uuid.uuid4().hex
     user.email_verification_token = verification_token
-    user.email_verification_expires_at = datetime.utcnow() + timedelta(hours=24)
+    user.email_verification_expires_at = datetime.now(timezone.utc) + timedelta(hours=24)
     db.add(user)
     db.commit()
     db.refresh(user)
@@ -154,7 +154,7 @@ def request_email_verification(
 
     verification_token = uuid.uuid4().hex
     user.email_verification_token = verification_token
-    user.email_verification_expires_at = datetime.utcnow() + timedelta(hours=24)
+    user.email_verification_expires_at = datetime.now(timezone.utc) + timedelta(hours=24)
     db.add(user)
     db.commit()
     db.refresh(user)
@@ -198,7 +198,7 @@ def verify_email(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Invalid or expired verification token",
         )
-    if user.email_verification_expires_at and user.email_verification_expires_at < datetime.utcnow():
+    if user.email_verification_expires_at and user.email_verification_expires_at < datetime.now(timezone.utc):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Verification token expired",
@@ -223,3 +223,136 @@ def verify_email(
 )
 def get_current_user_profile(current_user=Depends(get_current_user)):
     return current_user
+
+
+# ===== Password Reset Endpoints (US-103) =====
+
+class PasswordResetRequest(BaseModel):
+    """Schema for password reset request."""
+    email: str
+
+
+class PasswordResetConfirm(BaseModel):
+    """Schema for password reset confirmation."""
+    token: str
+    new_password: str
+
+
+class PasswordResetResponse(BaseModel):
+    """Schema for password reset response."""
+    message: str
+    success: bool = True
+
+
+from pydantic import BaseModel
+
+
+@router.post(
+    "/password-reset/request",
+    response_model=PasswordResetResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Request password reset",
+    description="Send a password reset link to the user's email",
+)
+def request_password_reset(
+    payload: PasswordResetRequest,
+    background_tasks: BackgroundTasks,
+    db: Session = Depends(get_db),
+):
+    """
+    Request password reset.
+    
+    SRS: US-103 - Password Reset Flow
+    Sprint: GUI-2
+    """
+    user = auth_service.get_user_by_email(db, payload.email)
+    
+    # Always return success to prevent email enumeration
+    if not user:
+        return PasswordResetResponse(
+            message="If an account exists with this email, a reset link will be sent.",
+            success=True,
+        )
+    
+    # Generate reset token
+    reset_token = uuid.uuid4().hex
+    user.email_verification_token = f"reset_{reset_token}"
+    user.email_verification_expires_at = datetime.now(timezone.utc) + timedelta(hours=24)
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+    
+    # Send reset email (async)
+    try:
+        if settings.SMTP_HOST and settings.SMTP_FROM_EMAIL:
+            from app.services.email_service import send_password_reset_email
+            background_tasks.add_task(send_password_reset_email, user.email, reset_token)
+    except Exception:
+        pass  # Fail silently for security
+    
+    response = PasswordResetResponse(
+        message="If an account exists with this email, a reset link will be sent.",
+        success=True,
+    )
+    
+    # Include token in non-production for testing
+    if settings.ENV != "production":
+        response.message = f"Reset token (dev only): {reset_token}"
+    
+    return response
+
+
+@router.post(
+    "/password-reset/confirm",
+    response_model=PasswordResetResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Confirm password reset",
+    description="Reset password using the token from email",
+)
+def confirm_password_reset(
+    payload: PasswordResetConfirm,
+    db: Session = Depends(get_db),
+):
+    """
+    Confirm password reset with token.
+    
+    SRS: US-103 - Password Reset Flow
+    Sprint: GUI-2
+    """
+    # Find user with reset token
+    user = (
+        db.query(User)
+        .filter(User.email_verification_token == f"reset_{payload.token}")
+        .first()
+    )
+    
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid or expired reset token",
+        )
+    
+    if user.email_verification_expires_at and user.email_verification_expires_at < datetime.now(timezone.utc):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Reset token has expired. Please request a new one.",
+        )
+    
+    # Validate password
+    if len(payload.new_password) < 8:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Password must be at least 8 characters",
+        )
+    
+    # Update password
+    user.hashed_password = auth_service.hash_password(payload.new_password)
+    user.email_verification_token = None
+    user.email_verification_expires_at = None
+    db.add(user)
+    db.commit()
+    
+    return PasswordResetResponse(
+        message="Password reset successfully. You can now login with your new password.",
+        success=True,
+    )

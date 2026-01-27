@@ -11,7 +11,7 @@ import './GoogleCallbackPage.css';
 const GoogleCallbackPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { loginWithToken } = useAuth();
   const [error, setError] = useState<string | null>(null);
   const [processing, setProcessing] = useState(true);
 
@@ -37,12 +37,8 @@ const GoogleCallbackPage: React.FC = () => {
         const response = await api.post('/auth/google', { code });
         
         if (response.data.token) {
-          // Store token and user data
-          localStorage.setItem('token', response.data.token);
-          localStorage.setItem('user', JSON.stringify(response.data.user));
-          
-          // Update auth context
-          login(response.data.token, response.data.user);
+          // Update auth context (this also stores token in localStorage)
+          loginWithToken(response.data.token, response.data.user);
           
           // Redirect to dashboard
           navigate('/dashboard', { replace: true });
@@ -58,7 +54,7 @@ const GoogleCallbackPage: React.FC = () => {
     };
 
     handleCallback();
-  }, [searchParams, navigate, login]);
+  }, [searchParams, navigate, loginWithToken]);
 
   if (processing && !error) {
     return (

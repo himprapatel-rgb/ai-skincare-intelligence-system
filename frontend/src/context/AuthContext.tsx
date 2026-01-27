@@ -32,6 +32,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
+  loginWithToken: (token: string, user: User) => void;
   register: (name: string, email: string, password: string) => Promise<AuthResponse>;
   logout: () => void;
   updateUser: (userData: Partial<User>) => void;
@@ -86,6 +87,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   };
 
+  const loginWithToken = (newToken: string, userData: User): void => {
+    localStorage.setItem('auth_token', newToken);
+    axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
+    setToken(newToken);
+    setUser(userData);
+  };
+
   const register = async (name: string, email: string, password: string): Promise<AuthResponse> => {
     const response = await axios.post(`${API_URL}/auth/register`, {
       full_name: name,
@@ -126,6 +134,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         isAuthenticated: !!token && !!user,
         isLoading,
         login,
+        loginWithToken,
         register,
         logout,
         updateUser,

@@ -36,6 +36,12 @@ This document captures the comprehensive analysis of the current AI Skincare Int
 - Admin access requires allowlist + is_admin flag.
 - Admin UI lint fixes deployed; frontend lint/unit/E2E and backend tests re-run.
 
+### Addendum (2026-01-27)
+- **Email verification**: Confirmed working in production. SMTP password (Gmail App Password) updated in Railway; no more "Failed to send verification email" in logs. Register → verify-email/request → verify-email → login flow operational.
+- **FavoritesPage build fix**: API import changed from default to named (`import { api } from '../services/api'`) so frontend build succeeds.
+- **Digital Twin empty state**: Reverted to original simple design (dt-card, "Start a Scan" button); removed elaborate empty-state UI and related CSS.
+- **Docs per protocol**: Current-State, Implementation-Status, Required-Secrets, AI-AGILE-ITERATION-LOG, and docs README updated to reflect current status and "What We Need Now".
+
 ### Addendum (2026-01-26 Evening)
 - **External ML Integration**: Added external_models table and ExternalModel model.
 - **User Products**: Added user_products table and UserProduct model for scanned products.

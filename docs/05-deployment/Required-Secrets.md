@@ -9,15 +9,17 @@ Configure these as GitHub repository secrets (Settings → Secrets) or set them 
 Required secrets
 - `DATABASE_URL` — PostgreSQL connection string used by SQLAlchemy (e.g. `postgresql://user:pass@host:5432/dbname`).
 - `SECRET_KEY` — Application secret used for JWT signing and other cryptographic operations.
+- `ENCRYPTION_KEY` — AES-256 key material for encrypting sensitive profile data (e.g. `aes256-secure-key-for-skincare-app-2026`). Required for profile/onboarding; if missing, profile creation fails with "Encryption failed".
+- `ENCRYPTION_SALT` — Salt for key derivation (e.g. `skincare-salt-2026-secure`). Must be set with `ENCRYPTION_KEY` for profile encryption.
 - `GPTGPT_API_KEY` — API key for the external LLM provider used by `GPTService`.
 - `SUMMARY_TOKEN` — Shared secret used to protect the internal `/api/v1/internal/summary` endpoint.
 - `OPENAI_API_KEY` — API key for OpenAI vision analysis (required to enable live analysis).
 - `SKINIVE_API_TOKEN` — Deprecated. Previously used for Skinive skin analysis.
-- `SMTP_HOST` — SMTP server host for email verification.
+- `SMTP_HOST` — SMTP server host for email verification (e.g. `smtp.gmail.com`).
 - `SMTP_PORT` — SMTP server port (default `587`).
-- `SMTP_USERNAME` — SMTP username (if required by provider).
-- `SMTP_PASSWORD` — SMTP password (if required by provider).
-- `SMTP_FROM_EMAIL` — Sender address for verification emails.
+- `SMTP_USERNAME` — SMTP username; for Gmail must match the sending account (same as `SMTP_FROM_EMAIL`).
+- `SMTP_PASSWORD` — **Gmail:** use an [App Password](https://support.google.com/accounts/answer/185833) (16 chars), not the account password. 2-Step Verification must be on. If wrong, logs show "Username and Password not accepted".
+- `SMTP_FROM_EMAIL` — Sender address for verification emails; must match `SMTP_USERNAME` for Gmail.
 - `FRONTEND_URL` — Frontend base URL for verification links.
 - `ADMIN_EMAIL_ALLOWLIST` — Comma-separated admin emails (must also have is_admin flag).
 

@@ -649,6 +649,27 @@ The AI Skincare Intelligence System is production-ready with a solid foundation:
 
 ---
 
+## 16. WHAT WE NEED NOW (Jan 27, 2026)
+
+### Operational (No Action)
+- ✅ **Email verification** – Working. SMTP password updated in Railway; verification emails send and verify-email → login succeeds.
+- ✅ **Onboarding / profile creation** – ENCRYPTION_KEY and ENCRYPTION_SALT set on Railway; profile baseline creation succeeds.
+- ✅ **Frontend build** – FavoritesPage uses named API import; build passes.
+- ✅ **Digital Twin empty state** – Simple design retained (dt-card + "Start a Scan" button).
+
+### Next Priorities
+1. **Product reviews system** – Backend + frontend for product reviews (ProductDetailsPage).
+2. **ConsentPage frontend** – Wire ConsentPage to existing /api/v1/consent endpoints.
+3. **E2E test stabilization** – Remove continue-on-error where feasible; add/update E2E credentials if needed.
+4. **Password reset** – Backend templates and flow already stubbed; verify end-to-end and document.
+
+### Documentation
+- All ops docs updated per protocol (Current-State, Implementation-Status, Required-Secrets, AI-AGILE-ITERATION-LOG, docs README).
+- **Full list of features left:** `docs/06-operations/Features-Left-to-Implement.md`.
+- For secrets and env vars: see `docs/05-deployment/Required-Secrets.md`.
+
+---
+
 **Prepared by:** Development Team  
 **Status:** ✅ PRODUCTION OPERATIONAL  
 **Implementation Level:** ~90% Complete  
@@ -656,6 +677,6 @@ The AI Skincare Intelligence System is production-ready with a solid foundation:
 
 ---
 
-**Last Updated:** January 27, 2026, 12:35 AM GMT  
+**Last Updated:** January 27, 2026  
 **Previous Report:** Current-State.md (Dec 23, 2025)  
 **Next Review:** February 1, 2026

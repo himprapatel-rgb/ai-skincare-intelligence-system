@@ -24,6 +24,7 @@
 
 ### Operations (Living Docs)
 - **[Implementation Status (Jan 26, 2026)](./06-operations/Implementation-Status-2026-01-26.md)** - Latest comprehensive status
+- **[Features Left to Implement](./06-operations/Features-Left-to-Implement.md)** - Consolidated list of remaining features (Jan 27, 2026)
 - **[Current State](./06-operations/Current-State.md)** - Living document with addendums
 - **[Pages Status](./06-operations/Pages-Created-Status.md)** - All 31 pages inventory
 - **[Baseline Healthcheck](./06-operations/Baseline-Healthcheck.md)**
@@ -60,6 +61,7 @@
 | I want to... | Go to |
 |--------------|-------|
 | See what's implemented NOW | [Implementation Status (Jan 26)](./06-operations/Implementation-Status-2026-01-26.md) |
+| See what's left to implement | [Features Left to Implement](./06-operations/Features-Left-to-Implement.md) |
 | Check which features are complete | [Feature Traceability](./01-requirements/Feature-Implementation-Traceability-2026-01-26.md) |
 | Understand system requirements | [SRS V5.3](./01-requirements/SRS-V5.3-External-Pretrained-ML.md) |
 | See all 31 frontend pages | [Pages Status](./06-operations/Pages-Created-Status.md) |
@@ -86,5 +88,5 @@
 
 ---
 
-**Last Updated:** January 26, 2026  
+**Last Updated:** January 27, 2026  
 **Maintained by:** AI Skincare Intelligence System Team

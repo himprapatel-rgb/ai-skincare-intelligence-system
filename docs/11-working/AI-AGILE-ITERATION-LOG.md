@@ -6,6 +6,39 @@ Use that workflow doc for checklists and templates to avoid duplication here.
 
 ---
 
+## Iteration 2026-01-27 (Email Verification + Docs Update)
+
+### Goal
+Confirm email verification is working and update all docs per protocol.
+
+### Scope (Completed)
+- Email verification confirmed working after SMTP password (Gmail App Password) updated in Railway.
+- FavoritesPage import fix: changed `import api from '../services/api'` to `import { api } from '../services/api'` (named export).
+- Digital Twin empty-state reverted to original simple design (dt-card + "Start a Scan" button).
+- Current-State, Implementation-Status, Required-Secrets, and docs README updated per protocol.
+
+### Key Changes (Code)
+- FavoritesPage API import: `frontend/src/pages/FavoritesPage.tsx`
+- Digital Twin empty state reverted: `frontend/src/pages/DigitalTwinTimelinePage.tsx`
+- Digital Twin empty-state CSS removed: `frontend/src/components/digital-twin/styles/digital-twin.css`
+
+### Key Changes (Docs)
+- Iteration log: `docs/11-working/AI-AGILE-ITERATION-LOG.md`
+- Current state addendum: `docs/06-operations/Current-State.md`
+- Implementation status + What We Need Now: `docs/06-operations/Implementation-Status-2026-01-26.md`
+- Required secrets (SMTP/encryption): `docs/05-deployment/Required-Secrets.md`
+- Docs index: `docs/README.md`
+
+### Verification / Tests
+- Backend logs: `POST /api/v1/auth/verify-email/request` returns 200 OK; no "Failed to send verification email" in logs.
+- Register → verify-email/request → verify-email → login flow confirmed working in production.
+- Frontend build: FavoritesPage import fix unblocks `npm run build`.
+
+### Risks / Follow-ups
+- None. Email verification, onboarding (ENCRYPTION_KEY/ENCRYPTION_SALT), and frontend build are operational.
+
+---
+
 ## Iteration 2026-01-26 (Global GUI Polish)
 
 ### Goal

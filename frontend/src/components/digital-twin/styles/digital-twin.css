@@ -202,8 +202,9 @@
 
 .dt-snapshot-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(140px, 180px));
   gap: 16px;
+  justify-content: start;
 }
 
 .dt-snapshot-card {
@@ -215,6 +216,7 @@
   cursor: pointer;
   transition: 0.2s ease;
   padding: 0;
+  max-width: 180px;
 }
 
 .dt-snapshot-card.is-selected {
@@ -225,7 +227,7 @@
 .dt-snapshot-image {
   position: relative;
   width: 100%;
-  aspect-ratio: 1;
+  aspect-ratio: 3 / 4; /* Portrait aspect for face photos */
   overflow: hidden;
 }
 
@@ -233,6 +235,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center 20%; /* Focus on upper portion for face */
 }
 
 .dt-snapshot-date {
@@ -368,6 +371,208 @@
   color: var(--primary);
 }
 
+/* Help Button (subtle icon) */
+.dt-hero-title-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.dt-help-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: rgba(13, 148, 136, 0.1);
+  color: var(--primary);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.dt-help-button:hover {
+  background: var(--primary);
+  color: white;
+}
+
+.dt-hero-tooltip {
+  margin-top: 16px;
+  animation: fadeIn 0.2s ease;
+}
+
+.dt-hero-tooltip-content {
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.dt-hero-tooltip-content strong {
+  display: block;
+  color: var(--text-dark);
+  margin-bottom: 12px;
+}
+
+.dt-hero-tooltip-content ul {
+  margin: 0 0 12px;
+  padding-left: 20px;
+  color: var(--text-gray);
+}
+
+.dt-hero-tooltip-content li {
+  margin-bottom: 6px;
+}
+
+.dt-tooltip-close {
+  border: none;
+  background: var(--primary);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Chart hint for single data point */
+.dt-chart-hint {
+  text-align: center;
+  padding: 8px 16px;
+  background: rgba(13, 148, 136, 0.08);
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.dt-chart-hint span {
+  color: var(--primary);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Delete button */
+.dt-delete-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--danger-light, #fecaca);
+  background: rgba(239, 68, 68, 0.05);
+  color: var(--danger, #ef4444);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dt-delete-button:hover {
+  background: var(--danger, #ef4444);
+  color: white;
+  border-color: var(--danger, #ef4444);
+}
+
+/* Metrics with progress bars */
+.dt-metrics-summary {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.dt-metric-highlight {
+  text-align: center;
+}
+
+.dt-metric-highlight-value {
+  display: block;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1.2;
+}
+
+.dt-metric-highlight-label {
+  font-size: 0.75rem;
+  color: var(--text-gray);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.dt-metric-bars {
+  display: grid;
+  gap: 14px;
+}
+
+.dt-metric-bar-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.dt-metric-bar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dt-metric-bar-label {
+  font-size: 0.875rem;
+  color: var(--text-dark);
+  font-weight: 500;
+}
+
+.dt-metric-bar-value {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.dt-metric-bar-value.metric-good {
+  color: #10b981;
+}
+
+.dt-metric-bar-value.metric-moderate {
+  color: #f59e0b;
+}
+
+.dt-metric-bar-value.metric-concern {
+  color: #ef4444;
+}
+
+.dt-metric-bar-track {
+  height: 8px;
+  background: var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.dt-metric-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+.dt-metric-bar-fill.metric-good {
+  background: linear-gradient(90deg, #10b981, #34d399);
+}
+
+.dt-metric-bar-fill.metric-moderate {
+  background: linear-gradient(90deg, #f59e0b, #fbbf24);
+}
+
+.dt-metric-bar-fill.metric-concern {
+  background: linear-gradient(90deg, #ef4444, #f87171);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 @media (max-width: 768px) {
   .dt-hero-header {
     flex-direction: column;
@@ -376,5 +581,19 @@
 
   .dt-hero-stats {
     justify-content: space-between;
+  }
+  
+  .dt-metrics-summary {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  
+  .dt-metric-highlight {
+    text-align: left;
+  }
+  
+  .dt-delete-button span {
+    display: none;
   }
 }

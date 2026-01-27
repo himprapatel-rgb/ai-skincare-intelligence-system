@@ -9,6 +9,8 @@ type ProgressChartProps = {
 };
 
 const ProgressChart: React.FC<ProgressChartProps> = ({ chartData, dateRange, onRangeChange, tooltipLabel }) => {
+  const hasMultiplePoints = chartData.length > 1;
+  
   return (
     <section className="dt-card">
       <div className="dt-card-header">
@@ -24,6 +26,11 @@ const ProgressChart: React.FC<ProgressChartProps> = ({ chartData, dateRange, onR
         </label>
       </div>
       <div className="dt-card-body">
+        {!hasMultiplePoints && (
+          <div className="dt-chart-hint">
+            <span>Add more scans to see trends over time</span>
+          </div>
+        )}
         <ResponsiveContainer width="100%" height={380}>
           <AreaChart data={chartData}>
             <defs>

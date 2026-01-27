@@ -363,7 +363,19 @@ const DigitalTwinTimelinePage: React.FC = () => {
           formatDate={formatFullDate}
         />
         {selectedData && (
-          <SnapshotDetails snapshot={selectedData} formatDate={formatFullDate} />
+          <SnapshotDetails 
+            snapshot={selectedData} 
+            formatDate={formatFullDate}
+            onDelete={snapshots.length > 1 ? (id) => {
+              // TODO: Add API call to delete snapshot
+              console.log('Delete snapshot:', id);
+              // For now, just show confirmation
+              if (window.confirm('Are you sure you want to delete this snapshot?')) {
+                // Would call API here: await api.delete(`/digital-twin/snapshot/${id}`)
+                alert('Delete functionality will be available in a future update.');
+              }
+            } : undefined}
+          />
         )}
         {snapshots.length >= 2 && (
           <BeforeAfterCircle

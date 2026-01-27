@@ -43,6 +43,7 @@ export { Target as IconTarget } from 'lucide-react';
 export { CheckCircle as IconCheckCircle } from 'lucide-react';
 export { AlertCircle as IconAlertCircle } from 'lucide-react';
 export { Info as IconInfo } from 'lucide-react';
+export { HelpCircle as IconHelpCircle } from 'lucide-react';
 export { Brain as IconBrain } from 'lucide-react';
 export { FileText as IconFileText } from 'lucide-react';
 export { BookOpen as IconBookOpen } from 'lucide-react';

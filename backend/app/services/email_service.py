@@ -24,6 +24,7 @@ def _ensure_smtp_configured() -> None:
 
 
 def send_verification_email(email: str, token: str) -> None:
+    logger.info(f"Sending verification email to {email} with token {token[:8]}...")
     _ensure_smtp_configured()
     link = _build_verification_link(email, token)
 
@@ -59,9 +60,10 @@ def send_verification_email(email: str, token: str) -> None:
                 logger.warning("SMTP credentials missing; skipping email send.")
                 return
             server.send_message(message)
+            logger.info(f"Verification email sent successfully to {email}")
     except Exception as exc:
         # Bypass email failures to avoid blocking development flows.
-        logger.error("Failed to send verification email: %s", exc)
+        logger.error("Failed to send verification email to %s: %s", email, exc)
         return
 
 

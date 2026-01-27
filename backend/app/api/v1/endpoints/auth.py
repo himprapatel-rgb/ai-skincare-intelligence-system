@@ -43,8 +43,15 @@ def register(
     db: Session = Depends(get_db),
 ):
     """Register a new user."""
+    import logging
+    logger = logging.getLogger(__name__)
+    
     existing_user = auth_service.get_user_by_email(db, user_data.email)
     if existing_user:
+        # If user exists but has a recent verification token, they may have double-submitted
+        if existing_user.email_verification_token and existing_user.email_verification_expires_at:
+            if existing_user.email_verification_expires_at > datetime.now(timezone.utc):
+                logger.warning(f"Duplicate registration attempt for {user_data.email} - user exists with valid token")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="User already exists",
@@ -53,6 +60,8 @@ def register(
     try:
         user = auth_service.create_user(db, user_data)
     except IntegrityError:
+        db.rollback()
+        logger.warning(f"IntegrityError during registration for {user_data.email}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="User already exists",
@@ -64,6 +73,8 @@ def register(
     db.add(user)
     db.commit()
     db.refresh(user)
+    
+    logger.info(f"User registered: {user.email} with token expiry {user.email_verification_expires_at}")
 
     token = create_access_token(
         data={"sub": user.email},

@@ -478,12 +478,6 @@ async def google_auth(
     return AuthResponse(
         token=token,
         token_type="bearer",
-        user=UserResponse(
-            id=user.public_id,
-            email=user.email,
-            full_name=user.full_name,
-            is_verified=user.is_verified,
-            is_admin=user.is_admin,
-        ),
+        user=UserResponse.model_validate(user),
         verification_required=False,
     )

@@ -36,7 +36,7 @@ from app.models.engagement import (
 from app.models.favorites import UserFavorite
 from app.models.goals import SkinGoal
 from app.models.notifications import Notification
-from app.models.shelf import ShelfItem
+from app.models.shelf import ShelfProduct
 from app.models.progress_photo import ProgressPhoto
 from app.models.saved_routine import SavedRoutine
 from app.routers import (  # GDPR & User Management

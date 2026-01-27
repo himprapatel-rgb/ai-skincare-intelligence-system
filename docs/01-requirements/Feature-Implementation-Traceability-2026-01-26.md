@@ -1,7 +1,7 @@
 # Feature Implementation Traceability Matrix
 **Generated:** January 26, 2026  
 **Purpose:** Map SRS requirements to actual code implementation  
-**Status:** Production Verification Complete
+**Status:** Production Verification Pending (post-deploy checks)
 
 ---
 
@@ -59,6 +59,7 @@ This traceability matrix connects:
 | Face validation | ✅ Complete | Face landmark detection, crop, quality checks | `frontend/src/utils/faceValidation.ts` |
 | Scan session creation | ✅ Complete | POST /scan/init endpoint | `backend/app/api/v1/endpoints/scan.py::init_scan()` |
 | Image upload | ✅ Complete | POST /scan/{id}/upload with file handling | `backend/app/api/v1/endpoints/scan.py::upload_scan_image()` |
+| Scan image retrieval | ✅ Complete | GET /scan/{id}/image endpoint | `backend/app/api/v1/endpoints/scan.py::get_scan_image()` |
 | ML inference | ✅ Complete | Async ML processing (mock analysis for now) | `backend/app/routers/scan.py::get_scan_result()` |
 | Analysis results | ✅ Complete | GET /scan/{id}/results with scores | `backend/app/api/v1/endpoints/scan.py::get_scan_results()` |
 | Scan history | ✅ Complete | GET /scan/history endpoint | `backend/app/routers/scan.py::get_scan_history()` |
@@ -208,7 +209,7 @@ This traceability matrix connects:
 | ContactPage | None (frontend only) | Contact form, FAQ | ✅ |
 | DashboardPage | GET /scan/history | Stats overview, quick actions | ✅ |
 | DataExportPage | GET /profile/export | GDPR export, format selection | ✅ |
-| DigitalTwinTimelinePage | GET /digital-twin/query, /timeline | Timeline visualization, snapshots | ✅ |
+| DigitalTwinTimelinePage | GET /digital-twin/query, /timeline | Timeline visualization, snapshots, before/after | ✅ |
 | EmailVerificationPage | POST /auth/verify-email, /verify-email/request | Email verification flow | ✅ |
 | HistoryPage | GET /scan/history | Scan history list with filters | ✅ |
 | HomePage | None (static) | Hero, trust badges, FAQ, CTA | ✅ |
@@ -235,7 +236,17 @@ This traceability matrix connects:
 | ProfileSettingsPage | Partial (scan-product works) | Full profile CRUD integration | Low |
 | SkinGoalsPage | Mock goals | POST /profile/goals, GET /profile/goals | Low |
 
-**Frontend Coverage:** 74% pages with real API integration (23/31)
+
+### Static / Education Pages (4 pages)
+
+| Page | Features | Status |
+|------|----------|--------|
+| BlogPage | Educational blog content | ✅ |
+| IngredientDictionaryPage | Ingredient glossary | ✅ |
+| SkinTypeGuidePage | Skin type education | ✅ |
+| VideoTutorialsPage | How-to tutorials | ✅ |
+
+**Frontend Coverage:** 66% pages with real API integration (23/35)
 
 ---
 
@@ -259,11 +270,12 @@ This traceability matrix connects:
 - ✅ POST /api/v1/profile/scan-product (NEW)
 - ✅ GET /api/v1/profile/products (NEW)
 
-#### Scan (6 endpoints) - 100% Complete
+#### Scan (7 endpoints) - 100% Complete
 - ✅ POST /api/v1/scan/init
 - ✅ POST /api/v1/scan/{scan_id}/upload
 - ✅ GET /api/v1/scan/{scan_id}/status
 - ✅ GET /api/v1/scan/{scan_id}/results
+- ✅ GET /api/v1/scan/{scan_id}/image
 - ✅ GET /api/v1/scan/history
 - ✅ GET /api/v1/scan/actions
 
@@ -496,7 +508,7 @@ The AI Skincare Intelligence System is **90% complete** with all core features o
 **Strengths:**
 - Solid authentication and security foundation
 - Comprehensive API coverage (~50+ endpoints)
-- 31 frontend pages (74% real API integration)
+- 35 frontend pages (66% real API integration)
 - Universal header/footer with accessibility
 - Admin dashboard for system management
 - GDPR compliance with audit trail

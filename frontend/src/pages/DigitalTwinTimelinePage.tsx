@@ -287,7 +287,7 @@ const DigitalTwinTimelinePage: React.FC = () => {
   const latestSnapshot = snapshots[0] || null;
   const beforeSnapshot = snapshots.find(s => s.id === comparisonBefore) || snapshots[snapshots.length - 1] || null;
   const afterSnapshot = snapshots.find(s => s.id === comparisonAfter) || snapshots[0] || null;
-  const chartTooltipLabel = (label: string | number, payload: Array<{ payload?: { fullLabel?: string } }>) => {
+  const chartTooltipLabel = (label: string | number, payload: ReadonlyArray<{ payload?: { fullLabel?: string } }>) => {
     if (payload?.[0]?.payload?.fullLabel) return payload[0].payload.fullLabel;
     return String(label);
   };

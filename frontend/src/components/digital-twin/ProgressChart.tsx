@@ -5,7 +5,7 @@ type ProgressChartProps = {
   chartData: Array<Record<string, number | string>>;
   dateRange: '7d' | '30d' | '90d' | 'all';
   onRangeChange: (range: '7d' | '30d' | '90d' | 'all') => void;
-  tooltipLabel: (label: string | number, payload: Array<{ payload?: { fullLabel?: string } }>) => React.ReactNode;
+  tooltipLabel: (label: string | number, payload: ReadonlyArray<{ payload?: { fullLabel?: string } }>) => React.ReactNode;
 };
 
 const ProgressChart: React.FC<ProgressChartProps> = ({ chartData, dateRange, onRangeChange, tooltipLabel }) => {

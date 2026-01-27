@@ -20,14 +20,16 @@ const PasswordResetPage: React.FC = () => {
     setIsLoading(true);
 
     try {
-      // TODO: Integrate with backend API
-      const response = await fetch('/api/auth/password-reset', {
+      const response = await fetch('/api/v1/auth/password-reset/request', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
       });
 
-      if (!response.ok) throw new Error('Failed to send reset email');
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.detail || 'Failed to send reset email');
+      }
       setIsSubmitted(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong');

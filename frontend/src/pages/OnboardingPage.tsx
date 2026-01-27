@@ -101,25 +101,27 @@ const OnboardingPage: React.FC = () => {
         return (
           <div className="step-content">
             <div className="welcome-icon">
-              <IconSparkles size={64} strokeWidth={2} />
+              <IconSparkles size={48} strokeWidth={1.5} />
             </div>
             <h1>Welcome to AuraSkin AI</h1>
             <p>Analyze your skin in seconds with AI-powered technology</p>
             <ul className="features-list">
               <li>
-                <IconZap size={20} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '8px' }} />
+                <IconZap size={22} strokeWidth={2} />
                 Fast analysis in under 3 seconds
               </li>
               <li>
-                <IconShield size={20} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '8px' }} />
+                <IconShield size={22} strokeWidth={2} />
                 Privacy-first - your data is secure
               </li>
               <li>
-                <IconBarChart size={20} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '8px' }} />
+                <IconBarChart size={22} strokeWidth={2} />
                 Detailed insights and recommendations
               </li>
             </ul>
-            <button onClick={handleNext} className="btn-primary">Get Started</button>
+            <button onClick={handleNext} className="btn-primary">
+              Get Started
+            </button>
           </div>
         );
 
@@ -235,20 +237,20 @@ const OnboardingPage: React.FC = () => {
             <p className="step-description">Allow camera access for skin analysis</p>
             <div className="camera-info">
               <div className="camera-icon">
-                <IconScan size={64} strokeWidth={2} />
+                <IconScan size={40} strokeWidth={1.5} />
               </div>
               <p>We need access to your camera to capture your skin for analysis</p>
               <ul className="permission-list">
                 <li>
-                  <IconCheck size={16} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '8px' }} />
+                  <IconCheck size={18} strokeWidth={2.5} />
                   Photos are processed securely
                 </li>
                 <li>
-                  <IconCheck size={16} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '8px' }} />
+                  <IconCheck size={18} strokeWidth={2.5} />
                   Never shared without permission
                 </li>
                 <li>
-                  <IconCheck size={16} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '8px' }} />
+                  <IconCheck size={18} strokeWidth={2.5} />
                   You can revoke access anytime
                 </li>
               </ul>
@@ -287,9 +289,9 @@ const OnboardingPage: React.FC = () => {
           {[1, 2, 3, 4, 5].map(num => (
             <div 
               key={num} 
-              className={`progress-step ${step >= num ? 'active' : ''}`}
+              className={`progress-step ${step === num ? 'active' : ''} ${step > num ? 'completed' : ''}`}
             >
-              {num}
+              {step > num ? '✓' : num}
             </div>
           ))}
         </div>

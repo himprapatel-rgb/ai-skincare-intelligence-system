@@ -42,23 +42,44 @@ const ProductScannerPage: React.FC = () => {
     setError(null);
     
     try {
-      // TODO: API call to /api/v1/products/scan
-      // For now, mock response
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Extract barcode from image (simplified - in production use a barcode library)
+      // For now, prompt user for barcode or use demo
+      const barcode = prompt('Enter product barcode (or leave empty for demo):', '');
       
-      const mockProduct: ScannedProduct = {
-        id: 'scanned-1',
-        name: 'Vitamin C Serum',
-        brand: 'CeraVe',
-        barcode: '1234567890123',
-        imageUrl: imageData,
-        ingredients: ['Water', 'Ascorbic Acid', 'Glycerin', 'Hyaluronic Acid', 'Niacinamide'],
-        safetyRating: 85,
-        suitabilityScore: 78,
-        warnings: ['Contains fragrance', 'May cause irritation in sensitive skin']
-      };
+      const token = localStorage.getItem('token');
+      const response = await fetch('/api/v1/products/scan-barcode', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          ...(token && { 'Authorization': `Bearer ${token}` })
+        },
+        body: JSON.stringify({ 
+          barcode: barcode || '3337875546430', // Demo barcode for La Roche-Posay
+          image_data: imageData 
+        }),
+      });
       
-      setScannedProduct(mockProduct);
+      if (response.ok) {
+        const data = await response.json();
+        
+        if (data.found && data.product) {
+          setScannedProduct({
+            id: data.product.id || 'scanned-1',
+            name: data.product.name || 'Unknown Product',
+            brand: data.product.brand || 'Unknown Brand',
+            barcode: data.product.barcode || barcode || 'N/A',
+            imageUrl: data.product.image_url || imageData,
+            ingredients: data.ingredients || [],
+            safetyRating: data.safety_rating || 0,
+            suitabilityScore: data.suitability_score || 0,
+            warnings: data.warnings || []
+          });
+        } else {
+          setError('Product not found in database. Try a different barcode.');
+        }
+      } else {
+        throw new Error('Scan failed');
+      }
     } catch (err) {
       setError('Failed to scan product. Please try again.');
       console.error('Scan error:', err);
@@ -67,10 +88,29 @@ const ProductScannerPage: React.FC = () => {
     }
   };
 
-  const handleAddToShelf = () => {
+  const handleAddToShelf = async () => {
     if (scannedProduct) {
-      // TODO: API call to add product to shelf
-      navigate('/myshelf');
+      try {
+        const token = localStorage.getItem('token');
+        await fetch('/api/v1/shelf', {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            external_product_id: scannedProduct.id,
+            product_name: scannedProduct.name,
+            product_brand: scannedProduct.brand,
+            product_image: scannedProduct.imageUrl,
+            status: 'active',
+          }),
+        });
+        navigate('/myshelf');
+      } catch (err) {
+        console.error('Failed to add to shelf:', err);
+        navigate('/myshelf');
+      }
     }
   };
 

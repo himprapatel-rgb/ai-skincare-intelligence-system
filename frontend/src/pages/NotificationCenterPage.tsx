@@ -23,72 +23,81 @@ const NotificationCenterPage: React.FC = () => {
   const [showSettings, setShowSettings] = useState(false);
 
   useEffect(() => {
-    // Mock data - replace with API call to /api/v1/notifications
-    const mockNotifications: Notification[] = [
-      {
-        id: '1',
-        type: 'reminder',
-        title: 'Morning Routine Reminder',
-        message: 'Time for your morning skincare routine!',
-        timestamp: '2026-01-15T08:00:00Z',
-        read: false,
-        actionUrl: '/routine-builder'
-      },
-      {
-        id: '2',
-        type: 'progress',
-        title: 'Progress Milestone',
-        message: 'Congratulations! You\'ve completed 5 scans',
-        timestamp: '2026-01-14T10:30:00Z',
-        read: false,
-        actionUrl: '/progress'
-      },
-      {
-        id: '3',
-        type: 'alert',
-        title: 'Skin Change Detected',
-        message: 'We noticed changes in your skin. Consider scheduling a new scan.',
-        timestamp: '2026-01-13T14:20:00Z',
-        read: true,
-        actionUrl: '/scan'
-      },
-      {
-        id: '4',
-        type: 'info',
-        title: 'New Product Recommendation',
-        message: 'Based on your latest scan, we have new product recommendations for you.',
-        timestamp: '2026-01-12T09:15:00Z',
-        read: true,
-        actionUrl: '/recommendations'
-      },
-      {
-        id: '5',
-        type: 'reminder',
-        title: 'Evening Routine Reminder',
-        message: 'Don\'t forget your evening skincare routine!',
-        timestamp: '2026-01-11T20:00:00Z',
-        read: true,
-        actionUrl: '/routine-builder'
-      }
-    ];
-    setNotifications(mockNotifications);
+    fetchNotifications();
   }, []);
 
-  const markAsRead = (id: string) => {
-    setNotifications(notifications.map(n => 
-      n.id === id ? { ...n, read: true } : n
-    ));
-    // TODO: API call to mark as read
+  const fetchNotifications = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) return;
+      
+      const response = await fetch('/api/v1/notifications', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        setNotifications(data.notifications.map((n: any) => ({
+          id: n.id.toString(),
+          type: n.type,
+          title: n.title,
+          message: n.message,
+          timestamp: n.created_at,
+          read: n.read,
+          actionUrl: n.action_url,
+        })));
+      }
+    } catch (err) {
+      console.error('Failed to fetch notifications:', err);
+      // Keep empty state if API fails
+    }
   };
 
-  const markAllAsRead = () => {
-    setNotifications(notifications.map(n => ({ ...n, read: true })));
-    // TODO: API call to mark all as read
+  const markAsRead = async (id: string) => {
+    try {
+      const token = localStorage.getItem('token');
+      await fetch(`/api/v1/notifications/${id}/read`, {
+        method: 'PATCH',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      setNotifications(notifications.map(n => 
+        n.id === id ? { ...n, read: true } : n
+      ));
+    } catch (err) {
+      console.error('Failed to mark as read:', err);
+      // Still update UI
+      setNotifications(notifications.map(n => 
+        n.id === id ? { ...n, read: true } : n
+      ));
+    }
   };
 
-  const deleteNotification = (id: string) => {
-    setNotifications(notifications.filter(n => n.id !== id));
-    // TODO: API call to delete notification
+  const markAllAsRead = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      await fetch('/api/v1/notifications/read-all', {
+        method: 'PATCH',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      setNotifications(notifications.map(n => ({ ...n, read: true })));
+    } catch (err) {
+      console.error('Failed to mark all as read:', err);
+      setNotifications(notifications.map(n => ({ ...n, read: true })));
+    }
+  };
+
+  const deleteNotification = async (id: string) => {
+    try {
+      const token = localStorage.getItem('token');
+      await fetch(`/api/v1/notifications/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      setNotifications(notifications.filter(n => n.id !== id));
+    } catch (err) {
+      console.error('Failed to delete notification:', err);
+      setNotifications(notifications.filter(n => n.id !== id));
+    }
   };
 
   const getNotificationIcon = (type: Notification['type']) => {

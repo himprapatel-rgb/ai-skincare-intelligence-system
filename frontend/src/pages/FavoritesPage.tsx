@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { IconHeart, IconX, IconPackage, IconStar } from '../components/Icons';
+import api from '../services/api';
 import './CommonStyles.css';
 import './FavoritesPage.css';
 
@@ -23,21 +24,50 @@ const FavoritesPage: React.FC = () => {
   const [favorites, setFavorites] = useState<FavoriteProduct[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [sortBy, setSortBy] = useState<'date' | 'name' | 'price'>('date');
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Mock data - replace with API call
-    const mockFavorites: FavoriteProduct[] = [
-      { id: '1', name: 'Hydrating Serum', brand: 'CeraVe', price: 24.99, image: '/placeholder.jpg', rating: 4.8, matchScore: 95, addedAt: '2026-01-10' },
-      { id: '2', name: 'Vitamin C Serum', brand: 'The Ordinary', price: 12.99, image: '/placeholder.jpg', rating: 4.6, matchScore: 88, addedAt: '2026-01-08' },
-      { id: '3', name: 'Retinol Cream', brand: 'Paula\'s Choice', price: 58.00, image: '/placeholder.jpg', rating: 4.9, matchScore: 92, addedAt: '2026-01-05' },
-      { id: '4', name: 'SPF 50 Sunscreen', brand: 'La Roche-Posay', price: 34.99, image: '/placeholder.jpg', rating: 4.7, matchScore: 90, addedAt: '2026-01-01' },
-    ];
-    setFavorites(mockFavorites);
-    setIsLoading(false);
+    fetchFavorites();
   }, []);
 
-  const handleRemove = (id: string) => {
-    setFavorites(prev => prev.filter(p => p.id !== id));
+  const fetchFavorites = async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      const response = await api.get('/favorites');
+      const data = response.data;
+      
+      setFavorites(data.favorites.map((f: any) => ({
+        id: f.id.toString(),
+        name: f.product_name,
+        brand: f.product_brand || 'Unknown',
+        price: f.product_price || 0,
+        image: f.product_image || '/placeholder.jpg',
+        rating: f.product_rating || 0,
+        matchScore: f.match_score || 0,
+        addedAt: f.created_at?.split('T')[0] || '',
+      })));
+    } catch (err: any) {
+      console.error('Failed to fetch favorites:', err);
+      // Fallback to empty state if API not available
+      setFavorites([]);
+      if (err.response?.status !== 401) {
+        setError('Unable to load favorites. Please try again.');
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleRemove = async (id: string) => {
+    try {
+      await api.delete(`/favorites/${id}`);
+      setFavorites(prev => prev.filter(p => p.id !== id));
+    } catch (err) {
+      console.error('Failed to remove favorite:', err);
+      // Still remove from UI for better UX
+      setFavorites(prev => prev.filter(p => p.id !== id));
+    }
   };
 
   const sortedFavorites = [...favorites].sort((a, b) => {

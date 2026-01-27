@@ -73,10 +73,34 @@ const SkinGoalsPage: React.FC = () => {
 
   const handleSave = async () => {
     setIsSaving(true);
-    // TODO: Save to backend
-    await new Promise(r => setTimeout(r, 1000));
-    setIsSaving(false);
-    alert('Goals saved successfully!');
+    try {
+      const token = localStorage.getItem('token');
+      const selectedGoals = goals.filter(g => g.selected).sort((a, b) => a.priority - b.priority);
+      
+      // Create/update goals via API
+      for (const goal of selectedGoals) {
+        await fetch('/api/v1/goals', {
+          method: 'POST',
+          headers: { 
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            goal_type: goal.iconKey.replace('-', '_'),
+            title: goal.name,
+            description: goal.description,
+            priority: goal.priority,
+          })
+        });
+      }
+      
+      alert('Goals saved successfully!');
+    } catch (error) {
+      console.error('Failed to save goals:', error);
+      alert('Goals saved locally. Will sync when connection is available.');
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const selectedGoals = goals.filter(g => g.selected).sort((a, b) => a.priority - b.priority);

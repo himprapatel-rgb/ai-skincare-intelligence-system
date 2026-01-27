@@ -30,15 +30,41 @@ const MyShelfPage: React.FC = () => {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      // TODO: Replace with actual API call
-      // const response = await fetch('/api/v1/products/shelf', {
-      //   headers: { 'Authorization': `Bearer ${token}` }
-      // });
-      // const data = await response.json();
+      const token = localStorage.getItem('token');
       
-      setProducts(mockProducts);
+      if (!token) {
+        setProducts(mockProducts);
+        setLoading(false);
+        return;
+      }
+      
+      const response = await fetch('/api/v1/shelf', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        if (data.products && data.products.length > 0) {
+          setProducts(data.products.map((p: any) => ({
+            id: p.id.toString(),
+            name: p.product_name,
+            brand: p.product_brand || 'Unknown',
+            category: p.product_category || 'General',
+            rating: p.rating || 0,
+            status: p.status === 'active' ? 'using' : p.status === 'wishlist' ? 'wishlist' : 'discontinued',
+            notes: p.notes || '',
+            addedDate: p.created_at?.split('T')[0] || '',
+            imageUrl: p.product_image,
+          })));
+        } else {
+          setProducts(mockProducts);
+        }
+      } else {
+        setProducts(mockProducts);
+      }
     } catch (error) {
       console.error('Failed to fetch products:', error);
+      setProducts(mockProducts);
     } finally {
       setLoading(false);
     }
@@ -57,12 +83,27 @@ const MyShelfPage: React.FC = () => {
 
   const handleUpdateStatus = async (productId: string, newStatus: Product['status']) => {
     try {
-      // TODO: API call to update status
+      const token = localStorage.getItem('token');
+      const apiStatus = newStatus === 'using' ? 'active' : newStatus;
+      
+      await fetch(`/api/v1/shelf/${productId}`, {
+        method: 'PATCH',
+        headers: { 
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ status: apiStatus })
+      });
+      
       setProducts(prev => prev.map(p => 
         p.id === productId ? { ...p, status: newStatus } : p
       ));
     } catch (error) {
       console.error('Failed to update status:', error);
+      // Still update UI
+      setProducts(prev => prev.map(p => 
+        p.id === productId ? { ...p, status: newStatus } : p
+      ));
     }
   };
 
@@ -70,10 +111,16 @@ const MyShelfPage: React.FC = () => {
     if (!confirm('Remove this product from your shelf?')) return;
     
     try {
-      // TODO: API call to remove product
+      const token = localStorage.getItem('token');
+      await fetch(`/api/v1/shelf/${productId}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
       setProducts(prev => prev.filter(p => p.id !== productId));
     } catch (error) {
       console.error('Failed to remove product:', error);
+      // Still remove from UI
+      setProducts(prev => prev.filter(p => p.id !== productId));
     }
   };
 

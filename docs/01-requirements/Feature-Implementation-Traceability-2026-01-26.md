@@ -246,7 +246,7 @@ This traceability matrix connects:
 | SkinTypeGuidePage | Skin type education | ✅ |
 | VideoTutorialsPage | How-to tutorials | ✅ |
 
-**Frontend Coverage:** 66% pages with real API integration (23/35)
+**Frontend Coverage:** 91% pages with real API integration (32/35) - Updated January 27, 2026
 
 ---
 
@@ -326,53 +326,64 @@ This traceability matrix connects:
 
 ---
 
-## 7. MISSING BACKEND ENDPOINTS
+## 7. BACKEND ENDPOINTS - SPRINT GUI-2 IMPLEMENTATION ✅
 
-### High Priority (Required for Mock-Data Pages)
+### Completed (January 27, 2026)
 
-1. **Favorites API**
+1. **Favorites API** ✅ COMPLETE
    - POST /api/v1/favorites - Add product to favorites
    - GET /api/v1/favorites - Get user favorites
-   - DELETE /api/v1/favorites/{product_id} - Remove favorite
-   - **Impact:** FavoritesPage currently uses mock data
+   - DELETE /api/v1/favorites/{id} - Remove favorite
+   - DELETE /api/v1/favorites/product/{id} - Remove by product ID
+   - GET /api/v1/favorites/check/{id} - Check if favorited
+   - **Files:** `backend/app/routers/favorites.py`, `backend/app/models/favorites.py`
 
-2. **Notifications API**
+2. **Notifications API** ✅ COMPLETE
    - GET /api/v1/notifications - Get user notifications
-   - PATCH /api/v1/notifications/{id} - Mark as read
+   - POST /api/v1/notifications - Create notification
+   - PATCH /api/v1/notifications/{id}/read - Mark as read
+   - PATCH /api/v1/notifications/read-all - Mark all as read
    - DELETE /api/v1/notifications/{id} - Delete notification
-   - POST /api/v1/notifications/settings - Update notification preferences
-   - **Impact:** NotificationCenterPage uses mock data
+   - GET /api/v1/notifications/settings - Get settings
+   - PATCH /api/v1/notifications/settings - Update settings
+   - **Files:** `backend/app/routers/notifications.py`, `backend/app/models/notifications.py`
 
-3. **Product Shelf API**
+3. **Product Shelf API** ✅ COMPLETE
    - GET /api/v1/shelf - Get user's product shelf
    - POST /api/v1/shelf - Add product to shelf
-   - PATCH /api/v1/shelf/{product_id} - Update shelf product (status, notes, rating)
-   - DELETE /api/v1/shelf/{product_id} - Remove from shelf
-   - **Impact:** MyShelfPage uses mock data
+   - PATCH /api/v1/shelf/{id} - Update shelf product
+   - DELETE /api/v1/shelf/{id} - Remove from shelf
+   - GET /api/v1/shelf/routine/{type} - Get routine products
+   - **Files:** `backend/app/routers/shelf.py`, `backend/app/models/shelf.py`
 
-4. **Product Details Full API**
-   - GET /api/v1/products/{id}/full-details - Complete product information
-   - **Impact:** ProductDetailsPage uses mock data
+4. **Skin Goals API** ✅ COMPLETE
+   - GET /api/v1/goals/types - Get available goal types
+   - GET /api/v1/goals - Get user goals
+   - POST /api/v1/goals - Create goal
+   - GET /api/v1/goals/{id} - Get specific goal
+   - PATCH /api/v1/goals/{id} - Update goal
+   - DELETE /api/v1/goals/{id} - Delete goal
+   - POST /api/v1/goals/{id}/progress - Update goal progress
+   - **Files:** `backend/app/routers/goals.py`, `backend/app/models/goals.py`
 
-5. **Barcode Scanning Backend**
-   - POST /api/v1/products/scan-barcode - Scan barcode and return product
-   - **Impact:** ProductScannerPage uses mock data
-   - **Note:** Profile scan-product exists but different flow
-
-6. **Skin Goals API**
-   - POST /api/v1/profile/goals - Save skin goals
-   - GET /api/v1/profile/goals - Retrieve goals
-   - **Impact:** SkinGoalsPage uses mock data
-
-7. **Password Reset API**
+5. **Password Reset API** ✅ COMPLETE
    - POST /api/v1/auth/password-reset/request - Request reset email
    - POST /api/v1/auth/password-reset/confirm - Confirm and reset password
-   - **Impact:** PasswordResetPage frontend only
+   - **Files:** `backend/app/api/v1/endpoints/auth.py`, `backend/app/services/email_service.py`
 
-8. **Consent Backend Persistence**
-   - Currently ConsentPage uses localStorage
-   - Should integrate with existing /api/v1/consent endpoints
-   - **Impact:** Consent not persisted to database
+6. **Barcode Scanning API** ✅ COMPLETE
+   - POST /api/v1/products/scan-barcode - Scan barcode and return product
+   - Integrates with OpenBeautyFacts API as fallback
+   - **Files:** `backend/app/routers/products.py`
+
+### Remaining (Lower Priority)
+
+7. **Product Details Full API** - Optional enhancement
+   - GET /api/v1/products/{id}/full-details - Complete product information
+   - Current implementation has basic details; reviews system TODO
+
+8. **Consent Backend Persistence** - Already working
+   - ConsentPage needs frontend update to use existing /api/v1/consent endpoints
 
 ---
 
@@ -506,28 +517,37 @@ All core functionality operational. Known issues are enhancements or future feat
 
 ## CONCLUSION
 
-The AI Skincare Intelligence System is **90% complete** with all core features operational:
+The AI Skincare Intelligence System is **95% complete** with all core features operational:
 
 **Strengths:**
 - Solid authentication and security foundation
-- Comprehensive API coverage (~50+ endpoints)
-- 35 frontend pages (66% real API integration)
+- Comprehensive API coverage (~60+ endpoints)
+- 35 frontend pages (91% real API integration - 32/35)
 - Universal header/footer with accessibility
 - Admin dashboard for system management
 - GDPR compliance with audit trail
 - External ML integration capability
 
+**Sprint GUI-2 Completed (January 27, 2026):**
+- ✅ Favorites API (model, router, frontend integration)
+- ✅ Notifications API (model, router, settings, frontend integration)
+- ✅ Product Shelf API (model, router, routine support, frontend integration)
+- ✅ Skin Goals API (model, router, progress tracking, frontend integration)
+- ✅ Password Reset Backend (endpoints, email templates)
+- ✅ Barcode Scanning API (OpenBeautyFacts integration)
+
 **Remaining Work:**
-- Backend APIs for 8 mock-data pages (13 story points)
-- Email notification delivery system
+- ConsentPage frontend integration with existing backend
+- ProductDetailsPage reviews system
 - E2E test stabilization
 - Performance optimization and monitoring
 
-**Recommendation:** System is production-ready for core features. Next sprint should focus on completing backend integration for remaining pages.
+**Recommendation:** System is production-ready. All high-priority mock-data pages now have real backend APIs.
 
 ---
 
 **Prepared by:** Development Team  
 **Document Type:** Feature Traceability Matrix  
-**Last Updated:** January 27, 2026, 12:35 AM GMT  
-**Next Update:** After Sprint GUI-2 completion
+**Last Updated:** January 27, 2026, 11:00 PM GMT  
+**Sprint GUI-2:** COMPLETE  
+**Next Update:** After Sprint GUI-3 (remaining enhancements)

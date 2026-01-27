@@ -7,7 +7,7 @@ import sys
 from typing import Optional
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status, Request
 from fastapi.responses import FileResponse, Response
 from sqlalchemy.orm import Session
 
@@ -479,6 +479,7 @@ def get_scan_image(
     summary="Get Scan History"
 )
 def get_scan_history(
+    request: Request,
     db: Session = Depends(get_db),
     current_user: Optional[User] = Depends(get_current_user_optional)
 ):
@@ -486,6 +487,7 @@ def get_scan_history(
     if not current_user:
         return {"scans": []}
     user_id = current_user.id
+    base_url = str(request.base_url).rstrip("/")
     scans = db.query(ScanSession).filter(
         ScanSession.user_id == user_id
     ).all()
@@ -497,6 +499,10 @@ def get_scan_history(
         if isinstance(scan.scan_metadata, dict):
             summary = scan.scan_metadata.get("summary")
             image_url = (summary or {}).get("image_url") if isinstance(summary, dict) else None
+        if not image_url and scan.image_url:
+            image_url = scan.image_url
+        if not image_url and scan.image_data:
+            image_url = f"{base_url}/api/v1/scan/{scan.id}/image"
         items.append(
             {
                 "scan_id": str(scan.id),

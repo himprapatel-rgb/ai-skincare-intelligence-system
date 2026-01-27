@@ -54,7 +54,11 @@ async def add_security_headers(request, call_next):
     response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
     response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()"
     response.headers["Cross-Origin-Opener-Policy"] = "same-origin"
-    response.headers["Cross-Origin-Resource-Policy"] = "same-site"
+    # Allow scan images to load across the frontend + backend domains.
+    if request.url.path.startswith("/api/v1/scan/") and request.url.path.endswith("/image"):
+        response.headers["Cross-Origin-Resource-Policy"] = "cross-origin"
+    else:
+        response.headers["Cross-Origin-Resource-Policy"] = "same-site"
     if not settings.DEBUG:
         response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
     return response

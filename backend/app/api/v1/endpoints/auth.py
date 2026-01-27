@@ -2,12 +2,12 @@
 Authentication API endpoints.
 
 Handles user registration, login, email verification, and password reset.
-Version: 2026-01-27-FIXED
 """
 import uuid
 from datetime import datetime, timedelta, timezone
 
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
+from pydantic import BaseModel
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
@@ -26,10 +26,6 @@ from app.schemas.user import (
 )
 from app.services.auth_service import auth_service
 from app.services.email_service import send_verification_email
-
-import logging
-logger = logging.getLogger(__name__)
-logger.warning("=== AUTH MODULE LOADED - VERSION 2026-01-27-FIXED ===")
 
 router = APIRouter()
 
@@ -249,9 +245,6 @@ class PasswordResetResponse(BaseModel):
     """Schema for password reset response."""
     message: str
     success: bool = True
-
-
-from pydantic import BaseModel
 
 
 @router.post(

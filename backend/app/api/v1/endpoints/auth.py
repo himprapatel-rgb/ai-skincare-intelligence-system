@@ -73,6 +73,7 @@ def register(
     verification_token = uuid.uuid4().hex
     user.email_verification_token = verification_token
     user.email_verification_expires_at = datetime.now(timezone.utc) + timedelta(hours=24)
+    user.email_verification_sent_at = datetime.now(timezone.utc)  # Track when email was sent
     db.add(user)
     db.commit()
     db.refresh(user)
@@ -176,9 +177,20 @@ def request_email_verification(
         logger.info(f"[{request_id}] User {payload.email} already verified, skipping email")
         return EmailVerificationResponse(message="Email already verified.", verified=True)
 
+    # Rate limit: don't send if email was sent in the last 60 seconds
+    if hasattr(user, 'email_verification_sent_at') and user.email_verification_sent_at:
+        time_since_last = datetime.now(timezone.utc) - user.email_verification_sent_at.replace(tzinfo=timezone.utc)
+        if time_since_last.total_seconds() < 60:
+            logger.warning(f"[{request_id}] Rate limited: email sent {time_since_last.total_seconds():.0f}s ago for {payload.email}")
+            return EmailVerificationResponse(
+                message="Verification email was recently sent. Please check your inbox or wait a moment before requesting again.",
+                verified=False,
+            )
+
     verification_token = uuid.uuid4().hex
     user.email_verification_token = verification_token
     user.email_verification_expires_at = datetime.now(timezone.utc) + timedelta(hours=24)
+    user.email_verification_sent_at = datetime.now(timezone.utc)  # Track when email was sent
     db.add(user)
     db.commit()
     db.refresh(user)

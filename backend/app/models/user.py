@@ -38,6 +38,7 @@ class User(Base):
     is_admin = Column(Boolean, default=False)
     email_verification_token = Column(String, nullable=True, index=True)
     email_verification_expires_at = Column(DateTime(timezone=True), nullable=True)
+    email_verification_sent_at = Column(DateTime(timezone=True), nullable=True)  # Rate limit tracking
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 

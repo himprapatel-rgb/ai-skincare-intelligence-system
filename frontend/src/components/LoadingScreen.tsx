@@ -8,16 +8,14 @@ interface LoadingScreenProps {
 }
 
 const LoadingScreen: React.FC<LoadingScreenProps> = ({ 
-  message = 'Loading...', 
+  message = 'Loading', 
   fullscreen = true 
 }) => {
   return (
     <div className={`loading-screen ${fullscreen ? 'fullscreen' : 'inline'}`}>
       <div className="loading-content">
         <div className="loading-spinner-container">
-          <div className="loading-spinner-ring"></div>
-          <div className="loading-spinner-ring"></div>
-          <div className="loading-spinner-ring"></div>
+          <div className="loading-spinner-ring" />
         </div>
         {message && <p className="loading-message">{message}</p>}
       </div>

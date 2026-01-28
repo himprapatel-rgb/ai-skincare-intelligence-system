@@ -32,24 +32,92 @@ const ProgressChart: React.FC<ProgressChartProps> = ({ chartData, dateRange, onR
           </div>
         )}
         <ResponsiveContainer width="100%" height={380}>
-          <AreaChart data={chartData}>
+          <AreaChart data={chartData} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
             <defs>
               <linearGradient id="dtScore" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="var(--primary)" stopOpacity={0.1} />
+                <stop offset="0%" stopColor="#3b82f6" stopOpacity={0.35} />
+                <stop offset="50%" stopColor="#3b82f6" stopOpacity={0.15} />
+                <stop offset="100%" stopColor="#3b82f6" stopOpacity={0.02} />
               </linearGradient>
               <linearGradient id="dtMood" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="var(--secondary)" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="var(--secondary)" stopOpacity={0.1} />
+                <stop offset="0%" stopColor="#8b5cf6" stopOpacity={0.35} />
+                <stop offset="50%" stopColor="#8b5cf6" stopOpacity={0.15} />
+                <stop offset="100%" stopColor="#8b5cf6" stopOpacity={0.02} />
               </linearGradient>
+              <filter id="chartGlow" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="2" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
             </defs>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="dateLabel" interval="preserveStartEnd" />
-            <YAxis domain={[0, 100]} tickFormatter={(value) => `${value}`} />
-            <Tooltip formatter={(value, name) => [`${value}`, name]} labelFormatter={tooltipLabel} />
-            <Legend />
-            <Area type="monotone" dataKey="score" stroke="var(--primary)" fillOpacity={1} fill="url(#dtScore)" name="Overall Score" dot={{ r: 3 }} activeDot={{ r: 5 }} />
-            <Area type="monotone" dataKey="mood" stroke="var(--secondary)" fillOpacity={1} fill="url(#dtMood)" name="Skin Mood" dot={{ r: 3 }} activeDot={{ r: 5 }} />
+            <CartesianGrid 
+              strokeDasharray="3 3" 
+              stroke="#e2e8f0" 
+              strokeOpacity={0.6}
+              vertical={false}
+            />
+            <XAxis 
+              dataKey="dateLabel" 
+              interval="preserveStartEnd" 
+              axisLine={{ stroke: '#e2e8f0' }}
+              tickLine={false}
+              tick={{ fill: '#64748b', fontSize: 12, fontWeight: 500 }}
+              dy={8}
+            />
+            <YAxis 
+              domain={[0, 100]} 
+              tickFormatter={(value) => `${value}`} 
+              axisLine={false}
+              tickLine={false}
+              tick={{ fill: '#64748b', fontSize: 12, fontWeight: 500 }}
+              dx={-4}
+            />
+            <Tooltip 
+              formatter={(value, name) => [`${value}`, name]} 
+              labelFormatter={tooltipLabel}
+              contentStyle={{
+                background: 'rgba(255, 255, 255, 0.96)',
+                border: '1px solid #e2e8f0',
+                borderRadius: '12px',
+                boxShadow: '0 8px 24px rgba(0, 0, 0, 0.12)',
+                padding: '12px 16px',
+                fontWeight: 500
+              }}
+              cursor={{ stroke: '#3b82f6', strokeWidth: 1, strokeDasharray: '4 4' }}
+            />
+            <Legend 
+              wrapperStyle={{ paddingTop: '20px' }}
+              iconType="circle"
+              iconSize={8}
+            />
+            <Area 
+              type="monotone" 
+              dataKey="score" 
+              stroke="#3b82f6" 
+              strokeWidth={2.5}
+              fillOpacity={1} 
+              fill="url(#dtScore)" 
+              name="Overall Score" 
+              dot={{ r: 4, fill: '#fff', stroke: '#3b82f6', strokeWidth: 2 }} 
+              activeDot={{ r: 6, fill: '#3b82f6', stroke: '#fff', strokeWidth: 2, filter: 'url(#chartGlow)' }} 
+              animationDuration={1000}
+              animationEasing="ease-out"
+            />
+            <Area 
+              type="monotone" 
+              dataKey="mood" 
+              stroke="#8b5cf6" 
+              strokeWidth={2.5}
+              fillOpacity={1} 
+              fill="url(#dtMood)" 
+              name="Skin Mood" 
+              dot={{ r: 4, fill: '#fff', stroke: '#8b5cf6', strokeWidth: 2 }} 
+              activeDot={{ r: 6, fill: '#8b5cf6', stroke: '#fff', strokeWidth: 2, filter: 'url(#chartGlow)' }} 
+              animationDuration={1000}
+              animationEasing="ease-out"
+            />
           </AreaChart>
         </ResponsiveContainer>
       </div>

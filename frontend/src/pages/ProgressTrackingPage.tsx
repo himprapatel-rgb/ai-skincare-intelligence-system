@@ -108,44 +108,87 @@ const ProgressTrackingPage: React.FC = () => {
           </div>
           <div className="chart-container">
             <ResponsiveContainer width="100%" height={400}>
-              <AreaChart data={progressData}>
+              <AreaChart data={progressData} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
                 <defs>
                   <linearGradient id="colorScore" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.8}/>
-                    <stop offset="95%" stopColor="var(--primary)" stopOpacity={0.1}/>
+                    <stop offset="0%" stopColor="#3b82f6" stopOpacity={0.35}/>
+                    <stop offset="50%" stopColor="#3b82f6" stopOpacity={0.15}/>
+                    <stop offset="100%" stopColor="#3b82f6" stopOpacity={0.02}/>
                   </linearGradient>
                   <linearGradient id="colorAcne" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="var(--secondary)" stopOpacity={0.8}/>
-                    <stop offset="95%" stopColor="var(--secondary)" stopOpacity={0.1}/>
+                    <stop offset="0%" stopColor="#8b5cf6" stopOpacity={0.35}/>
+                    <stop offset="50%" stopColor="#8b5cf6" stopOpacity={0.15}/>
+                    <stop offset="100%" stopColor="#8b5cf6" stopOpacity={0.02}/>
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
-                <YAxis domain={[0, 100]} />
-                <Tooltip />
-                <Legend />
+                <CartesianGrid 
+                  strokeDasharray="3 3" 
+                  stroke="#e2e8f0"
+                  strokeOpacity={0.6}
+                  vertical={false}
+                />
+                <XAxis 
+                  dataKey="date" 
+                  axisLine={{ stroke: '#e2e8f0' }}
+                  tickLine={false}
+                  tick={{ fill: '#64748b', fontSize: 12, fontWeight: 500 }}
+                  dy={8}
+                />
+                <YAxis 
+                  domain={[0, 100]}
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: '#64748b', fontSize: 12, fontWeight: 500 }}
+                  dx={-4}
+                />
+                <Tooltip 
+                  contentStyle={{
+                    background: 'rgba(255, 255, 255, 0.96)',
+                    border: '1px solid #e2e8f0',
+                    borderRadius: '12px',
+                    boxShadow: '0 8px 24px rgba(0, 0, 0, 0.12)',
+                    padding: '12px 16px',
+                    fontWeight: 500
+                  }}
+                  cursor={{ stroke: '#3b82f6', strokeWidth: 1, strokeDasharray: '4 4' }}
+                />
+                <Legend 
+                  wrapperStyle={{ paddingTop: '20px' }}
+                  iconType="circle"
+                  iconSize={8}
+                />
                 <Area 
                   type="monotone" 
                   dataKey="overallScore" 
-                  stroke="var(--primary)" 
+                  stroke="#3b82f6"
+                  strokeWidth={2.5}
                   fillOpacity={1}
                   fill="url(#colorScore)"
                   name="Overall Score"
+                  dot={{ r: 4, fill: '#fff', stroke: '#3b82f6', strokeWidth: 2 }}
+                  activeDot={{ r: 6, fill: '#3b82f6', stroke: '#fff', strokeWidth: 2 }}
+                  animationDuration={1000}
                 />
                 <Line 
                   type="monotone" 
                   dataKey="acne" 
-                  stroke="var(--secondary)" 
-                  strokeWidth={2}
+                  stroke="#8b5cf6" 
+                  strokeWidth={2.5}
                   name="Acne"
                   strokeDasharray="5 5"
+                  dot={{ r: 3, fill: '#fff', stroke: '#8b5cf6', strokeWidth: 2 }}
+                  activeDot={{ r: 5, fill: '#8b5cf6', stroke: '#fff', strokeWidth: 2 }}
+                  animationDuration={1000}
                 />
                 <Line 
                   type="monotone" 
                   dataKey="hydration" 
                   stroke="#10b981" 
-                  strokeWidth={2}
+                  strokeWidth={2.5}
                   name="Hydration"
+                  dot={{ r: 3, fill: '#fff', stroke: '#10b981', strokeWidth: 2 }}
+                  activeDot={{ r: 5, fill: '#10b981', stroke: '#fff', strokeWidth: 2 }}
+                  animationDuration={1000}
                 />
               </AreaChart>
             </ResponsiveContainer>

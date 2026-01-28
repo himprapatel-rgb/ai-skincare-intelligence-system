@@ -330,19 +330,24 @@ const ProfileSettingsPage: React.FC = () => {
 
   return (
     <div className="profile-settings-page">
-      <div className="profile-container">
-        <div className="profile-header">
-          <div>
-            <h1>Profile Settings</h1>
-            <p className="profile-subtitle">Manage your personal details, skin profile, and privacy preferences.</p>
-          </div>
-          {isDirty && <span className="unsaved-pill">Unsaved changes</span>}
-        </div>
+      {/* Hero Banner */}
+      <div className="profile-hero-banner">
+        <h1>Profile Settings</h1>
+        <p className="profile-subtitle">Manage your personal details, skin profile, and privacy preferences.</p>
+      </div>
 
-        <form onSubmit={handleSubmit} className="settings-form">
-          <div className="profile-layout">
-            <aside className="profile-sidebar">
-              <div className="profile-card">
+      <div className="profile-container">
+        <div className="profile-container-inner">
+          {isDirty && (
+            <div className="profile-header">
+              <span className="unsaved-pill">Unsaved changes</span>
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="settings-form">
+            <div className="profile-layout">
+              <aside className="profile-sidebar">
+                <div className="profile-card">
                 <div className="photo-preview">
                   {profile.profilePhoto ? (
                     <img src={profile.profilePhoto} alt="Profile" />
@@ -375,12 +380,12 @@ const ProfileSettingsPage: React.FC = () => {
 
               <div className="profile-quick-stats">
                 <div className="quick-stat">
-                  <span className="stat-label">Skin Score</span>
-                  <span className="stat-value">{stats.skinHealthScore}%</span>
+                  <span className="quick-stat-value">{stats.skinHealthScore}%</span>
+                  <span className="quick-stat-label">Skin Score</span>
                 </div>
                 <div className="quick-stat">
-                  <span className="stat-label">Total Scans</span>
-                  <span className="stat-value">{stats.totalScans}</span>
+                  <span className="quick-stat-value">{stats.totalScans}</span>
+                  <span className="quick-stat-label">Total Scans</span>
                 </div>
               </div>
 
@@ -910,6 +915,7 @@ const ProfileSettingsPage: React.FC = () => {
             </div>
           </div>
         </form>
+        </div>
         {toast && (
           <Toast
             type={toast.type}

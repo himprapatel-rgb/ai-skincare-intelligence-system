@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './AdminProductsPage.css';
 
@@ -11,6 +11,9 @@ type AdminProduct = {
   price_usd?: number | null;
   product_image_url?: string | null;
 };
+
+type SortKey = 'brand' | 'name' | 'category';
+type SortDir = 'asc' | 'desc';
 
 const emptyForm = {
   brand: '',
@@ -26,6 +29,9 @@ const AdminProductsPage: React.FC = () => {
   const [form, setForm] = useState({ ...emptyForm });
   const [editingId, setEditingId] = useState<string | null>(null);
   const [search, setSearch] = useState('');
+  const [sortBy, setSortBy] = useState<SortKey>('name');
+  const [sortDir, setSortDir] = useState<SortDir>('asc');
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
 
   const fetchProducts = useCallback(async () => {
     try {
@@ -52,6 +58,59 @@ const AdminProductsPage: React.FC = () => {
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
+
+  const handleSort = useCallback((key: SortKey) => {
+    setSortBy(key);
+    setSortDir((d) => (sortBy === key && d === 'asc' ? 'desc' : 'asc'));
+  }, [sortBy]);
+
+  const sortedProducts = useMemo(() => {
+    const list = [...products];
+    list.sort((a, b) => {
+      const aVal = String(a[sortBy] ?? '');
+      const bVal = String(b[sortBy] ?? '');
+      const cmp = aVal.localeCompare(bVal);
+      return sortDir === 'asc' ? cmp : -cmp;
+    });
+    return list;
+  }, [products, sortBy, sortDir]);
+
+  const toggleSelect = (id: string) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  const selectAll = () => {
+    if (selectedIds.size === products.length) {
+      setSelectedIds(new Set());
+    } else {
+      setSelectedIds(new Set(products.map((p) => p.id)));
+    }
+  };
+
+  const bulkDelete = async () => {
+    const API_BASE = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
+    const token = localStorage.getItem('auth_token');
+    const ids = Array.from(selectedIds);
+    const deleted = new Set<string>();
+    for (const id of ids) {
+      try {
+        const response = await fetch(`${API_BASE}/admin/products/${id}`, {
+          method: 'DELETE',
+          headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+        });
+        if (response.ok) deleted.add(id);
+      } catch (err) {
+        console.error('Delete product failed:', id, err);
+      }
+    }
+    setProducts((prev) => prev.filter((item) => !deleted.has(item.id)));
+    setSelectedIds(new Set());
+  };
 
   const handleChange = (field: keyof typeof form) => (event: React.ChangeEvent<HTMLInputElement>) => {
     setForm((prev) => ({ ...prev, [field]: event.target.value }));
@@ -145,6 +204,11 @@ const AdminProductsPage: React.FC = () => {
         />
         <button className="btn btn-secondary" onClick={fetchProducts}>Search</button>
         <Link to="/admin" className="btn btn-secondary">Back to Admin</Link>
+        {selectedIds.size > 0 && (
+          <button type="button" className="btn btn-primary admin-bulk-delete" onClick={bulkDelete}>
+            Delete selected ({selectedIds.size})
+          </button>
+        )}
       </div>
 
       <div className="admin-product-form">
@@ -167,25 +231,68 @@ const AdminProductsPage: React.FC = () => {
         </div>
       </div>
 
-      <div className="admin-product-list">
-        {products.map((product) => (
-          <div key={product.id} className="admin-product-row">
-            <div>
-              <div className="admin-product-title">{product.name}</div>
-              <div className="admin-product-subtitle">{product.brand} · {product.category}</div>
-            </div>
-            <div className="admin-product-meta">
-              <span>{product.price_usd ? `$${product.price_usd}` : '—'}</span>
-              <span>{product.upc || 'No UPC'}</span>
-            </div>
-            <div className="admin-product-actions">
-              <button className="btn btn-secondary" onClick={() => startEdit(product)}>Edit</button>
-              <button className="btn btn-secondary" onClick={() => deleteProduct(product.id)}>Delete</button>
-            </div>
-          </div>
-        ))}
-        {products.length === 0 && <div className="admin-card">No products found.</div>}
+      <div className="admin-products-table-wrapper">
+        <table className="admin-products-table" role="grid">
+          <thead>
+            <tr className="admin-products-header">
+              <th scope="col">
+                <label className="admin-select-all">
+                  <input
+                    type="checkbox"
+                    checked={products.length > 0 && selectedIds.size === products.length}
+                    onChange={selectAll}
+                    aria-label="Select all products"
+                  />
+                </label>
+              </th>
+              <th scope="col">
+                <button type="button" className="admin-sort-btn" onClick={() => handleSort('brand')} aria-sort={sortBy === 'brand' ? (sortDir === 'asc' ? 'ascending' : 'descending') : undefined}>
+                  Brand {sortBy === 'brand' && (sortDir === 'asc' ? '↑' : '↓')}
+                </button>
+              </th>
+              <th scope="col">
+                <button type="button" className="admin-sort-btn" onClick={() => handleSort('name')} aria-sort={sortBy === 'name' ? (sortDir === 'asc' ? 'ascending' : 'descending') : undefined}>
+                  Name {sortBy === 'name' && (sortDir === 'asc' ? '↑' : '↓')}
+                </button>
+              </th>
+              <th scope="col">
+                <button type="button" className="admin-sort-btn" onClick={() => handleSort('category')} aria-sort={sortBy === 'category' ? (sortDir === 'asc' ? 'ascending' : 'descending') : undefined}>
+                  Category {sortBy === 'category' && (sortDir === 'asc' ? '↑' : '↓')}
+                </button>
+              </th>
+              <th scope="col">Price</th>
+              <th scope="col">UPC</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {sortedProducts.map((product) => (
+              <tr key={product.id} className="admin-product-row">
+                <td>
+                  <label className="admin-row-select">
+                    <input
+                      type="checkbox"
+                      checked={selectedIds.has(product.id)}
+                      onChange={() => toggleSelect(product.id)}
+                      aria-label={`Select ${product.name}`}
+                    />
+                  </label>
+                </td>
+                <td>{product.brand}</td>
+                <td>{product.name}</td>
+                <td>{product.category}</td>
+                <td>{product.price_usd != null ? `$${product.price_usd}` : '—'}</td>
+                <td>{product.upc || '—'}</td>
+                <td>
+                  <button type="button" className="btn btn-secondary" onClick={() => startEdit(product)}>Edit</button>
+                  <button type="button" className="btn btn-secondary" onClick={() => deleteProduct(product.id)}>Delete</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
+      {products.length === 0 && <div className="admin-card">No products found.</div>}
     </div>
   );
 };

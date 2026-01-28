@@ -4,6 +4,7 @@ import { IconInstagram, IconBrandX, IconLinkedin, IconTiktok, IconMenu, IconX, I
 import { useAuth } from '../context/AuthContext';
 import { BackToTop } from './BackToTop';
 import { OfflineBanner } from './OfflineBanner';
+import { ApiStatusIndicator } from './ApiStatusIndicator';
 import './AppLayout.css';
 
 type AppLayoutProps = {
@@ -109,8 +110,8 @@ const displayName = nameParts.length > 1
           <nav className="app-nav app-nav-desktop">
             <div className="app-nav-links">
               <Link className={`app-nav-link${location.pathname === '/' ? ' active' : ''}`} to="/">Home</Link>
-              <Link className={`app-nav-link${location.pathname.startsWith('/scan') ? ' active' : ''}`} to="/scan" title="Start a free skin analysis">Skin Analysis</Link>
-              <Link className={`app-nav-link${location.pathname.startsWith('/dashboard') ? ' active' : ''}`} to="/dashboard" title="View your dashboard and insights">Dashboard</Link>
+              <Link className={`app-nav-link${location.pathname.startsWith('/scan') ? ' active' : ''}`} to="/scan" title="Start a free skin analysis" onMouseEnter={() => void import('../pages/ScanPage')}>Skin Analysis</Link>
+              <Link className={`app-nav-link${location.pathname.startsWith('/dashboard') ? ' active' : ''}`} to="/dashboard" title="View your dashboard and insights" onMouseEnter={() => void import('../pages/DashboardPage')}>Dashboard</Link>
               <Link className={`app-nav-link${location.pathname.startsWith('/digital-twin') ? ' active' : ''}`} to="/digital-twin">Digital Twin</Link>
               <Link className={`app-nav-link${location.pathname.startsWith('/about') ? ' active' : ''}`} to="/about">About</Link>
               {isAuthenticated && user?.is_admin && (
@@ -181,7 +182,7 @@ const displayName = nameParts.length > 1
               )}
               
               {!location.pathname.startsWith('/scan') && !location.pathname.startsWith('/analysis') && (
-                <Link className="app-nav-cta" to="/scan" title="Start a free skin analysis">
+                <Link className="app-nav-cta" to="/scan" title="Start a free skin analysis" onMouseEnter={() => void import('../pages/ScanPage')}>
                   <IconScan size={18} strokeWidth={2} />
                   <span>Free Scan</span>
                 </Link>
@@ -364,7 +365,7 @@ const displayName = nameParts.length > 1
         {/* Bottom Bar */}
         <div className="app-footer-bottom">
           <div className="app-footer-bottom-container">
-            <p className="app-footer-copyright">© 2026 SkinCareAI. All rights reserved. <span className="app-footer-version" aria-hidden="true">v1.0</span></p>
+            <p className="app-footer-copyright">© 2026 SkinCareAI. All rights reserved. <span className="app-footer-version" aria-hidden="true">v1.0</span> <ApiStatusIndicator /></p>
             <p className="app-footer-disclaimer">
               <span className="app-footer-disclaimer-icon">ℹ️</span>
               Not a medical device. For informational purposes only.

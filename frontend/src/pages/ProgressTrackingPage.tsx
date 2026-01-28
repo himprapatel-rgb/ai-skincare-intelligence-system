@@ -91,7 +91,7 @@ const ProgressTrackingPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="chart-section">
+        <div className="chart-section" role="img" aria-label={`Progress chart: overall score and acne over time. ${progressData.length} data points. Current score ${progressData[0]?.overallScore ?? 0}. Improvement ${getImprovement() >= 0 ? '+' : ''}${getImprovement()}.`}>
           <div className="chart-header">
             <h2>Progress Chart</h2>
             <div className="chart-controls">
@@ -133,6 +133,7 @@ const ProgressTrackingPage: React.FC = () => {
                   tickLine={false}
                   tick={{ fill: '#64748b', fontSize: 12, fontWeight: 500 }}
                   dy={8}
+                  label={{ value: 'Date', position: 'insideBottom', offset: -8, fill: '#64748b', fontSize: 12 }}
                 />
                 <YAxis 
                   domain={[0, 100]}
@@ -140,6 +141,7 @@ const ProgressTrackingPage: React.FC = () => {
                   tickLine={false}
                   tick={{ fill: '#64748b', fontSize: 12, fontWeight: 500 }}
                   dx={-4}
+                  label={{ value: 'Score (%)', angle: -90, position: 'insideLeft', fill: '#64748b', fontSize: 12 }}
                 />
                 <Tooltip 
                   contentStyle={{

@@ -363,9 +363,9 @@ const AnalysisResults: React.FC = () => {
               <table className="history-table">
                 <thead>
                   <tr>
-                    <th>Date</th>
-                    <th>Status</th>
-                    <th className="right">Actions</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Status</th>
+                    <th scope="col" className="right">Actions</th>
                   </tr>
                 </thead>
                 <tbody>

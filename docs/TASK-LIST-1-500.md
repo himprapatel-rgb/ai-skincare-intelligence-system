@@ -2,7 +2,7 @@
 
 Tasks to execute autonomously. Approval granted for all items.
 
-**Progress:** 123 Done | 377 Remaining (as of last update)
+**Progress:** 145 Done | 355 Remaining (as of last update)
 
 ---
 
@@ -35,8 +35,8 @@ Tasks to execute autonomously. Approval granted for all items.
 | 23 | Remove or consolidate duplicate/unused CSS | Done |
 | 24 | Error boundary (already done) | Done |
 | 25 | API retry logic for failed requests (exponential backoff) | Done |
-| 26 | Add/expand E2E tests (Playwright) | - |
-| 27 | Add/expand unit tests (Vitest) | - |
+| 26 | Add/expand E2E tests (Playwright) | Done |
+| 27 | Add/expand unit tests (Vitest) | Done |
 | 28 | Document VITE_API_URL and env vars in README/.env.example | Done |
 | 29 | Sitemap or meta for SEO (title per route) | Done |
 | 30 | Ensure all routes have sensible document title | Done |
@@ -52,8 +52,8 @@ Tasks to execute autonomously. Approval granted for all items.
 | 40 | Rate limiting message in UI when API returns 429 | Done |
 | 41 | Offline / connection-lost message | Done |
 | 42 | Remove or guard console.log in production | Done |
-| 43 | Optional Sentry or error-reporting hook | - |
-| 44 | Health-check endpoint or status indicator | - |
+| 43 | Optional Sentry or error-reporting hook | Done |
+| 44 | Health-check endpoint or status indicator | Done |
 | 45 | "Remember me" on login form | Done |
 | 46 | Logout placement and wording in nav/dropdown | Done |
 | 47 | Print CSS (hide nav/footer, show content) | Done |
@@ -83,10 +83,10 @@ Tasks to execute autonomously. Approval granted for all items.
 | 64 | FavoritesPage: card hover and focus styles | Done |
 | 65 | MyShelfPage: filter tabs mobile wrap | Done |
 | 66 | Recommendations: filter chips or clear-all visibility | Done |
-| 67 | ProductDetailsPage: image gallery or zoom | - |
+| 67 | ProductDetailsPage: image gallery or zoom | Done |
 | 68 | RoutineBuilderPage: drag handle or reorder UI | - |
-| 69 | DigitalTwinTimelinePage: timeline axis labels | - |
-| 70 | ProgressTrackingPage: chart legend and tooltips | - |
+| 69 | DigitalTwinTimelinePage: timeline axis labels | Done |
+| 70 | ProgressTrackingPage: chart legend and tooltips | Done |
 | 71 | ContactPage: form validation and success state | Done |
 | 72 | AboutPage: section spacing and CTA | Done |
 | 73 | PrivacyPage: ToC or jump links | Done |
@@ -96,7 +96,7 @@ Tasks to execute autonomously. Approval granted for all items.
 | 77 | SkinTypeGuidePage: step indicators | Done |
 | 78 | VideoTutorialsPage: thumbnails and duration | Done |
 | 79 | OnboardingPage: progress step indicator | Done |
-| 80 | AuthPage: tab order and focus trap in modals | - |
+| 80 | AuthPage: tab order and focus trap in modals | Done |
 | 81 | PasswordResetPage: success message and CTA | Done |
 | 82 | EmailVerificationPage: resend cooldown UI | Done |
 | 83 | GoogleCallbackPage: loading and error copy | Done |
@@ -105,8 +105,8 @@ Tasks to execute autonomously. Approval granted for all items.
 | 86 | DataExportPage: format options and ETA | Done |
 | 87 | NotificationCenterPage: mark-all-read and filters | Done |
 | 88 | AdminDashboardPage: key metrics cards | Done |
-| 89 | AdminUsersPage: table sort and search | - |
-| 90 | AdminProductsPage: table sort and bulk actions | - |
+| 89 | AdminUsersPage: table sort and search | Done |
+| 90 | AdminProductsPage: table sort and bulk actions | Done |
 | 91 | AppLayout: mobile menu animation | Done |
 | 92 | AppLayout: user dropdown keyboard nav | Done |
 | 93 | AppLayout: footer columns responsive | Done |
@@ -140,7 +140,7 @@ Tasks to execute autonomously. Approval granted for all items.
 | 114 | Reduce motion preference: disable animations | Done |
 | 115 | Touch targets ≥44x44px on mobile | - |
 | 116 | Links vs buttons: use correct element | - |
-| 117 | Table headers and scope where tables exist | - |
+| 117 | Table headers and scope where tables exist | Done |
 | 118 | List markup (ul/ol) for lists | Done |
 | 119 | Landmark roles (main, nav, banner, contentinfo) | Done |
 | 120 | Page title unique and descriptive | Done |
@@ -166,7 +166,7 @@ Tasks to execute autonomously. Approval granted for all items.
 | 140 | Test with axe-core or lighthouse a11y | - |
 | 141 | Test with keyboard only | - |
 | 142 | Test with one screen reader (NVDA/VoiceOver) | - |
-| 143 | Document a11y decisions in README or docs | - |
+| 143 | Document a11y decisions in README or docs | Done |
 | 144 | Add a11y testing to CI | - |
 | 145 | Fix any a11y issues from automated run | - |
 | 146 | High-contrast or forced-colors support | - |
@@ -182,7 +182,7 @@ Tasks to execute autonomously. Approval granted for all items.
 | # | Task | Status |
 |---|------|--------|
 | 151 | Code-split routes (already lazy) | Done |
-| 152 | Preload critical route on hover | - |
+| 152 | Preload critical route on hover | Done |
 | 153 | Preconnect to API origin in index.html | Done |
 | 154 | Lazy load images below fold | - |
 | 155 | Use responsive images (srcset/sizes) where useful | - |
@@ -194,7 +194,7 @@ Tasks to execute autonomously. Approval granted for all items.
 | 161 | Avoid unnecessary re-renders (React.memo where useful) | - |
 | 162 | Virtualize long lists (e.g. history, products) | - |
 | 163 | Lazy load recharts or heavy libs | - |
-| 164 | Tree-shake lucide-react (import single icons) | - |
+| 164 | Tree-shake lucide-react (import single icons) | Done |
 | 165 | Audit bundle size (vite build --analyze or similar) | - |
 | 166 | Set long cache headers for static assets | - |
 | 167 | Add etag or version query for cache bust | - |
@@ -211,8 +211,8 @@ Tasks to execute autonomously. Approval granted for all items.
 | 178 | CI: run lighthouse or perf budget | - |
 | 179 | Source maps in staging only | - |
 | 180 | Error boundary log to backend or Sentry | - |
-| 181 | Retry failed API calls with backoff | - |
-| 182 | Timeout for API calls | - |
+| 181 | Retry failed API calls with backoff | Done |
+| 182 | Timeout for API calls | Done |
 | 183 | AbortController for fetch on unmount | - |
 | 184 | Loading state for every async action | - |
 | 185 | Optimistic updates where safe (e.g. favorites) | - |
@@ -238,13 +238,13 @@ Tasks to execute autonomously. Approval granted for all items.
 
 | # | Task | Status |
 |---|------|--------|
-| 201 | Unique meta title per route | - |
+| 201 | Unique meta title per route | Done |
 | 202 | Meta description per route | - |
 | 203 | OG title, description, image for key pages | - |
 | 204 | Twitter card meta | - |
-| 205 | Canonical URL meta | - |
+| 205 | Canonical URL meta | Done |
 | 206 | JSON-LD Organization | - |
-| 207 | JSON-LD WebApplication | - |
+| 207 | JSON-LD WebApplication | Done |
 | 208 | JSON-LD BreadcrumbList on inner pages | - |
 | 209 | Sitemap.xml or route list for crawlers | - |
 | 210 | Robots.txt if needed | - |

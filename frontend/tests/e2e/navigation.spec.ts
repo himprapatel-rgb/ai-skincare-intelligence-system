@@ -138,4 +138,12 @@ test.describe("manual UX navigation flow", () => {
       await expect(link).toBeVisible({ timeout: 5000 });
     }
   });
+
+  test("skip to main content link is present and focusable", async ({ page }) => {
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    const skipLink = page.getByRole("link", { name: /skip to main content/i }).first();
+    await expect(skipLink).toBeVisible({ timeout: 5000 });
+    await skipLink.focus();
+    await expect(skipLink).toBeFocused();
+  });
 });

@@ -90,7 +90,7 @@ describe("DigitalTwinTimelinePage", () => {
 
     await waitFor(() => {
       expect(screen.getByText("Digital Twin Timeline")).toBeInTheDocument();
-      expect(screen.getByText("improving")).toBeInTheDocument();
+      expect(screen.getByText(/improving/i)).toBeInTheDocument();
       expect(screen.getAllByText("Redness").length).toBeGreaterThan(0);
       expect(screen.getAllByText("Acne").length).toBeGreaterThan(0);
       expect(screen.getByText("Top Concerns")).toBeInTheDocument();

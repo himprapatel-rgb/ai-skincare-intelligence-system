@@ -84,6 +84,14 @@
   box-shadow: 0 6px 16px rgba(31, 111, 235, 0.3);
 }
 
+.consent-summary {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-dark);
+  margin: 0 0 8px 0;
+  line-height: 1.4;
+}
+
 .consent-existing-notice {
   background: var(--primary-light);
   color: var(--primary);

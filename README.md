@@ -32,6 +32,22 @@
 8. [Environment Variables](#environment-variables)
 9. [API Reference](#api-reference)
 10. [Contributing](#contributing)
+11. [Accessibility](#accessibility)
+
+---
+
+## Accessibility
+
+We aim for WCAG 2.1 Level AA where practical. Key decisions:
+
+- **Skip link**: “Skip to main content” at top of every page for keyboard users.
+- **Landmarks**: `main`, `nav`, `banner`, `contentinfo`; headings in logical order (single `h1` per page).
+- **Forms**: Labels via `htmlFor`, errors via `aria-describedby` and `aria-invalid`; required fields use `aria-required`.
+- **Modals**: Focus trap and return focus on close; `role="dialog"`, `aria-modal="true"`.
+- **Toasts**: `role="alert"`, `aria-live="polite"`.
+- **Loading**: Spinners use `role="status"` and `aria-label="Loading"`.
+- **Motion**: `prefers-reduced-motion` respected in CSS.
+- **Tables**: Headers use `scope="col"` where applicable.
 
 ---
 

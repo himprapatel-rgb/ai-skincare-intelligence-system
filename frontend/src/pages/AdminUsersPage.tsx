@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './AdminUsersPage.css';
 
@@ -12,10 +12,15 @@ type AdminUser = {
   created_at?: string | null;
 };
 
+type SortKey = 'email' | 'full_name' | 'created_at';
+type SortDir = 'asc' | 'desc';
+
 const AdminUsersPage: React.FC = () => {
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState('');
+  const [sortBy, setSortBy] = useState<SortKey>('email');
+  const [sortDir, setSortDir] = useState<SortDir>('asc');
 
   const fetchUsers = useCallback(async () => {
     try {
@@ -45,6 +50,22 @@ const AdminUsersPage: React.FC = () => {
   useEffect(() => {
     fetchUsers();
   }, [fetchUsers]);
+
+  const handleSort = useCallback((key: SortKey) => {
+    setSortBy(key);
+    setSortDir((d) => (sortBy === key && d === 'asc' ? 'desc' : 'asc'));
+  }, [sortBy]);
+
+  const sortedUsers = useMemo(() => {
+    const list = [...users];
+    list.sort((a, b) => {
+      const aVal = (a[sortBy] ?? '') as string;
+      const bVal = (b[sortBy] ?? '') as string;
+      const cmp = String(aVal).localeCompare(String(bVal));
+      return sortDir === 'asc' ? cmp : -cmp;
+    });
+    return list;
+  }, [users, sortBy, sortDir]);
 
   const updateUser = async (userId: number, updates: Partial<AdminUser>) => {
     try {
@@ -89,46 +110,54 @@ const AdminUsersPage: React.FC = () => {
       {isLoading ? (
         <div className="admin-card">Loading users...</div>
       ) : (
-        <div className="admin-users-table">
-          <div className="admin-users-row admin-users-header">
-            <span>Email</span>
-            <span>Name</span>
-            <span>Active</span>
-            <span>Verified</span>
-            <span>Admin</span>
-          </div>
-          {users.map((user) => (
-            <div key={user.id} className="admin-users-row">
-              <span>{user.email}</span>
-              <span>{user.full_name || '—'}</span>
-              <label className="admin-toggle">
+        <>
+        <div className="admin-users-table-wrapper">
+        <table className="admin-users-table" role="grid">
+          <thead>
+            <tr className="admin-users-row admin-users-header">
+              <th scope="col"><button type="button" className="admin-sort-btn" onClick={() => handleSort('email')} aria-sort={sortBy === 'email' ? (sortDir === 'asc' ? 'ascending' : 'descending') : undefined}>Email {sortBy === 'email' && (sortDir === 'asc' ? '↑' : '↓')}</button></th>
+              <th scope="col"><button type="button" className="admin-sort-btn" onClick={() => handleSort('full_name')} aria-sort={sortBy === 'full_name' ? (sortDir === 'asc' ? 'ascending' : 'descending') : undefined}>Name {sortBy === 'full_name' && (sortDir === 'asc' ? '↑' : '↓')}</button></th>
+              <th scope="col">Active</th>
+              <th scope="col">Verified</th>
+              <th scope="col">Admin</th>
+            </tr>
+          </thead>
+          <tbody>
+          {sortedUsers.map((user) => (
+            <tr key={user.id} className="admin-users-row">
+              <td>{user.email}</td>
+              <td>{user.full_name || '—'}</td>
+              <td><label className="admin-toggle">
                 <input
                   type="checkbox"
                   checked={user.is_active}
                   onChange={(event) => updateUser(user.id, { is_active: event.target.checked })}
                 />
                 <span />
-              </label>
-              <label className="admin-toggle">
+              </label></td>
+              <td><label className="admin-toggle">
                 <input
                   type="checkbox"
                   checked={user.is_verified}
                   onChange={(event) => updateUser(user.id, { is_verified: event.target.checked })}
                 />
                 <span />
-              </label>
-              <label className="admin-toggle">
+              </label></td>
+              <td><label className="admin-toggle">
                 <input
                   type="checkbox"
                   checked={user.is_admin}
                   onChange={(event) => updateUser(user.id, { is_admin: event.target.checked })}
                 />
                 <span />
-              </label>
-            </div>
+              </label></td>
+            </tr>
           ))}
-          {users.length === 0 && <div className="admin-card">No users found.</div>}
+          </tbody>
+        </table>
         </div>
+          {users.length === 0 && <div className="admin-card">No users found.</div>}
+        </>
       )}
     </div>
   );

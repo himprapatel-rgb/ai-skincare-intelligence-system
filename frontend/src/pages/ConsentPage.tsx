@@ -171,6 +171,7 @@ const ConsentPage: React.FC = () => {
                   <span className="slider"></span>
                 </label>
               </div>
+              <p className="consent-summary">Required for skin analysis and your account.</p>
               <p className="consent-description">
                 We collect and process basic information necessary to provide you with our skin analysis service. 
                 This includes your skin images, profile data, and analysis results. This consent is mandatory 
@@ -198,6 +199,7 @@ const ConsentPage: React.FC = () => {
                   <span className="slider"></span>
                 </label>
               </div>
+              <p className="consent-summary">Helps us improve the app and fix issues.</p>
               <p className="consent-description">
                 Help us improve our service by allowing us to collect anonymous usage data and performance metrics.
               </p>
@@ -248,6 +250,7 @@ const ConsentPage: React.FC = () => {
                   <span className="slider"></span>
                 </label>
               </div>
+              <p className="consent-summary">Anonymized data may be shared with research partners.</p>
               <p className="consent-description">
                 Allow us to share anonymized data with trusted research partners to advance skincare science and AI technology.
               </p>

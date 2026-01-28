@@ -65,6 +65,7 @@ const ProgressChart: React.FC<ProgressChartProps> = ({ chartData, dateRange, onR
               tickLine={false}
               tick={{ fill: '#64748b', fontSize: 12, fontWeight: 500 }}
               dy={8}
+              label={{ value: 'Date', position: 'insideBottom', offset: -8, fill: '#64748b', fontSize: 12 }}
             />
             <YAxis 
               domain={[0, 100]} 
@@ -73,6 +74,7 @@ const ProgressChart: React.FC<ProgressChartProps> = ({ chartData, dateRange, onR
               tickLine={false}
               tick={{ fill: '#64748b', fontSize: 12, fontWeight: 500 }}
               dx={-4}
+              label={{ value: 'Score', angle: -90, position: 'insideLeft', fill: '#64748b', fontSize: 12 }}
             />
             <Tooltip 
               formatter={(value, name) => [`${value}`, name]} 

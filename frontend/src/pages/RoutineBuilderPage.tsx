@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { IconSun, IconMoon, IconBell, IconArrowUp, IconArrowDown, IconX, IconCheck, IconInfo } from '../components/Icons';
+import { IconSun, IconMoon, IconBell, IconArrowUp, IconArrowDown, IconX, IconCheck, IconInfo, IconGripVertical } from '../components/Icons';
 import { usePageTitle } from '../hooks/usePageTitle';
 import './RoutineBuilderPage.css';
 
@@ -280,6 +280,9 @@ const RoutineBuilderPage: React.FC = () => {
           <>
             {currentRoutine.map((step, index) => (
               <div key={step.id} className="step-card">
+                <div className="step-drag-handle" aria-hidden="true" title="Reorder step">
+                  <IconGripVertical size={20} strokeWidth={2} />
+                </div>
                 <div className="step-number">{step.order}</div>
                 <div className="step-content">
                   <div className="step-field">

@@ -351,13 +351,26 @@
 }
 
 /* Step Card */
+.step-drag-handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-gray);
+  cursor: grab;
+  flex-shrink: 0;
+}
+
+.step-drag-handle:active {
+  cursor: grabbing;
+}
+
 .step-card {
   background: var(--bg-white);
   border: 2px solid var(--border);
   border-radius: 12px;
   padding: 20px;
   display: grid;
-  grid-template-columns: 50px 1fr auto;
+  grid-template-columns: 36px 50px 1fr auto;
   gap: 16px;
   align-items: center;
   transition: all 0.2s ease;

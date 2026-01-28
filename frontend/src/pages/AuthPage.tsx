@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { LoginForm } from '../components/LoginForm';
@@ -7,11 +7,14 @@ import { IconCamera, IconSparkles, IconBarChart } from '../components/Icons';
 import { usePageTitle } from '../hooks/usePageTitle';
 import './AuthPage.css';
 
+const FOCUSABLE = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+
 export const AuthPage: React.FC = () => {
   usePageTitle('Sign In');
   const [mode, setMode] = useState<'login' | 'register'>('login');
   const navigate = useNavigate();
   const location = useLocation();
+  const authCardRef = useRef<HTMLDivElement>(null);
   const API_URL = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
 
   useEffect(() => {
@@ -23,6 +26,30 @@ export const AuthPage: React.FC = () => {
       setMode('login');
     }
   }, [location.search]);
+
+  useEffect(() => {
+    const el = authCardRef.current;
+    if (!el) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== 'Tab') return;
+      const focusables = el.querySelectorAll<HTMLElement>(FOCUSABLE);
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (e.shiftKey) {
+        if (document.activeElement === first && last) {
+          e.preventDefault();
+          last.focus();
+        }
+      } else {
+        if (document.activeElement === last && first) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+    el.addEventListener('keydown', onKeyDown);
+    return () => el.removeEventListener('keydown', onKeyDown);
+  }, [mode]);
 
   const handleAuthSuccess = async () => {
     try {
@@ -78,7 +105,7 @@ export const AuthPage: React.FC = () => {
       {/* Right Panel - Auth Form */}
       <div className="auth-right">
         <div className="auth-container">
-          <div className="auth-card">
+          <div ref={authCardRef} className="auth-card" role="form" aria-label={mode === 'login' ? 'Sign in form' : 'Create account form'}>
             <div className="auth-header">
               <h2>{mode === 'login' ? 'Welcome Back' : 'Create Account'}</h2>
               <p>{mode === 'login' ? 'Sign in to continue your skincare journey' : 'Start your personalized skincare experience'}</p>

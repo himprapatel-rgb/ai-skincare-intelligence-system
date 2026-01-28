@@ -67,6 +67,7 @@ const ProductDetailsPage: React.FC = () => {
   });
   const [submittingReview, setSubmittingReview] = useState(false);
   const [reviewError, setReviewError] = useState('');
+  const [imageZoomed, setImageZoomed] = useState(false);
 
   const fetchProductDetails = useCallback(async () => {
     try {
@@ -192,7 +193,17 @@ const ProductDetailsPage: React.FC = () => {
       <div className="product-header">
         <div className="product-image-section">
           {product.imageUrl ? (
-            <img src={product.imageUrl} alt={product.name} loading="lazy" width={320} height={320} />
+            <>
+              <button type="button" className="product-image-zoom-trigger" onClick={() => setImageZoomed(true)} aria-label="Zoom product image">
+                <img src={product.imageUrl} alt={product.name} loading="lazy" width={320} height={320} />
+              </button>
+              {imageZoomed && (
+                <div className="product-image-zoom-overlay" role="dialog" aria-modal="true" aria-label="Enlarged product image" onClick={() => setImageZoomed(false)}>
+                  <button type="button" className="product-image-zoom-close" onClick={() => setImageZoomed(false)} aria-label="Close zoom">×</button>
+                  <img src={product.imageUrl} alt={product.name} onClick={(e) => e.stopPropagation()} />
+                </div>
+              )}
+            </>
           ) : (
             <div className="placeholder-image">
               <svg width="80" height="100" viewBox="0 0 80 100" fill="none" xmlns="http://www.w3.org/2000/svg">

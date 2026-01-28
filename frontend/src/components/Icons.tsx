@@ -76,6 +76,7 @@ export { Bell as IconBell } from 'lucide-react';
 export { ArrowUp as IconArrowUp } from 'lucide-react';
 export { ArrowDown as IconArrowDown } from 'lucide-react';
 export { ArrowRight as IconArrowRight } from 'lucide-react';
+export { GripVertical as IconGripVertical } from 'lucide-react';
 
 // Social & Communication
 export { Mail as IconMail } from 'lucide-react';

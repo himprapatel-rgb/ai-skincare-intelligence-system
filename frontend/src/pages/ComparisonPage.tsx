@@ -320,10 +320,10 @@ const ComparisonPage: React.FC = () => {
               <table className="comparison-table">
                 <thead>
                   <tr>
-                    <th className="comparison-th left">Concern</th>
-                    <th className="comparison-th center">{analysis1.date}</th>
-                    <th className="comparison-th center">{analysis2.date}</th>
-                    <th className="comparison-th center">Change</th>
+                    <th scope="col" className="comparison-th left">Concern</th>
+                    <th scope="col" className="comparison-th center">{analysis1.date}</th>
+                    <th scope="col" className="comparison-th center">{analysis2.date}</th>
+                    <th scope="col" className="comparison-th center">Change</th>
                   </tr>
                 </thead>
                 <tbody>

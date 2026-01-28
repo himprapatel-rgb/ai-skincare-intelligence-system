@@ -327,12 +327,14 @@ const ProductDetailsPage: React.FC = () => {
                 Remove from Shelf
               </button>
             ) : (
-              <button className="btn-primary" onClick={handleAddToShelf}>
-                Add to My Shelf
-              </button>
-              <button type="button" className="btn-secondary" onClick={handleAddToCompare} disabled={compareIds.includes(product.id)}>
-                {compareIds.includes(product.id) ? 'In compare list' : 'Add to compare'}
-              </button>
+              <>
+                <button className="btn-primary" onClick={handleAddToShelf}>
+                  Add to My Shelf
+                </button>
+                <button type="button" className="btn-secondary" onClick={handleAddToCompare} disabled={compareIds.includes(product.id)}>
+                  {compareIds.includes(product.id) ? 'In compare list' : 'Add to compare'}
+                </button>
+              </>
             )}
             <button className="btn-outline" onClick={() => navigate('/routine-builder')}>
               Add to Routine

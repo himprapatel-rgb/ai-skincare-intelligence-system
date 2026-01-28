@@ -131,13 +131,18 @@
 .stat-icon {
   width: 64px;
   height: 64px;
-  border-radius: 12px;
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg-light);
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.12) 0%, rgba(139, 92, 246, 0.08) 100%);
   color: var(--primary);
   flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.stat-card:hover .stat-icon {
+  transform: scale(1.08);
 }
 
 .stat-icon svg {
@@ -147,6 +152,7 @@
 
 .stat-card.primary .stat-icon {
   background: rgba(255, 255, 255, 0.2);
+  color: white;
 }
 
 .stat-content {
@@ -313,9 +319,11 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 16px;
-  background: var(--bg-light);
-  border-radius: 8px;
+  padding: 16px 20px;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  transition: all 0.2s ease;
   transition: all 0.2s ease;
 }
 

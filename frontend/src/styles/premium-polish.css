@@ -192,10 +192,10 @@ button:active::after,
 /* Glow effect */
 @keyframes glow {
   0%, 100% {
-    box-shadow: 0 0 5px rgba(13, 148, 136, 0.5);
+    box-shadow: 0 0 5px rgba(31, 111, 235, 0.5);
   }
   50% {
-    box-shadow: 0 0 20px rgba(13, 148, 136, 0.8);
+    box-shadow: 0 0 20px rgba(31, 111, 235, 0.8);
   }
 }
 
@@ -218,7 +218,7 @@ select:focus {
 /* Focus ring */
 .focus-ring:focus {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.2);
+  box-shadow: 0 0 0 3px rgba(31, 111, 235, 0.2);
 }
 
 /* ==========================================
@@ -413,7 +413,7 @@ select:focus {
 }
 
 .hover-glow:hover {
-  box-shadow: 0 0 20px rgba(13, 148, 136, 0.4);
+  box-shadow: 0 0 20px rgba(31, 111, 235, 0.4);
 }
 
 /* ==========================================

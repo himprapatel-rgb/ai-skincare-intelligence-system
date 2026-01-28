@@ -38,7 +38,7 @@
 }
 
 .consent-option:hover {
-  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.15);
+  box-shadow: 0 4px 12px rgba(31, 111, 235, 0.15);
   border-color: var(--primary);
   transform: translateY(-2px);
 }
@@ -73,7 +73,7 @@
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.2);
+  box-shadow: 0 4px 12px rgba(31, 111, 235, 0.2);
   margin-top: 32px;
   width: 100%;
 }
@@ -81,7 +81,7 @@
 .save-button:hover {
   background: var(--primary-dark);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(13, 148, 136, 0.3);
+  box-shadow: 0 6px 16px rgba(31, 111, 235, 0.3);
 }
 
 .consent-existing-notice {

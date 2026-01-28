@@ -166,7 +166,7 @@
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
-  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.2);
+  box-shadow: 0 4px 12px rgba(31, 111, 235, 0.2);
 }
 
 .btn-scan:hover:not(:disabled) {

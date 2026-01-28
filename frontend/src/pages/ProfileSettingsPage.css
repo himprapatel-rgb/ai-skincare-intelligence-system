@@ -127,7 +127,7 @@
 .profile-nav button:hover {
   border-color: var(--primary);
   color: var(--primary);
-  background: rgba(13, 148, 136, 0.08);
+  background: rgba(31, 111, 235, 0.08);
 }
 
 .profile-nav button.active {

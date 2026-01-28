@@ -186,7 +186,7 @@
 
 .notification-item.unread {
   border-left: 4px solid var(--primary);
-  background: rgba(13, 148, 136, 0.05);
+  background: rgba(31, 111, 235, 0.05);
 }
 
 .notification-icon {

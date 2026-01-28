@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { IconInstagram, IconTwitter, IconLinkedin, IconTiktok, IconMenu, IconX, IconBell, IconUser, IconChevronDown, IconLogOut, IconSettings, IconScan } from './Icons';
+import { IconInstagram, IconBrandX, IconLinkedin, IconTiktok, IconMenu, IconX, IconUser, IconChevronDown, IconLogOut, IconSettings, IconScan } from './Icons';
 import { useAuth } from '../context/AuthContext';
 import './AppLayout.css';
 
@@ -113,12 +113,6 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
             <div className="app-nav-actions">
               {isAuthenticated ? (
                 <>
-                  {/* Notification Bell */}
-                  <Link to="/notifications" className="app-nav-icon-btn" aria-label="Notifications">
-                    <IconBell size={20} strokeWidth={2} />
-                    <span className="app-nav-notification-dot" />
-                  </Link>
-                  
                   {/* User Dropdown */}
                   <div className="app-nav-user-dropdown" ref={userDropdownRef}>
                     <button 
@@ -295,9 +289,9 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
                 <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram">
                   <IconInstagram size={18} strokeWidth={2} />
                 </a>
-                <a href="https://x.com" target="_blank" rel="noreferrer" aria-label="X">
-                  <IconTwitter size={18} strokeWidth={2} />
-                </a>
+              <a href="https://x.com" target="_blank" rel="noreferrer" aria-label="X">
+                <IconBrandX size={18} />
+              </a>
                 <a href="https://tiktok.com" target="_blank" rel="noreferrer" aria-label="TikTok">
                   <IconTiktok size={18} strokeWidth={2} />
                 </a>

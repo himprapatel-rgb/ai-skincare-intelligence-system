@@ -195,7 +195,7 @@
 }
 
 .auth-submit {
-  background: var(--primary); /* Brand teal */
+  background: var(--primary); /* Brand blue */
   color: white;
   padding: 12px 24px; /* Brand guideline: 12px 24px */
   border: none;
@@ -205,13 +205,13 @@
   cursor: pointer;
   transition: all 0.2s;
   margin-top: 8px;
-  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.2);
+  box-shadow: 0 4px 12px rgba(31, 111, 235, 0.2);
 }
 
 .auth-submit:hover {
   background: var(--primary-hover);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(13, 148, 136, 0.3);
+  box-shadow: 0 6px 16px rgba(31, 111, 235, 0.3);
 }
 
 .auth-submit:disabled {
@@ -254,7 +254,7 @@
 .auth-toggle a,
 .auth-toggle button {
   display: inline-block;
-  color: var(--primary); /* Brand teal */
+  color: var(--primary); /* Brand blue */
   font-weight: 600;
   font-size: 1rem; /* Brand guideline: 16px Body */
   text-decoration: none;
@@ -288,7 +288,7 @@
   color: white;
   border-color: var(--primary);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+  box-shadow: 0 4px 12px rgba(31, 111, 235, 0.3);
 }
 
 .auth-toggle a:hover::before,
@@ -374,7 +374,7 @@
 
 .btn-link {
   display: inline-block;
-  color: var(--primary); /* Brand teal */
+  color: var(--primary); /* Brand blue */
   font-weight: 600;
   font-size: 1rem; /* Brand guideline: 16px Body */
   text-decoration: none;
@@ -391,7 +391,7 @@
   background: var(--primary);
   color: white;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+  box-shadow: 0 4px 12px rgba(31, 111, 235, 0.3);
 }
 
 
@@ -479,12 +479,12 @@
   font-size: 1rem; /* Brand guideline: 16px Body */
   font-weight: 600; /* Brand guideline */
   color: white;
-  background: var(--primary); /* Brand teal */
+  background: var(--primary); /* Brand blue */
   border: none;
   border-radius: 8px; /* Brand guideline: 8px */
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.2);
+  box-shadow: 0 4px 12px rgba(31, 111, 235, 0.2);
   min-width: 120px;
   min-height: 44px;
 }
@@ -492,7 +492,7 @@
 .btn-primary:hover:not(:disabled) {
   background: var(--primary-hover);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(13, 148, 136, 0.3);
+  box-shadow: 0 6px 16px rgba(31, 111, 235, 0.3);
 }
 
 .btn-primary:active:not(:disabled) {

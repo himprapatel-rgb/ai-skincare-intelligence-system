@@ -1,46 +1,63 @@
 # SkinCareAI Color Scheme Documentation
 
-> **IMPORTANT: Do not change these colors.** This document serves as the official color reference for the application.
+> **🔒 LOCKED - DO NOT CHANGE THESE COLORS**
+> 
+> This document serves as the official color reference for the application.
+> The color scheme is final and should not be modified.
 
-## Primary Colors
+---
 
-| Name | Hex | Usage |
-|------|-----|-------|
-| Primary | `#1f6feb` | Main brand color, buttons, links, accents |
-| Primary Hover | `#1e4fd6` | Hover states, darker variant |
-| Primary Light | `#e6efff` | Backgrounds, selections, subtle highlights |
+## Brand Colors (Primary Palette)
+
+The application uses a **Blue + White** color scheme for a clean, premium, medical feel.
+
+| Name | Hex | RGB | Usage |
+|------|-----|-----|-------|
+| **Brand Blue** | `#1f6feb` | `rgb(31, 111, 235)` | Primary buttons, links, accents, active states |
+| **Brand Blue Hover** | `#1e4fd6` | `rgb(30, 79, 214)` | Hover states, darker variant |
+| **Brand Blue Light** | `#e6efff` | `rgb(230, 239, 255)` | Backgrounds, selections, subtle highlights |
+| **White** | `#ffffff` | `rgb(255, 255, 255)` | Main backgrounds, cards |
+
+## RGBA Values for Shadows & Overlays
+
+When you need transparency, use these RGBA values:
+
+```css
+/* Blue with opacity */
+rgba(31, 111, 235, 0.1)   /* Very light - backgrounds */
+rgba(31, 111, 235, 0.2)   /* Light - shadows */
+rgba(31, 111, 235, 0.3)   /* Medium - hover shadows */
+rgba(31, 111, 235, 0.5)   /* Strong - focus rings */
+rgba(31, 111, 235, 0.9)   /* Almost solid - overlays */
+```
+
+---
 
 ## Accent Colors
 
 | Name | Hex | Usage |
 |------|-----|-------|
-| Accent | `#a9c7ff` | Secondary highlights, decorative elements |
-| Accent Light | `#f1f5ff` | Light backgrounds, hover states |
+| **Accent Blue** | `#a9c7ff` | Secondary highlights, decorative elements |
+| **Accent Light** | `#f1f5ff` | Light backgrounds, hover states |
 
-## Status Colors
+---
 
-| Name | Hex | Light Variant | Usage |
-|------|-----|---------------|-------|
-| Success | `#34c759` | `#e6f8ec` | Positive feedback, completed states |
-| Warning | `#ffb020` | `#fff4d6` | Caution states, alerts |
-| Danger | `#ff3b30` | `#ffe4e1` | Errors, destructive actions |
-| Info | `#3b82f6` | `#e7f0ff` | Informational messages |
-
-## Neutral Colors (Gray Scale)
+## Neutral Colors (Grays)
 
 | Name | Hex | Usage |
 |------|-----|-------|
-| White | `#ffffff` | Backgrounds, cards |
 | Gray 50 | `#f8fbff` | Tertiary backgrounds |
 | Gray 100 | `#eef3fb` | Secondary backgrounds |
 | Gray 200 | `#e3ecff` | Borders, dividers |
-| Gray 300 | `#c8d6f2` | Disabled states, scrollbars |
+| Gray 300 | `#c8d6f2` | Disabled states |
 | Gray 400 | `#8a9ab7` | Muted text, placeholders |
 | Gray 500 | `#6b7d99` | Secondary text |
 | Gray 600 | `#4b5b76` | Body text |
-| Gray 700 | `#32415b` | Headings, emphasis |
+| Gray 700 | `#32415b` | Headings |
 | Gray 800 | `#1b2740` | Dark text |
-| Gray 900 | `#0b1220` | Primary text, near-black |
+| Gray 900 | `#0b1220` | Primary text (near black) |
+
+---
 
 ## Background Colors
 
@@ -50,48 +67,75 @@
 | `--bg-secondary` | `#f3f7ff` | Section backgrounds |
 | `--bg-tertiary` | `#f8fbff` | Card backgrounds |
 
-## Text Colors
+---
 
-| CSS Variable | Value | Usage |
-|--------------|-------|-------|
-| `--text-primary` | `#0b1220` | Headings, important text |
-| `--text-secondary` | `#4b5b76` | Body text, descriptions |
-| `--text-muted` | `#8a9ab7` | Captions, hints |
+## Status Colors (Use Sparingly)
+
+These are for functional feedback only:
+
+| Name | Hex | Usage |
+|------|-----|-------|
+| Success | `#34c759` | Success messages only |
+| Warning | `#ffb020` | Warning messages only |
+| Danger | `#ff3b30` | Error messages only |
+
+---
+
+## CSS Variables Reference
+
+```css
+:root {
+  /* Primary - LOCKED */
+  --primary: #1f6feb;
+  --primary-hover: #1e4fd6;
+  --primary-light: #e6efff;
+  
+  /* Accent - LOCKED */
+  --accent: #a9c7ff;
+  --accent-light: #f1f5ff;
+  
+  /* Text - LOCKED */
+  --text-primary: #0b1220;
+  --text-secondary: #4b5b76;
+  --text-muted: #8a9ab7;
+  
+  /* Background - LOCKED */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f3f7ff;
+}
+```
+
+---
 
 ## Gradients
 
 ```css
-/* Primary Gradient - used for CTAs and hero elements */
+/* Primary Gradient - for CTAs and hero elements */
 background: linear-gradient(135deg, #1f6feb 0%, #5a8bff 100%);
 
-/* Header Logo Mark */
+/* Logo mark gradient */
 background: linear-gradient(135deg, #1f6feb 0%, #5a8bff 100%);
 ```
 
-## Shadows
+---
 
-| Name | Value | Usage |
-|------|-------|-------|
-| Small | `0 1px 2px 0 rgba(13, 27, 62, 0.06)` | Subtle elevation |
-| Medium | `0 6px 14px -6px rgba(13, 27, 62, 0.16)` | Cards, dropdowns |
-| Large | `0 12px 22px -10px rgba(13, 27, 62, 0.2)` | Modals, popovers |
-| XL | `0 20px 28px -14px rgba(13, 27, 62, 0.22)` | Floating elements |
+## Design Principles
 
-## Typography
-
-- **Font Family**: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif
-- **Font Weights**: 400 (normal), 500 (medium), 600 (semibold), 700 (bold)
-
-## Border Radius Scale
-
-| Size | Value |
-|------|-------|
-| Small | `6px` |
-| Medium | `8px` / `10px` |
-| Large | `12px` / `16px` |
-| XL | `24px` |
-| Full | `9999px` (pill shape) |
+1. **Blue is the primary color** - Use for all interactive elements
+2. **White backgrounds** - Keep backgrounds clean and minimal
+3. **No random colors** - Avoid introducing new colors
+4. **Consistent shadows** - Use blue-tinted shadows for depth
+5. **Simple and premium** - Less is more
 
 ---
 
-*Last updated: January 2026*
+## What NOT to Use
+
+❌ Teal/Green as primary (`#0D9488`)
+❌ Orange as secondary (`#F97316`)  
+❌ Random accent colors
+❌ Gradients with multiple different colors
+
+---
+
+*Color scheme locked: January 27, 2026*

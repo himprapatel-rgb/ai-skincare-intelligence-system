@@ -55,7 +55,7 @@
 
 .info-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.15);
+  box-shadow: 0 4px 12px rgba(31, 111, 235, 0.15);
   border-color: var(--primary);
 }
 
@@ -80,7 +80,7 @@
 
 .social-card .social-links a:hover {
   color: var(--primary);
-  border-color: rgba(13, 148, 136, 0.4);
+  border-color: rgba(31, 111, 235, 0.4);
   box-shadow: var(--shadow-sm);
 }
 
@@ -142,7 +142,7 @@
   outline: none;
   border-color: var(--primary);
   background: var(--bg-white);
-  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+  box-shadow: 0 0 0 3px rgba(31, 111, 235, 0.1);
 }
 
 .form-group textarea {
@@ -153,7 +153,7 @@
 .btn-submit {
   width: 100%;
   padding: 12px 24px; /* Brand guideline: 12px 24px */
-  background: var(--primary); /* Brand teal */
+  background: var(--primary); /* Brand blue */
   color: white;
   border: none;
   border-radius: 8px; /* Brand guideline: 8px */
@@ -161,13 +161,13 @@
   font-weight: 600; /* Brand guideline */
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.2);
+  box-shadow: 0 4px 12px rgba(31, 111, 235, 0.2);
 }
 
 .btn-submit:hover {
   background: var(--primary-dark);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(13, 148, 136, 0.3);
+  box-shadow: 0 6px 16px rgba(31, 111, 235, 0.3);
 }
 
 @media (max-width: 1024px) {

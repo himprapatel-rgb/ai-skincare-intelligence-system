@@ -66,14 +66,14 @@
   border-color: var(--primary);
   color: var(--primary);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.15);
+  box-shadow: 0 4px 12px rgba(31, 111, 235, 0.15);
 }
 
 .filter-btn.active {
   background: var(--primary);
   border-color: var(--primary);
   color: white;
-  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+  box-shadow: 0 4px 12px rgba(31, 111, 235, 0.3);
 }
 
 /* Stats Grid */
@@ -96,7 +96,7 @@
 
 .stat-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.15);
+  box-shadow: 0 4px 12px rgba(31, 111, 235, 0.15);
   border-color: var(--primary);
 }
 
@@ -157,7 +157,7 @@
 
 .history-item:hover {
   transform: translateX(4px);
-  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.15);
+  box-shadow: 0 4px 12px rgba(31, 111, 235, 0.15);
   border-color: var(--primary);
 }
 
@@ -238,7 +238,7 @@
 
 .view-btn {
   padding: 10px 20px;
-  background: var(--primary); /* Brand teal */
+  background: var(--primary); /* Brand blue */
   border: none;
   border-radius: 8px; /* Brand guideline: 8px */
   color: white;
@@ -246,13 +246,13 @@
   font-size: 0.95rem;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.2);
+  box-shadow: 0 4px 12px rgba(31, 111, 235, 0.2);
 }
 
 .view-btn:hover {
   background: var(--primary-dark);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(13, 148, 136, 0.3);
+  box-shadow: 0 6px 16px rgba(31, 111, 235, 0.3);
 }
 
 .recommendations-count {

@@ -1,16 +1,5 @@
 /* Routine Builder Page - Brand-Aligned Design */
-
-:root {
-  --primary: #0D9488;
-  --primary-dark: #0f766e;
-  --secondary: #F97316;
-  --bg-light: #F8FAFC;
-  --bg-white: #FFFFFF;
-  --text-dark: #1E293B;
-  --text-gray: #4b5b76;
-  --border: #E2E8F0;
-  --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
+/* Uses global CSS variables from index.css */
 
 .routine-builder-page {
   min-height: 100vh;
@@ -77,9 +66,9 @@
 
 .routine-toggle button.active,
 .routine-toggle input:checked + label {
-  background: var(--primary); /* Brand teal */
+  background: var(--primary); /* Brand blue */
   color: white;
-  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.2);
+  box-shadow: 0 4px 12px rgba(31, 111, 235, 0.2);
 }
 
 .routine-toggle button:not(.active):hover {
@@ -211,7 +200,7 @@
 }
 
 .btn-step-secondary:hover {
-  background: rgba(13, 148, 136, 0.05);
+  background: rgba(31, 111, 235, 0.05);
 }
 
 /* Add Step Button */
@@ -230,7 +219,7 @@
 }
 
 .btn-add-step:hover {
-  background: rgba(13, 148, 136, 0.05);
+  background: rgba(31, 111, 235, 0.05);
   border-color: var(--primary);
   transform: translateY(-2px);
 }
@@ -247,14 +236,14 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.2);
+  box-shadow: 0 4px 12px rgba(31, 111, 235, 0.2);
   margin-top: 32px;
 }
 
 .btn-save-routine:hover {
   background: var(--primary-dark);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(13, 148, 136, 0.3);
+  box-shadow: 0 6px 16px rgba(31, 111, 235, 0.3);
 }
 
 /* Routine Header */

@@ -89,10 +89,10 @@
 /* Progress bar glow */
 @keyframes progressGlow {
   0%, 100% {
-    box-shadow: 0 0 10px rgba(13, 148, 136, 0.3);
+    box-shadow: 0 0 10px rgba(31, 111, 235, 0.3);
   }
   50% {
-    box-shadow: 0 0 20px rgba(13, 148, 136, 0.6);
+    box-shadow: 0 0 20px rgba(31, 111, 235, 0.6);
   }
 }
 
@@ -103,7 +103,7 @@
 /* Scan button hover effect */
 .btn-scan:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(13, 148, 136, 0.3);
+  box-shadow: 0 8px 20px rgba(31, 111, 235, 0.3);
 }
 
 .btn-scan:active:not(:disabled) {
@@ -180,7 +180,7 @@
 
 .mode-btn:hover {
   color: var(--primary);
-  background: rgba(13, 148, 136, 0.05);
+  background: rgba(31, 111, 235, 0.05);
 }
 
 .mode-btn.active {
@@ -297,8 +297,8 @@
   inset: 0;
   background: repeating-linear-gradient(
     to bottom,
-    rgba(13, 148, 136, 0.1) 0px,
-    rgba(13, 148, 136, 0.1) 1px,
+    rgba(31, 111, 235, 0.1) 0px,
+    rgba(31, 111, 235, 0.1) 1px,
     rgba(0, 0, 0, 0) 3px,
     rgba(0, 0, 0, 0) 6px
   );
@@ -310,7 +310,7 @@
   inset: 14px;
   border: 1px solid rgba(169, 199, 255, 0.25);
   border-radius: 12px;
-  box-shadow: inset 0 0 20px rgba(13, 148, 136, 0.15);
+  box-shadow: inset 0 0 20px rgba(31, 111, 235, 0.15);
   z-index: 1;
 }
 
@@ -357,9 +357,9 @@
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(13, 148, 136, 0.7) 45%,
-    rgba(13, 148, 136, 0.9) 50%,
-    rgba(13, 148, 136, 0.7) 55%,
+    rgba(31, 111, 235, 0.7) 45%,
+    rgba(31, 111, 235, 0.9) 50%,
+    rgba(31, 111, 235, 0.7) 55%,
     transparent 100%
   );
   animation: scanSweep 2.6s ease-in-out infinite;
@@ -393,10 +393,10 @@
 }
 
 .face-guide-circle.face-locked {
-  border-color: #22c55e;
+  border-color: var(--primary);
   box-shadow:
     0 0 0 9999px rgba(0, 0, 0, 0.4),
-    0 0 18px rgba(34, 197, 94, 0.85);
+    0 0 18px rgba(31, 111, 235, 0.85);
 }
 
 .face-guide-text {
@@ -405,12 +405,12 @@
   left: 50%;
   transform: translateX(-50%);
   color: white;
-  background: rgba(13, 148, 136, 0.9); /* Brand teal */
+  background: rgba(31, 111, 235, 0.9); /* Brand blue */
   padding: 10px 20px;
   border-radius: 24px;
   font-size: 0.95rem;
   font-weight: 600;
-  box-shadow: 0 4px 16px rgba(13, 148, 136, 0.3);
+  box-shadow: 0 4px 16px rgba(31, 111, 235, 0.3);
   z-index: 4;
 }
 
@@ -468,9 +468,9 @@
 
 .scan-upload-label:hover {
   border-color: var(--primary);
-  background: rgba(13, 148, 136, 0.02);
+  background: rgba(31, 111, 235, 0.02);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(13, 148, 136, 0.1);
+  box-shadow: 0 8px 24px rgba(31, 111, 235, 0.1);
 }
 
 .preview-container {
@@ -557,7 +557,7 @@
   border-radius: 12px; /* Brand guideline: 12px for cards */
   padding: 32px;
   margin-bottom: 32px;
-  border-left: 4px solid var(--primary); /* Brand teal accent */
+  border-left: 4px solid var(--primary); /* Brand blue accent */
   border: 1px solid var(--border);
 }
 
@@ -612,13 +612,13 @@
   font-weight: 600; /* Brand guideline */
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.2);
+  box-shadow: 0 4px 12px rgba(31, 111, 235, 0.2);
 }
 
 .scan-btn-primary:hover:not(:disabled) {
   background: var(--primary-dark);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(13, 148, 136, 0.3);
+  box-shadow: 0 6px 16px rgba(31, 111, 235, 0.3);
 }
 
 .scan-btn-primary:disabled {
@@ -631,7 +631,7 @@
 .scan-btn-secondary {
   padding: 16px 32px;
   background: transparent; /* Brand guideline */
-  color: var(--primary); /* Brand teal */
+  color: var(--primary); /* Brand blue */
   border: 2px solid var(--primary); /* Brand guideline */
   border-radius: 8px; /* Brand guideline: 8px */
   font-size: 1rem;
@@ -641,7 +641,7 @@
 }
 
 .scan-btn-secondary:hover:not(:disabled) {
-  background: rgba(13, 148, 136, 0.05);
+  background: rgba(31, 111, 235, 0.05);
   transform: translateY(-2px);
 }
 
@@ -705,7 +705,7 @@
   background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
   border-radius: 8px;
   transition: width 0.4s ease;
-  box-shadow: 0 2px 8px rgba(13, 148, 136, 0.3);
+  box-shadow: 0 2px 8px rgba(31, 111, 235, 0.3);
   width: var(--progress-width, 0%);
 }
 

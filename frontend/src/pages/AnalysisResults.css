@@ -1,27 +1,5 @@
 /* Analysis Results - Brand-Aligned Design */
-
-:root {
-  --primary: #0D9488;
-  --primary-dark: #0f766e;
-  --primary-light: rgba(13, 148, 136, 0.1);
-  --secondary: #F97316;
-  --bg-light: #F8FAFC;
-  --bg-white: #FFFFFF;
-  --text-dark: #1E293B;
-  --text-gray: #4b5b76;
-  --text-primary: #1E293B;
-  --text-secondary: #4b5b76;
-  --border: #E2E8F0;
-  --border-color: #E2E8F0;
-  --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
-  --success: #D1FAE5;
-  --warning: #FEF3C7;
-  --warning-light: #FEF3C7;
-  --danger: #dc2626;
-  --info: #0D9488;
-  --gray-200: #E2E8F0;
-}
+/* Uses global CSS variables from index.css */
 
 .analysis-results {
   min-height: 100vh;
@@ -171,7 +149,7 @@
   background: linear-gradient(90deg, #10b981 0%, #3b82f6 100%);
   border-radius: 8px;
   transition: width 0.4s ease;
-  box-shadow: 0 2px 8px rgba(13, 148, 136, 0.3);
+  box-shadow: 0 2px 8px rgba(31, 111, 235, 0.3);
 }
 
 .confidence-value {
@@ -197,7 +175,7 @@
 
 .result-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.15);
+  box-shadow: 0 4px 12px rgba(31, 111, 235, 0.15);
   border-color: var(--primary);
 }
 
@@ -478,13 +456,13 @@
   background: var(--primary);
   color: white;
   border: none;
-  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.2);
+  box-shadow: 0 4px 12px rgba(31, 111, 235, 0.2);
 }
 
 .results-actions .btn-primary:hover {
   background: var(--primary-dark);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(13, 148, 136, 0.3);
+  box-shadow: 0 6px 16px rgba(31, 111, 235, 0.3);
 }
 
 .results-actions .btn-secondary {
@@ -494,7 +472,7 @@
 }
 
 .results-actions .btn-secondary:hover {
-  background: rgba(13, 148, 136, 0.05);
+  background: rgba(31, 111, 235, 0.05);
   transform: translateY(-2px);
 }
 

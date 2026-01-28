@@ -2,7 +2,10 @@
 User Favorites database model for saved products.
 Sprint: GUI-2 - Story: Favorites API
 """
+import uuid
+
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, String, Float
+from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
@@ -15,7 +18,8 @@ class UserFavorite(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
-    product_id = Column(Integer, ForeignKey("products.id"), nullable=True)
+    # products.id is UUID in our schema
+    product_id = Column(UUID(as_uuid=True), ForeignKey("products.id"), nullable=True)
     
     # For external products not in our database
     external_product_id = Column(String(255), nullable=True, index=True)

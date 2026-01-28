@@ -125,6 +125,68 @@ def run_migrations():
                 )
                 """
             )
+
+            # Favorites (non-destructive)
+            # NOTE: products.id is UUID in our schema; do NOT create product_id as INTEGER
+            print("  - Ensuring favorites tables exist...")
+            cur.execute(
+                """
+                CREATE TABLE IF NOT EXISTS user_favorites (
+                    id SERIAL PRIMARY KEY,
+                    user_id INTEGER NOT NULL REFERENCES users(id),
+                    product_id UUID REFERENCES products(id),
+                    external_product_id VARCHAR(255),
+                    product_name VARCHAR(255) NOT NULL,
+                    product_brand VARCHAR(255),
+                    product_price DOUBLE PRECISION,
+                    product_image VARCHAR(500),
+                    product_rating DOUBLE PRECISION,
+                    match_score DOUBLE PRECISION,
+                    created_at TIMESTAMPTZ DEFAULT NOW()
+                )
+                """
+            )
+            cur.execute(
+                "CREATE INDEX IF NOT EXISTS idx_user_favorites_user_id ON user_favorites (user_id)"
+            )
+            cur.execute(
+                "CREATE INDEX IF NOT EXISTS idx_user_favorites_product_id ON user_favorites (product_id)"
+            )
+            cur.execute(
+                "CREATE INDEX IF NOT EXISTS idx_user_favorites_external_product_id ON user_favorites (external_product_id)"
+            )
+
+            # If a legacy/incorrect schema exists (e.g. product_id INTEGER), coerce to UUID safely.
+            # This is intentionally lossy for product_id because integer->uuid is not representable.
+            cur.execute(
+                """
+                DO $$
+                BEGIN
+                    IF EXISTS (
+                        SELECT 1
+                        FROM information_schema.columns
+                        WHERE table_name = 'user_favorites'
+                          AND column_name = 'product_id'
+                          AND data_type = 'integer'
+                    ) THEN
+                        BEGIN
+                            ALTER TABLE user_favorites
+                                DROP CONSTRAINT IF EXISTS user_favorites_product_id_fkey;
+                        EXCEPTION WHEN undefined_object THEN
+                            NULL;
+                        END;
+
+                        ALTER TABLE user_favorites
+                            ALTER COLUMN product_id TYPE UUID
+                            USING (NULL::uuid);
+
+                        ALTER TABLE user_favorites
+                            ADD CONSTRAINT user_favorites_product_id_fkey
+                            FOREIGN KEY (product_id) REFERENCES products(id);
+                    END IF;
+                END $$;
+                """
+            )
             cur.execute(
                 """
                 CREATE TABLE IF NOT EXISTS product_ingredients (

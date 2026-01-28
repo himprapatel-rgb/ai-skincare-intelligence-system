@@ -87,31 +87,33 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* Trust Badges - Safer language */}
-      <section className="trust-badges">
-        <div className="badge-item">
-          <span className="badge-icon-trust">
-            <IconShield size={24} strokeWidth={2} />
-          </span>
-          <span>Encrypted Uploads</span>
-        </div>
-        <div className="badge-item">
-          <span className="badge-icon-trust">
-            <IconBookOpen size={24} strokeWidth={2} />
-          </span>
-          <span>Built on Dermatology Research</span>
-        </div>
-        <div className="badge-item">
-          <span className="badge-icon-trust">
-            <IconTrash2 size={24} strokeWidth={2} />
-          </span>
-          <span>Delete Data Anytime</span>
-        </div>
-        <div className="badge-item">
-          <span className="badge-icon-trust">
-            <IconCheckCircle size={24} strokeWidth={2} />
-          </span>
-          <span>Privacy-First Processing</span>
+      {/* Trust Badges - Enhanced with cards */}
+      <section className="trust-badges-section">
+        <div className="trust-badges-grid">
+          <div className="trust-badge-card trust-badge-security">
+            <span className="trust-badge-icon">
+              <IconShield size={28} strokeWidth={2} />
+            </span>
+            <span className="trust-badge-text">Encrypted Uploads</span>
+          </div>
+          <div className="trust-badge-card trust-badge-research">
+            <span className="trust-badge-icon">
+              <IconBookOpen size={28} strokeWidth={2} />
+            </span>
+            <span className="trust-badge-text">Built on Dermatology Research</span>
+          </div>
+          <div className="trust-badge-card trust-badge-delete">
+            <span className="trust-badge-icon">
+              <IconTrash2 size={28} strokeWidth={2} />
+            </span>
+            <span className="trust-badge-text">Delete Data Anytime</span>
+          </div>
+          <div className="trust-badge-card trust-badge-privacy">
+            <span className="trust-badge-icon">
+              <IconCheckCircle size={28} strokeWidth={2} />
+            </span>
+            <span className="trust-badge-text">Privacy-First Processing</span>
+          </div>
         </div>
       </section>
 

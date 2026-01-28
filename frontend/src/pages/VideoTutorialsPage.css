@@ -42,15 +42,31 @@
   box-shadow: var(--shadow);
 }
 
-.video-thumb {
-  background: rgba(31, 111, 235, 0.1);
-  border: 1px dashed rgba(31, 111, 235, 0.4);
-  border-radius: 12px;
-  padding: 24px;
-  text-align: center;
-  font-weight: 600;
-  color: var(--primary);
+.video-thumb-wrap {
+  position: relative;
   margin-bottom: 12px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.video-thumb {
+  aspect-ratio: 16 / 9;
+  background: linear-gradient(135deg, rgba(31, 111, 235, 0.12) 0%, rgba(31, 111, 235, 0.06) 100%);
+  border: 1px solid rgba(31, 111, 235, 0.25);
+  border-radius: 12px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 8px;
+}
+
+.video-duration {
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
 }
 
 .video-card h3 {

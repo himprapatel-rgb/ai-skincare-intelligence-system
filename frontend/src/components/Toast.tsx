@@ -19,7 +19,7 @@ export function ToastContainer() {
           role="alert"
           aria-live="polite"
         >
-          <span className="toast-icon">
+          <span className="toast-icon" aria-hidden="true">
             {t.type === 'success' && <IconCheck size={18} strokeWidth={2.5} />}
             {t.type === 'error' && <IconX size={18} strokeWidth={2.5} />}
             {t.type === 'info' && <IconInfo size={18} strokeWidth={2} />}
@@ -31,7 +31,7 @@ export function ToastContainer() {
             onClick={() => dismiss(t.id)}
             aria-label="Dismiss"
           >
-            <IconX size={16} strokeWidth={2} />
+            <IconX size={16} strokeWidth={2} aria-hidden="true" />
           </button>
         </div>
       ))}

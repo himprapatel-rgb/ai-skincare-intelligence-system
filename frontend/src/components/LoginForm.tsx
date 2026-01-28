@@ -79,10 +79,12 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegis
     <div className="login-form">
       <h2>Sign In</h2>
       {error && (
-        <ErrorMessage 
-          message={error} 
-          onDismiss={() => setError('')}
-        />
+        <div id="login-error" role="alert" aria-live="assertive">
+          <ErrorMessage 
+            message={error} 
+            onDismiss={() => setError('')}
+          />
+        </div>
       )}
       {import.meta.env.DEV && error && (
         <details style={{ marginTop: '8px', fontSize: '0.875rem', color: 'var(--text-gray)' }}>
@@ -103,6 +105,9 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegis
             required
             disabled={loading}
             placeholder="Enter your email"
+            aria-required
+            aria-invalid={!!error}
+            aria-describedby={error ? 'login-error' : undefined}
           />
         </div>
         <div className="form-group">
@@ -116,7 +121,9 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegis
               required
               disabled={loading}
               placeholder="Enter your password"
-              aria-describedby="password-toggle-desc"
+              aria-required
+              aria-invalid={!!error}
+              aria-describedby={error ? 'login-error password-toggle-desc' : 'password-toggle-desc'}
             />
             <button
               type="button"

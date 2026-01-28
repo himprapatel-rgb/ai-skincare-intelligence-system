@@ -1,7 +1,37 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
+import { usePageTitle } from '../hooks/usePageTitle';
+import { useDebounce } from '../hooks/useDebounce';
 import './IngredientDictionaryPage.css';
 
+const INGREDIENTS = [
+  { name: 'Niacinamide', desc: 'Supports barrier strength, reduces redness, and balances oil.', best: 'sensitivity, redness, oiliness' },
+  { name: 'Hyaluronic Acid', desc: 'Humectant that draws moisture to the skin for lasting hydration.', best: 'dehydration, dryness' },
+  { name: 'Retinol', desc: 'Encourages cell turnover to improve texture and fine lines.', best: 'texture, wrinkles' },
+];
+
+function highlightMatch(text: string, query: string): React.ReactNode {
+  if (!query.trim()) return text;
+  const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const re = new RegExp(`(${escaped})`, 'gi');
+  const parts = text.split(re);
+  return parts.map((part, i) => (i % 2 === 1 ? <mark key={i} className="ingredient-highlight">{part}</mark> : part));
+}
+
 const IngredientDictionaryPage: React.FC = () => {
+  usePageTitle('Ingredient Dictionary');
+  const [searchQuery, setSearchQuery] = useState('');
+  const debouncedQuery = useDebounce(searchQuery, 300);
+  const filtered = useMemo(() => {
+    const q = debouncedQuery.toLowerCase().trim();
+    if (!q) return INGREDIENTS;
+    return INGREDIENTS.filter(
+      (i) =>
+        i.name.toLowerCase().includes(q) ||
+        i.desc.toLowerCase().includes(q) ||
+        i.best.toLowerCase().includes(q)
+    );
+  }, [debouncedQuery]);
+
   return (
     <div className="ingredient-page">
       <div className="page-container ingredient-container">
@@ -10,28 +40,29 @@ const IngredientDictionaryPage: React.FC = () => {
           <p>Search ingredients and learn how they support your skin goals.</p>
         </div>
 
-        <div className="ingredient-search">
-          <input type="text" placeholder="Search ingredients (e.g., niacinamide)" />
-          <button className="btn-primary">Search</button>
-        </div>
+        <form className="ingredient-search" role="search" onSubmit={(e) => e.preventDefault()}>
+          <input
+            type="search"
+            placeholder="Search ingredients (e.g., niacinamide)"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            aria-label="Search ingredients"
+          />
+          <button type="submit" className="btn-primary">Search</button>
+        </form>
 
         <div className="ingredient-grid">
-          <div className="ingredient-card">
-            <h3>Niacinamide</h3>
-            <p>Supports barrier strength, reduces redness, and balances oil.</p>
-            <span>Best for: sensitivity, redness, oiliness</span>
-          </div>
-          <div className="ingredient-card">
-            <h3>Hyaluronic Acid</h3>
-            <p>Humectant that draws moisture to the skin for lasting hydration.</p>
-            <span>Best for: dehydration, dryness</span>
-          </div>
-          <div className="ingredient-card">
-            <h3>Retinol</h3>
-            <p>Encourages cell turnover to improve texture and fine lines.</p>
-            <span>Best for: texture, wrinkles</span>
-          </div>
+          {filtered.map((item) => (
+            <div key={item.name} className="ingredient-card">
+              <h3>{highlightMatch(item.name, searchQuery)}</h3>
+              <p>{highlightMatch(item.desc, searchQuery)}</p>
+              <span>Best for: {highlightMatch(item.best, searchQuery)}</span>
+            </div>
+          ))}
         </div>
+        {filtered.length === 0 && (
+          <p className="ingredient-empty">No ingredients match &quot;{debouncedQuery}&quot;. Try a different search.</p>
+        )}
       </div>
     </div>
   );

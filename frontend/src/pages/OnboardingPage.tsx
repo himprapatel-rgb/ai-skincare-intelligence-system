@@ -285,11 +285,13 @@ const OnboardingPage: React.FC = () => {
   return (
     <div className="onboarding-page">
       <div className="onboarding-container">
-        <div className="progress-bar">
+        <div className="progress-bar" role="progressbar" aria-valuenow={step} aria-valuemin={1} aria-valuemax={5} aria-label={`Step ${step} of 5`}>
+          <span className="progress-bar-label">Step {step} of 5</span>
           {[1, 2, 3, 4, 5].map(num => (
             <div 
               key={num} 
               className={`progress-step ${step === num ? 'active' : ''} ${step > num ? 'completed' : ''}`}
+              aria-current={step === num ? 'step' : undefined}
             >
               {step > num ? '✓' : num}
             </div>

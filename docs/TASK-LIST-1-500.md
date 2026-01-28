@@ -90,10 +90,10 @@ Tasks to execute autonomously. Approval granted for all items.
 | 73 | PrivacyPage: ToC or jump links | Done |
 | 74 | TermsPage: ToC or jump links | Done |
 | 75 | BlogPage: post cards hover and meta | Done |
-| 76 | IngredientDictionaryPage: search highlight | - |
-| 77 | SkinTypeGuidePage: step indicators | - |
+| 76 | IngredientDictionaryPage: search highlight | Done |
+| 77 | SkinTypeGuidePage: step indicators | Done |
 | 78 | VideoTutorialsPage: thumbnails and duration | - |
-| 79 | OnboardingPage: progress step indicator | - |
+| 79 | OnboardingPage: progress step indicator | Done |
 | 80 | AuthPage: tab order and focus trap in modals | - |
 | 81 | PasswordResetPage: success message and CTA | Done |
 | 82 | EmailVerificationPage: resend cooldown UI | Done |
@@ -101,7 +101,7 @@ Tasks to execute autonomously. Approval granted for all items.
 | 84 | NotFoundPage: suggest Search or Home | Done |
 | 85 | ConsentPage: granular toggles and copy | - |
 | 86 | DataExportPage: format options and ETA | - |
-| 87 | NotificationCenterPage: mark-all-read and filters | - |
+| 87 | NotificationCenterPage: mark-all-read and filters | Done |
 | 88 | AdminDashboardPage: key metrics cards | - |
 | 89 | AdminUsersPage: table sort and search | - |
 | 90 | AdminProductsPage: table sort and bulk actions | - |
@@ -114,7 +114,7 @@ Tasks to execute autonomously. Approval granted for all items.
 | 97 | Toast: position and stack order | Done |
 | 98 | ErrorBoundary: illustration or icon | Done |
 | 99 | Skeleton: pulse animation consistency | Done |
-| 100 | Icons: ensure all used icons have a11y fallback | - |
+| 100 | Icons: ensure all used icons have a11y fallback | Done |
 
 ---
 
@@ -151,8 +151,8 @@ Tasks to execute autonomously. Approval granted for all items.
 | 127 | Carousels/sliders: pause on focus (if any) | - |
 | 128 | No keyboard traps | - |
 | 129 | Logical tab order in forms | - |
-| 130 | Required fields marked aria-required | - |
-| 131 | Invalid fields marked aria-invalid | - |
+| 130 | Required fields marked aria-required | Done |
+| 131 | Invalid fields marked aria-invalid | Done |
 | 132 | Dialog role and aria-modal for modals | Done |
 | 133 | Alert role for critical messages | - |
 | 134 | Status role for loading/success | - |
@@ -186,7 +186,7 @@ Tasks to execute autonomously. Approval granted for all items.
 | 155 | Use responsive images (srcset/sizes) where useful | - |
 | 156 | Compress or use WebP/AVIF for large assets | - |
 | 157 | Reduce layout shift: reserve space for images | - |
-| 158 | Debounce search inputs | - |
+| 158 | Debounce search inputs | Done |
 | 159 | Throttle scroll handlers | - |
 | 160 | Memoize expensive computed values (useMemo) | - |
 | 161 | Avoid unnecessary re-renders (React.memo where useful) | - |

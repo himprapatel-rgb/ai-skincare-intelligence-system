@@ -99,7 +99,7 @@ const displayName = nameParts.length > 1
         <div className="app-header-container">
           {/* Logo */}
           <Link to="/" className="app-logo">
-            <span className="app-logo-mark">
+            <span className="app-logo-mark" aria-hidden="true">
               <IconScan size={18} strokeWidth={2.5} />
             </span>
             <span className="app-logo-text">SkinCare<span className="app-logo-ai">AI</span></span>
@@ -127,6 +127,11 @@ const displayName = nameParts.length > 1
                       className="app-nav-user-trigger"
                       onClick={() => setUserDropdownOpen(!userDropdownOpen)}
                       aria-expanded={userDropdownOpen}
+                      aria-controls="user-dropdown-menu"
+                      aria-haspopup="true"
+                      onKeyDown={(e) => {
+                        if (e.key === 'Escape') setUserDropdownOpen(false);
+                      }}
                     >
                       <span className="app-nav-avatar">{userInitial}</span>
                       <span className="app-nav-user-name">{displayName}</span>
@@ -134,7 +139,7 @@ const displayName = nameParts.length > 1
                     </button>
                     
                     {userDropdownOpen && (
-                      <div className="app-nav-dropdown-menu">
+                      <div id="user-dropdown-menu" className="app-nav-dropdown-menu">
                         <div className="app-nav-dropdown-header">
                           <span className="app-nav-avatar app-nav-avatar-lg">{userInitial}</span>
                           <div>

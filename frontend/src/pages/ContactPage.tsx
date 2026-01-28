@@ -126,6 +126,7 @@ const ContactPage: React.FC = () => {
                   onChange={handleChange}
                   required
                   placeholder="John Doe"
+                  aria-required
                   aria-invalid={!!errors.name}
                   aria-describedby={errors.name ? 'name-error' : undefined}
                 />
@@ -142,6 +143,7 @@ const ContactPage: React.FC = () => {
                   onChange={handleChange}
                   required
                   placeholder="john@example.com"
+                  aria-required
                   aria-invalid={!!errors.email}
                   aria-describedby={errors.email ? 'email-error' : undefined}
                 />
@@ -158,6 +160,7 @@ const ContactPage: React.FC = () => {
                   onChange={handleChange}
                   required
                   placeholder="How can we help?"
+                  aria-required
                   aria-invalid={!!errors.subject}
                   aria-describedby={errors.subject ? 'subject-error' : undefined}
                 />
@@ -174,6 +177,7 @@ const ContactPage: React.FC = () => {
                   required
                   rows={6}
                   placeholder="Tell us more about your inquiry..."
+                  aria-required
                   aria-invalid={!!errors.message}
                   aria-describedby={errors.message ? 'message-error' : undefined}
                 />

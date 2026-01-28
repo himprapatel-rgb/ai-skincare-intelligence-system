@@ -40,6 +40,25 @@
   padding: 20px;
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
+  position: relative;
+}
+.skin-type-step {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.skin-type-tips .skin-type-steps {
+  margin: 12px 0 0;
+  padding-left: 24px;
+  color: var(--text-gray);
+  line-height: 1.8;
+}
+.skin-type-tips .skin-type-steps li {
+  margin-bottom: 8px;
 }
 
 .skin-type-card h3 {
@@ -62,7 +81,8 @@
   box-shadow: var(--shadow);
 }
 
-.skin-type-tips ul {
+.skin-type-tips ul,
+.skin-type-tips .skin-type-steps {
   margin: 12px 0 0;
   padding-left: 20px;
   color: var(--text-gray);

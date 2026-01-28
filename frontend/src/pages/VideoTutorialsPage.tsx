@@ -12,17 +12,29 @@ const VideoTutorialsPage: React.FC = () => {
 
         <div className="video-grid">
           <div className="video-card">
-            <div className="video-thumb">3:12</div>
+            <div className="video-thumb-wrap">
+              <div className="video-thumb">
+                <span className="video-duration" aria-label="Duration 3 minutes 12 seconds">3:12</span>
+              </div>
+            </div>
             <h3>How to Capture a Great Scan</h3>
             <p>Lighting, angles, and best practices for accurate results.</p>
           </div>
           <div className="video-card">
-            <div className="video-thumb">2:45</div>
+            <div className="video-thumb-wrap">
+              <div className="video-thumb" aria-hidden="true">
+                <span className="video-duration" aria-label="Duration 2 minutes 45 seconds">2:45</span>
+              </div>
+            </div>
             <h3>Reading Your Digital Twin</h3>
             <p>Understand progress charts, metrics, and before/after tools.</p>
           </div>
           <div className="video-card">
-            <div className="video-thumb">4:20</div>
+            <div className="video-thumb-wrap">
+              <div className="video-thumb">
+                <span className="video-duration" aria-label="Duration 4 minutes 20 seconds">4:20</span>
+              </div>
+            </div>
             <h3>Building a Routine</h3>
             <p>Layering products safely and saving your personalized routine.</p>
           </div>

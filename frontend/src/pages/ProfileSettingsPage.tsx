@@ -391,11 +391,15 @@ const ProfileSettingsPage: React.FC = () => {
                 </div>
               </div>
 
-              <nav className="profile-nav">
+              <nav className="profile-nav" role="tablist" aria-label="Profile sections">
                 {tabs.map((tab) => (
                   <button
                     key={tab.id}
                     type="button"
+                    role="tab"
+                    id={`tab-${tab.id}`}
+                    aria-selected={activeTab === tab.id}
+                    aria-controls={`panel-${tab.id}`}
                     className={activeTab === tab.id ? 'active' : ''}
                     onClick={() => setActiveTab(tab.id)}
                   >
@@ -497,7 +501,7 @@ const ProfileSettingsPage: React.FC = () => {
 
           {/* SKIN PROFILE TAB */}
           {activeTab === 'skin' && (
-            <div className="tab-content">
+            <div id="panel-skin" role="tabpanel" aria-labelledby="tab-skin" className="tab-content">
               <div className="section-card">
                 <div className="section-card-header">
                   <h2>Skin Profile</h2>
@@ -575,7 +579,7 @@ const ProfileSettingsPage: React.FC = () => {
 
           {/* LIFESTYLE TAB */}
           {activeTab === 'lifestyle' && (
-            <div className="tab-content">
+            <div id="panel-lifestyle" role="tabpanel" aria-labelledby="tab-lifestyle" className="tab-content">
               <div className="section-card">
                 <div className="section-card-header">
                   <h2>Lifestyle & Preferences</h2>
@@ -739,7 +743,7 @@ const ProfileSettingsPage: React.FC = () => {
 
           {/* PRIVACY TAB */}
           {activeTab === 'privacy' && (
-            <div className="tab-content">
+            <div id="panel-privacy" role="tabpanel" aria-labelledby="tab-privacy" className="tab-content">
               <div className="section-card">
                 <div className="section-card-header">
                   <h2>Privacy & Account Settings</h2>
@@ -825,7 +829,7 @@ const ProfileSettingsPage: React.FC = () => {
 
           {/* STATISTICS TAB */}
           {activeTab === 'stats' && (
-            <div className="tab-content">
+            <div id="panel-stats" role="tabpanel" aria-labelledby="tab-stats" className="tab-content">
               <div className="section-card">
                 <div className="section-card-header">
                   <h2>Your Statistics</h2>

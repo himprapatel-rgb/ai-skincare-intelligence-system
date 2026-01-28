@@ -36,7 +36,7 @@ Tasks to execute autonomously. Approval granted for all items.
 | 26 | Add/expand E2E tests (Playwright) | - |
 | 27 | Add/expand unit tests (Vitest) | - |
 | 28 | Document VITE_API_URL and env vars in README/.env.example | Done |
-| 29 | Sitemap or meta for SEO (title per route) | - |
+| 29 | Sitemap or meta for SEO (title per route) | Done |
 | 30 | Ensure all routes have sensible document title | Done |
 | 31 | Copy review: buttons, labels, placeholders | - |
 | 32 | Meta titles per page (usePageTitle or similar) | Done |
@@ -55,7 +55,7 @@ Tasks to execute autonomously. Approval granted for all items.
 | 45 | "Remember me" on login form | Done |
 | 46 | Logout placement and wording in nav/dropdown | Done |
 | 47 | Print CSS (hide nav/footer, show content) | Done |
-| 48 | Canonical URLs for key pages | - |
+| 48 | Canonical URLs for key pages | Done |
 | 49 | Lint pass + fix auto-fixable issues | Done |
 | 50 | Dead-code pass: remove unused exports/imports | Done |
 
@@ -68,10 +68,10 @@ Tasks to execute autonomously. Approval granted for all items.
 | 51 | Reusable EmptyState component used on all list pages | Done |
 | 52 | Reusable ConfirmModal for delete/remove | Done |
 | 53 | usePageTitle hook and use on main routes | Done |
-| 54 | Standardize all primary buttons to one variant | - |
-| 55 | Standardize all secondary/outline buttons | - |
-| 56 | Loading spinners: same size/color tokens | - |
-| 57 | All form inputs use .form-group + shared styles | - |
+| 54 | Standardize all primary buttons to one variant | Done |
+| 55 | Standardize all secondary/outline buttons | Done |
+| 56 | Loading spinners: same size/color tokens | Done |
+| 57 | All form inputs use .form-group + shared styles | Done |
 | 58 | Password visibility toggle on login/register | Done |
 | 59 | ScanPage: improve spacing and typography | Done |
 | 60 | AnalysisResults: spacing and typography | Done |
@@ -125,8 +125,8 @@ Tasks to execute autonomously. Approval granted for all items.
 | 101 | Audit all images for alt text | - |
 | 102 | Audit all icons for aria-hidden or sr-only text | - |
 | 103 | All custom buttons have aria-label or visible text | - |
-| 104 | Form labels linked with htmlFor | - |
-| 105 | Error messages linked with aria-describedby | - |
+| 104 | Form labels linked with htmlFor | Done |
+| 105 | Error messages linked with aria-describedby | Done |
 | 106 | Live regions for toast (aria-live) | - |
 | 107 | Focus trap in modals | Done |
 | 108 | Focus return after modal close | Done |
@@ -147,7 +147,7 @@ Tasks to execute autonomously. Approval granted for all items.
 | 123 | Analysis results: announce score/concerns | - |
 | 124 | Charts: sr-only summary or data table | - |
 | 125 | Dropdowns: aria-expanded, aria-controls | Done |
-| 126 | Tabs: role=tablist, aria-selected | - |
+| 126 | Tabs: role=tablist, aria-selected | Done |
 | 127 | Carousels/sliders: pause on focus (if any) | - |
 | 128 | No keyboard traps | - |
 | 129 | Logical tab order in forms | - |
@@ -199,7 +199,7 @@ Tasks to execute autonomously. Approval granted for all items.
 | 168 | Service worker for static caching (optional PWA) | - |
 | 169 | Offline fallback page | - |
 | 170 | Add .env.example with all vars | Done |
-| 171 | Document dev vs prod API URLs | - |
+| 171 | Document dev vs prod API URLs | Done |
 | 172 | Add npm scripts: build, lint, test, typecheck | Done |
 | 173 | ESLint rule for no-console in prod | - |
 | 174 | Prettier or formatter config | - |

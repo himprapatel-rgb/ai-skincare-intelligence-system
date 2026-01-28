@@ -276,7 +276,7 @@ The application is deployed on **Railway** with the following services:
 
 | Variable | Description |
 |----------|-------------|
-| `VITE_API_URL` | Backend API URL |
+| `VITE_API_URL` | Backend API URL. **Development:** use `http://localhost:8000/api/v1` (or your local backend). **Production:** use the deployed backend URL (e.g. `https://ai-skincare-intelligence-system-production.up.railway.app/api/v1`). |
 | `VITE_GOOGLE_CLIENT_ID` | Google OAuth client ID (for button) |
 
 See [ENVIRONMENT_VARIABLES.md](./docs/ENVIRONMENT_VARIABLES.md) for complete list.

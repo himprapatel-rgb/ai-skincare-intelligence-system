@@ -147,6 +147,28 @@
   }
 }
 
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  
+  .stat-item {
+    padding: 16px 8px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 12px;
+    border: 1px solid rgba(226, 232, 240, 0.6);
+  }
+  
+  .stat-number {
+    font-size: 1.5rem;
+  }
+  
+  .stat-label {
+    font-size: 0.8rem;
+  }
+}
+
 .testimonials-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -1814,11 +1836,32 @@
 
 .sample-report-preview {
   padding: 28px;
-  border-radius: 16px;
+  border-radius: 20px;
   border: 1px solid rgba(227, 236, 255, 0.9);
-  box-shadow: 0 20px 50px rgba(13, 27, 62, 0.12);
+  box-shadow: 
+    0 20px 50px rgba(13, 27, 62, 0.12),
+    0 0 0 1px rgba(255, 255, 255, 0.8) inset;
   max-width: 360px;
   width: 100%;
+  position: relative;
+  background: linear-gradient(180deg, #ffffff 0%, #fafbff 100%);
+  animation: floatCard 4s ease-in-out infinite;
+}
+
+.sample-report-preview::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 20px;
+  right: 20px;
+  height: 3px;
+  background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%);
+  border-radius: 0 0 4px 4px;
+}
+
+@keyframes floatCard {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
 }
 
 .preview-header {

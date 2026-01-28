@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { IconMail, IconArrowLeft } from '../components/Icons';
+import { usePageTitle } from '../hooks/usePageTitle';
 import './CommonStyles.css';
 import './PasswordResetPage.css';
 
@@ -9,6 +10,7 @@ import './PasswordResetPage.css';
  * Allows users to request password reset via email
  */
 const PasswordResetPage: React.FC = () => {
+  usePageTitle('Reset Password');
   const [email, setEmail] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);

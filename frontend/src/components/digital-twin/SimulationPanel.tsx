@@ -63,10 +63,10 @@ const SimulationPanel: React.FC = () => {
         improvements: data.recommendations || [],
         concerns: [],
       });
-    } catch (err: any) {
-      const status = err.response?.status;
-      const detail = err.response?.data?.detail;
-      
+    } catch (err: unknown) {
+      const res = err && typeof err === 'object' && 'response' in err ? (err as { response?: { status?: number; data?: { detail?: string } } }).response : undefined;
+      const status = res?.status;
+      const detail = typeof res?.data?.detail === 'string' ? res.data.detail : undefined;
       if (status === 401) {
         setError('Please log in to use the simulation feature');
       } else if (status === 400 && detail?.includes('No historical data')) {

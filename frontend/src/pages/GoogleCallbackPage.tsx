@@ -46,9 +46,10 @@ const GoogleCallbackPage: React.FC = () => {
           setError('Failed to authenticate with Google.');
           setProcessing(false);
         }
-      } catch (err: any) {
-        console.error('Google auth error:', err);
-        setError(err.response?.data?.detail || 'Failed to complete Google sign-in.');
+      } catch (err: unknown) {
+        if (import.meta.env.DEV) console.error('Google auth error:', err);
+        const res = err && typeof err === 'object' && 'response' in err ? (err as { response?: { data?: { detail?: string } } }).response : undefined;
+        setError(res?.data?.detail || 'Failed to complete Google sign-in.');
         setProcessing(false);
       }
     };

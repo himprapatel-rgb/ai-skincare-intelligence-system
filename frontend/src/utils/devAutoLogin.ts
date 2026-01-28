@@ -1,3 +1,4 @@
+/* eslint-disable no-console -- dev-only utility */
 // Development Auto-Login Utility
 // Automatically logs in as test user "Himanshu" for development
 

@@ -50,16 +50,16 @@ const MyShelfPage: React.FC = () => {
       if (response.ok) {
         const data = await response.json();
         if (data.products && data.products.length > 0) {
-          setProducts(data.products.map((p: any) => ({
-            id: p.id.toString(),
-            name: p.product_name,
-            brand: p.product_brand || 'Unknown',
-            category: p.product_category || 'General',
-            rating: p.rating || 0,
+          setProducts(data.products.map((p: Record<string, unknown>) => ({
+            id: String(p.id ?? ''),
+            name: String(p.product_name ?? ''),
+            brand: String(p.product_brand ?? 'Unknown'),
+            category: String(p.product_category ?? 'General'),
+            rating: Number(p.rating ?? 0),
             status: p.status === 'active' ? 'using' : p.status === 'wishlist' ? 'wishlist' : 'discontinued',
-            notes: p.notes || '',
-            addedDate: p.created_at?.split('T')[0] || '',
-            imageUrl: p.product_image,
+            notes: String(p.notes ?? ''),
+            addedDate: (typeof p.created_at === 'string' ? p.created_at.split('T')[0] : '') || '',
+            imageUrl: p.product_image as string | undefined,
           })));
         } else {
           setProducts(mockProducts);

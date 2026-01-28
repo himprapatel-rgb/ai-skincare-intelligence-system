@@ -1,4 +1,3 @@
-import { Buffer } from "buffer";
 import { expect, test } from "@playwright/test";
 
 // Configure longer timeouts for stability

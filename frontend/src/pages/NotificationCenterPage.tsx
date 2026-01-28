@@ -37,14 +37,14 @@ const NotificationCenterPage: React.FC = () => {
       
       if (response.ok) {
         const data = await response.json();
-        setNotifications(data.notifications.map((n: any) => ({
-          id: n.id.toString(),
-          type: n.type,
-          title: n.title,
-          message: n.message,
-          timestamp: n.created_at,
-          read: n.read,
-          actionUrl: n.action_url,
+        setNotifications(data.notifications.map((n: Record<string, unknown>) => ({
+          id: String(n.id ?? ''),
+          type: String(n.type ?? 'info'),
+          title: String(n.title ?? ''),
+          message: String(n.message ?? ''),
+          timestamp: String(n.created_at ?? ''),
+          read: Boolean(n.read),
+          actionUrl: n.action_url as string | undefined,
         })));
       }
     } catch (err) {

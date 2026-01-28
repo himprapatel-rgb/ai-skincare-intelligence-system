@@ -49,7 +49,7 @@ Tasks to execute autonomously. Approval granted for all items.
 | 39 | Empty-state microcopy consistency | - |
 | 40 | Rate limiting message in UI when API returns 429 | - |
 | 41 | Offline / connection-lost message | Done |
-| 42 | Remove or guard console.log in production | - |
+| 42 | Remove or guard console.log in production | Done |
 | 43 | Optional Sentry or error-reporting hook | - |
 | 44 | Health-check endpoint or status indicator | - |
 | 45 | "Remember me" on login form | - |
@@ -72,7 +72,7 @@ Tasks to execute autonomously. Approval granted for all items.
 | 55 | Standardize all secondary/outline buttons | - |
 | 56 | Loading spinners: same size/color tokens | - |
 | 57 | All form inputs use .form-group + shared styles | - |
-| 58 | Password visibility toggle on login/register | - |
+| 58 | Password visibility toggle on login/register | Done |
 | 59 | ScanPage: improve spacing and typography | - |
 | 60 | AnalysisResults: spacing and typography | - |
 | 61 | ProfileSettingsPage: spacing and typography | - |
@@ -109,10 +109,10 @@ Tasks to execute autonomously. Approval granted for all items.
 | 92 | AppLayout: user dropdown keyboard nav | - |
 | 93 | AppLayout: footer columns responsive | - |
 | 94 | Header: sticky shadow on scroll (if not done) | - |
-| 95 | Footer: social links aria-labels | - |
-| 96 | BackToTop: aria-label and focus order | - |
+| 95 | Footer: social links aria-labels | Done |
+| 96 | BackToTop: aria-label and focus order | Done |
 | 97 | Toast: position and stack order | - |
-| 98 | ErrorBoundary: illustration or icon | - |
+| 98 | ErrorBoundary: illustration or icon | Done |
 | 99 | Skeleton: pulse animation consistency | - |
 | 100 | Icons: ensure all used icons have a11y fallback | - |
 
@@ -134,8 +134,8 @@ Tasks to execute autonomously. Approval granted for all items.
 | 110 | Heading hierarchy (single h1, logical order) per page | - |
 | 111 | Color contrast ≥4.5:1 for body text | - |
 | 112 | Color contrast ≥3:1 for large text/UI | - |
-| 113 | Focus visible style on all focusable elements | - |
-| 114 | Reduce motion preference: disable animations | - |
+| 113 | Focus visible style on all focusable elements | Done |
+| 114 | Reduce motion preference: disable animations | Done |
 | 115 | Touch targets ≥44x44px on mobile | - |
 | 116 | Links vs buttons: use correct element | - |
 | 117 | Table headers and scope where tables exist | - |
@@ -156,9 +156,9 @@ Tasks to execute autonomously. Approval granted for all items.
 | 132 | Dialog role and aria-modal for modals | - |
 | 133 | Alert role for critical messages | - |
 | 134 | Status role for loading/success | - |
-| 135 | Breadcrumb nav with aria-current=page | - |
+| 135 | Breadcrumb nav with aria-current=page | Done |
 | 136 | Pagination aria labels | - |
-| 137 | Search form role=search | - |
+| 137 | Search form role=search | Done |
 | 138 | Banner/announcement role if used | - |
 | 139 | Complementaria region for sidebar | - |
 | 140 | Test with axe-core or lighthouse a11y | - |
@@ -181,7 +181,7 @@ Tasks to execute autonomously. Approval granted for all items.
 |---|------|--------|
 | 151 | Code-split routes (already lazy) | Done |
 | 152 | Preload critical route on hover | - |
-| 153 | Preconnect to API origin in index.html | - |
+| 153 | Preconnect to API origin in index.html | Done |
 | 154 | Lazy load images below fold | - |
 | 155 | Use responsive images (srcset/sizes) where useful | - |
 | 156 | Compress or use WebP/AVIF for large assets | - |

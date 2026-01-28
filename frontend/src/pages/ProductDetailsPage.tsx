@@ -141,11 +141,12 @@ const ProductDetailsPage: React.FC = () => {
       setNewReview({ rating: 5, title: '', comment: '', skin_type: '', would_recommend: true });
       // Refresh reviews
       fetchReviews();
-    } catch (error: any) {
-      console.error('Failed to submit review:', error);
-      if (error.response?.status === 400) {
+    } catch (error: unknown) {
+      if (import.meta.env.DEV) console.error('Failed to submit review:', error);
+      const res = error && typeof error === 'object' && 'response' in error ? (error as { response?: { status?: number } }).response : undefined;
+      if (res?.status === 400) {
         setReviewError('You have already reviewed this product.');
-      } else if (error.response?.status === 401) {
+      } else if (res?.status === 401) {
         setReviewError('Please log in to submit a review.');
       } else {
         setReviewError('Failed to submit review. Please try again.');

@@ -4,7 +4,7 @@
  */
 import { Component, ErrorInfo, ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { IconHome, IconRefresh } from '../components/Icons';
+import { IconHome, IconRefresh, IconAlertTriangle } from '../components/Icons';
 import './ErrorBoundary.css';
 
 interface Props {
@@ -34,6 +34,9 @@ export class ErrorBoundary extends Component<Props, State> {
       return (
         <div className="error-boundary-page">
           <div className="error-boundary-content">
+            <div className="error-boundary-icon" aria-hidden="true">
+              <IconAlertTriangle size={48} strokeWidth={2} />
+            </div>
             <h1 className="error-boundary-title">Something went wrong</h1>
             <p className="error-boundary-message">We’ve run into an error. You can try again or go back home.</p>
             <div className="error-boundary-actions">

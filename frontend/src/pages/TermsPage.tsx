@@ -1,8 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { usePageTitle } from '../hooks/usePageTitle';
 import './TermsPage.css';
 
 const TermsPage: React.FC = () => {
+  usePageTitle('Terms of Service');
   const navigate = useNavigate();
 
   return (

@@ -253,7 +253,7 @@ const displayName = nameParts.length > 1
                 {crumb.to ? (
                   <Link to={crumb.to}>{crumb.label}</Link>
                 ) : (
-                  <span className="app-breadcrumb-current">{crumb.label}</span>
+                  <span className="app-breadcrumb-current" aria-current="page">{crumb.label}</span>
                 )}
                 {index < breadcrumbs.length - 1 && <span className="app-breadcrumb-separator">/</span>}
               </span>

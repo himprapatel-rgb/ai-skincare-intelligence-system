@@ -53,6 +53,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components -- hook export
 export function useToast() {
   const ctx = useContext(ToastContext);
   if (!ctx) return { toasts: [], success: () => {}, error: () => {}, info: () => {}, dismiss: () => {} };

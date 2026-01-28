@@ -28,7 +28,7 @@ const FavoritesPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [sortBy, setSortBy] = useState<'date' | 'name' | 'price'>('date');
   const [searchTerm, setSearchTerm] = useState('');
-  const [_error, setError] = useState<string | null>(null);
+  const [, setError] = useState<string | null>(null);
   const [confirmRemoveId, setConfirmRemoveId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -42,21 +42,21 @@ const FavoritesPage: React.FC = () => {
       const response = await api.get('/favorites');
       const data = response.data;
       
-      setFavorites(data.favorites.map((f: any) => ({
-        id: f.id.toString(),
-        name: f.product_name,
-        brand: f.product_brand || 'Unknown',
-        price: f.product_price || 0,
-        image: f.product_image || '/placeholder.jpg',
-        rating: f.product_rating || 0,
-        matchScore: f.match_score || 0,
-        addedAt: f.created_at?.split('T')[0] || '',
+      setFavorites(data.favorites.map((f: Record<string, unknown>) => ({
+        id: String(f.id ?? ''),
+        name: String(f.product_name ?? ''),
+        brand: String(f.product_brand ?? 'Unknown'),
+        price: Number(f.product_price ?? 0),
+        image: String(f.product_image ?? '/placeholder.jpg'),
+        rating: Number(f.product_rating ?? 0),
+        matchScore: Number(f.match_score ?? 0),
+        addedAt: (typeof f.created_at === 'string' ? f.created_at.split('T')[0] : '') || '',
       })));
-    } catch (err: any) {
-      console.error('Failed to fetch favorites:', err);
-      // Fallback to empty state if API not available
+    } catch (err: unknown) {
+      if (import.meta.env.DEV) console.error('Failed to fetch favorites:', err);
       setFavorites([]);
-      if (err.response?.status !== 401) {
+      const res = err && typeof err === 'object' && 'response' in err ? (err as { response?: { status?: number } }).response : undefined;
+      if (res?.status !== 401) {
         setError('Unable to load favorites. Please try again.');
       }
     } finally {

@@ -15,6 +15,7 @@ const NotFoundPage: React.FC = () => {
       <h1 className="not-found-title">404</h1>
       <p className="not-found-message">Page not found</p>
       <p className="not-found-sub">The page you’re looking for doesn’t exist or has been moved.</p>
+      <p className="not-found-hint">Try going home, starting a scan, or browsing product recommendations.</p>
       <div className="not-found-actions">
         <Link to="/" className="btn-primary">
           <IconHome size={20} strokeWidth={2} style={{ marginRight: 8, verticalAlign: 'middle' }} />
@@ -23,6 +24,9 @@ const NotFoundPage: React.FC = () => {
         <Link to="/scan" className="btn-secondary">
           <IconScan size={20} strokeWidth={2} style={{ marginRight: 8, verticalAlign: 'middle' }} />
           Start Scan
+        </Link>
+        <Link to="/recommendations" className="btn-secondary">
+          Browse products
         </Link>
       </div>
     </div>

@@ -54,6 +54,8 @@ export { FileText as IconFileText } from 'lucide-react';
 export { BookOpen as IconBookOpen } from 'lucide-react';
 export { Trash2 as IconTrash2 } from 'lucide-react';
 export { Lock as IconLock } from 'lucide-react';
+export { Eye as IconEye } from 'lucide-react';
+export { EyeOff as IconEyeOff } from 'lucide-react';
 
 // Product & Skincare Icons
 export { Droplet as IconDroplet } from 'lucide-react';
@@ -149,6 +151,7 @@ export const IconRadiance = Sparkle;
 export const IconBarrier = ShieldCheck;
 
 // Helper function to get skin concern icon by name
+// eslint-disable-next-line react-refresh/only-export-components -- shared helper
 export const getSkinConcernIcon = (concernName: string) => {
   const name = concernName.toLowerCase();
   if (name.includes('acne') || name.includes('breakout') || name.includes('pimple')) {

@@ -84,6 +84,7 @@ const Recommendations: React.FC = () => {
   useEffect(() => {
     fetchRecommendations();
     loadFavorites();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- initial load only
   }, []);
 
   const fetchRecommendations = async () => {

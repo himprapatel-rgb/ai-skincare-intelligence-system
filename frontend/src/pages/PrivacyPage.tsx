@@ -1,8 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { usePageTitle } from '../hooks/usePageTitle';
 import './PrivacyPage.css';
 
 const PrivacyPage: React.FC = () => {
+  usePageTitle('Privacy Policy');
   const navigate = useNavigate();
 
   return (

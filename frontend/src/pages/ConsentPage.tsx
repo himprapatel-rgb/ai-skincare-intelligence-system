@@ -115,11 +115,12 @@ const ConsentPage: React.FC = () => {
       
       // Navigate to next page (onboarding or home)
       navigate('/onboarding');
-    } catch (err: any) {
-      console.error('Failed to save consent:', err);
-      if (err.response?.status === 401) {
+    } catch (err: unknown) {
+      if (import.meta.env.DEV) console.error('Failed to save consent:', err);
+      const res = err && typeof err === 'object' && 'response' in err ? (err as { response?: { status?: number } }).response : undefined;
+      if (res?.status === 401) {
         setError('Please log in to save your preferences.');
-      } else if (err.response?.status === 400) {
+      } else if (res?.status === 400) {
         setError('Invalid policy versions. Please refresh and try again.');
       } else {
         setError('Failed to save your preferences. Please try again.');

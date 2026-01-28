@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { ErrorMessage } from './ErrorMessage';
 import { LoadingSpinner } from './LoadingSpinner';
 import { GoogleSignInButton } from './GoogleSignInButton';
+import { IconEye, IconEyeOff } from './Icons';
 
 interface LoginFormProps {
   onSuccess: () => void;
@@ -24,6 +25,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegis
     }
   });
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(() => {
     try {
       return !!localStorage.getItem(REMEMBER_EMAIL_KEY);
@@ -43,6 +45,11 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegis
 
     try {
       await login(email, password);
+      if (rememberMe) {
+        try { localStorage.setItem(REMEMBER_EMAIL_KEY, email); } catch { /* ignore */ }
+      } else {
+        try { localStorage.removeItem(REMEMBER_EMAIL_KEY); } catch { /* ignore */ }
+      }
       onSuccess();
     } catch (err: unknown) {
       console.error('Login error:', err);
@@ -100,15 +107,28 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegis
         </div>
         <div className="form-group">
           <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            disabled={loading}
-            placeholder="Enter your password"
-          />
+          <div className="password-input-wrap">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              disabled={loading}
+              placeholder="Enter your password"
+              aria-describedby="password-toggle-desc"
+            />
+            <button
+              type="button"
+              className="password-toggle"
+              onClick={() => setShowPassword((v) => !v)}
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
+              tabIndex={-1}
+            >
+              {showPassword ? <IconEyeOff size={18} strokeWidth={2} /> : <IconEye size={18} strokeWidth={2} />}
+            </button>
+          </div>
+          <span id="password-toggle-desc" className="sr-only">Toggle password visibility</span>
         </div>
         <div className="form-group form-group-inline">
           <label className="checkbox-label">

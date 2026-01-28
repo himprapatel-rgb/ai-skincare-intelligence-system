@@ -96,6 +96,7 @@ const AnalysisResults: React.FC = () => {
       timestamp: String((scanResult as { created_at?: string }).created_at || new Date().toISOString()),
       recommendations,
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- buildScanImageUrl is stable
   }, [analysisId]);
 
   const fetchAnalysisResults = useCallback(async () => {

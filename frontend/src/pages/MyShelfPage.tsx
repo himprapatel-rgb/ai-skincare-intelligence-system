@@ -19,6 +19,8 @@ interface Product {
   imageUrl?: string;
 }
 
+const SHELF_STORAGE_KEY = 'shelf_products';
+
 const MyShelfPage: React.FC = () => {
   usePageTitle('My Shelf');
   const navigate = useNavigate();
@@ -28,6 +30,34 @@ const MyShelfPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [confirmRemoveId, setConfirmRemoveId] = useState<string | null>(null);
 
+  const mergeShelfFromStorage = (list: Product[]): Product[] => {
+    try {
+      const fromStorage = JSON.parse(localStorage.getItem(SHELF_STORAGE_KEY) || '[]');
+      if (!Array.isArray(fromStorage)) return list;
+      const ids = new Set(list.map((p) => p.id));
+      const merged = [...list];
+      fromStorage.forEach((p: Record<string, unknown>) => {
+        const id = String(p.id ?? '');
+        if (!id || ids.has(id)) return;
+        ids.add(id);
+        merged.push({
+          id,
+          name: String(p.name ?? ''),
+          brand: String(p.brand ?? 'Unknown'),
+          category: String(p.category ?? 'General'),
+          rating: Number(p.rating ?? 0),
+          status: (p.status as Product['status']) || 'using',
+          notes: String(p.notes ?? ''),
+          addedDate: String(p.addedDate ?? new Date().toISOString().split('T')[0]),
+          imageUrl: p.imageUrl as string | undefined,
+        });
+      });
+      return merged;
+    } catch {
+      return list;
+    }
+  };
+
   useEffect(() => {
     fetchProducts();
   }, []);
@@ -36,40 +66,40 @@ const MyShelfPage: React.FC = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      
+      let list: Product[];
+
       if (!token) {
-        setProducts(mockProducts);
-        setLoading(false);
-        return;
-      }
-      
-      const response = await fetch('/api/v1/shelf', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      
-      if (response.ok) {
-        const data = await response.json();
-        if (data.products && data.products.length > 0) {
-          setProducts(data.products.map((p: Record<string, unknown>) => ({
-            id: String(p.id ?? ''),
-            name: String(p.product_name ?? ''),
-            brand: String(p.product_brand ?? 'Unknown'),
-            category: String(p.product_category ?? 'General'),
-            rating: Number(p.rating ?? 0),
-            status: p.status === 'active' ? 'using' : p.status === 'wishlist' ? 'wishlist' : 'discontinued',
-            notes: String(p.notes ?? ''),
-            addedDate: (typeof p.created_at === 'string' ? p.created_at.split('T')[0] : '') || '',
-            imageUrl: p.product_image as string | undefined,
-          })));
-        } else {
-          setProducts(mockProducts);
-        }
+        list = mockProducts;
       } else {
-        setProducts(mockProducts);
+        const response = await fetch('/api/v1/shelf', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          if (data.products && data.products.length > 0) {
+            list = data.products.map((p: Record<string, unknown>) => ({
+              id: String(p.id ?? ''),
+              name: String(p.product_name ?? ''),
+              brand: String(p.product_brand ?? 'Unknown'),
+              category: String(p.product_category ?? 'General'),
+              rating: Number(p.rating ?? 0),
+              status: p.status === 'active' ? 'using' : p.status === 'wishlist' ? 'wishlist' : 'discontinued',
+              notes: String(p.notes ?? ''),
+              addedDate: (typeof p.created_at === 'string' ? p.created_at.split('T')[0] : '') || '',
+              imageUrl: p.product_image as string | undefined,
+            }));
+          } else {
+            list = mockProducts;
+          }
+        } else {
+          list = mockProducts;
+        }
       }
+      setProducts(mergeShelfFromStorage(list));
     } catch (error) {
       console.error('Failed to fetch products:', error);
-      setProducts(mockProducts);
+      setProducts(mergeShelfFromStorage(mockProducts));
     } finally {
       setLoading(false);
     }

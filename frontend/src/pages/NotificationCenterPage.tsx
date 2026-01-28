@@ -160,6 +160,8 @@ const NotificationCenterPage: React.FC = () => {
             <button 
               onClick={() => setShowSettings(!showSettings)}
               className="btn-settings"
+              title={showSettings ? 'Close notification settings' : 'Open notification settings'}
+              aria-label={showSettings ? 'Close notification settings' : 'Open notification settings'}
             >
               <IconSettings size={20} strokeWidth={2} />
             </button>
@@ -238,10 +240,10 @@ const NotificationCenterPage: React.FC = () => {
         {/* Notifications List */}
         <div className="notifications-list">
           {filteredNotifications.length === 0 ? (
-            <div className="empty-state">
-              <IconBell size={64} strokeWidth={2} />
+            <div className="empty-state" role="status">
+              <IconBell size={64} strokeWidth={2} className="empty-state-icon" aria-hidden="true" />
               <h3>No notifications yet</h3>
-              <p>When you have reminders or updates, they&apos;ll appear here.</p>
+              <p className="empty-state-text">When you get reminders, progress updates, or tips, they&apos;ll show up here.</p>
             </div>
           ) : (
             filteredNotifications.map(notification => (

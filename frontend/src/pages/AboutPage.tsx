@@ -213,6 +213,21 @@ const AboutPage: React.FC = () => {
           </div>
         </section>
 
+        {/* What's new / Changelog (Task 250) */}
+        <section className="about-section" id="whats-new" aria-labelledby="whats-new-heading">
+          <h2 id="whats-new-heading" className="section-title">What&apos;s New</h2>
+          <div className="about-changelog">
+            <p className="changelog-version">v1.0 (January 2026)</p>
+            <ul className="changelog-list">
+              <li>AI skin analysis from a single photo</li>
+              <li>Digital Twin progress tracking</li>
+              <li>Routine Builder and product recommendations</li>
+              <li>Ingredient dictionary and skin type guide</li>
+              <li>Privacy-first data export and consent controls</li>
+            </ul>
+          </div>
+        </section>
+
         {/* CTA Section */}
         <section className="about-cta">
           <h2>Ready to understand your skin?</h2>

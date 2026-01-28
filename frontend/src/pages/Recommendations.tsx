@@ -1,9 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { usePageTitle } from '../hooks/usePageTitle';
-import { IconStar, IconAlertTriangle, IconHeart, IconArrowLeft } from '../components/Icons';
+import { IconStar, IconAlertTriangle, IconHeart, IconArrowLeft, IconPackage } from '../components/Icons';
 import { SkeletonCardGrid } from '../components/Skeleton';
+import { useToast } from '../context/ToastContext';
 import './Recommendations.css';
+
+const SHELF_STORAGE_KEY = 'shelf_products';
+const COMPARE_IDS_KEY = 'compare_product_ids';
+const MAX_COMPARE = 4;
+
+function getCompareIds(): string[] {
+  try {
+    const raw = localStorage.getItem(COMPARE_IDS_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+function addToCompareList(productId: string): string[] {
+  try {
+    const list = getCompareIds().filter((id) => id !== productId);
+    const next = [productId, ...list].slice(0, MAX_COMPARE);
+    localStorage.setItem(COMPARE_IDS_KEY, JSON.stringify(next));
+    return next;
+  } catch {
+    return getCompareIds();
+  }
+}
 
 interface Product {
   id: string;
@@ -21,10 +46,12 @@ interface Product {
 const Recommendations: React.FC = () => {
   usePageTitle('Recommendations');
   const navigate = useNavigate();
+  const toast = useToast();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
+  const [shelfIds, setShelfIds] = useState<Set<string>>(new Set());
   const [filters, setFilters] = useState({
     category: 'all',
     priceRange: 'all',
@@ -84,6 +111,7 @@ const Recommendations: React.FC = () => {
   useEffect(() => {
     fetchRecommendations();
     loadFavorites();
+    loadShelfIds();
     // eslint-disable-next-line react-hooks/exhaustive-deps -- initial load only
   }, []);
 
@@ -129,6 +157,52 @@ const Recommendations: React.FC = () => {
     if (saved) {
       setFavorites(new Set(JSON.parse(saved)));
     }
+  };
+
+  const loadShelfIds = () => {
+    try {
+      const raw = localStorage.getItem(SHELF_STORAGE_KEY);
+      const list = raw ? JSON.parse(raw) : [];
+      const ids = Array.isArray(list)
+        ? (list as { id?: string }[]).map((p) => p?.id).filter((id): id is string => typeof id === 'string')
+        : [];
+      setShelfIds(new Set(ids));
+    } catch {
+      setShelfIds(new Set());
+    }
+  };
+
+  const addToShelf = (product: Product) => {
+    if (shelfIds.has(product.id)) {
+      toast.success('Already on your shelf');
+      return;
+    }
+    try {
+      const raw = localStorage.getItem(SHELF_STORAGE_KEY);
+      const list = raw ? JSON.parse(raw) : [];
+      const entry = {
+        id: product.id,
+        name: product.name,
+        brand: product.brand,
+        category: product.category,
+        rating: product.rating ?? null,
+        status: 'using',
+        notes: '',
+        addedDate: new Date().toISOString(),
+        imageUrl: product.imageUrl ?? null,
+      };
+      const next = Array.isArray(list) ? [...list, entry] : [entry];
+      localStorage.setItem(SHELF_STORAGE_KEY, JSON.stringify(next));
+      setShelfIds((prev) => new Set([...prev, product.id]));
+      toast.success('Added to shelf');
+    } catch {
+      toast.error('Could not add to shelf');
+    }
+  };
+
+  const handleAddToCompare = (productId: string) => {
+    setCompareIds(addToCompareList(productId));
+    toast.success('Added to compare list');
   };
 
   const toggleFavorite = (productId: string) => {
@@ -389,20 +463,43 @@ const Recommendations: React.FC = () => {
                     <span className="price-value">
                       {product.price != null ? `$${product.price}` : 'Price N/A'}
                     </span>
-                    {product.purchaseUrl ? (
-                      <a
-                        href={product.purchaseUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="btn-add"
+                    <div className="product-actions-row">
+                      <button
+                        type="button"
+                        className={`btn-add-to-shelf ${shelfIds.has(product.id) ? 'on-shelf' : ''}`}
+                        onClick={() => addToShelf(product)}
+                        disabled={shelfIds.has(product.id)}
+                        title={shelfIds.has(product.id) ? 'Already on shelf' : 'Add to shelf'}
+                        aria-label={shelfIds.has(product.id) ? `${product.name} already on shelf` : `Add ${product.name} to shelf`}
                       >
-                        Buy Now
-                      </a>
-                    ) : (
-                      <button type="button" className="btn-disabled" disabled>
-                        Unavailable
+                        <IconPackage size={16} strokeWidth={2} />
+                        {shelfIds.has(product.id) ? 'On shelf' : 'Add to shelf'}
                       </button>
-                    )}
+                      <button
+                        type="button"
+                        className={`btn-add-to-compare ${compareIds.includes(product.id) ? 'in-compare' : ''}`}
+                        onClick={() => handleAddToCompare(product.id)}
+                        disabled={compareIds.includes(product.id)}
+                        title={compareIds.includes(product.id) ? 'In compare list' : 'Add to compare'}
+                        aria-label={compareIds.includes(product.id) ? `${product.name} in compare list` : `Add ${product.name} to compare`}
+                      >
+                        {compareIds.includes(product.id) ? 'In compare' : 'Compare'}
+                      </button>
+                      {product.purchaseUrl ? (
+                        <a
+                          href={product.purchaseUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="btn-add"
+                        >
+                          Buy Now
+                        </a>
+                      ) : (
+                        <button type="button" className="btn-disabled" disabled>
+                          Unavailable
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>

@@ -48,6 +48,30 @@
   color: var(--primary);
 }
 
+.product-details-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.product-details-actions-row .compare-link {
+  padding: 8px 14px;
+  border-radius: var(--border-radius-md);
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 0.9375rem;
+}
+
+.product-details-actions-row .compare-link:hover {
+  background: rgba(31, 111, 235, 0.08);
+  border-color: var(--primary);
+}
+
 .product-header {
   display: grid;
   grid-template-columns: minmax(260px, 360px) 1fr;

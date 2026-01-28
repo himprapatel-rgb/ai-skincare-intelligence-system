@@ -37,6 +37,13 @@ const SkinTypeGuidePage: React.FC = () => {
             <li>Track changes across seasons and stress levels.</li>
           </ol>
         </div>
+
+        <div className="skin-type-summary" role="region" aria-label="Result summary">
+          <h2>Using Your Result</h2>
+          <p className="skin-type-summary-text">
+            Your skin type helps you choose the right products. Dry? Prioritize rich hydration and barrier care. Oily? Look for lightweight, non-comedogenic formulas. Combination? Target the T-zone and hydrate drier areas. Sensitive? Stick to calming, minimal-ingredient products.
+          </p>
+        </div>
       </div>
     </div>
   );

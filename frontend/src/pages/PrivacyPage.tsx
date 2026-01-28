@@ -11,7 +11,9 @@ const PrivacyPage: React.FC = () => {
     <div className="privacy-page">
       <div className="privacy-hero">
         <h1>Privacy Policy</h1>
+        <p className="effective-date">Effective: January 2026</p>
         <p className="last-updated">Last Updated: {new Date().toLocaleDateString()}</p>
+        <p className="privacy-summary">We collect only what we need to run the service, keep your data secure, and never sell it. You can export or delete your data anytime.</p>
       </div>
 
       <nav className="privacy-toc" aria-label="Privacy policy sections">

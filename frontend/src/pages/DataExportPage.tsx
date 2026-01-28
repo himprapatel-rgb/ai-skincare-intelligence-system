@@ -170,6 +170,9 @@ const DataExportPage: React.FC = () => {
                 <div className="export-format-subtitle">Human-readable format</div>
               </button>
             </div>
+            <p className="export-format-explanation" id="export-format-desc">
+              <strong>JSON</strong> — A single file containing your selected data in a structured format (profile, analysis history, favorites). Use it to back up data or port it to another service. <strong>PDF</strong> — A human-readable report (coming soon) for sharing or printing.
+            </p>
             <p className="export-eta" aria-live="polite">Estimated time: under 1 minute for typical data size.</p>
           </div>
 

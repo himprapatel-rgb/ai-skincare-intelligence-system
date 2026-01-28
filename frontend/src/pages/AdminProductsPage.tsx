@@ -296,7 +296,12 @@ const AdminProductsPage: React.FC = () => {
           </tbody>
         </table>
       </div>
-      {products.length === 0 && <div className="admin-card">No products found.</div>}
+      {products.length === 0 && (
+        <div className="admin-card admin-empty-state" role="status">
+          <p className="admin-empty-title">No products in catalog</p>
+          <p className="admin-empty-text">Add a product using the form above, or run a search to load from the API.</p>
+        </div>
+      )}
     </div>
   );
 };

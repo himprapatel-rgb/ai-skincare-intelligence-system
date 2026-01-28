@@ -550,6 +550,36 @@
   justify-content: center;
 }
 
+/* As featured / Social proof (Task 213) */
+.as-featured-section {
+  padding: 32px 24px;
+  background: var(--bg-white);
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+.as-featured-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-gray);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0 16px;
+}
+.as-featured-logos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px 40px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.as-featured-name {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  opacity: 0.85;
+}
+
 /* STATS BAR */
 .stats-section {
   background: var(--bg-white);

@@ -15,6 +15,7 @@ const VideoTutorialsPage: React.FC = () => {
             <div className="video-thumb-wrap">
               <div className="video-thumb">
                 <span className="video-duration" aria-label="Duration 3 minutes 12 seconds">3:12</span>
+                <span className="video-difficulty" aria-label="Difficulty: Beginner">Beginner</span>
               </div>
             </div>
             <h3>How to Capture a Great Scan</h3>
@@ -24,6 +25,7 @@ const VideoTutorialsPage: React.FC = () => {
             <div className="video-thumb-wrap">
               <div className="video-thumb">
                 <span className="video-duration" aria-label="Duration 2 minutes 45 seconds">2:45</span>
+                <span className="video-difficulty" aria-label="Difficulty: Intermediate">Intermediate</span>
               </div>
             </div>
             <h3>Reading Your Digital Twin</h3>
@@ -33,6 +35,7 @@ const VideoTutorialsPage: React.FC = () => {
             <div className="video-thumb-wrap">
               <div className="video-thumb">
                 <span className="video-duration" aria-label="Duration 4 minutes 20 seconds">4:20</span>
+                <span className="video-difficulty" aria-label="Difficulty: Beginner">Beginner</span>
               </div>
             </div>
             <h3>Building a Routine</h3>

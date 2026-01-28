@@ -61,7 +61,14 @@ const IngredientDictionaryPage: React.FC = () => {
           ))}
         </div>
         {filtered.length === 0 && (
-          <p className="ingredient-empty">No ingredients match &quot;{debouncedQuery}&quot;. Try a different search.</p>
+          <div className="ingredient-empty" role="status">
+            <p className="ingredient-empty-title">Ingredient not found</p>
+            <p className="ingredient-empty-text">
+              {debouncedQuery.trim()
+                ? `No ingredients match "${debouncedQuery}". Check the spelling or try a different search.`
+                : 'No ingredients in the dictionary yet. Try searching by name or concern.'}
+            </p>
+          </div>
         )}
       </div>
     </div>

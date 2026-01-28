@@ -82,3 +82,10 @@
   color: var(--text-gray);
   margin-top: 24px;
 }
+.ingredient-empty-title {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+.ingredient-empty-text {
+  margin: 0;
+}

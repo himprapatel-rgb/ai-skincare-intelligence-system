@@ -160,7 +160,12 @@ const AdminUsersPage: React.FC = () => {
           </tbody>
         </table>
         </div>
-          {users.length === 0 && <div className="admin-card">No users found.</div>}
+          {users.length === 0 && (
+            <div className="admin-card admin-empty-state" role="status">
+              <p className="admin-empty-title">No users yet</p>
+              <p className="admin-empty-text">Users will appear here once they register. Use search to filter by email or name.</p>
+            </div>
+          )}
         </>
       )}
     </div>

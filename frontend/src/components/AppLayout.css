@@ -861,6 +861,14 @@
   font-size: 0.8rem;
   margin-left: 0.25em;
 }
+.app-footer-whats-new {
+  color: var(--primary);
+  text-decoration: none;
+  font-size: 0.85rem;
+}
+.app-footer-whats-new:hover {
+  text-decoration: underline;
+}
 
 .app-footer-disclaimer {
   display: flex;

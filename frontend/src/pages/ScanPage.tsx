@@ -658,7 +658,31 @@ export default function ScanPage() {
             <p className="scan-subtitle">
               Get instant AI-powered insights on your skin health from a single photo
             </p>
+            {/* Step titles and descriptions (Task 214) */}
+            {scanStep === 'upload' && (
+              <div className="scan-step-desc" role="status">
+                <h2 className="scan-step-title">Step 1: Upload your photo</h2>
+                <p className="scan-step-text">Take a selfie or upload an image. We&apos;ll analyze skin tone, texture, and concerns.</p>
+              </div>
+            )}
+            {scanStep === 'scanning' && (
+              <div className="scan-step-desc" role="status">
+                <h2 className="scan-step-title">Step 2: Analysis</h2>
+                <p className="scan-step-text">Our AI is analyzing your image. This usually takes 30–60 seconds.</p>
+              </div>
+            )}
+            {scanStep === 'complete' && (
+              <div className="scan-step-desc" role="status">
+                <h2 className="scan-step-title">Step 3: View results</h2>
+                <p className="scan-step-text">Your personalized report is ready. You&apos;ll be redirected to the full results.</p>
+              </div>
+            )}
           </div>
+
+          {/* Legal disclaimer (Tasks 245, 246) */}
+          <p className="scan-legal-disclaimer" role="note">
+            This tool is for informational use only and is not a medical device. It does not replace professional dermatological advice.
+          </p>
 
           {scanStep === 'upload' && (
             <div className="scan-upload-section">

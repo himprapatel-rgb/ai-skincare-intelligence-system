@@ -1,8 +1,10 @@
 // src/pages/OnboardingPage.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IconSparkles, IconScan, IconZap, IconShield, IconBarChart, IconCheck } from '../components/Icons';
 import './OnboardingPage.css';
+
+const ONBOARDING_PROGRESS_KEY = 'onboarding_progress';
 
 interface OnboardingData {
   name: string;
@@ -13,19 +15,48 @@ interface OnboardingData {
   cameraConsent: boolean;
 }
 
+const defaultFormData: OnboardingData = {
+  name: '',
+  age: 0,
+  skinType: '',
+  concerns: [],
+  goals: [],
+  cameraConsent: false
+};
+
 const OnboardingPage: React.FC = () => {
   const navigate = useNavigate();
-  const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState<OnboardingData>({
-    name: '',
-    age: 0,
-    skinType: '',
-    concerns: [],
-    goals: [],
-    cameraConsent: false
+  const [step, setStep] = useState(() => {
+    try {
+      const raw = localStorage.getItem(ONBOARDING_PROGRESS_KEY);
+      const data = raw ? JSON.parse(raw) : null;
+      return typeof data?.step === 'number' ? data.step : 1;
+    } catch {
+      return 1;
+    }
+  });
+  const [formData, setFormData] = useState<OnboardingData>(() => {
+    try {
+      const raw = localStorage.getItem(ONBOARDING_PROGRESS_KEY);
+      const data = raw ? JSON.parse(raw) : null;
+      if (data?.formData && typeof data.formData === 'object') {
+        return { ...defaultFormData, ...data.formData };
+      }
+    } catch {
+      /* ignore */
+    }
+    return defaultFormData;
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(ONBOARDING_PROGRESS_KEY, JSON.stringify({ step, formData }));
+    } catch {
+      /* ignore */
+    }
+  }, [step, formData]);
 
   const skinTypes = ['Dry', 'Oily', 'Combination', 'Normal', 'Sensitive'];
   const concernsOptions = ['Acne', 'Rosacea', 'Wrinkles', 'Dark Spots', 'Sensitivity', 'Dryness', 'Oiliness', 'Pores'];
@@ -87,6 +118,15 @@ const OnboardingPage: React.FC = () => {
 
       if (!response.ok) throw new Error('Onboarding failed');
 
+      try {
+        localStorage.setItem('onboarding_goals', JSON.stringify({
+          goals: formData.goals,
+          concerns: formData.concerns,
+          skinType: formData.skinType,
+        }));
+      } catch {
+        /* ignore */
+      }
       navigate('/scan');
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Failed to complete onboarding');
@@ -95,11 +135,29 @@ const OnboardingPage: React.FC = () => {
     }
   };
 
+  const handleSkip = () => {
+    try {
+      localStorage.removeItem(ONBOARDING_PROGRESS_KEY);
+    } catch {
+      /* ignore */
+    }
+    navigate('/scan');
+  };
+
+  const stepTitles: Record<number, string> = {
+    1: 'Welcome',
+    2: 'Profile setup',
+    3: 'Skin concerns',
+    4: 'Skincare goals',
+    5: 'Camera permission',
+  };
+
   const renderStep = () => {
     switch (step) {
       case 1:
         return (
           <div className="step-content">
+            <p className="onboarding-step-title" role="status">Step 1: {stepTitles[1]}</p>
             <div className="welcome-icon">
               <IconSparkles size={48} strokeWidth={1.5} />
             </div>
@@ -119,15 +177,21 @@ const OnboardingPage: React.FC = () => {
                 Detailed insights and recommendations
               </li>
             </ul>
-            <button onClick={handleNext} className="btn-primary">
-              Get Started
-            </button>
+            <div className="button-group">
+              <button onClick={handleNext} className="btn-primary">
+                Get Started
+              </button>
+              <button type="button" onClick={handleSkip} className="btn-link onboarding-skip">
+                Skip for now
+              </button>
+            </div>
           </div>
         );
 
       case 2:
         return (
           <div className="step-content">
+            <p className="onboarding-step-title" role="status">Step 2: {stepTitles[2]}</p>
             <h2>Profile Setup</h2>
             <p className="step-description">Tell us a bit about yourself</p>
             <div className="form-group">
@@ -185,6 +249,7 @@ const OnboardingPage: React.FC = () => {
       case 3:
         return (
           <div className="step-content">
+            <p className="onboarding-step-title" role="status">Step 3: {stepTitles[3]}</p>
             <h2>Skin Concerns</h2>
             <p className="step-description">Select all that apply (optional)</p>
             <div className="options-grid">
@@ -233,6 +298,7 @@ const OnboardingPage: React.FC = () => {
       case 5:
         return (
           <div className="step-content">
+            <p className="onboarding-step-title" role="status">Step 5: {stepTitles[5]}</p>
             <h2>Camera Permission</h2>
             <p className="step-description">Allow camera access for skin analysis</p>
             <div className="camera-info">

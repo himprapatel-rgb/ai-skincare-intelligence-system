@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { api } from '../services/api';
 import { IconArrowLeft, IconStar } from '../components/Icons';
 import { BreadcrumbJsonLd } from '../components/BreadcrumbJsonLd';
@@ -46,6 +46,42 @@ interface ReviewsData {
   rating_distribution: { [key: number]: number };
 }
 
+const RECENTLY_VIEWED_KEY = 'recently_viewed_products';
+const COMPARE_IDS_KEY = 'compare_product_ids';
+const MAX_RECENT = 10;
+const MAX_COMPARE = 4;
+
+function addToRecentlyViewed(item: { id: string; name: string; brand: string; imageUrl?: string }) {
+  try {
+    const raw = localStorage.getItem(RECENTLY_VIEWED_KEY);
+    const list: Array<{ id: string; name: string; brand: string; imageUrl?: string; viewedAt: string }> = raw ? JSON.parse(raw) : [];
+    const next = [{ ...item, viewedAt: new Date().toISOString() }, ...list.filter((p) => p.id !== item.id)].slice(0, MAX_RECENT);
+    localStorage.setItem(RECENTLY_VIEWED_KEY, JSON.stringify(next));
+  } catch {
+    /* ignore */
+  }
+}
+
+function getCompareIds(): string[] {
+  try {
+    const raw = localStorage.getItem(COMPARE_IDS_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+function addToCompare(productId: string): string[] {
+  try {
+    const list = getCompareIds().filter((id) => id !== productId);
+    const next = [productId, ...list].slice(0, MAX_COMPARE);
+    localStorage.setItem(COMPARE_IDS_KEY, JSON.stringify(next));
+    return next;
+  } catch {
+    return getCompareIds();
+  }
+}
+
 const ProductDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -72,6 +108,12 @@ const ProductDetailsPage: React.FC = () => {
   const [submittingReview, setSubmittingReview] = useState(false);
   const [reviewError, setReviewError] = useState('');
   const [imageZoomed, setImageZoomed] = useState(false);
+  const [compareIds, setCompareIds] = useState<string[]>(() => getCompareIds());
+
+  const handleAddToCompare = () => {
+    if (!product?.id) return;
+    setCompareIds(addToCompare(product.id));
+  };
 
   const fetchProductDetails = useCallback(async () => {
     try {
@@ -100,6 +142,12 @@ const ProductDetailsPage: React.FC = () => {
       };
       
       setProduct(mockProduct);
+      addToRecentlyViewed({
+        id: mockProduct.id,
+        name: mockProduct.name,
+        brand: mockProduct.brand,
+        imageUrl: mockProduct.imageUrl,
+      });
       // Check if in shelf
       setInShelf(Math.random() > 0.5); // Mock
     } catch (error) {
@@ -196,11 +244,17 @@ const ProductDetailsPage: React.FC = () => {
           { name: product.name, path: `/product/${id}` },
         ]}
       />
-      <button className="back-button" onClick={() => navigate(-1)}>
-        <IconArrowLeft size={16} strokeWidth={2} className="icon-inline" />
-        Back
-      </button>
-      
+      <div className="product-details-actions-row">
+        <button className="back-button" onClick={() => navigate(-1)}>
+          <IconArrowLeft size={16} strokeWidth={2} className="icon-inline" />
+          Back
+        </button>
+        {compareIds.length >= 2 && (
+          <Link to={`/product/compare?ids=${compareIds.slice(0, 4).join(',')}`} className="compare-link">
+            Compare ({compareIds.length})
+          </Link>
+        )}
+      </div>
       <div className="product-header">
         <div className="product-image-section">
           {product.imageUrl ? (
@@ -275,6 +329,9 @@ const ProductDetailsPage: React.FC = () => {
             ) : (
               <button className="btn-primary" onClick={handleAddToShelf}>
                 Add to My Shelf
+              </button>
+              <button type="button" className="btn-secondary" onClick={handleAddToCompare} disabled={compareIds.includes(product.id)}>
+                {compareIds.includes(product.id) ? 'In compare list' : 'Add to compare'}
               </button>
             )}
             <button className="btn-outline" onClick={() => navigate('/routine-builder')}>

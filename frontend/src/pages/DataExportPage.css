@@ -167,6 +167,13 @@
   line-height: 1.6;
 }
 
+.export-format-explanation {
+  margin-top: 12px;
+  font-size: 0.875rem;
+  color: var(--text-gray, #6b7280);
+  line-height: 1.5;
+}
+
 .export-eta {
   margin-top: 12px;
   font-size: 0.875rem;

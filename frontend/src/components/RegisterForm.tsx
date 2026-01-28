@@ -11,6 +11,18 @@ interface RegisterFormProps {
   onSwitchToLogin: () => void;
 }
 
+/** Map API error strings to user-friendly register messages (Task 222) */
+function toFriendlyRegisterError(detail: string, status?: number): string {
+  const s = (detail || '').toLowerCase();
+  if (status === 409 || s.includes('already') && (s.includes('email') || s.includes('registered')))
+    return 'An account with this email already exists. Try signing in or use Forgot password.';
+  if (s.includes('invalid') && s.includes('email')) return 'Please enter a valid email address.';
+  if (s.includes('password') && (s.includes('weak') || s.includes('requirement')))
+    return 'Password does not meet requirements. Use at least 8 characters, one uppercase, one number, and one special character.';
+  if (status === 429) return 'Too many attempts. Please wait a few minutes and try again.';
+  return '';
+}
+
 export const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onSwitchToLogin }) => {
   const { register } = useAuth();
   const navigate = useNavigate();
@@ -68,9 +80,11 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onSwitchT
       onSuccess();
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
-        setError(err.response?.data?.detail || err.response?.data?.message || 'Registration failed. Please try again.');
+        const detail = err.response?.data?.detail || err.response?.data?.message || '';
+        const friendly = toFriendlyRegisterError(typeof detail === 'string' ? detail : '', err.response?.status);
+        setError(friendly || (typeof detail === 'string' ? detail : '') || 'Registration failed. Please try again.');
       } else if (err instanceof Error) {
-        setError(err.message);
+        setError(toFriendlyRegisterError(err.message) || err.message);
       } else {
         setError('Registration failed. Please try again.');
       }

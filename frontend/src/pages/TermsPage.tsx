@@ -11,7 +11,9 @@ const TermsPage: React.FC = () => {
     <div className="terms-page">
       <div className="terms-hero">
         <h1>Terms of Service</h1>
+        <p className="effective-date">Effective: January 2026</p>
         <p className="last-updated">Last Updated: {new Date().toLocaleDateString()}</p>
+        <p className="terms-summary">By using our app you agree to use the service as intended, accept that skin analysis is for informational use only, and follow our acceptable use policy.</p>
       </div>
 
       <nav className="terms-toc" aria-label="Terms of Service sections">

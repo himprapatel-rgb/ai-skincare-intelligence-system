@@ -26,6 +26,7 @@ const SampleReportPage = React.lazy(() => import("./pages/SampleReportPage"));
 const DigitalTwinTimelinePage = React.lazy(() => import("./pages/DigitalTwinTimelinePage"));
 const Recommendations = React.lazy(() => import("./pages/Recommendations"));
 const ProductDetailsPage = React.lazy(() => import("./pages/ProductDetailsPage"));
+const ProductComparePage = React.lazy(() => import("./pages/ProductComparePage"));
 const RoutineBuilderPage = React.lazy(() => import("./pages/RoutineBuilderPage"));
 const FavoritesPage = React.lazy(() => import("./pages/FavoritesPage"));
 const MyShelfPage = React.lazy(() => import("./pages/MyShelfPage"));
@@ -81,6 +82,7 @@ export default function App() {
             <Route path="/recommendations" element={<Recommendations />} />
             <Route path="/discover" element={<Recommendations />} />
             <Route path="/product/:id" element={<ProductDetailsPage />} />
+            <Route path="/product/compare" element={<ProductComparePage />} />
             <Route path="/routine-builder" element={<RoutineBuilderPage />} />
             <Route path="/routines" element={<RoutineBuilderPage />} />
             <Route path="/favorites" element={<FavoritesPage />} />

@@ -1,0 +1,165 @@
+.product-compare-page {
+  min-height: 100vh;
+  background: var(--bg-light, #f8fafc);
+  padding: var(--spacing-xl, 32px) var(--spacing-lg, 24px);
+  font-family: 'Inter', -apple-system, BlinkMacFont, sans-serif;
+}
+
+.product-compare-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.product-compare-container h1 {
+  font-size: 1.75rem;
+  color: var(--text-dark, #1e293b);
+  margin-bottom: 8px;
+}
+
+.compare-empty-desc {
+  color: var(--text-gray, #64748b);
+  margin-bottom: 24px;
+  max-width: 480px;
+}
+
+.compare-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.compare-back {
+  display: inline-flex;
+  align-items: center;
+}
+
+.compare-grid {
+  display: grid;
+  gap: 24px;
+  align-items: start;
+}
+
+.compare-card {
+  background: var(--bg-white, #fff);
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.compare-card-name {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.compare-card-brand {
+  font-size: 0.9375rem;
+  color: var(--text-gray);
+  margin: 0;
+}
+
+.compare-card-meta {
+  font-size: 0.875rem;
+  color: var(--text-gray);
+  margin: 0;
+}
+
+.compare-card-rating {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.compare-card-section {
+  margin-top: 4px;
+}
+
+.compare-card-section h4 {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-gray);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 8px 0;
+}
+
+.compare-card-section ul {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 0.875rem;
+  color: var(--text-dark);
+  line-height: 1.5;
+}
+
+.compare-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.compare-tag {
+  display: inline-block;
+  padding: 4px 10px;
+  background: rgba(31, 111, 235, 0.1);
+  color: var(--primary, #1f6feb);
+  border-radius: 6px;
+  font-size: 0.8125rem;
+}
+
+.compare-tag.empty {
+  background: transparent;
+  color: var(--text-gray);
+}
+
+.compare-card-link {
+  margin-top: auto;
+  padding-top: 12px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.compare-card-link:hover {
+  text-decoration: underline;
+}
+
+.btn-primary,
+.btn-secondary {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-right: 12px;
+  margin-bottom: 8px;
+}
+
+.btn-primary {
+  background: var(--primary, #1f6feb);
+  color: white;
+  border: none;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--text-dark);
+  border: 1px solid var(--border);
+}
+
+@media (max-width: 768px) {
+  .compare-grid {
+    grid-template-columns: 1fr !important;
+  }
+}

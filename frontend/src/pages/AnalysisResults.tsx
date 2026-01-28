@@ -1,6 +1,8 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { IconScan, IconHome, IconCheck, IconAlertTriangle, IconArrowLeft, IconCopy, getSkinConcernIcon } from '../components/Icons';
+import html2canvas from 'html2canvas';
+import { jsPDF } from 'jspdf';
+import { IconScan, IconHome, IconCheck, IconAlertTriangle, IconArrowLeft, IconCopy, IconShare2, IconBrandX, IconHeart, IconDownload, getSkinConcernIcon } from '../components/Icons';
 import { BreadcrumbJsonLd } from '../components/BreadcrumbJsonLd';
 import { getScanHistory, getScanResult } from '../services/scanApi';
 import { useToast } from '../context/ToastContext';
@@ -35,6 +37,9 @@ const AnalysisResults: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [failureMessage, setFailureMessage] = useState<string | null>(null);
   const [previousScans, setPreviousScans] = useState<ScanHistoryItem[]>([]);
+  const [savedToFavorites, setSavedToFavorites] = useState(false);
+  const [exporting, setExporting] = useState<'pdf' | 'image' | null>(null);
+  const exportContainerRef = useRef<HTMLDivElement>(null);
   const apiBase = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
   const apiOrigin = apiBase.replace(/\/api\/v1\/?$/, '');
   const buildScanImageUrl = (scanId?: string) => (scanId ? `${apiOrigin}/api/v1/scan/${scanId}/image` : '');
@@ -139,6 +144,90 @@ const AnalysisResults: React.FC = () => {
     fetchAnalysisResults();
   }, [fetchAnalysisResults]);
 
+  useEffect(() => {
+    if (!analysisId) return;
+    try {
+      const list = JSON.parse(localStorage.getItem('favorite_analyses') || '[]');
+      setSavedToFavorites(Array.isArray(list) && list.includes(analysisId));
+    } catch {
+      setSavedToFavorites(false);
+    }
+  }, [analysisId]);
+
+  const toggleSaveAnalysis = () => {
+    if (!analysisId) return;
+    try {
+      const list: string[] = JSON.parse(localStorage.getItem('favorite_analyses') || '[]');
+      const next = list.includes(analysisId)
+        ? list.filter((id) => id !== analysisId)
+        : [...list, analysisId];
+      localStorage.setItem('favorite_analyses', JSON.stringify(next));
+      setSavedToFavorites(next.includes(analysisId));
+      toast.success(next.includes(analysisId) ? 'Analysis saved to favorites' : 'Removed from favorites');
+    } catch {
+      toast.error('Could not save');
+    }
+  };
+
+  const captureForExport = useCallback(() => {
+    const el = exportContainerRef.current;
+    if (!el) return null;
+    return html2canvas(el, {
+      useCORS: true,
+      allowTaint: true,
+      scale: 2,
+      ignoreElements: (element) =>
+        element.classList.contains('results-header-actions') ||
+        element.classList.contains('results-actions') ||
+        element.classList.contains('sr-only'),
+    });
+  }, []);
+
+  const exportAsImage = useCallback(async () => {
+    setExporting('image');
+    try {
+      const canvas = await captureForExport();
+      if (!canvas) {
+        toast.error('Could not capture results');
+        return;
+      }
+      const link = document.createElement('a');
+      link.download = `skin-analysis-${analysisId ?? 'results'}-${new Date().toISOString().slice(0, 10)}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      toast.success('Image downloaded');
+    } catch {
+      toast.error('Could not export image');
+    } finally {
+      setExporting(null);
+    }
+  }, [analysisId, captureForExport, toast]);
+
+  const exportAsPdf = useCallback(async () => {
+    setExporting('pdf');
+    try {
+      const canvas = await captureForExport();
+      if (!canvas) {
+        toast.error('Could not capture results');
+        return;
+      }
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'a4' });
+      const pageW = pdf.internal.pageSize.getWidth();
+      const pageH = pdf.internal.pageSize.getHeight();
+      const scale = Math.min(pageW / canvas.width, pageH / canvas.height);
+      const w = canvas.width * scale;
+      const h = canvas.height * scale;
+      pdf.addImage(imgData, 'PNG', 0, 0, w, h);
+      pdf.save(`skin-analysis-${analysisId ?? 'results'}-${new Date().toISOString().slice(0, 10)}.pdf`);
+      toast.success('PDF downloaded');
+    } catch {
+      toast.error('Could not export PDF');
+    } finally {
+      setExporting(null);
+    }
+  }, [analysisId, captureForExport, toast]);
+
   const getSeverityColor = (severity: number): string => {
     if (severity >= 80) return 'severity-severe';
     if (severity >= 60) return 'severity-high';
@@ -153,6 +242,15 @@ const AnalysisResults: React.FC = () => {
     if (severity >= 40) return 'Mild';
     if (severity >= 20) return 'Light';
     return 'Clear';
+  };
+
+  /** Tooltip text for severity levels (Task 215) */
+  const getSeverityTooltip = (severity: number): string => {
+    if (severity >= 80) return 'Severe (80–100%): Highly visible; consider professional advice if persistent.';
+    if (severity >= 60) return 'Moderate (60–79%): Noticeable; consistent routine may help.';
+    if (severity >= 40) return 'Mild (40–59%): Some visibility; good candidate for at-home care.';
+    if (severity >= 20) return 'Light (20–39%): Slight; maintenance and prevention recommended.';
+    return 'Clear (0–19%): Minimal or none detected; keep up your routine.';
   };
 
   if (loading) {
@@ -205,22 +303,95 @@ const AnalysisResults: React.FC = () => {
             </p>
           </div>
           <div className="results-header-actions">
+            <div className="results-share-wrap">
+              <span className="results-share-label">Share your results</span>
+              <button
+                type="button"
+                className="results-copy-link"
+                onClick={async () => {
+                  try {
+                    await navigator.clipboard.writeText(window.location.href);
+                    toast.success('Link copied to clipboard');
+                  } catch {
+                    toast.error('Could not copy link');
+                  }
+                }}
+                title="Copy link to this analysis"
+                aria-label="Copy link to share this analysis"
+              >
+                <IconCopy size={16} strokeWidth={2} />
+                Copy link
+              </button>
+              <a
+                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent('Check out my skin analysis')}&url=${encodeURIComponent(window.location.href)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="results-share-social results-share-x"
+                title="Share on X (Twitter)"
+                aria-label="Share on X (Twitter)"
+              >
+                <IconBrandX size={16} />
+                Share on X
+              </a>
+              {typeof navigator !== 'undefined' && navigator.share && (
+                <button
+                  type="button"
+                  className="results-copy-link results-share-native"
+                  onClick={async () => {
+                    try {
+                      await navigator.share({
+                        title: 'Skin Analysis Results',
+                        text: 'Check out my skin analysis',
+                        url: window.location.href,
+                      });
+                      toast.success('Shared successfully');
+                    } catch (err) {
+                      if ((err as Error).name !== 'AbortError') {
+                        toast.error('Could not share');
+                      }
+                    }
+                  }}
+                  title="Share via device options"
+                  aria-label="Share via device options"
+                >
+                  <IconShare2 size={16} strokeWidth={2} />
+                  Share
+                </button>
+              )}
+            </div>
+            <div className="results-export-wrap">
+              <button
+                type="button"
+                className="results-copy-link results-export-btn"
+                onClick={exportAsPdf}
+                disabled={!!exporting}
+                title="Export analysis as PDF"
+                aria-label="Export analysis as PDF"
+              >
+                <IconDownload size={16} strokeWidth={2} />
+                {exporting === 'pdf' ? 'Exporting…' : 'PDF'}
+              </button>
+              <button
+                type="button"
+                className="results-copy-link results-export-btn"
+                onClick={exportAsImage}
+                disabled={!!exporting}
+                title="Export analysis as image"
+                aria-label="Export analysis as image"
+              >
+                <IconDownload size={16} strokeWidth={2} />
+                {exporting === 'image' ? 'Exporting…' : 'Image'}
+              </button>
+            </div>
             <button
               type="button"
-              className="results-copy-link"
-              onClick={async () => {
-                try {
-                  await navigator.clipboard.writeText(window.location.href);
-                  toast.success('Link copied to clipboard');
-                } catch {
-                  toast.error('Could not copy link');
-                }
-              }}
-              title="Copy link to this analysis"
-              aria-label="Copy link to this analysis"
+              className={`results-save-analysis ${savedToFavorites ? 'saved' : ''}`}
+              onClick={toggleSaveAnalysis}
+              title={savedToFavorites ? 'Saved to favorites' : 'Save analysis to favorites'}
+              aria-label={savedToFavorites ? 'Remove from favorites' : 'Save analysis to favorites'}
             >
-              <IconCopy size={16} strokeWidth={2} />
-              Copy link
+              <IconHeart size={16} strokeWidth={2} fill={savedToFavorites ? 'currentColor' : 'none'} />
+              {savedToFavorites ? 'Saved' : 'Save analysis'}
             </button>
             <button onClick={() => navigate('/')} className="results-back">
               <IconArrowLeft size={16} strokeWidth={2} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
@@ -228,6 +399,9 @@ const AnalysisResults: React.FC = () => {
             </button>
           </div>
         </div>
+        <p className="analysis-legal-disclaimer" role="note">
+          For informational use only. Not a medical device. See a dermatologist for medical advice.
+        </p>
 
         {failureMessage && (
           <div className="analysis-inline-warning">
@@ -315,7 +489,7 @@ const AnalysisResults: React.FC = () => {
                         </span>
                         <h3 className="severity-title">{concern}</h3>
                       </div>
-                      <span className={`severity-pill ${getSeverityColor(value)}`}>
+                      <span className={`severity-pill ${getSeverityColor(value)}`} title={getSeverityTooltip(value)}>
                         {getSeverityLabel(value)}
                       </span>
                     </div>
@@ -375,33 +549,43 @@ const AnalysisResults: React.FC = () => {
           </div>
         )}
 
-        {previousScans.length > 0 && (
+        {(previousScans.length > 0 || true) && (
           <div className="result-card">
-            <h2>Historical Comparison</h2>
-            <div className="history-table-wrapper">
-              <table className="history-table">
-                <thead>
-                  <tr>
-                    <th scope="col">Date</th>
-                    <th scope="col">Status</th>
-                    <th scope="col" className="right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {previousScans.slice(0, 5).map((prev) => (
-                    <tr key={prev.scan_id}>
-                      <td>{prev.created_at ? new Date(prev.created_at).toLocaleDateString() : '—'}</td>
-                      <td>{prev.status}</td>
-                      <td className="right">
-                        <button onClick={() => navigate(`/analysis/${prev.scan_id}`)} className="link-button">
-                          View
-                        </button>
-                      </td>
+            <h2>Compare with previous</h2>
+            <p className="results-compare-desc">Compare this analysis with another scan to track changes over time.</p>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={() => navigate('/comparison')}
+            >
+              Compare with previous
+            </button>
+            {previousScans.length > 0 && (
+              <div className="history-table-wrapper">
+                <table className="history-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Date</th>
+                      <th scope="col">Status</th>
+                      <th scope="col" className="right">Actions</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {previousScans.slice(0, 5).map((prev) => (
+                      <tr key={prev.scan_id}>
+                        <td>{prev.created_at ? new Date(prev.created_at).toLocaleDateString() : '—'}</td>
+                        <td>{prev.status}</td>
+                        <td className="right">
+                          <button onClick={() => navigate(`/analysis/${prev.scan_id}`)} className="link-button">
+                            View
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         )}
 

@@ -88,3 +88,22 @@
   color: var(--text-gray);
   line-height: 1.6;
 }
+
+/* Result summary (Task 228) */
+.skin-type-summary {
+  margin-top: 32px;
+  padding: 20px;
+  background: var(--bg-light);
+  border-radius: 14px;
+  border: 1px solid var(--border);
+}
+.skin-type-summary h2 {
+  margin: 0 0 12px;
+  font-size: 1.25rem;
+  color: var(--text-dark);
+}
+.skin-type-summary-text {
+  margin: 0;
+  color: var(--text-gray);
+  line-height: 1.6;
+}

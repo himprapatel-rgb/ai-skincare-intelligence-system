@@ -1,6 +1,7 @@
 /**
  * Toast notifications context - Task 3
- * Use toast.success(), toast.error(), toast.info() from any component
+ * Use toast.success(), toast.error(), toast.info() from any component.
+ * Wording (Task 237): success = "[Thing] saved/done."; error = "[Action] failed. Try again."; info = short neutral message.
  */
 import { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 

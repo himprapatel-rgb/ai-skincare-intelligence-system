@@ -13,9 +13,10 @@ import {
   IconShoppingCart,
   IconCalendar,
   IconStar,
-  IconClock,
   IconTrendingDown,
-  IconArrowRight
+  IconArrowRight,
+  IconTarget,
+  IconBell
 } from '../components/Icons';
 import { SkeletonStat, SkeletonHeading, SkeletonText, SkeletonCard } from '../components/Skeleton';
 import './DashboardPage.css';
@@ -35,12 +36,35 @@ interface DashboardData {
   skinTrend: 'improving' | 'stable' | 'declining';
 }
 
+const SCAN_REMINDER_KEY = 'scan_reminder';
+const ONBOARDING_GOALS_KEY = 'onboarding_goals';
+const RECENTLY_VIEWED_KEY = 'recently_viewed_products';
+const ONBOARDING_PROGRESS_KEY = 'onboarding_progress';
+
+type ScanReminder = { date?: string; frequency?: 'weekly' | 'biweekly' | 'monthly' };
+
 const DashboardPage: React.FC = () => {
   usePageTitle('Dashboard', 'Your skincare dashboard: recent scans, skin score, shelf, and quick actions.');
   const { user } = useAuth();
   const navigate = useNavigate();
   const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [scanReminder, setScanReminder] = useState<ScanReminder>(() => {
+    try {
+      const raw = localStorage.getItem(SCAN_REMINDER_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch {
+      return {};
+    }
+  });
+  const [onboardingGoals] = useState<{ goals: string[]; concerns: string[]; skinType: string } | null>(() => {
+    try {
+      const raw = localStorage.getItem(ONBOARDING_GOALS_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch {
+      return null;
+    }
+  });
 
   useEffect(() => {
     if (!user) {
@@ -109,6 +133,39 @@ const DashboardPage: React.FC = () => {
       setLoading(false);
     }
   };
+
+  const displayNextScan = ((): string => {
+    if (scanReminder.date) return scanReminder.date;
+    const lastScanDate = data?.recentActivity?.[0]?.date;
+    if (scanReminder.frequency && lastScanDate) {
+      const d = new Date(lastScanDate);
+      if (scanReminder.frequency === 'weekly') d.setDate(d.getDate() + 7);
+      else if (scanReminder.frequency === 'biweekly') d.setDate(d.getDate() + 14);
+      else if (scanReminder.frequency === 'monthly') d.setDate(d.getDate() + 30);
+      return d.toISOString().slice(0, 10);
+    }
+    return data?.nextScanDue ? new Date(data.nextScanDue).toISOString().slice(0, 10) : new Date().toISOString().slice(0, 10);
+  })();
+
+  const saveScanReminder = (next: ScanReminder) => {
+    setScanReminder(next);
+    try {
+      localStorage.setItem(SCAN_REMINDER_KEY, JSON.stringify(next));
+    } catch {
+      /* ignore */
+    }
+  };
+
+  const nextSteps = (() => {
+    const steps: { label: string; href: string; icon: React.ReactNode; priority: number }[] = [];
+    if (!data) return steps;
+    if (data.recentScans === 0) steps.push({ label: 'Take your first scan', href: '/scan', icon: <IconScan size={20} strokeWidth={2} />, priority: 1 });
+    else steps.push({ label: 'Take a new scan', href: '/scan', icon: <IconScan size={20} strokeWidth={2} />, priority: 2 });
+    steps.push({ label: 'View recommendations', href: '/recommendations', icon: <IconStar size={20} strokeWidth={2} />, priority: 3 });
+    steps.push({ label: 'Build your routine', href: '/routine-builder', icon: <IconCalendar size={20} strokeWidth={2} />, priority: 4 });
+    if (data.productsInShelf === 0) steps.push({ label: 'Add products to your shelf', href: '/recommendations', icon: <IconPackage size={20} strokeWidth={2} />, priority: 5 });
+    return steps.sort((a, b) => a.priority - b.priority).slice(0, 4);
+  })();
 
   if (!user) {
     return (
@@ -222,6 +279,15 @@ const DashboardPage: React.FC = () => {
       </div>
 
       <div className="dashboard-content">
+        {onboardingProgress != null && onboardingProgress.step < 5 && (
+          <div className="dashboard-section continue-onboarding">
+            <h2>Continue where you left off</h2>
+            <p>You started onboarding. Pick up from step {onboardingProgress.step}.</p>
+            <button type="button" className="btn-primary" onClick={() => navigate('/onboarding')}>
+              Continue onboarding
+            </button>
+          </div>
+        )}
         <div className="dashboard-section">
           <h2>Quick Actions</h2>
           <div className="quick-actions">
@@ -253,6 +319,48 @@ const DashboardPage: React.FC = () => {
               <h3>Discover</h3>
               <p>Get recommendations</p>
             </button>
+          </div>
+        </div>
+
+        {recentlyViewed.length > 0 ? (
+          <div className="dashboard-section recently-viewed">
+            <h2>Recently viewed products</h2>
+            <div className="recently-viewed-list">
+              {recentlyViewed.slice(0, 6).map((p) => (
+                <button key={p.id} type="button" className="recently-viewed-item" onClick={() => navigate(`/product/${p.id}`)}>
+                  <span className="recently-viewed-name">{p.name}</span>
+                  <span className="recently-viewed-brand">{p.brand}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        ) : null}
+        {onboardingGoals?.goals?.length ? (
+          <div className="dashboard-section dashboard-goals">
+            <h2><IconTarget size={22} strokeWidth={2} style={{ verticalAlign: 'middle', marginRight: '8px' }} />Your goals</h2>
+            <p className="dashboard-goals-skin">Skin type: {onboardingGoals.skinType}</p>
+            <div className="dashboard-goals-tags">
+              {onboardingGoals.goals.map((g, i) => (
+                <span key={i} className="goal-tag">{g}</span>
+              ))}
+            </div>
+            {onboardingGoals.concerns?.length ? (
+              <p className="dashboard-goals-concerns">Concerns: {onboardingGoals.concerns.join(', ')}</p>
+            ) : null}
+          </div>
+        ) : null}
+
+        <div className="dashboard-section next-steps">
+          <h2>Next steps</h2>
+          <p className="next-steps-desc">Recommended actions based on your progress.</p>
+          <div className="next-steps-list">
+            {nextSteps.map((step, i) => (
+              <button key={i} type="button" className="next-step-item" onClick={() => navigate(step.href)}>
+                <span className="next-step-icon">{step.icon}</span>
+                <span>{step.label}</span>
+                <IconArrowRight size={18} strokeWidth={2} />
+              </button>
+            ))}
           </div>
         </div>
 
@@ -290,11 +398,36 @@ const DashboardPage: React.FC = () => {
 
         <div className="dashboard-section reminder">
           <div className="reminder-icon">
-            <IconClock size={48} strokeWidth={2} />
+            <IconBell size={48} strokeWidth={2} />
           </div>
           <div className="reminder-content">
-            <h3>Next Scan Reminder</h3>
-            <p>Schedule your next skin analysis on {new Date(data.nextScanDue).toLocaleDateString('en', { month: 'short', day: 'numeric', year: 'numeric' })}</p>
+            <h3>Remind me to scan</h3>
+            <p>Next scan: {new Date(displayNextScan + 'T12:00:00').toLocaleDateString('en', { month: 'short', day: 'numeric', year: 'numeric' })}</p>
+            <div className="reminder-controls">
+              <label className="reminder-label">
+                <span>Date</span>
+                <input
+                  type="date"
+                  value={scanReminder.date ?? ''}
+                  min={new Date().toISOString().slice(0, 10)}
+                  onChange={(e) => saveScanReminder({ ...scanReminder, date: e.target.value || undefined })}
+                  className="reminder-date-input"
+                />
+              </label>
+              <label className="reminder-label">
+                <span>Frequency</span>
+                <select
+                  value={scanReminder.frequency ?? ''}
+                  onChange={(e) => saveScanReminder({ ...scanReminder, frequency: (e.target.value || undefined) as ScanReminder['frequency'] })}
+                  className="reminder-frequency-select"
+                >
+                  <option value="">—</option>
+                  <option value="weekly">Every week</option>
+                  <option value="biweekly">Every 2 weeks</option>
+                  <option value="monthly">Every month</option>
+                </select>
+              </label>
+            </div>
             <button className="btn-primary" onClick={() => navigate('/scan')}>Scan Now</button>
           </div>
         </div>

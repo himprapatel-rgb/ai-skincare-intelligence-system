@@ -42,8 +42,40 @@
   line-height: 1.6;
 }
 
+.recommendations-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.recommendations-header-actions .compare-link {
+  white-space: nowrap;
+}
+
 .back-button {
   white-space: nowrap;
+}
+
+.btn-add-to-compare {
+  padding: 6px 12px;
+  font-size: 0.8125rem;
+  border-radius: 6px;
+  border: 1px solid var(--border, #e2e8f0);
+  background: var(--bg-white);
+  color: var(--text-dark);
+  cursor: pointer;
+}
+
+.btn-add-to-compare:hover:not(:disabled) {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.btn-add-to-compare.in-compare,
+.btn-add-to-compare:disabled {
+  opacity: 0.8;
+  cursor: default;
 }
 
 .recommendations-filters {
@@ -239,11 +271,45 @@
 
 .product-price {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+  gap: 10px;
   margin-top: auto;
   padding-top: 16px;
   border-top: 1px solid var(--border-color);
+}
+
+.product-actions-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.btn-add-to-shelf {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: var(--bg-light, #f1f5f9);
+  border: 1px solid var(--border-color, #e2e8f0);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-weight: 500;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.btn-add-to-shelf:hover:not(:disabled) {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: white;
+}
+.btn-add-to-shelf.on-shelf,
+.btn-add-to-shelf:disabled {
+  opacity: 0.8;
+  cursor: default;
 }
 
 .price-value {

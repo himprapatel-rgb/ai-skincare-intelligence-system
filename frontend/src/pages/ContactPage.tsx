@@ -107,12 +107,12 @@ const ContactPage: React.FC = () => {
 
         <div className="contact-form-container">
           {submitted ? (
-            <div className="success-message">
+            <div className="success-message" role="status" aria-live="polite">
               <div className="success-icon">
                 <IconCheckCircle size={24} strokeWidth={2} />
               </div>
-              <h2>Thank You!</h2>
-              <p>Your message has been received. We'll get back to you soon.</p>
+              <h2>Message sent</h2>
+              <p>Thanks! We&apos;ve received your message and will respond within 24 hours.</p>
             </div>
           ) : (
             <form className="contact-form" onSubmit={handleSubmit}>

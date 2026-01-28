@@ -192,6 +192,28 @@
   margin-bottom: var(--ds-space-8);
 }
 
+/* Step titles and skip (Task 230) */
+.onboarding-step-title {
+  font-size: var(--ds-text-sm);
+  font-weight: 600;
+  color: var(--ds-gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 var(--ds-space-4);
+}
+.onboarding-skip {
+  background: none;
+  border: none;
+  color: var(--ds-gray-500);
+  font-size: var(--ds-text-sm);
+  cursor: pointer;
+  text-decoration: underline;
+  margin-top: var(--ds-space-3);
+}
+.onboarding-skip:hover {
+  color: var(--ds-primary);
+}
+
 /* Features List */
 .features-list {
   list-style: none;

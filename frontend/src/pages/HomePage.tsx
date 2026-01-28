@@ -119,6 +119,17 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
+      {/* As featured / Social proof (Task 213) */}
+      <section className="as-featured-section" aria-label="As featured in">
+        <p className="as-featured-label">As featured in</p>
+        <div className="as-featured-logos">
+          <span className="as-featured-name">Allure</span>
+          <span className="as-featured-name">Derm Review</span>
+          <span className="as-featured-name">TechCrunch</span>
+          <span className="as-featured-name">Skincare.com</span>
+        </div>
+      </section>
+
       {/* Community Stats */}
       <section className="stats-section">
         <div className="section-header">

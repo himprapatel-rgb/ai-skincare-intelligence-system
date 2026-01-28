@@ -73,20 +73,20 @@ Tasks to execute autonomously. Approval granted for all items.
 | 56 | Loading spinners: same size/color tokens | - |
 | 57 | All form inputs use .form-group + shared styles | - |
 | 58 | Password visibility toggle on login/register | Done |
-| 59 | ScanPage: improve spacing and typography | - |
-| 60 | AnalysisResults: spacing and typography | - |
-| 61 | ProfileSettingsPage: spacing and typography | - |
-| 62 | DashboardPage: card grid responsive breakpoints | - |
-| 63 | HistoryPage: mobile layout for list items | - |
-| 64 | FavoritesPage: card hover and focus styles | - |
-| 65 | MyShelfPage: filter tabs mobile wrap | - |
-| 66 | Recommendations: filter chips or clear-all visibility | - |
+| 59 | ScanPage: improve spacing and typography | Done |
+| 60 | AnalysisResults: spacing and typography | Done |
+| 61 | ProfileSettingsPage: spacing and typography | Done |
+| 62 | DashboardPage: card grid responsive breakpoints | Done |
+| 63 | HistoryPage: mobile layout for list items | Done |
+| 64 | FavoritesPage: card hover and focus styles | Done |
+| 65 | MyShelfPage: filter tabs mobile wrap | Done |
+| 66 | Recommendations: filter chips or clear-all visibility | Done |
 | 67 | ProductDetailsPage: image gallery or zoom | - |
 | 68 | RoutineBuilderPage: drag handle or reorder UI | - |
 | 69 | DigitalTwinTimelinePage: timeline axis labels | - |
 | 70 | ProgressTrackingPage: chart legend and tooltips | - |
-| 71 | ContactPage: form validation and success state | - |
-| 72 | AboutPage: section spacing and CTA | - |
+| 71 | ContactPage: form validation and success state | Done |
+| 72 | AboutPage: section spacing and CTA | Done |
 | 73 | PrivacyPage: ToC or jump links | Done |
 | 74 | TermsPage: ToC or jump links | Done |
 | 75 | BlogPage: post cards hover and meta | - |
@@ -128,8 +128,8 @@ Tasks to execute autonomously. Approval granted for all items.
 | 104 | Form labels linked with htmlFor | - |
 | 105 | Error messages linked with aria-describedby | - |
 | 106 | Live regions for toast (aria-live) | - |
-| 107 | Focus trap in modals | - |
-| 108 | Focus return after modal close | - |
+| 107 | Focus trap in modals | Done |
+| 108 | Focus return after modal close | Done |
 | 109 | Skip to main content link | Done |
 | 110 | Heading hierarchy (single h1, logical order) per page | - |
 | 111 | Color contrast ≥4.5:1 for body text | - |

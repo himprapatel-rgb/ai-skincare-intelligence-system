@@ -71,9 +71,23 @@
 
 .filters-reset {
   background: transparent;
-  border: none;
+  border: 2px solid var(--primary);
   color: var(--primary);
   font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.filters-reset:hover {
+  background: var(--primary-light, #dbeafe);
+}
+.recommendations-filters.has-active-filters .filters-reset {
+  background: var(--primary);
+  color: white;
+}
+.recommendations-filters.has-active-filters .filters-reset:hover {
+  background: var(--primary-hover);
 }
 
 .filters-grid {

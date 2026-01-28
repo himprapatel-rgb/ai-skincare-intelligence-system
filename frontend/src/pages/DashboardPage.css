@@ -68,6 +68,28 @@
   gap: 20px;
   align-items: stretch;
 }
+@media (max-width: 640px) {
+  .dashboard-stats {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+}
+@media (min-width: 641px) and (max-width: 900px) {
+  .dashboard-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 640px) {
+  .dashboard-stats {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+@media (min-width: 641px) and (max-width: 900px) {
+  .dashboard-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
 
 .stat-card {
   background: var(--bg-white);

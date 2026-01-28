@@ -245,7 +245,7 @@ const Recommendations: React.FC = () => {
           </Link>
         </div>
 
-        <div className="recommendations-filters">
+        <div className={`recommendations-filters ${hasFilters ? 'has-active-filters' : ''}`}>
           <div className="filters-header">
             <h2>Filters</h2>
             <button

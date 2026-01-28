@@ -137,6 +137,17 @@
   font-family: inherit;
 }
 
+.form-group.has-error input,
+.form-group.has-error textarea {
+  border-color: #dc2626;
+  background: #fef2f2;
+}
+.form-error {
+  display: block;
+  font-size: 0.875rem;
+  color: #dc2626;
+  margin-top: 4px;
+}
 .form-group input:focus,
 .form-group textarea:focus {
   outline: none;

@@ -116,6 +116,16 @@
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
+  justify-content: center;
+}
+@media (max-width: 480px) {
+  .filter-tabs {
+    gap: 8px;
+  }
+  .filter-tabs button {
+    padding: 10px 16px;
+    font-size: 0.9rem;
+  }
 }
 
 .filter-tabs button {

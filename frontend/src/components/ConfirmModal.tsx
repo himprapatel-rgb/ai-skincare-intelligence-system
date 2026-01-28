@@ -1,9 +1,12 @@
 /**
  * Reusable confirm modal for destructive actions (Task 16)
+ * Focus trap (107) and focus return (108)
  */
 import { useEffect, useRef } from 'react';
 import { IconAlertTriangle } from './Icons';
 import './ConfirmModal.css';
+
+const FOCUSABLE = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
 export interface ConfirmModalProps {
   open: boolean;
@@ -26,25 +29,63 @@ export function ConfirmModal({
   onConfirm,
   onCancel,
 }: ConfirmModalProps) {
-  const focusRef = useRef<HTMLButtonElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const confirmRef = useRef<HTMLButtonElement>(null);
+  const previousActiveRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    if (open && focusRef.current) {
-      focusRef.current.focus();
+    if (open) {
+      previousActiveRef.current = document.activeElement as HTMLElement | null;
+      setTimeout(() => confirmRef.current?.focus(), 0);
+    } else {
+      previousActiveRef.current?.focus();
+      previousActiveRef.current = null;
     }
   }, [open]);
 
   useEffect(() => {
+    if (!open) return;
+    const el = modalRef.current;
+    if (!el) return;
+    const focusables = el.querySelectorAll<HTMLElement>(FOCUSABLE);
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
     const handler = (e: KeyboardEvent) => {
-      if (!open) return;
       if (e.key === 'Escape') {
         e.preventDefault();
         onCancel();
+        previousActiveRef.current?.focus();
+        previousActiveRef.current = null;
+        return;
+      }
+      if (e.key !== 'Tab') return;
+      const current = document.activeElement as HTMLElement;
+      if (e.shiftKey) {
+        if (current === first) {
+          e.preventDefault();
+          last?.focus();
+        }
+      } else {
+        if (current === last) {
+          e.preventDefault();
+          first?.focus();
+        }
       }
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
   }, [open, onCancel]);
+
+  const handleCancel = () => {
+    onCancel();
+    previousActiveRef.current?.focus();
+    previousActiveRef.current = null;
+  };
+  const handleConfirm = () => {
+    onConfirm();
+    previousActiveRef.current?.focus();
+    previousActiveRef.current = null;
+  };
 
   if (!open) return null;
 
@@ -55,9 +96,9 @@ export function ConfirmModal({
       aria-modal="true"
       aria-labelledby="confirm-modal-title"
       aria-describedby="confirm-modal-desc"
-      onClick={(e) => e.target === e.currentTarget && onCancel()}
+      onClick={(e) => e.target === e.currentTarget && handleCancel()}
     >
-      <div className={`confirm-modal confirm-modal--${variant}`}>
+      <div ref={modalRef} className={`confirm-modal confirm-modal--${variant}`}>
         <div className="confirm-modal-icon">
           <IconAlertTriangle size={32} strokeWidth={2} />
         </div>
@@ -71,15 +112,15 @@ export function ConfirmModal({
           <button
             type="button"
             className="confirm-modal-cancel"
-            onClick={onCancel}
+            onClick={handleCancel}
           >
             {cancelLabel}
           </button>
           <button
-            ref={focusRef}
+            ref={confirmRef}
             type="button"
             className="confirm-modal-confirm"
-            onClick={onConfirm}
+            onClick={handleConfirm}
           >
             {confirmLabel}
           </button>

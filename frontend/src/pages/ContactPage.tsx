@@ -14,17 +14,26 @@ const ContactPage: React.FC = () => {
     message: ''
   });
   const [submitted, setSubmitted] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (errors[name]) setErrors((prev) => ({ ...prev, [name]: '' }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // For demo purposes, just show success message
+    const next: Record<string, string> = {};
+    if (!formData.name.trim()) next.name = 'Name is required';
+    if (!formData.email.trim()) next.email = 'Email is required';
+    if (!formData.subject.trim()) next.subject = 'Subject is required';
+    if (!formData.message.trim()) next.message = 'Message is required';
+    if (Object.keys(next).length > 0) {
+      setErrors(next);
+      return;
+    }
+    setErrors({});
     setSubmitted(true);
     setTimeout(() => {
       setSubmitted(false);
@@ -107,7 +116,7 @@ const ContactPage: React.FC = () => {
             </div>
           ) : (
             <form className="contact-form" onSubmit={handleSubmit}>
-              <div className="form-group">
+              <div className={`form-group ${errors.name ? 'has-error' : ''}`}>
                 <label htmlFor="name">Full Name</label>
                 <input
                   type="text"
@@ -117,10 +126,13 @@ const ContactPage: React.FC = () => {
                   onChange={handleChange}
                   required
                   placeholder="John Doe"
+                  aria-invalid={!!errors.name}
+                  aria-describedby={errors.name ? 'name-error' : undefined}
                 />
+                {errors.name && <span id="name-error" className="form-error">{errors.name}</span>}
               </div>
 
-              <div className="form-group">
+              <div className={`form-group ${errors.email ? 'has-error' : ''}`}>
                 <label htmlFor="email">Email Address</label>
                 <input
                   type="email"
@@ -130,10 +142,13 @@ const ContactPage: React.FC = () => {
                   onChange={handleChange}
                   required
                   placeholder="john@example.com"
+                  aria-invalid={!!errors.email}
+                  aria-describedby={errors.email ? 'email-error' : undefined}
                 />
+                {errors.email && <span id="email-error" className="form-error">{errors.email}</span>}
               </div>
 
-              <div className="form-group">
+              <div className={`form-group ${errors.subject ? 'has-error' : ''}`}>
                 <label htmlFor="subject">Subject</label>
                 <input
                   type="text"
@@ -143,10 +158,13 @@ const ContactPage: React.FC = () => {
                   onChange={handleChange}
                   required
                   placeholder="How can we help?"
+                  aria-invalid={!!errors.subject}
+                  aria-describedby={errors.subject ? 'subject-error' : undefined}
                 />
+                {errors.subject && <span id="subject-error" className="form-error">{errors.subject}</span>}
               </div>
 
-              <div className="form-group">
+              <div className={`form-group ${errors.message ? 'has-error' : ''}`}>
                 <label htmlFor="message">Message</label>
                 <textarea
                   id="message"
@@ -156,7 +174,10 @@ const ContactPage: React.FC = () => {
                   required
                   rows={6}
                   placeholder="Tell us more about your inquiry..."
+                  aria-invalid={!!errors.message}
+                  aria-describedby={errors.message ? 'message-error' : undefined}
                 />
+                {errors.message && <span id="message-error" className="form-error">{errors.message}</span>}
               </div>
 
               <button type="submit" className="submit-button">

@@ -1,10 +1,5 @@
-/* SkinCare AI - Industry Standard Medical Design */
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+/* SkinCare AI - Homepage Styles */
+/* Uses global CSS variables from index.css */
 
 /* =============================================
    HOMEPAGE INDUSTRY-STANDARD REFINEMENTS
@@ -487,7 +482,7 @@
 }
 
 .stat-number {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 800;
   color: var(--primary);
   margin-bottom: 8px;
@@ -523,7 +518,7 @@
   background: var(--bg-light);
   color: var(--primary);
   padding: 6px 16px;
-  border-radius: 20px;
+  border-radius: 16px;
   font-size: 0.875rem;
   font-weight: 600;
   margin-bottom: 16px;
@@ -601,7 +596,7 @@
 }
 
 .cta-title {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 700;
   color: white;
   margin-bottom: 16px;
@@ -724,7 +719,7 @@
   }
   
   .hero-title {
-    font-size: 2.5rem;
+    font-size: 2rem;
   }
   
   .stats-container {
@@ -1014,7 +1009,7 @@
 
 .sample-report-preview {
   background: white;
-  border-radius: 20px;
+  border-radius: 16px;
   padding: 24px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   border: 1px solid var(--border);
@@ -1069,7 +1064,7 @@
   padding: 4px 12px;
   background: #fef3c7;
   color: #92400e;
-  border-radius: 20px;
+  border-radius: 16px;
   font-size: 0.75rem;
   font-weight: 500;
 }
@@ -1637,7 +1632,7 @@
 }
 
 .sample-report-preview {
-  border-radius: 20px;
+  border-radius: 16px;
   border: 1px solid rgba(227, 236, 255, 0.9);
   box-shadow:
     0 22px 52px rgba(13, 27, 62, 0.12),
@@ -1752,7 +1747,7 @@
 
 .sample-report-preview {
   padding: 28px;
-  border-radius: 20px;
+  border-radius: 16px;
   border: 1px solid rgba(227, 236, 255, 0.9);
   box-shadow: 0 20px 50px rgba(13, 27, 62, 0.12);
   max-width: 360px;

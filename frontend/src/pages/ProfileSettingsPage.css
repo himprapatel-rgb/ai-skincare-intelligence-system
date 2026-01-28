@@ -25,7 +25,7 @@
 }
 
 .profile-container h1 {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 700; /* Brand guideline: Bold */
   color: var(--text-primary); /* Deep Navy */
   margin-bottom: 6px;
@@ -412,7 +412,7 @@
   padding: 6px 12px;
   background: #f1f5f9;
   border: 1px solid #e2e8f0;
-  border-radius: 20px;
+  border-radius: 16px;
   font-size: 0.8rem;
   color: #475569;
   margin: 4px;

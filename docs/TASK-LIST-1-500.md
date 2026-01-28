@@ -2,6 +2,8 @@
 
 Tasks to execute autonomously. Approval granted for all items.
 
+**Progress:** 123 Done | 377 Remaining (as of last update)
+
 ---
 
 ## 1–50: Design & UI foundation
@@ -102,7 +104,7 @@ Tasks to execute autonomously. Approval granted for all items.
 | 85 | ConsentPage: granular toggles and copy | - |
 | 86 | DataExportPage: format options and ETA | Done |
 | 87 | NotificationCenterPage: mark-all-read and filters | Done |
-| 88 | AdminDashboardPage: key metrics cards | - |
+| 88 | AdminDashboardPage: key metrics cards | Done |
 | 89 | AdminUsersPage: table sort and search | - |
 | 90 | AdminProductsPage: table sort and bulk actions | - |
 | 91 | AppLayout: mobile menu animation | Done |
@@ -154,8 +156,8 @@ Tasks to execute autonomously. Approval granted for all items.
 | 130 | Required fields marked aria-required | Done |
 | 131 | Invalid fields marked aria-invalid | Done |
 | 132 | Dialog role and aria-modal for modals | Done |
-| 133 | Alert role for critical messages | - |
-| 134 | Status role for loading/success | - |
+| 133 | Alert role for critical messages | Done |
+| 134 | Status role for loading/success | Done |
 | 135 | Breadcrumb nav with aria-current=page | Done |
 | 136 | Pagination aria labels | - |
 | 137 | Search form role=search | Done |

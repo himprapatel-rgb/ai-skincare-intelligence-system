@@ -148,7 +148,7 @@ export const IconRadiance = Sparkle;
 export const IconBarrier = ShieldCheck;
 
 // Helper function to get skin concern icon by name
-export const getSkinConcernIcon = (concernName: string): React.FC<{ size?: number; strokeWidth?: number; className?: string }> => {
+export const getSkinConcernIcon = (concernName: string) => {
   const name = concernName.toLowerCase();
   if (name.includes('acne') || name.includes('breakout') || name.includes('pimple')) {
     return IconAcne;

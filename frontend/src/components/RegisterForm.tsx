@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { ErrorMessage } from './ErrorMessage';
 import { LoadingSpinner } from './LoadingSpinner';
+import { GoogleSignInButton } from './GoogleSignInButton';
 
 interface RegisterFormProps {
   onSuccess: () => void;
@@ -148,6 +149,13 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onSwitchT
           {loading ? <LoadingSpinner size="small" /> : 'Create Account'}
         </button>
       </form>
+      
+      <div className="auth-divider">
+        <span>or</span>
+      </div>
+      
+      <GoogleSignInButton disabled={loading} />
+      
       <p className="switch-form">
         Already have an account?{' '}
         <button onClick={onSwitchToLogin} className="btn-link">

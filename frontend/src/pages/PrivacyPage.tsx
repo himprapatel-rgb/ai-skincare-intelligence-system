@@ -14,15 +14,26 @@ const PrivacyPage: React.FC = () => {
         <p className="last-updated">Last Updated: {new Date().toLocaleDateString()}</p>
       </div>
 
+      <nav className="privacy-toc" aria-label="Privacy policy sections">
+          <h2 className="privacy-toc-title">On this page</h2>
+          <ul>
+            <li><a href="#intro">Introduction</a></li>
+            <li><a href="#info-we-collect">Information We Collect</a></li>
+            <li><a href="#how-we-use">How We Use Your Information</a></li>
+            <li><a href="#data-retention">Data Retention</a></li>
+            <li><a href="#your-rights">Your Data Protection Rights</a></li>
+            <li><a href="#delete">Delete My Data</a></li>
+          </ul>
+        </nav>
       <div className="privacy-container">
-        <section className="privacy-section">
+        <section className="privacy-section" id="intro">
           <h2>1. Introduction</h2>
           <p>
             At AI Skincare Intelligence System, we take your privacy seriously. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our service. Please read this privacy policy carefully. If you do not agree with the terms of this privacy policy, please do not access the application.
           </p>
         </section>
 
-        <section className="privacy-section">
+        <section className="privacy-section" id="info-we-collect">
           <h2>2. Information We Collect</h2>
           <h3>Personal Information</h3>
           <p>
@@ -54,14 +65,14 @@ const PrivacyPage: React.FC = () => {
           </ul>
         </section>
 
-        <section className="privacy-section">
+        <section className="privacy-section" id="data-retention">
           <h2>4. Data Retention</h2>
           <p>
             We will retain your personal information only for as long as necessary to fulfill the purposes outlined in this Privacy Policy, unless a longer retention period is required or permitted by law. When we no longer need your personal information, we will securely delete or anonymize it.
           </p>
         </section>
 
-        <section className="privacy-section">
+        <section className="privacy-section" id="your-rights">
           <h2>5. Your Data Protection Rights (GDPR)</h2>
           <p>If you are a resident of the European Economic Area (EEA), you have certain data protection rights:</p>
           <ul>

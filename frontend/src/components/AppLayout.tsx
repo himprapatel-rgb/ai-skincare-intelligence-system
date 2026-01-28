@@ -357,7 +357,7 @@ const displayName = nameParts.length > 1
         {/* Bottom Bar */}
         <div className="app-footer-bottom">
           <div className="app-footer-bottom-container">
-            <p className="app-footer-copyright">© 2026 SkinCareAI. All rights reserved.</p>
+            <p className="app-footer-copyright">© 2026 SkinCareAI. All rights reserved. <span className="app-footer-version" aria-hidden="true">v1.0</span></p>
             <p className="app-footer-disclaimer">
               <span className="app-footer-disclaimer-icon">ℹ️</span>
               Not a medical device. For informational purposes only.

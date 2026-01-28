@@ -243,6 +243,11 @@
   font-weight: 500;
   margin-bottom: 8px;
 }
+.history-date-label {
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-right: 4px;
+}
 
 .history-title {
   font-size: 1.125rem; /* Brand guideline: 18px Body Large */

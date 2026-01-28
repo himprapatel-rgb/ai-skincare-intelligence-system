@@ -31,6 +31,39 @@
   margin: 0;
 }
 
+.terms-toc {
+  max-width: 900px;
+  margin: 0 auto 24px;
+  padding: 20px 24px;
+  background: var(--bg-white);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+.terms-toc-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin: 0 0 12px;
+}
+.terms-toc ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  column-count: 2;
+  column-gap: 24px;
+}
+.terms-toc li { margin-bottom: 8px; break-inside: avoid; }
+.terms-toc a {
+  color: var(--primary);
+  text-decoration: none;
+  font-size: 0.9375rem;
+}
+.terms-toc a:hover { text-decoration: underline; }
+@media (max-width: 600px) {
+  .terms-toc ul { column-count: 1; }
+}
+
 .terms-container {
   max-width: 900px;
   margin: 0 auto;

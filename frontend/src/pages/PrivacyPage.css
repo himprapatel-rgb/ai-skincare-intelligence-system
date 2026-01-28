@@ -31,6 +31,34 @@
   margin: 0;
 }
 
+.privacy-toc {
+  max-width: 900px;
+  margin: 0 auto 24px;
+  padding: 20px 24px;
+  background: var(--bg-white);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+.privacy-toc-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin: 0 0 12px;
+}
+.privacy-toc ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.privacy-toc li { margin-bottom: 8px; }
+.privacy-toc a {
+  color: var(--primary);
+  text-decoration: none;
+  font-size: 0.9375rem;
+}
+.privacy-toc a:hover { text-decoration: underline; }
+
 .privacy-container {
   max-width: 900px;
   margin: 0 auto;

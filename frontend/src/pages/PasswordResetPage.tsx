@@ -56,9 +56,15 @@ const PasswordResetPage: React.FC = () => {
             <p className="password-reset-note">
               The link will expire in 24 hours.
             </p>
-            <Link to="/auth" className="btn btn-primary password-reset-action">
-              Return to Login
-            </Link>
+            <p className="password-reset-cta">Didn&apos;t receive the email? Check your spam folder or use a different email address.</p>
+            <div className="password-reset-actions">
+              <Link to="/auth" className="btn btn-primary password-reset-action">
+                Return to Login
+              </Link>
+              <button type="button" className="btn btn-secondary" onClick={() => { setIsSubmitted(false); setError(null); }}>
+                Try again with different email
+              </button>
+            </div>
           </div>
         </div>
       </div>

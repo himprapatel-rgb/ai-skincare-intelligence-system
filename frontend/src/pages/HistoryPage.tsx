@@ -232,7 +232,7 @@ const HistoryPage: React.FC = () => {
                   </div>
                   <div className="history-content">
                     <div className="history-date">
-                      {new Date(item.date).toLocaleDateString('en', { month: 'short', day: 'numeric', year: 'numeric' })}
+                      <span className="history-date-label">Scanned</span> {new Date(item.date).toLocaleDateString('en', { month: 'short', day: 'numeric', year: 'numeric' })}
                     </div>
                     <div className="history-title">Skin Analysis</div>
                     <div className="history-score">Score: {item.score}%</div>

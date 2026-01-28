@@ -24,7 +24,7 @@ Tasks to execute autonomously. Approval granted for all items.
 | 14 | Search on History, Favorites, My Shelf where applicable | Done |
 | 15 | Sort options on History, Favorites (already on Favorites) | Done |
 | 16 | Confirm modals for destructive actions (remove, delete) | Done |
-| 17 | "Last updated" on profile, history items | - |
+| 17 | "Last updated" on profile, history items | Done |
 | 18 | In-app help entry (Help or FAQ link in header/footer) | Done |
 | 19 | Breadcrumbs (already in AppLayout) | Done |
 | 20 | "Reset filters" in Recommendations empty state | Done |
@@ -87,8 +87,8 @@ Tasks to execute autonomously. Approval granted for all items.
 | 70 | ProgressTrackingPage: chart legend and tooltips | - |
 | 71 | ContactPage: form validation and success state | - |
 | 72 | AboutPage: section spacing and CTA | - |
-| 73 | PrivacyPage: ToC or jump links | - |
-| 74 | TermsPage: ToC or jump links | - |
+| 73 | PrivacyPage: ToC or jump links | Done |
+| 74 | TermsPage: ToC or jump links | Done |
 | 75 | BlogPage: post cards hover and meta | - |
 | 76 | IngredientDictionaryPage: search highlight | - |
 | 77 | SkinTypeGuidePage: step indicators | - |
@@ -98,7 +98,7 @@ Tasks to execute autonomously. Approval granted for all items.
 | 81 | PasswordResetPage: success message and CTA | - |
 | 82 | EmailVerificationPage: resend cooldown UI | - |
 | 83 | GoogleCallbackPage: loading and error copy | - |
-| 84 | NotFoundPage: suggest Search or Home | - |
+| 84 | NotFoundPage: suggest Search or Home | Done |
 | 85 | ConsentPage: granular toggles and copy | - |
 | 86 | DataExportPage: format options and ETA | - |
 | 87 | NotificationCenterPage: mark-all-read and filters | - |
@@ -108,12 +108,12 @@ Tasks to execute autonomously. Approval granted for all items.
 | 91 | AppLayout: mobile menu animation | - |
 | 92 | AppLayout: user dropdown keyboard nav | - |
 | 93 | AppLayout: footer columns responsive | - |
-| 94 | Header: sticky shadow on scroll (if not done) | - |
+| 94 | Header: sticky shadow on scroll (if not done) | Done |
 | 95 | Footer: social links aria-labels | Done |
 | 96 | BackToTop: aria-label and focus order | Done |
-| 97 | Toast: position and stack order | - |
+| 97 | Toast: position and stack order | Done |
 | 98 | ErrorBoundary: illustration or icon | Done |
-| 99 | Skeleton: pulse animation consistency | - |
+| 99 | Skeleton: pulse animation consistency | Done |
 | 100 | Icons: ensure all used icons have a11y fallback | - |
 
 ---

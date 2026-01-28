@@ -14,15 +14,32 @@ const TermsPage: React.FC = () => {
         <p className="last-updated">Last Updated: {new Date().toLocaleDateString()}</p>
       </div>
 
+      <nav className="terms-toc" aria-label="Terms of Service sections">
+          <h2 className="terms-toc-title">On this page</h2>
+          <ul>
+            <li><a href="#acceptance">Acceptance of Terms</a></li>
+            <li><a href="#description">Description of Service</a></li>
+            <li><a href="#user-accounts">User Accounts</a></li>
+            <li><a href="#medical-disclaimer">Medical Disclaimer</a></li>
+            <li><a href="#user-content">User Content and Conduct</a></li>
+            <li><a href="#ip">Intellectual Property</a></li>
+            <li><a href="#liability">Limitation of Liability</a></li>
+            <li><a href="#modifications">Service Modifications</a></li>
+            <li><a href="#termination">Termination</a></li>
+            <li><a href="#governing-law">Governing Law</a></li>
+            <li><a href="#changes">Changes to Terms</a></li>
+            <li><a href="#contact">Contact Us</a></li>
+          </ul>
+        </nav>
       <div className="terms-container">
-        <section className="terms-section">
+        <section className="terms-section" id="acceptance">
           <h2>1. Acceptance of Terms</h2>
           <p>
             By accessing and using the AI Skincare Intelligence System, you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to these Terms of Service, you may not access or use this service.
           </p>
         </section>
 
-        <section className="terms-section">
+        <section className="terms-section" id="description">
           <h2>2. Description of Service</h2>
           <p>
             AI Skincare Intelligence System provides an AI-powered skin analysis platform that uses machine learning to analyze uploaded images and provide personalized skincare recommendations. The service includes:
@@ -35,7 +52,7 @@ const TermsPage: React.FC = () => {
           </ul>
         </section>
 
-        <section className="terms-section">
+        <section className="terms-section" id="user-accounts">
           <h2>3. User Accounts</h2>
           <p>
             To use certain features of our service, you must register for an account. You agree to:
@@ -57,7 +74,7 @@ const TermsPage: React.FC = () => {
           </div>
         </section>
 
-        <section className="terms-section">
+        <section className="terms-section" id="user-content">
           <h2>5. User Content and Conduct</h2>
           <p>By uploading images or content to our service, you grant us a worldwide, non-exclusive, royalty-free license to use, reproduce, and analyze such content for the purpose of providing our services. You agree NOT to:</p>
           <ul>
@@ -76,7 +93,7 @@ const TermsPage: React.FC = () => {
           </p>
         </section>
 
-        <section className="terms-section">
+        <section className="terms-section" id="liability">
           <h2>7. Limitation of Liability</h2>
           <p>
             To the maximum extent permitted by law, AI Skincare Intelligence System shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses resulting from:
@@ -96,7 +113,7 @@ const TermsPage: React.FC = () => {
           </p>
         </section>
 
-        <section className="terms-section">
+        <section className="terms-section" id="termination">
           <h2>9. Termination</h2>
           <p>
             We may terminate or suspend your account and access to the service immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach the Terms. Upon termination, your right to use the service will immediately cease.
@@ -110,14 +127,14 @@ const TermsPage: React.FC = () => {
           </p>
         </section>
 
-        <section className="terms-section">
+        <section className="terms-section" id="changes">
           <h2>11. Changes to Terms</h2>
           <p>
             We reserve the right to modify or replace these Terms at any time. If a revision is material, we will provide at least 30 days' notice prior to any new terms taking effect. What constitutes a material change will be determined at our sole discretion.
           </p>
         </section>
 
-        <section className="terms-section">
+        <section className="terms-section" id="contact">
           <h2>12. Contact Us</h2>
           <p>If you have any questions about these Terms, please contact us:</p>
           <ul>

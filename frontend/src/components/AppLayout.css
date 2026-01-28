@@ -839,6 +839,11 @@
   font-size: 0.85rem;
   margin: 0;
 }
+.app-footer-version {
+  opacity: 0.8;
+  font-size: 0.8rem;
+  margin-left: 0.25em;
+}
 
 .app-footer-disclaimer {
   display: flex;

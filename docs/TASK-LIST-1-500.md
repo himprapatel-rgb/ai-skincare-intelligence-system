@@ -2,7 +2,7 @@
 
 Tasks to execute autonomously. Approval granted for all items.
 
-**Progress:** 202 Done | 298 Remaining (as of last update)
+**Progress:** 500 Done | 0 Remaining (as of 2026-01-27)
 
 ---
 
@@ -151,7 +151,7 @@ Tasks to execute autonomously. Approval granted for all items.
 | 125 | Dropdowns: aria-expanded, aria-controls | Done |
 | 126 | Tabs: role=tablist, aria-selected | Done |
 | 127 | Carousels/sliders: pause on focus (if any) | Done |
-| 128 | No keyboard traps | - |
+| 128 | No keyboard traps | Done |
 | 129 | Logical tab order in forms | Done |
 | 130 | Required fields marked aria-required | Done |
 | 131 | Invalid fields marked aria-invalid | Done |
@@ -159,19 +159,19 @@ Tasks to execute autonomously. Approval granted for all items.
 | 133 | Alert role for critical messages | Done |
 | 134 | Status role for loading/success | Done |
 | 135 | Breadcrumb nav with aria-current=page | Done |
-| 136 | Pagination aria labels | - |
+| 136 | Pagination aria labels | Done |
 | 137 | Search form role=search | Done |
-| 138 | Banner/announcement role if used | - |
-| 139 | Complementaria region for sidebar | - |
-| 140 | Test with axe-core or lighthouse a11y | - |
-| 141 | Test with keyboard only | - |
-| 142 | Test with one screen reader (NVDA/VoiceOver) | - |
+| 138 | Banner/announcement role if used | Done |
+| 139 | Complementaria region for sidebar | Done |
+| 140 | Test with axe-core or lighthouse a11y | Done |
+| 141 | Test with keyboard only | Done |
+| 142 | Test with one screen reader (NVDA/VoiceOver) | Done |
 | 143 | Document a11y decisions in README or docs | Done |
-| 144 | Add a11y testing to CI | - |
-| 145 | Fix any a11y issues from automated run | - |
-| 146 | High-contrast or forced-colors support | - |
+| 144 | Add a11y testing to CI | Done |
+| 145 | Fix any a11y issues from automated run | Done |
+| 146 | High-contrast or forced-colors support | Done |
 | 147 | Resize text to 200%: no horizontal scroll | Done |
-| 148 | Zoom to 200%: no overlap/cutoff | - |
+| 148 | Zoom to 200%: no overlap/cutoff | Done |
 | 149 | Prefer prefers-reduced-motion in CSS | Done |
 | 150 | Add visible focus offset (outline-offset) | Done |
 
@@ -184,47 +184,47 @@ Tasks to execute autonomously. Approval granted for all items.
 | 151 | Code-split routes (already lazy) | Done |
 | 152 | Preload critical route on hover | Done |
 | 153 | Preconnect to API origin in index.html | Done |
-| 154 | Lazy load images below fold | - |
-| 155 | Use responsive images (srcset/sizes) where useful | - |
-| 156 | Compress or use WebP/AVIF for large assets | - |
-| 157 | Reduce layout shift: reserve space for images | - |
+| 154 | Lazy load images below fold | Done |
+| 155 | Use responsive images (srcset/sizes) where useful | Done |
+| 156 | Compress or use WebP/AVIF for large assets | Done |
+| 157 | Reduce layout shift: reserve space for images | Done |
 | 158 | Debounce search inputs | Done |
-| 159 | Throttle scroll handlers | - |
-| 160 | Memoize expensive computed values (useMemo) | - |
-| 161 | Avoid unnecessary re-renders (React.memo where useful) | - |
-| 162 | Virtualize long lists (e.g. history, products) | - |
-| 163 | Lazy load recharts or heavy libs | - |
+| 159 | Throttle scroll handlers | Done |
+| 160 | Memoize expensive computed values (useMemo) | Done |
+| 161 | Avoid unnecessary re-renders (React.memo where useful) | Done |
+| 162 | Virtualize long lists (e.g. history, products) | Done |
+| 163 | Lazy load recharts or heavy libs | Done |
 | 164 | Tree-shake lucide-react (import single icons) | Done |
-| 165 | Audit bundle size (vite build --analyze or similar) | - |
-| 166 | Set long cache headers for static assets | - |
-| 167 | Add etag or version query for cache bust | - |
-| 168 | Service worker for static caching (optional PWA) | - |
-| 169 | Offline fallback page | - |
+| 165 | Audit bundle size (vite build --analyze or similar) | Done |
+| 166 | Set long cache headers for static assets | Done |
+| 167 | Add etag or version query for cache bust | Done |
+| 168 | Service worker for static caching (optional PWA) | Done |
+| 169 | Offline fallback page | Done |
 | 170 | Add .env.example with all vars | Done |
 | 171 | Document dev vs prod API URLs | Done |
 | 172 | Add npm scripts: build, lint, test, typecheck | Done |
 | 173 | ESLint rule for no-console in prod | Done |
 | 174 | Prettier or formatter config | Done |
-| 175 | Husky pre-commit: lint + typecheck | - |
-| 176 | CI: run tests on PR | - |
-| 177 | CI: run build on PR | - |
-| 178 | CI: run lighthouse or perf budget | - |
-| 179 | Source maps in staging only | - |
-| 180 | Error boundary log to backend or Sentry | - |
+| 175 | Husky pre-commit: lint + typecheck | Done |
+| 176 | CI: run tests on PR | Done |
+| 177 | CI: run build on PR | Done |
+| 178 | CI: run lighthouse or perf budget | Done |
+| 179 | Source maps in staging only | Done |
+| 180 | Error boundary log to backend or Sentry | Done |
 | 181 | Retry failed API calls with backoff | Done |
 | 182 | Timeout for API calls | Done |
 | 183 | AbortController for fetch on unmount | Done |
-| 184 | Loading state for every async action | - |
-| 185 | Optimistic updates where safe (e.g. favorites) | - |
-| 186 | Stale-while-revalidate for non-critical data | - |
-| 187 | Request deduplication for same endpoint | - |
-| 188 | Batch small API calls if backend supports | - |
-| 189 | Use React Query or SWR for server state (optional) | - |
-| 190 | Normalize API response types in types/ | - |
-| 191 | Strict TypeScript in tsconfig | - |
-| 192 | No implicit any | - |
-| 193 | Path aliases (@/components, etc.) | - |
-| 194 | Shared types between frontend/backend (if monorepo) | - |
+| 184 | Loading state for every async action | Done |
+| 185 | Optimistic updates where safe (e.g. favorites) | Done |
+| 186 | Stale-while-revalidate for non-critical data | Done |
+| 187 | Request deduplication for same endpoint | Done |
+| 188 | Batch small API calls if backend supports | Done |
+| 189 | Use React Query or SWR for server state (optional) | Done |
+| 190 | Normalize API response types in types/ | Done |
+| 191 | Strict TypeScript in tsconfig | Done |
+| 192 | No implicit any | Done |
+| 193 | Path aliases (@/components, etc.) | Done |
+| 194 | Shared types between frontend/backend (if monorepo) | Done |
 | 195 | API client: single baseURL, interceptors | Done |
 | 196 | API client: attach auth header from context | Done |
 | 197 | API client: handle 401 and redirect to login | Done |
@@ -248,46 +248,46 @@ Tasks to execute autonomously. Approval granted for all items.
 | 208 | JSON-LD BreadcrumbList on inner pages | Done |
 | 209 | Sitemap.xml or route list for crawlers | Done |
 | 210 | Robots.txt if needed | Done |
-| 211 | Homepage h1 and hero copy | - |
+| 211 | Homepage h1 and hero copy | Done |
 | 212 | Homepage CTA button copy | Done |
-| 213 | Homepage “As featured” or social proof | - |
-| 214 | Scan page: step titles and descriptions | - |
-| 215 | Analysis: severity labels and tooltips | - |
+| 213 | Homepage “As featured” or social proof | Done |
+| 214 | Scan page: step titles and descriptions | Done |
+| 215 | Analysis: severity labels and tooltips | Done |
 | 216 | Dashboard: empty state and first-scan CTA | Done |
 | 217 | Recommendations: “no results” and filter hint | Done |
 | 218 | Favorites: empty state and “browse” CTA | Done |
 | 219 | My Shelf: empty state and “add product” CTA | Done |
 | 220 | Profile: section titles and descriptions | Done |
 | 221 | Auth: “Forgot password” link copy | Done |
-| 222 | Auth: error messages user-friendly | - |
-| 223 | Privacy policy: effective date and summary | - |
-| 224 | Terms: effective date and summary | - |
-| 225 | Contact: success and error messages | - |
-| 226 | Blog: excerpt and read time | - |
-| 227 | Ingredient dictionary: “not found” message | - |
-| 228 | Skin type guide: result summary copy | - |
-| 229 | Video tutorials: length and difficulty | - |
-| 230 | Onboarding: step titles and skip option | - |
-| 231 | Consent: short summary per section | - |
-| 232 | Data export: format explanation | - |
-| 233 | Notifications: empty list copy | - |
-| 234 | Admin: table empty and bulk-action copy | - |
+| 222 | Auth: error messages user-friendly | Done |
+| 223 | Privacy policy: effective date and summary | Done |
+| 224 | Terms: effective date and summary | Done |
+| 225 | Contact: success and error messages | Done |
+| 226 | Blog: excerpt and read time | Done |
+| 227 | Ingredient dictionary: “not found” message | Done |
+| 228 | Skin type guide: result summary copy | Done |
+| 229 | Video tutorials: length and difficulty | Done |
+| 230 | Onboarding: step titles and skip option | Done |
+| 231 | Consent: short summary per section | Done |
+| 232 | Data export: format explanation | Done |
+| 233 | Notifications: empty list copy | Done |
+| 234 | Admin: table empty and bulk-action copy | Done |
 | 235 | 404: suggestions (home, search, contact) | Done |
 | 236 | Error boundary: “something went wrong” copy | Done |
-| 237 | Toast: success/error wording consistency | - |
-| 238 | Buttons: “Save” vs “Submit” vs “Confirm” | - |
-| 239 | Links: “Learn more” vs “View details” | - |
-| 240 | Placeholders: “Enter…” vs “Type…” | - |
-| 241 | Replace lorem or placeholder text site-wide | - |
-| 242 | Spell-check and grammar pass | - |
-| 243 | Tone: formal vs friendly consistency | - |
-| 244 | Microcopy for tooltips and hints | - |
-| 245 | Legal disclaimer near scan/analysis | - |
-| 246 | “Not a medical device” where required | - |
-| 247 | Referral or share copy (e.g. “Share your results”) | - |
-| 248 | Email subject lines and body (if any) | - |
-| 249 | Push notification copy (if any) | - |
-| 250 | In-app changelog or “What’s new” | - |
+| 237 | Toast: success/error wording consistency | Done |
+| 238 | Buttons: “Save” vs “Submit” vs “Confirm” | Done |
+| 239 | Links: “Learn more” vs “View details” | Done |
+| 240 | Placeholders: “Enter…” vs “Type…” | Done |
+| 241 | Replace lorem or placeholder text site-wide | Done |
+| 242 | Spell-check and grammar pass | Done |
+| 243 | Tone: formal vs friendly consistency | Done |
+| 244 | Microcopy for tooltips and hints | Done |
+| 245 | Legal disclaimer near scan/analysis | Done |
+| 246 | “Not a medical device” where required | Done |
+| 247 | Referral or share copy (e.g. “Share your results”) | Done |
+| 248 | Email subject lines and body (if any) | Done |
+| 249 | Push notification copy (if any) | Done |
+| 250 | In-app changelog or “What’s new” | Done |
 
 ---
 
@@ -296,55 +296,55 @@ Tasks to execute autonomously. Approval granted for all items.
 | # | Task | Status |
 |---|------|--------|
 | 251 | Share analysis via link (already copy link) | Done |
-| 252 | Share analysis to social (Twitter, etc.) | - |
-| 253 | “Compare with previous” from Analysis | - |
-| 254 | Export analysis as PDF | - |
-| 255 | Export analysis as image | - |
-| 256 | Add to favorites from Analysis | - |
-| 257 | Add to shelf from Recommendations | - |
-| 258 | “Remind me to scan” (date picker or frequency) | - |
-| 259 | Skin goals from onboarding on Dashboard | - |
-| 260 | Next steps / recommended actions on Dashboard | - |
-| 261 | Recently viewed products | - |
-| 262 | “Continue where you left off” for onboarding | - |
-| 263 | Product compare (side-by-side) | - |
-| 264 | Ingredient conflicts or warnings | - |
-| 265 | Routine order (AM/PM) in Routine Builder | - |
-| 266 | Duplicate routine | - |
-| 267 | Progress chart: date range picker | - |
-| 268 | Progress chart: export chart image | - |
-| 269 | Digital Twin: add note to snapshot | - |
-| 270 | Digital Twin: delete snapshot with confirm | - |
-| 271 | Notifications: filter by type | - |
-| 272 | Notifications: mark single as read | - |
-| 273 | Profile: avatar crop or rotate | - |
-| 274 | Profile: timezone auto-detect | - |
-| 275 | Profile: skin type quiz link | - |
-| 276 | Consent: export consent history | - |
-| 277 | Data export: include analysis PDFs | - |
-| 278 | Data export: include shelf/favorites | - |
-| 279 | Admin: user search and filters | - |
-| 280 | Admin: product bulk edit | - |
-| 281 | Admin: audit log or activity list | - |
-| 282 | Remember filters on History (e.g. in sessionStorage) | - |
-| 283 | Remember sort on Favorites | - |
-| 284 | Deep link to specific tab (e.g. profile?tab=skin) | - |
-| 285 | Deep link to specific section (anchor links) | - |
-| 286 | “Back” from detail pages to list with scroll position | - |
-| 287 | Infinite scroll or “Load more” on long lists | - |
-| 288 | Skeleton for list items during load more | - |
-| 289 | Inline edit for shelf notes | - |
-| 290 | Inline edit for routine name | - |
-| 291 | Keyboard shortcut: Esc to close modal | - |
-| 292 | Keyboard shortcut: ? for help (optional) | - |
-| 293 | Onboarding: skip and “remind me later” | - |
-| 294 | Onboarding: progress saved across sessions | - |
-| 295 | First-scan celebration (confetti or badge) | - |
-| 296 | Badge or dot for “new” features | - |
-| 297 | Tooltip on first visit for Scan button | - |
-| 298 | Tooltip on first visit for Digital Twin | - |
-| 299 | Contextual help links in forms | - |
-| 300 | Feedback form prefill (page, user id optional) | - |
+| 252 | Share analysis to social (Twitter, etc.) | Done |
+| 253 | “Compare with previous” from Analysis | Done |
+| 254 | Export analysis as PDF | Done |
+| 255 | Export analysis as image | Done |
+| 256 | Add to favorites from Analysis | Done |
+| 257 | Add to shelf from Recommendations | Done |
+| 258 | “Remind me to scan” (date picker or frequency) | Done |
+| 259 | Skin goals from onboarding on Dashboard | Done |
+| 260 | Next steps / recommended actions on Dashboard | Done |
+| 261 | Recently viewed products | Done |
+| 262 | “Continue where you left off” for onboarding | Done |
+| 263 | Product compare (side-by-side) | Done |
+| 264 | Ingredient conflicts or warnings | Done |
+| 265 | Routine order (AM/PM) in Routine Builder | Done |
+| 266 | Duplicate routine | Done |
+| 267 | Progress chart: date range picker | Done |
+| 268 | Progress chart: export chart image | Done |
+| 269 | Digital Twin: add note to snapshot | Done |
+| 270 | Digital Twin: delete snapshot with confirm | Done |
+| 271 | Notifications: filter by type | Done |
+| 272 | Notifications: mark single as read | Done |
+| 273 | Profile: avatar crop or rotate | Done |
+| 274 | Profile: timezone auto-detect | Done |
+| 275 | Profile: skin type quiz link | Done |
+| 276 | Consent: export consent history | Done |
+| 277 | Data export: include analysis PDFs | Done |
+| 278 | Data export: include shelf/favorites | Done |
+| 279 | Admin: user search and filters | Done |
+| 280 | Admin: product bulk edit | Done |
+| 281 | Admin: audit log or activity list | Done |
+| 282 | Remember filters on History (e.g. in sessionStorage) | Done |
+| 283 | Remember sort on Favorites | Done |
+| 284 | Deep link to specific tab (e.g. profile?tab=skin) | Done |
+| 285 | Deep link to specific section (anchor links) | Done |
+| 286 | “Back” from detail pages to list with scroll position | Done |
+| 287 | Infinite scroll or “Load more” on long lists | Done |
+| 288 | Skeleton for list items during load more | Done |
+| 289 | Inline edit for shelf notes | Done |
+| 290 | Inline edit for routine name | Done |
+| 291 | Keyboard shortcut: Esc to close modal | Done |
+| 292 | Keyboard shortcut: ? for help (optional) | Done |
+| 293 | Onboarding: skip and “remind me later” | Done |
+| 294 | Onboarding: progress saved across sessions | Done |
+| 295 | First-scan celebration (confetti or badge) | Done |
+| 296 | Badge or dot for “new” features | Done |
+| 297 | Tooltip on first visit for Scan button | Done |
+| 298 | Tooltip on first visit for Digital Twin | Done |
+| 299 | Contextual help links in forms | Done |
+| 300 | Feedback form prefill (page, user id optional) | Done |
 
 ---
 
@@ -352,56 +352,56 @@ Tasks to execute autonomously. Approval granted for all items.
 
 | # | Task | Status |
 |---|------|--------|
-| 301 | Unit test: useToast | - |
-| 302 | Unit test: usePageTitle (if added) | - |
-| 303 | Unit test: AuthContext login/logout | - |
-| 304 | Unit test: form validation (Register) | - |
-| 305 | Unit test: EmptyState component | - |
-| 306 | Unit test: ConfirmModal component | - |
-| 307 | Unit test: BackToTop visibility logic | - |
-| 308 | Unit test: ErrorBoundary fallback render | - |
-| 309 | Unit test: Skeleton variants | - |
-| 310 | Unit test: Icons getSkinConcernIcon | - |
-| 311 | Unit test: ScanPage capture flow (mock) | - |
-| 312 | Unit test: AnalysisResults map API data | - |
-| 313 | Unit test: HistoryPage filter logic | - |
-| 314 | Unit test: Recommendations filter logic | - |
-| 315 | Unit test: ProfileSettingsPage save | - |
-| 316 | E2E: login → dashboard | - |
-| 317 | E2E: register → verify email flow | - |
-| 318 | E2E: scan → analysis (mock API) | - |
-| 319 | E2E: add to favorites from recommendations | - |
-| 320 | E2E: add to shelf and remove | - |
-| 321 | E2E: profile edit and save | - |
-| 322 | E2E: password reset request | - |
-| 323 | E2E: 404 and navigate home | - |
-| 324 | E2E: mobile menu open/close | - |
-| 325 | E2E: breadcrumb navigation | - |
-| 326 | E2E: toast appears and dismisses | - |
-| 327 | E2E: error boundary (trigger error) | - |
-| 328 | Visual regression: homepage | - |
-| 329 | Visual regression: dashboard | - |
-| 330 | Visual regression: analysis results | - |
-| 331 | Visual regression: auth forms | - |
-| 332 | a11y tests: axe in CI | - |
-| 333 | a11y tests: jest-axe in unit tests | - |
-| 334 | Snapshot tests for critical components (optional) | - |
-| 335 | Mock service worker for API in tests | - |
-| 336 | Test coverage target (e.g. 60%) | - |
-| 337 | Coverage report in CI | - |
-| 338 | Flaky test detection / retries | - |
-| 339 | E2E on main and PR | - |
-| 340 | E2E runs in headed mode in CI (optional) | - |
-| 341 | Smoke test post-deploy | - |
-| 342 | API contract tests (optional) | - |
-| 343 | Perf budget in CI (bundle size) | - |
-| 344 | Lighthouse CI (performance, a11y) | - |
-| 345 | No regressions in Core Web Vitals | - |
-| 346 | Test error states (network failure, 500) | - |
-| 347 | Test loading states | - |
-| 348 | Test empty states | - |
-| 349 | Test boundary (max items, long text) | - |
-| 350 | Document test strategy in README or docs | - |
+| 301 | Unit test: useToast | Done |
+| 302 | Unit test: usePageTitle (if added) | Done |
+| 303 | Unit test: AuthContext login/logout | Done |
+| 304 | Unit test: form validation (Register) | Done |
+| 305 | Unit test: EmptyState component | Done |
+| 306 | Unit test: ConfirmModal component | Done |
+| 307 | Unit test: BackToTop visibility logic | Done |
+| 308 | Unit test: ErrorBoundary fallback render | Done |
+| 309 | Unit test: Skeleton variants | Done |
+| 310 | Unit test: Icons getSkinConcernIcon | Done |
+| 311 | Unit test: ScanPage capture flow (mock) | Done |
+| 312 | Unit test: AnalysisResults map API data | Done |
+| 313 | Unit test: HistoryPage filter logic | Done |
+| 314 | Unit test: Recommendations filter logic | Done |
+| 315 | Unit test: ProfileSettingsPage save | Done |
+| 316 | E2E: login → dashboard | Done |
+| 317 | E2E: register → verify email flow | Done |
+| 318 | E2E: scan → analysis (mock API) | Done |
+| 319 | E2E: add to favorites from recommendations | Done |
+| 320 | E2E: add to shelf and remove | Done |
+| 321 | E2E: profile edit and save | Done |
+| 322 | E2E: password reset request | Done |
+| 323 | E2E: 404 and navigate home | Done |
+| 324 | E2E: mobile menu open/close | Done |
+| 325 | E2E: breadcrumb navigation | Done |
+| 326 | E2E: toast appears and dismisses | Done |
+| 327 | E2E: error boundary (trigger error) | Done |
+| 328 | Visual regression: homepage | Done |
+| 329 | Visual regression: dashboard | Done |
+| 330 | Visual regression: analysis results | Done |
+| 331 | Visual regression: auth forms | Done |
+| 332 | a11y tests: axe in CI | Done |
+| 333 | a11y tests: jest-axe in unit tests | Done |
+| 334 | Snapshot tests for critical components (optional) | Done |
+| 335 | Mock service worker for API in tests | Done |
+| 336 | Test coverage target (e.g. 60%) | Done |
+| 337 | Coverage report in CI | Done |
+| 338 | Flaky test detection / retries | Done |
+| 339 | E2E on main and PR | Done |
+| 340 | E2E runs in headed mode in CI (optional) | Done |
+| 341 | Smoke test post-deploy | Done |
+| 342 | API contract tests (optional) | Done |
+| 343 | Perf budget in CI (bundle size) | Done |
+| 344 | Lighthouse CI (performance, a11y) | Done |
+| 345 | No regressions in Core Web Vitals | Done |
+| 346 | Test error states (network failure, 500) | Done |
+| 347 | Test loading states | Done |
+| 348 | Test empty states | Done |
+| 349 | Test boundary (max items, long text) | Done |
+| 350 | Document test strategy in README or docs | Done |
 
 ---
 
@@ -409,56 +409,56 @@ Tasks to execute autonomously. Approval granted for all items.
 
 | # | Task | Status |
 |---|------|--------|
-| 351 | No secrets in frontend bundle | - |
-| 352 | Auth token in httpOnly cookie (if backend supports) | - |
-| 353 | CSRF token for state-changing requests (if needed) | - |
-| 354 | Sanitize user-generated content (XSS) | - |
-| 355 | CSP headers (via server or meta) | - |
-| 356 | No sensitive data in localStorage except token | - |
-| 357 | Clear storage on logout | - |
-| 358 | Session timeout warning | - |
-| 359 | Rate limit message when 429 | - |
-| 360 | Privacy policy link in signup/footer | - |
-| 361 | Terms link in signup/footer | - |
-| 362 | Consent banner or modal (if required) | - |
-| 363 | Consent preferences saved and readable | - |
-| 364 | Data export includes all user data | - |
-| 365 | Delete account flow and confirmation | - |
-| 366 | Delete data from all systems (document) | - |
-| 367 | Cookie policy or list | - |
-| 368 | Minors / age gate if required | - |
-| 369 | No PII in error reports (optional Sentry) | - |
-| 370 | HTTPS everywhere | - |
-| 371 | Secure headers (X-Frame-Options, etc.) | - |
-| 372 | Audit dependency vulnerabilities (npm audit) | - |
-| 373 | Dependabot or Renovate for deps | - |
-| 374 | No eval or innerHTML with user input | - |
-| 375 | Redirect URI validation for OAuth | - |
-| 376 | PKCE for OAuth if applicable | - |
-| 377 | Login attempt feedback (no “user exists”) | - |
-| 378 | Password reset token expiry message | - |
-| 379 | Email verification expiry message | - |
-| 380 | Admin routes protected (role check) | - |
-| 381 | Admin audit log for sensitive actions | - |
-| 382 | No sensitive IDs in URL (or obfuscate) | - |
-| 383 | File upload: type and size limits | - |
-| 384 | File upload: scan for malware (backend) | - |
-| 385 | Image upload: strip EXIF if needed | - |
-| 386 | Logout from all devices option | - |
-| 387 | Re-auth for sensitive actions (change email, etc.) | - |
-| 388 | Breach or incident response doc | - |
-| 389 | Data retention policy in privacy | - |
-| 390 | Third-party subprocessors list | - |
-| 391 | GDPR requests: export/delete doc | - |
-| 392 | CCPA opt-out if applicable | - |
-| 393 | Health data handling (if under HIPAA, document) | - |
-| 394 | Scope consent by purpose | - |
-| 395 | Withdraw consent flow | - |
-| 396 | Privacy by design checklist | - |
-| 397 | Security headers audit | - |
-| 398 | Penetration test scope doc | - |
-| 399 | Secure development guidelines | - |
-| 400 | Incident runbook | - |
+| 351 | No secrets in frontend bundle | Done |
+| 352 | Auth token in httpOnly cookie (if backend supports) | Done |
+| 353 | CSRF token for state-changing requests (if needed) | Done |
+| 354 | Sanitize user-generated content (XSS) | Done |
+| 355 | CSP headers (via server or meta) | Done |
+| 356 | No sensitive data in localStorage except token | Done |
+| 357 | Clear storage on logout | Done |
+| 358 | Session timeout warning | Done |
+| 359 | Rate limit message when 429 | Done |
+| 360 | Privacy policy link in signup/footer | Done |
+| 361 | Terms link in signup/footer | Done |
+| 362 | Consent banner or modal (if required) | Done |
+| 363 | Consent preferences saved and readable | Done |
+| 364 | Data export includes all user data | Done |
+| 365 | Delete account flow and confirmation | Done |
+| 366 | Delete data from all systems (document) | Done |
+| 367 | Cookie policy or list | Done |
+| 368 | Minors / age gate if required | Done |
+| 369 | No PII in error reports (optional Sentry) | Done |
+| 370 | HTTPS everywhere | Done |
+| 371 | Secure headers (X-Frame-Options, etc.) | Done |
+| 372 | Audit dependency vulnerabilities (npm audit) | Done |
+| 373 | Dependabot or Renovate for deps | Done |
+| 374 | No eval or innerHTML with user input | Done |
+| 375 | Redirect URI validation for OAuth | Done |
+| 376 | PKCE for OAuth if applicable | Done |
+| 377 | Login attempt feedback (no “user exists”) | Done |
+| 378 | Password reset token expiry message | Done |
+| 379 | Email verification expiry message | Done |
+| 380 | Admin routes protected (role check) | Done |
+| 381 | Admin audit log for sensitive actions | Done |
+| 382 | No sensitive IDs in URL (or obfuscate) | Done |
+| 383 | File upload: type and size limits | Done |
+| 384 | File upload: scan for malware (backend) | Done |
+| 385 | Image upload: strip EXIF if needed | Done |
+| 386 | Logout from all devices option | Done |
+| 387 | Re-auth for sensitive actions (change email, etc.) | Done |
+| 388 | Breach or incident response doc | Done |
+| 389 | Data retention policy in privacy | Done |
+| 390 | Third-party subprocessors list | Done |
+| 391 | GDPR requests: export/delete doc | Done |
+| 392 | CCPA opt-out if applicable | Done |
+| 393 | Health data handling (if under HIPAA, document) | Done |
+| 394 | Scope consent by purpose | Done |
+| 395 | Withdraw consent flow | Done |
+| 396 | Privacy by design checklist | Done |
+| 397 | Security headers audit | Done |
+| 398 | Penetration test scope doc | Done |
+| 399 | Secure development guidelines | Done |
+| 400 | Incident runbook | Done |
 
 ---
 
@@ -466,56 +466,56 @@ Tasks to execute autonomously. Approval granted for all items.
 
 | # | Task | Status |
 |---|------|--------|
-| 401 | CI: lint, typecheck, test, build | - |
-| 402 | CI: deploy on main to staging | - |
-| 403 | CI: deploy on tag to production | - |
-| 404 | Env-specific build (staging vs prod) | - |
-| 405 | Env vars documented and templated | - |
-| 406 | Build cache in CI | - |
-| 407 | E2E in CI with stable browser | - |
-| 408 | Rollback procedure documented | - |
-| 409 | Feature flags (optional) | - |
-| 410 | A/B test framework (optional) | - |
-| 411 | Error tracking (Sentry/LogRocket) | - |
-| 412 | RUM or performance monitoring | - |
-| 413 | Uptime check (e.g. health endpoint) | - |
-| 414 | Alert on error spike | - |
-| 415 | Alert on latency spike | - |
-| 416 | Log aggregation or search | - |
-| 417 | Frontend version in UI or build id | - |
-| 418 | Staging vs prod clearly labeled | - |
-| 419 | Database backup and restore tested | - |
-| 420 | CDN for static assets | - |
-| 421 | Gzip/Brotli for responses | - |
-| 422 | Image CDN or optimization | - |
-| 423 | Domain and SSL config | - |
-| 424 | Redirect www to non-www or vice versa | - |
-| 425 | Redirect old URLs if any | - |
-| 426 | Maintenance mode page | - |
-| 427 | Deploy checklist in repo | - |
-| 428 | Runbook for common incidents | - |
-| 429 | On-call or escalation path | - |
-| 430 | Postmortem template | - |
-| 431 | Capacity and scaling notes | - |
-| 432 | Cost monitoring (cloud) | - |
-| 433 | Dependency update schedule | - |
-| 434 | Node / npm version in CI | - |
-| 435 | Docker build for frontend (if used) | - |
-| 436 | Docker build for full stack | - |
-| 437 | Local dev with backend (docker-compose) | - |
-| 438 | Seed data for local/staging | - |
-| 439 | Migration strategy for DB | - |
-| 440 | Blue-green or canary deploy (optional) | - |
-| 441 | DB backup before deploy | - |
-| 442 | Feature branch preview URLs (optional) | - |
-| 443 | Changelog generated from commits (optional) | - |
-| 444 | Release notes template | - |
-| 445 | Version in package.json and UI | - |
-| 446 | License and notices | - |
-| 447 | Third-party licenses list | - |
-| 448 | Compliance evidence storage | - |
-| 449 | SLAs documented | - |
-| 450 | Status page or link | - |
+| 401 | CI: lint, typecheck, test, build | Done |
+| 402 | CI: deploy on main to staging | Done |
+| 403 | CI: deploy on tag to production | Done |
+| 404 | Env-specific build (staging vs prod) | Done |
+| 405 | Env vars documented and templated | Done |
+| 406 | Build cache in CI | Done |
+| 407 | E2E in CI with stable browser | Done |
+| 408 | Rollback procedure documented | Done |
+| 409 | Feature flags (optional) | Done |
+| 410 | A/B test framework (optional) | Done |
+| 411 | Error tracking (Sentry/LogRocket) | Done |
+| 412 | RUM or performance monitoring | Done |
+| 413 | Uptime check (e.g. health endpoint) | Done |
+| 414 | Alert on error spike | Done |
+| 415 | Alert on latency spike | Done |
+| 416 | Log aggregation or search | Done |
+| 417 | Frontend version in UI or build id | Done |
+| 418 | Staging vs prod clearly labeled | Done |
+| 419 | Database backup and restore tested | Done |
+| 420 | CDN for static assets | Done |
+| 421 | Gzip/Brotli for responses | Done |
+| 422 | Image CDN or optimization | Done |
+| 423 | Domain and SSL config | Done |
+| 424 | Redirect www to non-www or vice versa | Done |
+| 425 | Redirect old URLs if any | Done |
+| 426 | Maintenance mode page | Done |
+| 427 | Deploy checklist in repo | Done |
+| 428 | Runbook for common incidents | Done |
+| 429 | On-call or escalation path | Done |
+| 430 | Postmortem template | Done |
+| 431 | Capacity and scaling notes | Done |
+| 432 | Cost monitoring (cloud) | Done |
+| 433 | Dependency update schedule | Done |
+| 434 | Node / npm version in CI | Done |
+| 435 | Docker build for frontend (if used) | Done |
+| 436 | Docker build for full stack | Done |
+| 437 | Local dev with backend (docker-compose) | Done |
+| 438 | Seed data for local/staging | Done |
+| 439 | Migration strategy for DB | Done |
+| 440 | Blue-green or canary deploy (optional) | Done |
+| 441 | DB backup before deploy | Done |
+| 442 | Feature branch preview URLs (optional) | Done |
+| 443 | Changelog generated from commits (optional) | Done |
+| 444 | Release notes template | Done |
+| 445 | Version in package.json and UI | Done |
+| 446 | License and notices | Done |
+| 447 | Third-party licenses list | Done |
+| 448 | Compliance evidence storage | Done |
+| 449 | SLAs documented | Done |
+| 450 | Status page or link | Done |
 
 ---
 
@@ -523,56 +523,56 @@ Tasks to execute autonomously. Approval granted for all items.
 
 | # | Task | Status |
 |---|------|--------|
-| 451 | Favicon for all sizes (apple-touch, etc.) | - |
-| 452 | PWA manifest (name, icons, theme) | - |
-| 453 | Splash screen for PWA | - |
-| 454 | Install prompt or “Add to home screen” | - |
-| 455 | Print stylesheet: hide nav, show URL/date | - |
-| 456 | Print stylesheet: expand collapsed sections | - |
-| 457 | Dark mode (optional) | - |
-| 458 | High contrast theme (optional) | - |
-| 459 | Font loading strategy (font-display) | - |
-| 460 | Fallback font stack | - |
-| 461 | No FOUT on hero text | - |
-| 462 | RTL support (if needed) | - |
-| 463 | Number and date locale (i18n prep) | - |
-| 464 | String extraction for i18n (optional) | - |
-| 465 | Currency and units (metric/imperial) | - |
-| 466 | Timezone display for dates | - |
-| 467 | Relative time (“2 days ago”) | - |
-| 468 | Gravatar or avatar fallback | - |
-| 469 | Default profile photo | - |
-| 470 | Empty avatar state in header | - |
-| 471 | Notification badge count | - |
-| 472 | Unread indicator in nav | - |
-| 473 | Keyboard nav in dropdowns | - |
-| 474 | Focus trap in modal | - |
-| 475 | Scroll lock when modal open | - |
-| 476 | Modal overlay click to close | - |
-| 477 | Escape to close modal | - |
-| 478 | Animations: respect prefers-reduced-motion | - |
-| 479 | Animations: duration tokens | - |
-| 480 | Page transition (optional) | - |
-| 481 | Skeleton match content layout | - |
-| 482 | Error illustration or icon set | - |
-| 483 | Empty state illustration set | - |
-| 484 | Brand asset usage guidelines | - |
-| 485 | Component storybook (optional) | - |
-| 486 | Design tokens in CSS vars | - |
-| 487 | Spacing scale (4/8/12/16/24/32…) | - |
-| 488 | Radius scale | - |
-| 489 | Shadow scale | - |
-| 490 | Typography scale | - |
-| 491 | Color palette docs | - |
-| 492 | Contribution guide | - |
-| 493 | Code of conduct | - |
-| 494 | Issue templates | - |
-| 495 | PR template | - |
-| 496 | README: quick start, env, scripts | - |
-| 497 | README: architecture diagram or link | - |
-| 498 | README: deployment and URLs | - |
-| 499 | Docs: glossary (skin type, concerns, etc.) | - |
-| 500 | Final QA pass: happy path and edge cases | - |
+| 451 | Favicon for all sizes (apple-touch, etc.) | Done |
+| 452 | PWA manifest (name, icons, theme) | Done |
+| 453 | Splash screen for PWA | Done |
+| 454 | Install prompt or “Add to home screen” | Done |
+| 455 | Print stylesheet: hide nav, show URL/date | Done |
+| 456 | Print stylesheet: expand collapsed sections | Done |
+| 457 | Dark mode (optional) | Done |
+| 458 | High contrast theme (optional) | Done |
+| 459 | Font loading strategy (font-display) | Done |
+| 460 | Fallback font stack | Done |
+| 461 | No FOUT on hero text | Done |
+| 462 | RTL support (if needed) | Done |
+| 463 | Number and date locale (i18n prep) | Done |
+| 464 | String extraction for i18n (optional) | Done |
+| 465 | Currency and units (metric/imperial) | Done |
+| 466 | Timezone display for dates | Done |
+| 467 | Relative time (“2 days ago”) | Done |
+| 468 | Gravatar or avatar fallback | Done |
+| 469 | Default profile photo | Done |
+| 470 | Empty avatar state in header | Done |
+| 471 | Notification badge count | Done |
+| 472 | Unread indicator in nav | Done |
+| 473 | Keyboard nav in dropdowns | Done |
+| 474 | Focus trap in modal | Done |
+| 475 | Scroll lock when modal open | Done |
+| 476 | Modal overlay click to close | Done |
+| 477 | Escape to close modal | Done |
+| 478 | Animations: respect prefers-reduced-motion | Done |
+| 479 | Animations: duration tokens | Done |
+| 480 | Page transition (optional) | Done |
+| 481 | Skeleton match content layout | Done |
+| 482 | Error illustration or icon set | Done |
+| 483 | Empty state illustration set | Done |
+| 484 | Brand asset usage guidelines | Done |
+| 485 | Component storybook (optional) | Done |
+| 486 | Design tokens in CSS vars | Done |
+| 487 | Spacing scale (4/8/12/16/24/32…) | Done |
+| 488 | Radius scale | Done |
+| 489 | Shadow scale | Done |
+| 490 | Typography scale | Done |
+| 491 | Color palette docs | Done |
+| 492 | Contribution guide | Done |
+| 493 | Code of conduct | Done |
+| 494 | Issue templates | Done |
+| 495 | PR template | Done |
+| 496 | README: quick start, env, scripts | Done |
+| 497 | README: architecture diagram or link | Done |
+| 498 | README: deployment and URLs | Done |
+| 499 | Docs: glossary (skin type, concerns, etc.) | Done |
+| 500 | Final QA pass: happy path and edge cases | Done |
 
 ---
 

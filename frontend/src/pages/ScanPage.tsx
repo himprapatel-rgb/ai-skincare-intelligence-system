@@ -15,7 +15,7 @@ type ScanStep = 'upload' | 'scanning' | 'complete';
 const ENABLE_LIVE_QUALITY_CHECKS = false;
 
 export default function ScanPage() {
-  usePageTitle('Skin Scan');
+  usePageTitle('Skin Scan', 'Upload a selfie for AI skin analysis. Get personalized insights and recommendations.');
   const navigate = useNavigate();
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -716,14 +716,26 @@ export default function ScanPage() {
                     )}
                     {cameraActive && (
                       <div className="face-guide-overlay">
+                        <div
+                          className="sr-only"
+                          role="status"
+                          aria-live="polite"
+                          aria-atomic="true"
+                        >
+                          {cameraStatus}. {cameraCountdown !== null
+                            ? `Hold still: ${cameraCountdown} seconds`
+                            : faceLocked
+                            ? "Face locked. Ready to capture."
+                            : "Tracking alignment."}
+                        </div>
                         <div className="scan-hud">
-                          <span className="hud-corner top-left"></span>
-                          <span className="hud-corner top-right"></span>
-                          <span className="hud-corner bottom-left"></span>
-                          <span className="hud-corner bottom-right"></span>
+                          <span className="hud-corner top-left" aria-hidden="true"></span>
+                          <span className="hud-corner top-right" aria-hidden="true"></span>
+                          <span className="hud-corner bottom-left" aria-hidden="true"></span>
+                          <span className="hud-corner bottom-right" aria-hidden="true"></span>
                         </div>
                         <div className="scan-sweep-line" aria-hidden="true"></div>
-                        <div className={`face-guide-circle ${faceLocked ? "face-locked" : ""}`}></div>
+                        <div className={`face-guide-circle ${faceLocked ? "face-locked" : ""}`} aria-hidden="true"></div>
                         <div className="face-guide-text">
                           {cameraStatus}
                         </div>

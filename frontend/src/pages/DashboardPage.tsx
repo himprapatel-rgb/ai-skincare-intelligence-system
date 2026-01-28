@@ -36,7 +36,7 @@ interface DashboardData {
 }
 
 const DashboardPage: React.FC = () => {
-  usePageTitle('Dashboard');
+  usePageTitle('Dashboard', 'Your skincare dashboard: recent scans, skin score, shelf, and quick actions.');
   const { user } = useAuth();
   const navigate = useNavigate();
   const [data, setData] = useState<DashboardData | null>(null);
@@ -260,7 +260,16 @@ const DashboardPage: React.FC = () => {
           <h2>Recent Activity</h2>
           <div className="activity-list">
             {data.recentActivity.length === 0 ? (
-              <p className="empty-state">No recent activity</p>
+              data.recentScans === 0 ? (
+                <div className="dashboard-first-scan empty-state">
+                  <p>Take your first scan to see your skin insights and track progress here.</p>
+                  <button type="button" className="btn-primary" onClick={() => navigate('/scan')}>
+                    Start your first scan
+                  </button>
+                </div>
+              ) : (
+                <p className="empty-state">No recent activity</p>
+              )
             ) : (
               data.recentActivity.map(activity => (
                 <div key={activity.id} className="activity-item">

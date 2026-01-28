@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { ErrorMessage } from './ErrorMessage';
 import { LoadingSpinner } from './LoadingSpinner';
@@ -137,7 +137,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegis
           </div>
           <span id="password-toggle-desc" className="sr-only">Toggle password visibility</span>
         </div>
-        <div className="form-group form-group-inline">
+        <div className="form-group form-group-inline form-group-between">
           <label className="checkbox-label">
             <input
               type="checkbox"
@@ -148,6 +148,9 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegis
             />
             <span>Remember me</span>
           </label>
+          <Link to="/password-reset" className="btn-link forgot-password">
+            Forgot password?
+          </Link>
         </div>
         <button type="submit" disabled={loading} className="btn-primary">
           {loading ? <LoadingSpinner size="small" /> : 'Sign In'}

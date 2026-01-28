@@ -196,7 +196,7 @@ const HomePage: React.FC = () => {
           <div className="step-card">
             <div className="step-number">1</div>
             <div className="step-illustration step-illustration--primary" aria-hidden="true">
-              <img src="/how-it-works-upload.svg" alt="" loading="lazy" width="200" height="160" />
+              <img src="/how-it-works-upload.svg" alt="Upload your photo for skin analysis" loading="lazy" width="200" height="160" />
             </div>
             <h3>Upload Photo</h3>
             <p>Take or upload a clear selfie</p>
@@ -218,7 +218,7 @@ const HomePage: React.FC = () => {
           <div className="step-card">
             <div className="step-number">2</div>
             <div className="step-illustration step-illustration--accent" aria-hidden="true">
-              <img src="/how-it-works-analysis.svg" alt="" loading="lazy" width="200" height="160" />
+              <img src="/how-it-works-analysis.svg" alt="AI analyzes your skin" loading="lazy" width="200" height="160" />
             </div>
             <h3>AI Analysis</h3>
             <p>Our model detects visible signs of acne, redness, pigmentation, and texture patterns</p>
@@ -226,7 +226,7 @@ const HomePage: React.FC = () => {
           <div className="step-card">
             <div className="step-number">3</div>
             <div className="step-illustration step-illustration--soft" aria-hidden="true">
-              <img src="/how-it-works-results.svg" alt="" loading="lazy" width="200" height="160" />
+              <img src="/how-it-works-results.svg" alt="View your personalized results" loading="lazy" width="200" height="160" />
             </div>
             <h3>Get Results</h3>
             <p>Receive a skin summary, concern scores, and personalized routine suggestions</p>

@@ -33,13 +33,14 @@ const AdminProductsPage: React.FC = () => {
   const [sortDir, setSortDir] = useState<SortDir>('asc');
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
 
-  const fetchProducts = useCallback(async () => {
+  const fetchProducts = useCallback(async (signal?: AbortSignal) => {
     try {
       const API_BASE = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
       const token = localStorage.getItem('auth_token');
       const params = new URLSearchParams();
       if (search.trim()) params.set('search', search.trim());
       const response = await fetch(`${API_BASE}/admin/products?${params.toString()}`, {
+        signal,
         headers: {
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
@@ -50,13 +51,16 @@ const AdminProductsPage: React.FC = () => {
       const data = await response.json();
       setProducts(data);
     } catch (error) {
+      if (error instanceof Error && error.name === 'AbortError') return;
       console.error('Admin products error:', error);
       setProducts([]);
     }
   }, [search]);
 
   useEffect(() => {
-    fetchProducts();
+    const controller = new AbortController();
+    fetchProducts(controller.signal);
+    return () => controller.abort();
   }, [fetchProducts]);
 
   const handleSort = useCallback((key: SortKey) => {
@@ -202,7 +206,7 @@ const AdminProductsPage: React.FC = () => {
           value={search}
           onChange={(event) => setSearch(event.target.value)}
         />
-        <button className="btn btn-secondary" onClick={fetchProducts}>Search</button>
+        <button className="btn btn-secondary" onClick={() => fetchProducts()}>Search</button>
         <Link to="/admin" className="btn btn-secondary">Back to Admin</Link>
         {selectedIds.size > 0 && (
           <button type="button" className="btn btn-primary admin-bulk-delete" onClick={bulkDelete}>

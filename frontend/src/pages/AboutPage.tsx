@@ -5,7 +5,7 @@ import { usePageTitle } from '../hooks/usePageTitle';
 import './AboutPage.css';
 
 const AboutPage: React.FC = () => {
-  usePageTitle('About');
+  usePageTitle('About', 'Learn about SkinCareAI: AI-powered skin analysis, personalized routines, and skincare science.');
   const navigate = useNavigate();
 
   return (

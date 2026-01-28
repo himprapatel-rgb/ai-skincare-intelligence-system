@@ -22,7 +22,7 @@ const AdminUsersPage: React.FC = () => {
   const [sortBy, setSortBy] = useState<SortKey>('email');
   const [sortDir, setSortDir] = useState<SortDir>('asc');
 
-  const fetchUsers = useCallback(async () => {
+  const fetchUsers = useCallback(async (signal?: AbortSignal) => {
     try {
       setIsLoading(true);
       const API_BASE = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
@@ -30,6 +30,7 @@ const AdminUsersPage: React.FC = () => {
       const params = new URLSearchParams();
       if (search.trim()) params.set('search', search.trim());
       const response = await fetch(`${API_BASE}/admin/users?${params.toString()}`, {
+        signal,
         headers: {
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
@@ -40,6 +41,7 @@ const AdminUsersPage: React.FC = () => {
       const data = await response.json();
       setUsers(data);
     } catch (error) {
+      if (error instanceof Error && error.name === 'AbortError') return;
       console.error('Admin users error:', error);
       setUsers([]);
     } finally {
@@ -48,7 +50,9 @@ const AdminUsersPage: React.FC = () => {
   }, [search]);
 
   useEffect(() => {
-    fetchUsers();
+    const controller = new AbortController();
+    fetchUsers(controller.signal);
+    return () => controller.abort();
   }, [fetchUsers]);
 
   const handleSort = useCallback((key: SortKey) => {
@@ -103,7 +107,7 @@ const AdminUsersPage: React.FC = () => {
           value={search}
           onChange={(event) => setSearch(event.target.value)}
         />
-        <button className="btn btn-secondary" onClick={fetchUsers}>Search</button>
+        <button className="btn btn-secondary" onClick={() => fetchUsers()}>Search</button>
         <Link to="/admin" className="btn btn-secondary">Back to Admin</Link>
       </div>
 

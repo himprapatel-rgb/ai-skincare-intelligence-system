@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { IconScan, IconHome, IconCheck, IconAlertTriangle, IconArrowLeft, IconCopy, getSkinConcernIcon } from '../components/Icons';
+import { BreadcrumbJsonLd } from '../components/BreadcrumbJsonLd';
 import { getScanHistory, getScanResult } from '../services/scanApi';
 import { useToast } from '../context/ToastContext';
 import { usePageTitle } from '../hooks/usePageTitle';
@@ -25,7 +26,7 @@ type ScanHistoryItem = {
 };
 
 const AnalysisResults: React.FC = () => {
-  usePageTitle('Skin Analysis Results');
+  usePageTitle('Skin Analysis Results', 'View your skin analysis score, concerns, and personalized recommendations.');
   const { analysisId } = useParams<{ analysisId: string }>();
   const navigate = useNavigate();
   const toast = useToast();
@@ -184,6 +185,13 @@ const AnalysisResults: React.FC = () => {
 
   return (
     <div className="analysis-results">
+      <BreadcrumbJsonLd
+        items={[
+          { name: 'Home', path: '/' },
+          { name: 'Dashboard', path: '/dashboard' },
+          { name: 'Skin Analysis Results', path: `/analysis/${analysisId}` },
+        ]}
+      />
       <div className="results-container">
         <div className="results-header">
           <div>
@@ -233,6 +241,17 @@ const AnalysisResults: React.FC = () => {
             </div>
           </div>
         )}
+
+        <div
+          className="sr-only"
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+        >
+          Analysis complete. Confidence score {analysis.confidence} percent. {analysis.concerns.length > 0
+            ? `Concerns: ${analysis.concerns.join(', ')}.`
+            : 'No concerns detected.'}
+        </div>
 
         <div className="confidence-row">
           <span>Confidence Score:</span>

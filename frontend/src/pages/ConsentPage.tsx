@@ -225,6 +225,7 @@ const ConsentPage: React.FC = () => {
                   <span className="slider"></span>
                 </label>
               </div>
+              <p className="consent-summary">Product tips, offers, and skincare recommendations by email.</p>
               <p className="consent-description">
                 Receive personalized product recommendations, skincare tips, and special offers tailored to your skin profile.
               </p>

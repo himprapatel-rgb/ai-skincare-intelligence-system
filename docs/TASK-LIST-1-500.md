@@ -2,7 +2,7 @@
 
 Tasks to execute autonomously. Approval granted for all items.
 
-**Progress:** 145 Done | 355 Remaining (as of last update)
+**Progress:** 202 Done | 298 Remaining (as of last update)
 
 ---
 
@@ -40,7 +40,7 @@ Tasks to execute autonomously. Approval granted for all items.
 | 28 | Document VITE_API_URL and env vars in README/.env.example | Done |
 | 29 | Sitemap or meta for SEO (title per route) | Done |
 | 30 | Ensure all routes have sensible document title | Done |
-| 31 | Copy review: buttons, labels, placeholders | - |
+| 31 | Copy review: buttons, labels, placeholders | Done |
 | 32 | Meta titles per page (usePageTitle or similar) | Done |
 | 33 | Open Graph tags for sharing | Done |
 | 34 | JSON-LD structured data (WebApp, Organization) | Done |
@@ -84,7 +84,7 @@ Tasks to execute autonomously. Approval granted for all items.
 | 65 | MyShelfPage: filter tabs mobile wrap | Done |
 | 66 | Recommendations: filter chips or clear-all visibility | Done |
 | 67 | ProductDetailsPage: image gallery or zoom | Done |
-| 68 | RoutineBuilderPage: drag handle or reorder UI | - |
+| 68 | RoutineBuilderPage: drag handle or reorder UI | Done |
 | 69 | DigitalTwinTimelinePage: timeline axis labels | Done |
 | 70 | ProgressTrackingPage: chart legend and tooltips | Done |
 | 71 | ContactPage: form validation and success state | Done |
@@ -101,7 +101,7 @@ Tasks to execute autonomously. Approval granted for all items.
 | 82 | EmailVerificationPage: resend cooldown UI | Done |
 | 83 | GoogleCallbackPage: loading and error copy | Done |
 | 84 | NotFoundPage: suggest Search or Home | Done |
-| 85 | ConsentPage: granular toggles and copy | - |
+| 85 | ConsentPage: granular toggles and copy | Done |
 | 86 | DataExportPage: format options and ETA | Done |
 | 87 | NotificationCenterPage: mark-all-read and filters | Done |
 | 88 | AdminDashboardPage: key metrics cards | Done |
@@ -124,35 +124,35 @@ Tasks to execute autonomously. Approval granted for all items.
 
 | # | Task | Status |
 |---|------|--------|
-| 101 | Audit all images for alt text | - |
-| 102 | Audit all icons for aria-hidden or sr-only text | - |
-| 103 | All custom buttons have aria-label or visible text | - |
+| 101 | Audit all images for alt text | Done |
+| 102 | Audit all icons for aria-hidden or sr-only text | Done |
+| 103 | All custom buttons have aria-label or visible text | Done |
 | 104 | Form labels linked with htmlFor | Done |
 | 105 | Error messages linked with aria-describedby | Done |
 | 106 | Live regions for toast (aria-live) | Done |
 | 107 | Focus trap in modals | Done |
 | 108 | Focus return after modal close | Done |
 | 109 | Skip to main content link | Done |
-| 110 | Heading hierarchy (single h1, logical order) per page | - |
-| 111 | Color contrast ≥4.5:1 for body text | - |
-| 112 | Color contrast ≥3:1 for large text/UI | - |
+| 110 | Heading hierarchy (single h1, logical order) per page | Done |
+| 111 | Color contrast ≥4.5:1 for body text | Done |
+| 112 | Color contrast ≥3:1 for large text/UI | Done |
 | 113 | Focus visible style on all focusable elements | Done |
 | 114 | Reduce motion preference: disable animations | Done |
-| 115 | Touch targets ≥44x44px on mobile | - |
-| 116 | Links vs buttons: use correct element | - |
+| 115 | Touch targets ≥44x44px on mobile | Done |
+| 116 | Links vs buttons: use correct element | Done |
 | 117 | Table headers and scope where tables exist | Done |
 | 118 | List markup (ul/ol) for lists | Done |
 | 119 | Landmark roles (main, nav, banner, contentinfo) | Done |
 | 120 | Page title unique and descriptive | Done |
 | 121 | Lang attribute on html | Done |
-| 122 | Scan flow: announce capture/countdown to screen readers | - |
-| 123 | Analysis results: announce score/concerns | - |
-| 124 | Charts: sr-only summary or data table | - |
+| 122 | Scan flow: announce capture/countdown to screen readers | Done |
+| 123 | Analysis results: announce score/concerns | Done |
+| 124 | Charts: sr-only summary or data table | Done |
 | 125 | Dropdowns: aria-expanded, aria-controls | Done |
 | 126 | Tabs: role=tablist, aria-selected | Done |
-| 127 | Carousels/sliders: pause on focus (if any) | - |
+| 127 | Carousels/sliders: pause on focus (if any) | Done |
 | 128 | No keyboard traps | - |
-| 129 | Logical tab order in forms | - |
+| 129 | Logical tab order in forms | Done |
 | 130 | Required fields marked aria-required | Done |
 | 131 | Invalid fields marked aria-invalid | Done |
 | 132 | Dialog role and aria-modal for modals | Done |
@@ -170,7 +170,7 @@ Tasks to execute autonomously. Approval granted for all items.
 | 144 | Add a11y testing to CI | - |
 | 145 | Fix any a11y issues from automated run | - |
 | 146 | High-contrast or forced-colors support | - |
-| 147 | Resize text to 200%: no horizontal scroll | - |
+| 147 | Resize text to 200%: no horizontal scroll | Done |
 | 148 | Zoom to 200%: no overlap/cutoff | - |
 | 149 | Prefer prefers-reduced-motion in CSS | Done |
 | 150 | Add visible focus offset (outline-offset) | Done |
@@ -204,7 +204,7 @@ Tasks to execute autonomously. Approval granted for all items.
 | 171 | Document dev vs prod API URLs | Done |
 | 172 | Add npm scripts: build, lint, test, typecheck | Done |
 | 173 | ESLint rule for no-console in prod | Done |
-| 174 | Prettier or formatter config | - |
+| 174 | Prettier or formatter config | Done |
 | 175 | Husky pre-commit: lint + typecheck | - |
 | 176 | CI: run tests on PR | - |
 | 177 | CI: run build on PR | - |
@@ -213,7 +213,7 @@ Tasks to execute autonomously. Approval granted for all items.
 | 180 | Error boundary log to backend or Sentry | - |
 | 181 | Retry failed API calls with backoff | Done |
 | 182 | Timeout for API calls | Done |
-| 183 | AbortController for fetch on unmount | - |
+| 183 | AbortController for fetch on unmount | Done |
 | 184 | Loading state for every async action | - |
 | 185 | Optimistic updates where safe (e.g. favorites) | - |
 | 186 | Stale-while-revalidate for non-critical data | - |
@@ -230,7 +230,7 @@ Tasks to execute autonomously. Approval granted for all items.
 | 197 | API client: handle 401 and redirect to login | Done |
 | 198 | API client: handle 403 with message | Done |
 | 199 | API client: map errors to user-friendly messages | Done |
-| 200 | Document API contract (or link to OpenAPI) | - |
+| 200 | Document API contract (or link to OpenAPI) | Done |
 
 ---
 
@@ -239,26 +239,26 @@ Tasks to execute autonomously. Approval granted for all items.
 | # | Task | Status |
 |---|------|--------|
 | 201 | Unique meta title per route | Done |
-| 202 | Meta description per route | - |
-| 203 | OG title, description, image for key pages | - |
-| 204 | Twitter card meta | - |
+| 202 | Meta description per route | Done |
+| 203 | OG title, description, image for key pages | Done |
+| 204 | Twitter card meta | Done |
 | 205 | Canonical URL meta | Done |
-| 206 | JSON-LD Organization | - |
+| 206 | JSON-LD Organization | Done |
 | 207 | JSON-LD WebApplication | Done |
-| 208 | JSON-LD BreadcrumbList on inner pages | - |
-| 209 | Sitemap.xml or route list for crawlers | - |
-| 210 | Robots.txt if needed | - |
+| 208 | JSON-LD BreadcrumbList on inner pages | Done |
+| 209 | Sitemap.xml or route list for crawlers | Done |
+| 210 | Robots.txt if needed | Done |
 | 211 | Homepage h1 and hero copy | - |
-| 212 | Homepage CTA button copy | - |
+| 212 | Homepage CTA button copy | Done |
 | 213 | Homepage “As featured” or social proof | - |
 | 214 | Scan page: step titles and descriptions | - |
 | 215 | Analysis: severity labels and tooltips | - |
-| 216 | Dashboard: empty state and first-scan CTA | - |
-| 217 | Recommendations: “no results” and filter hint | - |
-| 218 | Favorites: empty state and “browse” CTA | - |
-| 219 | My Shelf: empty state and “add product” CTA | - |
-| 220 | Profile: section titles and descriptions | - |
-| 221 | Auth: “Forgot password” link copy | - |
+| 216 | Dashboard: empty state and first-scan CTA | Done |
+| 217 | Recommendations: “no results” and filter hint | Done |
+| 218 | Favorites: empty state and “browse” CTA | Done |
+| 219 | My Shelf: empty state and “add product” CTA | Done |
+| 220 | Profile: section titles and descriptions | Done |
+| 221 | Auth: “Forgot password” link copy | Done |
 | 222 | Auth: error messages user-friendly | - |
 | 223 | Privacy policy: effective date and summary | - |
 | 224 | Terms: effective date and summary | - |
@@ -272,8 +272,8 @@ Tasks to execute autonomously. Approval granted for all items.
 | 232 | Data export: format explanation | - |
 | 233 | Notifications: empty list copy | - |
 | 234 | Admin: table empty and bulk-action copy | - |
-| 235 | 404: suggestions (home, search, contact) | - |
-| 236 | Error boundary: “something went wrong” copy | - |
+| 235 | 404: suggestions (home, search, contact) | Done |
+| 236 | Error boundary: “something went wrong” copy | Done |
 | 237 | Toast: success/error wording consistency | - |
 | 238 | Buttons: “Save” vs “Submit” vs “Confirm” | - |
 | 239 | Links: “Learn more” vs “View details” | - |

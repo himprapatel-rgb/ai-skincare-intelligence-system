@@ -1317,3 +1317,38 @@ body {
     page-break-inside: avoid;
   }
 }
+
+/* Resize text 200%: no horizontal scroll (Task 147) */
+html {
+  overflow-x: hidden;
+}
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+p, li, span, .page-container {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Touch targets ≥44x44px on mobile (Task 115) */
+@media (max-width: 768px) {
+  .btn-primary,
+  .btn-secondary,
+  .btn-outline,
+  .back-button,
+  .back-to-top,
+  button:not([type="checkbox"]):not([type="radio"]),
+  .app-nav a,
+  .skip-link {
+    min-height: 44px;
+    min-width: 44px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  /* Allow inline buttons to grow only in height */
+  button.inline-icon,
+  .back-button {
+    min-width: 44px;
+  }
+}

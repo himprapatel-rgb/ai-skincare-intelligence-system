@@ -334,7 +334,7 @@ See [ENVIRONMENT_VARIABLES.md](./docs/ENVIRONMENT_VARIABLES.md) for complete lis
 | GET | `/api/v1/recommendations` | Get personalized recommendations |
 | GET | `/api/v1/recommendations/routines` | Get routine suggestions |
 
-See full API documentation at `/api/docs` (Swagger UI).
+See full API documentation at `/api/docs` (Swagger UI). The **API contract** (OpenAPI 3) is available at `https://ai-skincare-intelligence-system-production.up.railway.app/api/docs` (production) or `http://localhost:8000/api/docs` (local).
 
 ---
 

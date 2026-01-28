@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { api } from '../services/api';
 import { IconArrowLeft, IconStar } from '../components/Icons';
+import { BreadcrumbJsonLd } from '../components/BreadcrumbJsonLd';
 import LoadingScreen from '../components/LoadingScreen';
 import { usePageTitle } from '../hooks/usePageTitle';
 import './ProductDetailsPage.css';
@@ -46,12 +47,15 @@ interface ReviewsData {
 }
 
 const ProductDetailsPage: React.FC = () => {
-  usePageTitle('Product Details');
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [product, setProduct] = useState<ProductDetails | null>(null);
   const [loading, setLoading] = useState(true);
   const [inShelf, setInShelf] = useState(false);
+  usePageTitle(
+    product ? product.name : 'Product Details',
+    product ? `${product.name} by ${product.brand}. ${product.category}. ${product.description?.slice(0, 120) || ''}` : null
+  );
   const [activeTab, setActiveTab] = useState<'overview' | 'ingredients' | 'reviews'>('overview');
   
   // Reviews state
@@ -185,6 +189,13 @@ const ProductDetailsPage: React.FC = () => {
 
   return (
     <div className="product-details-page">
+      <BreadcrumbJsonLd
+        items={[
+          { name: 'Home', path: '/' },
+          { name: 'Recommendations', path: '/recommendations' },
+          { name: product.name, path: `/product/${id}` },
+        ]}
+      />
       <button className="back-button" onClick={() => navigate(-1)}>
         <IconArrowLeft size={16} strokeWidth={2} className="icon-inline" />
         Back

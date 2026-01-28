@@ -25,7 +25,7 @@ export function BackToTop() {
       onClick={scrollTop}
       aria-label="Back to top"
     >
-      <IconArrowUp size={20} strokeWidth={2.5} />
+      <IconArrowUp size={20} strokeWidth={2.5} aria-hidden="true" />
     </button>
   );
 }

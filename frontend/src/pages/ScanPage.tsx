@@ -666,7 +666,8 @@ export default function ScanPage() {
                   className={`mode-btn ${uploadMode === 'file' ? 'active' : ''}`}
                   onClick={() => setUploadMode('file')}
                 >
-                  📁 Upload Photo
+                  <IconUpload size={20} strokeWidth={2} className="inline-icon" />
+                  Upload Photo
                 </button>
                 <button
                   className={`mode-btn ${uploadMode === 'camera' ? 'active' : ''}`}

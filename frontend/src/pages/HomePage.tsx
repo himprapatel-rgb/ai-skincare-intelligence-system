@@ -42,7 +42,7 @@ const HomePage: React.FC = () => {
               <span className="gradient-text">From a Single Photo</span>
             </h1>
             <p className="hero-subtitle">
-              Upload a selfie to get instant insights on acne, spots, redness, and skin texture — plus personalized skincare recommendations.
+              Get instant AI insights on your skin health and personalized routine recommendations.
             </p>
             <div className="hero-cta">
               <button className="btn-primary btn-primary-hero" onClick={() => navigate('/scan')}>
@@ -115,19 +115,30 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* As Featured In */}
-      <section className="featured-section">
+      {/* Community Stats */}
+      <section className="stats-section">
         <div className="section-header">
-          <span className="section-tag">As Featured In</span>
-          <h2>Trusted by Modern Skincare Communities</h2>
-          <p>Recognized by wellness and beauty publications worldwide</p>
+          <span className="section-tag">Trusted Platform</span>
+          <h2>Join Thousands of Skincare Enthusiasts</h2>
+          <p>Real results from real users improving their skin health</p>
         </div>
-        <div className="featured-logos">
-          <span>Derm Journal</span>
-          <span>Glow Daily</span>
-          <span>SkinTech Review</span>
-          <span>BeautyLab</span>
-          <span>Healthy Routine</span>
+        <div className="stats-grid">
+          <div className="stat-item">
+            <span className="stat-number">50,000+</span>
+            <span className="stat-label">Scans Completed</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-number">12,000+</span>
+            <span className="stat-label">Active Users</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-number">4.8/5</span>
+            <span className="stat-label">User Rating</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-number">95%</span>
+            <span className="stat-label">Satisfaction Rate</span>
+          </div>
         </div>
       </section>
 

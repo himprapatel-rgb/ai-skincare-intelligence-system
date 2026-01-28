@@ -12,7 +12,12 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, isAuthenticated, logout } = useAuth();
-  const displayName = user?.full_name || user?.email?.split('@')[0] || 'Account';
+  // Show first name only, or first name + last initial for better display
+const fullName = user?.full_name || '';
+const nameParts = fullName.split(' ').filter(Boolean);
+const displayName = nameParts.length > 1 
+  ? `${nameParts[0]} ${nameParts[nameParts.length - 1][0]}.`
+  : nameParts[0] || user?.email?.split('@')[0] || 'Account';
   const userInitial = (user?.full_name?.[0] || user?.email?.[0] || 'U').toUpperCase();
   
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

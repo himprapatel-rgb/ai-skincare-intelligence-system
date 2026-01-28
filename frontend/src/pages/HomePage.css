@@ -98,27 +98,53 @@
   padding: 80px 24px;
 }
 
-.featured-section,
+.stats-section,
 .testimonials-section {
   padding: 80px 24px;
 }
 
-.featured-logos {
-  max-width: 1000px;
-  margin: 32px auto 0;
+.stats-grid {
+  max-width: 900px;
+  margin: 40px auto 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
   text-align: center;
-  color: var(--text-gray);
-  font-weight: 600;
 }
 
-.featured-logos span {
-  background: #ffffff;
-  border-radius: 999px;
-  padding: 12px 18px;
-  border: 1px solid var(--border);
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--text-dark);
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #1e293b 0%, #3b82f6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.stat-label {
+  font-size: 0.95rem;
+  color: var(--text-gray);
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+  
+  .stat-number {
+    font-size: 2rem;
+  }
 }
 
 .testimonials-grid {
@@ -272,7 +298,7 @@
   .results-preview,
   .how-it-works,
   .faq-section,
-  .featured-section,
+  .stats-section,
   .testimonials-section {
     padding: 48px 20px;
   }

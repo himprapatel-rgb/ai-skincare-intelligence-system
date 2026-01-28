@@ -146,6 +146,19 @@
   color: var(--primary);
   font-weight: 600;
   background: rgba(31, 111, 235, 0.08);
+  position: relative;
+}
+
+.app-nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 3px;
+  background: linear-gradient(90deg, #3b82f6, #7c3aed);
+  border-radius: 2px;
 }
 
 /* Icon Button (Notification Bell) */

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { usePageTitle } from '../hooks/usePageTitle';
 import { IconStar } from '../components/Icons';
+import { ConfirmModal } from '../components/ConfirmModal';
 import { mockProducts } from '../data/mockProducts';
-import LoadingScreen from '../components/LoadingScreen';
+import { SkeletonCardGrid } from '../components/Skeleton';
 import './MyShelfPage.css';
 
 interface Product {
@@ -18,11 +20,13 @@ interface Product {
 }
 
 const MyShelfPage: React.FC = () => {
+  usePageTitle('My Shelf');
   const navigate = useNavigate();
   const [products, setProducts] = useState<Product[]>([]);
   const [filter, setFilter] = useState<'all' | 'using' | 'wishlist' | 'discontinued'>('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
+  const [confirmRemoveId, setConfirmRemoveId] = useState<string | null>(null);
 
   useEffect(() => {
     fetchProducts();
@@ -108,27 +112,34 @@ const MyShelfPage: React.FC = () => {
     }
   };
 
-  const handleRemoveProduct = async (productId: string) => {
-    if (!confirm('Remove this product from your shelf?')) return;
-    
+  const handleRemoveProduct = (productId: string) => {
+    setConfirmRemoveId(productId);
+  };
+
+  const doRemoveProduct = async () => {
+    if (!confirmRemoveId) return;
     try {
       const token = localStorage.getItem('token');
-      await fetch(`/api/v1/shelf/${productId}`, {
+      await fetch(`/api/v1/shelf/${confirmRemoveId}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
-      setProducts(prev => prev.filter(p => p.id !== productId));
+      setProducts(prev => prev.filter(p => p.id !== confirmRemoveId));
     } catch (error) {
       console.error('Failed to remove product:', error);
-      // Still remove from UI
-      setProducts(prev => prev.filter(p => p.id !== productId));
+      setProducts(prev => prev.filter(p => p.id !== confirmRemoveId));
+    } finally {
+      setConfirmRemoveId(null);
     }
   };
 
   if (loading) {
     return (
       <div className="myshelf-page">
-        <LoadingScreen message="Loading your products" fullscreen={false} />
+        <div className="myshelf-skeleton" style={{ padding: 24, maxWidth: 1200, margin: '0 auto' }}>
+          <div className="skeleton skeleton-heading" style={{ width: 220, height: 28, marginBottom: 24 }} />
+          <SkeletonCardGrid count={6} hasImage={true} />
+        </div>
       </div>
     );
   }
@@ -247,6 +258,9 @@ const MyShelfPage: React.FC = () => {
                 <img
                   src={product.imageUrl || placeholderImage}
                   alt={product.name}
+                  loading="lazy"
+                  width={120}
+                  height={120}
                   onError={(event) => {
                     const target = event.currentTarget;
                     if (target.src !== placeholderImage) {
@@ -308,6 +322,16 @@ const MyShelfPage: React.FC = () => {
         </div>
       )}
 
+      <ConfirmModal
+        open={!!confirmRemoveId}
+        title="Remove from shelf"
+        message="Remove this product from your shelf? You can add it again later."
+        confirmLabel="Remove"
+        cancelLabel="Keep"
+        variant="danger"
+        onConfirm={doRemoveProduct}
+        onCancel={() => setConfirmRemoveId(null)}
+      />
     </div>
   );
 };

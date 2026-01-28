@@ -1,9 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IconBrain, IconShield, IconBookOpen, IconZap, IconAlertTriangle, IconTarget, IconHeart, IconCheckCircle } from '../components/Icons';
+import { usePageTitle } from '../hooks/usePageTitle';
 import './AboutPage.css';
 
 const AboutPage: React.FC = () => {
+  usePageTitle('About');
   const navigate = useNavigate();
 
   return (

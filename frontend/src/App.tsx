@@ -1,10 +1,13 @@
 // src/App.tsx - Premium GUI v3 - Complete Frontend
 import React, { Suspense } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
+import { ToastProvider } from "./context/ToastContext";
 import AppLayout from "./components/AppLayout";
 import DevBanner from "./components/DevBanner";
 import LoadingScreen from "./components/LoadingScreen";
+import { ToastContainer } from "./components/Toast";
+import { ErrorBoundary } from "./components/ErrorBoundary";
 
 // Page Imports - Lazy loaded for faster initial load
 const HomePage = React.lazy(() => import("./pages/HomePage"));
@@ -46,15 +49,18 @@ const BlogPage = React.lazy(() => import("./pages/BlogPage"));
 const IngredientDictionaryPage = React.lazy(() => import("./pages/IngredientDictionaryPage"));
 const SkinTypeGuidePage = React.lazy(() => import("./pages/SkinTypeGuidePage"));
 const VideoTutorialsPage = React.lazy(() => import("./pages/VideoTutorialsPage"));
+const NotFoundPage = React.lazy(() => import("./pages/NotFoundPage"));
 
 export default function App() {
   return (
     <AuthProvider>
-      <DevBanner />
-      <BrowserRouter>
-        <AppLayout>
-          <Suspense fallback={<LoadingScreen message="Loading page..." fullscreen={false} />}>
-            <Routes>
+      <ToastProvider>
+        <DevBanner />
+        <BrowserRouter>
+          <AppLayout>
+            <ErrorBoundary>
+              <Suspense fallback={<LoadingScreen message="Loading page..." fullscreen={false} />}>
+                <Routes>
             {/* Public Routes */}
             <Route path="/" element={<HomePage />} />
             <Route path="/auth" element={<AuthPage />} />
@@ -104,12 +110,15 @@ export default function App() {
             <Route path="/skin-type-guide" element={<SkinTypeGuidePage />} />
             <Route path="/tutorials" element={<VideoTutorialsPage />} />
             
-            {/* Fallback */}
-            <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-          </Suspense>
-        </AppLayout>
-      </BrowserRouter>
+                  {/* 404 */}
+                  <Route path="*" element={<NotFoundPage />} />
+                </Routes>
+              </Suspense>
+            </ErrorBoundary>
+          </AppLayout>
+        </BrowserRouter>
+        <ToastContainer />
+      </ToastProvider>
     </AuthProvider>
   );
 }

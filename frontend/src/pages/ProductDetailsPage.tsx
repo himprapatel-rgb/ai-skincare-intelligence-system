@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { api } from '../services/api';
 import { IconArrowLeft, IconStar } from '../components/Icons';
 import LoadingScreen from '../components/LoadingScreen';
+import { usePageTitle } from '../hooks/usePageTitle';
 import './ProductDetailsPage.css';
 
 interface ProductDetails {
@@ -45,6 +46,7 @@ interface ReviewsData {
 }
 
 const ProductDetailsPage: React.FC = () => {
+  usePageTitle('Product Details');
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [product, setProduct] = useState<ProductDetails | null>(null);
@@ -189,7 +191,7 @@ const ProductDetailsPage: React.FC = () => {
       <div className="product-header">
         <div className="product-image-section">
           {product.imageUrl ? (
-            <img src={product.imageUrl} alt={product.name} />
+            <img src={product.imageUrl} alt={product.name} loading="lazy" width={320} height={320} />
           ) : (
             <div className="placeholder-image">
               <svg width="80" height="100" viewBox="0 0 80 100" fill="none" xmlns="http://www.w3.org/2000/svg">

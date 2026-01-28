@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { usePageTitle } from '../hooks/usePageTitle';
 import { IconStar, IconAlertTriangle, IconHeart, IconArrowLeft } from '../components/Icons';
-import { LoadingSpinner } from '../components/LoadingSpinner';
+import { SkeletonCardGrid } from '../components/Skeleton';
 import './Recommendations.css';
 
 interface Product {
@@ -18,6 +19,7 @@ interface Product {
 }
 
 const Recommendations: React.FC = () => {
+  usePageTitle('Recommendations');
   const navigate = useNavigate();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -192,8 +194,9 @@ const Recommendations: React.FC = () => {
     return (
       <div className="recommendations-page">
         <div className="recommendations-container">
-          <div className="recommendations-state">
-            <LoadingSpinner message="Loading recommendations..." size="large" />
+          <div className="recommendations-state recommendations-skeleton">
+            <div className="skeleton skeleton-heading" style={{ width: 200, height: 28, marginBottom: 24 }} />
+            <SkeletonCardGrid count={6} hasImage={true} />
           </div>
         </div>
       </div>
@@ -311,6 +314,15 @@ const Recommendations: React.FC = () => {
               </div>
               <h3>No products match your filters</h3>
               <p>Try a broader category or a different concern.</p>
+              {hasFilters && (
+                <button
+                  type="button"
+                  className="btn-primary empty-reset-filters"
+                  onClick={() => setFilters({ category: 'all', priceRange: 'all', concern: 'all' })}
+                >
+                  Reset filters
+                </button>
+              )}
             </div>
           ) : (
             displayProducts.map((product) => (
@@ -320,6 +332,9 @@ const Recommendations: React.FC = () => {
                     src={product.imageUrl || placeholderImage}
                     alt={product.name}
                     className="product-image"
+                    loading="lazy"
+                    width={240}
+                    height={240}
                     onError={(event) => {
                       const target = event.currentTarget;
                       if (target.src !== placeholderImage) {

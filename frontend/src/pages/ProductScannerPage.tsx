@@ -2,6 +2,7 @@ import React, { useState, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Webcam from 'react-webcam';
 import { IconScan, IconCamera, IconAlertTriangle, IconPackage, IconX } from '../components/Icons';
+import { usePageTitle } from '../hooks/usePageTitle';
 import './ProductScannerPage.css';
 
 interface ScannedProduct {
@@ -21,6 +22,7 @@ interface ScannedProduct {
  * Camera integration to scan product barcodes and analyze ingredients
  */
 const ProductScannerPage: React.FC = () => {
+  usePageTitle('Product Scanner');
   const navigate = useNavigate();
   const webcamRef = useRef<Webcam>(null);
   const [scanning, setScanning] = useState(false);
@@ -221,7 +223,7 @@ const ProductScannerPage: React.FC = () => {
               <div className="card-content">
                 <div className="product-header">
                   <div className="product-image">
-                    <img src={scannedProduct.imageUrl} alt={scannedProduct.name} />
+                    <img src={scannedProduct.imageUrl} alt={scannedProduct.name} loading="lazy" width={120} height={120} />
                   </div>
                   <div className="product-details">
                     <h3>{scannedProduct.name}</h3>

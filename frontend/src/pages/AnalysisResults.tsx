@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { IconScan, IconHome, IconCheck, IconAlertTriangle, IconArrowLeft, getSkinConcernIcon } from '../components/Icons';
+import { IconScan, IconHome, IconCheck, IconAlertTriangle, IconArrowLeft, IconCopy, getSkinConcernIcon } from '../components/Icons';
 import { getScanHistory, getScanResult } from '../services/scanApi';
+import { useToast } from '../context/ToastContext';
+import { usePageTitle } from '../hooks/usePageTitle';
 import './AnalysisResults.css';
 
 interface SkinAnalysis {
@@ -23,8 +25,10 @@ type ScanHistoryItem = {
 };
 
 const AnalysisResults: React.FC = () => {
+  usePageTitle('Skin Analysis Results');
   const { analysisId } = useParams<{ analysisId: string }>();
   const navigate = useNavigate();
+  const toast = useToast();
   const [analysis, setAnalysis] = useState<SkinAnalysis | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -191,10 +195,29 @@ const AnalysisResults: React.FC = () => {
               })}
             </p>
           </div>
-          <button onClick={() => navigate('/')} className="results-back">
-            <IconArrowLeft size={16} strokeWidth={2} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
-            Back to Dashboard
-          </button>
+          <div className="results-header-actions">
+            <button
+              type="button"
+              className="results-copy-link"
+              onClick={async () => {
+                try {
+                  await navigator.clipboard.writeText(window.location.href);
+                  toast.success('Link copied to clipboard');
+                } catch {
+                  toast.error('Could not copy link');
+                }
+              }}
+              title="Copy link to this analysis"
+              aria-label="Copy link to this analysis"
+            >
+              <IconCopy size={16} strokeWidth={2} />
+              Copy link
+            </button>
+            <button onClick={() => navigate('/')} className="results-back">
+              <IconArrowLeft size={16} strokeWidth={2} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
+              Back to Dashboard
+            </button>
+          </div>
         </div>
 
         {failureMessage && (
@@ -223,7 +246,7 @@ const AnalysisResults: React.FC = () => {
             <h2>Analyzed Image</h2>
             <div className="analysis-image">
               {analysis.imageUrl ? (
-                <img src={analysis.imageUrl} alt="Skin analysis" />
+                <img src={analysis.imageUrl} alt="Skin analysis" loading="lazy" width={400} height={300} />
               ) : (
                 <div className="analysis-image-fallback">
                   <IconScan size={32} strokeWidth={2} />

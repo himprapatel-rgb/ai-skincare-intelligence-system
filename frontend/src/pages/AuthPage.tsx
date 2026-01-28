@@ -4,9 +4,11 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { LoginForm } from '../components/LoginForm';
 import { RegisterForm } from '../components/RegisterForm';
 import { IconCamera, IconSparkles, IconBarChart } from '../components/Icons';
+import { usePageTitle } from '../hooks/usePageTitle';
 import './AuthPage.css';
 
 export const AuthPage: React.FC = () => {
+  usePageTitle('Sign In');
   const [mode, setMode] = useState<'login' | 'register'>('login');
   const navigate = useNavigate();
   const location = useLocation();

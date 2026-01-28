@@ -2,6 +2,7 @@
 import React, { useState, useCallback, useRef, useEffect } from "react";
 import { FaceLandmarker, FilesetResolver } from "@mediapipe/tasks-vision";
 import { useNavigate } from "react-router-dom";
+import { usePageTitle } from "../hooks/usePageTitle";
 import { initScan, uploadScanImage, getScanStatus, getScanResult } from "../services/scanApi";
 import { cameraService } from "../services/cameraService";
 import type { ScanResultResponse } from "../services/scanApi";
@@ -14,6 +15,7 @@ type ScanStep = 'upload' | 'scanning' | 'complete';
 const ENABLE_LIVE_QUALITY_CHECKS = false;
 
 export default function ScanPage() {
+  usePageTitle('Skin Scan');
   const navigate = useNavigate();
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -699,6 +701,8 @@ export default function ScanPage() {
                         className="camera-preview"
                         src={capturePreviewUrl}
                         alt="Captured preview"
+                        width={400}
+                        height={300}
                       />
                     )}
                     <canvas ref={overlayCanvasRef} className="camera-overlay" />
@@ -772,8 +776,10 @@ export default function ScanPage() {
                       <div className="preview-container">
                         <img
                           src={previewUrl}
-                          alt="Preview"
+                          alt="Upload preview"
                           className={`scan-preview ${faceLocked ? "scan-preview-locked" : ""}`}
+                          width={400}
+                          height={300}
                         />
                         <button
                           className="preview-remove"

@@ -20,7 +20,7 @@ const SnapshotCard: React.FC<SnapshotCardProps> = ({
 }) => (
   <button type="button" className={`dt-snapshot-card ${isSelected ? 'is-selected' : ''}`} onClick={onClick}>
     <div className="dt-snapshot-image">
-      <img src={imageUrl} alt={`Snapshot from ${dateLabel}`} loading="lazy" />
+      <img src={imageUrl} alt={`Snapshot from ${dateLabel}`} loading="lazy" width={120} height={90} />
       <div className="dt-snapshot-date">{dateLabel}</div>
     </div>
     <div className="dt-snapshot-info">

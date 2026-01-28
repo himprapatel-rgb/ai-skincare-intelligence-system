@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IconMail, IconClock, IconMessageCircle, IconMapPin, IconCheckCircle, IconInstagram, IconTwitter, IconLinkedin, IconTiktok } from '../components/Icons';
+import { usePageTitle } from '../hooks/usePageTitle';
 import './ContactPage.css';
 
 const ContactPage: React.FC = () => {
+  usePageTitle('Contact');
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',

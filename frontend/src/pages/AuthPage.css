@@ -171,8 +171,40 @@
   box-shadow: 0 0 0 3px rgba(31, 111, 235, 0.12);
 }
 
+.form-group.has-error input {
+  border-color: #dc2626;
+  background: #fef2f2;
+}
+
+.form-group.has-error input:focus {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15);
+}
+
 .form-group input::placeholder {
   color: #94a3b8;
+}
+
+.form-group-inline {
+  flex-direction: row;
+  align-items: center;
+}
+
+.form-group-inline .checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--text-secondary, #64748b);
+  cursor: pointer;
+}
+
+.form-group-inline .checkbox-label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary);
+  cursor: pointer;
 }
 
 .password-requirements {

@@ -102,6 +102,34 @@
   line-height: 1.6;
 }
 
+.results-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.results-copy-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-light, #f8fafc);
+  border: 1px solid var(--border, #e2e8f0);
+  color: var(--text-gray, #64748b);
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.results-copy-link:hover {
+  background: var(--white, #fff);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
 .results-back {
   background: transparent;
   border: 2px solid var(--primary);

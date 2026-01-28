@@ -197,8 +197,9 @@ cd frontend
 # Install dependencies
 npm install --legacy-peer-deps
 
-# Create .env file
+# Create .env file (copy from .env.example if present)
 echo "VITE_API_URL=http://localhost:8000/api/v1" > .env
+# Optionally set VITE_GOOGLE_CLIENT_ID for Google sign-in. See Environment Variables below.
 
 # Start development server
 npm run dev

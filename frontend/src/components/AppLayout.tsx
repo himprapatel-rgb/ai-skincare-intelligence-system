@@ -2,6 +2,8 @@ import React, { useMemo, useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { IconInstagram, IconBrandX, IconLinkedin, IconTiktok, IconMenu, IconX, IconUser, IconChevronDown, IconLogOut, IconSettings, IconScan } from './Icons';
 import { useAuth } from '../context/AuthContext';
+import { BackToTop } from './BackToTop';
+import { OfflineBanner } from './OfflineBanner';
 import './AppLayout.css';
 
 type AppLayoutProps = {
@@ -92,6 +94,7 @@ const displayName = nameParts.length > 1
   return (
     <div className="app-layout">
       <a className="skip-link" href="#main-content">Skip to main content</a>
+      <OfflineBanner />
       <header className={`app-header${scrolled ? ' scrolled' : ''}`}>
         <div className="app-header-container">
           {/* Logo */}
@@ -259,11 +262,13 @@ const displayName = nameParts.length > 1
         </div>
       )}
 
-      <main className="app-main" id="main-content">
+      <main className="app-main" id="main-content" role="main">
         {children}
       </main>
 
-      <footer className="app-footer">
+      <BackToTop />
+
+      <footer className="app-footer" role="contentinfo">
         {/* Newsletter Section */}
         <div className="app-footer-newsletter">
           <div className="app-footer-newsletter-content">
@@ -334,6 +339,8 @@ const displayName = nameParts.length > 1
                 <h4>Company</h4>
                 <Link to="/about">About Us</Link>
                 <Link to="/contact">Contact</Link>
+                <Link to="/contact?subject=feedback">Feedback</Link>
+                <Link to="/tutorials">Help</Link>
                 <Link to="/blog">Blog</Link>
                 <Link to="/tutorials">Video Tutorials</Link>
               </div>

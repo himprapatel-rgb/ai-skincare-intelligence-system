@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IconSun, IconMoon, IconBell, IconArrowUp, IconArrowDown, IconX, IconCheck, IconInfo } from '../components/Icons';
+import { usePageTitle } from '../hooks/usePageTitle';
 import './RoutineBuilderPage.css';
 
 interface RoutineStep {
@@ -32,6 +33,7 @@ interface ReminderSettings {
 }
 
 const RoutineBuilderPage: React.FC = () => {
+  usePageTitle('Routine Builder');
   const navigate = useNavigate();
   const [activeTime, setActiveTime] = useState<'morning' | 'evening'>('morning');
   const [morningRoutine, setMorningRoutine] = useState<RoutineStep[]>([

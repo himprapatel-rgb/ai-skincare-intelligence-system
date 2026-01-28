@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { usePageTitle } from '../hooks/usePageTitle';
 import { 
   IconZap, IconScan, IconClock, IconShield, IconBookOpen, 
   IconTrash2, IconCheckCircle, IconBarChart, IconSearch, 
@@ -8,6 +9,7 @@ import {
 import './HomePage.css';
 
 const HomePage: React.FC = () => {
+  usePageTitle(null);
   const navigate = useNavigate();
   const avatarBase = (initials: string, color: string) =>
     `data:image/svg+xml;utf8,${encodeURIComponent(
@@ -194,7 +196,7 @@ const HomePage: React.FC = () => {
           <div className="step-card">
             <div className="step-number">1</div>
             <div className="step-illustration step-illustration--primary" aria-hidden="true">
-              <img src="/how-it-works-upload.svg" alt="" loading="lazy" />
+              <img src="/how-it-works-upload.svg" alt="" loading="lazy" width="200" height="160" />
             </div>
             <h3>Upload Photo</h3>
             <p>Take or upload a clear selfie</p>
@@ -216,7 +218,7 @@ const HomePage: React.FC = () => {
           <div className="step-card">
             <div className="step-number">2</div>
             <div className="step-illustration step-illustration--accent" aria-hidden="true">
-              <img src="/how-it-works-analysis.svg" alt="" loading="lazy" />
+              <img src="/how-it-works-analysis.svg" alt="" loading="lazy" width="200" height="160" />
             </div>
             <h3>AI Analysis</h3>
             <p>Our model detects visible signs of acne, redness, pigmentation, and texture patterns</p>
@@ -224,7 +226,7 @@ const HomePage: React.FC = () => {
           <div className="step-card">
             <div className="step-number">3</div>
             <div className="step-illustration step-illustration--soft" aria-hidden="true">
-              <img src="/how-it-works-results.svg" alt="" loading="lazy" />
+              <img src="/how-it-works-results.svg" alt="" loading="lazy" width="200" height="160" />
             </div>
             <h3>Get Results</h3>
             <p>Receive a skin summary, concern scores, and personalized routine suggestions</p>

@@ -1,0 +1,33 @@
+/**
+ * 404 Not Found - Task 4
+ */
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { usePageTitle } from '../hooks/usePageTitle';
+import { IconHome, IconScan } from '../components/Icons';
+import './NotFoundPage.css';
+
+const NotFoundPage: React.FC = () => {
+  usePageTitle('Page Not Found');
+  return (
+  <div className="not-found-page">
+    <div className="not-found-content">
+      <h1 className="not-found-title">404</h1>
+      <p className="not-found-message">Page not found</p>
+      <p className="not-found-sub">The page you’re looking for doesn’t exist or has been moved.</p>
+      <div className="not-found-actions">
+        <Link to="/" className="btn-primary">
+          <IconHome size={20} strokeWidth={2} style={{ marginRight: 8, verticalAlign: 'middle' }} />
+          Go Home
+        </Link>
+        <Link to="/scan" className="btn-secondary">
+          <IconScan size={20} strokeWidth={2} style={{ marginRight: 8, verticalAlign: 'middle' }} />
+          Start Scan
+        </Link>
+      </div>
+    </div>
+  </div>
+  );
+};
+
+export default NotFoundPage;

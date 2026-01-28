@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { IconHeart, IconX, IconPackage, IconStar } from '../components/Icons';
+import { IconHeart, IconX, IconPackage, IconStar, IconSearch } from '../components/Icons';
+import { ConfirmModal } from '../components/ConfirmModal';
 import { api } from '../services/api';
+import { usePageTitle } from '../hooks/usePageTitle';
 import './CommonStyles.css';
 import './FavoritesPage.css';
 
@@ -21,10 +23,13 @@ interface FavoriteProduct {
  * Manage saved favorite skincare products
  */
 const FavoritesPage: React.FC = () => {
+  usePageTitle('Favorites');
   const [favorites, setFavorites] = useState<FavoriteProduct[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [sortBy, setSortBy] = useState<'date' | 'name' | 'price'>('date');
+  const [searchTerm, setSearchTerm] = useState('');
   const [_error, setError] = useState<string | null>(null);
+  const [confirmRemoveId, setConfirmRemoveId] = useState<string | null>(null);
 
   useEffect(() => {
     fetchFavorites();
@@ -59,24 +64,38 @@ const FavoritesPage: React.FC = () => {
     }
   };
 
-  const handleRemove = async (id: string) => {
+  const handleRemove = (id: string) => {
+    setConfirmRemoveId(id);
+  };
+
+  const doRemove = async () => {
+    if (!confirmRemoveId) return;
     try {
-      await api.delete(`/favorites/${id}`);
-      setFavorites(prev => prev.filter(p => p.id !== id));
+      await api.delete(`/favorites/${confirmRemoveId}`);
+      setFavorites(prev => prev.filter(p => p.id !== confirmRemoveId));
     } catch (err) {
       console.error('Failed to remove favorite:', err);
-      // Still remove from UI for better UX
-      setFavorites(prev => prev.filter(p => p.id !== id));
+      setFavorites(prev => prev.filter(p => p.id !== confirmRemoveId));
+    } finally {
+      setConfirmRemoveId(null);
     }
   };
 
-  const sortedFavorites = [...favorites].sort((a, b) => {
+  const sortedFavorites = useMemo(() => [...favorites].sort((a, b) => {
     switch (sortBy) {
       case 'name': return a.name.localeCompare(b.name);
       case 'price': return a.price - b.price;
       default: return new Date(b.addedAt).getTime() - new Date(a.addedAt).getTime();
     }
-  });
+  }), [favorites, sortBy]);
+
+  const searchFilteredFavorites = useMemo(() => {
+    if (!searchTerm.trim()) return sortedFavorites;
+    const q = searchTerm.toLowerCase().trim();
+    return sortedFavorites.filter((p) =>
+      p.name.toLowerCase().includes(q) || (p.brand && p.brand.toLowerCase().includes(q))
+    );
+  }, [sortedFavorites, searchTerm]);
 
   if (isLoading) return <div className="page-container"><p>Loading favorites...</p></div>;
 
@@ -92,6 +111,17 @@ const FavoritesPage: React.FC = () => {
 
       <div className="card favorites-toolbar">
         <div className="card-content favorites-toolbar-content">
+          <div className="favorites-search" role="search">
+            <IconSearch size={18} strokeWidth={2} className="favorites-search-icon" aria-hidden />
+            <input
+              type="search"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search by name or brand..."
+              aria-label="Search favorites by name or brand"
+              className="favorites-search-input"
+            />
+          </div>
           <div className="favorites-sort">
             <label>Sort by: </label>
             <select value={sortBy} onChange={(e) => setSortBy(e.target.value as 'date' | 'name' | 'price')}>
@@ -127,7 +157,14 @@ const FavoritesPage: React.FC = () => {
         </div>
       ) : (
         <div className="favorites-grid">
-          {sortedFavorites.map(product => (
+          {searchFilteredFavorites.length === 0 ? (
+            <div className="card favorites-empty favorites-empty-search">
+              <div className="card-content favorites-empty-content">
+                <p className="favorites-empty-text">No favorites match &quot;{searchTerm}&quot;. Try a different search or <Link to="/recommendations">browse products</Link>.</p>
+                <button type="button" className="btn btn-secondary" onClick={() => setSearchTerm('')}>Clear search</button>
+              </div>
+            </div>
+          ) : searchFilteredFavorites.map(product => (
             <div key={product.id} className="card">
               <div className="favorites-image">
                 <span className="favorites-image-icon">
@@ -162,6 +199,17 @@ const FavoritesPage: React.FC = () => {
           ))}
         </div>
       )}
+
+      <ConfirmModal
+        open={!!confirmRemoveId}
+        title="Remove from favorites"
+        message="Remove this product from your favorites? You can add it again from recommendations."
+        confirmLabel="Remove"
+        cancelLabel="Keep"
+        variant="danger"
+        onConfirm={doRemove}
+        onCancel={() => setConfirmRemoveId(null)}
+      />
     </div>
   );
 };

@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { usePageTitle } from '../hooks/usePageTitle';
 import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { useAuth } from '../context/AuthContext';
-import Toast, { ToastType } from '../components/Toast';
+import { useToast } from '../context/ToastContext';
 import { IconBarChart, IconCamera, IconPackage, IconSparkles, IconTrendingUp, IconScan } from '../components/Icons';
 import { mockProducts } from '../data/mockProducts';
 import { getScanHistory } from '../services/scanApi';
@@ -65,15 +66,16 @@ interface UserProfile {
 }
 
 const ProfileSettingsPage: React.FC = () => {
+  usePageTitle('Profile Settings');
   const { user } = useAuth();
   const navigate = useNavigate();
+  const toast = useToast();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const initialProfileRef = useRef<UserProfile | null>(null);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
   const [fieldErrors, setFieldErrors] = useState<{ name?: string; email?: string }>({});
-  const [toast, setToast] = useState<{ type: ToastType; message: string } | null>(null);
   const [isDirty, setIsDirty] = useState(false);
   const [activeTab, setActiveTab] = useState<'personal' | 'skin' | 'goals' | 'lifestyle' | 'notifications' | 'privacy' | 'stats'>('personal');
   
@@ -288,13 +290,13 @@ const ProfileSettingsPage: React.FC = () => {
     try {
       await new Promise(resolve => setTimeout(resolve, 1000));
       setSuccess(true);
-      setToast({ type: 'success', message: 'Profile updated successfully.' });
+      toast.success('Profile updated successfully.');
       initialProfileRef.current = profile;
       setIsDirty(false);
       setTimeout(() => setSuccess(false), 3000);
     } catch (err) {
       setError('Failed to update profile. Please try again.');
-      setToast({ type: 'error', message: 'Failed to update profile.' });
+      toast.error('Failed to update profile.');
     } finally {
       setLoading(false);
     }
@@ -318,14 +320,14 @@ const ProfileSettingsPage: React.FC = () => {
       const reader = new FileReader();
       reader.onloadend = () => {
         setProfile(prev => ({ ...prev, profilePhoto: reader.result as string }));
-        setToast({ type: 'success', message: 'Profile photo updated.' });
+        toast.success('Profile photo updated.');
       };
       reader.readAsDataURL(file);
     }
   };
 
   const handleProtectedAction = (message: string) => {
-    setToast({ type: 'info', message });
+    toast.info(message);
   };
 
   return (
@@ -350,7 +352,7 @@ const ProfileSettingsPage: React.FC = () => {
                 <div className="profile-card">
                 <div className="photo-preview">
                   {profile.profilePhoto ? (
-                    <img src={profile.profilePhoto} alt="Profile" />
+                    <img src={profile.profilePhoto} alt="Profile photo" loading="lazy" width={120} height={120} />
                   ) : (
                     <div className="photo-placeholder">No Photo</div>
                   )}
@@ -916,13 +918,6 @@ const ProfileSettingsPage: React.FC = () => {
           </div>
         </form>
         </div>
-        {toast && (
-          <Toast
-            type={toast.type}
-            message={toast.message}
-            onClose={() => setToast(null)}
-          />
-        )}
       </div>
     </div>
   );

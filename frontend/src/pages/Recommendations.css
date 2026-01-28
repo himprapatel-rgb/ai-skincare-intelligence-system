@@ -374,6 +374,10 @@
   line-height: 1.6;
 }
 
+.empty-recommendations .empty-reset-filters {
+  margin-top: 20px;
+}
+
 @media (max-width: 768px) {
   .recommendations-page {
     padding: 32px 20px;

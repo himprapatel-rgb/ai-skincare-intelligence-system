@@ -1271,3 +1271,49 @@ body {
     animation: none;
   }
 }
+
+/* ============================================================
+   PRINT STYLES (Task 47)
+   ============================================================ */
+@media print {
+  .app-header,
+  .app-nav,
+  .app-breadcrumbs,
+  .app-footer,
+  .skip-link,
+  .back-to-top,
+  .toast-container,
+  [aria-label="Notifications"],
+  button:not(.print-show),
+  .app-nav-cta,
+  .app-nav-mobile,
+  .app-nav-user-dropdown {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+    color: #111;
+  }
+
+  .app-main {
+    padding: 0;
+  }
+
+  a[href]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.85em;
+    color: #666;
+  }
+
+  img {
+    max-width: 100% !important;
+    page-break-inside: avoid;
+  }
+
+  .card {
+    box-shadow: none;
+    border: 1px solid #ddd;
+    page-break-inside: avoid;
+  }
+}

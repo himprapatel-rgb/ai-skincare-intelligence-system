@@ -8,6 +8,7 @@ import SnapshotDetails from '../components/digital-twin/SnapshotDetails';
 import BeforeAfterCircle from '../components/digital-twin/BeforeAfterCircle';
 import SimulationPanel from '../components/digital-twin/SimulationPanel';
 import LoadingScreen from '../components/LoadingScreen';
+import { usePageTitle } from '../hooks/usePageTitle';
 import '../components/digital-twin/styles/digital-twin.css';
 
 interface ApiStateVector {
@@ -80,6 +81,7 @@ const moodScoreMap: Record<string, number> = {
  * Showcase user's skin improvement over time with timeline visualization
  */
 const DigitalTwinTimelinePage: React.FC = () => {
+  usePageTitle('Digital Twin');
   const navigate = useNavigate();
   const [snapshots, setSnapshots] = useState<DigitalTwinSnapshot[]>([]);
   const [selectedSnapshot, setSelectedSnapshot] = useState<string | null>(null);

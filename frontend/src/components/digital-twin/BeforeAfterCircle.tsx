@@ -62,9 +62,9 @@ const BeforeAfterCircle: React.FC<BeforeAfterCircleProps> = ({
       <div className="dt-card-body">
         <div className="dt-before-after">
           <div className="dt-before-after-circle">
-            <img className="dt-before" src={beforeSnapshot.imageUrl} alt="Before" />
+            <img className="dt-before" src={beforeSnapshot.imageUrl} alt="Before" loading="lazy" width={300} height={300} />
             <div className="dt-after-layer" style={{ width: `${compareSplit}%` }}>
-              <img className="dt-after" src={afterSnapshot.imageUrl} alt="After" />
+              <img className="dt-after" src={afterSnapshot.imageUrl} alt="After" loading="lazy" width={300} height={300} />
             </div>
           </div>
           <input

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { usePageTitle } from '../hooks/usePageTitle';
 import { getScanHistory } from '../services/scanApi';
 import { mockProducts } from '../data/mockProducts';
 import { 
@@ -16,7 +17,7 @@ import {
   IconTrendingDown,
   IconArrowRight
 } from '../components/Icons';
-import LoadingScreen from '../components/LoadingScreen';
+import { SkeletonStat, SkeletonHeading, SkeletonText, SkeletonCard } from '../components/Skeleton';
 import './DashboardPage.css';
 
 interface DashboardData {
@@ -35,6 +36,7 @@ interface DashboardData {
 }
 
 const DashboardPage: React.FC = () => {
+  usePageTitle('Dashboard');
   const { user } = useAuth();
   const navigate = useNavigate();
   const [data, setData] = useState<DashboardData | null>(null);
@@ -123,7 +125,33 @@ const DashboardPage: React.FC = () => {
   }
 
   if (loading || !data) {
-    return <div className="dashboard-page"><LoadingScreen message="Loading dashboard" fullscreen={false} /></div>;
+    return (
+      <div className="dashboard-page dashboard-page--skeleton">
+        <div className="dashboard-header" style={{ marginBottom: 32 }}>
+          <SkeletonHeading style={{ width: 280, margin: '0 auto 8px', height: 32 }} />
+          <SkeletonText style={{ width: 200, margin: '0 auto' }} />
+        </div>
+        <div className="dashboard-stats" style={{ marginBottom: 48 }}>
+          {[1, 2, 3, 4].map((i) => (
+            <SkeletonStat key={i} />
+          ))}
+        </div>
+        <div className="dashboard-content">
+          <div className="dashboard-section">
+            <SkeletonHeading style={{ width: '60%', marginBottom: 24 }} />
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 16 }}>
+              {[1, 2, 3, 4].map((i) => (
+                <SkeletonCard key={i} hasImage={false} style={{ minHeight: 100 }} />
+              ))}
+            </div>
+          </div>
+          <div className="dashboard-section">
+            <SkeletonHeading style={{ width: '50%', marginBottom: 24 }} />
+            <SkeletonText lines={4} />
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (

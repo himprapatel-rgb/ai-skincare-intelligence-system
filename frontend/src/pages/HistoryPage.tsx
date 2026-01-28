@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { IconCamera, IconStar, IconZap, IconBarChart, IconScan } from '../components/Icons';
+import { IconCamera, IconStar, IconZap, IconBarChart, IconScan, IconSearch } from '../components/Icons';
 import { getScanHistory } from '../services/scanApi';
+import { usePageTitle } from '../hooks/usePageTitle';
 import LoadingScreen from '../components/LoadingScreen';
 import './HistoryPage.css';
 
@@ -16,11 +17,14 @@ interface ScanHistory {
 }
 
 const HistoryPage: React.FC = () => {
+  usePageTitle('Scan History');
   const navigate = useNavigate();
   const [history, setHistory] = useState<ScanHistory[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<'all' | '7days' | '30days' | '90days'>('all');
   const [showFailed, setShowFailed] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sortBy, setSortBy] = useState<'dateDesc' | 'dateAsc' | 'scoreDesc' | 'scoreAsc'>('dateDesc');
 
   useEffect(() => {
     fetchHistory();
@@ -84,6 +88,32 @@ const HistoryPage: React.FC = () => {
     : 0;
   const totalRecs = filteredHistory.reduce((acc, item) => acc + item.recommendations, 0);
 
+  const searchFiltered = useMemo(() => {
+    if (!searchTerm.trim()) return visibleHistory;
+    const q = searchTerm.toLowerCase().trim();
+    return visibleHistory.filter((item) => {
+      const dateStr = new Date(item.date).toLocaleDateString('en', { month: 'short', day: 'numeric', year: 'numeric' }).toLowerCase();
+      const concernMatch = item.concerns.some((c) => c.toLowerCase().includes(q));
+      return dateStr.includes(q) || concernMatch;
+    });
+  }, [visibleHistory, searchTerm]);
+
+  const sortedHistory = useMemo(() => {
+    const list = [...searchFiltered];
+    switch (sortBy) {
+      case 'dateAsc':
+        return list.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+      case 'dateDesc':
+        return list.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+      case 'scoreAsc':
+        return list.sort((a, b) => a.score - b.score);
+      case 'scoreDesc':
+        return list.sort((a, b) => b.score - a.score);
+      default:
+        return list.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    }
+  }, [searchFiltered, sortBy]);
+
   return (
     <div className="history-page">
       <div className="history-container">
@@ -101,6 +131,30 @@ const HistoryPage: React.FC = () => {
             {showFailed ? 'Hide Failed' : 'Show Failed'}
           </button>
         </div>
+        {!loading && filteredHistory.length > 0 && (
+          <div className="history-toolbar">
+            <div className="history-search" role="search">
+              <IconSearch size={18} strokeWidth={2} className="history-search-icon" aria-hidden />
+              <input
+                type="search"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Search by date or concerns..."
+                aria-label="Search scans by date or concerns"
+                className="history-search-input"
+              />
+            </div>
+            <div className="history-sort">
+              <label htmlFor="history-sort">Sort by:</label>
+              <select id="history-sort" value={sortBy} onChange={(e) => setSortBy(e.target.value as typeof sortBy)} className="history-sort-select">
+                <option value="dateDesc">Newest first</option>
+                <option value="dateAsc">Oldest first</option>
+                <option value="scoreDesc">Score high to low</option>
+                <option value="scoreAsc">Score low to high</option>
+              </select>
+            </div>
+          </div>
+        )}
 
         {loading ? (
           <LoadingScreen message="Loading history" fullscreen={false} />
@@ -144,13 +198,17 @@ const HistoryPage: React.FC = () => {
             </div>
 
             <div className="history-list">
-              {visibleHistory.length === 0 ? (
+              {sortedHistory.length === 0 ? (
                 <div className="empty-state">
-                  <h3>No completed scans in this range</h3>
-                  <p>{failedCount} failed scan{failedCount === 1 ? '' : 's'} hidden. Toggle to view failed scans.</p>
-                  <button className="view-btn" onClick={() => setShowFailed(true)}>Show Failed Scans</button>
+                  <h3>{searchFiltered.length === 0 && searchTerm ? 'No scans match your search' : 'No completed scans in this range'}</h3>
+                  <p>{searchTerm ? 'Try a different search term.' : `${failedCount} failed scan${failedCount === 1 ? '' : 's'} hidden. Toggle to view failed scans.`}</p>
+                  {searchTerm ? (
+                    <button className="view-btn" onClick={() => setSearchTerm('')}>Clear search</button>
+                  ) : (
+                    <button className="view-btn" onClick={() => setShowFailed(true)}>Show Failed Scans</button>
+                  )}
                 </div>
-              ) : visibleHistory.map(item => (
+              ) : sortedHistory.map(item => (
                 <div
                   key={item.id}
                   role="button"
@@ -166,7 +224,7 @@ const HistoryPage: React.FC = () => {
                   }}
                 >
                   <div className="history-thumbnail">
-                    {item.imageUrl ? <img src={item.imageUrl} alt="Scan" /> : (
+                    {item.imageUrl ? <img src={item.imageUrl} alt={`Scan from ${new Date(item.date).toLocaleDateString('en')}`} loading="lazy" width={80} height={80} /> : (
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%', background: 'var(--bg-light)' }}>
                         <IconScan size={32} strokeWidth={2} color="var(--text-gray)" />
                       </div>

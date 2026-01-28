@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { IconDownload, IconShare2, IconTrendingUp, IconTrendingDown } from '../components/Icons';
 import { getScanHistory } from '../services/scanApi';
+import { usePageTitle } from '../hooks/usePageTitle';
 import './CommonStyles.css';
 import './ComparisonPage.css';
 
@@ -27,6 +28,7 @@ interface Analysis {
  * Compare two skin analyses side-by-side to track improvement
  */
 const ComparisonPage: React.FC = () => {
+  usePageTitle('Compare Analyses');
   const [analyses, setAnalyses] = useState<Analysis[]>([]);
   const [selectedAnalyses, setSelectedAnalyses] = useState<[string | null, string | null]>([null, null]);
   // Loading state reserved for future API integration.
@@ -210,6 +212,9 @@ const ComparisonPage: React.FC = () => {
                     src={analysis1.imageUrl || analysis1.thumbnail} 
                     alt={`Analysis from ${analysis1.date}`}
                     className="comparison-image"
+                    loading="lazy"
+                    width={300}
+                    height={225}
                   />
                   <div className="comparison-image-label">
                     {analysis1.date} - Score: {analysis1.overallScore}
@@ -221,6 +226,9 @@ const ComparisonPage: React.FC = () => {
                     src={analysis2.imageUrl || analysis2.thumbnail} 
                     alt={`Analysis from ${analysis2.date}`}
                     className="comparison-image"
+                    loading="lazy"
+                    width={300}
+                    height={225}
                   />
                   <div className="comparison-image-label">
                     {analysis2.date} - Score: {analysis2.overallScore}

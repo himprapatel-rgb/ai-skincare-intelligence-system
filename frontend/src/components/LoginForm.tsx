@@ -11,11 +11,26 @@ interface LoginFormProps {
   onSwitchToRegister: () => void;
 }
 
+const REMEMBER_EMAIL_KEY = 'login_remember_email';
+
 export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegister }) => {
   const { login } = useAuth();
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(() => {
+    try {
+      return localStorage.getItem(REMEMBER_EMAIL_KEY) ?? '';
+    } catch {
+      return '';
+    }
+  });
   const [password, setPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(() => {
+    try {
+      return !!localStorage.getItem(REMEMBER_EMAIL_KEY);
+    } catch {
+      return false;
+    }
+  });
   const [error, setError] = useState('');
   const [showVerifyLink, setShowVerifyLink] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -94,6 +109,18 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegis
             disabled={loading}
             placeholder="Enter your password"
           />
+        </div>
+        <div className="form-group form-group-inline">
+          <label className="checkbox-label">
+            <input
+              type="checkbox"
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
+              disabled={loading}
+              aria-label="Remember my email"
+            />
+            <span>Remember me</span>
+          </label>
         </div>
         <button type="submit" disabled={loading} className="btn-primary">
           {loading ? <LoadingSpinner size="small" /> : 'Sign In'}

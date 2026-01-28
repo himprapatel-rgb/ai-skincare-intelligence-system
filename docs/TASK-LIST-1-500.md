@@ -30,7 +30,7 @@ Tasks to execute autonomously. Approval granted for all items.
 | 20 | "Reset filters" in Recommendations empty state | Done |
 | 21 | Lazy-load heavy routes (already using React.lazy) | Done |
 | 22 | Add loading="lazy" + width/height to img tags | Done |
-| 23 | Remove or consolidate duplicate/unused CSS | - |
+| 23 | Remove or consolidate duplicate/unused CSS | Done |
 | 24 | Error boundary (already done) | Done |
 | 25 | API retry logic for failed requests (exponential backoff) | Done |
 | 26 | Add/expand E2E tests (Playwright) | - |
@@ -46,7 +46,7 @@ Tasks to execute autonomously. Approval granted for all items.
 | 36 | Design changelog or version note in UI/footer | Done |
 | 37 | Alt text on all images | Done |
 | 38 | Button wording consistency (e.g. "Save" vs "Submit") | Done |
-| 39 | Empty-state microcopy consistency | - |
+| 39 | Empty-state microcopy consistency | Done |
 | 40 | Rate limiting message in UI when API returns 429 | Done |
 | 41 | Offline / connection-lost message | Done |
 | 42 | Remove or guard console.log in production | Done |
@@ -127,7 +127,7 @@ Tasks to execute autonomously. Approval granted for all items.
 | 103 | All custom buttons have aria-label or visible text | - |
 | 104 | Form labels linked with htmlFor | Done |
 | 105 | Error messages linked with aria-describedby | Done |
-| 106 | Live regions for toast (aria-live) | - |
+| 106 | Live regions for toast (aria-live) | Done |
 | 107 | Focus trap in modals | Done |
 | 108 | Focus return after modal close | Done |
 | 109 | Skip to main content link | Done |
@@ -139,7 +139,7 @@ Tasks to execute autonomously. Approval granted for all items.
 | 115 | Touch targets ≥44x44px on mobile | - |
 | 116 | Links vs buttons: use correct element | - |
 | 117 | Table headers and scope where tables exist | - |
-| 118 | List markup (ul/ol) for lists | - |
+| 118 | List markup (ul/ol) for lists | Done |
 | 119 | Landmark roles (main, nav, banner, contentinfo) | Done |
 | 120 | Page title unique and descriptive | Done |
 | 121 | Lang attribute on html | Done |
@@ -201,7 +201,7 @@ Tasks to execute autonomously. Approval granted for all items.
 | 170 | Add .env.example with all vars | Done |
 | 171 | Document dev vs prod API URLs | Done |
 | 172 | Add npm scripts: build, lint, test, typecheck | Done |
-| 173 | ESLint rule for no-console in prod | - |
+| 173 | ESLint rule for no-console in prod | Done |
 | 174 | Prettier or formatter config | - |
 | 175 | Husky pre-commit: lint + typecheck | - |
 | 176 | CI: run tests on PR | - |
@@ -223,11 +223,11 @@ Tasks to execute autonomously. Approval granted for all items.
 | 192 | No implicit any | - |
 | 193 | Path aliases (@/components, etc.) | - |
 | 194 | Shared types between frontend/backend (if monorepo) | - |
-| 195 | API client: single baseURL, interceptors | - |
-| 196 | API client: attach auth header from context | - |
-| 197 | API client: handle 401 and redirect to login | - |
-| 198 | API client: handle 403 with message | - |
-| 199 | API client: map errors to user-friendly messages | - |
+| 195 | API client: single baseURL, interceptors | Done |
+| 196 | API client: attach auth header from context | Done |
+| 197 | API client: handle 401 and redirect to login | Done |
+| 198 | API client: handle 403 with message | Done |
+| 199 | API client: map errors to user-friendly messages | Done |
 | 200 | Document API contract (or link to OpenAPI) | - |
 
 ---

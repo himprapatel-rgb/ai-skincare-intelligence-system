@@ -23,11 +23,10 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   };
 
   return (
-    <div className="loading-spinner">
+    <div className="loading-spinner" role="status" aria-live="polite" aria-label="Loading">
       <div 
         className={`loading-spinner__spinner ${sizeClasses[size]}`}
-        role="status"
-        aria-label="Loading"
+        aria-hidden="true"
       />
       {message && (
         <p className="loading-spinner__message">{message}</p>

@@ -61,6 +61,18 @@ class ApiClient {
         let detail = error.response?.data?.detail || error.message || 'An unexpected error occurred';
         if (status === 429) {
           detail = 'Too many requests. Please try again in a few minutes.';
+        } else if (status === 401) {
+          detail = 'Session expired. Please sign in again.';
+          try {
+            localStorage.removeItem('auth_token');
+            if (typeof window !== 'undefined' && !window.location.pathname.startsWith('/auth')) {
+              window.location.href = '/auth';
+            }
+          } catch {
+            /* ignore */
+          }
+        } else if (status === 403) {
+          detail = detail || "You don't have permission to do that.";
         }
         const apiError: ApiError = {
           detail,

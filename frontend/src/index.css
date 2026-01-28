@@ -813,6 +813,147 @@ a:focus-visible {
   border-top-color: #ffffff;
 }
 
+/* ============================================================
+   SKELETON LOADING STATES
+   ============================================================ */
+
+/* Base skeleton styles */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    #f1f5f9 0%,
+    #e2e8f0 20%,
+    #f8fafc 40%,
+    #e2e8f0 60%,
+    #f1f5f9 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+  border-radius: var(--radius-md);
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Skeleton text line */
+.skeleton-text {
+  height: 1em;
+  margin-bottom: 0.5em;
+}
+
+.skeleton-text:last-child {
+  width: 70%;
+}
+
+/* Skeleton heading */
+.skeleton-heading {
+  height: 1.5em;
+  width: 60%;
+  margin-bottom: 1em;
+}
+
+/* Skeleton avatar */
+.skeleton-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+
+.skeleton-avatar--lg {
+  width: 80px;
+  height: 80px;
+}
+
+/* Skeleton card */
+.skeleton-card {
+  background: #ffffff;
+  border-radius: var(--radius-xl);
+  padding: 24px;
+  border: 1px solid var(--border-color);
+}
+
+.skeleton-card__image {
+  height: 180px;
+  margin-bottom: 16px;
+  border-radius: var(--radius-lg);
+}
+
+.skeleton-card__content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Skeleton stat */
+.skeleton-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 24px;
+}
+
+.skeleton-stat__icon {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-lg);
+}
+
+.skeleton-stat__value {
+  width: 60%;
+  height: 2rem;
+}
+
+.skeleton-stat__label {
+  width: 80%;
+  height: 1rem;
+}
+
+/* Skeleton button */
+.skeleton-button {
+  height: 48px;
+  width: 140px;
+  border-radius: var(--radius-lg);
+}
+
+/* Skeleton input */
+.skeleton-input {
+  height: 52px;
+  border-radius: var(--radius-lg);
+}
+
+/* Skeleton table row */
+.skeleton-row {
+  display: flex;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.skeleton-row > .skeleton {
+  flex: 1;
+  height: 1.25rem;
+}
+
+/* Skeleton chart */
+.skeleton-chart {
+  height: 300px;
+  border-radius: var(--radius-lg);
+}
+
+/* Skeleton grid */
+.skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
 
 /* ===============================================
    GLOBAL FIXES

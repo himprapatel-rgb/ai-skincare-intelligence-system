@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { IconScan, IconHome, IconCheck, IconAlertTriangle, IconArrowLeft } from '../components/Icons';
+import { IconScan, IconHome, IconCheck, IconAlertTriangle, IconArrowLeft, getSkinConcernIcon } from '../components/Icons';
 import { getScanHistory, getScanResult } from '../services/scanApi';
 import './AnalysisResults.css';
 
@@ -261,20 +261,28 @@ const AnalysisResults: React.FC = () => {
           <h2>Severity Analysis</h2>
           <div className="severity-grid">
             {Object.keys(analysis.severity).length > 0 ? (
-              Object.entries(analysis.severity).map(([concern, value]) => (
-                <div key={concern} className="severity-card">
-                  <div className="severity-header">
-                    <h3 className="severity-title">{concern}</h3>
-                    <span className={`severity-pill ${getSeverityColor(value)}`}>
-                      {getSeverityLabel(value)}
-                    </span>
+              Object.entries(analysis.severity).map(([concern, value]) => {
+                const ConcernIcon = getSkinConcernIcon(concern);
+                return (
+                  <div key={concern} className="severity-card">
+                    <div className="severity-header">
+                      <div className="severity-title-row">
+                        <span className="severity-icon">
+                          <ConcernIcon size={20} strokeWidth={2} />
+                        </span>
+                        <h3 className="severity-title">{concern}</h3>
+                      </div>
+                      <span className={`severity-pill ${getSeverityColor(value)}`}>
+                        {getSeverityLabel(value)}
+                      </span>
+                    </div>
+                    <div className="severity-bar">
+                      <div className={`severity-fill ${getSeverityColor(value)}`} style={{ width: `${value}%` }}></div>
+                    </div>
+                    <div className="severity-value">{value}%</div>
                   </div>
-                  <div className="severity-bar">
-                    <div className={`severity-fill ${getSeverityColor(value)}`} style={{ width: `${value}%` }}></div>
-                  </div>
-                  <div className="severity-value">{value}%</div>
-                </div>
-              ))
+                );
+              })
             ) : (
               <p className="analysis-empty">No severity metrics available for this scan.</p>
             )}

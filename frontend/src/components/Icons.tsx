@@ -121,3 +121,51 @@ export const IconBrandGoogle: React.FC<{ size?: number; className?: string }> = 
     <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
   </svg>
 );
+
+// Skin Concern Icons - Custom icons for skin analysis
+export { Flame as IconAcne } from 'lucide-react';           // Acne/inflammation
+export { Droplets as IconHydration } from 'lucide-react';    // Hydration
+export { Fingerprint as IconTexture } from 'lucide-react';   // Texture/smoothness
+export { CircleDot as IconDarkSpots } from 'lucide-react';   // Dark spots/pigmentation
+export { Thermometer as IconRedness } from 'lucide-react';   // Redness/irritation
+export { Waves as IconWrinkles } from 'lucide-react';        // Wrinkles/fine lines
+export { CircleOff as IconPores } from 'lucide-react';       // Pores
+export { Sparkle as IconRadiance } from 'lucide-react';      // Radiance/glow
+export { ShieldCheck as IconBarrier } from 'lucide-react';   // Skin barrier
+
+// Helper function to get skin concern icon by name
+export const getSkinConcernIcon = (concernName: string): React.FC<{ size?: number; strokeWidth?: number; className?: string }> => {
+  const name = concernName.toLowerCase();
+  if (name.includes('acne') || name.includes('breakout') || name.includes('pimple')) {
+    return IconAcne;
+  }
+  if (name.includes('hydration') || name.includes('moisture') || name.includes('dry')) {
+    return IconHydration;
+  }
+  if (name.includes('texture') || name.includes('rough') || name.includes('smooth')) {
+    return IconTexture;
+  }
+  if (name.includes('dark') || name.includes('spot') || name.includes('pigment') || name.includes('hyperpigmentation')) {
+    return IconDarkSpots;
+  }
+  if (name.includes('red') || name.includes('irritat') || name.includes('sensitiv')) {
+    return IconRedness;
+  }
+  if (name.includes('wrinkle') || name.includes('line') || name.includes('aging') || name.includes('fine')) {
+    return IconWrinkles;
+  }
+  if (name.includes('pore')) {
+    return IconPores;
+  }
+  if (name.includes('radian') || name.includes('glow') || name.includes('dull')) {
+    return IconRadiance;
+  }
+  if (name.includes('barrier') || name.includes('protect')) {
+    return IconBarrier;
+  }
+  // Default fallback
+  return IconCircle;
+};
+
+// Lucide exports for new icons
+export { Flame, Droplets, Fingerprint, CircleDot, Thermometer, Waves, CircleOff, Sparkle, ShieldCheck } from 'lucide-react';

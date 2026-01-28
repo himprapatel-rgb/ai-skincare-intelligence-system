@@ -122,16 +122,30 @@ export const IconBrandGoogle: React.FC<{ size?: number; className?: string }> = 
   </svg>
 );
 
-// Skin Concern Icons - Custom icons for skin analysis
-export { Flame as IconAcne } from 'lucide-react';           // Acne/inflammation
-export { Droplets as IconHydration } from 'lucide-react';    // Hydration
-export { Fingerprint as IconTexture } from 'lucide-react';   // Texture/smoothness
-export { CircleDot as IconDarkSpots } from 'lucide-react';   // Dark spots/pigmentation
-export { Thermometer as IconRedness } from 'lucide-react';   // Redness/irritation
-export { Waves as IconWrinkles } from 'lucide-react';        // Wrinkles/fine lines
-export { CircleOff as IconPores } from 'lucide-react';       // Pores
-export { Sparkle as IconRadiance } from 'lucide-react';      // Radiance/glow
-export { ShieldCheck as IconBarrier } from 'lucide-react';   // Skin barrier
+// Skin Concern Icons - Import from lucide-react
+import { 
+  Flame, 
+  Droplets, 
+  Fingerprint, 
+  CircleDot, 
+  Thermometer, 
+  Waves, 
+  CircleOff, 
+  Sparkle, 
+  ShieldCheck,
+  Circle as LucideCircle
+} from 'lucide-react';
+
+// Re-export with semantic names
+export const IconAcne = Flame;
+export const IconHydration = Droplets;
+export const IconTexture = Fingerprint;
+export const IconDarkSpots = CircleDot;
+export const IconRedness = Thermometer;
+export const IconWrinkles = Waves;
+export const IconPores = CircleOff;
+export const IconRadiance = Sparkle;
+export const IconBarrier = ShieldCheck;
 
 // Helper function to get skin concern icon by name
 export const getSkinConcernIcon = (concernName: string): React.FC<{ size?: number; strokeWidth?: number; className?: string }> => {
@@ -164,8 +178,8 @@ export const getSkinConcernIcon = (concernName: string): React.FC<{ size?: numbe
     return IconBarrier;
   }
   // Default fallback
-  return IconCircle;
+  return LucideCircle;
 };
 
-// Lucide exports for new icons
-export { Flame, Droplets, Fingerprint, CircleDot, Thermometer, Waves, CircleOff, Sparkle, ShieldCheck } from 'lucide-react';
+// Also export the raw lucide icons
+export { Flame, Droplets, Fingerprint, CircleDot, Thermometer, Waves, CircleOff, Sparkle, ShieldCheck };

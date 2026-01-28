@@ -5,11 +5,13 @@ Sprint: GUI-2 - Story: Product Shelf API
 Provides endpoints for managing user's product inventory.
 """
 import logging
+import uuid
 from datetime import datetime
 from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
+from sqlalchemy import or_
 from sqlalchemy.orm import Session
 
 from app.core.security import get_current_user
@@ -26,7 +28,8 @@ logger = logging.getLogger(__name__)
 
 class ShelfProductCreate(BaseModel):
     """Schema for adding a product to shelf."""
-    product_id: Optional[int] = None
+    # Internal products use UUID IDs (products.id)
+    product_id: Optional[str] = None
     external_product_id: Optional[str] = None
     product_name: str
     product_brand: Optional[str] = None
@@ -57,7 +60,7 @@ class ShelfProductUpdate(BaseModel):
 class ShelfProductResponse(BaseModel):
     """Schema for shelf product response."""
     id: int
-    product_id: Optional[int] = None
+    product_id: Optional[str] = None
     external_product_id: Optional[str] = None
     product_name: str
     product_brand: Optional[str] = None
@@ -129,7 +132,7 @@ async def get_shelf(
         products=[
             ShelfProductResponse(
                 id=p.id,
-                product_id=p.product_id,
+                product_id=str(p.product_id) if p.product_id else None,
                 external_product_id=p.external_product_id,
                 product_name=p.product_name,
                 product_brand=p.product_brand,
@@ -164,21 +167,31 @@ async def add_to_shelf(
     """
     Add a product to user's shelf.
     """
-    # Check if already on shelf (by product_id or external_product_id)
-    existing_query = db.query(ShelfProduct).filter(
-        ShelfProduct.user_id == current_user.id
-    )
-    
+    product_uuid: Optional[uuid.UUID] = None
     if product_data.product_id:
-        existing = existing_query.filter(
-            ShelfProduct.product_id == product_data.product_id
-        ).first()
-    elif product_data.external_product_id:
-        existing = existing_query.filter(
-            ShelfProduct.external_product_id == product_data.external_product_id
-        ).first()
-    else:
-        existing = None
+        try:
+            product_uuid = uuid.UUID(str(product_data.product_id))
+        except (ValueError, TypeError):
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                detail="Invalid product_id (must be a UUID)",
+            )
+
+    # Check if already on shelf (by product_id or external_product_id)
+    existing_query = db.query(ShelfProduct).filter(ShelfProduct.user_id == current_user.id)
+
+    conditions = []
+    if product_uuid:
+        conditions.append(ShelfProduct.product_id == product_uuid)
+    if product_data.external_product_id:
+        conditions.append(ShelfProduct.external_product_id == product_data.external_product_id)
+    if not conditions:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="Either product_id or external_product_id is required",
+        )
+
+    existing = existing_query.filter(or_(*conditions)).first()
     
     if existing:
         raise HTTPException(
@@ -188,7 +201,7 @@ async def add_to_shelf(
     
     product = ShelfProduct(
         user_id=current_user.id,
-        product_id=product_data.product_id,
+        product_id=product_uuid,
         external_product_id=product_data.external_product_id,
         product_name=product_data.product_name,
         product_brand=product_data.product_brand,
@@ -212,7 +225,7 @@ async def add_to_shelf(
     
     return ShelfProductResponse(
         id=product.id,
-        product_id=product.product_id,
+        product_id=str(product.product_id) if product.product_id else None,
         external_product_id=product.external_product_id,
         product_name=product.product_name,
         product_brand=product.product_brand,
@@ -270,7 +283,7 @@ async def update_shelf_product(
     
     return ShelfProductResponse(
         id=product.id,
-        product_id=product.product_id,
+        product_id=str(product.product_id) if product.product_id else None,
         external_product_id=product.external_product_id,
         product_name=product.product_name,
         product_brand=product.product_brand,

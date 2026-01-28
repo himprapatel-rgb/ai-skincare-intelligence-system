@@ -2,6 +2,20 @@ import axios, { AxiosInstance, AxiosError } from 'axios';
 import { ApiError } from '../types/scan';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
+
+const MAX_RETRIES = 3;
+const INITIAL_DELAY_MS = 1000;
+
+function delay(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function shouldRetry(error: AxiosError): boolean {
+  const status = error.response?.status;
+  if (status && status >= 400 && status < 500 && status !== 408) return false;
+  return true;
+}
+
 class ApiClient {
   private client: AxiosInstance;
 
@@ -18,7 +32,6 @@ class ApiClient {
   }
 
   private setupInterceptors() {
-    // Request interceptor - add auth token
     this.client.interceptors.request.use(
       (config) => {
         const token = localStorage.getItem('auth_token');
@@ -30,13 +43,28 @@ class ApiClient {
       (error) => Promise.reject(error)
     );
 
-    // Response interceptor - handle errors
     this.client.interceptors.response.use(
       (response) => response,
-      (error: AxiosError<ApiError>) => {
+      async (error: AxiosError<ApiError>) => {
+        const config = error.config as ({ _retryCount?: number } & typeof error.config) | undefined;
+        if (!config) {
+          return Promise.reject({ detail: error.message || 'Request failed', status: 0, timestamp: new Date().toISOString() } as ApiError);
+        }
+        config._retryCount = config._retryCount ?? 0;
+        if (config._retryCount < MAX_RETRIES && shouldRetry(error)) {
+          config._retryCount += 1;
+          const wait = INITIAL_DELAY_MS * Math.pow(2, config._retryCount - 1);
+          await delay(wait);
+          return this.client.request(config);
+        }
+        const status = error.response?.status || 500;
+        let detail = error.response?.data?.detail || error.message || 'An unexpected error occurred';
+        if (status === 429) {
+          detail = 'Too many requests. Please try again in a few minutes.';
+        }
         const apiError: ApiError = {
-          detail: error.response?.data?.detail || error.message || 'An unexpected error occurred',
-          status: error.response?.status || 500,
+          detail,
+          status,
           timestamp: new Date().toISOString(),
         };
         return Promise.reject(apiError);

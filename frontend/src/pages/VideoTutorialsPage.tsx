@@ -22,7 +22,7 @@ const VideoTutorialsPage: React.FC = () => {
           </div>
           <div className="video-card">
             <div className="video-thumb-wrap">
-              <div className="video-thumb" aria-hidden="true">
+              <div className="video-thumb">
                 <span className="video-duration" aria-label="Duration 2 minutes 45 seconds">2:45</span>
               </div>
             </div>

@@ -109,8 +109,8 @@ const displayName = nameParts.length > 1
           <nav className="app-nav app-nav-desktop">
             <div className="app-nav-links">
               <Link className={`app-nav-link${location.pathname === '/' ? ' active' : ''}`} to="/">Home</Link>
-              <Link className={`app-nav-link${location.pathname.startsWith('/scan') ? ' active' : ''}`} to="/scan">Skin Analysis</Link>
-              <Link className={`app-nav-link${location.pathname.startsWith('/dashboard') ? ' active' : ''}`} to="/dashboard">Dashboard</Link>
+              <Link className={`app-nav-link${location.pathname.startsWith('/scan') ? ' active' : ''}`} to="/scan" title="Start a free skin analysis">Skin Analysis</Link>
+              <Link className={`app-nav-link${location.pathname.startsWith('/dashboard') ? ' active' : ''}`} to="/dashboard" title="View your dashboard and insights">Dashboard</Link>
               <Link className={`app-nav-link${location.pathname.startsWith('/digital-twin') ? ' active' : ''}`} to="/digital-twin">Digital Twin</Link>
               <Link className={`app-nav-link${location.pathname.startsWith('/about') ? ' active' : ''}`} to="/about">About</Link>
               {isAuthenticated && user?.is_admin && (
@@ -158,11 +158,13 @@ const displayName = nameParts.length > 1
                         </Link>
                         <div className="app-nav-dropdown-divider" />
                         <button
+                          type="button"
                           className="app-nav-dropdown-item app-nav-dropdown-logout"
                           onClick={() => {
                             logout();
                             navigate('/');
                           }}
+                          aria-label="Sign out"
                         >
                           <IconLogOut size={18} strokeWidth={2} />
                           <span>Sign Out</span>
@@ -179,7 +181,7 @@ const displayName = nameParts.length > 1
               )}
               
               {!location.pathname.startsWith('/scan') && !location.pathname.startsWith('/analysis') && (
-                <Link className="app-nav-cta" to="/scan">
+                <Link className="app-nav-cta" to="/scan" title="Start a free skin analysis">
                   <IconScan size={18} strokeWidth={2} />
                   <span>Free Scan</span>
                 </Link>
@@ -202,8 +204,8 @@ const displayName = nameParts.length > 1
         <nav className={`app-nav-mobile${mobileMenuOpen ? ' open' : ''}`}>
           <div className="app-nav-mobile-links">
             <Link className={`app-nav-mobile-link${location.pathname === '/' ? ' active' : ''}`} to="/">Home</Link>
-            <Link className={`app-nav-mobile-link${location.pathname.startsWith('/scan') ? ' active' : ''}`} to="/scan">Skin Analysis</Link>
-            <Link className={`app-nav-mobile-link${location.pathname.startsWith('/dashboard') ? ' active' : ''}`} to="/dashboard">Dashboard</Link>
+            <Link className={`app-nav-mobile-link${location.pathname.startsWith('/scan') ? ' active' : ''}`} to="/scan" title="Start a free skin analysis">Skin Analysis</Link>
+            <Link className={`app-nav-mobile-link${location.pathname.startsWith('/dashboard') ? ' active' : ''}`} to="/dashboard" title="View your dashboard">Dashboard</Link>
             <Link className={`app-nav-mobile-link${location.pathname.startsWith('/digital-twin') ? ' active' : ''}`} to="/digital-twin">Digital Twin</Link>
             <Link className={`app-nav-mobile-link${location.pathname.startsWith('/about') ? ' active' : ''}`} to="/about">About</Link>
             {isAuthenticated && user?.is_admin && (
@@ -242,7 +244,7 @@ const displayName = nameParts.length > 1
           )}
           
           {!location.pathname.startsWith('/scan') && (
-            <Link className="app-nav-mobile-cta" to="/scan">
+            <Link className="app-nav-mobile-cta" to="/scan" title="Start a free skin analysis">
               <IconScan size={20} strokeWidth={2} />
               <span>Start Free Skin Scan</span>
             </Link>

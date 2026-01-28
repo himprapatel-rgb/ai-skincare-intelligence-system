@@ -239,10 +239,10 @@ const MyShelfPage: React.FC = () => {
 
       {filteredProducts.length === 0 ? (
         <div className="empty-state">
-          <h3>No products found</h3>
-          <p>Start building your collection by scanning products or adding them manually.</p>
+          <h3>No products on your shelf yet</h3>
+          <p>Add products from recommendations or scan a product to build your collection.</p>
           <button className="btn-primary" onClick={() => navigate('/scan')}>
-            Scan a Product
+            Add Your First Product
           </button>
         </div>
       ) : (

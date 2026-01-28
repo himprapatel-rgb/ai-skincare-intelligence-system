@@ -240,8 +240,8 @@ const NotificationCenterPage: React.FC = () => {
           {filteredNotifications.length === 0 ? (
             <div className="empty-state">
               <IconBell size={64} strokeWidth={2} />
-              <h3>No notifications</h3>
-              <p>You're all caught up!</p>
+              <h3>No notifications yet</h3>
+              <p>When you have reminders or updates, they&apos;ll appear here.</p>
             </div>
           ) : (
             filteredNotifications.map(notification => (

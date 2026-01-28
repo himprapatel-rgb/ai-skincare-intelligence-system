@@ -170,6 +170,7 @@ const DataExportPage: React.FC = () => {
                 <div className="export-format-subtitle">Human-readable format</div>
               </button>
             </div>
+            <p className="export-eta" aria-live="polite">Estimated time: under 1 minute for typical data size.</p>
           </div>
 
           <div className="export-actions">

@@ -19,7 +19,7 @@ Tasks to execute autonomously. Approval granted for all items.
 | 9 | Back-to-top button | Done |
 | 10 | Spacing/typography audit: Scan, Analysis, Profile | Done |
 | 11 | Copy link on Analysis Results | Done |
-| 12 | First-time tooltips on key actions (Scan, Dashboard) | - |
+| 12 | First-time tooltips on key actions (Scan, Dashboard) | Done |
 | 13 | Feedback link in footer | Done |
 | 14 | Search on History, Favorites, My Shelf where applicable | Done |
 | 15 | Sort options on History, Favorites (already on Favorites) | Done |
@@ -32,7 +32,7 @@ Tasks to execute autonomously. Approval granted for all items.
 | 22 | Add loading="lazy" + width/height to img tags | Done |
 | 23 | Remove or consolidate duplicate/unused CSS | - |
 | 24 | Error boundary (already done) | Done |
-| 25 | API retry logic for failed requests (exponential backoff) | - |
+| 25 | API retry logic for failed requests (exponential backoff) | Done |
 | 26 | Add/expand E2E tests (Playwright) | - |
 | 27 | Add/expand unit tests (Vitest) | - |
 | 28 | Document VITE_API_URL and env vars in README/.env.example | Done |
@@ -40,24 +40,24 @@ Tasks to execute autonomously. Approval granted for all items.
 | 30 | Ensure all routes have sensible document title | Done |
 | 31 | Copy review: buttons, labels, placeholders | - |
 | 32 | Meta titles per page (usePageTitle or similar) | Done |
-| 33 | Open Graph tags for sharing | - |
-| 34 | JSON-LD structured data (WebApp, Organization) | - |
+| 33 | Open Graph tags for sharing | Done |
+| 34 | JSON-LD structured data (WebApp, Organization) | Done |
 | 35 | Skip link, lang on html, contrast check | Done |
 | 36 | Design changelog or version note in UI/footer | Done |
 | 37 | Alt text on all images | Done |
-| 38 | Button wording consistency (e.g. "Save" vs "Submit") | - |
+| 38 | Button wording consistency (e.g. "Save" vs "Submit") | Done |
 | 39 | Empty-state microcopy consistency | - |
-| 40 | Rate limiting message in UI when API returns 429 | - |
+| 40 | Rate limiting message in UI when API returns 429 | Done |
 | 41 | Offline / connection-lost message | Done |
 | 42 | Remove or guard console.log in production | Done |
 | 43 | Optional Sentry or error-reporting hook | - |
 | 44 | Health-check endpoint or status indicator | - |
 | 45 | "Remember me" on login form | Done |
-| 46 | Logout placement and wording in nav/dropdown | - |
+| 46 | Logout placement and wording in nav/dropdown | Done |
 | 47 | Print CSS (hide nav/footer, show content) | Done |
 | 48 | Canonical URLs for key pages | - |
-| 49 | Lint pass + fix auto-fixable issues | - |
-| 50 | Dead-code pass: remove unused exports/imports | - |
+| 49 | Lint pass + fix auto-fixable issues | Done |
+| 50 | Dead-code pass: remove unused exports/imports | Done |
 
 ---
 
@@ -92,7 +92,7 @@ Tasks to execute autonomously. Approval granted for all items.
 | 75 | BlogPage: post cards hover and meta | Done |
 | 76 | IngredientDictionaryPage: search highlight | Done |
 | 77 | SkinTypeGuidePage: step indicators | Done |
-| 78 | VideoTutorialsPage: thumbnails and duration | - |
+| 78 | VideoTutorialsPage: thumbnails and duration | Done |
 | 79 | OnboardingPage: progress step indicator | Done |
 | 80 | AuthPage: tab order and focus trap in modals | - |
 | 81 | PasswordResetPage: success message and CTA | Done |
@@ -100,13 +100,13 @@ Tasks to execute autonomously. Approval granted for all items.
 | 83 | GoogleCallbackPage: loading and error copy | Done |
 | 84 | NotFoundPage: suggest Search or Home | Done |
 | 85 | ConsentPage: granular toggles and copy | - |
-| 86 | DataExportPage: format options and ETA | - |
+| 86 | DataExportPage: format options and ETA | Done |
 | 87 | NotificationCenterPage: mark-all-read and filters | Done |
 | 88 | AdminDashboardPage: key metrics cards | - |
 | 89 | AdminUsersPage: table sort and search | - |
 | 90 | AdminProductsPage: table sort and bulk actions | - |
-| 91 | AppLayout: mobile menu animation | - |
-| 92 | AppLayout: user dropdown keyboard nav | - |
+| 91 | AppLayout: mobile menu animation | Done |
+| 92 | AppLayout: user dropdown keyboard nav | Done |
 | 93 | AppLayout: footer columns responsive | Done |
 | 94 | Header: sticky shadow on scroll (if not done) | Done |
 | 95 | Footer: social links aria-labels | Done |
@@ -198,9 +198,9 @@ Tasks to execute autonomously. Approval granted for all items.
 | 167 | Add etag or version query for cache bust | - |
 | 168 | Service worker for static caching (optional PWA) | - |
 | 169 | Offline fallback page | - |
-| 170 | Add .env.example with all vars | - |
+| 170 | Add .env.example with all vars | Done |
 | 171 | Document dev vs prod API URLs | - |
-| 172 | Add npm scripts: build, lint, test, typecheck | - |
+| 172 | Add npm scripts: build, lint, test, typecheck | Done |
 | 173 | ESLint rule for no-console in prod | - |
 | 174 | Prettier or formatter config | - |
 | 175 | Husky pre-commit: lint + typecheck | - |

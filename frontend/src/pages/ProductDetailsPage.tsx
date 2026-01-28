@@ -191,7 +191,20 @@ const ProductDetailsPage: React.FC = () => {
           {product.imageUrl ? (
             <img src={product.imageUrl} alt={product.name} />
           ) : (
-            <div className="placeholder-image">No Image</div>
+            <div className="placeholder-image">
+              <svg width="80" height="100" viewBox="0 0 80 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="productGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#3b82f6"/>
+                    <stop offset="100%" stopColor="#8b5cf6"/>
+                  </linearGradient>
+                </defs>
+                <rect x="10" y="0" width="60" height="85" rx="8" fill="url(#productGrad)" opacity="0.9"/>
+                <rect x="18" y="8" width="44" height="16" rx="4" fill="white" opacity="0.3"/>
+                <circle cx="40" cy="55" r="14" fill="white" opacity="0.2"/>
+              </svg>
+              <span>Product Image</span>
+            </div>
           )}
         </div>
         

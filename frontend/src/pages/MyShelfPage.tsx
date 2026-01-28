@@ -136,13 +136,26 @@ const MyShelfPage: React.FC = () => {
   const placeholderImage =
     'data:image/svg+xml;utf8,' +
     encodeURIComponent(
-      '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300">' +
-        '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">' +
-        '<stop offset="0%" stop-color="#e2e8f0"/><stop offset="100%" stop-color="#f8fafc"/>' +
-        '</linearGradient></defs>' +
-        '<rect width="100%" height="100%" fill="url(#g)"/>' +
-        '<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#64748b" font-size="20" font-family="Arial, sans-serif">' +
-        'No Image' +
+      '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">' +
+        '<defs>' +
+          '<linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">' +
+            '<stop offset="0%" stop-color="#f0f4ff"/>' +
+            '<stop offset="50%" stop-color="#e8f0fe"/>' +
+            '<stop offset="100%" stop-color="#dbeafe"/>' +
+          '</linearGradient>' +
+          '<linearGradient id="icon" x1="0%" y1="0%" x2="100%" y2="100%">' +
+            '<stop offset="0%" stop-color="#3b82f6"/>' +
+            '<stop offset="100%" stop-color="#8b5cf6"/>' +
+          '</linearGradient>' +
+        '</defs>' +
+        '<rect width="100%" height="100%" fill="url(#bg)"/>' +
+        '<g transform="translate(175, 115)">' +
+          '<rect x="5" y="0" width="40" height="70" rx="6" fill="url(#icon)" opacity="0.9"/>' +
+          '<rect x="10" y="5" width="30" height="12" rx="3" fill="white" opacity="0.3"/>' +
+          '<circle cx="25" cy="45" r="10" fill="white" opacity="0.2"/>' +
+        '</g>' +
+        '<text x="50%" y="220" text-anchor="middle" fill="#94a3b8" font-size="13" font-family="system-ui, sans-serif" font-weight="500">' +
+          'Product Image' +
         '</text>' +
       '</svg>'
     );

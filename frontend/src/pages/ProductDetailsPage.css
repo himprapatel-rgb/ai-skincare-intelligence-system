@@ -72,13 +72,20 @@
 
 .placeholder-image {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 16px;
   height: 260px;
-  color: var(--text-muted);
-  background: var(--bg-tertiary);
-  border-radius: var(--border-radius-md);
-  border: 1px dashed var(--border-color);
+  color: #94a3b8;
+  background: linear-gradient(145deg, #f0f4ff 0%, #e8f0fe 50%, #dbeafe 100%);
+  border-radius: 16px;
+  border: 1px solid rgba(59, 130, 246, 0.1);
+}
+
+.placeholder-image span {
+  font-size: 0.875rem;
+  font-weight: 500;
 }
 
 .product-info-section {

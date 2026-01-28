@@ -65,6 +65,22 @@ const DashboardPage: React.FC = () => {
       return null;
     }
   });
+  const [onboardingProgress] = useState<{ step: number } | null>(() => {
+    try {
+      const raw = localStorage.getItem(ONBOARDING_PROGRESS_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch {
+      return null;
+    }
+  });
+  const [recentlyViewed] = useState<{ id: string; name: string; brand: string }[]>(() => {
+    try {
+      const raw = localStorage.getItem(RECENTLY_VIEWED_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch {
+      return [];
+    }
+  });
 
   useEffect(() => {
     if (!user) {

@@ -73,7 +73,7 @@ const ProductComparePage: React.FC = () => {
   usePageTitle('Compare Products', 'Side-by-side product comparison.');
 
   useEffect(() => {
-    setProducts(ids.map((id) => getProduct(id)));
+    setProducts(ids.map((id) => getProduct(id)).filter((p): p is CompareProduct => p !== null));
   }, [ids]);
 
   if (ids.length < 2) {

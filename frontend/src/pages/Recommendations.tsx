@@ -52,6 +52,7 @@ const Recommendations: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
   const [shelfIds, setShelfIds] = useState<Set<string>>(new Set());
+  const [compareIds, setCompareIds] = useState<string[]>(getCompareIds);
   const [filters, setFilters] = useState({
     category: 'all',
     priceRange: 'all',

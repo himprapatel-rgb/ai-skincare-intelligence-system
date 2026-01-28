@@ -40,6 +40,16 @@
   border-radius: 14px;
   padding: 24px;
   box-shadow: var(--shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.blog-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  border-color: var(--primary, #2563eb);
+}
+.blog-card:focus-within {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
 }
 
 .blog-card h3 {
@@ -54,6 +64,8 @@
 }
 
 .blog-meta {
+  display: block;
   font-size: 0.85rem;
-  color: var(--text-gray);
+  color: var(--text-muted, var(--text-gray));
+  margin-top: 12px;
 }

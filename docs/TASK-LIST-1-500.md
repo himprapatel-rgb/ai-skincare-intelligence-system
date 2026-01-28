@@ -17,7 +17,7 @@ Tasks to execute autonomously. Approval granted for all items.
 | 7 | Form validation styling (.form-group.has-error) | Done |
 | 8 | Card/list hover consistency across pages | Done |
 | 9 | Back-to-top button | Done |
-| 10 | Spacing/typography audit: Scan, Analysis, Profile | - |
+| 10 | Spacing/typography audit: Scan, Analysis, Profile | Done |
 | 11 | Copy link on Analysis Results | Done |
 | 12 | First-time tooltips on key actions (Scan, Dashboard) | - |
 | 13 | Feedback link in footer | Done |
@@ -43,7 +43,7 @@ Tasks to execute autonomously. Approval granted for all items.
 | 33 | Open Graph tags for sharing | - |
 | 34 | JSON-LD structured data (WebApp, Organization) | - |
 | 35 | Skip link, lang on html, contrast check | Done |
-| 36 | Design changelog or version note in UI/footer | - |
+| 36 | Design changelog or version note in UI/footer | Done |
 | 37 | Alt text on all images | Done |
 | 38 | Button wording consistency (e.g. "Save" vs "Submit") | - |
 | 39 | Empty-state microcopy consistency | - |
@@ -52,7 +52,7 @@ Tasks to execute autonomously. Approval granted for all items.
 | 42 | Remove or guard console.log in production | Done |
 | 43 | Optional Sentry or error-reporting hook | - |
 | 44 | Health-check endpoint or status indicator | - |
-| 45 | "Remember me" on login form | - |
+| 45 | "Remember me" on login form | Done |
 | 46 | Logout placement and wording in nav/dropdown | - |
 | 47 | Print CSS (hide nav/footer, show content) | Done |
 | 48 | Canonical URLs for key pages | - |
@@ -89,15 +89,15 @@ Tasks to execute autonomously. Approval granted for all items.
 | 72 | AboutPage: section spacing and CTA | Done |
 | 73 | PrivacyPage: ToC or jump links | Done |
 | 74 | TermsPage: ToC or jump links | Done |
-| 75 | BlogPage: post cards hover and meta | - |
+| 75 | BlogPage: post cards hover and meta | Done |
 | 76 | IngredientDictionaryPage: search highlight | - |
 | 77 | SkinTypeGuidePage: step indicators | - |
 | 78 | VideoTutorialsPage: thumbnails and duration | - |
 | 79 | OnboardingPage: progress step indicator | - |
 | 80 | AuthPage: tab order and focus trap in modals | - |
-| 81 | PasswordResetPage: success message and CTA | - |
-| 82 | EmailVerificationPage: resend cooldown UI | - |
-| 83 | GoogleCallbackPage: loading and error copy | - |
+| 81 | PasswordResetPage: success message and CTA | Done |
+| 82 | EmailVerificationPage: resend cooldown UI | Done |
+| 83 | GoogleCallbackPage: loading and error copy | Done |
 | 84 | NotFoundPage: suggest Search or Home | Done |
 | 85 | ConsentPage: granular toggles and copy | - |
 | 86 | DataExportPage: format options and ETA | - |
@@ -107,7 +107,7 @@ Tasks to execute autonomously. Approval granted for all items.
 | 90 | AdminProductsPage: table sort and bulk actions | - |
 | 91 | AppLayout: mobile menu animation | - |
 | 92 | AppLayout: user dropdown keyboard nav | - |
-| 93 | AppLayout: footer columns responsive | - |
+| 93 | AppLayout: footer columns responsive | Done |
 | 94 | Header: sticky shadow on scroll (if not done) | Done |
 | 95 | Footer: social links aria-labels | Done |
 | 96 | BackToTop: aria-label and focus order | Done |
@@ -141,19 +141,19 @@ Tasks to execute autonomously. Approval granted for all items.
 | 117 | Table headers and scope where tables exist | - |
 | 118 | List markup (ul/ol) for lists | - |
 | 119 | Landmark roles (main, nav, banner, contentinfo) | Done |
-| 120 | Page title unique and descriptive | - |
+| 120 | Page title unique and descriptive | Done |
 | 121 | Lang attribute on html | Done |
 | 122 | Scan flow: announce capture/countdown to screen readers | - |
 | 123 | Analysis results: announce score/concerns | - |
 | 124 | Charts: sr-only summary or data table | - |
-| 125 | Dropdowns: aria-expanded, aria-controls | - |
+| 125 | Dropdowns: aria-expanded, aria-controls | Done |
 | 126 | Tabs: role=tablist, aria-selected | - |
 | 127 | Carousels/sliders: pause on focus (if any) | - |
 | 128 | No keyboard traps | - |
 | 129 | Logical tab order in forms | - |
 | 130 | Required fields marked aria-required | - |
 | 131 | Invalid fields marked aria-invalid | - |
-| 132 | Dialog role and aria-modal for modals | - |
+| 132 | Dialog role and aria-modal for modals | Done |
 | 133 | Alert role for critical messages | - |
 | 134 | Status role for loading/success | - |
 | 135 | Breadcrumb nav with aria-current=page | Done |
@@ -170,8 +170,8 @@ Tasks to execute autonomously. Approval granted for all items.
 | 146 | High-contrast or forced-colors support | - |
 | 147 | Resize text to 200%: no horizontal scroll | - |
 | 148 | Zoom to 200%: no overlap/cutoff | - |
-| 149 | Prefer prefers-reduced-motion in CSS | - |
-| 150 | Add visible focus offset (outline-offset) | - |
+| 149 | Prefer prefers-reduced-motion in CSS | Done |
+| 150 | Add visible focus offset (outline-offset) | Done |
 
 ---
 

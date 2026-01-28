@@ -6,9 +6,11 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../services/api';
+import { usePageTitle } from '../hooks/usePageTitle';
 import './GoogleCallbackPage.css';
 
 const GoogleCallbackPage: React.FC = () => {
+  usePageTitle('Signing in');
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { loginWithToken } = useAuth();
@@ -76,8 +78,8 @@ const GoogleCallbackPage: React.FC = () => {
           <div className="error-icon">✕</div>
           <h2>Sign-in Failed</h2>
           <p>{error}</p>
-          <button onClick={() => navigate('/login')} className="btn-primary">
-            Back to Login
+          <button onClick={() => navigate('/auth')} className="btn-primary">
+            Back to Sign In
           </button>
         </div>
       </div>

@@ -1,7 +1,9 @@
 import React from 'react';
+import { usePageTitle } from '../hooks/usePageTitle';
 import './BlogPage.css';
 
 const BlogPage: React.FC = () => {
+  usePageTitle('Blog');
   return (
     <div className="blog-page">
       <div className="page-container blog-container">

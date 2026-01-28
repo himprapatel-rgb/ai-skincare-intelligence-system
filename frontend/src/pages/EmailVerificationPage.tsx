@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import { usePageTitle } from '../hooks/usePageTitle';
 import './EmailVerificationPage.css';
 
 type VerificationState = 'idle' | 'verifying' | 'verified' | 'error' | 'sent';
@@ -9,6 +10,7 @@ type VerificationState = 'idle' | 'verifying' | 'verified' | 'error' | 'sent';
 const API_URL = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
 
 export const EmailVerificationPage: React.FC = () => {
+  usePageTitle('Verify Email');
   const location = useLocation();
   const navigate = useNavigate();
   const { updateUser } = useAuth();

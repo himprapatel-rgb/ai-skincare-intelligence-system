@@ -57,6 +57,14 @@ This document captures the comprehensive analysis of the current AI Skincare Int
 - **Status**: 31 pages total, 23 with real API (74%), 8 with mock data (26%).
 - **Implementation Level**: ~90% complete, production operational.
 
+### Addendum (2026-01-26 Late)
+- **Infrastructure Migration**: Migrated from Railway to Fly.io (backend) + Cloudflare Pages (frontend).
+- **Production URLs**: pellicura.com (frontend), pellicura-api.fly.dev (backend).
+- **Staging Environment**: staging.pellicura.pages.dev + pellicura-api-staging.fly.dev.
+- **CI/CD**: GitHub Actions auto-deploys on push (main → production, develop → staging).
+- **Documentation Cleanup**: Removed incorrect photo-editing AI docs, updated to reflect actual skincare AI.
+- **AI Stack Confirmed**: OpenAI Vision (GPT-4o) for skin analysis, MediaPipe for face detection.
+
 ### Key Findings
 ✅ **Strong Foundation:** Core authentication, encryption, GDPR compliance, and ML integration operational
 ✅ **Database Models:** 10+ models covering users, products, routines, scans, digital twin

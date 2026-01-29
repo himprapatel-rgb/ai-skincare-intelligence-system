@@ -140,16 +140,21 @@ Format: `postgresql://user:password@host:port/database`
 
 ---
 
-## Third-Party API Keys (Optional)
+## Third-Party API Keys
 
-These are optional integrations that enhance functionality.
+### Required for Core Features
+
+| Service | Secret Name | Purpose | Required |
+|---------|-------------|---------|----------|
+| OpenAI | `OPENAI_API_KEY` | AI skin analysis (GPT-4 Vision) | **YES** - Core feature |
+
+### Optional Integrations
 
 | Service | Secret Name | Purpose | Required |
 |---------|-------------|---------|----------|
 | SendGrid | `SENDGRID_API_KEY` | Email sending | For email features |
-| OpenAI | `OPENAI_API_KEY` | AI analysis | For AI features |
 | Cloudinary | `CLOUDINARY_URL` | Image storage | For image uploads |
-| Skinive | `SKINIVE_API_KEY` | Skin analysis API | Optional |
+| Skinive | `SKINIVE_API_KEY` | Additional skin analysis | Optional |
 
 ---
 

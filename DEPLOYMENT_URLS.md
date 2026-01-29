@@ -5,6 +5,16 @@
 
 ---
 
+## What is Pellicura?
+
+Pellicura is an **AI-powered skincare intelligence app** that:
+- Analyzes skin photos using AI (OpenAI Vision)
+- Detects skin conditions (acne, wrinkles, texture, etc.)
+- Provides personalized skincare recommendations
+- Tracks skin progress over time (Digital Twin)
+
+---
+
 ## Production Environment
 
 | Component | URL | Platform | Status |
@@ -58,17 +68,30 @@
 │           │                              │                       │
 │           ▼                              ▼                       │
 │   Cloudflare Pages                 Cloudflare Pages             │
+│   (React/Vite)                     (React/Vite)                 │
 │           │                              │                       │
 │           ▼                              ▼                       │
 │   pellicura-api-staging            pellicura-api                │
 │   (Fly.io London)                  (Fly.io London)              │
+│   FastAPI + OpenAI Vision          FastAPI + OpenAI Vision      │
 │           │                              │                       │
 │           └──────────┬───────────────────┘                       │
 │                      ▼                                           │
 │              Railway PostgreSQL                                  │
+│              (User data, scans, products)                        │
 │                                                                  │
 └─────────────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## AI/ML Stack
+
+| Component | Technology | Purpose |
+|-----------|------------|---------|
+| Skin Analysis | OpenAI Vision API (GPT-4o) | Analyze skin photos |
+| Face Detection | MediaPipe | Local face validation |
+| Product Matching | Rule-based (ML-ready) | Match products to skin |
 
 ---
 
@@ -98,29 +121,29 @@
 
 ---
 
-## Required Secrets (GitHub)
+## Required Secrets
 
+### GitHub Actions
 | Secret | Description |
 |--------|-------------|
 | `FLY_API_TOKEN` | Fly.io deployment token |
 | `CLOUDFLARE_ACCOUNT_ID` | Cloudflare account ID |
 | `CLOUDFLARE_API_TOKEN` | Cloudflare API token |
 
----
-
-## Mobile Apps (Planned)
-
-| Platform | Status | Distribution |
-|----------|--------|--------------|
-| iOS | 🔄 Development | TestFlight (future) |
-| Android | 🔄 Development | Play Store (future) |
+### Fly.io Backend
+| Secret | Description |
+|--------|-------------|
+| `DATABASE_URL` | PostgreSQL connection string |
+| `SECRET_KEY` | JWT signing key |
+| `OPENAI_API_KEY` | OpenAI API for skin analysis |
 
 ---
 
-## Support & Documentation
+## Documentation
 
 - **Deployment Guide**: [docs/05-deployment/Deployment-Guide.md](docs/05-deployment/Deployment-Guide.md)
-- **Architecture**: [docs/02-architecture/](docs/02-architecture/)
+- **Skin Analysis AI**: [docs/02-architecture/Skin-Analysis-AI.md](docs/02-architecture/Skin-Analysis-AI.md)
+- **Cloud Infrastructure**: [docs/02-architecture/Cloud-Infrastructure.md](docs/02-architecture/Cloud-Infrastructure.md)
 - **Quick Start**: [docs/00-index/Quick-Start.md](docs/00-index/Quick-Start.md)
 
 **Last Reviewed**: January 26, 2026

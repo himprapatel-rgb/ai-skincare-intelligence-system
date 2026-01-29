@@ -66,7 +66,7 @@ const MyShelfPage: React.FC = () => {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('auth_token') || localStorage.getItem('token');
       let list: Product[] = [];
 
       if (!token) {
@@ -118,7 +118,7 @@ const MyShelfPage: React.FC = () => {
 
   const handleUpdateStatus = async (productId: string, newStatus: Product['status']) => {
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('auth_token') || localStorage.getItem('token');
       const apiStatus = newStatus === 'using' ? 'active' : newStatus;
       
       await fetch(`${API_BASE}/shelf/${productId}`, {
@@ -149,7 +149,7 @@ const MyShelfPage: React.FC = () => {
   const doRemoveProduct = async () => {
     if (!confirmRemoveId) return;
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('auth_token') || localStorage.getItem('token');
       await fetch(`${API_BASE}/shelf/${confirmRemoveId}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }

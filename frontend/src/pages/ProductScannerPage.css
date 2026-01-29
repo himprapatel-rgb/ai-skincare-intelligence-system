@@ -702,12 +702,63 @@
   transition: width 0.3s ease;
 }
 
+/* Key Active Ingredients with Percentages */
+.key-ingredients-section {
+  margin-bottom: 24px;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(139, 92, 246, 0.05));
+  border: 1px solid var(--primary);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.key-ingredients-section h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.key-ingredients-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.key-ingredient-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.key-ingredient-item .ingredient-name {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-dark);
+}
+
+.key-ingredient-item .ingredient-percentage {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--primary);
+  background: rgba(59, 130, 246, 0.1);
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+/* All Ingredients List */
 .ingredients-section {
   margin-bottom: 32px;
 }
 
 .ingredients-section h3 {
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   font-weight: 600;
   color: var(--text-dark);
   margin-bottom: 16px;

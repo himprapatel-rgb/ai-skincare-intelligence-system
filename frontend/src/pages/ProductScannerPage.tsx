@@ -16,6 +16,11 @@ import { useAuth } from '../context/AuthContext';
 import { useShelf } from '../context/ShelfContext';
 import './ProductScannerPage.css';
 
+interface KeyIngredient {
+  name: string;
+  percentage?: string;  // e.g., "10%", "2%"
+}
+
 interface ScannedProduct {
   id: string;
   name: string;
@@ -23,7 +28,8 @@ interface ScannedProduct {
   barcode?: string;
   imageUrl?: string;
   category?: string;
-  ingredients: string[];
+  keyIngredients?: KeyIngredient[];  // Active ingredients with percentages
+  ingredients: string[];  // Full ingredient list
   safetyRating: number;
   suitabilityScore: number;
   warnings: string[];
@@ -214,6 +220,10 @@ const ProductScannerPage: React.FC = () => {
             brand: data.brand || 'Unknown Brand',
             imageUrl: cleanImageUrl,  // Use clean image, not user's blurry photo
             category: data.category,
+            keyIngredients: data.key_ingredients?.map((ki: { name: string; percentage?: string }) => ({
+              name: ki.name,
+              percentage: ki.percentage
+            })) || [],
             ingredients: data.ingredients || [],
             safetyRating: data.safety_rating || 0,
             suitabilityScore: data.suitability_score || 0,
@@ -529,10 +539,27 @@ const ProductScannerPage: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Ingredients */}
+                {/* Key Active Ingredients with Percentages */}
+                {scannedProduct.keyIngredients && scannedProduct.keyIngredients.length > 0 && (
+                  <div className="key-ingredients-section">
+                    <h3>Key Active Ingredients</h3>
+                    <div className="key-ingredients-list">
+                      {scannedProduct.keyIngredients.map((ki, idx) => (
+                        <div key={idx} className="key-ingredient-item">
+                          <span className="ingredient-name">{ki.name}</span>
+                          {ki.percentage && (
+                            <span className="ingredient-percentage">{ki.percentage}</span>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Full Ingredients List */}
                 {scannedProduct.ingredients.length > 0 && (
                   <div className="ingredients-section">
-                    <h3>Ingredients</h3>
+                    <h3>All Ingredients</h3>
                     <div className="ingredients-list">
                       {scannedProduct.ingredients.map((ingredient, idx) => (
                         <span key={idx} className="ingredient-tag">

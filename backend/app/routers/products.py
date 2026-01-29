@@ -462,13 +462,20 @@ class ProductImageRequest(BaseModel):
     image_data: str  # Base64 encoded image
 
 
+class KeyIngredient(BaseModel):
+    """Key ingredient with concentration percentage."""
+    name: str
+    percentage: Optional[str] = None  # e.g., "10%", "2%"
+    
+    
 class ProductImageResponse(BaseModel):
     """Response schema for product image recognition."""
     found: bool
     product_name: Optional[str] = None
     brand: Optional[str] = None
     category: Optional[str] = None
-    ingredients: Optional[List[str]] = None
+    key_ingredients: Optional[List[KeyIngredient]] = None  # Active ingredients with percentages
+    ingredients: Optional[List[str]] = None  # Full ingredient list
     description: Optional[str] = None
     confidence: Optional[float] = None
     matched_product: Optional[dict] = None
@@ -573,15 +580,23 @@ When shown an image of a product, extract:
 1. Product name (exact name from packaging)
 2. Brand name
 3. Category (cleanser, moisturizer, serum, sunscreen, toner, mask, exfoliant, eye cream, lip care, body care, hair care, other)
-4. Any visible ingredients (if ingredient list is shown)
-5. Product size/volume if visible
+4. Key active ingredients WITH percentages if shown (e.g., "Niacinamide 10%", "Vitamin C 15%", "Hyaluronic Acid 2%")
+5. Full ingredient list if visible
+6. Product size/volume if visible
+
+IMPORTANT: For ingredients, always include the percentage/concentration if it's displayed on the packaging.
+Many products highlight key actives like "10% Niacinamide" or "2% Salicylic Acid" - capture these percentages.
 
 Respond in JSON format:
 {
     "product_name": "string",
     "brand": "string", 
     "category": "string",
-    "ingredients": ["ingredient1", "ingredient2", ...] or null if not visible,
+    "key_ingredients": [
+        {"name": "Niacinamide", "percentage": "10%"},
+        {"name": "Hyaluronic Acid", "percentage": "2%"}
+    ] or null if not visible,
+    "ingredients": ["Water", "Glycerin", ...] or null if not visible,
     "size": "string or null",
     "description": "brief description of the product",
     "confidence": 0.0-1.0
@@ -634,6 +649,19 @@ If you cannot identify the product, return:
         category = ai_result.get("category")
         ingredients = ai_result.get("ingredients") or []
         confidence = ai_result.get("confidence", 0.8)
+        
+        # Extract key ingredients with percentages
+        key_ingredients_raw = ai_result.get("key_ingredients") or []
+        key_ingredients = []
+        for ki in key_ingredients_raw:
+            if isinstance(ki, dict):
+                key_ingredients.append(KeyIngredient(
+                    name=ki.get("name", ""),
+                    percentage=ki.get("percentage")
+                ))
+            elif isinstance(ki, str):
+                # Handle simple string format like "Niacinamide 10%"
+                key_ingredients.append(KeyIngredient(name=ki))
         
         # Try to find matching product in database
         matched_product = None
@@ -709,6 +737,7 @@ If you cannot identify the product, return:
             product_name=product_name,
             brand=brand,
             category=category,
+            key_ingredients=key_ingredients if key_ingredients else None,
             ingredients=ingredients[:15],  # Limit to 15 ingredients
             description=ai_result.get("description"),
             confidence=confidence,

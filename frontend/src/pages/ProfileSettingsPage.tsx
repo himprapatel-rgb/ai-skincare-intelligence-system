@@ -4,8 +4,8 @@ import { usePageTitle } from '../hooks/usePageTitle';
 import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
+import { useShelf } from '../context/ShelfContext';
 import { IconBarChart, IconCamera, IconPackage, IconSparkles, IconTrendingUp, IconScan } from '../components/Icons';
-import { mockProducts } from '../data/mockProducts';
 import { getScanHistory } from '../services/scanApi';
 import './ProfileSettingsPage.css';
 
@@ -68,6 +68,7 @@ interface UserProfile {
 const ProfileSettingsPage: React.FC = () => {
   usePageTitle('Profile Settings');
   const { user } = useAuth();
+  const { totalCount: shelfProductCount } = useShelf();
   const navigate = useNavigate();
   const toast = useToast();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -128,7 +129,7 @@ const ProfileSettingsPage: React.FC = () => {
   const [stats, setStats] = useState({
     skinHealthScore: 0,
     totalScans: 0,
-    productsInShelf: mockProducts.length,
+    productsInShelf: shelfProductCount,
     activeRoutines: 0
   });
   const [progressData, setProgressData] = useState<Array<{ date: string; score: number }>>([]);
@@ -248,7 +249,7 @@ const ProfileSettingsPage: React.FC = () => {
         setStats({
           skinHealthScore: avgScore,
           totalScans: scans.length,
-          productsInShelf: mockProducts.length,
+          productsInShelf: shelfProductCount,
           activeRoutines: 0
         });
         setProgressData(progress);
@@ -258,7 +259,13 @@ const ProfileSettingsPage: React.FC = () => {
     };
 
     loadStats();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Update shelf count when it changes
+  useEffect(() => {
+    setStats(prev => ({ ...prev, productsInShelf: shelfProductCount }));
+  }, [shelfProductCount]);
 
   useEffect(() => {
     if (!initialProfileRef.current) {

@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { IconStar } from '../components/Icons';
 import { ConfirmModal } from '../components/ConfirmModal';
 import { SkeletonCardGrid } from '../components/Skeleton';
+import { useShelf } from '../context/ShelfContext';
 import './MyShelfPage.css';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
-
-interface Product {
+interface DisplayProduct {
   id: string;
   name: string;
   brand: string;
@@ -20,126 +19,56 @@ interface Product {
   imageUrl?: string;
 }
 
-const SHELF_STORAGE_KEY = 'shelf_products';
-
 const MyShelfPage: React.FC = () => {
   usePageTitle('My Shelf');
   const navigate = useNavigate();
-  const [products, setProducts] = useState<Product[]>([]);
+  const { 
+    products: shelfProducts, 
+    loading, 
+    totalCount,
+    usingCount,
+    wishlistCount,
+    discontinuedCount,
+    removeFromShelf, 
+    updateProductStatus 
+  } = useShelf();
+  
   const [filter, setFilter] = useState<'all' | 'using' | 'wishlist' | 'discontinued'>('all');
   const [searchTerm, setSearchTerm] = useState('');
-  const [loading, setLoading] = useState(true);
   const [confirmRemoveId, setConfirmRemoveId] = useState<string | null>(null);
 
-  const mergeShelfFromStorage = (list: Product[]): Product[] => {
-    try {
-      const fromStorage = JSON.parse(localStorage.getItem(SHELF_STORAGE_KEY) || '[]');
-      if (!Array.isArray(fromStorage)) return list;
-      const ids = new Set(list.map((p) => p.id));
-      const merged = [...list];
-      fromStorage.forEach((p: Record<string, unknown>) => {
-        const id = String(p.id ?? '');
-        if (!id || ids.has(id)) return;
-        ids.add(id);
-        merged.push({
-          id,
-          name: String(p.name ?? ''),
-          brand: String(p.brand ?? 'Unknown'),
-          category: String(p.category ?? 'General'),
-          rating: Number(p.rating ?? 0),
-          status: (p.status as Product['status']) || 'using',
-          notes: String(p.notes ?? ''),
-          addedDate: String(p.addedDate ?? new Date().toISOString().split('T')[0]),
-          imageUrl: p.imageUrl as string | undefined,
-        });
-      });
-      return merged;
-    } catch {
-      return list;
-    }
-  };
+  // Transform shelf products to display format
+  const products: DisplayProduct[] = useMemo(() => {
+    return shelfProducts.map(p => ({
+      id: p.id,
+      name: p.product_name,
+      brand: p.product_brand || 'Unknown',
+      category: p.product_category || 'General',
+      rating: p.rating || 0,
+      status: p.status === 'active' ? 'using' as const : 
+              p.status === 'wishlist' ? 'wishlist' as const : 'discontinued' as const,
+      notes: p.notes || '',
+      addedDate: p.created_at ? p.created_at.split('T')[0] : '',
+      imageUrl: p.product_image,
+    }));
+  }, [shelfProducts]);
 
-  useEffect(() => {
-    fetchProducts();
-  }, []);
-
-  const fetchProducts = async () => {
-    try {
-      setLoading(true);
-      const token = localStorage.getItem('auth_token') || localStorage.getItem('token');
-      let list: Product[] = [];
-
-      if (!token) {
-        // Not logged in - show empty shelf with prompt to log in
-        list = [];
-      } else {
-        const response = await fetch(`${API_BASE}/shelf`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          if (data.products && Array.isArray(data.products)) {
-            list = data.products.map((p: Record<string, unknown>) => ({
-              id: String(p.id ?? ''),
-              name: String(p.product_name ?? ''),
-              brand: String(p.product_brand ?? 'Unknown'),
-              category: String(p.product_category ?? 'General'),
-              rating: Number(p.rating ?? 0),
-              status: p.status === 'active' ? 'using' : p.status === 'wishlist' ? 'wishlist' : 'discontinued',
-              notes: String(p.notes ?? ''),
-              addedDate: (typeof p.created_at === 'string' ? p.created_at.split('T')[0] : '') || '',
-              imageUrl: p.product_image as string | undefined,
-            }));
-          }
-        } else {
-          console.error('Failed to fetch shelf:', response.status);
-        }
-      }
-      setProducts(mergeShelfFromStorage(list));
-    } catch (error) {
-      console.error('Failed to fetch products:', error);
-      setProducts([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const filteredProducts = products.filter(product => {
-    const matchesFilter = filter === 'all' || product.status === filter;
-    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          product.brand.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesFilter && matchesSearch;
-  });
+  const filteredProducts = useMemo(() => {
+    return products.filter(product => {
+      const matchesFilter = filter === 'all' || product.status === filter;
+      const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                            product.brand.toLowerCase().includes(searchTerm.toLowerCase());
+      return matchesFilter && matchesSearch;
+    });
+  }, [products, filter, searchTerm]);
 
   const handleProductClick = (productId: string) => {
     navigate(`/product/${productId}`);
   };
 
-  const handleUpdateStatus = async (productId: string, newStatus: Product['status']) => {
-    try {
-      const token = localStorage.getItem('auth_token') || localStorage.getItem('token');
-      const apiStatus = newStatus === 'using' ? 'active' : newStatus;
-      
-      await fetch(`${API_BASE}/shelf/${productId}`, {
-        method: 'PATCH',
-        headers: { 
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ status: apiStatus })
-      });
-      
-      setProducts(prev => prev.map(p => 
-        p.id === productId ? { ...p, status: newStatus } : p
-      ));
-    } catch (error) {
-      console.error('Failed to update status:', error);
-      // Still update UI
-      setProducts(prev => prev.map(p => 
-        p.id === productId ? { ...p, status: newStatus } : p
-      ));
-    }
+  const handleUpdateStatus = async (productId: string, newStatus: DisplayProduct['status']) => {
+    const apiStatus = newStatus === 'using' ? 'active' : newStatus;
+    await updateProductStatus(productId, apiStatus as 'active' | 'wishlist' | 'discontinued');
   };
 
   const handleRemoveProduct = (productId: string) => {
@@ -148,19 +77,8 @@ const MyShelfPage: React.FC = () => {
 
   const doRemoveProduct = async () => {
     if (!confirmRemoveId) return;
-    try {
-      const token = localStorage.getItem('auth_token') || localStorage.getItem('token');
-      await fetch(`${API_BASE}/shelf/${confirmRemoveId}`, {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      setProducts(prev => prev.filter(p => p.id !== confirmRemoveId));
-    } catch (error) {
-      console.error('Failed to remove product:', error);
-      setProducts(prev => prev.filter(p => p.id !== confirmRemoveId));
-    } finally {
-      setConfirmRemoveId(null);
-    }
+    await removeFromShelf(confirmRemoveId);
+    setConfirmRemoveId(null);
   };
 
   if (loading) {
@@ -241,25 +159,25 @@ const MyShelfPage: React.FC = () => {
             className={filter === 'all' ? 'active' : ''}
             onClick={() => setFilter('all')}
           >
-            All ({products.length})
+            All ({totalCount})
           </button>
           <button 
             className={filter === 'using' ? 'active' : ''}
             onClick={() => setFilter('using')}
           >
-            Using ({products.filter(p => p.status === 'using').length})
+            Using ({usingCount})
           </button>
           <button 
             className={filter === 'wishlist' ? 'active' : ''}
             onClick={() => setFilter('wishlist')}
           >
-            Wishlist ({products.filter(p => p.status === 'wishlist').length})
+            Wishlist ({wishlistCount})
           </button>
           <button 
             className={filter === 'discontinued' ? 'active' : ''}
             onClick={() => setFilter('discontinued')}
           >
-            Discontinued ({products.filter(p => p.status === 'discontinued').length})
+            Discontinued ({discontinuedCount})
           </button>
         </div>
         <button className="add-product-btn" onClick={() => navigate('/scan')}>

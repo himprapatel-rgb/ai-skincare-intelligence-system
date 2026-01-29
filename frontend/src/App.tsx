@@ -3,6 +3,7 @@ import React, { Suspense } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { ToastProvider } from "./context/ToastContext";
+import { ShelfProvider } from "./context/ShelfContext";
 import AppLayout from "./components/AppLayout";
 import DevBanner from "./components/DevBanner";
 import LoadingScreen from "./components/LoadingScreen";
@@ -55,8 +56,9 @@ const NotFoundPage = React.lazy(() => import("./pages/NotFoundPage"));
 export default function App() {
   return (
     <AuthProvider>
-      <ToastProvider>
-        <DevBanner />
+      <ShelfProvider>
+        <ToastProvider>
+          <DevBanner />
         <BrowserRouter>
           <AppLayout>
             <ErrorBoundary>
@@ -119,8 +121,9 @@ export default function App() {
             </ErrorBoundary>
           </AppLayout>
         </BrowserRouter>
-        <ToastContainer />
-      </ToastProvider>
+          <ToastContainer />
+        </ToastProvider>
+      </ShelfProvider>
     </AuthProvider>
   );
 }

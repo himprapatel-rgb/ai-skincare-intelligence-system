@@ -13,6 +13,7 @@ import {
 } from '../components/Icons';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { useAuth } from '../context/AuthContext';
+import { useShelf } from '../context/ShelfContext';
 import './ProductScannerPage.css';
 
 interface ScannedProduct {
@@ -45,6 +46,7 @@ const ProductScannerPage: React.FC = () => {
   usePageTitle('Product Scanner');
   const navigate = useNavigate();
   const { token } = useAuth();
+  const { addToShelf: addToShelfContext, isOnShelf } = useShelf();
   
   // Scanner state
   const [scanMode, setScanMode] = useState<ScanMode>('barcode');
@@ -54,6 +56,7 @@ const ProductScannerPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [cameraActive, setCameraActive] = useState(false);
   const [addedToShelf, setAddedToShelf] = useState(false);
+  const [addingToShelf, setAddingToShelf] = useState(false);
   
   // Refs
   const scannerRef = useRef<Html5Qrcode | null>(null);
@@ -254,38 +257,41 @@ const ProductScannerPage: React.FC = () => {
     }
   };
 
-  // Add to shelf
+  // Add to shelf using global context
   const handleAddToShelf = async () => {
     if (!scannedProduct || !token) return;
     
+    // Check if already on shelf
+    if (isOnShelf(scannedProduct.id)) {
+      setAddedToShelf(true);
+      setTimeout(() => navigate('/myshelf'), 1500);
+      return;
+    }
+    
+    setAddingToShelf(true);
     try {
-      const response = await fetch('/api/v1/shelf', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          external_product_id: scannedProduct.id,
-          product_name: scannedProduct.name,
-          product_brand: scannedProduct.brand,
-          product_category: scannedProduct.category,
-          product_image: scannedProduct.imageUrl?.startsWith('data:') 
-            ? null 
-            : scannedProduct.imageUrl,
-          status: 'active',
-        }),
+      const success = await addToShelfContext({
+        external_product_id: scannedProduct.id,
+        product_name: scannedProduct.name,
+        product_brand: scannedProduct.brand,
+        product_category: scannedProduct.category,
+        product_image: scannedProduct.imageUrl?.startsWith('data:') 
+          ? undefined 
+          : scannedProduct.imageUrl,
+        status: 'active',
       });
       
-      if (response.ok) {
+      if (success) {
         setAddedToShelf(true);
         setTimeout(() => navigate('/myshelf'), 1500);
       } else {
-        throw new Error('Failed to add');
+        setError('Failed to add product to shelf. Please try again.');
       }
     } catch (err) {
       console.error('Failed to add to shelf:', err);
       setError('Failed to add product to shelf. Please try again.');
+    } finally {
+      setAddingToShelf(false);
     }
   };
 
@@ -561,6 +567,11 @@ const ProductScannerPage: React.FC = () => {
                     <button className="btn-success" disabled>
                       <IconCheck size={18} strokeWidth={2} className="icon-inline" />
                       Added to Shelf!
+                    </button>
+                  ) : addingToShelf ? (
+                    <button className="btn-primary" disabled>
+                      <IconLoader size={18} strokeWidth={2} className="icon-inline spin" />
+                      Adding...
                     </button>
                   ) : (
                     <button onClick={handleAddToShelf} className="btn-primary" disabled={!token}>

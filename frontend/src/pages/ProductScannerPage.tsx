@@ -200,11 +200,16 @@ const ProductScannerPage: React.FC = () => {
         const data = await response.json();
         
         if (data.found && data.product_name) {
+          // Prioritize clean product image from API over user's photo
+          const cleanImageUrl = data.product_image_url 
+            || data.matched_product?.image_url 
+            || null;
+          
           setScannedProduct({
             id: data.matched_product?.id || `img-${Date.now()}`,
             name: data.product_name,
             brand: data.brand || 'Unknown Brand',
-            imageUrl: data.matched_product?.image_url || base64,
+            imageUrl: cleanImageUrl,  // Use clean image, not user's blurry photo
             category: data.category,
             ingredients: data.ingredients || [],
             safetyRating: data.safety_rating || 0,
@@ -449,17 +454,25 @@ const ProductScannerPage: React.FC = () => {
               
               <div className="card-content">
                 <div className="product-header">
-                  {scannedProduct.imageUrl && !scannedProduct.imageUrl.startsWith('data:') && (
-                    <div className="product-image">
+                  <div className="product-image">
+                    {scannedProduct.imageUrl ? (
                       <img 
                         src={scannedProduct.imageUrl} 
                         alt={scannedProduct.name} 
                         loading="lazy" 
                         width={120} 
                         height={120} 
+                        onError={(e) => {
+                          // Hide image on error
+                          (e.target as HTMLImageElement).style.display = 'none';
+                        }}
                       />
-                    </div>
-                  )}
+                    ) : (
+                      <div className="product-image-placeholder">
+                        <IconPackage size={48} strokeWidth={1.5} />
+                      </div>
+                    )}
+                  </div>
                   <div className="product-details">
                     <h3>{scannedProduct.name}</h3>
                     <p className="product-brand">{scannedProduct.brand}</p>

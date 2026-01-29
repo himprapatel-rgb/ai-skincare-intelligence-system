@@ -615,7 +615,7 @@ Tasks to execute autonomously. Approval granted for all items.
 
 | # | Task | Priority | Status |
 |---|------|----------|--------|
-| 524 | Barcode/QR product scanning | 🟠 P1 | Planned |
+| 524 | Barcode/QR product scanning + AI image identification | 🟠 P1 | ✅ Done |
 | 525 | Social sharing of progress | 🟡 P2 | Planned |
 | 526 | Community forums | 🟢 P3 | Planned |
 | 527 | Dermatologist booking integration | 🟢 P3 | Planned |

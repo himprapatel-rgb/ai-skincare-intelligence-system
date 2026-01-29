@@ -448,6 +448,56 @@ class ProductImageResponse(BaseModel):
     safety_rating: Optional[int] = None
     suitability_score: Optional[int] = None
     warnings: Optional[List[str]] = None
+    product_image_url: Optional[str] = None  # Clean product image URL
+    image_source: Optional[str] = None  # Where the image came from
+
+
+async def fetch_clean_product_image(brand: str, product_name: str) -> Optional[str]:
+    """
+    Fetch a clean product image from various sources.
+    Priority: 1. Open Beauty Facts  2. Open Food Facts  3. None
+    """
+    try:
+        async with httpx.AsyncClient(timeout=10.0) as client:
+            # Search Open Beauty Facts by product name
+            search_query = f"{brand} {product_name}".replace(" ", "+")
+            
+            # Try Open Beauty Facts search
+            obf_url = f"https://world.openbeautyfacts.org/cgi/search.pl?search_terms={search_query}&search_simple=1&action=process&json=1&page_size=5"
+            response = await client.get(obf_url)
+            
+            if response.status_code == 200:
+                data = response.json()
+                products = data.get("products", [])
+                
+                for product in products:
+                    image_url = product.get("image_front_url") or product.get("image_url")
+                    if image_url:
+                        # Verify image is accessible
+                        try:
+                            img_check = await client.head(image_url, timeout=5.0)
+                            if img_check.status_code == 200:
+                                return image_url
+                        except:
+                            continue
+            
+            # Try Open Food Facts as fallback (some beauty products are there)
+            off_url = f"https://world.openfoodfacts.org/cgi/search.pl?search_terms={search_query}&search_simple=1&action=process&json=1&page_size=3"
+            response = await client.get(off_url)
+            
+            if response.status_code == 200:
+                data = response.json()
+                products = data.get("products", [])
+                
+                for product in products:
+                    image_url = product.get("image_front_url") or product.get("image_url")
+                    if image_url:
+                        return image_url
+                        
+    except Exception as e:
+        logger.warning(f"Failed to fetch product image: {e}")
+    
+    return None
 
 
 @router.post("/identify-from-image", response_model=ProductImageResponse)
@@ -560,7 +610,11 @@ If you cannot identify the product, return:
         
         # Try to find matching product in database
         matched_product = None
+        product_image_url = None
+        image_source = None
+        
         if product_name and brand:
+            # First check our local database
             db_product = db.query(Product).filter(
                 Product.name.ilike(f"%{product_name}%"),
                 Product.brand.ilike(f"%{brand}%")
@@ -574,6 +628,16 @@ If you cannot identify the product, return:
                     "category": db_product.category,
                     "image_url": db_product.product_image_url,
                 }
+                if db_product.product_image_url:
+                    product_image_url = db_product.product_image_url
+                    image_source = "database"
+        
+        # If no image found in database, search online for a clean product image
+        if not product_image_url and brand and product_name:
+            fetched_image = await fetch_clean_product_image(brand, product_name)
+            if fetched_image:
+                product_image_url = fetched_image
+                image_source = "open_beauty_facts"
         
         # Calculate safety rating based on ingredients
         warnings = []
@@ -597,7 +661,9 @@ If you cannot identify the product, return:
             matched_product=matched_product,
             safety_rating=max(0, safety_score),
             suitability_score=75,  # TODO: Calculate based on user skin profile
-            warnings=list(set(warnings)) if warnings else None
+            warnings=list(set(warnings)) if warnings else None,
+            product_image_url=product_image_url,
+            image_source=image_source
         )
         
     except openai.APIError as e:

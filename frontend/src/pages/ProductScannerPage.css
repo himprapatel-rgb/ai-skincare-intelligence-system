@@ -627,6 +627,18 @@
   width: 100%;
   height: auto;
   display: block;
+  object-fit: cover;
+}
+
+.product-image-placeholder {
+  width: 120px;
+  height: 120px;
+  background: var(--bg-light);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-gray);
 }
 
 .product-details h3 {

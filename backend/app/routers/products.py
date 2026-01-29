@@ -23,6 +23,7 @@ from app.schemas.product_schemas import (
     ReviewsListResponse,
     SafetyAnalysis,
 )
+from app.services.ingredient_safety import analyze_ingredients_list
 
 router = APIRouter(
     prefix="/api/v1/products",
@@ -466,6 +467,30 @@ class KeyIngredient(BaseModel):
     """Key ingredient with concentration percentage."""
     name: str
     percentage: Optional[str] = None  # e.g., "10%", "2%"
+
+
+class FlaggedIngredient(BaseModel):
+    """A flagged harmful/concerning ingredient."""
+    name: str  # Official name (e.g., "Parabens")
+    matched_term: str  # What was matched in the ingredient list
+    severity: str  # "high", "moderate", "low"
+    categories: List[str]  # ["irritant", "allergen", etc.]
+    reason: str  # Why it's flagged
+    alternatives: List[str]  # Safer alternatives
+    avoid_if: List[str]  # Conditions where extra caution needed
+
+
+class SafetyReport(BaseModel):
+    """Comprehensive safety analysis report for a product."""
+    flagged_ingredients: List[FlaggedIngredient]
+    total_flagged: int
+    high_severity_count: int
+    moderate_severity_count: int
+    low_severity_count: int
+    safety_score: int  # 0-100, higher = safer
+    recommendations: List[str]
+    is_pregnancy_safe: bool
+    is_sensitive_skin_safe: bool
     
     
 class ProductImageResponse(BaseModel):
@@ -482,6 +507,7 @@ class ProductImageResponse(BaseModel):
     safety_rating: Optional[int] = None
     suitability_score: Optional[int] = None
     warnings: Optional[List[str]] = None
+    safety_report: Optional[SafetyReport] = None  # Detailed safety analysis
     product_image_url: Optional[str] = None  # Clean product image URL
     image_source: Optional[str] = None  # Where the image came from
 
@@ -755,16 +781,46 @@ If you cannot identify the product, return:
                 logger.warning(f"Failed to auto-save product: {e}")
                 db.rollback()
         
-        # Calculate safety rating based on ingredients
-        warnings = []
-        safety_score = 85
+        # Comprehensive safety analysis using ingredient safety database
+        all_ingredients_to_analyze = ingredients.copy()
+        # Also analyze key ingredients
+        for ki in key_ingredients:
+            if ki.name not in all_ingredients_to_analyze:
+                all_ingredients_to_analyze.append(ki.name)
         
-        irritants = ["fragrance", "parfum", "alcohol denat", "sodium lauryl sulfate", "parabens", "formaldehyde"]
-        for ing in ingredients:
-            for irritant in irritants:
-                if irritant.lower() in ing.lower():
-                    warnings.append(f"Contains {irritant}")
-                    safety_score -= 10
+        safety_analysis = analyze_ingredients_list(all_ingredients_to_analyze)
+        
+        # Build safety report
+        safety_report = SafetyReport(
+            flagged_ingredients=[
+                FlaggedIngredient(
+                    name=f["name"],
+                    matched_term=f["matched_term"],
+                    severity=f["severity"],
+                    categories=f["categories"],
+                    reason=f["reason"],
+                    alternatives=f["alternatives"],
+                    avoid_if=f["avoid_if"]
+                )
+                for f in safety_analysis["flagged_ingredients"]
+            ],
+            total_flagged=safety_analysis["total_flagged"],
+            high_severity_count=safety_analysis["high_severity_count"],
+            moderate_severity_count=safety_analysis["moderate_severity_count"],
+            low_severity_count=safety_analysis["low_severity_count"],
+            safety_score=safety_analysis["safety_score"],
+            recommendations=safety_analysis["recommendations"],
+            is_pregnancy_safe=safety_analysis["is_pregnancy_safe"],
+            is_sensitive_skin_safe=safety_analysis["is_sensitive_skin_safe"]
+        )
+        
+        # Generate simple warnings from flagged ingredients
+        warnings = []
+        for flagged in safety_analysis["flagged_ingredients"]:
+            if flagged["severity"] == "high":
+                warnings.append(f"⚠️ {flagged['name']}: {flagged['reason']}")
+            elif flagged["severity"] == "moderate":
+                warnings.append(f"⚡ {flagged['name']}: {flagged['reason']}")
         
         return ProductImageResponse(
             found=True,
@@ -776,9 +832,10 @@ If you cannot identify the product, return:
             description=ai_result.get("description"),
             confidence=confidence,
             matched_product=matched_product,
-            safety_rating=max(0, safety_score),
+            safety_rating=safety_analysis["safety_score"],
             suitability_score=75,  # TODO: Calculate based on user skin profile
-            warnings=list(set(warnings)) if warnings else None,
+            warnings=warnings if warnings else None,
+            safety_report=safety_report,
             product_image_url=product_image_url,
             image_source=image_source
         )

@@ -21,6 +21,28 @@ interface KeyIngredient {
   percentage?: string;  // e.g., "10%", "2%"
 }
 
+interface FlaggedIngredient {
+  name: string;           // Official name (e.g., "Parabens")
+  matched_term: string;   // What was matched in the list
+  severity: 'high' | 'moderate' | 'low';
+  categories: string[];   // ["irritant", "allergen", etc.]
+  reason: string;         // Why it's flagged
+  alternatives: string[]; // Safer alternatives
+  avoid_if: string[];     // Conditions where caution is needed
+}
+
+interface SafetyReport {
+  flagged_ingredients: FlaggedIngredient[];
+  total_flagged: number;
+  high_severity_count: number;
+  moderate_severity_count: number;
+  low_severity_count: number;
+  safety_score: number;
+  recommendations: string[];
+  is_pregnancy_safe: boolean;
+  is_sensitive_skin_safe: boolean;
+}
+
 interface ScannedProduct {
   id: string;
   name: string;
@@ -33,6 +55,7 @@ interface ScannedProduct {
   safetyRating: number;
   suitabilityScore: number;
   warnings: string[];
+  safetyReport?: SafetyReport;  // Detailed safety analysis
   source: 'barcode' | 'image';
   confidence?: number;
 }
@@ -250,6 +273,7 @@ const ProductScannerPage: React.FC = () => {
             safetyRating: data.safety_rating || 0,
             suitabilityScore: data.suitability_score || 0,
             warnings: data.warnings || [],
+            safetyReport: data.safety_report || undefined,
             source: 'image',
             confidence: data.confidence
           });
@@ -587,8 +611,78 @@ const ProductScannerPage: React.FC = () => {
                   </div>
                 )}
 
-                {/* Warnings */}
-                {scannedProduct.warnings.length > 0 && (
+                {/* Flagged Harmful Ingredients */}
+                {scannedProduct.safetyReport && scannedProduct.safetyReport.flagged_ingredients.length > 0 && (
+                  <div className="flagged-ingredients-section">
+                    <h3>
+                      <IconAlertTriangle size={20} strokeWidth={2} className="icon-inline warning-icon" />
+                      Ingredient Safety Concerns ({scannedProduct.safetyReport.total_flagged})
+                    </h3>
+                    
+                    <div className="flagged-list">
+                      {scannedProduct.safetyReport.flagged_ingredients.map((flagged, idx) => (
+                        <div key={idx} className={`flagged-item severity-${flagged.severity}`}>
+                          <div className="flagged-header">
+                            <span className="flagged-name">{flagged.name}</span>
+                            <span className={`severity-badge ${flagged.severity}`}>
+                              {flagged.severity === 'high' ? '⚠️ Avoid' : 
+                               flagged.severity === 'moderate' ? '⚡ Caution' : 'ℹ️ Note'}
+                            </span>
+                          </div>
+                          <p className="flagged-reason">{flagged.reason}</p>
+                          <div className="flagged-categories">
+                            {flagged.categories.map((cat, catIdx) => (
+                              <span key={catIdx} className="category-tag">
+                                {cat.replace('_', ' ')}
+                              </span>
+                            ))}
+                          </div>
+                          {flagged.alternatives.length > 0 && flagged.alternatives[0] !== "None - avoid completely" && (
+                            <div className="flagged-alternatives">
+                              <strong>Safer alternatives:</strong> {flagged.alternatives.join(', ')}
+                            </div>
+                          )}
+                          {flagged.avoid_if.length > 0 && (
+                            <div className="flagged-avoid">
+                              <strong>Extra caution for:</strong> {flagged.avoid_if.join(', ')}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                    
+                    {/* Safety Recommendations */}
+                    {scannedProduct.safetyReport.recommendations.length > 0 && (
+                      <div className="safety-recommendations">
+                        <h4>Recommendations</h4>
+                        <ul>
+                          {scannedProduct.safetyReport.recommendations.map((rec, idx) => (
+                            <li key={idx}>{rec}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    
+                    {/* Safety Badges */}
+                    <div className="safety-badges">
+                      {scannedProduct.safetyReport.is_pregnancy_safe && (
+                        <span className="safety-badge safe">🤰 Pregnancy Safe</span>
+                      )}
+                      {!scannedProduct.safetyReport.is_pregnancy_safe && (
+                        <span className="safety-badge warning">🤰 Check with Doctor</span>
+                      )}
+                      {scannedProduct.safetyReport.is_sensitive_skin_safe && (
+                        <span className="safety-badge safe">✓ Sensitive Skin Friendly</span>
+                      )}
+                      {!scannedProduct.safetyReport.is_sensitive_skin_safe && (
+                        <span className="safety-badge warning">⚡ May Irritate Sensitive Skin</span>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* Simple Warnings (legacy) */}
+                {scannedProduct.warnings.length > 0 && !scannedProduct.safetyReport && (
                   <div className="warnings-section">
                     <h3>
                       <IconAlertTriangle size={20} strokeWidth={2} className="icon-inline warning-icon" />

@@ -11,8 +11,8 @@ References:
 """
 
 from dataclasses import dataclass
-from typing import List, Optional, Dict
 from enum import Enum
+from typing import Dict, List, Optional
 
 
 class Severity(str, Enum):
@@ -283,6 +283,7 @@ def _is_word_match(needle: str, haystack: str) -> bool:
     Avoids false positives like 'ethanol' matching 'phenoxyethanol'.
     """
     import re
+
     # Use word boundary matching for more precision
     pattern = r'\b' + re.escape(needle) + r'\b'
     return bool(re.search(pattern, haystack, re.IGNORECASE))

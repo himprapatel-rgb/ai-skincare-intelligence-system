@@ -15,7 +15,7 @@ from sqlalchemy.orm import Session
 from app.core.security import get_current_user
 from app.database import Base, engine
 from app.dependencies import get_db
-from app.models.goals import SkinGoal, GOAL_TYPES
+from app.models.goals import GOAL_TYPES, SkinGoal
 from app.models.user import User
 
 router = APIRouter(prefix="/goals", tags=["goals"])

@@ -420,6 +420,7 @@ async def google_auth(
     4. Return JWT token
     """
     import logging
+
     from app.services.google_auth_service import google_auth_service
     
     logger = logging.getLogger(__name__)

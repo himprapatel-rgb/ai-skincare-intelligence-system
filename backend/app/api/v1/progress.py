@@ -6,8 +6,8 @@ from sqlalchemy.orm import Session
 
 from app.core.security import get_current_user
 from app.database import get_db
-from app.models.scan import ScanSession
 from app.models.progress_photo import ProgressPhoto
+from app.models.scan import ScanSession
 from app.models.user import User
 from app.schemas.progress_schemas import (
     ProgressPhotoCreate,

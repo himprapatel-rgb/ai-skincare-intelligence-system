@@ -290,10 +290,12 @@ async def create_product_review(
     )
 
 
+import logging
+
+import httpx
+
 # ===== Barcode Scanning Endpoint (FR28) =====
 from pydantic import BaseModel
-import httpx
-import logging
 
 logger = logging.getLogger(__name__)
 
@@ -455,10 +457,12 @@ async def scan_barcode(
     )
 
 
-# ===== Product Image Recognition Endpoint (FR28 Enhanced) =====
-import openai
 import base64
 import os
+
+# ===== Product Image Recognition Endpoint (FR28 Enhanced) =====
+import openai
+
 
 class ProductImageRequest(BaseModel):
     """Request schema for product image recognition."""

@@ -3,7 +3,7 @@ Google OAuth Service for social login.
 Sprint: Final Features - Google OAuth Integration
 """
 import logging
-from typing import Optional, Dict, Any
+from typing import Any, Dict, Optional
 
 import httpx
 

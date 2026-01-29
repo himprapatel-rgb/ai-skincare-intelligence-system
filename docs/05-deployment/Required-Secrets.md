@@ -1,39 +1,186 @@
-# Required Repository Secrets
+# Required Secrets & Environment Variables
 
-This file lists the repository secrets that must be configured for CI, deployments,
-and for the backend to communicate with external services.
+**Last Updated:** January 26, 2026
 
-Configure these as GitHub repository secrets (Settings → Secrets) or set them in
-`backend/.env` for local development. Do NOT commit `.env` to source control.
+---
 
-Required secrets
-- `DATABASE_URL` — PostgreSQL connection string used by SQLAlchemy (e.g. `postgresql://user:pass@host:5432/dbname`).
-- `SECRET_KEY` — Application secret used for JWT signing and other cryptographic operations.
-- `ENCRYPTION_KEY` — AES-256 key material for encrypting sensitive profile data (e.g. `aes256-secure-key-for-skincare-app-2026`). Required for profile/onboarding; if missing, profile creation fails with "Encryption failed".
-- `ENCRYPTION_SALT` — Salt for key derivation (e.g. `skincare-salt-2026-secure`). Must be set with `ENCRYPTION_KEY` for profile encryption.
-- `GPTGPT_API_KEY` — API key for the external LLM provider used by `GPTService`.
-- `SUMMARY_TOKEN` — Shared secret used to protect the internal `/api/v1/internal/summary` endpoint.
-- `OPENAI_API_KEY` — API key for OpenAI vision analysis (required to enable live analysis).
-- `SKINIVE_API_TOKEN` — Deprecated. Previously used for Skinive skin analysis.
-- `SMTP_HOST` — SMTP server host for email verification (e.g. `smtp.gmail.com`).
-- `SMTP_PORT` — SMTP server port (default `587`).
-- `SMTP_USERNAME` — SMTP username; for Gmail must match the sending account (same as `SMTP_FROM_EMAIL`).
-- `SMTP_PASSWORD` — **Gmail:** use an [App Password](https://support.google.com/accounts/answer/185833) (16 chars), not the account password. 2-Step Verification must be on. If wrong, logs show "Username and Password not accepted".
-- `SMTP_FROM_EMAIL` — Sender address for verification emails; must match `SMTP_USERNAME` for Gmail.
-- `FRONTEND_URL` — Frontend base URL for verification links.
-- `ADMIN_EMAIL_ALLOWLIST` — Comma-separated admin emails (must also have is_admin flag).
+## GitHub Repository Secrets
 
-Optional / Environment-specific
-- `GPTGPT_API_BASE` — Custom base URL for the LLM provider API (if your provider requires a custom host).
-- `OPENAI_API_BASE` — Override for OpenAI API base URL (default `https://api.openai.com/v1`).
-- `OPENAI_MODEL` — OpenAI model used for vision analysis (default `gpt-4o-mini`).
-- `OPENAI_TIMEOUT_SECONDS` — OpenAI request timeout in seconds (default `60`).
-- `SKINIVE_API_BASE` — Override for Skinive API base URL (default `https://api.skiniver.com`).
-- `SKINIVE_LOCALE` — Locale for Skinive responses (default `en`).
-- `SKINIVE_TIMEOUT_SECONDS` — Skinive request timeout in seconds (default `30`).
-- `DAILY_ASSIGNEE` — GitHub username to auto-assign the daily reminder issue created by the scheduled workflow.
+These secrets must be configured in GitHub → Settings → Secrets and variables → Actions.
 
-Notes
-- Keep secrets private and rotate them regularly.
-- CI workflows expect these secrets to be present when running LLM-related jobs; otherwise the jobs will skip or fail safely.
-- For local development, copy `backend/.env.example` → `backend/.env` and populate the values. Ensure `.env` is ignored by git.
+### Deployment Secrets
+
+| Secret Name | Description | How to Obtain |
+|-------------|-------------|---------------|
+| `FLY_API_TOKEN` | Fly.io deployment token | Run `flyctl tokens create deploy` in terminal |
+| `CLOUDFLARE_ACCOUNT_ID` | Cloudflare account identifier | Cloudflare Dashboard → Overview → Account ID |
+| `CLOUDFLARE_API_TOKEN` | Cloudflare API token for Pages | Cloudflare Dashboard → Profile → API Tokens → Create Token |
+
+### Setting Up GitHub Secrets
+
+1. Go to your repository on GitHub
+2. Click **Settings** → **Secrets and variables** → **Actions**
+3. Click **New repository secret**
+4. Enter the secret name and value
+5. Click **Add secret**
+
+---
+
+## Fly.io Secrets (Backend)
+
+These secrets are stored in Fly.io and injected as environment variables.
+
+### Production (pellicura-api)
+
+| Secret Name | Description | Required |
+|-------------|-------------|----------|
+| `SECRET_KEY` | JWT signing key (32+ chars) | Yes |
+| `ALGORITHM` | JWT algorithm (HS256) | Yes |
+| `ACCESS_TOKEN_EXPIRE_MINUTES` | Token expiry in minutes | Yes |
+| `DATABASE_URL` | PostgreSQL connection string | Yes |
+| `RUN_MIGRATIONS` | Enable migrations on deploy | Yes |
+| `ALLOW_PROD_MIGRATIONS` | Allow production migrations | Yes |
+| `APP_NAME` | Application name | No |
+| `SENDGRID_API_KEY` | SendGrid email API key | Optional |
+| `OPENAI_API_KEY` | OpenAI API key | Optional |
+| `CLOUDINARY_URL` | Cloudinary connection string | Optional |
+
+### Staging (pellicura-api-staging)
+
+Same secrets as production, with staging-specific values.
+
+### Managing Fly.io Secrets
+
+```bash
+# Set a secret
+flyctl secrets set SECRET_KEY="your-secure-key-here" --app pellicura-api
+
+# Set multiple secrets
+flyctl secrets set \
+  SECRET_KEY="key" \
+  DATABASE_URL="postgresql://..." \
+  --app pellicura-api
+
+# List all secrets (names only, values hidden)
+flyctl secrets list --app pellicura-api
+
+# Remove a secret
+flyctl secrets unset SECRET_KEY --app pellicura-api
+```
+
+---
+
+## Environment Variables in fly.toml
+
+These are non-sensitive configuration values set in `fly.toml`.
+
+### Production (backend/fly.toml)
+
+```toml
+[env]
+  PORT = "8000"
+  ENV = "production"
+  DEBUG = "false"
+  ALLOWED_ORIGINS = "[\"https://pellicura.com\",\"https://www.pellicura.com\"]"
+  ALLOWED_HOSTS = "[\"*\"]"
+  FRONTEND_URL = "https://pellicura.com"
+```
+
+### Staging (backend/fly.staging.toml)
+
+```toml
+[env]
+  PORT = "8000"
+  ENV = "staging"
+  DEBUG = "true"
+  ALLOWED_ORIGINS = "[\"https://staging.pellicura.pages.dev\"]"
+  FRONTEND_URL = "https://staging.pellicura.pages.dev"
+```
+
+---
+
+## Frontend Environment Variables
+
+Frontend uses Vite, which requires environment variables at **build time**.
+
+### Build-Time Variables
+
+| Variable | Description | Set In |
+|----------|-------------|--------|
+| `VITE_API_URL` | Backend API URL | GitHub Actions workflow |
+
+### GitHub Actions Configuration
+
+In `.github/workflows/deploy-cloudflare.yml`:
+```yaml
+- name: Build frontend
+  run: npm run build
+  env:
+    VITE_API_URL: https://pellicura-api.fly.dev/api/v1
+```
+
+---
+
+## Database Configuration
+
+### Railway PostgreSQL
+
+| Variable | Description |
+|----------|-------------|
+| `DATABASE_URL` | Full connection string from Railway |
+
+Format: `postgresql://user:password@host:port/database`
+
+### Getting Railway Connection String
+
+1. Go to Railway Dashboard
+2. Select your PostgreSQL service
+3. Click **Variables** tab
+4. Copy `DATABASE_URL`
+
+---
+
+## Third-Party API Keys (Optional)
+
+These are optional integrations that enhance functionality.
+
+| Service | Secret Name | Purpose | Required |
+|---------|-------------|---------|----------|
+| SendGrid | `SENDGRID_API_KEY` | Email sending | For email features |
+| OpenAI | `OPENAI_API_KEY` | AI analysis | For AI features |
+| Cloudinary | `CLOUDINARY_URL` | Image storage | For image uploads |
+| Skinive | `SKINIVE_API_KEY` | Skin analysis API | Optional |
+
+---
+
+## Quick Setup Checklist
+
+### GitHub Secrets
+- [ ] `FLY_API_TOKEN` - From `flyctl tokens create deploy`
+- [ ] `CLOUDFLARE_ACCOUNT_ID` - From Cloudflare dashboard
+- [ ] `CLOUDFLARE_API_TOKEN` - Create with Pages permissions
+
+### Fly.io Secrets (Production)
+- [ ] `SECRET_KEY` - Generate with `openssl rand -hex 32`
+- [ ] `DATABASE_URL` - From Railway
+- [ ] `RUN_MIGRATIONS=true`
+- [ ] `ALLOW_PROD_MIGRATIONS=true`
+- [ ] `ALGORITHM=HS256`
+- [ ] `ACCESS_TOKEN_EXPIRE_MINUTES=60`
+
+### Fly.io Secrets (Staging)
+- [ ] Same as production with staging-specific values
+
+---
+
+## Security Best Practices
+
+1. **Never commit secrets** to git
+2. **Use different secrets** for staging and production
+3. **Rotate secrets** quarterly
+4. **Use strong random values** for SECRET_KEY
+5. **Limit API token permissions** to minimum required
+
+---
+
+**End of Document**

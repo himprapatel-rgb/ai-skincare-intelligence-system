@@ -1,177 +1,126 @@
 # AI Skincare Intelligence System - Deployment URLs
 
-> **ℹ️ NOTE:** This document contains historical deployment information. For current status, see:
-> - [Implementation Status (Jan 26, 2026)](docs/06-operations/Implementation-Status-2026-01-26.md)
-> - [Deployment Guide](docs/05-deployment/Deployment-Guide.md)
-
-**Last Updated**: January 26, 2026, 11:45 PM GMT  
-**Current Status (Jan 26, 2026):** Frontend ✅ Live | Backend ⚠️ Verify | Database ✅ Operational
-
-## 🌐 Production Environments
-
-### Backend API (Railway)
-**URL**: https://ai-skincare-intelligence-system-production.up.railway.app
-**Status**: ⚠️ Pending health verification after latest deploy
-**Platform**: Railway
-**Region**: us-east4 (USA East)
-**Environment**: Production
-
-**API Endpoints** (when operational):
-- Health Check: `https://ai-skincare-intelligence-system-production.up.railway.app/health`
-- API Docs: `https://ai-skincare-intelligence-system-production.up.railway.app/docs`
-- API v1: `https://ai-skincare-intelligence-system-production.up.railway.app/api/v1/`
-
-### Web Application (Frontend)
-**Status**: ✅ DEPLOYED
-**Platform**: Railway
-**URL**: https://frontend-production-0415.up.railway.app
-**Repository**: https://github.com/himprapatel-rgb/ai-skincare-intelligence-system/tree/main/frontend
-
-### iOS Application
-**Status**: 🔄 IN DEVELOPMENT
-**Platform**: Apple App Store (Future)
-**TestFlight**: Not yet configured
-
-**Action Required**: 
-1. Complete iOS app development
-2. Set up Apple Developer account
-3. Configure TestFlight for beta testing
-4. Submit to App Store
-
-### Android Application
-**Status**: 🔄 IN DEVELOPMENT
-**Platform**: Google Play Store (Future)
-**Internal Testing**: Not yet configured
-
-**Action Required**:
-1. Complete Android app development
-2. Set up Google Play Console
-3. Configure internal/closed testing
-4. Submit to Play Store
+**Last Updated**: January 26, 2026  
+**Current Status:** Production ✅ | Staging ✅ | Database ✅
 
 ---
 
-## 🔧 Development & Testing
+## Production Environment
+
+| Component | URL | Platform | Status |
+|-----------|-----|----------|--------|
+| **Frontend** | https://pellicura.com | Cloudflare Pages | ✅ Live |
+| **Backend API** | https://pellicura-api.fly.dev | Fly.io | ✅ Live |
+| **Database** | Railway PostgreSQL | Railway | ✅ Operational |
+
+### Production API Endpoints
+- Health Check: `https://pellicura-api.fly.dev/api/health`
+- API Docs: `https://pellicura-api.fly.dev/docs`
+- API v1: `https://pellicura-api.fly.dev/api/v1/`
+
+---
+
+## Staging Environment
+
+| Component | URL | Platform | Status |
+|-----------|-----|----------|--------|
+| **Frontend** | https://staging.pellicura.pages.dev | Cloudflare Pages | ✅ Live |
+| **Backend API** | https://pellicura-api-staging.fly.dev | Fly.io | ✅ Live |
+| **Database** | Railway PostgreSQL (shared) | Railway | ✅ Operational |
+
+### Staging API Endpoints
+- Health Check: `https://pellicura-api-staging.fly.dev/api/health`
+- API Docs: `https://pellicura-api-staging.fly.dev/docs`
+- API v1: `https://pellicura-api-staging.fly.dev/api/v1/`
+
+---
+
+## Git Branches & Auto-Deploy
+
+| Branch | Deploys To | Trigger |
+|--------|------------|---------|
+| `main` | Production | Auto on push |
+| `develop` | Staging | Auto on push |
+
+---
+
+## Infrastructure Summary
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    PELLICURA INFRASTRUCTURE                      │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│   STAGING                           PRODUCTION                   │
+│   ───────                           ──────────                   │
+│                                                                  │
+│   staging.pellicura.pages.dev       pellicura.com               │
+│           │                              │                       │
+│           ▼                              ▼                       │
+│   Cloudflare Pages                 Cloudflare Pages             │
+│           │                              │                       │
+│           ▼                              ▼                       │
+│   pellicura-api-staging            pellicura-api                │
+│   (Fly.io London)                  (Fly.io London)              │
+│           │                              │                       │
+│           └──────────┬───────────────────┘                       │
+│                      ▼                                           │
+│              Railway PostgreSQL                                  │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Development & CI/CD
 
 ### GitHub Repository
-**URL**: https://github.com/himprapatel-rgb/ai-skincare-intelligence-system
-**Visibility**: Private
+- **URL**: https://github.com/himprapatel-rgb/ai-skincare-intelligence-system
+- **CI/CD**: https://github.com/himprapatel-rgb/ai-skincare-intelligence-system/actions
 
-### CI/CD Pipeline
-**URL**: https://github.com/himprapatel-rgb/ai-skincare-intelligence-system/actions
-**Status**: ✅ OPERATIONAL
-**Latest Run**: CI - Tests #63 - SUCCESS (23s)
-
-### VS Code Codespaces
-**URL**: https://probable-funicular-x5757jw95vg6hp64v.github.dev/
-**Status**: ✅ ACTIVE
+### GitHub Actions Workflows
+| Workflow | Trigger | Deploys To |
+|----------|---------|------------|
+| `deploy-cloudflare.yml` | Push to `main` (frontend changes) | Production Frontend |
+| `deploy-fly.yml` | Push to `main` (backend changes) | Production Backend |
+| `deploy-staging.yml` | Push to `develop` | Staging (both) |
 
 ---
 
-## 📱 Mobile App Distribution (Planned)
+## Configuration Files
 
-### iOS TestFlight (Beta)
-**Status**: Not configured
-**Public Link**: TBD
-**Requirements**:
-- Apple Developer Program membership ($99/year)
-- App Store Connect setup
-- TestFlight configuration
-
-### Android Internal Testing
-**Status**: Not configured
-**Public Link**: TBD
-**Requirements**:
-- Google Play Console account ($25 one-time)
-- Closed testing track setup
-- Internal testing configuration
+| File | Purpose |
+|------|---------|
+| `backend/fly.toml` | Production backend (Fly.io) |
+| `backend/fly.staging.toml` | Staging backend (Fly.io) |
+| `frontend/wrangler.toml` | Frontend (Cloudflare Pages) |
+| `.github/workflows/deploy-*.yml` | CI/CD pipelines |
 
 ---
 
-## 🚀 Deployment Checklist
+## Required Secrets (GitHub)
 
-### Backend (Railway) - ⚠️ VERIFY HEALTH
-- [x] Initial deployment configured
-- [x] Auto-deploy from GitHub enabled
-- [x] Environment variables set
-- [ ] Verify health check endpoint
-- [ ] Test API endpoints
-
-### Frontend (Railway) - ✅ LIVE
-- [x] Railway frontend service created
-- [x] Build and start commands configured
-- [x] Public domain generated
-- [x] Deployment verified
-- [ ] Update README with live URL (optional)
-
-### iOS App - 📋 TO DO
-- [ ] Complete app development
-- [ ] Enroll in Apple Developer Program
-- [ ] Create App Store Connect account
-- [ ] Configure app signing & provisioning
-- [ ] Set up TestFlight
-- [ ] Invite beta testers
-- [ ] Submit for App Store review
-- [ ] Publish to App Store
-
-### Android App - 📋 TO DO
-- [ ] Complete app development
-- [ ] Create Google Play Console account
-- [ ] Configure app signing
-- [ ] Create store listing
-- [ ] Set up internal testing track
-- [ ] Invite beta testers
-- [ ] Submit for Play Store review
-- [ ] Publish to Play Store
+| Secret | Description |
+|--------|-------------|
+| `FLY_API_TOKEN` | Fly.io deployment token |
+| `CLOUDFLARE_ACCOUNT_ID` | Cloudflare account ID |
+| `CLOUDFLARE_API_TOKEN` | Cloudflare API token |
 
 ---
 
-## 🛠️ Next Steps (Priority Order)
+## Mobile Apps (Planned)
 
-### IMMEDIATE (This Week)
-1. **Fix Backend 502 Error** - Investigate Railway deployment logs
-2. **Deploy Frontend** - Railway service live
-3. **Create Deployment Documentation** - Step-by-step guides
-
-### SHORT-TERM (Next 2 Weeks)
-4. Configure custom domain for web app (optional)
-5. Set up SSL certificates
-6. Create staging environment
-7. Set up monitoring & analytics
-
-### MEDIUM-TERM (Next Month)
-8. Complete iOS app MVP
-9. Complete Android app MVP
-10. Set up TestFlight for iOS
-11. Set up Google Play internal testing
-12. Invite beta testers
-
-### LONG-TERM (Next Quarter)
-13. Submit apps to stores
-14. Launch marketing campaign
-15. Monitor user feedback
-16. Iterate based on feedback
+| Platform | Status | Distribution |
+|----------|--------|--------------|
+| iOS | 🔄 Development | TestFlight (future) |
+| Android | 🔄 Development | Play Store (future) |
 
 ---
 
-## 📊 Deployment Status Dashboard
+## Support & Documentation
 
-| Platform | Status | URL | Last Updated |
-|----------|--------|-----|-------------|
-| Backend API | ⚠️ Verify | https://ai-skincare-intelligence-system-production.up.railway.app | 2026-01-26 |
-| Web Frontend | ✅ Live | https://frontend-production-0415.up.railway.app | 2026-01-26 |
-| iOS App | 🔄 Dev | Not deployed | - |
-| Android App | 🔄 Dev | Not deployed | - |
-| CI/CD | ✅ Active | https://github.com/.../actions | 2025-12-05 |
-
----
-
-## 📞 Support & Documentation
-
-- **Repository**: https://github.com/himprapatel-rgb/ai-skincare-intelligence-system
-- **CI/CD Status**: docs/CI-CD-STATUS-UPDATE-2025-12-05.md
-- **Product Backlog**: docs/Product-Backlog-V5.md
-- **SRS Document**: docs/SRS-V5-Enhanced.md
+- **Deployment Guide**: [docs/05-deployment/Deployment-Guide.md](docs/05-deployment/Deployment-Guide.md)
+- **Architecture**: [docs/02-architecture/](docs/02-architecture/)
+- **Quick Start**: [docs/00-index/Quick-Start.md](docs/00-index/Quick-Start.md)
 
 **Last Reviewed**: January 26, 2026
-**Next Review**: February 2, 2026

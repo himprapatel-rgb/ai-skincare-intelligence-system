@@ -16,6 +16,9 @@ import { useAuth } from '../context/AuthContext';
 import { useShelf } from '../context/ShelfContext';
 import './ProductScannerPage.css';
 
+// API base URL - use environment variable or fallback to production
+const API_BASE = import.meta.env.VITE_API_URL || 'https://pellicura-api.fly.dev/api/v1';
+
 interface KeyIngredient {
   name: string;
   percentage?: string;  // e.g., "10%", "2%"
@@ -247,7 +250,7 @@ const ProductScannerPage: React.FC = () => {
     setError(null);
     
     try {
-      const response = await fetch('/api/v1/products/scan-barcode', {
+      const response = await fetch(`${API_BASE}/products/scan-barcode`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -300,7 +303,7 @@ const ProductScannerPage: React.FC = () => {
       const base64 = await fileToBase64(file);
       setProcessingStep('Analyzing with AI...');
       
-      const response = await fetch('/api/v1/products/identify-from-image', {
+      const response = await fetch(`${API_BASE}/products/identify-from-image`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

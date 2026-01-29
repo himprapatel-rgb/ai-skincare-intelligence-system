@@ -135,6 +135,30 @@ class Settings(BaseSettings):
         description="Model version identifier for tracking"
     )
 
+    # Replicate AI API (Premium AI Processing)
+    REPLICATE_API_TOKEN: str | None = Field(
+        default=None,
+        description="Replicate API token for premium AI models (3D face, enhancement)"
+    )
+
+    # Cloudflare R2 Storage (S3-compatible)
+    R2_ACCESS_KEY_ID: str | None = Field(
+        default=None,
+        description="Cloudflare R2 access key ID"
+    )
+    R2_SECRET_ACCESS_KEY: str | None = Field(
+        default=None,
+        description="Cloudflare R2 secret access key"
+    )
+    R2_BUCKET_NAME: str = Field(
+        default="pellicura-assets",
+        description="Cloudflare R2 bucket name"
+    )
+    R2_PUBLIC_URL: str | None = Field(
+        default=None,
+        description="Public URL for R2 bucket (e.g., https://pub-xxx.r2.dev)"
+    )
+
     class Config:
         env_file = ".env"
         case_sensitive = True

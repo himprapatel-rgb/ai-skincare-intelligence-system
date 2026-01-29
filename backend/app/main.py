@@ -41,6 +41,7 @@ from app.models.progress_photo import ProgressPhoto
 from app.models.saved_routine import SavedRoutine
 from app.routers import (  # GDPR & User Management
     admin,
+    ai_processing,
     consent,
     digital_twin,
     favorites,
@@ -360,6 +361,7 @@ app.include_router(favorites.router, prefix="/api/v1", tags=["favorites"])  # Fa
 app.include_router(notifications.router, prefix="/api/v1", tags=["notifications"])  # Notifications API
 app.include_router(shelf.router, prefix="/api/v1", tags=["shelf"])  # Product Shelf API
 app.include_router(goals.router, prefix="/api/v1", tags=["goals"])  # Skin Goals API
+app.include_router(ai_processing.router, prefix="/api/v1", tags=["ai"])  # AI Processing (3D, Enhancement, BG Removal)
 
 @app.get("/", tags=["Root"])
 def read_root():

@@ -55,6 +55,10 @@ class ShelfProductUpdate(BaseModel):
     purchase_date: Optional[datetime] = None
     expiry_date: Optional[datetime] = None
     would_repurchase: Optional[bool] = None
+    product_image: Optional[str] = None  # Allow updating product image
+    product_name: Optional[str] = None   # Allow updating product name
+    product_brand: Optional[str] = None  # Allow updating brand
+    product_category: Optional[str] = None  # Allow updating category
 
 
 class ShelfProductResponse(BaseModel):

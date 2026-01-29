@@ -274,13 +274,15 @@ const ProductScannerPage: React.FC = () => {
             source: 'barcode'
           });
         } else {
-          setError(`Product not found for barcode: ${barcode}. Try taking a photo instead.`);
+          setError(`Product not found for barcode: ${barcode}. Try using "Take Photo" mode instead.`);
         }
       } else {
-        throw new Error('Scan failed');
+        // Try to get error message from response
+        const errorData = await response.json().catch(() => ({}));
+        setError(errorData.detail || 'Failed to scan barcode. Please try again.');
       }
     } catch (err) {
-      setError('Failed to look up product. Please try again.');
+      setError('Failed to look up product. Check your internet connection and try again.');
       console.error('Barcode lookup error:', err);
     } finally {
       setProcessing(false);
@@ -345,9 +347,14 @@ const ProductScannerPage: React.FC = () => {
       } else if (response.status === 401) {
         setError('Please log in to use product identification.');
       } else if (response.status === 503) {
-        setError('AI service is temporarily unavailable. Please try again later.');
+        const errorData = await response.json().catch(() => ({}));
+        setError(errorData.detail || 'AI service is temporarily unavailable. Please try again later.');
+      } else if (response.status === 429) {
+        setError('AI service is busy. Please wait a moment and try again.');
       } else {
-        throw new Error('Identification failed');
+        // Try to get error message from response
+        const errorData = await response.json().catch(() => ({}));
+        setError(errorData.detail || 'Could not identify product. Try a clearer photo with the product label visible.');
       }
     } catch (err) {
       setError('Failed to identify product. Please try again with a clearer image.');

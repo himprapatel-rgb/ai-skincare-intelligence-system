@@ -550,7 +550,17 @@ const ProductScannerPage: React.FC = () => {
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
                   className="btn-primary"
-                  style={{ marginTop: '16px', padding: '12px 24px', fontSize: '1rem' }}
+                  style={{ 
+                    marginTop: '16px', 
+                    padding: '12px 24px', 
+                    fontSize: '1rem',
+                    backgroundColor: '#3b82f6',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    fontWeight: '600'
+                  }}
                 >
                   Choose File
                 </button>

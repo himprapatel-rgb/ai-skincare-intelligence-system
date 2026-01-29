@@ -45,12 +45,17 @@ Pellicura is an **AI-powered skincare intelligence app** that:
 
 ---
 
-## Git Branches & Auto-Deploy
+## Git Branches & Deployment
 
 | Branch | Deploys To | Trigger |
 |--------|------------|---------|
-| `main` | Production | Auto on push |
-| `develop` | Staging | Auto on push |
+| `develop` | Staging | ✅ Auto on push |
+| `main` | Production | 🔒 Manual only (requires approval) |
+
+### Workflow
+1. **Development**: Push to `develop` → Auto-deploys to Staging
+2. **Testing**: Test on staging.pellicura.pages.dev
+3. **Production**: Manual deploy from GitHub Actions (requires typing "deploy")
 
 ---
 

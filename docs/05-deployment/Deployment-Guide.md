@@ -148,21 +148,35 @@ python scripts/run_migrations.py
 │     - Backend: http://localhost:8000                             │
 │     - Frontend: http://localhost:5173                            │
 │                                                                  │
-│  3. Commit and push                                              │
+│  3. Commit and push to develop                                   │
 │     git add .                                                    │
 │     git commit -m "feat: add my feature"                         │
-│     git push origin feature/my-feature                           │
+│     git push origin develop                                      │
 │                                                                  │
-│  4. Create PR to develop → Auto-deploys to Staging               │
-│                                                                  │
-│  5. Test on Staging environment                                  │
+│  4. Auto-deploys to STAGING                                      │
 │     - https://staging.pellicura.pages.dev                        │
 │     - https://pellicura-api-staging.fly.dev                      │
 │                                                                  │
-│  6. Create PR from develop → main → Auto-deploys to Production   │
+│  5. Test thoroughly on Staging                                   │
+│                                                                  │
+│  6. When ready for PRODUCTION (requires approval):               │
+│     - Go to GitHub Actions                                       │
+│     - Run "Deploy Backend to Production" manually                │
+│     - Run "Deploy Frontend to Production" manually               │
+│     - Type "deploy" to confirm                                   │
 │                                                                  │
 └─────────────────────────────────────────────────────────────────┘
 ```
+
+### 4.2 Production Deployment (Manual Only)
+
+**Production deployments require explicit approval.**
+
+1. Go to: https://github.com/himprapatel-rgb/ai-skincare-intelligence-system/actions
+2. Select "Deploy Backend to Production" or "Deploy Frontend to Production"
+3. Click "Run workflow"
+4. Type `deploy` in the confirmation field
+5. Click "Run workflow" button
 
 ### 4.2 Manual Deployment
 

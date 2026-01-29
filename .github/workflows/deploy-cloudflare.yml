@@ -1,23 +1,28 @@
 name: Deploy Frontend to Production
 
+# PRODUCTION DEPLOYS REQUIRE MANUAL APPROVAL
+# Only runs when manually triggered from GitHub Actions UI
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'frontend/**'
-      - '.github/workflows/deploy-cloudflare.yml'
   workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type "deploy" to confirm production deployment'
+        required: true
+        type: string
 
 jobs:
   deploy:
-    name: Deploy to Cloudflare Pages
+    name: Deploy to Cloudflare Pages Production
     runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.confirm == 'deploy' }}
     defaults:
       run:
         working-directory: ./frontend
     
     steps:
+      - name: Confirm deployment
+        run: echo "🚀 Deploying to PRODUCTION with approval..."
+      
       - name: Checkout repository
         uses: actions/checkout@v4
       

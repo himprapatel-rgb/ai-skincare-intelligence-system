@@ -39,6 +39,28 @@ interface ScannedProduct {
 
 type ScanMode = 'barcode' | 'photo';
 
+// Clean white background placeholder for products without images
+const placeholderImage =
+  'data:image/svg+xml;utf8,' +
+  encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">' +
+      '<rect width="100%" height="100%" fill="#ffffff"/>' +
+      '<defs>' +
+        '<linearGradient id="icon" x1="0%" y1="0%" x2="100%" y2="100%">' +
+          '<stop offset="0%" stop-color="#3b82f6"/>' +
+          '<stop offset="100%" stop-color="#8b5cf6"/>' +
+        '</linearGradient>' +
+      '</defs>' +
+      '<g transform="translate(150, 120)">' +
+        '<rect x="10" y="0" width="80" height="140" rx="10" fill="url(#icon)" opacity="0.9"/>' +
+        '<rect x="20" y="10" width="60" height="25" rx="5" fill="white" opacity="0.3"/>' +
+        '<circle cx="50" cy="90" r="25" fill="white" opacity="0.2"/>' +
+        '<rect x="30" y="150" width="40" height="8" rx="4" fill="#e5e7eb"/>' +
+      '</g>' +
+      '<text x="200" y="340" text-anchor="middle" font-family="Inter, sans-serif" font-size="14" fill="#9ca3af">Product Image</text>' +
+    '</svg>'
+  );
+
 /**
  * Product Scanner Page (FR28 from SRS)
  * 
@@ -471,23 +493,18 @@ const ProductScannerPage: React.FC = () => {
               <div className="card-content">
                 <div className="product-header">
                   <div className="product-image">
-                    {scannedProduct.imageUrl ? (
-                      <img 
-                        src={scannedProduct.imageUrl} 
-                        alt={scannedProduct.name} 
-                        loading="lazy" 
-                        width={120} 
-                        height={120} 
-                        onError={(e) => {
-                          // Hide image on error
-                          (e.target as HTMLImageElement).style.display = 'none';
-                        }}
-                      />
-                    ) : (
-                      <div className="product-image-placeholder">
-                        <IconPackage size={48} strokeWidth={1.5} />
-                      </div>
-                    )}
+                    <img 
+                      src={scannedProduct.imageUrl || placeholderImage} 
+                      alt={scannedProduct.name} 
+                      loading="lazy" 
+                      width={120} 
+                      height={120} 
+                      onError={(e) => {
+                        // Use placeholder on error
+                        (e.target as HTMLImageElement).src = placeholderImage;
+                      }}
+                      className="product-img"
+                    />
                   </div>
                   <div className="product-details">
                     <h3>{scannedProduct.name}</h3>

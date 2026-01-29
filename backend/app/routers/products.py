@@ -486,37 +486,65 @@ class ProductImageResponse(BaseModel):
     image_source: Optional[str] = None  # Where the image came from
 
 
-async def fetch_clean_product_image(brand: str, product_name: str) -> Optional[str]:
+async def fetch_clean_product_image(brand: str, product_name: str) -> tuple[Optional[str], Optional[str]]:
     """
-    Fetch a clean product image from various sources.
-    Priority: 1. Open Beauty Facts  2. Open Food Facts  3. None
+    Fetch a clean product image with white background from various sources.
+    Priority: 1. Open Beauty Facts (best quality)  2. Open Food Facts  3. None
+    
+    Returns: (image_url, source) tuple
     """
     try:
-        async with httpx.AsyncClient(timeout=10.0) as client:
-            # Search Open Beauty Facts by product name
+        async with httpx.AsyncClient(timeout=15.0) as client:
             search_query = f"{brand} {product_name}".replace(" ", "+")
             
-            # Try Open Beauty Facts search
-            obf_url = f"https://world.openbeautyfacts.org/cgi/search.pl?search_terms={search_query}&search_simple=1&action=process&json=1&page_size=5"
+            # Try Open Beauty Facts search - prefer high-res images
+            obf_url = f"https://world.openbeautyfacts.org/cgi/search.pl?search_terms={search_query}&search_simple=1&action=process&json=1&page_size=10"
             response = await client.get(obf_url)
             
             if response.status_code == 200:
                 data = response.json()
                 products = data.get("products", [])
                 
+                # Sort by image quality - prefer front images, then large images
                 for product in products:
-                    image_url = product.get("image_front_url") or product.get("image_url")
-                    if image_url:
-                        # Verify image is accessible
+                    # Priority: front_url > selected_images > image_url
+                    possible_images = []
+                    
+                    # Check for high-res front image (best quality, usually white bg)
+                    if product.get("image_front_url"):
+                        possible_images.append(product["image_front_url"])
+                    
+                    # Check selected_images for front display
+                    selected = product.get("selected_images", {})
+                    front_display = selected.get("front", {}).get("display", {})
+                    if front_display:
+                        # Get highest resolution available
+                        for lang in ["en", "fr", "de", ""]:
+                            if front_display.get(lang):
+                                possible_images.append(front_display[lang])
+                                break
+                    
+                    # Fallback to regular image
+                    if product.get("image_url"):
+                        possible_images.append(product["image_url"])
+                    
+                    # Try each image URL
+                    for image_url in possible_images:
+                        if not image_url:
+                            continue
                         try:
+                            # Verify image is accessible and get size
                             img_check = await client.head(image_url, timeout=5.0)
                             if img_check.status_code == 200:
-                                return image_url
+                                # Prefer larger images (better quality)
+                                content_length = img_check.headers.get("content-length", "0")
+                                if int(content_length) > 5000:  # At least 5KB
+                                    return (image_url, "open_beauty_facts")
                         except:
                             continue
             
-            # Try Open Food Facts as fallback (some beauty products are there)
-            off_url = f"https://world.openfoodfacts.org/cgi/search.pl?search_terms={search_query}&search_simple=1&action=process&json=1&page_size=3"
+            # Try Open Food Facts as fallback
+            off_url = f"https://world.openfoodfacts.org/cgi/search.pl?search_terms={search_query}&search_simple=1&action=process&json=1&page_size=5"
             response = await client.get(off_url)
             
             if response.status_code == 200:
@@ -524,14 +552,20 @@ async def fetch_clean_product_image(brand: str, product_name: str) -> Optional[s
                 products = data.get("products", [])
                 
                 for product in products:
+                    # Prefer front images
                     image_url = product.get("image_front_url") or product.get("image_url")
                     if image_url:
-                        return image_url
+                        try:
+                            img_check = await client.head(image_url, timeout=5.0)
+                            if img_check.status_code == 200:
+                                return (image_url, "open_food_facts")
+                        except:
+                            continue
                         
     except Exception as e:
         logger.warning(f"Failed to fetch product image: {e}")
     
-    return None
+    return (None, None)
 
 
 @router.post("/identify-from-image", response_model=ProductImageResponse)
@@ -689,10 +723,10 @@ If you cannot identify the product, return:
         
         # If no image found in database, search online for a clean product image
         if not product_image_url and brand and product_name:
-            fetched_image = await fetch_clean_product_image(brand, product_name)
+            fetched_image, fetched_source = await fetch_clean_product_image(brand, product_name)
             if fetched_image:
                 product_image_url = fetched_image
-                image_source = "open_beauty_facts"
+                image_source = fetched_source or "online"
         
         # AUTO-SAVE: If product not in database and confidence is high, save it
         if not matched_product and product_name and brand and confidence >= 0.7:

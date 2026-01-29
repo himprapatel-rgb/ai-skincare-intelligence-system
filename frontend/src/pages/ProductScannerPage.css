@@ -621,20 +621,26 @@
   border-radius: 12px;
   overflow: hidden;
   box-shadow: var(--shadow);
+  background: #ffffff;
+  border: 1px solid var(--border);
+  padding: 8px;
 }
 
-.product-image img {
-  width: 100%;
-  height: auto;
+.product-image img,
+.product-image .product-img {
+  width: 120px;
+  height: 120px;
   display: block;
-  object-fit: cover;
+  object-fit: contain;
+  background: #ffffff;
+  border-radius: 8px;
 }
 
 .product-image-placeholder {
   width: 120px;
   height: 120px;
-  background: var(--bg-light);
-  border-radius: 12px;
+  background: #ffffff;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;

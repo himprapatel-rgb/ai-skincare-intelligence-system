@@ -580,39 +580,27 @@ Tasks to execute autonomously. Approval granted for all items.
 
 **Post-Launch Roadmap** - See `docs/FUTURE-TASKS.md` for full details.
 
-### Cloudflare Migration (Scheduled: 2026-01-29)
+### Cloud Infrastructure (Completed: 2026-01-26)
 
 | # | Task | Priority | Status |
 |---|------|----------|--------|
-| 501 | Database migration to Neon PostgreSQL | 🟠 P1 | Planned |
-| 502 | Backend deployment to Fly.io | 🟠 P1 | Planned |
-| 503 | Frontend deployment to Cloudflare Pages | 🟠 P1 | Planned |
-| 504 | DNS configuration (pellicura.com) | 🟠 P1 | Planned |
-| 505 | SSL/TLS setup on Cloudflare | 🟠 P1 | Planned |
-| 506 | Production verification & testing | 🟠 P1 | Planned |
-| 507 | Railway decommission | 🟢 P3 | Planned |
+| 501 | Database on Railway PostgreSQL | 🟠 P1 | ✅ Done |
+| 502 | Backend deployment to Fly.io | 🟠 P1 | ✅ Done |
+| 503 | Frontend deployment to Cloudflare Pages | 🟠 P1 | ✅ Done |
+| 504 | DNS configuration (pellicura.com) | 🟠 P1 | ✅ Done |
+| 505 | SSL/TLS setup on Cloudflare | 🟠 P1 | ✅ Done |
+| 506 | Staging environment setup | 🟠 P1 | ✅ Done |
+| 507 | Production manual-deploy protection | 🟠 P1 | ✅ Done |
 
-### AI & ML Enhancements
-
-| # | Task | Priority | Status |
-|---|------|----------|--------|
-| 508 | AI Image Enhancement - Client-side (OpenCV.js) | 🟠 P1 | Planned |
-| 509 | AI Image Enhancement - Server-side (Real-ESRGAN) | 🟡 P2 | Planned |
-| 510 | Custom skin condition model training | 🟡 P2 | Planned |
-| 511 | Ingredient-skin interaction AI | 🟢 P3 | Planned |
-| 512 | Product efficacy prediction model | 🟢 P3 | Planned |
-
-### 3D Face Scanning (See `docs/3D-FACE-SCAN-PLAN.md`)
+### AI Skin Analysis Enhancements
 
 | # | Task | Priority | Status |
 |---|------|----------|--------|
-| 513 | Multi-Angle Capture - Guided 5-angle photo capture | 🟠 P1 | Planned |
-| 514 | 3D Face Viewer - Three.js interactive model | 🟠 P1 | Planned |
-| 515 | Region-Based Analysis - Forehead, cheeks, chin, etc. | 🟡 P2 | Planned |
-| 516 | Photogrammetry - Server-side 3D reconstruction | 🟢 P3 | Planned |
-| 517 | iOS LiDAR Scanning - React Native + ARKit | 🔵 P4 | Future |
-| 518 | NeRF Video Scanning - AI 3D from video | 🔵 P4 | Future |
-| 519 | 3D Before/After - Compare 3D models over time | 🟢 P3 | Planned |
+| 508 | Custom skin condition model training (acne, rosacea) | 🟡 P2 | Planned |
+| 509 | Ingredient-skin interaction AI | 🟢 P3 | Planned |
+| 510 | Product efficacy prediction model | 🟢 P3 | Planned |
+| 511 | Multi-angle analysis (forehead, cheeks, chin) | 🟡 P2 | Planned |
+| 512 | Progress comparison AI (before/after) | 🟡 P2 | Planned |
 
 ### Mobile & Apps
 
@@ -642,15 +630,15 @@ Tasks to execute autonomously. Approval granted for all items.
 | 531 | Affiliate product links | 🟢 P3 | Planned |
 | 532 | White-label API for partners | 🔵 P4 | Future |
 
-### Background Removal (See `docs/BACKGROUND-REMOVAL-PLAN.md`)
+### CI/CD & DevOps
 
 | # | Task | Priority | Status |
 |---|------|----------|--------|
-| 533 | MediaPipe background removal integration | 🟠 P1 | Planned |
-| 534 | Real-time BG removal preview in camera | 🟠 P1 | Planned |
-| 535 | Neutral background options (white/gray/custom) | 🟡 P2 | Planned |
-| 536 | Server-side Rembg for premium quality | 🟢 P3 | Planned |
-| 537 | Before/after comparison viewer | 🟡 P2 | Planned |
+| 533 | Add GitHub Secrets (FLY_API_TOKEN, CLOUDFLARE) | 🟠 P1 | TODO |
+| 534 | Verify staging auto-deploy works | 🟠 P1 | TODO |
+| 535 | Database backup automation | 🟡 P2 | Planned |
+| 536 | Error monitoring (Sentry) | 🟡 P2 | Planned |
+| 537 | Uptime monitoring alerts | 🟢 P3 | Planned |
 
 ---
 

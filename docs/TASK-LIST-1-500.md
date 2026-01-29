@@ -642,6 +642,16 @@ Tasks to execute autonomously. Approval granted for all items.
 | 531 | Affiliate product links | 🟢 P3 | Planned |
 | 532 | White-label API for partners | 🔵 P4 | Future |
 
+### Background Removal (See `docs/BACKGROUND-REMOVAL-PLAN.md`)
+
+| # | Task | Priority | Status |
+|---|------|----------|--------|
+| 533 | MediaPipe background removal integration | 🟠 P1 | Planned |
+| 534 | Real-time BG removal preview in camera | 🟠 P1 | Planned |
+| 535 | Neutral background options (white/gray/custom) | 🟡 P2 | Planned |
+| 536 | Server-side Rembg for premium quality | 🟢 P3 | Planned |
+| 537 | Before/after comparison viewer | 🟡 P2 | Planned |
+
 ---
 
 ## How to use this list

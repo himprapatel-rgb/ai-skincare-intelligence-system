@@ -31,6 +31,16 @@
 | F6 | **Personalized ML Model** - User-specific skin predictions | 🔵 P4 | 1 month | Future |
 | F7 | **AR Skin Overlay** - Real-time skin analysis with AR | 🔵 P4 | 2 months | Future |
 
+### Background Removal (See `docs/BACKGROUND-REMOVAL-PLAN.md`)
+
+| # | Task | Priority | Effort | Status |
+|---|------|----------|--------|--------|
+| F53 | **MediaPipe BG Removal** - Client-side background removal | 🟠 P1 | 1 week | Planned |
+| F54 | **Real-time Preview** - Live BG removal in camera view | 🟠 P1 | 3 days | Planned |
+| F55 | **Background Options** - White/gray/custom backgrounds | 🟡 P2 | 2 days | Planned |
+| F56 | **Rembg Server** - Premium quality server-side removal | 🟢 P3 | 1 week | Planned |
+| F57 | **Before/After View** - Compare original vs clean image | 🟡 P2 | 3 days | Planned |
+
 ### 3D Face Scanning (See `docs/3D-FACE-SCAN-PLAN.md`)
 
 | # | Task | Priority | Effort | Status |

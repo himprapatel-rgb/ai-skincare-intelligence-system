@@ -1,9 +1,11 @@
 # Database Schema Documentation
 
-**Document Version:** 1.0  
+**Document Version:** 1.1  
 **Last Updated:** 2026-01-29  
 **Database:** PostgreSQL (Railway)  
-**ORM:** SQLAlchemy
+**ORM:** SQLAlchemy  
+**Backend:** Fly.io  
+**Frontend:** Cloudflare Pages
 
 ---
 

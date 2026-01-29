@@ -15,19 +15,20 @@
 
 | Resource | URL |
 |----------|-----|
-| **Production Domain** | [pellicura.com](https://pellicura.com) *(Cloudflare - Coming Soon)* |
-| **Current Frontend** | [frontend-production-0415.up.railway.app](https://frontend-production-0415.up.railway.app) |
-| **Current Backend** | [ai-skincare-intelligence-system-production.up.railway.app](https://ai-skincare-intelligence-system-production.up.railway.app) |
+| **Production Frontend** | [pellicura.pages.dev](https://pellicura.pages.dev) |
+| **Staging Frontend** | [staging.pellicura.pages.dev](https://staging.pellicura.pages.dev) |
+| **Production Backend** | [pellicura-api.fly.dev](https://pellicura-api.fly.dev) |
+| **Staging Backend** | [pellicura-api-staging.fly.dev](https://pellicura-api-staging.fly.dev) |
 | **API Documentation** | `/api/docs` (Swagger UI) |
 | **GitHub Repository** | [github.com/himprapatel-rgb/ai-skincare-intelligence-system](https://github.com/himprapatel-rgb/ai-skincare-intelligence-system) |
 
-### Upcoming Migration (2026-01-29)
-| Service | Current | Target |
-|---------|---------|--------|
-| Frontend | Railway | Cloudflare Pages |
-| Backend | Railway | Fly.io + Cloudflare |
-| Database | Railway PostgreSQL | Neon PostgreSQL |
-| Domain | Railway URLs | **pellicura.com** |
+### Infrastructure (Current)
+| Service | Platform | Status |
+|---------|----------|--------|
+| Frontend | Cloudflare Pages | ✅ Live |
+| Backend | Fly.io | ✅ Live |
+| Database | Railway PostgreSQL | ✅ Live |
+| Domain | pellicura.pages.dev | ✅ Active |
 
 ---
 
@@ -86,8 +87,9 @@ The AI Skincare Intelligence System is a full-stack web application that uses ar
 | **What-If Simulation** | Predict skin improvements based on product usage | ✅ Complete |
 | **Personalized Recommendations** | AI-generated product/routine suggestions | ✅ Complete |
 | **Routine Builder** | Create AM/PM skincare routines with reminders | ✅ Complete |
-| **Product Scanner** | Barcode/ingredient scanning for product analysis | ✅ Complete |
-| **My Shelf** | Track products you own and their status | ✅ Complete |
+| **Product Scanner** | Barcode/photo scanning with AI identification, ingredient percentages, harmful ingredient detection | ✅ Complete |
+| **My Shelf** | Track products with ratings, expiry dates, repurchase intentions, scan history | ✅ Complete |
+| **Ingredient Safety** | 50+ harmful ingredients database with severity levels, alternatives, and recommendations | ✅ Complete |
 | **Favorites** | Save favorite products and routines | ✅ Complete |
 | **Notifications** | In-app notifications and routine reminders | ✅ Complete |
 | **Progress Tracking** | Before/after comparisons and improvement charts | ✅ Complete |
@@ -258,29 +260,28 @@ npm run dev
 
 ## Deployment
 
-### Current Deployment (Railway)
+### Current Infrastructure
 
-| Service | URL | Status |
-|---------|-----|--------|
-| **Frontend** | https://frontend-production-0415.up.railway.app | ✅ Live |
-| **Backend** | https://ai-skincare-intelligence-system-production.up.railway.app | ✅ Live |
-| **Database** | Railway PostgreSQL | ✅ Live |
+| Service | Platform | URL | Status |
+|---------|----------|-----|--------|
+| **Frontend (Production)** | Cloudflare Pages | https://pellicura.pages.dev | ✅ Live |
+| **Frontend (Staging)** | Cloudflare Pages | https://staging.pellicura.pages.dev | ✅ Live |
+| **Backend (Production)** | Fly.io | https://pellicura-api.fly.dev | ✅ Live |
+| **Backend (Staging)** | Fly.io | https://pellicura-api-staging.fly.dev | ✅ Live |
+| **Database** | Railway PostgreSQL | Private | ✅ Live |
 
-### Target Deployment (Cloudflare - Migration 2026-01-29)
+### CI/CD Pipelines
 
-| Service | URL | Platform |
-|---------|-----|----------|
-| **Frontend** | https://pellicura.com | Cloudflare Pages |
-| **Backend** | https://api.pellicura.com | Fly.io + Cloudflare |
-| **Database** | Neon PostgreSQL | Serverless |
+| Branch | Frontend | Backend |
+|--------|----------|---------|
+| `main` | → Production (Cloudflare) | → Production (Fly.io) |
+| `develop` | → Staging (Cloudflare) | → Staging (Fly.io) |
 
-### Migration Plan
+### Deployment Workflow
 
-See [ZERO-DOWNTIME-MIGRATION-PLAN.md](./docs/ZERO-DOWNTIME-MIGRATION-PLAN.md) for details.
-
-- **Zero Downtime**: Railway runs parallel during migration
-- **Timeline**: 2026-01-29 to 2026-01-31
-- **Rollback**: Instant DNS switch back to Railway if needed
+- Push to `develop` → Staging deployment
+- Push to `main` → Production deployment
+- Database migrations run automatically on backend start
 
 ### CI/CD Pipeline
 
@@ -402,20 +403,28 @@ For questions or issues, please open a GitHub issue or contact the development t
 |-----------|--------|------|
 | MVP Development | ✅ Complete | 2026-01 |
 | 500 Task Checklist | ✅ 500/500 Complete | 2026-01-28 |
-| Railway Deployment | ✅ Live | 2026-01-28 |
-| Cloudflare Migration | 🔄 Scheduled | 2026-01-29 |
-| Production Launch | 🔄 Pending | TBD |
+| Fly.io + Cloudflare Migration | ✅ Complete | 2026-01-29 |
+| Product Scanner Enhancements | ✅ Complete | 2026-01-29 |
+| Ingredient Safety System | ✅ Complete | 2026-01-29 |
+| Production Launch | ✅ Live | 2026-01-29 |
+
+### Recent Updates (January 2026)
+
+- **Product Scanner**: AI-powered product identification with ingredient percentages, scan history, confidence scoring
+- **Ingredient Safety**: 50+ harmful ingredients database with severity levels, categories, alternatives
+- **My Shelf**: Interactive star ratings, expiry tracking, "Would Repurchase" toggle
+- **Infrastructure**: Migrated to Fly.io (backend) + Cloudflare Pages (frontend)
 
 ### Key Documents
 
 | Document | Description |
 |----------|-------------|
 | [TASK-LIST-1-500.md](./docs/TASK-LIST-1-500.md) | All 500 tasks completed |
-| [ZERO-DOWNTIME-MIGRATION-PLAN.md](./docs/ZERO-DOWNTIME-MIGRATION-PLAN.md) | Cloudflare migration plan |
-| [CLOUDFLARE-MIGRATION-PLAN.md](./docs/CLOUDFLARE-MIGRATION-PLAN.md) | Detailed migration architecture |
+| [DATABASE_SCHEMA.md](./docs/DATABASE_SCHEMA.md) | Complete database documentation |
+| [ARCHITECTURE.md](./docs/ARCHITECTURE.md) | System architecture |
 
 ---
 
-*Last updated: January 28, 2026*  
-*Domain: pellicura.com*  
-*Status: Production Ready - Awaiting Cloudflare Migration*
+*Last updated: January 29, 2026*  
+*Domain: pellicura.pages.dev*  
+*Status: Production Live on Fly.io + Cloudflare*

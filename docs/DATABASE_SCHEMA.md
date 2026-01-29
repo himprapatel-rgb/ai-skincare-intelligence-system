@@ -370,16 +370,44 @@ CREATE TABLE shelf_products (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
     product_id INTEGER REFERENCES products(id),
-    custom_name VARCHAR(255), -- For manual entries
-    status VARCHAR(50) DEFAULT 'using', -- 'using', 'wishlist', 'discontinued'
-    notes TEXT,
-    purchase_date DATE,
-    expiry_date DATE,
-    added_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    external_product_id VARCHAR(255),        -- Barcode or external ID
+    product_name VARCHAR(255) NOT NULL,      -- Product name
+    product_brand VARCHAR(255),              -- Brand name
+    product_category VARCHAR(100),           -- cleanser, moisturizer, serum, etc.
+    product_image VARCHAR(500),              -- Product image URL
+    status VARCHAR(50) DEFAULT 'active',     -- 'active', 'wishlist', 'discontinued', 'finished'
+    rating FLOAT,                            -- User's rating (1-5)
+    notes TEXT,                              -- User's notes
+    routine_type VARCHAR(20),                -- 'am', 'pm', 'both'
+    routine_order INTEGER,                   -- Order in routine
+    purchase_date TIMESTAMP,                 -- When purchased
+    expiry_date TIMESTAMP,                   -- Product expiration
+    purchase_price FLOAT,                    -- Purchase price
+    would_repurchase BOOLEAN,                -- Would repurchase? 
+    times_repurchased INTEGER DEFAULT 0,     -- Repurchase count
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP
 );
 
 CREATE INDEX idx_shelf_user_id ON shelf_products(user_id);
+CREATE INDEX idx_shelf_external_id ON shelf_products(external_product_id);
 ```
+
+| Column | Type | Description |
+|--------|------|-------------|
+| id | SERIAL | Primary key |
+| user_id | INTEGER | FK to users |
+| external_product_id | VARCHAR | Barcode/external ID for lookups |
+| product_name | VARCHAR | Product display name |
+| product_brand | VARCHAR | Brand name |
+| product_category | VARCHAR | Product category |
+| product_image | VARCHAR | Clean product image URL |
+| status | VARCHAR | active/wishlist/discontinued/finished |
+| rating | FLOAT | User's 1-5 star rating |
+| notes | TEXT | User notes (can include ingredients) |
+| expiry_date | TIMESTAMP | Expiration with reminder support |
+| would_repurchase | BOOLEAN | Repurchase intention toggle |
+| times_repurchased | INTEGER | Track repurchase count |
 
 ### skin_goals
 
@@ -494,4 +522,45 @@ ADD COLUMN IF NOT EXISTS column_name data_type DEFAULT default_value;
 
 ---
 
-*Last updated: January 27, 2026*
+## Application Services (Non-Database)
+
+### Ingredient Safety Database
+
+The application includes a **runtime ingredient safety database** (not stored in PostgreSQL) with 50+ harmful ingredients:
+
+**Location:** `backend/app/services/ingredient_safety.py`
+
+**Structure:**
+```python
+HARMFUL_INGREDIENTS_DB = {
+    "ingredient_key": HarmfulIngredient(
+        name="Display Name",
+        aliases=["alias1", "alias2"],
+        severity=Severity.HIGH | MODERATE | LOW,
+        categories=[ConcernCategory.IRRITANT, ...],
+        reason="Why it's flagged",
+        alternatives=["Safer alternatives"],
+        avoid_if=["Conditions to avoid"]
+    )
+}
+```
+
+**Categories:**
+- `IRRITANT` - Can irritate skin
+- `ALLERGEN` - Common allergen
+- `CARCINOGEN` - Cancer concerns
+- `ENDOCRINE_DISRUPTOR` - Hormone concerns
+- `ENVIRONMENTAL_TOXIN` - Environmental harm
+- `PREGNANCY_UNSAFE` - Avoid during pregnancy
+- `SENSITIZER` - Can cause sensitization
+- `COMEDOGENIC` - Can clog pores
+- `DRYING` - Can dry out skin
+
+**Severity Levels:**
+- `HIGH` - Avoid if possible
+- `MODERATE` - Use with caution
+- `LOW` - Generally safe but may cause issues for some
+
+---
+
+*Last updated: January 29, 2026*

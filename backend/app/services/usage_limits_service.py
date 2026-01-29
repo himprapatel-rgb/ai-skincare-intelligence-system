@@ -34,36 +34,37 @@ class UserTier(str, Enum):
 
 
 class FeatureType(str, Enum):
-    """Premium AI features that require limits"""
+    """
+    User-facing premium features that require limits.
+    
+    NOTE: Background removal, enhancement, upscale are INTERNAL processing
+    to improve scan quality - they run automatically and have NO limits.
+    
+    Only 3D Face Model is a user-facing premium feature.
+    """
+    FACE_3D = "face_3d"  # Only premium feature users see
+
+
+class InternalProcessing(str, Enum):
+    """
+    Internal processing steps - no limits, runs automatically.
+    These improve OUR analysis quality, users don't interact with these.
+    """
     BACKGROUND_REMOVAL = "background_removal"
     FACE_ENHANCEMENT = "face_enhancement"
     UPSCALE = "upscale"
-    FACE_3D = "face_3d"
-    FULL_PIPELINE = "full_pipeline"
 
 
-# Daily limits per tier
+# Daily limits per tier - ONLY for user-facing premium features
 DAILY_LIMITS = {
     UserTier.GUEST: {
-        FeatureType.BACKGROUND_REMOVAL: 0,
-        FeatureType.FACE_ENHANCEMENT: 0,
-        FeatureType.UPSCALE: 0,
-        FeatureType.FACE_3D: 0,
-        FeatureType.FULL_PIPELINE: 0,
+        FeatureType.FACE_3D: 0,  # Must login
     },
     UserTier.FREE: {
-        FeatureType.BACKGROUND_REMOVAL: 1,
-        FeatureType.FACE_ENHANCEMENT: 1,
-        FeatureType.UPSCALE: 1,
-        FeatureType.FACE_3D: 1,
-        FeatureType.FULL_PIPELINE: 1,  # Full pipeline counts as 1
+        FeatureType.FACE_3D: 1,  # 1 per day free
     },
     UserTier.PREMIUM: {
-        FeatureType.BACKGROUND_REMOVAL: 999999,  # Unlimited
-        FeatureType.FACE_ENHANCEMENT: 999999,
-        FeatureType.UPSCALE: 999999,
-        FeatureType.FACE_3D: 999999,
-        FeatureType.FULL_PIPELINE: 999999,
+        FeatureType.FACE_3D: 999999,  # Unlimited
     },
 }
 

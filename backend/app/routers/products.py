@@ -30,6 +30,7 @@ from app.services.ingredient_service import (
     build_ingredients_snapshot,
     save_product_ingredients,
 )
+from app.services.product_catalog import ProductCatalogService
 
 router = APIRouter(
     prefix="/api/v1/products",
@@ -332,11 +333,40 @@ async def scan_barcode(
     SRS: FR28 - Barcode Scanning
     Sprint: GUI-2
     
-    First checks local database, then falls back to OpenBeautyFacts API.
+    Priority order:
+    1. Check Product Catalog (pre-computed data, instant response)
+    2. Check local products table
+    3. Fall back to OpenBeautyFacts API
     """
     barcode = request.barcode.strip()
     
-    # 1. Check local database first
+    # 0. Check Product Catalog FIRST (instant, pre-computed data!)
+    try:
+        catalog = ProductCatalogService(db)
+        catalog_product = catalog.lookup_barcode(barcode)
+        
+        if catalog_product:
+            logger.info(f"Catalog HIT for barcode: {barcode}")
+            return BarcodeScanResponse(
+                found=True,
+                product={
+                    "id": catalog_product["id"],
+                    "name": catalog_product["name"],
+                    "brand": catalog_product["brand"],
+                    "barcode": barcode,
+                    "category": catalog_product["category"],
+                    "image_url": catalog_product.get("image_url"),
+                },
+                safety_rating=catalog_product.get("safety_score", 80),
+                suitability_score=75,
+                ingredients=catalog_product.get("ingredients", []),
+                warnings=[f["name"] for f in (catalog_product.get("flagged_ingredients") or [])[:3]],
+                source="catalog",
+            )
+    except Exception as e:
+        logger.warning(f"Catalog lookup failed: {e}")
+    
+    # 1. Check local database (legacy products table)
     product = db.query(Product).filter(Product.upc == barcode).first()
     
     if product:
@@ -746,7 +776,51 @@ If you cannot identify the product, return:
         image_source = None
         
         if product_name and brand:
-            # First check our local database
+            # CATALOG FIRST: Check Product Catalog for pre-computed data
+            try:
+                catalog = ProductCatalogService(db)
+                catalog_product = catalog.lookup_by_name_brand(product_name, brand)
+                
+                if catalog_product:
+                    logger.info(f"Catalog HIT for AI-identified product: {brand} - {product_name}")
+                    # Use catalog data with pre-computed safety!
+                    return ProductImageResponse(
+                        found=True,
+                        product_name=catalog_product["name"],
+                        brand=catalog_product["brand"],
+                        category=catalog_product["category"],
+                        key_ingredients=[KeyIngredient(**ki) for ki in (catalog_product.get("key_ingredients") or [])],
+                        ingredients=catalog_product.get("ingredients", []),
+                        description=catalog_product.get("description"),
+                        confidence=confidence,
+                        matched_product={
+                            "id": catalog_product["id"],
+                            "name": catalog_product["name"],
+                            "brand": catalog_product["brand"],
+                            "category": catalog_product["category"],
+                            "image_url": catalog_product.get("image_url"),
+                        },
+                        safety_rating=catalog_product.get("safety_score", 80),
+                        suitability_score=75,
+                        warnings=None,
+                        safety_report=SafetyReport(
+                            flagged_ingredients=[FlaggedIngredient(**f) for f in (catalog_product.get("flagged_ingredients") or [])],
+                            total_flagged=len(catalog_product.get("flagged_ingredients") or []),
+                            high_severity_count=0,
+                            moderate_severity_count=0,
+                            low_severity_count=0,
+                            safety_score=catalog_product.get("safety_score", 80),
+                            recommendations=[],
+                            is_pregnancy_safe=catalog_product.get("pregnancy_safe", True),
+                            is_sensitive_skin_safe=catalog_product.get("sensitive_skin_safe", True),
+                        ) if catalog_product.get("safety_score") else None,
+                        product_image_url=catalog_product.get("image_url"),
+                        image_source="catalog"
+                    )
+            except Exception as e:
+                logger.warning(f"Catalog lookup failed for AI product: {e}")
+            
+            # Fall back to local products database
             db_product = db.query(Product).filter(
                 Product.name.ilike(f"%{product_name}%"),
                 Product.brand.ilike(f"%{brand}%")
@@ -774,6 +848,7 @@ If you cannot identify the product, return:
         # AUTO-SAVE: If product not in database and confidence is high, save it
         if not matched_product and product_name and brand and confidence >= 0.7:
             try:
+                # Save to legacy products table
                 new_product = Product(
                     brand=brand,
                     name=product_name,
@@ -794,6 +869,27 @@ If you cannot identify the product, return:
                     "image_url": new_product.product_image_url,
                 }
                 logger.info(f"Auto-saved new product: {brand} - {product_name}")
+                
+                # ALSO ADD TO CATALOG: Save to Product Catalog with pre-computed safety
+                try:
+                    catalog = ProductCatalogService(db)
+                    key_ing_dicts_for_catalog = [
+                        {"name": ki.name, "percentage": ki.percentage}
+                        for ki in key_ingredients
+                    ] if key_ingredients else None
+                    
+                    catalog.add_from_scan(
+                        name=product_name,
+                        brand=brand,
+                        category=category or "other",
+                        ingredients=ingredients,
+                        key_ingredients=key_ing_dicts_for_catalog,
+                        image_url=product_image_url,
+                        source="ai_scan"
+                    )
+                    logger.info(f"Added to catalog: {brand} - {product_name}")
+                except Exception as catalog_err:
+                    logger.warning(f"Failed to add to catalog: {catalog_err}")
                 
                 # SAVE INGREDIENTS: Persist ingredients to database with percentages
                 if ingredients:

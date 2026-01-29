@@ -3,6 +3,7 @@ User Product Shelf database model.
 Sprint: GUI-2 - Story: Product Shelf API
 """
 from sqlalchemy import Boolean, Column, DateTime, Enum, Float, ForeignKey, Integer, String, Text
+from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 import enum
@@ -24,7 +25,8 @@ class ShelfProduct(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
-    product_id = Column(Integer, ForeignKey("products.id"), nullable=True)
+    # products.id is UUID in our schema
+    product_id = Column(UUID(as_uuid=True), ForeignKey("products.id"), nullable=True)
     
     # Product details (for external products)
     external_product_id = Column(String(255), nullable=True, index=True)

@@ -148,6 +148,30 @@ Format: `postgresql://user:password@host:port/database`
 |---------|-------------|---------|----------|
 | OpenAI | `OPENAI_API_KEY` | AI skin analysis (GPT-4 Vision) | **YES** - Core feature |
 
+### Google OAuth (Social Login)
+
+| Service | Secret Name | Where to Set | Purpose |
+|---------|-------------|--------------|---------|
+| Google OAuth | `GOOGLE_CLIENT_ID` | GitHub Secrets + Fly.io | Google Sign-In button |
+| Google OAuth | `GOOGLE_CLIENT_SECRET` | Fly.io only | Backend OAuth exchange |
+
+**Setup Steps:**
+1. Go to [Google Cloud Console](https://console.cloud.google.com/apis/credentials)
+2. Create a new OAuth 2.0 Client ID
+3. Set authorized JavaScript origins:
+   - `https://staging.pellicura.pages.dev` (staging)
+   - `https://pellicura.pages.dev` (production)
+4. Set authorized redirect URIs:
+   - `https://staging.pellicura.pages.dev/auth/google/callback` (staging)
+   - `https://pellicura.pages.dev/auth/google/callback` (production)
+5. Copy Client ID and Client Secret
+6. Add to GitHub Secrets: `GOOGLE_CLIENT_ID`
+7. Add to Fly.io:
+   ```bash
+   fly secrets set GOOGLE_CLIENT_ID="your-client-id" --app pellicura-api-staging
+   fly secrets set GOOGLE_CLIENT_SECRET="your-client-secret" --app pellicura-api-staging
+   ```
+
 ### Optional Integrations
 
 | Service | Secret Name | Purpose | Required |
@@ -166,9 +190,11 @@ Format: `postgresql://user:password@host:port/database`
 
 | Secret | How to Get | Status |
 |--------|------------|--------|
-| `FLY_API_TOKEN` | Run `fly tokens create deploy -x 999999h` | ⬜ TODO |
-| `CLOUDFLARE_ACCOUNT_ID` | Cloudflare Dashboard → Overview → Account ID | ⬜ TODO |
-| `CLOUDFLARE_API_TOKEN` | Cloudflare Dashboard → Profile → API Tokens → Create | ⬜ TODO |
+| `FLY_API_TOKEN` | Run `fly tokens create deploy -x 999999h` | ✅ Set |
+| `FLY_API_TOKEN_STAGING` | Run `fly tokens create deploy -x 999999h` | ✅ Set |
+| `CLOUDFLARE_ACCOUNT_ID` | Cloudflare Dashboard → Overview → Account ID | ✅ Set |
+| `CLOUDFLARE_API_TOKEN` | Cloudflare Dashboard → Profile → API Tokens → Create | ✅ Set |
+| `GOOGLE_CLIENT_ID` | Google Cloud Console → Credentials → OAuth 2.0 | ⬜ **MISSING** |
 
 **Add secrets at:** https://github.com/himprapatel-rgb/ai-skincare-intelligence-system/settings/secrets/actions
 
@@ -183,6 +209,8 @@ Format: `postgresql://user:password@host:port/database`
 
 ### Fly.io Secrets (Staging)
 - [x] Same as production with staging-specific values
+- [ ] `GOOGLE_CLIENT_ID` - **MISSING** - For Google Sign-In
+- [ ] `GOOGLE_CLIENT_SECRET` - **MISSING** - For Google OAuth
 
 ---
 

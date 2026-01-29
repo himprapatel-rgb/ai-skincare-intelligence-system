@@ -249,7 +249,7 @@ const MyShelfPage: React.FC = () => {
                 <div className="product-actions">
                   <select 
                     value={product.status}
-                    onChange={(e) => handleUpdateStatus(product.id, e.target.value as Product['status'])}
+                    onChange={(e) => handleUpdateStatus(product.id, e.target.value as DisplayProduct['status'])}
                     className="status-select"
                   >
                     <option value="using">Using</option>

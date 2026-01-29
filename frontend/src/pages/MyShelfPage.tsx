@@ -3,9 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { IconStar } from '../components/Icons';
 import { ConfirmModal } from '../components/ConfirmModal';
-import { mockProducts } from '../data/mockProducts';
 import { SkeletonCardGrid } from '../components/Skeleton';
 import './MyShelfPage.css';
+
+const API_BASE = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
 
 interface Product {
   id: string;
@@ -66,18 +67,19 @@ const MyShelfPage: React.FC = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      let list: Product[];
+      let list: Product[] = [];
 
       if (!token) {
-        list = mockProducts;
+        // Not logged in - show empty shelf with prompt to log in
+        list = [];
       } else {
-        const response = await fetch('/api/v1/shelf', {
+        const response = await fetch(`${API_BASE}/shelf`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
 
         if (response.ok) {
           const data = await response.json();
-          if (data.products && data.products.length > 0) {
+          if (data.products && Array.isArray(data.products)) {
             list = data.products.map((p: Record<string, unknown>) => ({
               id: String(p.id ?? ''),
               name: String(p.product_name ?? ''),
@@ -89,17 +91,15 @@ const MyShelfPage: React.FC = () => {
               addedDate: (typeof p.created_at === 'string' ? p.created_at.split('T')[0] : '') || '',
               imageUrl: p.product_image as string | undefined,
             }));
-          } else {
-            list = mockProducts;
           }
         } else {
-          list = mockProducts;
+          console.error('Failed to fetch shelf:', response.status);
         }
       }
       setProducts(mergeShelfFromStorage(list));
     } catch (error) {
       console.error('Failed to fetch products:', error);
-      setProducts(mergeShelfFromStorage(mockProducts));
+      setProducts([]);
     } finally {
       setLoading(false);
     }
@@ -121,7 +121,7 @@ const MyShelfPage: React.FC = () => {
       const token = localStorage.getItem('token');
       const apiStatus = newStatus === 'using' ? 'active' : newStatus;
       
-      await fetch(`/api/v1/shelf/${productId}`, {
+      await fetch(`${API_BASE}/shelf/${productId}`, {
         method: 'PATCH',
         headers: { 
           'Authorization': `Bearer ${token}`,
@@ -150,7 +150,7 @@ const MyShelfPage: React.FC = () => {
     if (!confirmRemoveId) return;
     try {
       const token = localStorage.getItem('token');
-      await fetch(`/api/v1/shelf/${confirmRemoveId}`, {
+      await fetch(`${API_BASE}/shelf/${confirmRemoveId}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });

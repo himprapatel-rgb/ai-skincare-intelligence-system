@@ -274,6 +274,228 @@ HARMFUL_INGREDIENTS_DB: Dict[str, HarmfulIngredient] = {
         alternatives=["PHAs (polyhydroxy acids) - gentler"],
         avoid_if=["Beginners (start low)", "Very sensitive skin", "Without sunscreen"]
     ),
+    
+    # ===== ADDITIONAL HIGH SEVERITY =====
+    
+    "benzene": HarmfulIngredient(
+        name="Benzene",
+        aliases=["benzol", "phenyl hydride"],
+        severity=Severity.HIGH,
+        categories=[ConcernCategory.CARCINOGEN],
+        reason="Known human carcinogen. Linked to leukemia. Contaminant found in some sunscreens.",
+        alternatives=["Choose benzene-free certified products"],
+        avoid_if=["Everyone - should not be in cosmetics"]
+    ),
+    
+    "diethanolamine": HarmfulIngredient(
+        name="Diethanolamine (DEA)",
+        aliases=["dea", "cocamide dea", "lauramide dea", "myristamide dea"],
+        severity=Severity.HIGH,
+        categories=[ConcernCategory.CARCINOGEN, ConcernCategory.IRRITANT],
+        reason="Reacts with other ingredients to form carcinogenic nitrosamines.",
+        alternatives=["Cocamidopropyl betaine", "Sodium cocoyl isethionate"],
+        avoid_if=["All users - banned in EU"]
+    ),
+    
+    "triethanolamine": HarmfulIngredient(
+        name="Triethanolamine (TEA)",
+        aliases=["tea", "triethanolamine", "trolamine"],
+        severity=Severity.MODERATE,
+        categories=[ConcernCategory.IRRITANT, ConcernCategory.ALLERGEN],
+        reason="Can form carcinogenic nitrosamines. May cause contact dermatitis.",
+        alternatives=["Aminomethyl propanol"],
+        avoid_if=["Sensitive skin", "Long-term use"]
+    ),
+    
+    "bht": HarmfulIngredient(
+        name="BHT (Butylated Hydroxytoluene)",
+        aliases=["butylated hydroxytoluene", "e321"],
+        severity=Severity.MODERATE,
+        categories=[ConcernCategory.ENDOCRINE_DISRUPTOR, ConcernCategory.ALLERGEN],
+        reason="Potential endocrine disruptor. Can cause skin allergies in some people.",
+        alternatives=["Vitamin E (tocopherol)", "Rosemary extract"],
+        avoid_if=["Hormone-sensitive conditions", "Skin allergies"]
+    ),
+    
+    "bha preservative": HarmfulIngredient(
+        name="BHA (Butylated Hydroxyanisole)",
+        aliases=["butylated hydroxyanisole", "e320"],
+        severity=Severity.MODERATE,
+        categories=[ConcernCategory.CARCINOGEN, ConcernCategory.ENDOCRINE_DISRUPTOR],
+        reason="Possible human carcinogen. Endocrine disruptor.",
+        alternatives=["Vitamin E (tocopherol)", "Natural preservatives"],
+        avoid_if=["Long-term use", "Hormone-sensitive conditions"]
+    ),
+    
+    "octinoxate": HarmfulIngredient(
+        name="Octinoxate",
+        aliases=["ethylhexyl methoxycinnamate", "octyl methoxycinnamate"],
+        severity=Severity.MODERATE,
+        categories=[ConcernCategory.ENDOCRINE_DISRUPTOR, ConcernCategory.ENVIRONMENTAL_TOXIN],
+        reason="Hormone disruptor. Harmful to coral reefs. Banned in Hawaii.",
+        alternatives=["Zinc oxide", "Titanium dioxide"],
+        avoid_if=["Pregnant women", "Ocean swimming", "Reef areas"]
+    ),
+    
+    "homosalate": HarmfulIngredient(
+        name="Homosalate",
+        aliases=["hms"],
+        severity=Severity.MODERATE,
+        categories=[ConcernCategory.ENDOCRINE_DISRUPTOR],
+        reason="May disrupt hormones. Accumulates in body.",
+        alternatives=["Zinc oxide", "Titanium dioxide"],
+        avoid_if=["Pregnant women", "Daily long-term use"]
+    ),
+    
+    "avobenzone": HarmfulIngredient(
+        name="Avobenzone",
+        aliases=["butyl methoxydibenzoylmethane", "parsol 1789"],
+        severity=Severity.LOW,
+        categories=[ConcernCategory.ALLERGEN],
+        reason="Can degrade in sunlight and cause allergic reactions in some people.",
+        alternatives=["Zinc oxide (more stable)", "Tinosorb"],
+        avoid_if=["Avobenzone sensitivity", "Without stabilizers"]
+    ),
+    
+    "propylene glycol": HarmfulIngredient(
+        name="Propylene Glycol",
+        aliases=["pg", "1,2-propanediol"],
+        severity=Severity.LOW,
+        categories=[ConcernCategory.IRRITANT, ConcernCategory.ALLERGEN],
+        reason="Can cause contact dermatitis in sensitive individuals. Enhances penetration of other ingredients.",
+        alternatives=["Glycerin", "Butylene glycol", "Pentylene glycol"],
+        avoid_if=["Sensitive skin", "Eczema"]
+    ),
+    
+    "silicones": HarmfulIngredient(
+        name="Silicones",
+        aliases=["dimethicone", "cyclomethicone", "cyclopentasiloxane", "cyclohexasiloxane"],
+        severity=Severity.LOW,
+        categories=[ConcernCategory.COMEDOGENIC],
+        reason="Can trap debris and cause buildup. May clog pores in some people.",
+        alternatives=["Squalane", "Natural oils"],
+        avoid_if=["Acne-prone skin (some people)", "Hair that gets weighed down"]
+    ),
+    
+    "artificial colors": HarmfulIngredient(
+        name="Artificial Colors",
+        aliases=["fd&c", "d&c", "ci 77491", "ci 77492", "ci 77499", "red 40", "yellow 5", "blue 1"],
+        severity=Severity.LOW,
+        categories=[ConcernCategory.ALLERGEN, ConcernCategory.IRRITANT],
+        reason="Coal tar derived colors may contain heavy metal contaminants. Can cause allergic reactions.",
+        alternatives=["Plant-derived colorants", "Iron oxides", "Mica"],
+        avoid_if=["Sensitive skin", "Color allergies"]
+    ),
+    
+    "lanolin": HarmfulIngredient(
+        name="Lanolin",
+        aliases=["wool wax", "wool grease", "adeps lanae"],
+        severity=Severity.LOW,
+        categories=[ConcernCategory.ALLERGEN, ConcernCategory.COMEDOGENIC],
+        reason="Common allergen. Can clog pores. May contain pesticide residues.",
+        alternatives=["Plant-based waxes", "Shea butter"],
+        avoid_if=["Wool allergy", "Acne-prone skin"]
+    ),
+    
+    "menthol": HarmfulIngredient(
+        name="Menthol",
+        aliases=["peppermint alcohol", "mint camphor"],
+        severity=Severity.LOW,
+        categories=[ConcernCategory.IRRITANT, ConcernCategory.SENSITIZER],
+        reason="Can irritate skin over time. The cooling sensation masks irritation.",
+        alternatives=["Aloe vera for soothing"],
+        avoid_if=["Sensitive skin", "Rosacea", "Around eyes"]
+    ),
+    
+    "witch hazel": HarmfulIngredient(
+        name="Witch Hazel (Alcohol-based)",
+        aliases=["hamamelis virginiana"],
+        severity=Severity.LOW,
+        categories=[ConcernCategory.DRYING, ConcernCategory.IRRITANT],
+        reason="Alcohol-based versions are drying. Can irritate skin barrier.",
+        alternatives=["Alcohol-free witch hazel", "Niacinamide for pores"],
+        avoid_if=["Dry skin", "Sensitive skin"]
+    ),
+    
+    "aluminum compounds": HarmfulIngredient(
+        name="Aluminum Compounds",
+        aliases=["aluminum chlorohydrate", "aluminum zirconium", "aluminium"],
+        severity=Severity.LOW,
+        categories=[ConcernCategory.IRRITANT],
+        reason="May cause irritation. Controversial links to health issues (unproven).",
+        alternatives=["Magnesium-based deodorants", "Arrowroot powder"],
+        avoid_if=["Skin irritation", "Personal preference"]
+    ),
+    
+    "imidazolidinyl urea": HarmfulIngredient(
+        name="Imidazolidinyl Urea",
+        aliases=["germall 115"],
+        severity=Severity.MODERATE,
+        categories=[ConcernCategory.ALLERGEN, ConcernCategory.IRRITANT],
+        reason="Formaldehyde-releasing preservative. Can cause contact dermatitis.",
+        alternatives=["Phenoxyethanol", "Sodium benzoate"],
+        avoid_if=["Sensitive skin", "Formaldehyde sensitivity"]
+    ),
+    
+    "dmdm hydantoin": HarmfulIngredient(
+        name="DMDM Hydantoin",
+        aliases=["1,3-dimethylol-5,5-dimethylhydantoin", "glydant"],
+        severity=Severity.MODERATE,
+        categories=[ConcernCategory.ALLERGEN, ConcernCategory.IRRITANT],
+        reason="Formaldehyde-releasing preservative. Subject of class action lawsuits.",
+        alternatives=["Phenoxyethanol", "Sodium benzoate"],
+        avoid_if=["Sensitive skin", "Formaldehyde sensitivity"]
+    ),
+    
+    "quaternium-15": HarmfulIngredient(
+        name="Quaternium-15",
+        aliases=["dowicil 200", "dowicil 75"],
+        severity=Severity.MODERATE,
+        categories=[ConcernCategory.ALLERGEN, ConcernCategory.IRRITANT],
+        reason="Most sensitizing formaldehyde-releasing preservative. Common cause of contact dermatitis.",
+        alternatives=["Phenoxyethanol", "Sodium benzoate"],
+        avoid_if=["All users - high sensitization rate"]
+    ),
+    
+    "polyethylene glycol": HarmfulIngredient(
+        name="PEGs (Polyethylene Glycols)",
+        aliases=["peg-4", "peg-10", "peg-100", "peg-40", "polyethylene glycol"],
+        severity=Severity.LOW,
+        categories=[ConcernCategory.IRRITANT],
+        reason="Can be contaminated with 1,4-dioxane. May enhance penetration of harmful ingredients.",
+        alternatives=["Plant-derived emulsifiers"],
+        avoid_if=["Damaged skin barrier"]
+    ),
+    
+    "sodium hydroxide": HarmfulIngredient(
+        name="Sodium Hydroxide",
+        aliases=["lye", "caustic soda", "naoh"],
+        severity=Severity.LOW,
+        categories=[ConcernCategory.IRRITANT],
+        reason="Strong alkaline. Safe in small amounts for pH adjustment. Irritating at high concentrations.",
+        alternatives=["Citric acid for pH adjustment"],
+        avoid_if=["Only concerning if improperly formulated"]
+    ),
+    
+    "cinnamates": HarmfulIngredient(
+        name="Cinnamates",
+        aliases=["cinnamal", "cinnamic aldehyde", "cinnamyl alcohol"],
+        severity=Severity.MODERATE,
+        categories=[ConcernCategory.ALLERGEN, ConcernCategory.SENSITIZER],
+        reason="One of the most common fragrance allergens. Found in many products.",
+        alternatives=["Fragrance-free products"],
+        avoid_if=["Fragrance allergies", "Sensitive skin"]
+    ),
+    
+    "chlorphenesin": HarmfulIngredient(
+        name="Chlorphenesin",
+        aliases=["chlorphenesin carbamate"],
+        severity=Severity.LOW,
+        categories=[ConcernCategory.IRRITANT],
+        reason="Can cause skin and eye irritation in some people.",
+        alternatives=["Phenoxyethanol", "Benzisothiazolinone"],
+        avoid_if=["Sensitive skin", "Eye area products"]
+    ),
 }
 
 

@@ -93,6 +93,20 @@ const placeholderImage =
  * 3. Ingredient analysis and safety ratings
  * 4. Add to shelf functionality
  */
+// Scan history item stored in localStorage
+interface ScanHistoryItem {
+  id: string;
+  name: string;
+  brand: string;
+  imageUrl?: string;
+  category?: string;
+  scannedAt: string;
+  source: 'barcode' | 'image';
+}
+
+const SCAN_HISTORY_KEY = 'pellicura_scan_history';
+const MAX_HISTORY_ITEMS = 5;
+
 const ProductScannerPage: React.FC = () => {
   usePageTitle('Product Scanner');
   const navigate = useNavigate();
@@ -103,11 +117,52 @@ const ProductScannerPage: React.FC = () => {
   const [scanMode, setScanMode] = useState<ScanMode>('barcode');
   const [scanning, setScanning] = useState(false);
   const [processing, setProcessing] = useState(false);
+  const [processingStep, setProcessingStep] = useState<string>('');
   const [scannedProduct, setScannedProduct] = useState<ScannedProduct | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [cameraActive, setCameraActive] = useState(false);
   const [addedToShelf, setAddedToShelf] = useState(false);
   const [addingToShelf, setAddingToShelf] = useState(false);
+  const [scanHistory, setScanHistory] = useState<ScanHistoryItem[]>([]);
+
+  // Load scan history from localStorage on mount
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem(SCAN_HISTORY_KEY);
+      if (stored) {
+        setScanHistory(JSON.parse(stored));
+      }
+    } catch (e) {
+      console.error('Failed to load scan history:', e);
+    }
+  }, []);
+
+  // Save product to scan history
+  const addToScanHistory = (product: ScannedProduct) => {
+    const historyItem: ScanHistoryItem = {
+      id: product.id,
+      name: product.name,
+      brand: product.brand,
+      imageUrl: product.imageUrl,
+      category: product.category,
+      scannedAt: new Date().toISOString(),
+      source: product.source
+    };
+
+    setScanHistory(prev => {
+      // Remove if already exists
+      const filtered = prev.filter(item => item.id !== product.id);
+      // Add to front, limit to MAX_HISTORY_ITEMS
+      const updated = [historyItem, ...filtered].slice(0, MAX_HISTORY_ITEMS);
+      // Save to localStorage
+      try {
+        localStorage.setItem(SCAN_HISTORY_KEY, JSON.stringify(updated));
+      } catch (e) {
+        console.error('Failed to save scan history:', e);
+      }
+      return updated;
+    });
+  };
   
   // Refs
   const scannerRef = useRef<Html5Qrcode | null>(null);
@@ -236,10 +291,12 @@ const ProductScannerPage: React.FC = () => {
   const handlePhotoCapture = async (file: File) => {
     setProcessing(true);
     setError(null);
+    setProcessingStep('Preparing image...');
     
     try {
       // Convert to base64
       const base64 = await fileToBase64(file);
+      setProcessingStep('Analyzing with AI...');
       
       const response = await fetch('/api/v1/products/identify-from-image', {
         method: 'POST',
@@ -254,12 +311,14 @@ const ProductScannerPage: React.FC = () => {
         const data = await response.json();
         
         if (data.found && data.product_name) {
+          setProcessingStep('Product identified! Loading details...');
+          
           // Prioritize clean product image from API over user's photo
           const cleanImageUrl = data.product_image_url 
             || data.matched_product?.image_url 
             || null;
           
-          setScannedProduct({
+          const product: ScannedProduct = {
             id: data.matched_product?.id || `img-${Date.now()}`,
             name: data.product_name,
             brand: data.brand || 'Unknown Brand',
@@ -276,7 +335,10 @@ const ProductScannerPage: React.FC = () => {
             safetyReport: data.safety_report || undefined,
             source: 'image',
             confidence: data.confidence
-          });
+          };
+          
+          setScannedProduct(product);
+          addToScanHistory(product);  // Save to scan history
         } else {
           setError('Could not identify product from image. Try a clearer photo with the product label visible.');
         }
@@ -480,14 +542,31 @@ const ProductScannerPage: React.FC = () => {
           </div>
         )}
 
-        {/* Processing State */}
+        {/* Processing State with Steps */}
         {processing && (
           <div className="processing-card">
-            <IconLoader size={48} className="spin" />
+            <div className="processing-animation">
+              <div className="processing-ring"></div>
+              <IconLoader size={32} className="processing-icon" />
+            </div>
             <h3>
               {scanMode === 'barcode' ? 'Looking up product...' : 'Analyzing product image...'}
             </h3>
-            <p>This may take a few seconds</p>
+            <p className="processing-step">{processingStep || 'This may take a few seconds'}</p>
+            <div className="processing-steps">
+              <div className={`step ${processingStep.includes('Preparing') ? 'active' : processingStep ? 'done' : ''}`}>
+                <span className="step-dot"></span>
+                <span>Prepare Image</span>
+              </div>
+              <div className={`step ${processingStep.includes('Analyzing') ? 'active' : processingStep.includes('identified') ? 'done' : ''}`}>
+                <span className="step-dot"></span>
+                <span>AI Analysis</span>
+              </div>
+              <div className={`step ${processingStep.includes('identified') ? 'active' : ''}`}>
+                <span className="step-dot"></span>
+                <span>Get Details</span>
+              </div>
+            </div>
           </div>
         )}
 
@@ -540,9 +619,20 @@ const ProductScannerPage: React.FC = () => {
                       <p className="product-barcode">Barcode: {scannedProduct.barcode}</p>
                     )}
                     {scannedProduct.confidence && (
-                      <p className="product-confidence">
-                        AI Confidence: {Math.round(scannedProduct.confidence * 100)}%
-                      </p>
+                      <div className="confidence-display">
+                        <span className="confidence-label">AI Confidence</span>
+                        <div className="confidence-bar-container">
+                          <div 
+                            className="confidence-bar-fill" 
+                            style={{ 
+                              width: `${Math.round(scannedProduct.confidence * 100)}%`,
+                              backgroundColor: scannedProduct.confidence >= 0.8 ? '#22c55e' : 
+                                               scannedProduct.confidence >= 0.6 ? '#f59e0b' : '#ef4444'
+                            }}
+                          />
+                        </div>
+                        <span className="confidence-value">{Math.round(scannedProduct.confidence * 100)}%</span>
+                      </div>
                     )}
                     <span className={`source-badge ${scannedProduct.source}`}>
                       {scannedProduct.source === 'barcode' ? 'Barcode Scan' : 'AI Identified'}
@@ -776,6 +866,45 @@ const ProductScannerPage: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* Scan History */}
+      {scanHistory.length > 0 && !scannedProduct && !processing && (
+        <section className="scan-history-section">
+          <div className="section-header">
+            <h2>Recently Scanned</h2>
+            <p>Your last {scanHistory.length} scanned product{scanHistory.length > 1 ? 's' : ''}</p>
+          </div>
+          
+          <div className="history-grid">
+            {scanHistory.map((item) => (
+              <div 
+                key={item.id} 
+                className="history-card"
+                onClick={() => navigate(`/product/${item.id}`)}
+                role="button"
+                tabIndex={0}
+              >
+                <div className="history-image">
+                  <img 
+                    src={item.imageUrl || placeholderImage} 
+                    alt={item.name}
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = placeholderImage;
+                    }}
+                  />
+                </div>
+                <div className="history-details">
+                  <h4>{item.name}</h4>
+                  <p className="history-brand">{item.brand}</p>
+                  <span className={`history-badge ${item.source}`}>
+                    {item.source === 'barcode' ? 'Barcode' : 'Photo'}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 };

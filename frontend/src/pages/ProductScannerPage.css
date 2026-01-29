@@ -1132,3 +1132,228 @@
     font-size: 1.6rem;
   }
 }
+
+/* ===== Processing Animation ===== */
+.processing-animation {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 24px;
+}
+
+.processing-ring {
+  position: absolute;
+  inset: 0;
+  border: 3px solid rgba(59, 130, 246, 0.2);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: ring-spin 1.5s linear infinite;
+}
+
+@keyframes ring-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.processing-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--primary);
+}
+
+.processing-step {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+
+.processing-steps {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  margin-top: 16px;
+}
+
+.processing-steps .step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  opacity: 0.5;
+  transition: all 0.3s ease;
+}
+
+.processing-steps .step.active {
+  opacity: 1;
+  color: var(--primary);
+}
+
+.processing-steps .step.done {
+  opacity: 1;
+  color: #22c55e;
+}
+
+.step-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: currentColor;
+  transition: transform 0.3s ease;
+}
+
+.step.active .step-dot {
+  transform: scale(1.3);
+  box-shadow: 0 0 10px currentColor;
+}
+
+/* ===== Confidence Display ===== */
+.confidence-display {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.confidence-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.confidence-bar-container {
+  flex: 1;
+  height: 6px;
+  background: #e5e7eb;
+  border-radius: 3px;
+  overflow: hidden;
+  max-width: 100px;
+}
+
+.confidence-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+
+.confidence-value {
+  font-size: 0.85rem;
+  font-weight: 600;
+  min-width: 36px;
+}
+
+/* ===== Scan History Section ===== */
+.scan-history-section {
+  background: #f8fafc;
+  padding: 48px 24px;
+  margin-top: 0;
+}
+
+.scan-history-section .section-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.scan-history-section .section-header h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.scan-history-section .section-header p {
+  color: var(--text-muted);
+}
+
+.history-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.history-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid #e5e7eb;
+}
+
+.history-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.history-image {
+  height: 120px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+}
+
+.history-image img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.history-details {
+  padding: 12px;
+  border-top: 1px solid #f3f4f6;
+}
+
+.history-details h4 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.history-brand {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.history-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-weight: 500;
+}
+
+.history-badge.barcode {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.history-badge.image {
+  background: #f3e8ff;
+  color: #7c3aed;
+}
+
+@media (max-width: 600px) {
+  .history-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  
+  .history-image {
+    height: 100px;
+  }
+  
+  .processing-steps {
+    gap: 16px;
+    font-size: 0.75rem;
+  }
+}

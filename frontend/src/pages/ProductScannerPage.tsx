@@ -529,21 +529,21 @@ const ProductScannerPage: React.FC = () => {
               <h2>Take Product Photo</h2>
               <p>Take a clear photo of the product packaging or label</p>
               
-              <div className="photo-upload-area">
+              <div className="photo-upload-area" onClick={() => fileInputRef.current?.click()}>
                 <input
                   ref={fileInputRef}
                   type="file"
                   accept="image/*"
-                  capture="environment"
                   onChange={handleFileChange}
                   className="file-input"
                   id="product-photo-input"
+                  style={{ display: 'none' }}
                 />
-                <label htmlFor="product-photo-input" className="upload-label">
+                <div className="upload-label">
                   <IconUpload size={48} strokeWidth={1.5} />
-                  <span className="upload-text">Tap to take photo or upload</span>
+                  <span className="upload-text">Click to upload photo</span>
                   <span className="upload-hint">For best results, capture the full product label</span>
-                </label>
+                </div>
               </div>
               
               <div className="photo-tips">

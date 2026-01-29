@@ -15,6 +15,7 @@ from fastapi import APIRouter, HTTPException, Depends, UploadFile, File, Form
 from pydantic import BaseModel, HttpUrl
 from typing import Optional
 from enum import Enum
+from sqlalchemy.orm import Session
 import base64
 
 from app.services.replicate_ai_service import (
@@ -24,8 +25,27 @@ from app.services.replicate_ai_service import (
     ProcessingResult
 )
 from app.services.r2_storage_service import R2StorageService, get_r2_storage
+from app.services.usage_limits_service import (
+    UsageLimitsService,
+    get_usage_service,
+    FeatureType,
+    UserTier
+)
+from app.database import get_db
+from app.core.security import get_current_user_optional
 
 router = APIRouter(prefix="/ai", tags=["AI Processing"])
+
+
+# ============== Dependency for optional auth ==============
+
+async def get_current_user_id_optional(
+    current_user = Depends(get_current_user_optional)
+) -> Optional[int]:
+    """Get current user ID or None for guests."""
+    if current_user:
+        return current_user.id
+    return None
 
 
 # ============== Request/Response Models ==============
@@ -102,20 +122,34 @@ def quality_to_enum(quality: QualityLevel) -> ModelQuality:
 @router.post("/remove-background", response_model=ProcessingResponse)
 async def remove_background(
     request: BackgroundRemovalRequest,
+    user_id: Optional[int] = Depends(get_current_user_id_optional),
+    db: Session = Depends(get_db),
     ai_service: ReplicateAIService = Depends(get_replicate_service)
 ):
     """
     Remove background from image.
     
+    **Requires login** - Free users get 1/day.
+    
     Uses RMBG-2.0 (premium) for best quality.
     Perfect edge detection, handles hair perfectly.
-    
-    Cost: ~$0.005/image
     """
+    # Check usage limit
+    usage_service = get_usage_service(db)
+    can_use, message = usage_service.check_limit(user_id, FeatureType.BACKGROUND_REMOVAL)
+    
+    if not can_use:
+        raise HTTPException(status_code=403, detail=message)
+    
+    # Process image
     result = await ai_service.remove_background(
         image_url=str(request.image_url),
         quality=quality_to_enum(request.quality)
     )
+    
+    # Record usage if successful
+    if result.success and user_id:
+        usage_service.record_usage(user_id, FeatureType.BACKGROUND_REMOVAL)
     
     return ProcessingResponse(
         success=result.success,
@@ -129,25 +163,38 @@ async def remove_background(
 @router.post("/enhance-face", response_model=ProcessingResponse)
 async def enhance_face(
     request: FaceEnhancementRequest,
+    user_id: Optional[int] = Depends(get_current_user_id_optional),
+    db: Session = Depends(get_db),
     ai_service: ReplicateAIService = Depends(get_replicate_service)
 ):
     """
     Enhance face quality using CodeFormer.
+    
+    **Requires login** - Free users get 1/day.
     
     Best for low-quality selfies, restores natural skin texture.
     
     Parameters:
     - upscale: 1-4x output size
     - fidelity: 0.0 = max enhancement, 1.0 = preserve original
-    
-    Cost: ~$0.02/image
     """
+    # Check usage limit
+    usage_service = get_usage_service(db)
+    can_use, message = usage_service.check_limit(user_id, FeatureType.FACE_ENHANCEMENT)
+    
+    if not can_use:
+        raise HTTPException(status_code=403, detail=message)
+    
     result = await ai_service.enhance_face(
         image_url=str(request.image_url),
         quality=quality_to_enum(request.quality),
         upscale=request.upscale,
         codeformer_fidelity=request.fidelity
     )
+    
+    # Record usage if successful
+    if result.success and user_id:
+        usage_service.record_usage(user_id, FeatureType.FACE_ENHANCEMENT)
     
     return ProcessingResponse(
         success=result.success,
@@ -161,23 +208,36 @@ async def enhance_face(
 @router.post("/upscale", response_model=ProcessingResponse)
 async def upscale_image(
     request: UpscaleRequest,
+    user_id: Optional[int] = Depends(get_current_user_id_optional),
+    db: Session = Depends(get_db),
     ai_service: ReplicateAIService = Depends(get_replicate_service)
 ):
     """
     Upscale image to 4K using Real-ESRGAN.
     
+    **Requires login** - Free users get 1/day.
+    
     Parameters:
     - scale: 2x or 4x
     - face_enhance: Apply GFPGAN face enhancement
-    
-    Cost: ~$0.01/image
     """
+    # Check usage limit
+    usage_service = get_usage_service(db)
+    can_use, message = usage_service.check_limit(user_id, FeatureType.UPSCALE)
+    
+    if not can_use:
+        raise HTTPException(status_code=403, detail=message)
+    
     result = await ai_service.upscale_image(
         image_url=str(request.image_url),
         scale=request.scale,
         quality=quality_to_enum(request.quality),
         face_enhance=request.face_enhance
     )
+    
+    # Record usage if successful
+    if result.success and user_id:
+        usage_service.record_usage(user_id, FeatureType.UPSCALE)
     
     return ProcessingResponse(
         success=result.success,
@@ -191,22 +251,35 @@ async def upscale_image(
 @router.post("/reconstruct-3d", response_model=ProcessingResponse)
 async def reconstruct_3d_face(
     request: Face3DRequest,
+    user_id: Optional[int] = Depends(get_current_user_id_optional),
+    db: Session = Depends(get_db),
     ai_service: ReplicateAIService = Depends(get_replicate_service)
 ):
     """
     Generate 3D face model from single photo using DECA.
     
+    **Requires login** - Free users get 1/day.
+    
     Returns:
     - 3D mesh (OBJ format)
     - Texture map
     - Shape and expression parameters
-    
-    Cost: ~$0.08/face
     """
+    # Check usage limit
+    usage_service = get_usage_service(db)
+    can_use, message = usage_service.check_limit(user_id, FeatureType.FACE_3D)
+    
+    if not can_use:
+        raise HTTPException(status_code=403, detail=message)
+    
     result = await ai_service.reconstruct_3d_face(
         image_url=str(request.image_url),
         quality=quality_to_enum(request.quality)
     )
+    
+    # Record usage if successful
+    if result.success and user_id:
+        usage_service.record_usage(user_id, FeatureType.FACE_3D)
     
     return ProcessingResponse(
         success=result.success,
@@ -358,36 +431,105 @@ async def upload_and_process(
 
 # ============== Cost Estimation ==============
 
+@router.get("/usage")
+async def get_usage_limits(
+    user_id: Optional[int] = Depends(get_current_user_id_optional),
+    db: Session = Depends(get_db)
+):
+    """
+    Get current usage limits and remaining uses for all features.
+    
+    Returns tier info and remaining daily uses for each premium feature.
+    """
+    usage_service = get_usage_service(db)
+    return usage_service.get_limits_info(user_id)
+
+
 @router.get("/pricing")
-async def get_pricing():
-    """Get current pricing for AI operations."""
+async def get_pricing(
+    user_id: Optional[int] = Depends(get_current_user_id_optional),
+    db: Session = Depends(get_db)
+):
+    """Get current pricing and usage limits for AI operations."""
+    usage_service = get_usage_service(db)
+    limits_info = usage_service.get_limits_info(user_id)
+    
     return {
         "currency": "USD",
+        "user_tier": limits_info["tier"],
+        "is_premium": limits_info["is_premium"],
         "operations": {
             "background_removal": {
                 "cost": 0.005,
                 "description": "Remove background using RMBG-2.0",
-                "quality": "Premium - perfect edges"
+                "quality": "Premium - perfect edges",
+                "requires_login": True,
+                "free_daily_limit": 1,
+                "remaining_today": limits_info["features"]["background_removal"]["remaining"]
             },
             "face_enhancement": {
                 "cost": 0.02,
                 "description": "Enhance face using CodeFormer",
-                "quality": "Premium - natural skin texture"
+                "quality": "Premium - natural skin texture",
+                "requires_login": True,
+                "free_daily_limit": 1,
+                "remaining_today": limits_info["features"]["face_enhancement"]["remaining"]
             },
             "upscale": {
                 "cost": 0.01,
                 "description": "4x upscale using Real-ESRGAN",
-                "quality": "Premium - sharp 4K output"
+                "quality": "Premium - sharp 4K output",
+                "requires_login": True,
+                "free_daily_limit": 1,
+                "remaining_today": limits_info["features"]["upscale"]["remaining"]
             },
             "face_3d": {
                 "cost": 0.08,
                 "description": "3D reconstruction using DECA",
-                "quality": "Premium - accurate geometry"
+                "quality": "Premium - accurate geometry",
+                "requires_login": True,
+                "free_daily_limit": 1,
+                "remaining_today": limits_info["features"]["face_3d"]["remaining"]
             },
             "full_pipeline": {
                 "cost_with_3d": 0.12,
                 "cost_without_3d": 0.04,
-                "description": "Complete processing pipeline"
+                "description": "Complete processing pipeline",
+                "requires_login": True,
+                "free_daily_limit": 1,
+                "remaining_today": limits_info["features"]["full_pipeline"]["remaining"]
+            }
+        },
+        "tiers": {
+            "guest": {
+                "name": "Guest",
+                "price": "Free",
+                "features": ["Basic skin scan", "Basic analysis", "Recommendations"],
+                "limitations": ["No premium AI features", "No history saved"]
+            },
+            "free": {
+                "name": "Free",
+                "price": "Free (login required)",
+                "features": [
+                    "All guest features",
+                    "1x Background removal/day",
+                    "1x Face enhancement/day",
+                    "1x 3D face model/day",
+                    "Scan history saved",
+                    "Progress tracking"
+                ],
+                "limitations": ["Daily limits on premium features"]
+            },
+            "premium": {
+                "name": "Premium",
+                "price": "Coming Soon",
+                "features": [
+                    "Unlimited AI features",
+                    "Priority processing",
+                    "Best quality models",
+                    "API access"
+                ],
+                "limitations": []
             }
         },
         "storage": {

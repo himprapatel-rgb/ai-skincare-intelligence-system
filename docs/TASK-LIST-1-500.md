@@ -636,13 +636,13 @@ Tasks to execute autonomously. Approval granted for all items.
 
 | # | Task | Priority | Status |
 |---|------|----------|--------|
-| 540 | Create catalog schema in PostgreSQL (separate schema) | 🟠 P1 | Planned |
-| 541 | Build ProductCatalog service class | 🟠 P1 | Planned |
-| 542 | Implement barcode lookup endpoint (catalog-first) | 🟠 P1 | Planned |
-| 543 | Add lookup-first logic to product scanner | 🟠 P1 | Planned |
-| 544 | Download Open Beauty Facts data dump | 🟠 P1 | Planned |
-| 545 | Build OBF import script with cleaning/filtering | 🟠 P1 | Planned |
-| 546 | Import first 100K high-quality products | 🟠 P1 | Planned |
+| 540 | Create catalog schema in PostgreSQL (separate schema) | 🟠 P1 | ✅ Done |
+| 541 | Build ProductCatalog service class | 🟠 P1 | ✅ Done |
+| 542 | Implement barcode lookup endpoint (catalog-first) | 🟠 P1 | ✅ Done |
+| 543 | Add lookup-first logic to product scanner | 🟠 P1 | ✅ Done |
+| 544 | Download Open Beauty Facts data dump | 🟠 P1 | ✅ Done |
+| 545 | Build OBF import script with cleaning/filtering | 🟠 P1 | ✅ Done |
+| 546 | Import first 100K high-quality products | 🟠 P1 | Ready to Run |
 | 547 | Set up Cloudinary for product images | 🟡 P2 | Planned |
 | 548 | Build image download & upload pipeline | 🟡 P2 | Planned |
 | 549 | Download/host OBF images to Cloudinary | 🟡 P2 | Planned |

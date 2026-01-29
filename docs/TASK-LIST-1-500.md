@@ -1,682 +1,628 @@
-# Task List 1–500 — AI Skincare Intelligence System
+# Product Scanner & Barcode System - Task List (1-500)
 
-Tasks to execute autonomously. Approval granted for all items.
-
-**Progress:** 500 Done | 21 New Tasks Added (Product Catalog) | Updated 2026-01-29
-
----
-
-## 1–50: Design & UI foundation
-
-| # | Task | Status |
-|---|------|--------|
-| 1 | Skeleton loaders on Dashboard, Recommendations, My Shelf | Done |
-| 2 | Empty states with CTAs on all list pages | Done |
-| 3 | Global toast system (success/error/info) | Done |
-| 4 | Error boundary + 404 page | Done |
-| 5 | Focus rings on all interactive elements | Done |
-| 6 | Skip link, main/contentinfo roles | Done |
-| 7 | Form validation styling (.form-group.has-error) | Done |
-| 8 | Card/list hover consistency across pages | Done |
-| 9 | Back-to-top button | Done |
-| 10 | Spacing/typography audit: Scan, Analysis, Profile | Done |
-| 11 | Copy link on Analysis Results | Done |
-| 12 | First-time tooltips on key actions (Scan, Dashboard) | Done |
-| 13 | Feedback link in footer | Done |
-| 14 | Search on History, Favorites, My Shelf where applicable | Done |
-| 15 | Sort options on History, Favorites (already on Favorites) | Done |
-| 16 | Confirm modals for destructive actions (remove, delete) | Done |
-| 17 | "Last updated" on profile, history items | Done |
-| 18 | In-app help entry (Help or FAQ link in header/footer) | Done |
-| 19 | Breadcrumbs (already in AppLayout) | Done |
-| 20 | "Reset filters" in Recommendations empty state | Done |
-| 21 | Lazy-load heavy routes (already using React.lazy) | Done |
-| 22 | Add loading="lazy" + width/height to img tags | Done |
-| 23 | Remove or consolidate duplicate/unused CSS | Done |
-| 24 | Error boundary (already done) | Done |
-| 25 | API retry logic for failed requests (exponential backoff) | Done |
-| 26 | Add/expand E2E tests (Playwright) | Done |
-| 27 | Add/expand unit tests (Vitest) | Done |
-| 28 | Document VITE_API_URL and env vars in README/.env.example | Done |
-| 29 | Sitemap or meta for SEO (title per route) | Done |
-| 30 | Ensure all routes have sensible document title | Done |
-| 31 | Copy review: buttons, labels, placeholders | Done |
-| 32 | Meta titles per page (usePageTitle or similar) | Done |
-| 33 | Open Graph tags for sharing | Done |
-| 34 | JSON-LD structured data (WebApp, Organization) | Done |
-| 35 | Skip link, lang on html, contrast check | Done |
-| 36 | Design changelog or version note in UI/footer | Done |
-| 37 | Alt text on all images | Done |
-| 38 | Button wording consistency (e.g. "Save" vs "Submit") | Done |
-| 39 | Empty-state microcopy consistency | Done |
-| 40 | Rate limiting message in UI when API returns 429 | Done |
-| 41 | Offline / connection-lost message | Done |
-| 42 | Remove or guard console.log in production | Done |
-| 43 | Optional Sentry or error-reporting hook | Done |
-| 44 | Health-check endpoint or status indicator | Done |
-| 45 | "Remember me" on login form | Done |
-| 46 | Logout placement and wording in nav/dropdown | Done |
-| 47 | Print CSS (hide nav/footer, show content) | Done |
-| 48 | Canonical URLs for key pages | Done |
-| 49 | Lint pass + fix auto-fixable issues | Done |
-| 50 | Dead-code pass: remove unused exports/imports | Done |
+**Created:** January 26, 2026  
+**Priority:** Critical improvements for scanning, barcode, photo capture, My Shelf, and product details
 
 ---
 
-## 51–100: Components & pages polish
+## SECTION A: CAMERA & BARCODE SCANNING (Tasks 1-100)
 
-| # | Task | Status |
-|---|------|--------|
-| 51 | Reusable EmptyState component used on all list pages | Done |
-| 52 | Reusable ConfirmModal for delete/remove | Done |
-| 53 | usePageTitle hook and use on main routes | Done |
-| 54 | Standardize all primary buttons to one variant | Done |
-| 55 | Standardize all secondary/outline buttons | Done |
-| 56 | Loading spinners: same size/color tokens | Done |
-| 57 | All form inputs use .form-group + shared styles | Done |
-| 58 | Password visibility toggle on login/register | Done |
-| 59 | ScanPage: improve spacing and typography | Done |
-| 60 | AnalysisResults: spacing and typography | Done |
-| 61 | ProfileSettingsPage: spacing and typography | Done |
-| 62 | DashboardPage: card grid responsive breakpoints | Done |
-| 63 | HistoryPage: mobile layout for list items | Done |
-| 64 | FavoritesPage: card hover and focus styles | Done |
-| 65 | MyShelfPage: filter tabs mobile wrap | Done |
-| 66 | Recommendations: filter chips or clear-all visibility | Done |
-| 67 | ProductDetailsPage: image gallery or zoom | Done |
-| 68 | RoutineBuilderPage: drag handle or reorder UI | Done |
-| 69 | DigitalTwinTimelinePage: timeline axis labels | Done |
-| 70 | ProgressTrackingPage: chart legend and tooltips | Done |
-| 71 | ContactPage: form validation and success state | Done |
-| 72 | AboutPage: section spacing and CTA | Done |
-| 73 | PrivacyPage: ToC or jump links | Done |
-| 74 | TermsPage: ToC or jump links | Done |
-| 75 | BlogPage: post cards hover and meta | Done |
-| 76 | IngredientDictionaryPage: search highlight | Done |
-| 77 | SkinTypeGuidePage: step indicators | Done |
-| 78 | VideoTutorialsPage: thumbnails and duration | Done |
-| 79 | OnboardingPage: progress step indicator | Done |
-| 80 | AuthPage: tab order and focus trap in modals | Done |
-| 81 | PasswordResetPage: success message and CTA | Done |
-| 82 | EmailVerificationPage: resend cooldown UI | Done |
-| 83 | GoogleCallbackPage: loading and error copy | Done |
-| 84 | NotFoundPage: suggest Search or Home | Done |
-| 85 | ConsentPage: granular toggles and copy | Done |
-| 86 | DataExportPage: format options and ETA | Done |
-| 87 | NotificationCenterPage: mark-all-read and filters | Done |
-| 88 | AdminDashboardPage: key metrics cards | Done |
-| 89 | AdminUsersPage: table sort and search | Done |
-| 90 | AdminProductsPage: table sort and bulk actions | Done |
-| 91 | AppLayout: mobile menu animation | Done |
-| 92 | AppLayout: user dropdown keyboard nav | Done |
-| 93 | AppLayout: footer columns responsive | Done |
-| 94 | Header: sticky shadow on scroll (if not done) | Done |
-| 95 | Footer: social links aria-labels | Done |
-| 96 | BackToTop: aria-label and focus order | Done |
-| 97 | Toast: position and stack order | Done |
-| 98 | ErrorBoundary: illustration or icon | Done |
-| 99 | Skeleton: pulse animation consistency | Done |
-| 100 | Icons: ensure all used icons have a11y fallback | Done |
+### Camera Access & Permissions (1-25)
 
----
+1. Fix "Something went wrong" error when starting barcode camera
+2. Add proper camera permission request flow with user-friendly prompts
+3. Implement fallback UI when camera permission is denied
+4. Add "Grant Camera Access" button with instructions for different browsers
+5. Detect if camera is already in use by another app and show helpful message
+6. Add camera permission status indicator (granted/denied/pending)
+7. Implement camera permission persistence check on page load
+8. Add retry mechanism after camera initialization failure
+9. Create troubleshooting guide for camera access issues
+10. Add browser-specific instructions for enabling camera (Chrome, Safari, Firefox, Edge)
+11. Implement HTTPS check - camera only works on secure connections
+12. Add localhost exception handling for development
+13. Create camera diagnostics tool for debugging issues
+14. Add detailed error logging for camera failures
+15. Implement camera capability detection (resolution, zoom, flash)
+16. Add graceful degradation when advanced camera features unavailable
+17. Create camera test page for users to verify camera works
+18. Add "Check Camera" button before scanning starts
+19. Implement camera warm-up time to prevent black screen
+20. Add loading spinner while camera initializes
+21. Fix camera preview aspect ratio on different devices
+22. Add camera orientation detection (portrait/landscape)
+23. Implement camera switching (front/back) with proper state management
+24. Add camera zoom controls for barcode scanning
+25. Implement pinch-to-zoom on mobile for barcode scanner
 
-## 101–150: Accessibility (a11y)
+### Mobile Back Camera for Products (26-50)
 
-| # | Task | Status |
-|---|------|--------|
-| 101 | Audit all images for alt text | Done |
-| 102 | Audit all icons for aria-hidden or sr-only text | Done |
-| 103 | All custom buttons have aria-label or visible text | Done |
-| 104 | Form labels linked with htmlFor | Done |
-| 105 | Error messages linked with aria-describedby | Done |
-| 106 | Live regions for toast (aria-live) | Done |
-| 107 | Focus trap in modals | Done |
-| 108 | Focus return after modal close | Done |
-| 109 | Skip to main content link | Done |
-| 110 | Heading hierarchy (single h1, logical order) per page | Done |
-| 111 | Color contrast ≥4.5:1 for body text | Done |
-| 112 | Color contrast ≥3:1 for large text/UI | Done |
-| 113 | Focus visible style on all focusable elements | Done |
-| 114 | Reduce motion preference: disable animations | Done |
-| 115 | Touch targets ≥44x44px on mobile | Done |
-| 116 | Links vs buttons: use correct element | Done |
-| 117 | Table headers and scope where tables exist | Done |
-| 118 | List markup (ul/ol) for lists | Done |
-| 119 | Landmark roles (main, nav, banner, contentinfo) | Done |
-| 120 | Page title unique and descriptive | Done |
-| 121 | Lang attribute on html | Done |
-| 122 | Scan flow: announce capture/countdown to screen readers | Done |
-| 123 | Analysis results: announce score/concerns | Done |
-| 124 | Charts: sr-only summary or data table | Done |
-| 125 | Dropdowns: aria-expanded, aria-controls | Done |
-| 126 | Tabs: role=tablist, aria-selected | Done |
-| 127 | Carousels/sliders: pause on focus (if any) | Done |
-| 128 | No keyboard traps | Done |
-| 129 | Logical tab order in forms | Done |
-| 130 | Required fields marked aria-required | Done |
-| 131 | Invalid fields marked aria-invalid | Done |
-| 132 | Dialog role and aria-modal for modals | Done |
-| 133 | Alert role for critical messages | Done |
-| 134 | Status role for loading/success | Done |
-| 135 | Breadcrumb nav with aria-current=page | Done |
-| 136 | Pagination aria labels | Done |
-| 137 | Search form role=search | Done |
-| 138 | Banner/announcement role if used | Done |
-| 139 | Complementaria region for sidebar | Done |
-| 140 | Test with axe-core or lighthouse a11y | Done |
-| 141 | Test with keyboard only | Done |
-| 142 | Test with one screen reader (NVDA/VoiceOver) | Done |
-| 143 | Document a11y decisions in README or docs | Done |
-| 144 | Add a11y testing to CI | Done |
-| 145 | Fix any a11y issues from automated run | Done |
-| 146 | High-contrast or forced-colors support | Done |
-| 147 | Resize text to 200%: no horizontal scroll | Done |
-| 148 | Zoom to 200%: no overlap/cutoff | Done |
-| 149 | Prefer prefers-reduced-motion in CSS | Done |
-| 150 | Add visible focus offset (outline-offset) | Done |
+26. Default to BACK camera for product/barcode scanning (not front)
+27. Add camera selector dropdown (front/back/external)
+28. Remember user's camera preference in localStorage
+29. Auto-detect when on mobile and switch to back camera
+30. Add "Switch Camera" button prominently displayed
+31. Implement facingMode: "environment" for back camera
+32. Add facingMode: "user" only for face/skin scans
+33. Fix camera constraints for iOS Safari compatibility
+34. Fix camera constraints for Android Chrome compatibility
+35. Test and fix camera on Samsung Internet browser
+36. Test and fix camera on Firefox Mobile
+37. Add camera resolution optimization for barcodes (lower res = faster)
+38. Add camera resolution optimization for products (higher res = better AI)
+39. Implement adaptive resolution based on network speed
+40. Add torch/flashlight toggle for low-light barcode scanning
+41. Implement auto-focus tap on mobile devices
+42. Add focus indicator overlay on camera preview
+43. Implement continuous auto-focus for barcode scanning
+44. Add exposure compensation for bright/dark environments
+45. Implement HDR mode toggle for better product photos
+46. Add anti-shake detection before capture
+47. Implement burst mode for difficult barcodes
+48. Add manual focus slider for macro shots
+49. Implement focus peaking for sharp product photos
+50. Add grid overlay option for composition
 
----
+### Barcode Scanner Improvements (51-75)
 
-## 151–200: Performance & DX
+51. Upgrade Html5Qrcode library to latest version
+52. Add support for more barcode formats (Code128, Code39, ITF)
+53. Implement multi-barcode detection (scan multiple at once)
+54. Add barcode region highlighting (show where barcode detected)
+55. Implement sound feedback on successful scan
+56. Add haptic/vibration feedback on successful scan
+57. Implement visual flash feedback on successful scan
+58. Add scan history in scanner (last 5 barcodes)
+59. Implement barcode validation before API call
+60. Add checksum verification for EAN/UPC barcodes
+61. Implement offline barcode queue (scan now, lookup later)
+62. Add manual barcode entry as fallback
+63. Create numpad for manual barcode input
+64. Add barcode format auto-detection display
+65. Implement scan confidence indicator
+66. Add "Scan Again" quick action after failed lookup
+67. Implement continuous scanning mode (scan multiple products)
+68. Add batch scanning for inventory management
+69. Create scanning session with product count
+70. Implement scan rate limiting to prevent duplicates
+71. Add duplicate detection within session
+72. Create barcode scanner calibration tool
+73. Add scanner sensitivity adjustment
+74. Implement motion blur compensation
+75. Add partial barcode reconstruction for damaged labels
 
-| # | Task | Status |
-|---|------|--------|
-| 151 | Code-split routes (already lazy) | Done |
-| 152 | Preload critical route on hover | Done |
-| 153 | Preconnect to API origin in index.html | Done |
-| 154 | Lazy load images below fold | Done |
-| 155 | Use responsive images (srcset/sizes) where useful | Done |
-| 156 | Compress or use WebP/AVIF for large assets | Done |
-| 157 | Reduce layout shift: reserve space for images | Done |
-| 158 | Debounce search inputs | Done |
-| 159 | Throttle scroll handlers | Done |
-| 160 | Memoize expensive computed values (useMemo) | Done |
-| 161 | Avoid unnecessary re-renders (React.memo where useful) | Done |
-| 162 | Virtualize long lists (e.g. history, products) | Done |
-| 163 | Lazy load recharts or heavy libs | Done |
-| 164 | Tree-shake lucide-react (import single icons) | Done |
-| 165 | Audit bundle size (vite build --analyze or similar) | Done |
-| 166 | Set long cache headers for static assets | Done |
-| 167 | Add etag or version query for cache bust | Done |
-| 168 | Service worker for static caching (optional PWA) | Done |
-| 169 | Offline fallback page | Done |
-| 170 | Add .env.example with all vars | Done |
-| 171 | Document dev vs prod API URLs | Done |
-| 172 | Add npm scripts: build, lint, test, typecheck | Done |
-| 173 | ESLint rule for no-console in prod | Done |
-| 174 | Prettier or formatter config | Done |
-| 175 | Husky pre-commit: lint + typecheck | Done |
-| 176 | CI: run tests on PR | Done |
-| 177 | CI: run build on PR | Done |
-| 178 | CI: run lighthouse or perf budget | Done |
-| 179 | Source maps in staging only | Done |
-| 180 | Error boundary log to backend or Sentry | Done |
-| 181 | Retry failed API calls with backoff | Done |
-| 182 | Timeout for API calls | Done |
-| 183 | AbortController for fetch on unmount | Done |
-| 184 | Loading state for every async action | Done |
-| 185 | Optimistic updates where safe (e.g. favorites) | Done |
-| 186 | Stale-while-revalidate for non-critical data | Done |
-| 187 | Request deduplication for same endpoint | Done |
-| 188 | Batch small API calls if backend supports | Done |
-| 189 | Use React Query or SWR for server state (optional) | Done |
-| 190 | Normalize API response types in types/ | Done |
-| 191 | Strict TypeScript in tsconfig | Done |
-| 192 | No implicit any | Done |
-| 193 | Path aliases (@/components, etc.) | Done |
-| 194 | Shared types between frontend/backend (if monorepo) | Done |
-| 195 | API client: single baseURL, interceptors | Done |
-| 196 | API client: attach auth header from context | Done |
-| 197 | API client: handle 401 and redirect to login | Done |
-| 198 | API client: handle 403 with message | Done |
-| 199 | API client: map errors to user-friendly messages | Done |
-| 200 | Document API contract (or link to OpenAPI) | Done |
+### Barcode Scanner UI/UX (76-100)
+
+76. Redesign barcode scanner overlay with clear scanning zone
+77. Add animated scanning line across viewfinder
+78. Implement corner markers for scan zone
+79. Add "Center barcode here" guide text
+80. Create pulsing animation while scanning
+81. Add scanning progress indicator
+82. Implement scan timeout with helpful message
+83. Add "Move closer" / "Move further" distance hints
+84. Create brightness warning for too dark/bright
+85. Add tilt detection with correction hints
+86. Implement full-screen scanner mode option
+87. Add minimize scanner to corner (picture-in-picture style)
+88. Create scanner pause/resume functionality
+89. Add scanner settings gear icon
+90. Implement quick settings panel (sound, vibration, flash)
+91. Add accessibility features for scanner (screen reader support)
+92. Create high-contrast mode for visibility
+93. Implement voice feedback option for successful scans
+94. Add large text mode for scan results
+95. Create one-handed operation mode
+96. Add left-handed mode (flip controls)
+97. Implement landscape scanner layout
+98. Add split-screen support on tablets
+99. Create kid-friendly scanning mode
+100. Add gamification elements (scan streak, achievements)
 
 ---
 
-## 201–250: Content, copy & SEO
+## SECTION B: PHOTO CAPTURE & AI RECOGNITION (Tasks 101-200)
 
-| # | Task | Status |
-|---|------|--------|
-| 201 | Unique meta title per route | Done |
-| 202 | Meta description per route | Done |
-| 203 | OG title, description, image for key pages | Done |
-| 204 | Twitter card meta | Done |
-| 205 | Canonical URL meta | Done |
-| 206 | JSON-LD Organization | Done |
-| 207 | JSON-LD WebApplication | Done |
-| 208 | JSON-LD BreadcrumbList on inner pages | Done |
-| 209 | Sitemap.xml or route list for crawlers | Done |
-| 210 | Robots.txt if needed | Done |
-| 211 | Homepage h1 and hero copy | Done |
-| 212 | Homepage CTA button copy | Done |
-| 213 | Homepage “As featured” or social proof | Done |
-| 214 | Scan page: step titles and descriptions | Done |
-| 215 | Analysis: severity labels and tooltips | Done |
-| 216 | Dashboard: empty state and first-scan CTA | Done |
-| 217 | Recommendations: “no results” and filter hint | Done |
-| 218 | Favorites: empty state and “browse” CTA | Done |
-| 219 | My Shelf: empty state and “add product” CTA | Done |
-| 220 | Profile: section titles and descriptions | Done |
-| 221 | Auth: “Forgot password” link copy | Done |
-| 222 | Auth: error messages user-friendly | Done |
-| 223 | Privacy policy: effective date and summary | Done |
-| 224 | Terms: effective date and summary | Done |
-| 225 | Contact: success and error messages | Done |
-| 226 | Blog: excerpt and read time | Done |
-| 227 | Ingredient dictionary: “not found” message | Done |
-| 228 | Skin type guide: result summary copy | Done |
-| 229 | Video tutorials: length and difficulty | Done |
-| 230 | Onboarding: step titles and skip option | Done |
-| 231 | Consent: short summary per section | Done |
-| 232 | Data export: format explanation | Done |
-| 233 | Notifications: empty list copy | Done |
-| 234 | Admin: table empty and bulk-action copy | Done |
-| 235 | 404: suggestions (home, search, contact) | Done |
-| 236 | Error boundary: “something went wrong” copy | Done |
-| 237 | Toast: success/error wording consistency | Done |
-| 238 | Buttons: “Save” vs “Submit” vs “Confirm” | Done |
-| 239 | Links: “Learn more” vs “View details” | Done |
-| 240 | Placeholders: “Enter…” vs “Type…” | Done |
-| 241 | Replace lorem or placeholder text site-wide | Done |
-| 242 | Spell-check and grammar pass | Done |
-| 243 | Tone: formal vs friendly consistency | Done |
-| 244 | Microcopy for tooltips and hints | Done |
-| 245 | Legal disclaimer near scan/analysis | Done |
-| 246 | “Not a medical device” where required | Done |
-| 247 | Referral or share copy (e.g. “Share your results”) | Done |
-| 248 | Email subject lines and body (if any) | Done |
-| 249 | Push notification copy (if any) | Done |
-| 250 | In-app changelog or “What’s new” | Done |
+### Photo Capture - Camera Mode (101-125)
 
----
+101. Implement ACTUAL camera capture (not just file upload)
+102. Add "Take Photo" button that opens device camera
+103. Use MediaDevices.getUserMedia() for live camera feed
+104. Add camera preview before capture
+105. Implement capture button with shutter animation
+106. Add countdown timer option (3, 5, 10 seconds)
+107. Implement photo review before submission
+108. Add "Retake" button after preview
+109. Create crop/rotate tools before submission
+110. Add brightness/contrast adjustment
+111. Implement auto-enhance for product photos
+112. Add filter to remove background
+113. Create focus on product (blur background)
+114. Implement edge detection for products
+115. Add product boundary detection
+116. Create auto-crop to product
+117. Implement perspective correction
+118. Add shadow removal
+119. Create lighting normalization
+120. Implement color correction for accurate display
+121. Add photo compression before upload
+122. Implement progressive upload with preview
+123. Create upload progress indicator
+124. Add upload cancellation option
+125. Implement retry on upload failure
 
-## 251–300: Features & UX flows
+### Photo Upload Improvements (126-150)
 
-| # | Task | Status |
-|---|------|--------|
-| 251 | Share analysis via link (already copy link) | Done |
-| 252 | Share analysis to social (Twitter, etc.) | Done |
-| 253 | “Compare with previous” from Analysis | Done |
-| 254 | Export analysis as PDF | Done |
-| 255 | Export analysis as image | Done |
-| 256 | Add to favorites from Analysis | Done |
-| 257 | Add to shelf from Recommendations | Done |
-| 258 | “Remind me to scan” (date picker or frequency) | Done |
-| 259 | Skin goals from onboarding on Dashboard | Done |
-| 260 | Next steps / recommended actions on Dashboard | Done |
-| 261 | Recently viewed products | Done |
-| 262 | “Continue where you left off” for onboarding | Done |
-| 263 | Product compare (side-by-side) | Done |
-| 264 | Ingredient conflicts or warnings | Done |
-| 265 | Routine order (AM/PM) in Routine Builder | Done |
-| 266 | Duplicate routine | Done |
-| 267 | Progress chart: date range picker | Done |
-| 268 | Progress chart: export chart image | Done |
-| 269 | Digital Twin: add note to snapshot | Done |
-| 270 | Digital Twin: delete snapshot with confirm | Done |
-| 271 | Notifications: filter by type | Done |
-| 272 | Notifications: mark single as read | Done |
-| 273 | Profile: avatar crop or rotate | Done |
-| 274 | Profile: timezone auto-detect | Done |
-| 275 | Profile: skin type quiz link | Done |
-| 276 | Consent: export consent history | Done |
-| 277 | Data export: include analysis PDFs | Done |
-| 278 | Data export: include shelf/favorites | Done |
-| 279 | Admin: user search and filters | Done |
-| 280 | Admin: product bulk edit | Done |
-| 281 | Admin: audit log or activity list | Done |
-| 282 | Remember filters on History (e.g. in sessionStorage) | Done |
-| 283 | Remember sort on Favorites | Done |
-| 284 | Deep link to specific tab (e.g. profile?tab=skin) | Done |
-| 285 | Deep link to specific section (anchor links) | Done |
-| 286 | “Back” from detail pages to list with scroll position | Done |
-| 287 | Infinite scroll or “Load more” on long lists | Done |
-| 288 | Skeleton for list items during load more | Done |
-| 289 | Inline edit for shelf notes | Done |
-| 290 | Inline edit for routine name | Done |
-| 291 | Keyboard shortcut: Esc to close modal | Done |
-| 292 | Keyboard shortcut: ? for help (optional) | Done |
-| 293 | Onboarding: skip and “remind me later” | Done |
-| 294 | Onboarding: progress saved across sessions | Done |
-| 295 | First-scan celebration (confetti or badge) | Done |
-| 296 | Badge or dot for “new” features | Done |
-| 297 | Tooltip on first visit for Scan button | Done |
-| 298 | Tooltip on first visit for Digital Twin | Done |
-| 299 | Contextual help links in forms | Done |
-| 300 | Feedback form prefill (page, user id optional) | Done |
+126. Fix file picker styling across all browsers
+127. Add drag-and-drop zone for photos
+128. Implement paste from clipboard
+129. Add URL input for product images
+130. Create screenshot capture tool
+131. Implement multi-photo upload for same product
+132. Add photo gallery selection from device
+133. Create recent photos quick-select
+134. Implement cloud storage integration (Google Photos, iCloud)
+135. Add image format validation (JPEG, PNG, WebP, HEIC)
+136. Implement HEIC to JPEG conversion for iOS photos
+137. Add file size validation with helpful error
+138. Create automatic image resizing for large files
+139. Implement image dimension detection
+140. Add minimum quality threshold warning
+141. Create blur detection with retake suggestion
+142. Implement lighting quality check
+143. Add product visibility check (is product in frame?)
+144. Create orientation auto-correction
+145. Implement EXIF data preservation for location (if allowed)
+146. Add timestamp overlay option
+147. Create watermark removal detection
+148. Implement inappropriate content filtering
+149. Add personal information detection (blur faces, addresses)
+150. Create photo privacy settings
 
----
+### AI Recognition Improvements (151-175)
 
-## 301–350: Testing & quality
+151. Improve AI prompt for partial text recognition
+152. Add brand logo recognition (not just text)
+153. Implement packaging shape recognition
+154. Add color scheme matching for brands
+155. Create product silhouette matching
+156. Implement barcode-in-image detection
+157. Add text extraction (OCR) from product photos
+158. Create ingredient list photo-to-text
+159. Implement multi-language label recognition
+160. Add non-English product support
+161. Create Korean skincare product database
+162. Implement Japanese product recognition
+163. Add French pharmacy brand recognition
+164. Create European product support
+165. Implement regional product variations
+166. Add size/variant detection from photos
+167. Create scent/fragrance variant matching
+168. Implement limited edition detection
+169. Add discontinued product identification
+170. Create counterfeit product warning
+171. Implement price tag detection and removal from analysis
+172. Add promotional sticker ignorance
+173. Create multiple product detection in single photo
+174. Implement product grouping (sets, bundles)
+175. Add accessory detection (applicators, tools)
 
-| # | Task | Status |
-|---|------|--------|
-| 301 | Unit test: useToast | Done |
-| 302 | Unit test: usePageTitle (if added) | Done |
-| 303 | Unit test: AuthContext login/logout | Done |
-| 304 | Unit test: form validation (Register) | Done |
-| 305 | Unit test: EmptyState component | Done |
-| 306 | Unit test: ConfirmModal component | Done |
-| 307 | Unit test: BackToTop visibility logic | Done |
-| 308 | Unit test: ErrorBoundary fallback render | Done |
-| 309 | Unit test: Skeleton variants | Done |
-| 310 | Unit test: Icons getSkinConcernIcon | Done |
-| 311 | Unit test: ScanPage capture flow (mock) | Done |
-| 312 | Unit test: AnalysisResults map API data | Done |
-| 313 | Unit test: HistoryPage filter logic | Done |
-| 314 | Unit test: Recommendations filter logic | Done |
-| 315 | Unit test: ProfileSettingsPage save | Done |
-| 316 | E2E: login → dashboard | Done |
-| 317 | E2E: register → verify email flow | Done |
-| 318 | E2E: scan → analysis (mock API) | Done |
-| 319 | E2E: add to favorites from recommendations | Done |
-| 320 | E2E: add to shelf and remove | Done |
-| 321 | E2E: profile edit and save | Done |
-| 322 | E2E: password reset request | Done |
-| 323 | E2E: 404 and navigate home | Done |
-| 324 | E2E: mobile menu open/close | Done |
-| 325 | E2E: breadcrumb navigation | Done |
-| 326 | E2E: toast appears and dismisses | Done |
-| 327 | E2E: error boundary (trigger error) | Done |
-| 328 | Visual regression: homepage | Done |
-| 329 | Visual regression: dashboard | Done |
-| 330 | Visual regression: analysis results | Done |
-| 331 | Visual regression: auth forms | Done |
-| 332 | a11y tests: axe in CI | Done |
-| 333 | a11y tests: jest-axe in unit tests | Done |
-| 334 | Snapshot tests for critical components (optional) | Done |
-| 335 | Mock service worker for API in tests | Done |
-| 336 | Test coverage target (e.g. 60%) | Done |
-| 337 | Coverage report in CI | Done |
-| 338 | Flaky test detection / retries | Done |
-| 339 | E2E on main and PR | Done |
-| 340 | E2E runs in headed mode in CI (optional) | Done |
-| 341 | Smoke test post-deploy | Done |
-| 342 | API contract tests (optional) | Done |
-| 343 | Perf budget in CI (bundle size) | Done |
-| 344 | Lighthouse CI (performance, a11y) | Done |
-| 345 | No regressions in Core Web Vitals | Done |
-| 346 | Test error states (network failure, 500) | Done |
-| 347 | Test loading states | Done |
-| 348 | Test empty states | Done |
-| 349 | Test boundary (max items, long text) | Done |
-| 350 | Document test strategy in README or docs | Done |
+### AI Confidence & Fallbacks (176-200)
+
+176. Display confidence percentage prominently
+177. Add confidence threshold settings
+178. Create "Not sure? Try again" prompt for low confidence
+179. Implement multiple AI attempts for difficult images
+180. Add human review request for failed recognition
+181. Create community identification feature
+182. Implement similar product suggestions when exact match fails
+183. Add "Is this correct?" confirmation flow
+184. Create product correction submission
+185. Implement learning from corrections
+186. Add anonymous correction aggregation
+187. Create confidence-based UI (high = auto-proceed, low = confirm)
+188. Implement progressive disclosure of details
+189. Add "Tell me more" expansion for each section
+190. Create comparison with similar products
+191. Implement "Did you mean...?" for close matches
+192. Add voice input for product name correction
+193. Create text search as fallback
+194. Implement database search if AI fails
+195. Add recent/popular products quick-match
+196. Create category-based browsing fallback
+197. Implement brand catalog browsing
+198. Add alphabetical product index
+199. Create trending products in category
+200. Implement personalized product suggestions
 
 ---
 
-## 351–400: Security, privacy & compliance
+## SECTION C: MY SHELF PAGE IMPROVEMENTS (Tasks 201-300)
 
-| # | Task | Status |
-|---|------|--------|
-| 351 | No secrets in frontend bundle | Done |
-| 352 | Auth token in httpOnly cookie (if backend supports) | Done |
-| 353 | CSRF token for state-changing requests (if needed) | Done |
-| 354 | Sanitize user-generated content (XSS) | Done |
-| 355 | CSP headers (via server or meta) | Done |
-| 356 | No sensitive data in localStorage except token | Done |
-| 357 | Clear storage on logout | Done |
-| 358 | Session timeout warning | Done |
-| 359 | Rate limit message when 429 | Done |
-| 360 | Privacy policy link in signup/footer | Done |
-| 361 | Terms link in signup/footer | Done |
-| 362 | Consent banner or modal (if required) | Done |
-| 363 | Consent preferences saved and readable | Done |
-| 364 | Data export includes all user data | Done |
-| 365 | Delete account flow and confirmation | Done |
-| 366 | Delete data from all systems (document) | Done |
-| 367 | Cookie policy or list | Done |
-| 368 | Minors / age gate if required | Done |
-| 369 | No PII in error reports (optional Sentry) | Done |
-| 370 | HTTPS everywhere | Done |
-| 371 | Secure headers (X-Frame-Options, etc.) | Done |
-| 372 | Audit dependency vulnerabilities (npm audit) | Done |
-| 373 | Dependabot or Renovate for deps | Done |
-| 374 | No eval or innerHTML with user input | Done |
-| 375 | Redirect URI validation for OAuth | Done |
-| 376 | PKCE for OAuth if applicable | Done |
-| 377 | Login attempt feedback (no “user exists”) | Done |
-| 378 | Password reset token expiry message | Done |
-| 379 | Email verification expiry message | Done |
-| 380 | Admin routes protected (role check) | Done |
-| 381 | Admin audit log for sensitive actions | Done |
-| 382 | No sensitive IDs in URL (or obfuscate) | Done |
-| 383 | File upload: type and size limits | Done |
-| 384 | File upload: scan for malware (backend) | Done |
-| 385 | Image upload: strip EXIF if needed | Done |
-| 386 | Logout from all devices option | Done |
-| 387 | Re-auth for sensitive actions (change email, etc.) | Done |
-| 388 | Breach or incident response doc | Done |
-| 389 | Data retention policy in privacy | Done |
-| 390 | Third-party subprocessors list | Done |
-| 391 | GDPR requests: export/delete doc | Done |
-| 392 | CCPA opt-out if applicable | Done |
-| 393 | Health data handling (if under HIPAA, document) | Done |
-| 394 | Scope consent by purpose | Done |
-| 395 | Withdraw consent flow | Done |
-| 396 | Privacy by design checklist | Done |
-| 397 | Security headers audit | Done |
-| 398 | Penetration test scope doc | Done |
-| 399 | Secure development guidelines | Done |
-| 400 | Incident runbook | Done |
+### Product Display & Information (201-225)
 
----
+201. Add full ingredient list to product detail view
+202. Fix missing ingredient list title and content
+203. Implement ingredient list alphabetical sorting
+204. Add ingredient list by concentration order
+205. Create ingredient category grouping
+206. Implement ingredient search within product
+207. Add ingredient highlight for concerns (e.g., fragrance)
+208. Create ingredient safety indicator (green/yellow/red)
+209. Implement ingredient percentage display when known
+210. Add ingredient function description
+211. Create ingredient synonyms display
+212. Implement "What is this?" ingredient popup
+213. Add ingredient pronunciation guide
+214. Create ingredient origin information
+215. Implement vegan/cruelty-free ingredient marking
+216. Add allergen highlighting in ingredients
+217. Create pregnancy-safe ingredient indicator
+218. Implement fungal acne trigger marking
+219. Add comedogenic rating per ingredient
+220. Create irritation potential indicator
+221. Implement pH information display
+222. Add texture/consistency description
+223. Create scent profile information
+224. Implement absorption rate indicator
+225. Add shelf life/expiration information
 
-## 401–450: DevOps, deployment & monitoring
+### Product Overview Enhancement (226-250)
 
-| # | Task | Status |
-|---|------|--------|
-| 401 | CI: lint, typecheck, test, build | Done |
-| 402 | CI: deploy on main to staging | Done |
-| 403 | CI: deploy on tag to production | Done |
-| 404 | Env-specific build (staging vs prod) | Done |
-| 405 | Env vars documented and templated | Done |
-| 406 | Build cache in CI | Done |
-| 407 | E2E in CI with stable browser | Done |
-| 408 | Rollback procedure documented | Done |
-| 409 | Feature flags (optional) | Done |
-| 410 | A/B test framework (optional) | Done |
-| 411 | Error tracking (Sentry/LogRocket) | Done |
-| 412 | RUM or performance monitoring | Done |
-| 413 | Uptime check (e.g. health endpoint) | Done |
-| 414 | Alert on error spike | Done |
-| 415 | Alert on latency spike | Done |
-| 416 | Log aggregation or search | Done |
-| 417 | Frontend version in UI or build id | Done |
-| 418 | Staging vs prod clearly labeled | Done |
-| 419 | Database backup and restore tested | Done |
-| 420 | CDN for static assets | Done |
-| 421 | Gzip/Brotli for responses | Done |
-| 422 | Image CDN or optimization | Done |
-| 423 | Domain and SSL config | Done |
-| 424 | Redirect www to non-www or vice versa | Done |
-| 425 | Redirect old URLs if any | Done |
-| 426 | Maintenance mode page | Done |
-| 427 | Deploy checklist in repo | Done |
-| 428 | Runbook for common incidents | Done |
-| 429 | On-call or escalation path | Done |
-| 430 | Postmortem template | Done |
-| 431 | Capacity and scaling notes | Done |
-| 432 | Cost monitoring (cloud) | Done |
-| 433 | Dependency update schedule | Done |
-| 434 | Node / npm version in CI | Done |
-| 435 | Docker build for frontend (if used) | Done |
-| 436 | Docker build for full stack | Done |
-| 437 | Local dev with backend (docker-compose) | Done |
-| 438 | Seed data for local/staging | Done |
-| 439 | Migration strategy for DB | Done |
-| 440 | Blue-green or canary deploy (optional) | Done |
-| 441 | DB backup before deploy | Done |
-| 442 | Feature branch preview URLs (optional) | Done |
-| 443 | Changelog generated from commits (optional) | Done |
-| 444 | Release notes template | Done |
-| 445 | Version in package.json and UI | Done |
-| 446 | License and notices | Done |
-| 447 | Third-party licenses list | Done |
-| 448 | Compliance evidence storage | Done |
-| 449 | SLAs documented | Done |
-| 450 | Status page or link | Done |
+226. Expand overview section with more details
+227. Add product description from manufacturer
+228. Implement user-generated description/reviews summary
+229. Add product benefits list
+230. Create "Best for" skin type indicator
+231. Implement "Not recommended for" warnings
+232. Add usage instructions
+233. Create application tips
+234. Implement morning/evening/both indicator
+235. Add frequency recommendation (daily, weekly, etc.)
+236. Create layering order suggestion
+237. Implement wait time after application
+238. Add amount per use guidance
+239. Create "Pairs well with" product suggestions
+240. Implement "Avoid combining with" warnings
+241. Add alternative products section
+242. Create price comparison (where to buy)
+243. Implement price history graph
+244. Add "In stock" status at retailers
+245. Create wishlist/save for later
+246. Implement purchase link integration
+247. Add sample/trial size availability
+248. Create subscription option indicator
+249. Implement rewards/points availability
+250. Add coupon/discount detection
 
----
+### Product Tabs & Navigation (251-275)
 
-## 451–500: Polish & miscellaneous
+251. Add "Ingredients" tab to product detail
+252. Create "Reviews" tab with aggregated ratings
+253. Implement "How to Use" tab
+254. Add "Safety" tab with analysis
+255. Create "Compare" tab for similar products
+256. Implement "History" tab for scan/usage history
+257. Add "Notes" tab for personal notes
+258. Create "Photos" tab for user photos
+259. Implement "Routine" tab showing where product fits
+260. Add tab persistence (remember last viewed tab)
+261. Create swipe navigation between tabs
+262. Implement tab indicator dots
+263. Add tab content loading states
+264. Create tab error states
+265. Implement tab empty states with calls-to-action
+266. Add keyboard navigation for tabs
+267. Create tab accessibility labels
+268. Implement tab deep linking (URL reflects tab)
+269. Add tab sharing (share specific tab)
+270. Create tab printing optimization
+271. Implement tab export options
+272. Add tab bookmark feature
+273. Create tab comparison across products
+274. Implement tab synchronization across devices
+275. Add tab customization (reorder, hide)
 
-| # | Task | Status |
-|---|------|--------|
-| 451 | Favicon for all sizes (apple-touch, etc.) | Done |
-| 452 | PWA manifest (name, icons, theme) | Done |
-| 453 | Splash screen for PWA | Done |
-| 454 | Install prompt or “Add to home screen” | Done |
-| 455 | Print stylesheet: hide nav, show URL/date | Done |
-| 456 | Print stylesheet: expand collapsed sections | Done |
-| 457 | Dark mode (optional) | Done |
-| 458 | High contrast theme (optional) | Done |
-| 459 | Font loading strategy (font-display) | Done |
-| 460 | Fallback font stack | Done |
-| 461 | No FOUT on hero text | Done |
-| 462 | RTL support (if needed) | Done |
-| 463 | Number and date locale (i18n prep) | Done |
-| 464 | String extraction for i18n (optional) | Done |
-| 465 | Currency and units (metric/imperial) | Done |
-| 466 | Timezone display for dates | Done |
-| 467 | Relative time (“2 days ago”) | Done |
-| 468 | Gravatar or avatar fallback | Done |
-| 469 | Default profile photo | Done |
-| 470 | Empty avatar state in header | Done |
-| 471 | Notification badge count | Done |
-| 472 | Unread indicator in nav | Done |
-| 473 | Keyboard nav in dropdowns | Done |
-| 474 | Focus trap in modal | Done |
-| 475 | Scroll lock when modal open | Done |
-| 476 | Modal overlay click to close | Done |
-| 477 | Escape to close modal | Done |
-| 478 | Animations: respect prefers-reduced-motion | Done |
-| 479 | Animations: duration tokens | Done |
-| 480 | Page transition (optional) | Done |
-| 481 | Skeleton match content layout | Done |
-| 482 | Error illustration or icon set | Done |
-| 483 | Empty state illustration set | Done |
-| 484 | Brand asset usage guidelines | Done |
-| 485 | Component storybook (optional) | Done |
-| 486 | Design tokens in CSS vars | Done |
-| 487 | Spacing scale (4/8/12/16/24/32…) | Done |
-| 488 | Radius scale | Done |
-| 489 | Shadow scale | Done |
-| 490 | Typography scale | Done |
-| 491 | Color palette docs | Done |
-| 492 | Contribution guide | Done |
-| 493 | Code of conduct | Done |
-| 494 | Issue templates | Done |
-| 495 | PR template | Done |
-| 496 | README: quick start, env, scripts | Done |
-| 497 | README: architecture diagram or link | Done |
-| 498 | README: deployment and URLs | Done |
-| 499 | Docs: glossary (skin type, concerns, etc.) | Done |
-| 500 | Final QA pass: happy path and edge cases | Done |
+### My Shelf Organization (276-300)
+
+276. Add sorting options (A-Z, recent, most used, rating)
+277. Implement filter by category (cleanser, serum, etc.)
+278. Add filter by brand
+279. Create filter by skin concern
+280. Implement filter by ingredient
+281. Add search within shelf
+282. Create shelf sections/folders
+283. Implement custom collections
+284. Add "Routine" automatic grouping
+285. Create "Favorites" collection
+286. Implement "Finished" archive
+287. Add "Repurchase" list
+288. Create "Would not repurchase" list
+289. Implement product rating system
+290. Add usage tracking (how often used)
+291. Create expiration date tracking
+292. Implement "Running low" indicator
+293. Add purchase date tracking
+294. Create product cost tracking
+295. Implement total skincare investment calculation
+296. Add monthly spend tracker
+297. Create shelf sharing (public profile)
+298. Implement shelf comparison with friends
+299. Add shelf recommendations based on gaps
+300. Create shelf health score
 
 ---
 
-## Future Tasks (501+)
+## SECTION D: SCANNER PAGE LAYOUT & UX (Tasks 301-400)
 
-**Post-Launch Roadmap** - See `docs/FUTURE-TASKS.md` for full details.
+### Page Layout Fixes (301-325)
 
-### Cloud Infrastructure (Completed: 2026-01-26)
+301. Fix overall page layout for consistency
+302. Standardize spacing between sections
+303. Fix responsive breakpoints for mobile
+304. Implement proper tablet layout
+305. Add desktop optimized layout
+306. Fix header overlap issues
+307. Implement sticky scanner controls
+308. Add floating action button for quick actions
+309. Create collapsible sections
+310. Implement progressive disclosure
+311. Add "Show more" for additional options
+312. Create compact mode for small screens
+313. Implement full-screen mode
+314. Add picture-in-picture scanner
+315. Create split view (scanner + results)
+316. Implement slide-over results panel
+317. Add bottom sheet for mobile results
+318. Create modal vs inline result display option
+319. Implement result animation (slide in, fade)
+320. Add result card elevation/shadow
+321. Create result action bar
+322. Implement swipe gestures for results
+323. Add pull-to-refresh for page
+324. Create infinite scroll for history
+325. Implement virtualized list for performance
 
-| # | Task | Priority | Status |
-|---|------|----------|--------|
-| 501 | Database on Railway PostgreSQL | 🟠 P1 | ✅ Done |
-| 502 | Backend deployment to Fly.io | 🟠 P1 | ✅ Done |
-| 503 | Frontend deployment to Cloudflare Pages | 🟠 P1 | ✅ Done |
-| 504 | DNS configuration (pellicura.com) | 🟠 P1 | ✅ Done |
-| 505 | SSL/TLS setup on Cloudflare | 🟠 P1 | ✅ Done |
-| 506 | Staging environment setup | 🟠 P1 | ✅ Done |
-| 507 | Production manual-deploy protection | 🟠 P1 | ✅ Done |
+### Navigation & Flow (326-350)
 
-### AI Skin Analysis Enhancements
+326. Add clear navigation breadcrumbs
+327. Implement back button behavior
+328. Create "Start Over" clear action
+329. Add confirmation before leaving with unsaved
+330. Implement page state persistence
+331. Add deep linking to scanner modes
+332. Create shareable scan URLs
+333. Implement QR code for scan results
+334. Add "Continue on phone" for desktop users
+335. Create scan handoff between devices
+336. Implement browser history integration
+337. Add keyboard shortcuts for power users
+338. Create command palette (Cmd+K)
+339. Implement quick actions menu
+340. Add voice commands support
+341. Create gesture navigation
+342. Implement swipe between pages
+343. Add edge swipe for back
+344. Create pull down for options
+345. Implement shake to undo
+346. Add double-tap actions
+347. Create long-press context menu
+348. Implement 3D Touch/Force Touch
+349. Add haptic feedback throughout
+350. Create consistent animation timings
 
-| # | Task | Priority | Status |
-|---|------|----------|--------|
-| 508 | Custom skin condition model training (acne, rosacea) | 🟡 P2 | Planned |
-| 509 | Ingredient-skin interaction AI | 🟢 P3 | Planned |
-| 510 | Product efficacy prediction model | 🟢 P3 | Planned |
-| 511 | Multi-angle analysis (forehead, cheeks, chin) | 🟡 P2 | Planned |
-| 512 | Progress comparison AI (before/after) | 🟡 P2 | Planned |
+### Error Handling & Messages (351-375)
 
-### Mobile & Apps
+351. Improve "Something went wrong" with specific errors
+352. Add error codes for debugging
+353. Implement error recovery suggestions
+354. Create "Try these steps" troubleshooting
+355. Add "Contact support" with pre-filled info
+356. Implement error logging for analytics
+357. Add error screenshot capture
+358. Create error report submission
+359. Implement retry with exponential backoff
+360. Add offline mode detection
+361. Create offline queue for actions
+362. Implement sync when back online
+363. Add network status indicator
+364. Create slow network mode
+365. Implement timeout handling with message
+366. Add server error handling (500s)
+367. Create maintenance mode detection
+368. Implement API version mismatch handling
+369. Add graceful degradation for old browsers
+370. Create feature detection fallbacks
+371. Implement polyfill loading as needed
+372. Add WebGL/WebRTC fallbacks
+373. Create canvas fallback for older devices
+374. Implement CSS fallbacks
+375. Add JavaScript error boundaries
 
-| # | Task | Priority | Status |
-|---|------|----------|--------|
-| 520 | React Native mobile app | 🟡 P2 | Planned |
-| 521 | Push notifications | 🟡 P2 | Planned |
-| 522 | Offline mode with sync | 🟢 P3 | Planned |
-| 523 | Apple Watch skin reminder | 🔵 P4 | Future |
+### Loading & Performance (376-400)
 
-### Features & UX
-
-| # | Task | Priority | Status |
-|---|------|----------|--------|
-| 524 | Barcode/QR product scanning + AI image identification | 🟠 P1 | ✅ Done |
-| 525 | Social sharing of progress | 🟡 P2 | Planned |
-| 526 | Community forums | 🟢 P3 | Planned |
-| 527 | Dermatologist booking integration | 🟢 P3 | Planned |
-| 528 | Multi-language support (i18n) | 🟡 P2 | Planned |
-
-### Monetization
-
-| # | Task | Priority | Status |
-|---|------|----------|--------|
-| 529 | Stripe subscription billing | 🟡 P2 | Planned |
-| 530 | Premium features gating | 🟡 P2 | Planned |
-| 531 | Affiliate product links | 🟢 P3 | Planned |
-| 532 | White-label API for partners | 🔵 P4 | Future |
-
-### Product Catalog Database (In-House Data)
-
-> **Strategy Document:** [PRODUCT-CATALOG-DATABASE-STRATEGY.md](./03-product/PRODUCT-CATALOG-DATABASE-STRATEGY.md)
-
-| # | Task | Priority | Status |
-|---|------|----------|--------|
-| 540 | Create catalog schema in PostgreSQL (separate schema) | 🟠 P1 | ✅ Done |
-| 541 | Build ProductCatalog service class | 🟠 P1 | ✅ Done |
-| 542 | Implement barcode lookup endpoint (catalog-first) | 🟠 P1 | ✅ Done |
-| 543 | Add lookup-first logic to product scanner | 🟠 P1 | ✅ Done |
-| 544 | Download Open Beauty Facts data dump | 🟠 P1 | ✅ Done |
-| 545 | Build OBF import script with cleaning/filtering | 🟠 P1 | ✅ Done |
-| 546 | Import first 100K high-quality products | 🟠 P1 | Ready to Run |
-| 547 | Set up Cloudinary for product images | 🟡 P2 | Planned |
-| 548 | Build image download & upload pipeline | 🟡 P2 | Planned |
-| 549 | Download/host OBF images to Cloudinary | 🟡 P2 | Planned |
-| 550 | Build batch safety analyzer for imported products | 🟡 P2 | Planned |
-| 551 | Pre-compute safety scores for all products | 🟡 P2 | Planned |
-| 552 | Update ingredients table with safety flags | 🟡 P2 | Planned |
-| 553 | Add full-text search to product catalog | 🟡 P2 | Planned |
-| 554 | Implement Redis caching for product lookups | 🟢 P3 | Planned |
-| 555 | Build catalog admin dashboard | 🟢 P3 | Planned |
-| 556 | Add product verification workflow | 🟢 P3 | Planned |
-| 557 | Track cache hit rate vs AI calls | 🟢 P3 | Planned |
-| 558 | Community product contribution system | 🔵 P4 | Future |
-| 559 | Brand partnership data import | 🔵 P4 | Future |
-| 560 | API for third-party product access | 🔵 P4 | Future |
-
-### CI/CD & DevOps
-
-| # | Task | Priority | Status |
-|---|------|----------|--------|
-| 533 | Add GitHub Secrets (FLY_API_TOKEN, CLOUDFLARE) | 🟠 P1 | ✅ Done |
-| 534 | Verify staging auto-deploy works | 🟠 P1 | ✅ Done |
-| 535 | Database backup automation | 🟡 P2 | Planned |
-| 536 | Error monitoring (Sentry) | 🟡 P2 | Planned |
-| 537 | Uptime monitoring alerts | 🟢 P3 | Planned |
+376. Add skeleton screens for loading states
+377. Implement optimistic UI updates
+378. Create instant feedback for actions
+379. Add progress indicators for long operations
+380. Implement lazy loading for images
+381. Create image placeholders with blur-up
+382. Add intersection observer for lazy loading
+383. Implement virtual scrolling for lists
+384. Create pagination for large datasets
+385. Add "Load more" button option
+386. Implement prefetching for likely next actions
+387. Add service worker for caching
+388. Create offline-first architecture
+389. Implement background sync
+390. Add push notifications for updates
+391. Create delta updates (only changed data)
+392. Implement compression for API calls
+393. Add request batching
+394. Create request deduplication
+395. Implement cache invalidation strategy
+396. Add ETags for conditional requests
+397. Create CDN integration for static assets
+398. Implement image optimization pipeline
+399. Add WebP/AVIF format support
+400. Create responsive images (srcset)
 
 ---
 
-## How to use this list
+## SECTION E: BACKEND & DATABASE (Tasks 401-450)
 
-- **Status:** “Done” = already implemented; “-” = not yet done.
-- Work through in order when possible; some tasks depend on others.
-- Prefer small, reviewable changes.
-- Run `npm run build` and `npm run lint` after batches of changes.
-- Update this file as you complete tasks (change “-” to “Done” and add date if desired).
+### API Improvements (401-425)
 
-*Last updated: 2026-01-29*
-*Domain: pellicura.com*
+401. Add rate limiting for scan endpoints
+402. Implement request validation
+403. Create input sanitization
+404. Add SQL injection protection
+405. Implement XSS prevention
+406. Create CSRF protection
+407. Add API versioning
+408. Implement deprecation headers
+409. Create API documentation (OpenAPI/Swagger)
+410. Add API changelog
+411. Implement webhook support for integrations
+412. Create batch API endpoints
+413. Add partial response support (fields parameter)
+414. Implement sorting/filtering parameters
+415. Create cursor-based pagination
+416. Add API key authentication option
+417. Implement OAuth2 for third-party apps
+418. Create API usage analytics
+419. Add response time monitoring
+420. Implement error rate alerting
+421. Create API health endpoint
+422. Add dependency health checks
+423. Implement circuit breaker pattern
+424. Create fallback responses
+425. Add request tracing (correlation IDs)
+
+### Database & Storage (426-450)
+
+426. Index frequently queried fields
+427. Implement database connection pooling
+428. Create read replicas for scaling
+429. Add caching layer (Redis)
+430. Implement cache invalidation
+431. Create materialized views for reports
+432. Add full-text search (Elasticsearch)
+433. Implement fuzzy matching for products
+434. Create ingredient database normalization
+435. Add ingredient synonym mapping
+436. Implement product variation linking
+437. Create brand hierarchy (parent/child)
+438. Add product image storage optimization
+439. Implement image CDN distribution
+440. Create image thumbnail generation
+441. Add image format conversion pipeline
+442. Implement backup strategy
+443. Create disaster recovery plan
+444. Add database migration tooling
+445. Implement schema versioning
+446. Create data archival strategy
+447. Add GDPR data export
+448. Implement right to deletion
+449. Create audit logging
+450. Add data anonymization for analytics
+
+---
+
+## SECTION F: TESTING & QUALITY (Tasks 451-500)
+
+### Unit & Integration Tests (451-475)
+
+451. Add unit tests for barcode validation
+452. Create tests for camera permission flow
+453. Implement tests for AI prompt formatting
+454. Add tests for image processing
+455. Create tests for API endpoints
+456. Implement tests for database queries
+457. Add tests for ingredient parsing
+458. Create tests for product matching
+459. Implement tests for safety calculations
+460. Add tests for suitability scoring
+461. Create tests for authentication flow
+462. Implement tests for authorization
+463. Add tests for rate limiting
+464. Create tests for error handling
+465. Implement tests for edge cases
+466. Add tests for mobile-specific features
+467. Create tests for accessibility
+468. Implement tests for internationalization
+469. Add tests for performance benchmarks
+470. Create tests for memory leaks
+471. Implement tests for network failures
+472. Add tests for concurrent users
+473. Create tests for data integrity
+474. Implement tests for backup/restore
+475. Add tests for upgrade/migration paths
+
+### E2E & User Testing (476-500)
+
+476. Create E2E tests for complete scan flow
+477. Add E2E tests for barcode scanning
+478. Implement E2E tests for photo upload
+479. Create E2E tests for My Shelf
+480. Add E2E tests for product details
+481. Implement E2E tests for authentication
+482. Create visual regression tests
+483. Add screenshot comparison tests
+484. Implement cross-browser testing
+485. Create mobile device testing matrix
+486. Add performance testing suite
+487. Implement load testing scenarios
+488. Create stress testing for peak usage
+489. Add security penetration testing
+490. Implement accessibility audit (WCAG)
+491. Create usability testing protocol
+492. Add A/B testing framework
+493. Implement feature flag system
+494. Create beta testing program
+495. Add user feedback collection
+496. Implement analytics tracking
+497. Create funnel analysis
+498. Add heatmap integration
+499. Implement session recording (with consent)
+500. Create user journey mapping
+
+---
+
+## Priority Matrix
+
+### Critical (Do First) - P0
+- Tasks 1-10: Camera errors and permissions
+- Tasks 26-35: Back camera for products
+- Tasks 101-110: Real camera capture
+- Tasks 201-210: Missing ingredient list
+
+### High Priority - P1
+- Tasks 51-75: Barcode scanner improvements
+- Tasks 151-175: AI recognition improvements
+- Tasks 226-250: Product overview enhancement
+- Tasks 351-375: Error handling
+
+### Medium Priority - P2
+- Tasks 76-100: Scanner UI/UX
+- Tasks 126-150: Photo upload improvements
+- Tasks 276-300: My Shelf organization
+- Tasks 301-350: Page layout and navigation
+
+### Lower Priority - P3
+- Tasks 401-450: Backend optimizations
+- Tasks 451-500: Testing and quality
+
+---
+
+## Notes
+
+- All camera features should work on iOS Safari, Android Chrome, and desktop browsers
+- Mobile-first design approach for all UI changes
+- Accessibility should be considered for all features
+- Performance budget: <3s load time, <100ms interaction response
+- All features should work offline where possible
+
+---
+
+*Last Updated: January 26, 2026*

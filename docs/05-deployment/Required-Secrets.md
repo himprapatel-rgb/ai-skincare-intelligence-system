@@ -160,21 +160,29 @@ Format: `postgresql://user:password@host:port/database`
 
 ## Quick Setup Checklist
 
-### GitHub Secrets
-- [ ] `FLY_API_TOKEN` - From `flyctl tokens create deploy`
-- [ ] `CLOUDFLARE_ACCOUNT_ID` - From Cloudflare dashboard
-- [ ] `CLOUDFLARE_API_TOKEN` - Create with Pages permissions
+### GitHub Secrets (REQUIRED for CI/CD)
+
+⚠️ **CI/CD will fail without these!**
+
+| Secret | How to Get | Status |
+|--------|------------|--------|
+| `FLY_API_TOKEN` | Run `fly tokens create deploy -x 999999h` | ⬜ TODO |
+| `CLOUDFLARE_ACCOUNT_ID` | Cloudflare Dashboard → Overview → Account ID | ⬜ TODO |
+| `CLOUDFLARE_API_TOKEN` | Cloudflare Dashboard → Profile → API Tokens → Create | ⬜ TODO |
+
+**Add secrets at:** https://github.com/himprapatel-rgb/ai-skincare-intelligence-system/settings/secrets/actions
 
 ### Fly.io Secrets (Production)
-- [ ] `SECRET_KEY` - Generate with `openssl rand -hex 32`
-- [ ] `DATABASE_URL` - From Railway
-- [ ] `RUN_MIGRATIONS=true`
-- [ ] `ALLOW_PROD_MIGRATIONS=true`
-- [ ] `ALGORITHM=HS256`
-- [ ] `ACCESS_TOKEN_EXPIRE_MINUTES=60`
+- [x] `SECRET_KEY` - JWT signing key
+- [x] `DATABASE_URL` - From Railway
+- [x] `RUN_MIGRATIONS=true`
+- [x] `ALLOW_PROD_MIGRATIONS=true`
+- [x] `ALGORITHM=HS256`
+- [x] `ACCESS_TOKEN_EXPIRE_MINUTES=60`
+- [x] `OPENAI_API_KEY` - For skin analysis
 
 ### Fly.io Secrets (Staging)
-- [ ] Same as production with staging-specific values
+- [x] Same as production with staging-specific values
 
 ---
 

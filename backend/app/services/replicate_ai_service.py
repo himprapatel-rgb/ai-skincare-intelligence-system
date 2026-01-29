@@ -1,5 +1,9 @@
 """
-Replicate AI Service - Premium Quality Models
+AI Processing Service - Supports Multiple Providers
+
+Providers:
+1. REPLICATE (Cloud) - Pay per use, ~$0.12/image
+2. SELF_HOSTED (Future) - Your Dell server at home, $0 per image
 
 This service provides access to the best AI models for:
 1. Background Removal (RMBG-2.0)
@@ -7,18 +11,30 @@ This service provides access to the best AI models for:
 3. Image Upscaling (Real-ESRGAN)
 4. 3D Face Reconstruction (DECA)
 
-Cost per full pipeline: ~$0.12/image
+Switch providers by setting AI_PROVIDER in environment:
+- AI_PROVIDER=replicate (default, cloud)
+- AI_PROVIDER=self_hosted (your Dell server)
 """
 
 import os
 import base64
 import httpx
-import replicate
+import logging
 from typing import Optional
 from dataclasses import dataclass
 from enum import Enum
 
 from app.config import settings
+
+logger = logging.getLogger(__name__)
+
+# Only import replicate if using cloud provider
+try:
+    import replicate
+    REPLICATE_AVAILABLE = True
+except ImportError:
+    REPLICATE_AVAILABLE = False
+    logger.warning("Replicate package not installed. Cloud AI will not work.")
 
 
 class ModelQuality(Enum):
@@ -39,15 +55,34 @@ class ProcessingResult:
     error: Optional[str] = None
 
 
+class AIProvider(Enum):
+    """AI processing provider options"""
+    REPLICATE = "replicate"      # Cloud - Replicate.com
+    SELF_HOSTED = "self_hosted"  # Your Dell server at home
+
+
 class ReplicateAIService:
     """
-    Premium AI processing using Replicate's best models.
+    AI processing service supporting multiple providers.
+    
+    Providers:
+    1. REPLICATE (Cloud) - Uses Replicate.com API
+       - Cost: ~$0.12/image
+       - No setup required
+       
+    2. SELF_HOSTED (Future) - Your Dell server at home
+       - Cost: $0/image (only electricity)
+       - Requires server setup with GPU
     
     Models used:
-    - Background: lucataco/rmbg-2.0 (best edge detection)
-    - Enhancement: sczhou/codeformer (best face restoration)
-    - Upscale: nightmareai/real-esrgan (best 4K upscale)
-    - 3D Face: cjwbw/deca (best 3D reconstruction)
+    - Background: RMBG-2.0 (best edge detection)
+    - Enhancement: CodeFormer (best face restoration)
+    - Upscale: Real-ESRGAN (best 4K upscale)
+    - 3D Face: DECA (best 3D reconstruction)
+    
+    Switch providers:
+        AI_PROVIDER=replicate (default)
+        AI_PROVIDER=self_hosted
     """
     
     # Best-in-class models
@@ -82,11 +117,94 @@ class ReplicateAIService:
         "face_3d": 0.08,
     }
     
-    def __init__(self, api_token: Optional[str] = None):
-        """Initialize with Replicate API token."""
-        self.api_token = api_token or settings.REPLICATE_API_TOKEN or os.getenv("REPLICATE_API_TOKEN")
-        if self.api_token:
-            os.environ["REPLICATE_API_TOKEN"] = self.api_token
+    def __init__(self, api_token: Optional[str] = None, provider: Optional[str] = None):
+        """
+        Initialize AI service.
+        
+        Args:
+            api_token: API token (Replicate or self-hosted)
+            provider: Override provider ("replicate" or "self_hosted")
+        """
+        # Determine provider
+        provider_str = provider or settings.AI_PROVIDER or "replicate"
+        self.provider = AIProvider(provider_str.lower())
+        
+        if self.provider == AIProvider.REPLICATE:
+            # Cloud provider - Replicate
+            self.api_token = api_token or settings.REPLICATE_API_TOKEN or os.getenv("REPLICATE_API_TOKEN")
+            if self.api_token:
+                os.environ["REPLICATE_API_TOKEN"] = self.api_token
+            self.base_url = "https://api.replicate.com"
+            logger.info("AI Provider: Replicate (Cloud) - Cost per image: ~$0.12")
+        else:
+            # Self-hosted provider - Your Dell server
+            self.api_token = api_token or settings.SELF_HOSTED_ML_TOKEN
+            self.base_url = settings.SELF_HOSTED_ML_URL or "http://localhost:5000"
+            logger.info(f"AI Provider: Self-Hosted at {self.base_url} - Cost per image: $0")
+        
+        # HTTP client for self-hosted calls
+        self._http_client = None
+    
+    @property
+    def http_client(self) -> httpx.AsyncClient:
+        """Get or create HTTP client for self-hosted API calls."""
+        if self._http_client is None:
+            headers = {}
+            if self.api_token:
+                headers["Authorization"] = f"Bearer {self.api_token}"
+            self._http_client = httpx.AsyncClient(
+                base_url=self.base_url,
+                headers=headers,
+                timeout=120.0
+            )
+        return self._http_client
+    
+    def _get_cost(self, operation: str) -> float:
+        """Get cost for operation (0 for self-hosted)."""
+        if self.provider == AIProvider.SELF_HOSTED:
+            return 0.0
+        return self.COSTS.get(operation, 0.0)
+    
+    async def _self_hosted_call(
+        self,
+        endpoint: str,
+        image_url: str,
+        operation: str,
+        **extra_params
+    ) -> ProcessingResult:
+        """
+        Call self-hosted ML server (your Dell server).
+        
+        Expected API format on your server:
+        POST /remove-background  {"image_url": "..."}
+        POST /enhance-face       {"image_url": "...", "upscale": 2}
+        POST /upscale            {"image_url": "...", "scale": 4}
+        POST /reconstruct-3d     {"image_url": "..."}
+        
+        Response: {"success": true, "output_url": "..."}
+        """
+        try:
+            payload = {"image_url": image_url, **extra_params}
+            
+            response = await self.http_client.post(endpoint, json=payload)
+            response.raise_for_status()
+            
+            result = response.json()
+            
+            return ProcessingResult(
+                success=result.get("success", True),
+                output_url=result.get("output_url"),
+                output_data=result.get("output_data"),
+                model_used=f"self_hosted:{endpoint}",
+                cost_estimate=0.0,  # Free - your own server!
+                error=result.get("error")
+            )
+        except Exception as e:
+            logger.error(f"Self-hosted ML call failed: {e}")
+            return ProcessingResult(
+                success=False,
+                error=f"Self-hosted server error: {str(e)}"
+            )
     
     async def remove_background(
         self, 
@@ -100,6 +218,15 @@ class ReplicateAIService:
         Quality: ⭐⭐⭐⭐⭐ - Perfect hair edges, transparent output
         """
         try:
+            if self.provider == AIProvider.SELF_HOSTED:
+                # Call your Dell server
+                return await self._self_hosted_call(
+                    endpoint="/remove-background",
+                    image_url=image_url,
+                    operation="background_removal"
+                )
+            
+            # Cloud - Replicate
             model = self.MODELS["background_removal"][quality.value]
             
             output = replicate.run(
@@ -114,7 +241,7 @@ class ReplicateAIService:
                 success=True,
                 output_url=str(output_url),
                 model_used=model,
-                cost_estimate=self.COSTS["background_removal"]
+                cost_estimate=self._get_cost("background_removal")
             )
         except Exception as e:
             return ProcessingResult(
@@ -139,6 +266,16 @@ class ReplicateAIService:
             codeformer_fidelity: 0.0 = max enhancement, 1.0 = preserve original
         """
         try:
+            if self.provider == AIProvider.SELF_HOSTED:
+                return await self._self_hosted_call(
+                    endpoint="/enhance-face",
+                    image_url=image_url,
+                    operation="face_enhancement",
+                    upscale=upscale,
+                    fidelity=codeformer_fidelity
+                )
+            
+            # Cloud - Replicate
             model = self.MODELS["face_enhancement"][quality.value]
             
             if "codeformer" in model:
@@ -169,7 +306,7 @@ class ReplicateAIService:
                 success=True,
                 output_url=str(output_url),
                 model_used=model,
-                cost_estimate=self.COSTS["face_enhancement"]
+                cost_estimate=self._get_cost("face_enhancement")
             )
         except Exception as e:
             return ProcessingResult(
@@ -191,6 +328,16 @@ class ReplicateAIService:
         Quality: ⭐⭐⭐⭐⭐ - Sharp 4x upscale, preserves details
         """
         try:
+            if self.provider == AIProvider.SELF_HOSTED:
+                return await self._self_hosted_call(
+                    endpoint="/upscale",
+                    image_url=image_url,
+                    operation="upscale",
+                    scale=scale,
+                    face_enhance=face_enhance
+                )
+            
+            # Cloud - Replicate
             model = self.MODELS["upscale"][quality.value]
             
             output = replicate.run(
@@ -206,7 +353,7 @@ class ReplicateAIService:
                 success=True,
                 output_url=str(output),
                 model_used=model,
-                cost_estimate=self.COSTS["upscale"]
+                cost_estimate=self._get_cost("upscale")
             )
         except Exception as e:
             return ProcessingResult(
@@ -232,6 +379,14 @@ class ReplicateAIService:
             - Expression coefficients
         """
         try:
+            if self.provider == AIProvider.SELF_HOSTED:
+                return await self._self_hosted_call(
+                    endpoint="/reconstruct-3d",
+                    image_url=image_url,
+                    operation="face_3d"
+                )
+            
+            # Cloud - Replicate
             model = self.MODELS["face_3d"][quality.value]
             
             output = replicate.run(
@@ -245,7 +400,7 @@ class ReplicateAIService:
                 output_url=str(output) if isinstance(output, str) else str(output[0]),
                 output_data=output,  # Contains mesh, texture, params
                 model_used=model,
-                cost_estimate=self.COSTS["face_3d"]
+                cost_estimate=self._get_cost("face_3d")
             )
         except Exception as e:
             return ProcessingResult(

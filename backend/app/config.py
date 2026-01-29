@@ -135,7 +135,24 @@ class Settings(BaseSettings):
         description="Model version identifier for tracking"
     )
 
-    # Replicate AI API (Premium AI Processing)
+    # AI Processing Provider Configuration
+    # Options: "replicate" (cloud), "self_hosted" (your own server)
+    AI_PROVIDER: str = Field(
+        default="replicate",
+        description="AI provider: 'replicate' (cloud) or 'self_hosted' (your Dell server)"
+    )
+    
+    # Self-Hosted Server URL (for future home server setup)
+    SELF_HOSTED_ML_URL: str = Field(
+        default="http://localhost:5000",
+        description="URL of your self-hosted ML server (Dell server at home)"
+    )
+    SELF_HOSTED_ML_TOKEN: str | None = Field(
+        default=None,
+        description="API token for self-hosted ML server (optional security)"
+    )
+
+    # Replicate AI API (Cloud - Pay per use)
     REPLICATE_API_TOKEN: str | None = Field(
         default=None,
         description="Replicate API token for premium AI models (3D face, enhancement)"

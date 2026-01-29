@@ -394,15 +394,42 @@ async def scan_barcode(
                                 warnings.append(f"Contains {irritant}")
                                 safety_score -= 10
                     
+                    # Extract product data
+                    product_name = obf_product.get("product_name", "Unknown Product")
+                    brand_name = obf_product.get("brands", "Unknown Brand")
+                    category_name = obf_product.get("categories", "").split(",")[0] if obf_product.get("categories") else "other"
+                    image_url = obf_product.get("image_front_url") or obf_product.get("image_url")
+                    
+                    # AUTO-SAVE: Save to local database for future lookups
+                    saved_product_id = barcode
+                    try:
+                        new_product = Product(
+                            brand=brand_name,
+                            name=product_name,
+                            category=category_name or "other",
+                            upc=barcode,
+                            product_image_url=image_url,
+                            primary_concerns=[],
+                            skin_types=[],
+                        )
+                        db.add(new_product)
+                        db.commit()
+                        db.refresh(new_product)
+                        saved_product_id = str(new_product.id)
+                        logger.info(f"Auto-saved product from barcode: {barcode} - {brand_name} {product_name}")
+                    except Exception as e:
+                        logger.warning(f"Failed to auto-save barcode product: {e}")
+                        db.rollback()
+                    
                     return BarcodeScanResponse(
                         found=True,
                         product={
-                            "id": barcode,
-                            "name": obf_product.get("product_name", "Unknown Product"),
-                            "brand": obf_product.get("brands", "Unknown Brand"),
+                            "id": saved_product_id,
+                            "name": product_name,
+                            "brand": brand_name,
                             "barcode": barcode,
-                            "category": obf_product.get("categories", "").split(",")[0] if obf_product.get("categories") else None,
-                            "image_url": obf_product.get("image_url"),
+                            "category": category_name,
+                            "image_url": image_url,
                         },
                         safety_rating=max(0, safety_score),
                         suitability_score=70,
@@ -638,6 +665,33 @@ If you cannot identify the product, return:
             if fetched_image:
                 product_image_url = fetched_image
                 image_source = "open_beauty_facts"
+        
+        # AUTO-SAVE: If product not in database and confidence is high, save it
+        if not matched_product and product_name and brand and confidence >= 0.7:
+            try:
+                new_product = Product(
+                    brand=brand,
+                    name=product_name,
+                    category=category or "other",
+                    product_image_url=product_image_url,
+                    primary_concerns=[],
+                    skin_types=[],
+                )
+                db.add(new_product)
+                db.commit()
+                db.refresh(new_product)
+                
+                matched_product = {
+                    "id": str(new_product.id),
+                    "name": new_product.name,
+                    "brand": new_product.brand,
+                    "category": new_product.category,
+                    "image_url": new_product.product_image_url,
+                }
+                logger.info(f"Auto-saved new product: {brand} - {product_name}")
+            except Exception as e:
+                logger.warning(f"Failed to auto-save product: {e}")
+                db.rollback()
         
         # Calculate safety rating based on ingredients
         warnings = []

@@ -35,11 +35,16 @@ class Settings(BaseSettings):
     ALLOWED_ORIGINS: list[str] = Field(
         default=[
             "http://localhost:3000",  # Next.js dev
+            "http://localhost:5173",  # Vite dev
             "http://localhost:19006",  # Expo web
             "http://localhost:8081",  # Expo mobile
             "https://himprapatel-rgb.github.io",  # GitHub Pages production
             "https://ai-skincare-intelligence-system-production.up.railway.app",  # Railway backend
-                        "https://frontend-production-0415.up.railway.app",  # Railway frontend
+            "https://frontend-production-0415.up.railway.app",  # Railway frontend
+            "https://pellicura.pages.dev",  # Cloudflare Pages production
+            "https://staging.pellicura.pages.dev",  # Cloudflare Pages staging
+            "https://pellicura.com",  # Production custom domain
+            "https://www.pellicura.com",  # Production custom domain with www
         ],
         description="List of allowed CORS origins",
     )

@@ -145,7 +145,7 @@ HARMFUL_INGREDIENTS_DB: Dict[str, HarmfulIngredient] = {
     
     "alcohol denat": HarmfulIngredient(
         name="Denatured Alcohol",
-        aliases=["alcohol denat", "sd alcohol", "alcohol", "ethanol", "isopropyl alcohol"],
+        aliases=["alcohol denat", "sd alcohol", "denatured alcohol", "isopropyl alcohol", "alcohol denatured"],
         severity=Severity.MODERATE,
         categories=[ConcernCategory.DRYING, ConcernCategory.IRRITANT],
         reason="Can severely dry out skin, disrupt skin barrier, and cause irritation.",
@@ -277,6 +277,17 @@ HARMFUL_INGREDIENTS_DB: Dict[str, HarmfulIngredient] = {
 }
 
 
+def _is_word_match(needle: str, haystack: str) -> bool:
+    """
+    Check if needle matches haystack as a complete word/phrase.
+    Avoids false positives like 'ethanol' matching 'phenoxyethanol'.
+    """
+    import re
+    # Use word boundary matching for more precision
+    pattern = r'\b' + re.escape(needle) + r'\b'
+    return bool(re.search(pattern, haystack, re.IGNORECASE))
+
+
 def analyze_ingredient_safety(ingredient_name: str) -> Optional[Dict]:
     """
     Analyze a single ingredient for safety concerns.
@@ -286,8 +297,8 @@ def analyze_ingredient_safety(ingredient_name: str) -> Optional[Dict]:
     ingredient_lower = ingredient_name.lower().strip()
     
     for key, harmful in HARMFUL_INGREDIENTS_DB.items():
-        # Check main name
-        if key in ingredient_lower or ingredient_lower in key:
+        # Check main name - exact or word-boundary match
+        if _is_word_match(key, ingredient_lower) or ingredient_lower == key:
             return {
                 "name": harmful.name,
                 "matched_term": ingredient_name,
@@ -298,9 +309,9 @@ def analyze_ingredient_safety(ingredient_name: str) -> Optional[Dict]:
                 "avoid_if": harmful.avoid_if
             }
         
-        # Check aliases
+        # Check aliases - use word-boundary matching to avoid false positives
         for alias in harmful.aliases:
-            if alias.lower() in ingredient_lower or ingredient_lower in alias.lower():
+            if _is_word_match(alias, ingredient_lower) or ingredient_lower == alias.lower():
                 return {
                     "name": harmful.name,
                     "matched_term": ingredient_name,

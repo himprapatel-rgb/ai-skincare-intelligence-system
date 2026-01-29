@@ -576,6 +576,74 @@ Tasks to execute autonomously. Approval granted for all items.
 
 ---
 
+## Future Tasks (501+)
+
+**Post-Launch Roadmap** - See `docs/FUTURE-TASKS.md` for full details.
+
+### Cloudflare Migration (Scheduled: 2026-01-29)
+
+| # | Task | Priority | Status |
+|---|------|----------|--------|
+| 501 | Database migration to Neon PostgreSQL | 🟠 P1 | Planned |
+| 502 | Backend deployment to Fly.io | 🟠 P1 | Planned |
+| 503 | Frontend deployment to Cloudflare Pages | 🟠 P1 | Planned |
+| 504 | DNS configuration (pellicura.com) | 🟠 P1 | Planned |
+| 505 | SSL/TLS setup on Cloudflare | 🟠 P1 | Planned |
+| 506 | Production verification & testing | 🟠 P1 | Planned |
+| 507 | Railway decommission | 🟢 P3 | Planned |
+
+### AI & ML Enhancements
+
+| # | Task | Priority | Status |
+|---|------|----------|--------|
+| 508 | AI Image Enhancement - Client-side (OpenCV.js) | 🟠 P1 | Planned |
+| 509 | AI Image Enhancement - Server-side (Real-ESRGAN) | 🟡 P2 | Planned |
+| 510 | Custom skin condition model training | 🟡 P2 | Planned |
+| 511 | Ingredient-skin interaction AI | 🟢 P3 | Planned |
+| 512 | Product efficacy prediction model | 🟢 P3 | Planned |
+
+### 3D Face Scanning (See `docs/3D-FACE-SCAN-PLAN.md`)
+
+| # | Task | Priority | Status |
+|---|------|----------|--------|
+| 513 | Multi-Angle Capture - Guided 5-angle photo capture | 🟠 P1 | Planned |
+| 514 | 3D Face Viewer - Three.js interactive model | 🟠 P1 | Planned |
+| 515 | Region-Based Analysis - Forehead, cheeks, chin, etc. | 🟡 P2 | Planned |
+| 516 | Photogrammetry - Server-side 3D reconstruction | 🟢 P3 | Planned |
+| 517 | iOS LiDAR Scanning - React Native + ARKit | 🔵 P4 | Future |
+| 518 | NeRF Video Scanning - AI 3D from video | 🔵 P4 | Future |
+| 519 | 3D Before/After - Compare 3D models over time | 🟢 P3 | Planned |
+
+### Mobile & Apps
+
+| # | Task | Priority | Status |
+|---|------|----------|--------|
+| 520 | React Native mobile app | 🟡 P2 | Planned |
+| 521 | Push notifications | 🟡 P2 | Planned |
+| 522 | Offline mode with sync | 🟢 P3 | Planned |
+| 523 | Apple Watch skin reminder | 🔵 P4 | Future |
+
+### Features & UX
+
+| # | Task | Priority | Status |
+|---|------|----------|--------|
+| 524 | Barcode/QR product scanning | 🟠 P1 | Planned |
+| 525 | Social sharing of progress | 🟡 P2 | Planned |
+| 526 | Community forums | 🟢 P3 | Planned |
+| 527 | Dermatologist booking integration | 🟢 P3 | Planned |
+| 528 | Multi-language support (i18n) | 🟡 P2 | Planned |
+
+### Monetization
+
+| # | Task | Priority | Status |
+|---|------|----------|--------|
+| 529 | Stripe subscription billing | 🟡 P2 | Planned |
+| 530 | Premium features gating | 🟡 P2 | Planned |
+| 531 | Affiliate product links | 🟢 P3 | Planned |
+| 532 | White-label API for partners | 🔵 P4 | Future |
+
+---
+
 ## How to use this list
 
 - **Status:** “Done” = already implemented; “-” = not yet done.
@@ -584,4 +652,5 @@ Tasks to execute autonomously. Approval granted for all items.
 - Run `npm run build` and `npm run lint` after batches of changes.
 - Update this file as you complete tasks (change “-” to “Done” and add date if desired).
 
-*Last updated: generated for autonomous run.*
+*Last updated: 2026-01-28*
+*Domain: pellicura.com*

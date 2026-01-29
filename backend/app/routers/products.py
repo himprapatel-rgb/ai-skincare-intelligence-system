@@ -665,9 +665,18 @@ async def identify_product_from_image(
         # Get OpenAI API key
         openai_key = os.getenv("OPENAI_API_KEY")
         if not openai_key:
+            logger.error("OPENAI_API_KEY environment variable is not set")
             raise HTTPException(
                 status_code=503,
-                detail="AI image recognition service not configured"
+                detail="AI image recognition service not configured. Please contact support."
+            )
+        
+        # Validate key format (should start with sk-)
+        if not openai_key.startswith("sk-"):
+            logger.error("OPENAI_API_KEY appears to be invalid (doesn't start with sk-)")
+            raise HTTPException(
+                status_code=503,
+                detail="AI service configuration error. Please contact support."
             )
         
         # Prepare image data
@@ -969,18 +978,33 @@ If you cannot identify the product, return:
             image_source=image_source
         )
         
+    except openai.AuthenticationError as e:
+        logger.error(f"OpenAI authentication error: {e}")
+        raise HTTPException(
+            status_code=503,
+            detail="AI service authentication failed. Please check API key configuration."
+        )
+    except openai.RateLimitError as e:
+        logger.error(f"OpenAI rate limit: {e}")
+        raise HTTPException(
+            status_code=429,
+            detail="AI service is busy. Please try again in a moment."
+        )
     except openai.APIError as e:
         logger.error(f"OpenAI API error: {e}")
         raise HTTPException(
             status_code=503,
-            detail="AI service temporarily unavailable"
+            detail="AI service temporarily unavailable. Please try again later."
         )
     except json.JSONDecodeError as e:
-        logger.error(f"JSON parse error: {e}")
+        logger.error(f"JSON parse error from AI response: {e}")
         return ProductImageResponse(found=False)
+    except HTTPException:
+        # Re-raise HTTP exceptions without wrapping
+        raise
     except Exception as e:
-        logger.error(f"Product identification error: {e}")
+        logger.error(f"Product identification error: {type(e).__name__}: {e}", exc_info=True)
         raise HTTPException(
             status_code=500,
-            detail=f"Failed to identify product: {str(e)}"
+            detail=f"Failed to identify product. Please try again with a clearer image."
         )

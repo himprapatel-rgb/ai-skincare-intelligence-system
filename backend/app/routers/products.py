@@ -3,6 +3,8 @@
 FastAPI router for product search, recommendations, and ingredient analysis.
 Created: December 13, 2025
 """
+import json
+import re
 from typing import List, Optional
 from uuid import UUID
 
@@ -690,9 +692,6 @@ If you cannot identify the product, return:
         ai_text = response.choices[0].message.content
         
         # Extract JSON from response
-        import json
-        import re
-        
         # Try to find JSON in the response
         json_match = re.search(r'\{[\s\S]*\}', ai_text)
         if not json_match:

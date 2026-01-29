@@ -188,7 +188,7 @@ const DashboardPage: React.FC = () => {
     else steps.push({ label: 'Take a new scan', href: '/scan', icon: <IconScan size={20} strokeWidth={2} />, priority: 2 });
     steps.push({ label: 'View recommendations', href: '/recommendations', icon: <IconStar size={20} strokeWidth={2} />, priority: 3 });
     steps.push({ label: 'Build your routine', href: '/routine-builder', icon: <IconCalendar size={20} strokeWidth={2} />, priority: 4 });
-    if (data.productsInShelf === 0) steps.push({ label: 'Add products to your shelf', href: '/recommendations', icon: <IconPackage size={20} strokeWidth={2} />, priority: 5 });
+    if (data.productsInShelf === 0) steps.push({ label: 'Add products to your shelf', href: '/scanner', icon: <IconPackage size={20} strokeWidth={2} />, priority: 5 });
     return steps.sort((a, b) => a.priority - b.priority).slice(0, 4);
   })();
 

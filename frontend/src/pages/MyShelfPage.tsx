@@ -211,7 +211,7 @@ const MyShelfPage: React.FC = () => {
             Discontinued ({discontinuedCount})
           </button>
         </div>
-        <button className="add-product-btn" onClick={() => navigate('/scan')}>
+        <button className="add-product-btn" onClick={() => navigate('/scanner')}>
           Add Product
         </button>
       </div>
@@ -220,7 +220,7 @@ const MyShelfPage: React.FC = () => {
         <div className="empty-state">
           <h3>No products on your shelf yet</h3>
           <p>Add products from recommendations or scan a product to build your collection.</p>
-          <button className="btn-primary" onClick={() => navigate('/scan')}>
+          <button className="btn-primary" onClick={() => navigate('/scanner')}>
             Add Your First Product
           </button>
         </div>

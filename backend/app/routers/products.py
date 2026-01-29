@@ -423,3 +423,195 @@ async def scan_barcode(
         warnings=None,
         source="not_found",
     )
+
+
+# ===== Product Image Recognition Endpoint (FR28 Enhanced) =====
+import openai
+import base64
+import os
+
+class ProductImageRequest(BaseModel):
+    """Request schema for product image recognition."""
+    image_data: str  # Base64 encoded image
+
+
+class ProductImageResponse(BaseModel):
+    """Response schema for product image recognition."""
+    found: bool
+    product_name: Optional[str] = None
+    brand: Optional[str] = None
+    category: Optional[str] = None
+    ingredients: Optional[List[str]] = None
+    description: Optional[str] = None
+    confidence: Optional[float] = None
+    matched_product: Optional[dict] = None
+    safety_rating: Optional[int] = None
+    suitability_score: Optional[int] = None
+    warnings: Optional[List[str]] = None
+
+
+@router.post("/identify-from-image", response_model=ProductImageResponse)
+async def identify_product_from_image(
+    request: ProductImageRequest,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """
+    Identify a beauty/skincare product from an image using AI vision.
+    
+    SRS: FR28 - Product Scanner (Enhanced with Image Recognition)
+    
+    Uses OpenAI GPT-4 Vision to:
+    1. Identify product name, brand, and category
+    2. Extract visible ingredients if shown
+    3. Match against local database
+    4. Provide safety analysis
+    """
+    try:
+        # Get OpenAI API key
+        openai_key = os.getenv("OPENAI_API_KEY")
+        if not openai_key:
+            raise HTTPException(
+                status_code=503,
+                detail="AI image recognition service not configured"
+            )
+        
+        # Prepare image data
+        image_data = request.image_data
+        if image_data.startswith("data:"):
+            # Extract base64 part from data URL
+            image_data = image_data.split(",")[1]
+        
+        # Call OpenAI Vision API
+        client = openai.OpenAI(api_key=openai_key)
+        
+        response = client.chat.completions.create(
+            model="gpt-4o",
+            messages=[
+                {
+                    "role": "system",
+                    "content": """You are a beauty and skincare product identification expert.
+                    
+When shown an image of a product, extract:
+1. Product name (exact name from packaging)
+2. Brand name
+3. Category (cleanser, moisturizer, serum, sunscreen, toner, mask, exfoliant, eye cream, lip care, body care, hair care, other)
+4. Any visible ingredients (if ingredient list is shown)
+5. Product size/volume if visible
+
+Respond in JSON format:
+{
+    "product_name": "string",
+    "brand": "string", 
+    "category": "string",
+    "ingredients": ["ingredient1", "ingredient2", ...] or null if not visible,
+    "size": "string or null",
+    "description": "brief description of the product",
+    "confidence": 0.0-1.0
+}
+
+If you cannot identify the product, return:
+{"product_name": null, "brand": null, "confidence": 0}"""
+                },
+                {
+                    "role": "user",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Identify this beauty/skincare product. Extract all visible information from the packaging."
+                        },
+                        {
+                            "type": "image_url",
+                            "image_url": {
+                                "url": f"data:image/jpeg;base64,{image_data}",
+                                "detail": "high"
+                            }
+                        }
+                    ]
+                }
+            ],
+            max_tokens=1000,
+            temperature=0.1
+        )
+        
+        # Parse AI response
+        ai_text = response.choices[0].message.content
+        
+        # Extract JSON from response
+        import json
+        import re
+        
+        # Try to find JSON in the response
+        json_match = re.search(r'\{[\s\S]*\}', ai_text)
+        if not json_match:
+            logger.warning(f"Could not parse AI response: {ai_text}")
+            return ProductImageResponse(found=False)
+        
+        ai_result = json.loads(json_match.group())
+        
+        if not ai_result.get("product_name"):
+            return ProductImageResponse(found=False)
+        
+        product_name = ai_result.get("product_name")
+        brand = ai_result.get("brand")
+        category = ai_result.get("category")
+        ingredients = ai_result.get("ingredients") or []
+        confidence = ai_result.get("confidence", 0.8)
+        
+        # Try to find matching product in database
+        matched_product = None
+        if product_name and brand:
+            db_product = db.query(Product).filter(
+                Product.name.ilike(f"%{product_name}%"),
+                Product.brand.ilike(f"%{brand}%")
+            ).first()
+            
+            if db_product:
+                matched_product = {
+                    "id": str(db_product.id),
+                    "name": db_product.name,
+                    "brand": db_product.brand,
+                    "category": db_product.category,
+                    "image_url": db_product.product_image_url,
+                }
+        
+        # Calculate safety rating based on ingredients
+        warnings = []
+        safety_score = 85
+        
+        irritants = ["fragrance", "parfum", "alcohol denat", "sodium lauryl sulfate", "parabens", "formaldehyde"]
+        for ing in ingredients:
+            for irritant in irritants:
+                if irritant.lower() in ing.lower():
+                    warnings.append(f"Contains {irritant}")
+                    safety_score -= 10
+        
+        return ProductImageResponse(
+            found=True,
+            product_name=product_name,
+            brand=brand,
+            category=category,
+            ingredients=ingredients[:15],  # Limit to 15 ingredients
+            description=ai_result.get("description"),
+            confidence=confidence,
+            matched_product=matched_product,
+            safety_rating=max(0, safety_score),
+            suitability_score=75,  # TODO: Calculate based on user skin profile
+            warnings=list(set(warnings)) if warnings else None
+        )
+        
+    except openai.APIError as e:
+        logger.error(f"OpenAI API error: {e}")
+        raise HTTPException(
+            status_code=503,
+            detail="AI service temporarily unavailable"
+        )
+    except json.JSONDecodeError as e:
+        logger.error(f"JSON parse error: {e}")
+        return ProductImageResponse(found=False)
+    except Exception as e:
+        logger.error(f"Product identification error: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to identify product: {str(e)}"
+        )

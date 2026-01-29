@@ -634,8 +634,8 @@ Tasks to execute autonomously. Approval granted for all items.
 
 | # | Task | Priority | Status |
 |---|------|----------|--------|
-| 533 | Add GitHub Secrets (FLY_API_TOKEN, CLOUDFLARE) | 🟠 P1 | TODO |
-| 534 | Verify staging auto-deploy works | 🟠 P1 | TODO |
+| 533 | Add GitHub Secrets (FLY_API_TOKEN, CLOUDFLARE) | 🟠 P1 | ✅ Done |
+| 534 | Verify staging auto-deploy works | 🟠 P1 | ✅ Done |
 | 535 | Database backup automation | 🟡 P2 | Planned |
 | 536 | Error monitoring (Sentry) | 🟡 P2 | Planned |
 | 537 | Uptime monitoring alerts | 🟢 P3 | Planned |
@@ -650,5 +650,5 @@ Tasks to execute autonomously. Approval granted for all items.
 - Run `npm run build` and `npm run lint` after batches of changes.
 - Update this file as you complete tasks (change “-” to “Done” and add date if desired).
 
-*Last updated: 2026-01-28*
+*Last updated: 2026-01-29*
 *Domain: pellicura.com*

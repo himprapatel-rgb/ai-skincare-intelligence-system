@@ -2,7 +2,7 @@
 
 Tasks to execute autonomously. Approval granted for all items.
 
-**Progress:** 500 Done | 0 Remaining (as of 2026-01-27)
+**Progress:** 500 Done | 21 New Tasks Added (Product Catalog) | Updated 2026-01-29
 
 ---
 
@@ -629,6 +629,34 @@ Tasks to execute autonomously. Approval granted for all items.
 | 530 | Premium features gating | 🟡 P2 | Planned |
 | 531 | Affiliate product links | 🟢 P3 | Planned |
 | 532 | White-label API for partners | 🔵 P4 | Future |
+
+### Product Catalog Database (In-House Data)
+
+> **Strategy Document:** [PRODUCT-CATALOG-DATABASE-STRATEGY.md](./03-product/PRODUCT-CATALOG-DATABASE-STRATEGY.md)
+
+| # | Task | Priority | Status |
+|---|------|----------|--------|
+| 540 | Create catalog schema in PostgreSQL (separate schema) | 🟠 P1 | Planned |
+| 541 | Build ProductCatalog service class | 🟠 P1 | Planned |
+| 542 | Implement barcode lookup endpoint (catalog-first) | 🟠 P1 | Planned |
+| 543 | Add lookup-first logic to product scanner | 🟠 P1 | Planned |
+| 544 | Download Open Beauty Facts data dump | 🟠 P1 | Planned |
+| 545 | Build OBF import script with cleaning/filtering | 🟠 P1 | Planned |
+| 546 | Import first 100K high-quality products | 🟠 P1 | Planned |
+| 547 | Set up Cloudinary for product images | 🟡 P2 | Planned |
+| 548 | Build image download & upload pipeline | 🟡 P2 | Planned |
+| 549 | Download/host OBF images to Cloudinary | 🟡 P2 | Planned |
+| 550 | Build batch safety analyzer for imported products | 🟡 P2 | Planned |
+| 551 | Pre-compute safety scores for all products | 🟡 P2 | Planned |
+| 552 | Update ingredients table with safety flags | 🟡 P2 | Planned |
+| 553 | Add full-text search to product catalog | 🟡 P2 | Planned |
+| 554 | Implement Redis caching for product lookups | 🟢 P3 | Planned |
+| 555 | Build catalog admin dashboard | 🟢 P3 | Planned |
+| 556 | Add product verification workflow | 🟢 P3 | Planned |
+| 557 | Track cache hit rate vs AI calls | 🟢 P3 | Planned |
+| 558 | Community product contribution system | 🔵 P4 | Future |
+| 559 | Brand partnership data import | 🔵 P4 | Future |
+| 560 | API for third-party product access | 🔵 P4 | Future |
 
 ### CI/CD & DevOps
 

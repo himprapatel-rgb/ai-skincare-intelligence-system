@@ -536,13 +536,21 @@ const ProductScannerPage: React.FC = () => {
                   accept="image/*"
                   onChange={handleFileChange}
                   id="product-photo-input"
-                  hidden
+                  style={{ position: 'absolute', opacity: 0, width: '1px', height: '1px' }}
                 />
-                <label htmlFor="product-photo-input" className="upload-label" style={{ cursor: 'pointer' }}>
+                <label htmlFor="product-photo-input" className="upload-label" style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <IconUpload size={48} strokeWidth={1.5} />
                   <span className="upload-text">Click to upload photo</span>
                   <span className="upload-hint">For best results, capture the full product label</span>
                 </label>
+                <button 
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="btn-primary"
+                  style={{ marginTop: '16px', padding: '12px 24px', fontSize: '1rem' }}
+                >
+                  Choose File
+                </button>
               </div>
               
               <div className="photo-tips">

@@ -15,7 +15,7 @@ from sqlalchemy import (
     String,
     Text,
 )
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
@@ -63,6 +63,9 @@ class ShelfProduct(Base):
     # Repurchase tracking
     would_repurchase = Column(Boolean, nullable=True)
     times_repurchased = Column(Integer, default=0)
+    
+    # Ingredient snapshot (preserved at time of addition)
+    ingredients_json = Column(JSONB, nullable=True)  # {ingredients: [], key_ingredients: [], captured_at: timestamp}
     
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())

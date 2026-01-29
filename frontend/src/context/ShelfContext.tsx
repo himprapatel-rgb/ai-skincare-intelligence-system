@@ -7,6 +7,19 @@ import { useAuth } from './AuthContext';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
 
+// Ingredient with optional percentage
+export interface KeyIngredient {
+  name: string;
+  percentage?: string | null;
+}
+
+// Ingredient snapshot stored with shelf product
+export interface IngredientsSnapshot {
+  ingredients: string[];
+  key_ingredients: KeyIngredient[];
+  captured_at?: string;
+}
+
 export interface ShelfProduct {
   id: string;
   product_id?: string;
@@ -23,6 +36,7 @@ export interface ShelfProduct {
   purchase_date?: string;
   purchase_price?: number;
   would_repurchase?: boolean;
+  ingredients_json?: IngredientsSnapshot;  // Ingredient snapshot
 }
 
 // Partial update type for products
@@ -132,7 +146,8 @@ export const ShelfProvider: React.FC<{ children: ReactNode }> = ({ children }) =
           product_brand: product.product_brand,
           product_category: product.product_category,
           product_image: product.product_image,
-          status: product.status || 'active'
+          status: product.status || 'active',
+          ingredients_json: product.ingredients_json  // Include ingredient snapshot
         })
       });
 

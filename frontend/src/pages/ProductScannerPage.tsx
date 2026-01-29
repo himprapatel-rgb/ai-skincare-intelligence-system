@@ -388,6 +388,15 @@ const ProductScannerPage: React.FC = () => {
     
     setAddingToShelf(true);
     try {
+      // Build ingredients snapshot for persistent storage
+      const ingredientsSnapshot = {
+        ingredients: scannedProduct.ingredients || [],
+        key_ingredients: (scannedProduct.keyIngredients || []).map(ki => ({
+          name: ki.name,
+          percentage: ki.percentage || null
+        }))
+      };
+      
       const success = await addToShelfContext({
         external_product_id: scannedProduct.id,
         product_name: scannedProduct.name,
@@ -397,6 +406,7 @@ const ProductScannerPage: React.FC = () => {
           ? undefined 
           : scannedProduct.imageUrl,
         status: 'active',
+        ingredients_json: ingredientsSnapshot,  // Store ingredients with shelf product
       });
       
       if (success) {

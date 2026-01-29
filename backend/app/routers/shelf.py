@@ -43,6 +43,8 @@ class ShelfProductCreate(BaseModel):
     purchase_date: Optional[datetime] = None
     expiry_date: Optional[datetime] = None
     purchase_price: Optional[float] = None
+    # Ingredient snapshot (preserved at time of addition)
+    ingredients_json: Optional[dict] = None  # {ingredients: [], key_ingredients: []}
 
 
 class ShelfProductUpdate(BaseModel):
@@ -80,6 +82,7 @@ class ShelfProductResponse(BaseModel):
     purchase_price: Optional[float] = None
     would_repurchase: Optional[bool] = None
     times_repurchased: int
+    ingredients_json: Optional[dict] = None  # Ingredient snapshot
     created_at: str
     updated_at: Optional[str] = None
 
@@ -152,6 +155,7 @@ async def get_shelf(
                 purchase_price=p.purchase_price,
                 would_repurchase=p.would_repurchase,
                 times_repurchased=p.times_repurchased or 0,
+                ingredients_json=p.ingredients_json,
                 created_at=p.created_at.isoformat() if p.created_at else "",
                 updated_at=p.updated_at.isoformat() if p.updated_at else None,
             )
@@ -203,6 +207,11 @@ async def add_to_shelf(
             detail="Product already on shelf"
         )
     
+    # Add timestamp to ingredients snapshot
+    ingredients_data = product_data.ingredients_json
+    if ingredients_data:
+        ingredients_data["captured_at"] = datetime.utcnow().isoformat()
+    
     product = ShelfProduct(
         user_id=current_user.id,
         product_id=product_uuid,
@@ -219,6 +228,7 @@ async def add_to_shelf(
         purchase_date=product_data.purchase_date,
         expiry_date=product_data.expiry_date,
         purchase_price=product_data.purchase_price,
+        ingredients_json=ingredients_data,
     )
     
     db.add(product)
@@ -245,6 +255,7 @@ async def add_to_shelf(
         purchase_price=product.purchase_price,
         would_repurchase=product.would_repurchase,
         times_repurchased=product.times_repurchased or 0,
+        ingredients_json=product.ingredients_json,
         created_at=product.created_at.isoformat() if product.created_at else "",
         updated_at=product.updated_at.isoformat() if product.updated_at else None,
     )
@@ -303,6 +314,7 @@ async def update_shelf_product(
         purchase_price=product.purchase_price,
         would_repurchase=product.would_repurchase,
         times_repurchased=product.times_repurchased or 0,
+        ingredients_json=product.ingredients_json,
         created_at=product.created_at.isoformat() if product.created_at else "",
         updated_at=product.updated_at.isoformat() if product.updated_at else None,
     )

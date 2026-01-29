@@ -699,6 +699,35 @@ def run_migrations():
                 "ON product_offers (product_id)"
             )
             
+            # Ingredients persistence migration (2026-01-29)
+            print("  - Adding ingredients_json to shelf_products...")
+            cur.execute(
+                """
+                ALTER TABLE shelf_products
+                ADD COLUMN IF NOT EXISTS ingredients_json JSONB DEFAULT NULL
+                """
+            )
+            
+            # Ensure product_ingredients has proper constraints
+            print("  - Ensuring product_ingredients constraints...")
+            cur.execute(
+                """
+                DO $$
+                BEGIN
+                    IF NOT EXISTS (
+                        SELECT 1 FROM pg_constraint 
+                        WHERE conname = 'uq_product_ingredient'
+                    ) THEN
+                        ALTER TABLE product_ingredients 
+                        ADD CONSTRAINT uq_product_ingredient 
+                        UNIQUE (product_id, ingredient_id);
+                    END IF;
+                EXCEPTION WHEN duplicate_table THEN
+                    NULL;
+                END $$
+                """
+            )
+            
         conn.commit()
         print("  ✓ Migration completed successfully!")
         

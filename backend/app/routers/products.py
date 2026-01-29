@@ -26,6 +26,10 @@ from app.schemas.product_schemas import (
     SafetyAnalysis,
 )
 from app.services.ingredient_safety import analyze_ingredients_list
+from app.services.ingredient_service import (
+    build_ingredients_snapshot,
+    save_product_ingredients,
+)
 
 router = APIRouter(
     prefix="/api/v1/products",
@@ -422,6 +426,16 @@ async def scan_barcode(
                         db.refresh(new_product)
                         saved_product_id = str(new_product.id)
                         logger.info(f"Auto-saved product from barcode: {barcode} - {brand_name} {product_name}")
+                        
+                        # SAVE INGREDIENTS: Persist ingredients to database
+                        if ingredients:
+                            saved_count = save_product_ingredients(
+                                db=db,
+                                product_id=new_product.id,
+                                ingredients=ingredients,
+                                key_ingredients=None  # Barcode scan doesn't get percentages
+                            )
+                            logger.info(f"Saved {saved_count} ingredients for barcode product {barcode}")
                     except Exception as e:
                         logger.warning(f"Failed to auto-save barcode product: {e}")
                         db.rollback()
@@ -780,6 +794,22 @@ If you cannot identify the product, return:
                     "image_url": new_product.product_image_url,
                 }
                 logger.info(f"Auto-saved new product: {brand} - {product_name}")
+                
+                # SAVE INGREDIENTS: Persist ingredients to database with percentages
+                if ingredients:
+                    # Convert key_ingredients to dict format for saving
+                    key_ing_dicts = [
+                        {"name": ki.name, "percentage": ki.percentage}
+                        for ki in key_ingredients
+                    ] if key_ingredients else None
+                    
+                    saved_count = save_product_ingredients(
+                        db=db,
+                        product_id=new_product.id,
+                        ingredients=ingredients,
+                        key_ingredients=key_ing_dicts
+                    )
+                    logger.info(f"Saved {saved_count} ingredients for AI-identified product")
             except Exception as e:
                 logger.warning(f"Failed to auto-save product: {e}")
                 db.rollback()

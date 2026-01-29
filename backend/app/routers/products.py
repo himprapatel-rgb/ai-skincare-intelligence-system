@@ -693,56 +693,80 @@ async def identify_product_from_image(
             messages=[
                 {
                     "role": "system",
-                    "content": """You are a beauty and skincare product identification expert.
-                    
-When shown an image of a product, extract:
-1. Product name (exact name from packaging)
-2. Brand name
-3. Category (cleanser, moisturizer, serum, sunscreen, toner, mask, exfoliant, eye cream, lip care, body care, hair care, other)
-4. Key active ingredients WITH percentages if shown (e.g., "Niacinamide 10%", "Vitamin C 15%", "Hyaluronic Acid 2%")
-5. Full ingredient list if visible
-6. Product size/volume if visible
+                    "content": """You are an expert at identifying beauty and skincare products from photos.
 
-IMPORTANT: For ingredients, always include the percentage/concentration if it's displayed on the packaging.
-Many products highlight key actives like "10% Niacinamide" or "2% Salicylic Acid" - capture these percentages.
+YOUR GOAL: Identify the product even from blurry, angled, or low-quality photos.
+
+IDENTIFICATION STRATEGY:
+1. FIRST: Look for any visible text - brand name, product name, even partial words
+2. SECOND: Recognize the product by its distinctive packaging - color, shape, design, logo
+3. THIRD: Use your extensive knowledge of popular skincare/beauty products to match visual cues
+4. FOURTH: If you see a partial brand name or logo, infer the full brand (e.g., "Cera" -> "CeraVe", "Neutro" -> "Neutrogena")
+
+COMMON BRANDS TO RECOGNIZE BY PACKAGING:
+- CeraVe: Blue/white packaging, minimalist design
+- Neutrogena: Orange/white accents, clean design  
+- The Ordinary: White dropper bottles, minimalist black text
+- La Roche-Posay: White/blue, pharmacy style
+- Olay: Red/white, elegant curves
+- Cetaphil: Green/white, gentle branding
+- Paula's Choice: Teal/white modern design
+- Drunk Elephant: Colorful, playful bottles
+- Tatcha: Purple/gold, Japanese aesthetic
+- Sunday Riley: Colorful, luxury feel
+- Kiehl's: Apothecary brown bottles
+
+BE CONFIDENT: Even if the image is blurry, make your best educated guess based on:
+- Partial text you can read
+- Package shape and color
+- Brand design patterns you recognize
+- Common products that match the visual
+
+Extract:
+1. Product name (your best guess, even if partially visible)
+2. Brand name (infer from logo/colors if text unclear)
+3. Category (cleanser, moisturizer, serum, sunscreen, toner, mask, exfoliant, eye cream, lip care, body care, hair care, other)
+4. Key ingredients with percentages if shown
+5. Full ingredient list if visible
+6. Size if visible
 
 Respond in JSON format:
 {
     "product_name": "string",
     "brand": "string", 
     "category": "string",
-    "key_ingredients": [
-        {"name": "Niacinamide", "percentage": "10%"},
-        {"name": "Hyaluronic Acid", "percentage": "2%"}
-    ] or null if not visible,
-    "ingredients": ["Water", "Glycerin", ...] or null if not visible,
+    "key_ingredients": [{"name": "Niacinamide", "percentage": "10%"}] or null,
+    "ingredients": ["Water", "Glycerin", ...] or null,
     "size": "string or null",
-    "description": "brief description of the product",
+    "description": "brief description",
     "confidence": 0.0-1.0
 }
 
-If you cannot identify the product, return:
-{"product_name": null, "brand": null, "confidence": 0}"""
+IMPORTANT: 
+- Set confidence 0.5-0.7 if you're guessing based on partial info
+- Set confidence 0.8-1.0 if you clearly read the product info
+- ONLY return null if you truly cannot identify ANY product (just a random object)
+- Always try to provide product_name and brand - guess if needed!"""
                 },
                 {
                     "role": "user",
                     "content": [
                         {
                             "type": "text",
-                            "text": "Identify this beauty/skincare product. Extract all visible information from the packaging."
+                            "text": "Identify this skincare/beauty product. It may be blurry or at an angle - use your knowledge to recognize the brand and product from any visible text, colors, packaging shape, or logo design."
                         },
                         {
                             "type": "image_url",
                             "image_url": {
                                 "url": f"data:image/jpeg;base64,{image_data}",
-                                "detail": "high"
+                                "detail": "auto"  # Let AI choose detail level for flexibility
                             }
                         }
                     ]
                 }
             ],
             max_tokens=1000,
-            temperature=0.1
+            temperature=0.3  # Slightly higher to allow educated guessing
         )
         
         # Parse AI response

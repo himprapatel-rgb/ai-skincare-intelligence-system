@@ -5,24 +5,27 @@ import { IconArrowLeft, IconStar } from '../components/Icons';
 import { BreadcrumbJsonLd } from '../components/BreadcrumbJsonLd';
 import LoadingScreen from '../components/LoadingScreen';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { useShelf } from '../context/ShelfContext';
 import './ProductDetailsPage.css';
+
+const API_BASE = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
 
 interface ProductDetails {
   id: string;
   name: string;
   brand: string;
   category: string;
-  description: string;
+  description?: string;
   ingredients: string[];
-  rating: number;
-  reviews: number;
-  price: string;
+  rating?: number;        // Optional - only show if we have real data
+  reviews?: number;       // Optional - only show if we have real data
+  price?: string;         // Optional - only show if we have real data
   imageUrl?: string;
-  keyIngredients: string[];
-  suitable: string[];
-  concerns: string[];
-  howToUse: string;
-  benefits: string[];
+  keyIngredients?: string[];
+  suitable?: string[];
+  concerns?: string[];
+  howToUse?: string;
+  benefits?: string[];
 }
 
 interface Review {
@@ -85,9 +88,11 @@ function addToCompare(productId: string): string[] {
 const ProductDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { products: shelfProducts, isOnShelf, addToShelf, removeFromShelf } = useShelf();
   const [product, setProduct] = useState<ProductDetails | null>(null);
   const [loading, setLoading] = useState(true);
   const [inShelf, setInShelf] = useState(false);
+  const [shelfActionLoading, setShelfActionLoading] = useState(false);
   usePageTitle(
     product ? product.name : 'Product Details',
     product ? `${product.name} by ${product.brand}. ${product.category}. ${product.description?.slice(0, 120) || ''}` : null
@@ -116,46 +121,95 @@ const ProductDetailsPage: React.FC = () => {
   };
 
   const fetchProductDetails = useCallback(async () => {
+    if (!id) return;
+    
     try {
       setLoading(true);
-      // TODO: Replace with actual API call
-      // const response = await fetch(`/api/v1/products/${id}`);
-      // const data = await response.json();
       
-      // Mock data
-      const mockProduct: ProductDetails = {
-        id: id || '1',
-        name: 'Hydrating Serum with Hyaluronic Acid',
-        brand: 'CeraVe',
-        category: 'Serum',
-        description: 'A lightweight, fast-absorbing serum that deeply hydrates and plumps skin with multiple forms of hyaluronic acid.',
-        ingredients: ['Water', 'Glycerin', 'Hyaluronic Acid', 'Niacinamide', 'Ceramides', 'Vitamin B5'],
-        rating: 4.5,
-        reviews: 1247,
-        price: '$24.99',
-        imageUrl: '/placeholder.jpg',
-        keyIngredients: ['Hyaluronic Acid', 'Ceramides', 'Niacinamide'],
-        suitable: ['Normal', 'Dry', 'Combination'],
-        concerns: ['Dehydration', 'Fine Lines', 'Dullness'],
-        howToUse: 'Apply 2-3 drops to clean face morning and evening. Follow with moisturizer.',
-        benefits: ['Deep hydration', 'Plumps skin', 'Reduces fine lines', 'Strengthens barrier']
-      };
+      // First, check if product is on user's shelf
+      const shelfProduct = shelfProducts.find(p => 
+        p.id === id || p.product_id === id || p.external_product_id === id
+      );
       
-      setProduct(mockProduct);
-      addToRecentlyViewed({
-        id: mockProduct.id,
-        name: mockProduct.name,
-        brand: mockProduct.brand,
-        imageUrl: mockProduct.imageUrl,
-      });
-      // Check if in shelf
-      setInShelf(Math.random() > 0.5); // Mock
+      if (shelfProduct) {
+        // Product found on shelf - use that data
+        const productData: ProductDetails = {
+          id: shelfProduct.id,
+          name: shelfProduct.product_name,
+          brand: shelfProduct.product_brand || 'Unknown Brand',
+          category: shelfProduct.product_category || 'Skincare',
+          description: shelfProduct.notes || undefined,
+          ingredients: [],
+          imageUrl: shelfProduct.product_image,
+          // No fake ratings/reviews/prices - only show if we have real data
+        };
+        setProduct(productData);
+        setInShelf(true);
+        addToRecentlyViewed({
+          id: productData.id,
+          name: productData.name,
+          brand: productData.brand,
+          imageUrl: productData.imageUrl,
+        });
+      } else {
+        // Try to fetch from products API
+        try {
+          const response = await fetch(`${API_BASE}/products/${id}`);
+          if (response.ok) {
+            const data = await response.json();
+            const productData: ProductDetails = {
+              id: data.id || id,
+              name: data.name || data.product_name || 'Unknown Product',
+              brand: data.brand || data.product_brand || 'Unknown Brand',
+              category: data.category || data.product_category || 'Skincare',
+              description: data.description,
+              ingredients: data.ingredients || [],
+              imageUrl: data.image_url || data.product_image,
+              // Only include rating if it's real data from API
+              rating: data.average_rating || undefined,
+              reviews: data.review_count || undefined,
+              price: data.price || undefined,
+              keyIngredients: data.key_ingredients,
+              suitable: data.suitable_skin_types,
+              concerns: data.addresses_concerns,
+              howToUse: data.how_to_use,
+              benefits: data.benefits,
+            };
+            setProduct(productData);
+            setInShelf(isOnShelf(id));
+            addToRecentlyViewed({
+              id: productData.id,
+              name: productData.name,
+              brand: productData.brand,
+              imageUrl: productData.imageUrl,
+            });
+          } else {
+            // Product not found - show basic info
+            setProduct({
+              id: id,
+              name: 'Product Not Found',
+              brand: 'Unknown',
+              category: 'Unknown',
+              ingredients: [],
+            });
+          }
+        } catch {
+          // API error - show basic info
+          setProduct({
+            id: id,
+            name: 'Product Details Unavailable',
+            brand: 'Unknown',
+            category: 'Unknown',
+            ingredients: [],
+          });
+        }
+      }
     } catch (error) {
       console.error('Failed to fetch product details:', error);
     } finally {
       setLoading(false);
     }
-  }, [id]);
+  }, [id, shelfProducts, isOnShelf]);
 
   const fetchReviews = useCallback(async () => {
     if (!id) return;
@@ -210,20 +264,45 @@ const ProductDetailsPage: React.FC = () => {
   };
 
   const handleAddToShelf = async () => {
+    if (!product) return;
+    setShelfActionLoading(true);
     try {
-      // TODO: API call
-      setInShelf(true);
+      const success = await addToShelf({
+        product_id: product.id,
+        product_name: product.name,
+        product_brand: product.brand,
+        product_category: product.category,
+        product_image: product.imageUrl,
+        status: 'active',
+      });
+      if (success) {
+        setInShelf(true);
+      }
     } catch (error) {
       console.error('Failed to add to shelf:', error);
+    } finally {
+      setShelfActionLoading(false);
     }
   };
 
   const handleRemoveFromShelf = async () => {
+    if (!product) return;
+    setShelfActionLoading(true);
     try {
-      // TODO: API call
-      setInShelf(false);
+      // Find the shelf product ID
+      const shelfProduct = shelfProducts.find(p => 
+        p.id === product.id || p.product_id === product.id
+      );
+      if (shelfProduct) {
+        const success = await removeFromShelf(shelfProduct.id);
+        if (success) {
+          setInShelf(false);
+        }
+      }
     } catch (error) {
       console.error('Failed to remove from shelf:', error);
+    } finally {
+      setShelfActionLoading(false);
     }
   };
 
@@ -292,44 +371,66 @@ const ProductDetailsPage: React.FC = () => {
           <p className="brand">{product.brand}</p>
           <p className="category">{product.category}</p>
           
-          <div className="rating-section">
-            <div className="stars">
-              {Array.from({ length: 5 }).map((_, index) => (
-                <IconStar
-                  key={index}
-                  size={16}
-                  strokeWidth={2}
-                  fill={index < Math.floor(product.rating) ? 'currentColor' : 'none'}
-                  className="star-icon"
-                />
-              ))}
+          {/* Only show rating if we have real data */}
+          {product.rating !== undefined && product.rating > 0 && (
+            <div className="rating-section">
+              <div className="stars">
+                {Array.from({ length: 5 }).map((_, index) => (
+                  <IconStar
+                    key={index}
+                    size={16}
+                    strokeWidth={2}
+                    fill={index < Math.floor(product.rating!) ? 'currentColor' : 'none'}
+                    className="star-icon"
+                  />
+                ))}
+              </div>
+              <span className="rating-text">
+                {product.rating} {product.reviews ? `(${product.reviews} reviews)` : ''}
+              </span>
             </div>
-            <span className="rating-text">{product.rating} ({product.reviews} reviews)</span>
-          </div>
+          )}
           
-          <p className="price">{product.price}</p>
-          <p className="description">{product.description}</p>
+          {/* Only show price if we have real data */}
+          {product.price && <p className="price">{product.price}</p>}
           
-          <div className="product-tags">
-            <div className="tag-group">
-              <strong>Suitable for:</strong>
-              {product.suitable.map(s => <span key={s} className="tag">{s}</span>)}
+          {product.description && <p className="description">{product.description}</p>}
+          
+          {/* Only show tags if we have real data */}
+          {((product.suitable && product.suitable.length > 0) || (product.concerns && product.concerns.length > 0)) && (
+            <div className="product-tags">
+              {product.suitable && product.suitable.length > 0 && (
+                <div className="tag-group">
+                  <strong>Suitable for:</strong>
+                  {product.suitable.map(s => <span key={s} className="tag">{s}</span>)}
+                </div>
+              )}
+              {product.concerns && product.concerns.length > 0 && (
+                <div className="tag-group">
+                  <strong>Concerns:</strong>
+                  {product.concerns.map(c => <span key={c} className="tag concern">{c}</span>)}
+                </div>
+              )}
             </div>
-            <div className="tag-group">
-              <strong>Concerns:</strong>
-              {product.concerns.map(c => <span key={c} className="tag concern">{c}</span>)}
-            </div>
-          </div>
+          )}
           
           <div className="action-buttons">
             {inShelf ? (
-              <button className="btn-secondary" onClick={handleRemoveFromShelf}>
-                Remove from Shelf
+              <button 
+                className="btn-secondary" 
+                onClick={handleRemoveFromShelf}
+                disabled={shelfActionLoading}
+              >
+                {shelfActionLoading ? 'Removing...' : 'Remove from Shelf'}
               </button>
             ) : (
               <>
-                <button className="btn-primary" onClick={handleAddToShelf}>
-                  Add to My Shelf
+                <button 
+                  className="btn-primary" 
+                  onClick={handleAddToShelf}
+                  disabled={shelfActionLoading}
+                >
+                  {shelfActionLoading ? 'Adding...' : 'Add to My Shelf'}
                 </button>
                 <button type="button" className="btn-secondary" onClick={handleAddToCompare} disabled={compareIds.includes(product.id)}>
                   {compareIds.includes(product.id) ? 'In compare list' : 'Add to compare'}
@@ -368,28 +469,42 @@ const ProductDetailsPage: React.FC = () => {
         <div className="tab-content">
           {activeTab === 'overview' && (
             <div className="overview-tab">
-              <section>
-                <h3>Key Benefits</h3>
-                <ul>
-                  {product.benefits.map((benefit, idx) => <li key={idx}>{benefit}</li>)}
-                </ul>
-              </section>
+              {product.benefits && product.benefits.length > 0 && (
+                <section>
+                  <h3>Key Benefits</h3>
+                  <ul>
+                    {product.benefits.map((benefit, idx) => <li key={idx}>{benefit}</li>)}
+                  </ul>
+                </section>
+              )}
               
-              <section>
-                <h3>Key Ingredients</h3>
-                <div className="key-ingredients">
-                  {product.keyIngredients.map(ing => (
-                    <div key={ing} className="ingredient-card">
-                      <strong>{ing}</strong>
-                    </div>
-                  ))}
-                </div>
-              </section>
+              {product.keyIngredients && product.keyIngredients.length > 0 && (
+                <section>
+                  <h3>Key Ingredients</h3>
+                  <div className="key-ingredients">
+                    {product.keyIngredients.map(ing => (
+                      <div key={ing} className="ingredient-card">
+                        <strong>{ing}</strong>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              )}
               
-              <section>
-                <h3>How to Use</h3>
-                <p>{product.howToUse}</p>
-              </section>
+              {product.howToUse && (
+                <section>
+                  <h3>How to Use</h3>
+                  <p>{product.howToUse}</p>
+                </section>
+              )}
+
+              {/* Show message if no detailed info available */}
+              {!product.benefits?.length && !product.keyIngredients?.length && !product.howToUse && (
+                <section className="no-data-message">
+                  <p>Detailed product information is not yet available for this product.</p>
+                  <p>You can help by adding notes to this product from your shelf.</p>
+                </section>
+              )}
             </div>
           )}
           

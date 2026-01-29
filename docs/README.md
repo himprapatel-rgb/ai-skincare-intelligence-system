@@ -1,6 +1,15 @@
-# AI Skincare Intelligence System - Documentation
+# Pellicura - AI Skincare Intelligence System Documentation
 
 > **Master Documentation Index** - Single source of truth for all project documentation
+
+## 🎯 Project Status
+
+| Milestone | Status | Date |
+|-----------|--------|------|
+| **500 Task Checklist** | ✅ Complete (500/500) | 2026-01-28 |
+| **Railway Deployment** | ✅ Live | 2026-01-28 |
+| **Cloudflare Migration** | 🔄 Scheduled | 2026-01-29 |
+| **Production Domain** | pellicura.com | Pending |
 
 ## 🚀 Quick Start
 
@@ -8,6 +17,15 @@
 1. [Quick Start Guide](./00-index/Quick-Start.md)
 2. [System Requirements](./01-requirements/SRS-V5.3-External-Pretrained-ML.md)
 3. [Product Backlog](./03-product/Product-Backlog-V5.md)
+
+## 📦 Deployment & Migration
+
+| Document | Description |
+|----------|-------------|
+| [TASK-LIST-1-500.md](./TASK-LIST-1-500.md) | All 500 tasks - 100% complete |
+| [ZERO-DOWNTIME-MIGRATION-PLAN.md](./ZERO-DOWNTIME-MIGRATION-PLAN.md) | Cloudflare migration (2026-01-29) |
+| [CLOUDFLARE-MIGRATION-PLAN.md](./CLOUDFLARE-MIGRATION-PLAN.md) | Architecture details |
+| [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md) | Current & target deployment |
 
 ## 📋 Core Documentation
 
@@ -88,5 +106,19 @@
 
 ---
 
-**Last Updated:** January 27, 2026  
-**Maintained by:** AI Skincare Intelligence System Team
+## 🌐 Live URLs
+
+### Current (Railway)
+- Frontend: https://frontend-production-0415.up.railway.app
+- Backend: https://ai-skincare-intelligence-system-production.up.railway.app
+- API Docs: https://ai-skincare-intelligence-system-production.up.railway.app/docs
+
+### Target (Cloudflare) - After Migration
+- Frontend: https://pellicura.com
+- Backend: https://api.pellicura.com
+
+---
+
+**Last Updated:** January 28, 2026  
+**Domain:** pellicura.com  
+**Maintained by:** Pellicura Team

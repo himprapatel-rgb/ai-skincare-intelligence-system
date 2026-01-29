@@ -1,4 +1,4 @@
-# AI Skincare Intelligence System
+# Pellicura - AI Skincare Intelligence System
 
 > **Clinical-grade AI-powered skin analysis platform** that provides personalized skincare recommendations, tracks skin health over time, and helps users achieve their skincare goals.
 
@@ -6,6 +6,8 @@
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Python](https://img.shields.io/badge/python-3.11+-blue)
 ![React](https://img.shields.io/badge/react-18+-61dafb)
+![Status](https://img.shields.io/badge/status-Production%20Ready-brightgreen)
+![Tasks](https://img.shields.io/badge/tasks-500%2F500%20Complete-success)
 
 ---
 
@@ -13,10 +15,19 @@
 
 | Resource | URL |
 |----------|-----|
-| **Live Application** | [frontend-production-0415.up.railway.app](https://frontend-production-0415.up.railway.app) |
-| **Backend API** | [ai-skincare-intelligence-system-production.up.railway.app](https://ai-skincare-intelligence-system-production.up.railway.app) |
+| **Production Domain** | [pellicura.com](https://pellicura.com) *(Cloudflare - Coming Soon)* |
+| **Current Frontend** | [frontend-production-0415.up.railway.app](https://frontend-production-0415.up.railway.app) |
+| **Current Backend** | [ai-skincare-intelligence-system-production.up.railway.app](https://ai-skincare-intelligence-system-production.up.railway.app) |
 | **API Documentation** | `/api/docs` (Swagger UI) |
 | **GitHub Repository** | [github.com/himprapatel-rgb/ai-skincare-intelligence-system](https://github.com/himprapatel-rgb/ai-skincare-intelligence-system) |
+
+### Upcoming Migration (2026-01-29)
+| Service | Current | Target |
+|---------|---------|--------|
+| Frontend | Railway | Cloudflare Pages |
+| Backend | Railway | Fly.io + Cloudflare |
+| Database | Railway PostgreSQL | Neon PostgreSQL |
+| Domain | Railway URLs | **pellicura.com** |
 
 ---
 
@@ -112,13 +123,16 @@ The AI Skincare Intelligence System is a full-stack web application that uses ar
 | **Lucide React** | Icons |
 | **CSS Modules** | Styling |
 
-### Infrastructure
-| Technology | Purpose |
-|------------|---------|
-| **Railway** | Hosting (Backend + Frontend + Database) |
-| **GitHub Actions** | CI/CD pipelines |
-| **Docker** | Containerization |
-| **Playwright** | E2E testing |
+### Infrastructure (Current → Target)
+| Technology | Purpose | Migration Target |
+|------------|---------|------------------|
+| **Railway** | Current Hosting | → Cloudflare/Fly.io |
+| **Cloudflare Pages** | Frontend CDN | ✅ Target |
+| **Fly.io** | Backend Hosting | ✅ Target |
+| **Neon** | Serverless PostgreSQL | ✅ Target |
+| **GitHub Actions** | CI/CD pipelines | Unchanged |
+| **Docker** | Containerization | Unchanged |
+| **Playwright** | E2E testing | Unchanged |
 
 ---
 
@@ -244,19 +258,29 @@ npm run dev
 
 ## Deployment
 
-The application is deployed on **Railway** with the following services:
+### Current Deployment (Railway)
 
-| Service | Description |
-|---------|-------------|
-| **Backend** | FastAPI application with Uvicorn |
-| **Frontend** | Static React build served by Node.js |
-| **Database** | PostgreSQL 14 managed instance |
-| **Volume** | Persistent storage for ML models |
+| Service | URL | Status |
+|---------|-----|--------|
+| **Frontend** | https://frontend-production-0415.up.railway.app | ✅ Live |
+| **Backend** | https://ai-skincare-intelligence-system-production.up.railway.app | ✅ Live |
+| **Database** | Railway PostgreSQL | ✅ Live |
 
-### Deployment URLs
+### Target Deployment (Cloudflare - Migration 2026-01-29)
 
-- **Production Frontend**: https://frontend-production-0415.up.railway.app
-- **Production Backend**: https://ai-skincare-intelligence-system-production.up.railway.app
+| Service | URL | Platform |
+|---------|-----|----------|
+| **Frontend** | https://pellicura.com | Cloudflare Pages |
+| **Backend** | https://api.pellicura.com | Fly.io + Cloudflare |
+| **Database** | Neon PostgreSQL | Serverless |
+
+### Migration Plan
+
+See [ZERO-DOWNTIME-MIGRATION-PLAN.md](./docs/ZERO-DOWNTIME-MIGRATION-PLAN.md) for details.
+
+- **Zero Downtime**: Railway runs parallel during migration
+- **Timeline**: 2026-01-29 to 2026-01-31
+- **Rollback**: Instant DNS switch back to Railway if needed
 
 ### CI/CD Pipeline
 
@@ -372,4 +396,26 @@ For questions or issues, please open a GitHub issue or contact the development t
 
 ---
 
-*Last updated: January 27, 2026*
+## Project Status
+
+| Milestone | Status | Date |
+|-----------|--------|------|
+| MVP Development | ✅ Complete | 2026-01 |
+| 500 Task Checklist | ✅ 500/500 Complete | 2026-01-28 |
+| Railway Deployment | ✅ Live | 2026-01-28 |
+| Cloudflare Migration | 🔄 Scheduled | 2026-01-29 |
+| Production Launch | 🔄 Pending | TBD |
+
+### Key Documents
+
+| Document | Description |
+|----------|-------------|
+| [TASK-LIST-1-500.md](./docs/TASK-LIST-1-500.md) | All 500 tasks completed |
+| [ZERO-DOWNTIME-MIGRATION-PLAN.md](./docs/ZERO-DOWNTIME-MIGRATION-PLAN.md) | Cloudflare migration plan |
+| [CLOUDFLARE-MIGRATION-PLAN.md](./docs/CLOUDFLARE-MIGRATION-PLAN.md) | Detailed migration architecture |
+
+---
+
+*Last updated: January 28, 2026*  
+*Domain: pellicura.com*  
+*Status: Production Ready - Awaiting Cloudflare Migration*

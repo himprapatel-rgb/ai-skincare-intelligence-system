@@ -1,39 +1,51 @@
 # Deployment Guide
 
-> Complete guide to deploying the AI Skincare Intelligence System
+> Complete guide to deploying Pellicura - AI Skincare Intelligence System
 
 ---
 
 ## Table of Contents
 
 1. [Overview](#overview)
-2. [Railway Deployment](#railway-deployment)
-3. [Environment Setup](#environment-setup)
-4. [Database Setup](#database-setup)
-5. [CI/CD Pipeline](#cicd-pipeline)
-6. [Monitoring & Logs](#monitoring--logs)
-7. [Troubleshooting](#troubleshooting)
-8. [Rollback Procedures](#rollback-procedures)
+2. [Current Deployment (Railway)](#current-deployment-railway)
+3. [Target Deployment (Cloudflare)](#target-deployment-cloudflare)
+4. [Environment Setup](#environment-setup)
+5. [Database Setup](#database-setup)
+6. [CI/CD Pipeline](#cicd-pipeline)
+7. [Monitoring & Logs](#monitoring--logs)
+8. [Troubleshooting](#troubleshooting)
+9. [Rollback Procedures](#rollback-procedures)
 
 ---
 
 ## Overview
 
-The application is deployed on **Railway** with three services:
+### Domain: pellicura.com
 
-| Service | Type | Description |
-|---------|------|-------------|
-| **Backend** | Web Service | FastAPI application |
-| **Frontend** | Web Service | React static build |
-| **Database** | PostgreSQL | Managed database |
+### Current Stack (Railway) - Active until migration
 
-### Production URLs
+| Service | Type | URL |
+|---------|------|-----|
+| **Frontend** | Web Service | https://frontend-production-0415.up.railway.app |
+| **Backend** | Web Service | https://ai-skincare-intelligence-system-production.up.railway.app |
+| **Database** | PostgreSQL | Railway managed |
 
-| Service | URL |
-|---------|-----|
-| Frontend | https://frontend-production-0415.up.railway.app |
-| Backend | https://ai-skincare-intelligence-system-production.up.railway.app |
-| API Docs | https://ai-skincare-intelligence-system-production.up.railway.app/api/docs |
+### Target Stack (Cloudflare) - Migration Date: 2026-01-29
+
+| Service | Type | URL |
+|---------|------|-----|
+| **Frontend** | Cloudflare Pages | https://pellicura.com |
+| **Backend** | Fly.io + CF Proxy | https://api.pellicura.com |
+| **Database** | Neon PostgreSQL | Serverless |
+
+### Migration Documents
+
+- [ZERO-DOWNTIME-MIGRATION-PLAN.md](./ZERO-DOWNTIME-MIGRATION-PLAN.md) - Step-by-step migration
+- [CLOUDFLARE-MIGRATION-PLAN.md](./CLOUDFLARE-MIGRATION-PLAN.md) - Architecture details
+
+---
+
+## Current Deployment (Railway)
 
 ---
 
@@ -487,7 +499,7 @@ railway run psql $DATABASE_URL < backup.sql
 Before deploying to production:
 
 - [ ] All tests passing locally
-- [ ] Environment variables set in Railway
+- [ ] Environment variables set
 - [ ] Database migrations tested
 - [ ] CORS origins updated if needed
 - [ ] OAuth redirect URIs configured
@@ -497,4 +509,68 @@ Before deploying to production:
 
 ---
 
-*Last updated: January 27, 2026*
+## Target Deployment (Cloudflare)
+
+### Architecture
+
+```
+                    ┌─────────────────┐
+                    │   Cloudflare    │
+                    │  (DNS + CDN)    │
+                    │  pellicura.com  │
+                    └────────┬────────┘
+                             │
+           ┌─────────────────┼─────────────────┐
+           │                 │                 │
+           ▼                 ▼                 ▼
+   ┌───────────────┐ ┌───────────────┐ ┌───────────────┐
+   │  Cloudflare   │ │    Fly.io     │ │     Neon      │
+   │    Pages      │ │   (Backend)   │ │  PostgreSQL   │
+   │  (Frontend)   │ │ api.pellicura │ │  (Database)   │
+   └───────────────┘ └───────────────┘ └───────────────┘
+```
+
+### DNS Configuration
+
+```
+Type    Name    Target                          Proxy
+──────────────────────────────────────────────────────
+CNAME   @       pellicura.pages.dev            ✅ ON
+CNAME   www     pellicura.com                  ✅ ON
+CNAME   api     skincare-api-prod.fly.dev      ✅ ON
+```
+
+### Environment Variables (Cloudflare Pages)
+
+```bash
+VITE_API_URL=https://api.pellicura.com
+VITE_GOOGLE_CLIENT_ID=your-google-client-id
+```
+
+### Environment Variables (Fly.io)
+
+```bash
+DATABASE_URL=postgresql://user:pass@neon-host/db
+SECRET_KEY=your-secret-key
+FRONTEND_URL=https://pellicura.com
+ALLOWED_ORIGINS=https://pellicura.com,https://www.pellicura.com
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+```
+
+See [ZERO-DOWNTIME-MIGRATION-PLAN.md](./ZERO-DOWNTIME-MIGRATION-PLAN.md) for complete migration steps.
+
+---
+
+## Project Status
+
+| Milestone | Status |
+|-----------|--------|
+| 500 Task Checklist | ✅ Complete (500/500) |
+| Railway Deployment | ✅ Live |
+| Cloudflare Migration | 🔄 Scheduled 2026-01-29 |
+
+---
+
+*Last updated: January 28, 2026*  
+*Domain: pellicura.com*

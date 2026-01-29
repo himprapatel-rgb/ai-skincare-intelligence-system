@@ -52,6 +52,7 @@ jobs:
         run: npm run build
         env:
           VITE_API_URL: https://pellicura-api-staging.fly.dev/api/v1
+          VITE_GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
       
       - name: Deploy to Cloudflare Pages (Staging)
         uses: cloudflare/wrangler-action@v3

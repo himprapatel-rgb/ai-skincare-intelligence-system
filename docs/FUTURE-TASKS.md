@@ -31,6 +31,18 @@
 | F6 | **Personalized ML Model** - User-specific skin predictions | 🔵 P4 | 1 month | Future |
 | F7 | **AR Skin Overlay** - Real-time skin analysis with AR | 🔵 P4 | 2 months | Future |
 
+### 3D Face Scanning (See `docs/3D-FACE-SCAN-PLAN.md`)
+
+| # | Task | Priority | Effort | Status |
+|---|------|----------|--------|--------|
+| F46 | **Multi-Angle Capture** - Guided 5-angle photo capture | 🟠 P1 | 2 weeks | Planned |
+| F47 | **3D Face Viewer** - Three.js interactive model | 🟠 P1 | 1 week | Planned |
+| F48 | **Region-Based Analysis** - Forehead, cheeks, chin, etc. | 🟡 P2 | 2 weeks | Planned |
+| F49 | **Photogrammetry** - Server-side 3D reconstruction | 🟢 P3 | 1 month | Planned |
+| F50 | **iOS LiDAR Scanning** - React Native + ARKit | 🔵 P4 | 2 months | Future |
+| F51 | **NeRF Video Scanning** - AI 3D from video | 🔵 P4 | 3 months | Future |
+| F52 | **3D Before/After** - Compare 3D models over time | 🟢 P3 | 2 weeks | Planned |
+
 ---
 
 ## 2. Infrastructure & Performance

@@ -17,6 +17,10 @@ interface DisplayProduct {
   notes: string;
   addedDate: string;
   imageUrl?: string;
+  expiryDate?: string;
+  purchaseDate?: string;
+  purchasePrice?: number;
+  wouldRepurchase?: boolean;
 }
 
 const MyShelfPage: React.FC = () => {
@@ -30,7 +34,8 @@ const MyShelfPage: React.FC = () => {
     wishlistCount,
     discontinuedCount,
     removeFromShelf, 
-    updateProductStatus 
+    updateProductStatus,
+    updateProduct
   } = useShelf();
   
   const [filter, setFilter] = useState<'all' | 'using' | 'wishlist' | 'discontinued'>('all');
@@ -50,6 +55,10 @@ const MyShelfPage: React.FC = () => {
       notes: p.notes || '',
       addedDate: p.created_at ? p.created_at.split('T')[0] : '',
       imageUrl: p.product_image,
+      expiryDate: p.expiry_date,
+      purchaseDate: p.purchase_date,
+      purchasePrice: p.purchase_price,
+      wouldRepurchase: p.would_repurchase,
     }));
   }, [shelfProducts]);
 
@@ -73,6 +82,28 @@ const MyShelfPage: React.FC = () => {
 
   const handleRemoveProduct = (productId: string) => {
     setConfirmRemoveId(productId);
+  };
+
+  const handleRatingChange = async (productId: string, newRating: number) => {
+    await updateProduct(productId, { rating: newRating });
+  };
+
+  const handleWouldRepurchaseToggle = async (productId: string, current: boolean | undefined) => {
+    await updateProduct(productId, { would_repurchase: !current });
+  };
+
+  // Helper to check if expiry is approaching (within 30 days)
+  const isExpiryApproaching = (expiryDate?: string) => {
+    if (!expiryDate) return false;
+    const expiry = new Date(expiryDate);
+    const now = new Date();
+    const thirtyDays = 30 * 24 * 60 * 60 * 1000;
+    return expiry.getTime() - now.getTime() < thirtyDays && expiry.getTime() > now.getTime();
+  };
+
+  const isExpired = (expiryDate?: string) => {
+    if (!expiryDate) return false;
+    return new Date(expiryDate) < new Date();
   };
 
   const doRemoveProduct = async () => {
@@ -229,18 +260,54 @@ const MyShelfPage: React.FC = () => {
                 <p className="brand">{product.brand}</p>
                 <p className="category">{product.category}</p>
                 
-                <div className="rating">
+                <div className="rating interactive-rating">
                   {Array.from({ length: 5 }).map((_, index) => (
-                    <IconStar
+                    <button
                       key={index}
-                      size={14}
-                      strokeWidth={2}
-                      fill={index < Math.floor(product.rating) ? 'currentColor' : 'none'}
-                      style={{ marginRight: '4px' }}
-                    />
+                      type="button"
+                      className="star-button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleRatingChange(product.id, index + 1);
+                      }}
+                      aria-label={`Rate ${index + 1} stars`}
+                    >
+                      <IconStar
+                        size={16}
+                        strokeWidth={2}
+                        fill={index < Math.floor(product.rating) ? '#f59e0b' : 'none'}
+                        color={index < Math.floor(product.rating) ? '#f59e0b' : '#d1d5db'}
+                      />
+                    </button>
                   ))}
-                  <span>{product.rating}</span>
+                  <span className="rating-value">{product.rating > 0 ? product.rating : '-'}</span>
                 </div>
+                
+                {/* Would Repurchase Toggle */}
+                <div className="repurchase-toggle">
+                  <button
+                    type="button"
+                    className={`repurchase-btn ${product.wouldRepurchase ? 'yes' : ''}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleWouldRepurchaseToggle(product.id, product.wouldRepurchase);
+                    }}
+                  >
+                    {product.wouldRepurchase ? '✓ Would Repurchase' : 'Would Repurchase?'}
+                  </button>
+                </div>
+                
+                {/* Expiry Warning */}
+                {product.expiryDate && (
+                  <div className={`expiry-badge ${isExpired(product.expiryDate) ? 'expired' : isExpiryApproaching(product.expiryDate) ? 'warning' : ''}`}>
+                    {isExpired(product.expiryDate) 
+                      ? '⚠️ Expired' 
+                      : isExpiryApproaching(product.expiryDate)
+                        ? `⏰ Expires ${new Date(product.expiryDate).toLocaleDateString()}`
+                        : `Expires ${new Date(product.expiryDate).toLocaleDateString()}`
+                    }
+                  </div>
+                )}
                 
                 {product.notes && (
                   <p className="notes">{product.notes}</p>

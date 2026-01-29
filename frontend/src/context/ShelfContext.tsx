@@ -19,7 +19,14 @@ export interface ShelfProduct {
   rating?: number;
   notes?: string;
   created_at?: string;
+  expiry_date?: string;
+  purchase_date?: string;
+  purchase_price?: number;
+  would_repurchase?: boolean;
 }
+
+// Partial update type for products
+export type ShelfProductUpdate = Partial<Omit<ShelfProduct, 'id' | 'product_id' | 'external_product_id' | 'created_at'>>;
 
 interface ShelfContextType {
   products: ShelfProduct[];
@@ -35,6 +42,7 @@ interface ShelfContextType {
   addToShelf: (product: Omit<ShelfProduct, 'id'>) => Promise<boolean>;
   removeFromShelf: (productId: string) => Promise<boolean>;
   updateProductStatus: (productId: string, status: 'active' | 'wishlist' | 'discontinued') => Promise<boolean>;
+  updateProduct: (productId: string, updates: ShelfProductUpdate) => Promise<boolean>;
   isOnShelf: (productId: string) => boolean;
   getProductIds: () => Set<string>;
 }
@@ -196,6 +204,37 @@ export const ShelfProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     }
   }, [token]);
 
+  // Update product with any fields (rating, expiry, etc.)
+  const updateProduct = useCallback(async (
+    productId: string,
+    updates: ShelfProductUpdate
+  ): Promise<boolean> => {
+    if (!token) return false;
+
+    try {
+      const response = await fetch(`${API_BASE}/shelf/${productId}`, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updates)
+      });
+
+      if (response.ok) {
+        // Update local state immediately
+        setProducts(prev => prev.map(p => 
+          p.id === productId ? { ...p, ...updates } : p
+        ));
+        return true;
+      }
+      return false;
+    } catch (err) {
+      console.error('Update product error:', err);
+      return false;
+    }
+  }, [token]);
+
   // Check if product is on shelf
   const isOnShelf = useCallback((productId: string): boolean => {
     return products.some(p => 
@@ -229,6 +268,7 @@ export const ShelfProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       addToShelf,
       removeFromShelf,
       updateProductStatus,
+      updateProduct,
       isOnShelf,
       getProductIds
     }}>

@@ -41,6 +41,11 @@ const MyShelfPage: React.FC = () => {
   const [filter, setFilter] = useState<'all' | 'using' | 'wishlist' | 'discontinued'>('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [confirmRemoveId, setConfirmRemoveId] = useState<string | null>(null);
+  
+  // Task 276: Sorting options
+  const [sortBy, setSortBy] = useState<'recent' | 'name' | 'brand' | 'rating'>('recent');
+  // Task 278: Category filter
+  const [categoryFilter, setCategoryFilter] = useState<string>('all');
 
   // Transform shelf products to display format
   const products: DisplayProduct[] = useMemo(() => {
@@ -62,14 +67,41 @@ const MyShelfPage: React.FC = () => {
     }));
   }, [shelfProducts]);
 
+  // Task 278: Get unique categories for filter dropdown
+  const categories = useMemo(() => {
+    const cats = new Set(products.map(p => p.category));
+    return ['all', ...Array.from(cats).sort()];
+  }, [products]);
+
   const filteredProducts = useMemo(() => {
-    return products.filter(product => {
+    let result = products.filter(product => {
       const matchesFilter = filter === 'all' || product.status === filter;
       const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                             product.brand.toLowerCase().includes(searchTerm.toLowerCase());
-      return matchesFilter && matchesSearch;
+      const matchesCategory = categoryFilter === 'all' || product.category.toLowerCase() === categoryFilter.toLowerCase();
+      return matchesFilter && matchesSearch && matchesCategory;
     });
-  }, [products, filter, searchTerm]);
+    
+    // Task 276: Apply sorting
+    switch (sortBy) {
+      case 'name':
+        result = result.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case 'brand':
+        result = result.sort((a, b) => a.brand.localeCompare(b.brand));
+        break;
+      case 'rating':
+        result = result.sort((a, b) => b.rating - a.rating);
+        break;
+      case 'recent':
+      default:
+        result = result.sort((a, b) => 
+          new Date(b.addedDate).getTime() - new Date(a.addedDate).getTime()
+        );
+    }
+    
+    return result;
+  }, [products, filter, searchTerm, categoryFilter, sortBy]);
 
   const handleProductClick = (productId: string) => {
     navigate(`/product/${productId}`);
@@ -214,6 +246,40 @@ const MyShelfPage: React.FC = () => {
         <button className="add-product-btn" onClick={() => navigate('/scanner')}>
           Add Product
         </button>
+      </div>
+
+      {/* Task 276-278: Sort and Category Filter */}
+      <div className="myshelf-filters">
+        <div className="filter-group">
+          <label htmlFor="sort-select">Sort by:</label>
+          <select 
+            id="sort-select"
+            value={sortBy} 
+            onChange={(e) => setSortBy(e.target.value as 'recent' | 'name' | 'brand' | 'rating')}
+            className="filter-select"
+          >
+            <option value="recent">Recently Added</option>
+            <option value="name">Name (A-Z)</option>
+            <option value="brand">Brand (A-Z)</option>
+            <option value="rating">Highest Rated</option>
+          </select>
+        </div>
+        <div className="filter-group">
+          <label htmlFor="category-select">Category:</label>
+          <select 
+            id="category-select"
+            value={categoryFilter} 
+            onChange={(e) => setCategoryFilter(e.target.value)}
+            className="filter-select"
+          >
+            {categories.map(cat => (
+              <option key={cat} value={cat}>
+                {cat === 'all' ? 'All Categories' : cat}
+              </option>
+            ))}
+          </select>
+        </div>
+        <span className="results-count">{filteredProducts.length} products</span>
       </div>
 
       {filteredProducts.length === 0 ? (

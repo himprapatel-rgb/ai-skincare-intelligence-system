@@ -7,26 +7,8 @@ on:
       - staging
   workflow_dispatch:
 
+# Staging uses Railway backend (no cold starts). Fly.io staging backend deploy disabled (was failing).
 jobs:
-  deploy-backend:
-    name: Deploy Backend to Staging
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./backend
-    
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      
-      - name: Setup Fly CLI
-        uses: superfly/flyctl-actions/setup-flyctl@master
-      
-      - name: Deploy to Fly.io Staging
-        run: flyctl deploy --config fly.staging.toml --remote-only
-        env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN_STAGING }}
-
   deploy-frontend:
     name: Deploy Frontend to Staging
     runs-on: ubuntu-latest
@@ -51,7 +33,7 @@ jobs:
       - name: Build frontend for Staging
         run: npm run build
         env:
-          VITE_API_URL: https://pellicura-api-staging.fly.dev/api/v1
+          VITE_API_URL: https://ai-skincare-intelligence-system-production.up.railway.app/api/v1
           VITE_GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
       
       - name: Deploy to Cloudflare Pages (Staging)

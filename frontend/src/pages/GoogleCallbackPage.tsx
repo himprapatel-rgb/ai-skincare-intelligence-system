@@ -43,7 +43,8 @@ const GoogleCallbackPage: React.FC = () => {
 
     const handleCallback = async () => {
       try {
-        const response = await api.post('/auth/google', { code }, {
+        const redirect_uri = `${window.location.origin}/auth/google/callback`;
+        const response = await api.post('/auth/google', { code, redirect_uri }, {
           timeout: AUTH_GOOGLE_TIMEOUT_MS,
           signal: controller.signal,
         });

@@ -67,9 +67,12 @@ class GoogleAuthService:
             parts.append(str(error_desc))
         return " ".join(parts)
 
-    async def exchange_code_for_tokens(self, code: str) -> Optional[Dict[str, Any]]:
+    async def exchange_code_for_tokens(
+        self, code: str, redirect_uri: Optional[str] = None
+    ) -> Optional[Dict[str, Any]]:
         """Exchange authorization code for access and ID tokens. Raises GoogleAuthError on token endpoint failure."""
-        logger.info(f"Google OAuth: client_id={self.client_id[:20] if self.client_id else 'None'}..., redirect_uri={self.redirect_uri}")
+        uri = redirect_uri or self.redirect_uri
+        logger.info(f"Google OAuth: client_id={self.client_id[:20] if self.client_id else 'None'}..., redirect_uri={uri}")
         
         if not self.client_id or not self.client_secret:
             logger.error("Google OAuth not configured - missing client_id or client_secret")
@@ -84,7 +87,7 @@ class GoogleAuthService:
                         "client_secret": self.client_secret,
                         "code": code,
                         "grant_type": "authorization_code",
-                        "redirect_uri": self.redirect_uri,
+                        "redirect_uri": uri,
                     },
                     timeout=30.0,
                 )
@@ -125,13 +128,15 @@ class GoogleAuthService:
                 logger.error(f"Google userinfo error: {e}")
                 return None
     
-    async def verify_and_get_user(self, code: str) -> Optional[Dict[str, Any]]:
+    async def verify_and_get_user(
+        self, code: str, redirect_uri: Optional[str] = None
+    ) -> Optional[Dict[str, Any]]:
         """
         Complete OAuth flow: exchange code and get user info.
         Returns user data: email, name, picture, email_verified
         """
         # Exchange code for tokens
-        tokens = await self.exchange_code_for_tokens(code)
+        tokens = await self.exchange_code_for_tokens(code, redirect_uri=redirect_uri)
         if not tokens:
             return None
         

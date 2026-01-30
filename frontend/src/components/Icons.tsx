@@ -41,6 +41,11 @@ export { AlertTriangle as IconAlertTriangle } from 'lucide-react';
 export { RefreshCw as IconRefresh } from 'lucide-react';
 export { Menu as IconMenu } from 'lucide-react';
 export { LogOut as IconLogOut } from 'lucide-react';
+export { Flashlight as IconFlash } from 'lucide-react';
+export { SwitchCamera as IconSwitchCamera } from 'lucide-react';
+export { Keyboard as IconKeyboard } from 'lucide-react';
+export { Volume2 as IconVolume } from 'lucide-react';
+export { Vibrate as IconVibrate } from 'lucide-react';
 
 // Feature Icons
 export { Zap as IconZap } from 'lucide-react';

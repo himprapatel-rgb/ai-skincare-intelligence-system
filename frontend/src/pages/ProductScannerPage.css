@@ -1357,3 +1357,248 @@
     font-size: 0.75rem;
   }
 }
+
+/* ===== Enhanced Scanner UI (Tasks 76-100) ===== */
+
+/* Scanner controls row */
+.scanner-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.scan-count {
+  font-size: 0.85rem;
+  color: var(--primary);
+  font-weight: 600;
+  padding: 4px 12px;
+  background: rgba(59, 130, 246, 0.1);
+  border-radius: 20px;
+}
+
+/* Scan zone overlay */
+.scan-zone-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.scan-zone-guide {
+  position: relative;
+  width: 280px;
+  height: 160px;
+  border: 2px dashed rgba(255, 255, 255, 0.5);
+  border-radius: 12px;
+}
+
+.scan-zone-guide .corner {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-color: var(--primary);
+  border-style: solid;
+}
+
+.scan-zone-guide .corner.top-left {
+  top: -2px;
+  left: -2px;
+  border-width: 3px 0 0 3px;
+  border-radius: 8px 0 0 0;
+}
+
+.scan-zone-guide .corner.top-right {
+  top: -2px;
+  right: -2px;
+  border-width: 3px 3px 0 0;
+  border-radius: 0 8px 0 0;
+}
+
+.scan-zone-guide .corner.bottom-left {
+  bottom: -2px;
+  left: -2px;
+  border-width: 0 0 3px 3px;
+  border-radius: 0 0 0 8px;
+}
+
+.scan-zone-guide .corner.bottom-right {
+  bottom: -2px;
+  right: -2px;
+  border-width: 0 3px 3px 0;
+  border-radius: 0 0 8px 0;
+}
+
+/* Animated scan line */
+.scan-zone-guide .scan-line {
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary), var(--primary), transparent);
+  animation: scanLine 2s ease-in-out infinite;
+}
+
+@keyframes scanLine {
+  0%, 100% {
+    top: 10%;
+    opacity: 0.5;
+  }
+  50% {
+    top: 85%;
+    opacity: 1;
+  }
+}
+
+.scan-hint {
+  margin-top: 16px;
+  font-size: 0.85rem;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.4);
+  padding: 6px 16px;
+  border-radius: 20px;
+}
+
+/* Scanner quick controls */
+.scanner-quick-controls {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  padding: 12px;
+  background: var(--bg-light);
+  border-radius: 8px;
+  margin-top: 12px;
+}
+
+.scanner-quick-controls .control-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid var(--border-color);
+  background: white;
+  color: var(--text-gray);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.scanner-quick-controls .control-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.scanner-quick-controls .control-btn.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: white;
+}
+
+/* Manual barcode entry */
+.manual-entry-section {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.manual-entry-toggle {
+  font-size: 0.9rem;
+  color: var(--primary);
+  text-decoration: underline;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.manual-entry-toggle:hover {
+  color: var(--primary-dark);
+}
+
+.manual-entry-form {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 16px;
+  background: var(--bg-light);
+  border-radius: 8px;
+}
+
+.manual-entry-form .barcode-input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 2px;
+  text-align: center;
+}
+
+.manual-entry-form .barcode-input:focus {
+  border-color: var(--primary);
+  outline: none;
+}
+
+.manual-entry-form .btn-primary {
+  padding: 12px 24px;
+  white-space: nowrap;
+}
+
+/* Enhanced photo tips */
+.photo-tips.updated ul {
+  list-style: none;
+  padding: 0;
+}
+
+.photo-tips.updated li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+}
+
+.photo-tips.updated li::before {
+  content: '✓';
+  color: var(--success);
+  font-weight: bold;
+}
+
+/* Camera permission indicator */
+.camera-permission-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.camera-permission-indicator.granted {
+  background: rgba(34, 197, 94, 0.1);
+  color: #16a34a;
+}
+
+.camera-permission-indicator.denied {
+  background: rgba(239, 68, 68, 0.1);
+  color: #dc2626;
+}
+
+.camera-permission-indicator.prompt {
+  background: rgba(234, 179, 8, 0.1);
+  color: #ca8a04;
+}
+
+/* Spin animation for loader */
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

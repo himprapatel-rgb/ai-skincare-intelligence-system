@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Html5Qrcode, Html5QrcodeSupportedFormats } from 'html5-qrcode';
 import { 
@@ -9,11 +9,30 @@ import {
   IconX, 
   IconUpload,
   IconCheck,
-  IconLoader
+  IconLoader,
+  IconRefresh,
+  IconFlash,
+  IconSwitchCamera,
+  IconVolume
 } from '../components/Icons';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { useAuth } from '../context/AuthContext';
 import { useShelf } from '../context/ShelfContext';
+import {
+  getCameraPermissionStatus,
+  getCameraCapabilities,
+  isSecureContext,
+  isMobileDevice,
+  parseCameraError,
+  getBrowserCameraInstructions,
+  getCameraPreference,
+  saveCameraPreference,
+  hasTorchSupport,
+  toggleTorch,
+  warmUpDelay,
+  CameraPermissionStatus,
+  CameraCapabilities
+} from '../utils/cameraUtils';
 import './ProductScannerPage.css';
 
 // API base URL - use environment variable or fallback to production
@@ -127,6 +146,24 @@ const ProductScannerPage: React.FC = () => {
   const [addedToShelf, setAddedToShelf] = useState(false);
   const [addingToShelf, setAddingToShelf] = useState(false);
   const [scanHistory, setScanHistory] = useState<ScanHistoryItem[]>([]);
+  
+  // Enhanced camera state (Tasks 1-50)
+  const [cameraPermission, setCameraPermission] = useState<CameraPermissionStatus>('unknown');
+  const [cameraCapabilities, setCameraCapabilities] = useState<CameraCapabilities | null>(null);
+  const [currentFacingMode, setCurrentFacingMode] = useState<'user' | 'environment'>('environment');
+  const [torchEnabled, setTorchEnabled] = useState(false);
+  const [hasTorch, setHasTorch] = useState(false);
+  const [showManualEntry, setShowManualEntry] = useState(false);
+  const [manualBarcode, setManualBarcode] = useState('');
+  const [soundEnabled, setSoundEnabled] = useState(true);
+  const [vibrationEnabled, setVibrationEnabled] = useState(true);
+  const [continuousMode, setContinuousMode] = useState(false);
+  const [sessionScanCount, setSessionScanCount] = useState(0);
+  const [lastScannedBarcode, setLastScannedBarcode] = useState<string | null>(null);
+  
+  // Camera stream ref for photo capture
+  const cameraStreamRef = useRef<MediaStream | null>(null);
+  const videoPreviewRef = useRef<HTMLVideoElement | null>(null);
 
   // Load scan history from localStorage on mount
   useEffect(() => {
@@ -139,6 +176,83 @@ const ProductScannerPage: React.FC = () => {
       console.error('Failed to load scan history:', e);
     }
   }, []);
+  
+  // Task 7: Check camera permission and capabilities on mount
+  useEffect(() => {
+    const initializeCamera = async () => {
+      // Check permission status
+      const permission = await getCameraPermissionStatus();
+      setCameraPermission(permission);
+      
+      // Get camera capabilities
+      const capabilities = await getCameraCapabilities();
+      setCameraCapabilities(capabilities);
+      
+      // Load saved camera preference, default to back camera on mobile
+      const savedPreference = getCameraPreference();
+      if (savedPreference) {
+        setCurrentFacingMode(savedPreference);
+      } else if (isMobileDevice()) {
+        setCurrentFacingMode('environment'); // Back camera for mobile
+      }
+    };
+    
+    initializeCamera();
+  }, []);
+  
+  // Task 55, 56: Feedback on successful scan
+  const playSuccessFeedback = useCallback(() => {
+    // Sound feedback
+    if (soundEnabled) {
+      try {
+        const audioContext = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        oscillator.frequency.value = 800;
+        oscillator.type = 'sine';
+        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.1);
+      } catch {
+        // Audio not supported
+      }
+    }
+    
+    // Haptic feedback
+    if (vibrationEnabled && navigator.vibrate) {
+      navigator.vibrate(100);
+    }
+  }, [soundEnabled, vibrationEnabled]);
+  
+  // Task 62: Handle manual barcode entry
+  const handleManualBarcodeSubmit = async () => {
+    if (!manualBarcode.trim()) return;
+    
+    // Validate barcode format (8-14 digits)
+    const cleanBarcode = manualBarcode.replace(/\D/g, '');
+    if (cleanBarcode.length < 8 || cleanBarcode.length > 14) {
+      setError('Invalid barcode. Please enter 8-14 digits.');
+      return;
+    }
+    
+    setShowManualEntry(false);
+    await handleBarcodeDetected(cleanBarcode);
+    setManualBarcode('');
+  };
+  
+  // Task 40: Toggle torch/flashlight
+  const handleToggleTorch = async () => {
+    if (cameraStreamRef.current) {
+      const newState = !torchEnabled;
+      const success = await toggleTorch(cameraStreamRef.current, newState);
+      if (success) {
+        setTorchEnabled(newState);
+      }
+    }
+  };
 
   // Save product to scan history
   const addToScanHistory = (product: ScannedProduct) => {
@@ -181,14 +295,24 @@ const ProductScannerPage: React.FC = () => {
     };
   }, []);
 
-  // Start barcode scanner
+  // Start barcode scanner with enhanced features (Tasks 1-75)
   const startBarcodeScanner = async () => {
     if (!scannerContainerRef.current) return;
+    
+    // Task 11: Check secure context
+    if (!isSecureContext()) {
+      setError('Camera requires a secure connection (HTTPS). Please access this page using HTTPS.');
+      return;
+    }
     
     try {
       setError(null);
       setCameraActive(true);
       
+      // Task 19: Camera warm-up delay
+      await warmUpDelay();
+      
+      // Task 52: Support more barcode formats
       const html5Qrcode = new Html5Qrcode("barcode-scanner", {
         formatsToSupport: [
           Html5QrcodeSupportedFormats.EAN_13,
@@ -197,17 +321,21 @@ const ProductScannerPage: React.FC = () => {
           Html5QrcodeSupportedFormats.UPC_E,
           Html5QrcodeSupportedFormats.QR_CODE,
           Html5QrcodeSupportedFormats.DATA_MATRIX,
+          Html5QrcodeSupportedFormats.CODE_128,
+          Html5QrcodeSupportedFormats.CODE_39,
+          Html5QrcodeSupportedFormats.ITF,
         ],
         verbose: false
       });
       
       scannerRef.current = html5Qrcode;
       
+      // Task 26, 31: Use back camera (environment) for product scanning
       await html5Qrcode.start(
-        { facingMode: "environment" },
+        { facingMode: currentFacingMode },
         {
-          fps: 10,
-          qrbox: { width: 250, height: 150 },
+          fps: 15, // Slightly higher FPS for better scanning
+          qrbox: { width: 280, height: 160 }, // Larger scan area
           aspectRatio: 1.5
         },
         (decodedText) => {
@@ -219,11 +347,27 @@ const ProductScannerPage: React.FC = () => {
         }
       );
       
+      // Task 40: Check for torch support after camera starts
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: currentFacingMode } });
+        cameraStreamRef.current = stream;
+        const torchSupported = await hasTorchSupport(stream);
+        setHasTorch(torchSupported);
+        // Stop this stream as Html5Qrcode manages its own
+        stream.getTracks().forEach(t => t.stop());
+      } catch {
+        // Ignore - Html5Qrcode will manage the camera
+      }
+      
       setScanning(true);
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('Failed to start scanner:', err);
-      setError('Could not access camera. Please allow camera permissions.');
       setCameraActive(false);
+      
+      // Task 1, 10: Use parseCameraError utility for specific messages
+      const { message } = parseCameraError(err);
+      const instructions = getBrowserCameraInstructions();
+      setError(`${message}\n\n${instructions}`);
     }
   };
 
@@ -241,13 +385,28 @@ const ProductScannerPage: React.FC = () => {
     setCameraActive(false);
   };
 
-  // Handle barcode detection
+  // Handle barcode detection (Tasks 55-71)
   const handleBarcodeDetected = async (barcode: string) => {
-    // Stop scanner first
-    await stopBarcodeScanner();
+    // Task 70, 71: Duplicate detection within session
+    if (barcode === lastScannedBarcode) {
+      // Same barcode scanned again - ignore to prevent duplicates
+      return;
+    }
+    
+    // Task 55, 56: Play success feedback immediately on scan
+    playSuccessFeedback();
+    
+    // Stop scanner if not in continuous mode
+    if (!continuousMode) {
+      await stopBarcodeScanner();
+    }
     
     setProcessing(true);
     setError(null);
+    setLastScannedBarcode(barcode);
+    
+    // Task 69: Update session scan count
+    setSessionScanCount(prev => prev + 1);
     
     try {
       const response = await fetch(`${API_BASE}/products/scan-barcode`, {
@@ -263,7 +422,7 @@ const ProductScannerPage: React.FC = () => {
         const data = await response.json();
         
         if (data.found && data.product) {
-          setScannedProduct({
+          const product: ScannedProduct = {
             id: data.product.id || barcode,
             name: data.product.name || 'Unknown Product',
             brand: data.product.brand || 'Unknown Brand',
@@ -275,9 +434,12 @@ const ProductScannerPage: React.FC = () => {
             suitabilityScore: data.suitability_score || 0,
             warnings: data.warnings || [],
             source: 'barcode'
-          });
+          };
+          setScannedProduct(product);
+          addToScanHistory(product); // Save to history
         } else {
-          setError(`Product not found for barcode: ${barcode}. Try using "Take Photo" mode instead.`);
+          // Task 66: Offer alternatives when product not found
+          setError(`Product not found for barcode: ${barcode}.\n\nTry:\n• Take a photo of the product instead\n• Enter the barcode manually\n• Check if the barcode is complete and undamaged`);
         }
       } else {
         // Try to get error message from response
@@ -487,20 +649,29 @@ const ProductScannerPage: React.FC = () => {
           </div>
         )}
 
-        {/* Barcode Scanner Mode */}
+        {/* Barcode Scanner Mode - Enhanced (Tasks 76-100) */}
         {scanMode === 'barcode' && !scannedProduct && !processing && (
           <div className="scanner-section">
             <div className="scanner-card">
               <div className="scanner-header">
                 <h2>Scan Product Barcode</h2>
-                <button 
-                  onClick={cameraActive ? stopBarcodeScanner : startBarcodeScanner}
-                  className="btn-toggle-camera"
-                >
-                  {cameraActive ? 'Stop Camera' : 'Start Camera'}
-                </button>
+                <div className="scanner-controls">
+                  {/* Task 69: Session scan count */}
+                  {sessionScanCount > 0 && (
+                    <span className="scan-count" title="Products scanned this session">
+                      {sessionScanCount} scanned
+                    </span>
+                  )}
+                  <button 
+                    onClick={cameraActive ? stopBarcodeScanner : startBarcodeScanner}
+                    className="btn-toggle-camera"
+                  >
+                    {cameraActive ? 'Stop Camera' : 'Start Camera'}
+                  </button>
+                </div>
               </div>
               
+              {/* Task 76-80: Enhanced scanner overlay with scan zone */}
               <div 
                 id="barcode-scanner" 
                 ref={scannerContainerRef}
@@ -510,10 +681,49 @@ const ProductScannerPage: React.FC = () => {
                   <div className="camera-placeholder">
                     <IconCamera size={64} strokeWidth={1.5} />
                     <p>Click "Start Camera" to scan barcodes</p>
-                    <p className="hint">Supports EAN-13, EAN-8, UPC-A, UPC-E, QR codes</p>
+                    <p className="hint">Supports EAN-13, EAN-8, UPC, QR codes, Code128, Code39</p>
+                  </div>
+                )}
+                
+                {/* Task 79: Scan zone guide overlay */}
+                {cameraActive && (
+                  <div className="scan-zone-overlay">
+                    <div className="scan-zone-guide">
+                      <span className="corner top-left"></span>
+                      <span className="corner top-right"></span>
+                      <span className="corner bottom-left"></span>
+                      <span className="corner bottom-right"></span>
+                      <span className="scan-line"></span>
+                    </div>
+                    <p className="scan-hint">Center barcode in the box</p>
                   </div>
                 )}
               </div>
+              
+              {/* Task 40, 90: Quick scanner controls */}
+              {cameraActive && (
+                <div className="scanner-quick-controls">
+                  {/* Torch toggle */}
+                  {hasTorch && (
+                    <button 
+                      onClick={handleToggleTorch}
+                      className={`control-btn ${torchEnabled ? 'active' : ''}`}
+                      title={torchEnabled ? 'Turn off flashlight' : 'Turn on flashlight'}
+                    >
+                      <IconFlash size={20} />
+                    </button>
+                  )}
+                  
+                  {/* Sound toggle */}
+                  <button 
+                    onClick={() => setSoundEnabled(!soundEnabled)}
+                    className={`control-btn ${soundEnabled ? 'active' : ''}`}
+                    title={soundEnabled ? 'Mute scan sound' : 'Enable scan sound'}
+                  >
+                    <IconVolume size={20} />
+                  </button>
+                </div>
+              )}
               
               {scanning && (
                 <div className="scanning-indicator">
@@ -521,6 +731,37 @@ const ProductScannerPage: React.FC = () => {
                   <span>Scanning for barcodes...</span>
                 </div>
               )}
+              
+              {/* Task 62-63: Manual barcode entry fallback */}
+              <div className="manual-entry-section">
+                <button 
+                  onClick={() => setShowManualEntry(!showManualEntry)}
+                  className="btn-link manual-entry-toggle"
+                >
+                  {showManualEntry ? 'Hide manual entry' : "Can't scan? Enter barcode manually"}
+                </button>
+                
+                {showManualEntry && (
+                  <div className="manual-entry-form">
+                    <input
+                      type="text"
+                      value={manualBarcode}
+                      onChange={(e) => setManualBarcode(e.target.value.replace(/[^0-9]/g, ''))}
+                      placeholder="Enter barcode numbers (8-14 digits)"
+                      maxLength={14}
+                      className="barcode-input"
+                      onKeyDown={(e) => e.key === 'Enter' && handleManualBarcodeSubmit()}
+                    />
+                    <button 
+                      onClick={handleManualBarcodeSubmit}
+                      className="btn-primary"
+                      disabled={!manualBarcode.trim() || manualBarcode.length < 8}
+                    >
+                      Look Up
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         )}

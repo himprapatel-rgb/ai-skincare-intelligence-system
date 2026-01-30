@@ -9,8 +9,15 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
     """Application settings loaded from environment variables."""
 
-    # Database
+    # Main Database (users, scans, shelf, routines)
     DATABASE_URL: str | None = Field(default=None, description="PostgreSQL database connection URL")
+    
+    # Product Catalog Database (separate database for products, ingredients, brands)
+    # This enables a two-database architecture for better scalability
+    PRODUCT_DATABASE_URL: str | None = Field(
+        default=None, 
+        description="PostgreSQL connection URL for product catalog database (separate from main DB)"
+    )
 
     # JWT Settings
     SECRET_KEY: str = Field(default="dev-secret-key-change-in-production", description="Secret key for JWT token generation")

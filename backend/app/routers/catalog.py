@@ -3,8 +3,11 @@
 API endpoints for the in-house product catalog database.
 Provides fast lookups without AI API calls for known products.
 
-Part of the Product Catalog Database Strategy (Tasks 540-560).
+Uses the SEPARATE PRODUCT DATABASE (PRODUCT_DATABASE_URL).
+
+Part of the Product Catalog Database Strategy.
 Created: January 29, 2026
+Updated: January 27, 2026 - Uses separate product database
 """
 import logging
 from typing import List, Optional
@@ -15,6 +18,7 @@ from sqlalchemy.orm import Session
 
 from app.core.security import get_current_user
 from app.dependencies import get_db
+from app.product_database import get_product_db
 from app.models.user import User
 from app.services.product_catalog import ProductCatalogService
 
@@ -99,7 +103,7 @@ class CatalogStatsResponse(BaseModel):
 @router.get("/barcode/{barcode}", response_model=CatalogLookupResponse)
 async def lookup_by_barcode(
     barcode: str,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_product_db)
 ):
     """
     Look up a product by barcode in the catalog.
@@ -134,7 +138,7 @@ async def lookup_by_barcode(
 async def lookup_by_name_brand(
     name: str = Query(..., description="Product name"),
     brand: str = Query(..., description="Brand name"),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_product_db)
 ):
     """
     Look up a product by name and brand.
@@ -167,7 +171,7 @@ async def search_products(
     brand: Optional[str] = Query(None, description="Filter by brand"),
     limit: int = Query(20, ge=1, le=100),
     offset: int = Query(0, ge=0),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_product_db)
 ):
     """
     Search products in the catalog.
@@ -194,7 +198,7 @@ async def search_products(
 @router.get("/product/{product_id}", response_model=CatalogProductResponse)
 async def get_product(
     product_id: str,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_product_db)
 ):
     """
     Get a product by ID.
@@ -216,7 +220,7 @@ async def get_product(
 @router.get("/stats", response_model=CatalogStatsResponse)
 async def get_catalog_stats(
     current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_product_db)
 ):
     """
     Get catalog statistics.
@@ -231,7 +235,7 @@ async def get_catalog_stats(
 
 @router.get("/categories")
 async def get_categories(
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_product_db)
 ):
     """
     Get list of available product categories.

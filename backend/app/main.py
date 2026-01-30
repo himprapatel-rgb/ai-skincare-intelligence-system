@@ -17,6 +17,7 @@ from app.api.v1.routines import router as routines_router
 from app.config import settings
 from app.core.security import encrypt_sensitive_data
 from app.database import Base, SessionLocal, engine
+from app.product_database import create_product_tables, check_product_database_health
 from app.models.analysis_outputs import (
     DailySkinGuidance,
     EnvironmentalReading,
@@ -125,7 +126,12 @@ def ensure_test_user() -> None:
         # Create all tables from SQLAlchemy models (non-destructive)
         logger.info("Creating database tables (if not exist)...")
         Base.metadata.create_all(bind=engine, checkfirst=True)
-        logger.info("✅ Database tables ensured")
+        logger.info("✅ Main database tables ensured")
+        
+        # Create product catalog tables (separate database)
+        logger.info("Creating product catalog tables...")
+        create_product_tables()
+        logger.info("✅ Product catalog tables ensured")
         
         if engine.dialect.name != "sqlite":
             with engine.begin() as conn:
@@ -359,33 +365,43 @@ def ensure_test_user() -> None:
 async def health_check():
     """
     Health check endpoint with detailed status (Task 421-422).
-    Returns status of database and other dependencies.
+    Returns status of both main and product databases.
     """
     import time
     from datetime import datetime
     
     checks = {
-        "database": {"status": "ok", "latency_ms": 0},
+        "main_database": {"status": "ok", "latency_ms": 0},
+        "product_database": {"status": "ok", "latency_ms": 0},
         "api": {"status": "ok"},
     }
     overall_status = "healthy"
     
-    # Task 422: Database health check with latency
+    # Main Database health check
     try:
         start = time.time()
         with engine.connect() as conn:
             conn.execute(text("SELECT 1"))
-        checks["database"]["latency_ms"] = int((time.time() - start) * 1000)
+        checks["main_database"]["latency_ms"] = int((time.time() - start) * 1000)
     except Exception as e:
-        checks["database"]["status"] = "error"
-        checks["database"]["error"] = str(e)[:100]
+        checks["main_database"]["status"] = "error"
+        checks["main_database"]["error"] = str(e)[:100]
         overall_status = "degraded"
     
-    # Check if database latency is concerning
-    if checks["database"]["latency_ms"] > 500:
-        checks["database"]["status"] = "slow"
+    if checks["main_database"]["latency_ms"] > 500:
+        checks["main_database"]["status"] = "slow"
         if overall_status == "healthy":
             overall_status = "degraded"
+    
+    # Product Database health check (separate database)
+    try:
+        product_health = await check_product_database_health()
+        checks["product_database"] = product_health
+        if product_health["status"] == "error":
+            overall_status = "degraded"
+    except Exception as e:
+        checks["product_database"]["status"] = "error"
+        checks["product_database"]["error"] = str(e)[:100]
     
     return {
         "status": overall_status,

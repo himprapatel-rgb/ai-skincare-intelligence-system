@@ -1,9 +1,18 @@
 """Product Catalog Database Models
 
-In-house product catalog for reducing API dependency and improving response times.
-Part of the Product Catalog Database Strategy (Tasks 540-560).
+In-house product catalog stored in a SEPARATE DATABASE for better scalability.
+This is part of the two-database architecture:
+- Main DB (DATABASE_URL): Users, scans, shelf, routines
+- Product DB (PRODUCT_DATABASE_URL): Products, ingredients, brands
+
+Benefits:
+- Products can scale independently
+- Product lookups don't compete with user operations
+- Product data can be cached more aggressively
+- Catalog could be shared across multiple apps
 
 Created: January 29, 2026
+Updated: January 27, 2026 - Migrated to separate database
 """
 import uuid
 from datetime import datetime
@@ -25,7 +34,8 @@ from sqlalchemy.dialects.postgresql import ARRAY, JSONB, UUID
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
-from app.database import Base
+# Use ProductBase for separate product database
+from app.product_database import ProductBase as Base
 
 
 class CatalogProduct(Base):

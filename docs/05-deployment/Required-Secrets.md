@@ -123,7 +123,22 @@ In `.github/workflows/deploy-cloudflare.yml`:
 
 ## Database Configuration
 
-### Railway PostgreSQL
+### Two-Database Architecture
+
+The system uses **two separate databases** for better scalability:
+
+| Database | Variable | Purpose |
+|----------|----------|---------|
+| Main Database | `DATABASE_URL` | Users, scans, shelf, routines, authentication |
+| Product Catalog | `PRODUCT_DATABASE_URL` | Products, ingredients, brands (separate!) |
+
+**Benefits of Separate Product Database:**
+- Product data scales independently
+- Product lookups don't compete with user operations
+- Product catalog can be cached more aggressively
+- Catalog could be shared across multiple apps
+
+### Railway PostgreSQL (Main Database)
 
 | Variable | Description |
 |----------|-------------|
@@ -131,12 +146,34 @@ In `.github/workflows/deploy-cloudflare.yml`:
 
 Format: `postgresql://user:password@host:port/database`
 
+### Product Catalog Database (NEW)
+
+| Variable | Description |
+|----------|-------------|
+| `PRODUCT_DATABASE_URL` | Connection string for product catalog database |
+
+**Options for Product Database:**
+1. **Same as main DB** (simplest): Set `PRODUCT_DATABASE_URL` same as `DATABASE_URL`
+2. **Railway (second DB)**: Create another PostgreSQL instance on Railway
+3. **Supabase**: Good free tier, excellent tooling
+4. **Neon**: Serverless PostgreSQL, good for low traffic
+
 ### Getting Railway Connection String
 
 1. Go to Railway Dashboard
 2. Select your PostgreSQL service
 3. Click **Variables** tab
 4. Copy `DATABASE_URL`
+
+### Setting Up Product Database
+
+```bash
+# Option 1: Use same database (tables are separate)
+fly secrets set PRODUCT_DATABASE_URL="$DATABASE_URL" --app pellicura-api
+
+# Option 2: Create separate database on Railway and use that URL
+fly secrets set PRODUCT_DATABASE_URL="postgresql://..." --app pellicura-api
+```
 
 ---
 

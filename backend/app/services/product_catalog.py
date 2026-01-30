@@ -3,8 +3,12 @@
 Service layer for the in-house product catalog database.
 Provides lookup-first logic to reduce API dependency.
 
-Part of the Product Catalog Database Strategy (Tasks 540-560).
+This service uses the SEPARATE PRODUCT DATABASE for all operations.
+The product database is configured via PRODUCT_DATABASE_URL.
+
+Part of the Product Catalog Database Strategy.
 Created: January 29, 2026
+Updated: January 27, 2026 - Migrated to separate database
 """
 import logging
 import re

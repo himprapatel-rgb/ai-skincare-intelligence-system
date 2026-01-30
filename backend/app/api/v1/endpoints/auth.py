@@ -421,19 +421,25 @@ async def google_auth(
     """
     import logging
 
-    from app.services.google_auth_service import google_auth_service
-    
+    from app.services.google_auth_service import GoogleAuthError, google_auth_service
+
     logger = logging.getLogger(__name__)
-    
+
     if not settings.GOOGLE_CLIENT_ID or not settings.GOOGLE_CLIENT_SECRET:
         raise HTTPException(
             status_code=status.HTTP_501_NOT_IMPLEMENTED,
             detail="Google OAuth is not configured",
         )
-    
+
     # Exchange code and get user info
-    user_info = await google_auth_service.verify_and_get_user(payload.code)
-    
+    try:
+        user_info = await google_auth_service.verify_and_get_user(payload.code)
+    except GoogleAuthError as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=e.message,
+        ) from e
+
     if not user_info or not user_info.get("email"):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,

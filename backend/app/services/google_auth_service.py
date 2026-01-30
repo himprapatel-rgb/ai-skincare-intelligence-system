@@ -16,6 +16,14 @@ GOOGLE_USERINFO_URL = "https://www.googleapis.com/oauth2/v3/userinfo"
 GOOGLE_CERTS_URL = "https://www.googleapis.com/oauth2/v3/certs"
 
 
+class GoogleAuthError(Exception):
+    """Raised when Google OAuth fails; message is safe to show to the user."""
+
+    def __init__(self, message: str):
+        self.message = message
+        super().__init__(message)
+
+
 class GoogleAuthService:
     """Service for Google OAuth authentication."""
     
@@ -31,8 +39,36 @@ class GoogleAuthService:
     def redirect_uri(self):
         return f"{settings.FRONTEND_URL}/auth/google/callback"
     
+    def _user_friendly_token_error(self, status_code: int, body: Any) -> str:
+        """Build a user-friendly message from Google token endpoint error."""
+        error_code = ""
+        error_desc = ""
+        if isinstance(body, dict):
+            error_code = body.get("error") or ""
+            error_desc = body.get("error_description") or ""
+        if not error_code and isinstance(body, str) and body.strip().startswith("{"):
+            try:
+                import json
+                parsed = json.loads(body)
+                error_code = parsed.get("error") or ""
+                error_desc = parsed.get("error_description") or ""
+            except Exception:
+                pass
+        parts = [f"Google sign-in failed (HTTP {status_code})."]
+        if error_code:
+            parts.append(f"Error: {error_code}.")
+            if error_code == "redirect_uri_mismatch":
+                parts.append(
+                    f"Add this exact URL to 'Authorized redirect URIs' in Google Cloud Console: {self.redirect_uri}"
+                )
+            elif error_desc:
+                parts.append(str(error_desc))
+        elif error_desc:
+            parts.append(str(error_desc))
+        return " ".join(parts)
+
     async def exchange_code_for_tokens(self, code: str) -> Optional[Dict[str, Any]]:
-        """Exchange authorization code for access and ID tokens."""
+        """Exchange authorization code for access and ID tokens. Raises GoogleAuthError on token endpoint failure."""
         logger.info(f"Google OAuth: client_id={self.client_id[:20] if self.client_id else 'None'}..., redirect_uri={self.redirect_uri}")
         
         if not self.client_id or not self.client_secret:
@@ -54,11 +90,18 @@ class GoogleAuthService:
                 )
                 
                 if response.status_code != 200:
-                    logger.error(f"Google token exchange failed (status={response.status_code}): {response.text}")
-                    return None
+                    try:
+                        body = response.json()
+                    except Exception:
+                        body = response.text
+                    logger.error(f"Google token exchange failed (status={response.status_code}): {body}")
+                    msg = self._user_friendly_token_error(response.status_code, body)
+                    raise GoogleAuthError(msg)
                 
                 logger.info("Google token exchange successful")
                 return response.json()
+            except GoogleAuthError:
+                raise
             except Exception as e:
                 logger.error(f"Google token exchange error: {e}")
                 return None

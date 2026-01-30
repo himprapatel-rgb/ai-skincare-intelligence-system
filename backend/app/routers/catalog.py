@@ -255,3 +255,468 @@ async def get_categories(
             {"id": "other", "name": "Other", "icon": "package"},
         ]
     }
+
+
+# =========================================
+# ADMIN ENDPOINTS (Tasks 376-400)
+# =========================================
+
+class ProductCreateRequest(BaseModel):
+    """Request to add a new product to catalog."""
+    barcode: Optional[str] = None
+    name: str
+    brand: str
+    category: str
+    description: Optional[str] = None
+    ingredients: Optional[List[str]] = None
+    key_ingredients: Optional[List[dict]] = None
+    image_url: Optional[str] = None
+    price_usd: Optional[float] = None
+    is_vegan: Optional[bool] = False
+    is_cruelty_free: Optional[bool] = False
+    is_fragrance_free: Optional[bool] = False
+
+
+class ProductUpdateRequest(BaseModel):
+    """Request to update a product."""
+    name: Optional[str] = None
+    brand: Optional[str] = None
+    category: Optional[str] = None
+    description: Optional[str] = None
+    price_usd: Optional[float] = None
+    is_verified: Optional[bool] = None
+
+
+class BrandResponse(BaseModel):
+    """Response for brand info."""
+    id: str
+    name: str
+    slug: str
+    logo_url: Optional[str] = None
+    product_count: int = 0
+    is_cruelty_free: Optional[bool] = None
+    is_vegan: Optional[bool] = None
+
+
+class IngredientResponse(BaseModel):
+    """Response for ingredient info."""
+    id: str
+    inci_name: str
+    common_names: Optional[List[str]] = None
+    category: Optional[str] = None
+    function: Optional[str] = None
+    ewg_score: Optional[int] = None
+    is_harmful: bool = False
+    harm_severity: Optional[str] = None
+
+
+@router.post("/products", response_model=CatalogProductResponse, status_code=status.HTTP_201_CREATED)
+async def create_product(
+    request: ProductCreateRequest,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_product_db)
+):
+    """
+    Add a new product to the catalog (Task 376).
+    
+    Requires authentication. Computes safety score automatically.
+    """
+    catalog = ProductCatalogService(db)
+    
+    # Check if product already exists
+    if request.barcode:
+        existing = catalog.lookup_barcode(request.barcode)
+        if existing:
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail=f"Product with barcode {request.barcode} already exists"
+            )
+    
+    # Add to catalog
+    product = catalog.add_from_scan(
+        name=request.name,
+        brand=request.brand,
+        category=request.category,
+        barcode=request.barcode,
+        ingredients=request.ingredients,
+        key_ingredients=request.key_ingredients,
+        image_url=request.image_url,
+        source="manual"
+    )
+    
+    if not product:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to create product"
+        )
+    
+    return CatalogProductResponse(**product)
+
+
+@router.get("/brands", response_model=List[BrandResponse])
+async def list_brands(
+    limit: int = Query(50, ge=1, le=200),
+    offset: int = Query(0, ge=0),
+    db: Session = Depends(get_product_db)
+):
+    """
+    List all brands in the catalog (Task 385).
+    """
+    from app.models.catalog_models import CatalogBrand
+    from sqlalchemy import func
+    
+    brands = db.query(CatalogBrand).order_by(
+        CatalogBrand.product_count.desc().nullslast()
+    ).offset(offset).limit(limit).all()
+    
+    return [
+        BrandResponse(
+            id=str(b.id),
+            name=b.name,
+            slug=b.slug,
+            logo_url=b.logo_url,
+            product_count=b.product_count or 0,
+            is_cruelty_free=b.is_cruelty_free,
+            is_vegan=b.is_vegan
+        )
+        for b in brands
+    ]
+
+
+@router.get("/ingredients", response_model=List[IngredientResponse])
+async def list_ingredients(
+    search: Optional[str] = Query(None, description="Search by name"),
+    harmful_only: bool = Query(False, description="Only show harmful ingredients"),
+    limit: int = Query(50, ge=1, le=200),
+    offset: int = Query(0, ge=0),
+    db: Session = Depends(get_product_db)
+):
+    """
+    List ingredients in the catalog (Task 366).
+    """
+    from app.models.catalog_models import CatalogIngredient
+    from sqlalchemy import func
+    
+    query = db.query(CatalogIngredient)
+    
+    if search:
+        query = query.filter(
+            CatalogIngredient.inci_name.ilike(f"%{search}%")
+        )
+    
+    if harmful_only:
+        query = query.filter(CatalogIngredient.is_harmful == True)
+    
+    ingredients = query.order_by(
+        CatalogIngredient.inci_name
+    ).offset(offset).limit(limit).all()
+    
+    return [
+        IngredientResponse(
+            id=str(i.id),
+            inci_name=i.inci_name,
+            common_names=i.common_names or [],
+            category=i.category,
+            function=i.function,
+            ewg_score=i.ewg_score,
+            is_harmful=i.is_harmful or False,
+            harm_severity=i.harm_severity
+        )
+        for i in ingredients
+    ]
+
+
+@router.get("/products/by-ingredient/{ingredient_name}")
+async def get_products_by_ingredient(
+    ingredient_name: str,
+    limit: int = Query(20, ge=1, le=100),
+    db: Session = Depends(get_product_db)
+):
+    """
+    Find products containing a specific ingredient (Task 367).
+    """
+    from app.models.catalog_models import CatalogProduct
+    
+    products = db.query(CatalogProduct).filter(
+        CatalogProduct.ingredients_text.ilike(f"%{ingredient_name}%")
+    ).limit(limit).all()
+    
+    return {
+        "ingredient": ingredient_name,
+        "count": len(products),
+        "products": [
+            {
+                "id": str(p.id),
+                "name": p.name,
+                "brand": p.brand,
+                "category": p.category,
+                "image_url": p.image_front_url
+            }
+            for p in products
+        ]
+    }
+
+
+@router.get("/products/safe-for/{skin_type}")
+async def get_safe_products(
+    skin_type: str,
+    category: Optional[str] = None,
+    limit: int = Query(20, ge=1, le=100),
+    db: Session = Depends(get_product_db)
+):
+    """
+    Find products safe for a specific skin type (Task 369).
+    """
+    from app.models.catalog_models import CatalogProduct
+    
+    query = db.query(CatalogProduct).filter(
+        CatalogProduct.suitable_skin_types.contains([skin_type])
+    )
+    
+    if category:
+        query = query.filter(CatalogProduct.category == category)
+    
+    # Prioritize high safety scores
+    products = query.order_by(
+        CatalogProduct.safety_score.desc().nullslast()
+    ).limit(limit).all()
+    
+    return {
+        "skin_type": skin_type,
+        "category": category,
+        "count": len(products),
+        "products": [
+            {
+                "id": str(p.id),
+                "name": p.name,
+                "brand": p.brand,
+                "category": p.category,
+                "safety_score": p.safety_score,
+                "image_url": p.image_front_url
+            }
+            for p in products
+        ]
+    }
+
+
+@router.get("/products/pregnancy-safe")
+async def get_pregnancy_safe_products(
+    category: Optional[str] = None,
+    limit: int = Query(20, ge=1, le=100),
+    db: Session = Depends(get_product_db)
+):
+    """
+    Find pregnancy-safe products (Task 370).
+    """
+    from app.models.catalog_models import CatalogProduct
+    
+    query = db.query(CatalogProduct).filter(
+        CatalogProduct.pregnancy_safe == True
+    )
+    
+    if category:
+        query = query.filter(CatalogProduct.category == category)
+    
+    products = query.order_by(
+        CatalogProduct.safety_score.desc().nullslast()
+    ).limit(limit).all()
+    
+    return {
+        "filter": "pregnancy_safe",
+        "category": category,
+        "count": len(products),
+        "products": [
+            {
+                "id": str(p.id),
+                "name": p.name,
+                "brand": p.brand,
+                "category": p.category,
+                "safety_score": p.safety_score,
+                "image_url": p.image_front_url
+            }
+            for p in products
+        ]
+    }
+
+
+@router.get("/products/vegan")
+async def get_vegan_products(
+    category: Optional[str] = None,
+    limit: int = Query(20, ge=1, le=100),
+    db: Session = Depends(get_product_db)
+):
+    """
+    Find vegan products (Task 371).
+    """
+    from app.models.catalog_models import CatalogProduct
+    
+    query = db.query(CatalogProduct).filter(
+        CatalogProduct.is_vegan == True
+    )
+    
+    if category:
+        query = query.filter(CatalogProduct.category == category)
+    
+    products = query.order_by(
+        CatalogProduct.scan_count.desc().nullslast()
+    ).limit(limit).all()
+    
+    return {
+        "filter": "vegan",
+        "category": category,
+        "count": len(products),
+        "products": [
+            {
+                "id": str(p.id),
+                "name": p.name,
+                "brand": p.brand,
+                "category": p.category,
+                "image_url": p.image_front_url
+            }
+            for p in products
+        ]
+    }
+
+
+@router.get("/products/fragrance-free")
+async def get_fragrance_free_products(
+    category: Optional[str] = None,
+    limit: int = Query(20, ge=1, le=100),
+    db: Session = Depends(get_product_db)
+):
+    """
+    Find fragrance-free products (Task 373).
+    """
+    from app.models.catalog_models import CatalogProduct
+    
+    query = db.query(CatalogProduct).filter(
+        CatalogProduct.is_fragrance_free == True
+    )
+    
+    if category:
+        query = query.filter(CatalogProduct.category == category)
+    
+    products = query.order_by(
+        CatalogProduct.scan_count.desc().nullslast()
+    ).limit(limit).all()
+    
+    return {
+        "filter": "fragrance_free",
+        "category": category,
+        "count": len(products),
+        "products": [
+            {
+                "id": str(p.id),
+                "name": p.name,
+                "brand": p.brand,
+                "category": p.category,
+                "image_url": p.image_front_url
+            }
+            for p in products
+        ]
+    }
+
+
+@router.get("/products/popular")
+async def get_popular_products(
+    category: Optional[str] = None,
+    limit: int = Query(20, ge=1, le=100),
+    db: Session = Depends(get_product_db)
+):
+    """
+    Get most scanned/popular products (Task 363).
+    """
+    from app.models.catalog_models import CatalogProduct
+    
+    query = db.query(CatalogProduct)
+    
+    if category:
+        query = query.filter(CatalogProduct.category == category)
+    
+    products = query.order_by(
+        CatalogProduct.scan_count.desc().nullslast()
+    ).limit(limit).all()
+    
+    return {
+        "filter": "popular",
+        "category": category,
+        "count": len(products),
+        "products": [
+            {
+                "id": str(p.id),
+                "name": p.name,
+                "brand": p.brand,
+                "category": p.category,
+                "scan_count": p.scan_count or 0,
+                "image_url": p.image_front_url
+            }
+            for p in products
+        ]
+    }
+
+
+@router.get("/products/recent")
+async def get_recent_products(
+    limit: int = Query(20, ge=1, le=100),
+    db: Session = Depends(get_product_db)
+):
+    """
+    Get recently added products (Task 362).
+    """
+    from app.models.catalog_models import CatalogProduct
+    
+    products = db.query(CatalogProduct).order_by(
+        CatalogProduct.created_at.desc()
+    ).limit(limit).all()
+    
+    return {
+        "filter": "recent",
+        "count": len(products),
+        "products": [
+            {
+                "id": str(p.id),
+                "name": p.name,
+                "brand": p.brand,
+                "category": p.category,
+                "created_at": p.created_at.isoformat() if p.created_at else None,
+                "image_url": p.image_front_url
+            }
+            for p in products
+        ]
+    }
+
+
+@router.get("/health")
+async def catalog_health(
+    db: Session = Depends(get_product_db)
+):
+    """
+    Product catalog health check (Task 398).
+    """
+    from app.models.catalog_models import CatalogProduct, CatalogIngredient, CatalogBrand
+    from sqlalchemy import func
+    import time
+    
+    start = time.time()
+    
+    try:
+        product_count = db.query(func.count(CatalogProduct.id)).scalar()
+        ingredient_count = db.query(func.count(CatalogIngredient.id)).scalar()
+        brand_count = db.query(func.count(CatalogBrand.id)).scalar()
+        
+        latency = int((time.time() - start) * 1000)
+        
+        return {
+            "status": "healthy",
+            "latency_ms": latency,
+            "counts": {
+                "products": product_count,
+                "ingredients": ingredient_count,
+                "brands": brand_count
+            }
+        }
+    except Exception as e:
+        return {
+            "status": "error",
+            "error": str(e)[:100]
+        }

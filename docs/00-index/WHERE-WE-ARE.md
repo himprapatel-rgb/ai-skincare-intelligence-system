@@ -54,7 +54,11 @@
 
 ---
 
-## 4. Still To Do (your side)
+## 4. Just done (next)
+
+- **Scanner UX:** "Checking catalog..." during barcode/photo lookup; "From catalog" badge when result is from product catalog (Tasks 426–430).
+
+## 5. Still To Do (your side)
 
 1. **Google Sign-In (if you want it):**
    - GitHub Secrets: `GOOGLE_CLIENT_ID`
@@ -70,7 +74,7 @@
 
 ---
 
-## 5. Key Files
+## 6. Key Files
 
 | Purpose | Path |
 |---------|------|

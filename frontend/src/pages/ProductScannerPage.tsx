@@ -79,6 +79,8 @@ interface ScannedProduct {
   warnings: string[];
   safetyReport?: SafetyReport;  // Detailed safety analysis
   source: 'barcode' | 'image';
+  /** API data source: catalog = instant from product DB, database, openbeautyfacts, ai */
+  dataSource?: string;
   confidence?: number;
 }
 
@@ -409,6 +411,7 @@ const ProductScannerPage: React.FC = () => {
     setSessionScanCount(prev => prev + 1);
     
     try {
+      setProcessingStep('Checking catalog...');
       const response = await fetch(`${API_BASE}/products/scan-barcode`, {
         method: 'POST',
         headers: {
@@ -422,6 +425,7 @@ const ProductScannerPage: React.FC = () => {
         const data = await response.json();
         
         if (data.found && data.product) {
+          setProcessingStep('Product found!');
           const product: ScannedProduct = {
             id: data.product.id || barcode,
             name: data.product.name || 'Unknown Product',
@@ -433,16 +437,16 @@ const ProductScannerPage: React.FC = () => {
             safetyRating: data.safety_rating || 0,
             suitabilityScore: data.suitability_score || 0,
             warnings: data.warnings || [],
-            source: 'barcode'
+            source: 'barcode',
+            dataSource: data.source,
           };
           setScannedProduct(product);
-          addToScanHistory(product); // Save to history
+          addToScanHistory(product);
         } else {
           // Task 66: Offer alternatives when product not found
           setError(`Product not found for barcode: ${barcode}.\n\nTry:\n• Take a photo of the product instead\n• Enter the barcode manually\n• Check if the barcode is complete and undamaged`);
         }
       } else {
-        // Try to get error message from response
         const errorData = await response.json().catch(() => ({}));
         setError(errorData.detail || 'Failed to scan barcode. Please try again.');
       }
@@ -461,9 +465,8 @@ const ProductScannerPage: React.FC = () => {
     setProcessingStep('Preparing image...');
     
     try {
-      // Convert to base64
       const base64 = await fileToBase64(file);
-      setProcessingStep('Analyzing with AI...');
+      setProcessingStep('Checking catalog...');
       
       const response = await fetch(`${API_BASE}/products/identify-from-image`, {
         method: 'POST',
@@ -966,6 +969,11 @@ const ProductScannerPage: React.FC = () => {
                     <span className={`source-badge ${scannedProduct.source}`}>
                       {scannedProduct.source === 'barcode' ? 'Barcode Scan' : 'AI Identified'}
                     </span>
+                    {scannedProduct.dataSource === 'catalog' && (
+                      <span className="source-badge catalog-badge" title="Instant result from product catalog">
+                        From catalog
+                      </span>
+                    )}
                   </div>
                 </div>
 

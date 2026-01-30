@@ -28,6 +28,7 @@ This guide walks through configuring all necessary environment variables on Rail
 | `ENV` | Environment mode | ❌ Not set | Set to `production` | **P0** |
 | `SECRET_KEY` | JWT signing key | ⚠️ Likely placeholder | Generate secure random | **P0** |
 | `DATABASE_URL` | PostgreSQL connection | ✅ Configured on Railway | Verify working | **P0** |
+| `PRODUCT_DATABASE_URL` | Product catalog DB (optional) | Optional | Omit to use main DB; set for separate catalog DB | **P2** |
 
 ### 🟡 IMPORTANT - Highly Recommended
 
@@ -42,6 +43,7 @@ This guide walks through configuring all necessary environment variables on Rail
 
 | Variable | Purpose | Optional |
 |----------|---------|----------|
+| `PRODUCT_DATABASE_URL` | Second PostgreSQL for product catalog | Yes (omit = use DATABASE_URL for catalog) |
 | `CLOUDINARY_CLOUD_NAME` | Image hosting | Yes (required for file upload) |
 | `CLOUDINARY_API_KEY` | Cloudinary auth | Yes (required for file upload) |
 | `CLOUDINARY_API_SECRET` | Cloudinary auth | Yes (required for file upload) |
@@ -143,6 +145,7 @@ After adding variables:
 - [ ] `ALGORITHM` = `HS256`
 - [ ] `ACCESS_TOKEN_EXPIRE_MINUTES` = `30`
 - [ ] `DATABASE_URL` = Valid PostgreSQL connection (Railway auto-configured)
+- [ ] `PRODUCT_DATABASE_URL` = Omit (use one DB) or second Postgres URL for product catalog
 - [ ] ALLOWED_ORIGINS = Appropriate for environment
 
 ---
@@ -260,8 +263,11 @@ DEBUG=False
 ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=30
 DATABASE_URL=[Railway PostgreSQL connection string]
+# PRODUCT_DATABASE_URL=optional second Postgres URL for product catalog (omit to use DATABASE_URL)
 ALLOWED_ORIGINS=https://yourdomain.com
 ```
+
+**Product catalog:** If `PRODUCT_DATABASE_URL` is not set, the app uses `DATABASE_URL` for both main and catalog (single DB). See [Railway-Product-Database-Deploy.md](./Railway-Product-Database-Deploy.md) for two-database setup.
 
 ---
 

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { IconMail, IconArrowLeft } from '../components/Icons';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { API_BASE_URL } from '../config';
 import './CommonStyles.css';
 import './PasswordResetPage.css';
 
@@ -22,7 +23,7 @@ const PasswordResetPage: React.FC = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch('/api/v1/auth/password-reset/request', {
+      const response = await fetch(`${API_BASE_URL}/auth/password-reset/request`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),

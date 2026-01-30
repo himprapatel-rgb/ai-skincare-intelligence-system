@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useShelf } from '../context/ShelfContext';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { getScanHistory } from '../services/scanApi';
-import { mockProducts } from '../data/mockProducts';
 import { 
   IconTrendingUp, 
   IconCamera, 
@@ -46,6 +46,7 @@ type ScanReminder = { date?: string; frequency?: 'weekly' | 'biweekly' | 'monthl
 const DashboardPage: React.FC = () => {
   usePageTitle('Dashboard', 'Your skincare dashboard: recent scans, skin score, shelf, and quick actions.');
   const { user } = useAuth();
+  const { totalCount: shelfProductCount } = useShelf();
   const navigate = useNavigate();
   const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -89,7 +90,15 @@ const DashboardPage: React.FC = () => {
       return;
     }
     fetchDashboardData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
+
+  // Update shelf count when it changes (from ShelfContext)
+  useEffect(() => {
+    if (data) {
+      setData(prev => prev ? { ...prev, productsInShelf: shelfProductCount } : prev);
+    }
+  }, [shelfProductCount]);
 
   const fetchDashboardData = async () => {
     try {
@@ -127,7 +136,7 @@ const DashboardPage: React.FC = () => {
       const dashboardData: DashboardData = {
         recentScans: scans.length,
         skinScore: avgScore,
-        productsInShelf: mockProducts.length,
+        productsInShelf: shelfProductCount,
         activeRoutines: 0,
         nextScanDue: nextScanDue.toISOString(),
         recentActivity,
@@ -139,7 +148,7 @@ const DashboardPage: React.FC = () => {
       setData({
         recentScans: 0,
         skinScore: 0,
-        productsInShelf: mockProducts.length,
+        productsInShelf: shelfProductCount,
         activeRoutines: 0,
         nextScanDue: new Date().toISOString(),
         recentActivity: [],
@@ -179,7 +188,7 @@ const DashboardPage: React.FC = () => {
     else steps.push({ label: 'Take a new scan', href: '/scan', icon: <IconScan size={20} strokeWidth={2} />, priority: 2 });
     steps.push({ label: 'View recommendations', href: '/recommendations', icon: <IconStar size={20} strokeWidth={2} />, priority: 3 });
     steps.push({ label: 'Build your routine', href: '/routine-builder', icon: <IconCalendar size={20} strokeWidth={2} />, priority: 4 });
-    if (data.productsInShelf === 0) steps.push({ label: 'Add products to your shelf', href: '/recommendations', icon: <IconPackage size={20} strokeWidth={2} />, priority: 5 });
+    if (data.productsInShelf === 0) steps.push({ label: 'Add products to your shelf', href: '/scanner', icon: <IconPackage size={20} strokeWidth={2} />, priority: 5 });
     return steps.sort((a, b) => a.priority - b.priority).slice(0, 4);
   })();
 

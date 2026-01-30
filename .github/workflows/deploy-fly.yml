@@ -1,0 +1,35 @@
+name: Deploy Backend to Production
+
+# PRODUCTION DEPLOYS REQUIRE MANUAL APPROVAL
+# Only runs when manually triggered from GitHub Actions UI
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type "deploy" to confirm production deployment'
+        required: true
+        type: string
+
+jobs:
+  deploy:
+    name: Deploy to Fly.io Production
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.confirm == 'deploy' }}
+    defaults:
+      run:
+        working-directory: ./backend
+    
+    steps:
+      - name: Confirm deployment
+        run: echo "🚀 Deploying to PRODUCTION with approval..."
+      
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Fly CLI
+        uses: superfly/flyctl-actions/setup-flyctl@master
+      
+      - name: Deploy to Fly.io
+        run: flyctl deploy --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}

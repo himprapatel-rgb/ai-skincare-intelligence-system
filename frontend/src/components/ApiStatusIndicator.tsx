@@ -4,7 +4,18 @@
  */
 import { useState, useEffect } from 'react';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
+import { API_BASE_URL } from '../config';
+const API_BASE = API_BASE_URL;
+
+// Health check URL - use /api/health instead of /api/v1 which returns 404
+function getHealthUrl(): string {
+  const base = API_BASE.replace(/\/$/, '');
+  // Convert /api/v1 to /api/health
+  if (base.endsWith('/api/v1')) {
+    return base.replace('/api/v1', '/api/health');
+  }
+  return base + '/health';
+}
 
 export function ApiStatusIndicator() {
   const [status, setStatus] = useState<'checking' | 'up' | 'down'>('checking');
@@ -12,7 +23,7 @@ export function ApiStatusIndicator() {
   useEffect(() => {
     let cancelled = false;
     const controller = new AbortController();
-    fetch(API_BASE.replace(/\/$/, ''), { signal: controller.signal, method: 'GET' })
+    fetch(getHealthUrl(), { signal: controller.signal, method: 'GET' })
       .then((res) => {
         if (cancelled) return;
         setStatus(res.ok || res.status === 401 ? 'up' : 'down');

@@ -396,9 +396,38 @@ def confirm_password_reset(
 
 # ===== Google OAuth =====
 
+# Allowed redirect URIs for Google OAuth (must match Google Console). Frontend can pass redirect_uri when using shared backend.
+ALLOWED_GOOGLE_REDIRECT_URIS = [
+    "https://staging.pellicura.pages.dev/auth/google/callback",
+    "https://pellicura.pages.dev/auth/google/callback",
+    "https://pellicura.com/auth/google/callback",
+    "https://www.pellicura.com/auth/google/callback",
+    "https://frontend-production-0415.up.railway.app/auth/google/callback",
+    "http://localhost:5173/auth/google/callback",
+]
+
+
 class GoogleAuthRequest(BaseModel):
     """Google OAuth authorization code."""
     code: str
+    redirect_uri: str | None = None  # Optional: use when backend serves multiple frontends (e.g. Railway for both)
+
+
+class GoogleRedirectUriResponse(BaseModel):
+    """Public config so frontend can show the exact redirect URI for Google Console."""
+    redirect_uri: str
+
+
+@router.get(
+    "/google/redirect-uri",
+    response_model=GoogleRedirectUriResponse,
+    summary="Google OAuth redirect URI",
+    description="Returns the redirect URI this backend uses for Google OAuth. Add this exact URL to Authorized redirect URIs in Google Cloud Console.",
+)
+def google_redirect_uri():
+    """Return the redirect URI the backend sends to Google (for config verification)."""
+    base = (settings.FRONTEND_URL or "").rstrip("/")
+    return GoogleRedirectUriResponse(redirect_uri=f"{base}/auth/google/callback")
 
 
 @router.post(
@@ -420,19 +449,30 @@ async def google_auth(
     4. Return JWT token
     """
     import logging
-    from app.services.google_auth_service import google_auth_service
-    
+
+    from app.services.google_auth_service import GoogleAuthError, google_auth_service
+
     logger = logging.getLogger(__name__)
-    
+
     if not settings.GOOGLE_CLIENT_ID or not settings.GOOGLE_CLIENT_SECRET:
         raise HTTPException(
             status_code=status.HTTP_501_NOT_IMPLEMENTED,
             detail="Google OAuth is not configured",
         )
-    
+
+    # Determine redirect_uri: use frontend-provided if valid, else FRONTEND_URL
+    redirect_uri = None
+    if payload.redirect_uri and payload.redirect_uri in ALLOWED_GOOGLE_REDIRECT_URIS:
+        redirect_uri = payload.redirect_uri
     # Exchange code and get user info
-    user_info = await google_auth_service.verify_and_get_user(payload.code)
-    
+    try:
+        user_info = await google_auth_service.verify_and_get_user(payload.code, redirect_uri=redirect_uri)
+    except GoogleAuthError as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=e.message,
+        ) from e
+
     if not user_info or not user_info.get("email"):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,

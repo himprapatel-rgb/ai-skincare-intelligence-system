@@ -9,8 +9,15 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
     """Application settings loaded from environment variables."""
 
-    # Database
+    # Main Database (users, scans, shelf, routines)
     DATABASE_URL: str | None = Field(default=None, description="PostgreSQL database connection URL")
+    
+    # Product Catalog Database (separate database for products, ingredients, brands)
+    # This enables a two-database architecture for better scalability
+    PRODUCT_DATABASE_URL: str | None = Field(
+        default=None, 
+        description="PostgreSQL connection URL for product catalog database (separate from main DB)"
+    )
 
     # JWT Settings
     SECRET_KEY: str = Field(default="dev-secret-key-change-in-production", description="Secret key for JWT token generation")
@@ -35,11 +42,16 @@ class Settings(BaseSettings):
     ALLOWED_ORIGINS: list[str] = Field(
         default=[
             "http://localhost:3000",  # Next.js dev
+            "http://localhost:5173",  # Vite dev
             "http://localhost:19006",  # Expo web
             "http://localhost:8081",  # Expo mobile
             "https://himprapatel-rgb.github.io",  # GitHub Pages production
             "https://ai-skincare-intelligence-system-production.up.railway.app",  # Railway backend
-                        "https://frontend-production-0415.up.railway.app",  # Railway frontend
+            "https://frontend-production-0415.up.railway.app",  # Railway frontend
+            "https://pellicura.pages.dev",  # Cloudflare Pages production
+            "https://staging.pellicura.pages.dev",  # Cloudflare Pages staging
+            "https://pellicura.com",  # Production custom domain
+            "https://www.pellicura.com",  # Production custom domain with www
         ],
         description="List of allowed CORS origins",
     )

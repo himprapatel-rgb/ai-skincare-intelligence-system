@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { API_BASE_URL } from '../config';
 import './AdminProductsPage.css';
 
 type AdminProduct = {
@@ -35,11 +36,10 @@ const AdminProductsPage: React.FC = () => {
 
   const fetchProducts = useCallback(async (signal?: AbortSignal) => {
     try {
-      const API_BASE = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
       const token = localStorage.getItem('auth_token');
       const params = new URLSearchParams();
       if (search.trim()) params.set('search', search.trim());
-      const response = await fetch(`${API_BASE}/admin/products?${params.toString()}`, {
+      const response = await fetch(`${API_BASE_URL}/admin/products?${params.toString()}`, {
         signal,
         headers: {
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -97,13 +97,12 @@ const AdminProductsPage: React.FC = () => {
   };
 
   const bulkDelete = async () => {
-    const API_BASE = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
     const token = localStorage.getItem('auth_token');
     const ids = Array.from(selectedIds);
     const deleted = new Set<string>();
     for (const id of ids) {
       try {
-        const response = await fetch(`${API_BASE}/admin/products/${id}`, {
+        const response = await fetch(`${API_BASE_URL}/admin/products/${id}`, {
           method: 'DELETE',
           headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}) },
         });
@@ -127,7 +126,6 @@ const AdminProductsPage: React.FC = () => {
 
   const submitProduct = async () => {
     try {
-      const API_BASE = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
       const token = localStorage.getItem('auth_token');
       const payload = {
         brand: form.brand,
@@ -137,7 +135,7 @@ const AdminProductsPage: React.FC = () => {
         price_usd: form.price_usd ? Number(form.price_usd) : null,
         product_image_url: form.product_image_url || null,
       };
-      const response = await fetch(`${API_BASE}/admin/products${editingId ? `/${editingId}` : ''}`, {
+      const response = await fetch(`${API_BASE_URL}/admin/products${editingId ? `/${editingId}` : ''}`, {
         method: editingId ? 'PATCH' : 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -175,9 +173,8 @@ const AdminProductsPage: React.FC = () => {
 
   const deleteProduct = async (productId: string) => {
     try {
-      const API_BASE = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
       const token = localStorage.getItem('auth_token');
-      const response = await fetch(`${API_BASE}/admin/products/${productId}`, {
+      const response = await fetch(`${API_BASE_URL}/admin/products/${productId}`, {
         method: 'DELETE',
         headers: {
           ...(token ? { Authorization: `Bearer ${token}` } : {}),

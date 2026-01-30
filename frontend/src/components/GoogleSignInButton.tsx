@@ -19,12 +19,12 @@ export const GoogleSignInButton: React.FC<GoogleSignInButtonProps> = ({
   disabled = false,
   loading = false,
 }) => {
-  // Don't render if Google OAuth is not configured
-  if (!GOOGLE_CLIENT_ID) {
-    return null;
-  }
-
   const handleClick = () => {
+    if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_ID.trim()) {
+      // Button always visible; show message if build didn't get Client ID (e.g. secret not set in CI)
+      alert('Google sign-in is not configured for this environment. If you are the site owner, set VITE_GOOGLE_CLIENT_ID (and GOOGLE_CLIENT_ID in GitHub Secrets) and redeploy.');
+      return;
+    }
     // Build Google OAuth URL
     const params = new URLSearchParams({
       client_id: GOOGLE_CLIENT_ID,

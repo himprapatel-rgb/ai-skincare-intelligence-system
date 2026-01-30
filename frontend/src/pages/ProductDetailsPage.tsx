@@ -5,24 +5,38 @@ import { IconArrowLeft, IconStar } from '../components/Icons';
 import { BreadcrumbJsonLd } from '../components/BreadcrumbJsonLd';
 import LoadingScreen from '../components/LoadingScreen';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { useShelf } from '../context/ShelfContext';
 import './ProductDetailsPage.css';
+
+import { API_BASE_URL } from '../config';
+const API_BASE = API_BASE_URL;
 
 interface ProductDetails {
   id: string;
   name: string;
   brand: string;
   category: string;
-  description: string;
+  description?: string;
   ingredients: string[];
-  rating: number;
-  reviews: number;
-  price: string;
+  rating?: number;        // Optional - only show if we have real data
+  reviews?: number;       // Optional - only show if we have real data
+  price?: string;         // Optional - only show if we have real data
   imageUrl?: string;
-  keyIngredients: string[];
-  suitable: string[];
-  concerns: string[];
-  howToUse: string;
-  benefits: string[];
+  keyIngredients?: string[];
+  suitable?: string[];
+  concerns?: string[];
+  howToUse?: string;
+  benefits?: string[];
+  // Task 226-250: Enhanced product details
+  usageTime?: 'morning' | 'evening' | 'both';  // Task 234
+  usageFrequency?: string;                      // Task 235: daily, weekly, etc.
+  layeringOrder?: number;                       // Task 236: 1=cleanser, 2=toner, etc.
+  waitTime?: string;                            // Task 237: wait time after application
+  amountPerUse?: string;                        // Task 238: pea-sized, etc.
+  pairsWellWith?: string[];                     // Task 239
+  avoidCombiningWith?: string[];                // Task 240
+  size?: string;                                // Product size
+  shelfLife?: string;                           // Task 225
 }
 
 interface Review {
@@ -71,6 +85,43 @@ function getCompareIds(): string[] {
   }
 }
 
+// Task 234: Smart usage time based on category
+function getCategoryUsageTime(category: string): string {
+  const cat = category?.toLowerCase() || '';
+  if (cat.includes('sunscreen') || cat.includes('spf')) return '☀️ Morning only';
+  if (cat.includes('retinol') || cat.includes('night') || cat.includes('sleeping')) return '🌙 Evening only';
+  if (cat.includes('serum') || cat.includes('treatment')) return '☀️🌙 AM or PM';
+  if (cat.includes('cleanser') || cat.includes('moisturizer') || cat.includes('toner')) return '☀️🌙 AM & PM';
+  return '☀️🌙 As needed';
+}
+
+// Task 236: Step order based on category
+function getCategoryOrder(category: string): string {
+  const cat = category?.toLowerCase() || '';
+  if (cat.includes('cleanser') || cat.includes('clean')) return 'Step 1 - Cleanse';
+  if (cat.includes('toner') || cat.includes('essence')) return 'Step 2 - Tone';
+  if (cat.includes('serum') || cat.includes('ampoule')) return 'Step 3 - Treat';
+  if (cat.includes('eye')) return 'Step 4 - Eye area';
+  if (cat.includes('moisturizer') || cat.includes('cream') || cat.includes('lotion')) return 'Step 5 - Moisturize';
+  if (cat.includes('sunscreen') || cat.includes('spf')) return 'Step 6 - Protect (AM)';
+  if (cat.includes('mask')) return 'Weekly treatment';
+  if (cat.includes('exfoliant') || cat.includes('peel')) return '2-3x per week';
+  return 'As directed';
+}
+
+// Task 238: Amount per use based on category
+function getCategoryAmount(category: string): string {
+  const cat = category?.toLowerCase() || '';
+  if (cat.includes('serum') || cat.includes('oil')) return '2-3 drops';
+  if (cat.includes('cleanser')) return 'Dime-sized';
+  if (cat.includes('moisturizer') || cat.includes('cream')) return 'Pea-sized';
+  if (cat.includes('sunscreen')) return '2 finger lengths';
+  if (cat.includes('toner') || cat.includes('essence')) return '3-4 drops or cotton pad';
+  if (cat.includes('eye')) return 'Rice grain';
+  if (cat.includes('mask')) return 'Thin even layer';
+  return 'As directed';
+}
+
 function addToCompare(productId: string): string[] {
   try {
     const list = getCompareIds().filter((id) => id !== productId);
@@ -85,9 +136,11 @@ function addToCompare(productId: string): string[] {
 const ProductDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { products: shelfProducts, isOnShelf, addToShelf, removeFromShelf } = useShelf();
   const [product, setProduct] = useState<ProductDetails | null>(null);
   const [loading, setLoading] = useState(true);
   const [inShelf, setInShelf] = useState(false);
+  const [shelfActionLoading, setShelfActionLoading] = useState(false);
   usePageTitle(
     product ? product.name : 'Product Details',
     product ? `${product.name} by ${product.brand}. ${product.category}. ${product.description?.slice(0, 120) || ''}` : null
@@ -109,6 +162,7 @@ const ProductDetailsPage: React.FC = () => {
   const [reviewError, setReviewError] = useState('');
   const [imageZoomed, setImageZoomed] = useState(false);
   const [compareIds, setCompareIds] = useState<string[]>(() => getCompareIds());
+  const [fromCatalog, setFromCatalog] = useState(false);
 
   const handleAddToCompare = () => {
     if (!product?.id) return;
@@ -116,46 +170,117 @@ const ProductDetailsPage: React.FC = () => {
   };
 
   const fetchProductDetails = useCallback(async () => {
+    if (!id) return;
+    
     try {
       setLoading(true);
-      // TODO: Replace with actual API call
-      // const response = await fetch(`/api/v1/products/${id}`);
-      // const data = await response.json();
+      setFromCatalog(false);
       
-      // Mock data
-      const mockProduct: ProductDetails = {
-        id: id || '1',
-        name: 'Hydrating Serum with Hyaluronic Acid',
-        brand: 'CeraVe',
-        category: 'Serum',
-        description: 'A lightweight, fast-absorbing serum that deeply hydrates and plumps skin with multiple forms of hyaluronic acid.',
-        ingredients: ['Water', 'Glycerin', 'Hyaluronic Acid', 'Niacinamide', 'Ceramides', 'Vitamin B5'],
-        rating: 4.5,
-        reviews: 1247,
-        price: '$24.99',
-        imageUrl: '/placeholder.jpg',
-        keyIngredients: ['Hyaluronic Acid', 'Ceramides', 'Niacinamide'],
-        suitable: ['Normal', 'Dry', 'Combination'],
-        concerns: ['Dehydration', 'Fine Lines', 'Dullness'],
-        howToUse: 'Apply 2-3 drops to clean face morning and evening. Follow with moisturizer.',
-        benefits: ['Deep hydration', 'Plumps skin', 'Reduces fine lines', 'Strengthens barrier']
-      };
+      // First, check if product is on user's shelf
+      const shelfProduct = shelfProducts.find(p => 
+        p.id === id || p.product_id === id || p.external_product_id === id
+      );
       
-      setProduct(mockProduct);
-      addToRecentlyViewed({
-        id: mockProduct.id,
-        name: mockProduct.name,
-        brand: mockProduct.brand,
-        imageUrl: mockProduct.imageUrl,
-      });
-      // Check if in shelf
-      setInShelf(Math.random() > 0.5); // Mock
+      if (shelfProduct) {
+        // Product found on shelf - use that data
+        // Extract ingredients from ingredients_json if available
+        const ingredientsSnapshot = shelfProduct.ingredients_json;
+        const ingredients = ingredientsSnapshot?.ingredients || [];
+        const keyIngredients = ingredientsSnapshot?.key_ingredients?.map(ki => 
+          ki.percentage ? `${ki.name} ${ki.percentage}` : ki.name
+        ) || [];
+        
+        const productData: ProductDetails = {
+          id: shelfProduct.id,
+          name: shelfProduct.product_name,
+          brand: shelfProduct.product_brand || 'Unknown Brand',
+          category: shelfProduct.product_category || 'Skincare',
+          description: shelfProduct.notes || undefined,
+          ingredients: ingredients,
+          keyIngredients: keyIngredients.length > 0 ? keyIngredients : undefined,
+          imageUrl: shelfProduct.product_image,
+          // No fake ratings/reviews/prices - only show if we have real data
+        };
+        setProduct(productData);
+        setInShelf(true);
+        addToRecentlyViewed({
+          id: productData.id,
+          name: productData.name,
+          brand: productData.brand,
+          imageUrl: productData.imageUrl,
+        });
+        // Check if this product exists in catalog (for "From catalog" badge)
+        try {
+          const catRes = await fetch(`${API_BASE}/catalog/product/${id}`);
+          if (catRes.ok) setFromCatalog(true);
+        } catch {
+          setFromCatalog(false);
+        }
+      } else {
+        // Try to fetch from products API
+        try {
+          const response = await fetch(`${API_BASE}/products/${id}`);
+          if (response.ok) {
+            const data = await response.json();
+            const productData: ProductDetails = {
+              id: data.id || id,
+              name: data.name || data.product_name || 'Unknown Product',
+              brand: data.brand || data.product_brand || 'Unknown Brand',
+              category: data.category || data.product_category || 'Skincare',
+              description: data.description,
+              ingredients: data.ingredients || [],
+              imageUrl: data.image_url || data.product_image,
+              // Only include rating if it's real data from API
+              rating: data.average_rating || undefined,
+              reviews: data.review_count || undefined,
+              price: data.price || undefined,
+              keyIngredients: data.key_ingredients,
+              suitable: data.suitable_skin_types,
+              concerns: data.addresses_concerns,
+              howToUse: data.how_to_use,
+              benefits: data.benefits,
+            };
+            setProduct(productData);
+            setInShelf(isOnShelf(id));
+            addToRecentlyViewed({
+              id: productData.id,
+              name: productData.name,
+              brand: productData.brand,
+              imageUrl: productData.imageUrl,
+            });
+            try {
+              const catRes = await fetch(`${API_BASE}/catalog/product/${id}`);
+              if (catRes.ok) setFromCatalog(true);
+            } catch {
+              setFromCatalog(false);
+            }
+          } else {
+            // Product not found - show basic info
+            setProduct({
+              id: id,
+              name: 'Product Not Found',
+              brand: 'Unknown',
+              category: 'Unknown',
+              ingredients: [],
+            });
+          }
+        } catch {
+          // API error - show basic info
+          setProduct({
+            id: id,
+            name: 'Product Details Unavailable',
+            brand: 'Unknown',
+            category: 'Unknown',
+            ingredients: [],
+          });
+        }
+      }
     } catch (error) {
       console.error('Failed to fetch product details:', error);
     } finally {
       setLoading(false);
     }
-  }, [id]);
+  }, [id, shelfProducts, isOnShelf]);
 
   const fetchReviews = useCallback(async () => {
     if (!id) return;
@@ -210,20 +335,45 @@ const ProductDetailsPage: React.FC = () => {
   };
 
   const handleAddToShelf = async () => {
+    if (!product) return;
+    setShelfActionLoading(true);
     try {
-      // TODO: API call
-      setInShelf(true);
+      const success = await addToShelf({
+        product_id: product.id,
+        product_name: product.name,
+        product_brand: product.brand,
+        product_category: product.category,
+        product_image: product.imageUrl,
+        status: 'active',
+      });
+      if (success) {
+        setInShelf(true);
+      }
     } catch (error) {
       console.error('Failed to add to shelf:', error);
+    } finally {
+      setShelfActionLoading(false);
     }
   };
 
   const handleRemoveFromShelf = async () => {
+    if (!product) return;
+    setShelfActionLoading(true);
     try {
-      // TODO: API call
-      setInShelf(false);
+      // Find the shelf product ID
+      const shelfProduct = shelfProducts.find(p => 
+        p.id === product.id || p.product_id === product.id
+      );
+      if (shelfProduct) {
+        const success = await removeFromShelf(shelfProduct.id);
+        if (success) {
+          setInShelf(false);
+        }
+      }
     } catch (error) {
       console.error('Failed to remove from shelf:', error);
+    } finally {
+      setShelfActionLoading(false);
     }
   };
 
@@ -289,47 +439,76 @@ const ProductDetailsPage: React.FC = () => {
         
         <div className="product-info-section">
           <h1>{product.name}</h1>
-          <p className="brand">{product.brand}</p>
-          <p className="category">{product.category}</p>
-          
-          <div className="rating-section">
-            <div className="stars">
-              {Array.from({ length: 5 }).map((_, index) => (
-                <IconStar
-                  key={index}
-                  size={16}
-                  strokeWidth={2}
-                  fill={index < Math.floor(product.rating) ? 'currentColor' : 'none'}
-                  className="star-icon"
-                />
-              ))}
-            </div>
-            <span className="rating-text">{product.rating} ({product.reviews} reviews)</span>
+          <div className="product-meta-row">
+            <p className="brand">{product.brand}</p>
+            <p className="category">{product.category}</p>
+            {fromCatalog && (
+              <span className="from-catalog-badge" title="This product is in our verified catalog">
+                From catalog
+              </span>
+            )}
           </div>
           
-          <p className="price">{product.price}</p>
-          <p className="description">{product.description}</p>
+          {/* Only show rating if we have real data */}
+          {product.rating !== undefined && product.rating > 0 && (
+            <div className="rating-section">
+              <div className="stars">
+                {Array.from({ length: 5 }).map((_, index) => (
+                  <IconStar
+                    key={index}
+                    size={16}
+                    strokeWidth={2}
+                    fill={index < Math.floor(product.rating!) ? 'currentColor' : 'none'}
+                    className="star-icon"
+                  />
+                ))}
+              </div>
+              <span className="rating-text">
+                {product.rating} {product.reviews ? `(${product.reviews} reviews)` : ''}
+              </span>
+            </div>
+          )}
           
-          <div className="product-tags">
-            <div className="tag-group">
-              <strong>Suitable for:</strong>
-              {product.suitable.map(s => <span key={s} className="tag">{s}</span>)}
+          {/* Only show price if we have real data */}
+          {product.price && <p className="price">{product.price}</p>}
+          
+          {product.description && <p className="description">{product.description}</p>}
+          
+          {/* Only show tags if we have real data */}
+          {((product.suitable && product.suitable.length > 0) || (product.concerns && product.concerns.length > 0)) && (
+            <div className="product-tags">
+              {product.suitable && product.suitable.length > 0 && (
+                <div className="tag-group">
+                  <strong>Suitable for:</strong>
+                  {product.suitable.map(s => <span key={s} className="tag">{s}</span>)}
+                </div>
+              )}
+              {product.concerns && product.concerns.length > 0 && (
+                <div className="tag-group">
+                  <strong>Concerns:</strong>
+                  {product.concerns.map(c => <span key={c} className="tag concern">{c}</span>)}
+                </div>
+              )}
             </div>
-            <div className="tag-group">
-              <strong>Concerns:</strong>
-              {product.concerns.map(c => <span key={c} className="tag concern">{c}</span>)}
-            </div>
-          </div>
+          )}
           
           <div className="action-buttons">
             {inShelf ? (
-              <button className="btn-secondary" onClick={handleRemoveFromShelf}>
-                Remove from Shelf
+              <button 
+                className="btn-secondary" 
+                onClick={handleRemoveFromShelf}
+                disabled={shelfActionLoading}
+              >
+                {shelfActionLoading ? 'Removing...' : 'Remove from Shelf'}
               </button>
             ) : (
               <>
-                <button className="btn-primary" onClick={handleAddToShelf}>
-                  Add to My Shelf
+                <button 
+                  className="btn-primary" 
+                  onClick={handleAddToShelf}
+                  disabled={shelfActionLoading}
+                >
+                  {shelfActionLoading ? 'Adding...' : 'Add to My Shelf'}
                 </button>
                 <button type="button" className="btn-secondary" onClick={handleAddToCompare} disabled={compareIds.includes(product.id)}>
                   {compareIds.includes(product.id) ? 'In compare list' : 'Add to compare'}
@@ -368,39 +547,179 @@ const ProductDetailsPage: React.FC = () => {
         <div className="tab-content">
           {activeTab === 'overview' && (
             <div className="overview-tab">
-              <section>
-                <h3>Key Benefits</h3>
-                <ul>
-                  {product.benefits.map((benefit, idx) => <li key={idx}>{benefit}</li>)}
-                </ul>
-              </section>
-              
-              <section>
-                <h3>Key Ingredients</h3>
-                <div className="key-ingredients">
-                  {product.keyIngredients.map(ing => (
-                    <div key={ing} className="ingredient-card">
-                      <strong>{ing}</strong>
-                    </div>
-                  ))}
+              {/* Task 234-238: Usage Information Card */}
+              <section className="usage-info-card">
+                <h3>Usage Guide</h3>
+                <div className="usage-grid">
+                  <div className="usage-item">
+                    <span className="usage-label">Best Time</span>
+                    <span className="usage-value">
+                      {product.usageTime === 'morning' ? '☀️ Morning' :
+                       product.usageTime === 'evening' ? '🌙 Evening' :
+                       product.usageTime === 'both' ? '☀️🌙 AM & PM' :
+                       getCategoryUsageTime(product.category)}
+                    </span>
+                  </div>
+                  <div className="usage-item">
+                    <span className="usage-label">Frequency</span>
+                    <span className="usage-value">{product.usageFrequency || 'Daily'}</span>
+                  </div>
+                  <div className="usage-item">
+                    <span className="usage-label">Step Order</span>
+                    <span className="usage-value">{getCategoryOrder(product.category)}</span>
+                  </div>
+                  <div className="usage-item">
+                    <span className="usage-label">Amount</span>
+                    <span className="usage-value">{product.amountPerUse || getCategoryAmount(product.category)}</span>
+                  </div>
                 </div>
               </section>
+
+              {product.benefits && product.benefits.length > 0 && (
+                <section>
+                  <h3>Key Benefits</h3>
+                  <ul className="benefits-list">
+                    {product.benefits.map((benefit, idx) => <li key={idx}>✓ {benefit}</li>)}
+                  </ul>
+                </section>
+              )}
               
-              <section>
-                <h3>How to Use</h3>
-                <p>{product.howToUse}</p>
-              </section>
+              {product.keyIngredients && product.keyIngredients.length > 0 && (
+                <section>
+                  <h3>Key Ingredients</h3>
+                  <div className="key-ingredients">
+                    {product.keyIngredients.map(ing => (
+                      <div key={ing} className="ingredient-card">
+                        <strong>{ing}</strong>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              )}
+              
+              {product.howToUse && (
+                <section>
+                  <h3>How to Use</h3>
+                  <p>{product.howToUse}</p>
+                </section>
+              )}
+
+              {/* Task 239-240: Product pairing tips */}
+              {(product.pairsWellWith?.length || product.avoidCombiningWith?.length) && (
+                <section className="pairing-section">
+                  <h3>Pairing Guide</h3>
+                  {product.pairsWellWith && product.pairsWellWith.length > 0 && (
+                    <div className="pairing-good">
+                      <strong>✓ Pairs well with:</strong>
+                      <span>{product.pairsWellWith.join(', ')}</span>
+                    </div>
+                  )}
+                  {product.avoidCombiningWith && product.avoidCombiningWith.length > 0 && (
+                    <div className="pairing-avoid">
+                      <strong>⚠ Avoid combining with:</strong>
+                      <span>{product.avoidCombiningWith.join(', ')}</span>
+                    </div>
+                  )}
+                </section>
+              )}
+
+              {/* Show message if no detailed info available */}
+              {!product.benefits?.length && !product.keyIngredients?.length && !product.howToUse && (
+                <section className="no-data-message">
+                  <p>Detailed product information is not yet available for this product.</p>
+                  <p>You can help by adding notes to this product from your shelf.</p>
+                </section>
+              )}
             </div>
           )}
           
           {activeTab === 'ingredients' && (
             <div className="ingredients-tab">
               <h3>Full Ingredient List</h3>
-              <div className="ingredients-list">
-                {product.ingredients.map((ing, idx) => (
-                  <span key={idx} className="ingredient-item">{ing}</span>
-                ))}
-              </div>
+              {product.ingredients && product.ingredients.length > 0 ? (
+                <>
+                  {/* Task 206: Ingredient search */}
+                  <div className="ingredient-controls">
+                    <input
+                      type="text"
+                      placeholder="Search ingredients..."
+                      className="ingredient-search"
+                      onChange={(e) => {
+                        const search = e.target.value.toLowerCase();
+                        document.querySelectorAll('.ingredient-item').forEach((el) => {
+                          const text = el.textContent?.toLowerCase() || '';
+                          (el as HTMLElement).style.display = text.includes(search) ? '' : 'none';
+                        });
+                      }}
+                    />
+                    <span className="ingredient-count">{product.ingredients.length} ingredients</span>
+                  </div>
+                  
+                  {/* Task 207-208: Ingredient list with safety indicators */}
+                  <div className="ingredients-list">
+                    {product.ingredients.map((ing, idx) => {
+                      // Task 207: Highlight concerning ingredients
+                      const ingLower = ing.toLowerCase();
+                      const isConcern = ['fragrance', 'parfum', 'alcohol denat', 'denatured alcohol', 
+                        'sodium lauryl sulfate', 'sls', 'formaldehyde'].some(c => ingLower.includes(c));
+                      const isAllergen = ['methylisothiazolinone', 'methylchloroisothiazolinone', 
+                        'lanolin', 'propylene glycol'].some(a => ingLower.includes(a));
+                      const isActive = ['niacinamide', 'retinol', 'vitamin c', 'ascorbic acid', 
+                        'hyaluronic acid', 'salicylic acid', 'glycolic acid', 'ceramide'].some(a => ingLower.includes(a));
+                      
+                      let className = 'ingredient-item';
+                      let tooltip = '';
+                      if (isActive) {
+                        className += ' ingredient-active';
+                        tooltip = 'Active ingredient';
+                      } else if (isConcern) {
+                        className += ' ingredient-concern';
+                        tooltip = 'May cause sensitivity';
+                      } else if (isAllergen) {
+                        className += ' ingredient-allergen';
+                        tooltip = 'Potential allergen';
+                      }
+                      
+                      return (
+                        <span 
+                          key={idx} 
+                          className={className}
+                          title={tooltip || `Position ${idx + 1} in formula`}
+                        >
+                          {ing}
+                          {idx < 5 && <span className="ingredient-rank">Top {idx + 1}</span>}
+                        </span>
+                      );
+                    })}
+                  </div>
+                  
+                  {/* Task 210: Ingredient legend */}
+                  <div className="ingredient-legend">
+                    <div className="legend-item">
+                      <span className="legend-dot active"></span>
+                      <span>Active ingredients</span>
+                    </div>
+                    <div className="legend-item">
+                      <span className="legend-dot concern"></span>
+                      <span>May cause sensitivity</span>
+                    </div>
+                    <div className="legend-item">
+                      <span className="legend-dot allergen"></span>
+                      <span>Potential allergen</span>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <div className="no-ingredients-message">
+                  <p>Ingredient list not available for this product.</p>
+                  <p>Tips to get ingredient data:</p>
+                  <ul>
+                    <li>Scan the product again with the ingredients list visible in the photo</li>
+                    <li>Use barcode scanning for products in our database</li>
+                    <li>Take a clear photo of the back label showing all ingredients</li>
+                  </ul>
+                </div>
+              )}
             </div>
           )}
           

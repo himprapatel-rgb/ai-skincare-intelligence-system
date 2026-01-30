@@ -1,6 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 import { devAutoLogin } from '../utils/devAutoLogin';
 
 // Types
@@ -41,9 +42,6 @@ interface AuthContextType {
 // Create context
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// API base URL
-const API_URL = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
-
 // Provider component
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
@@ -59,7 +57,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       if (storedToken) {
         try {
           axios.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`;
-          const response = await axios.get(`${API_URL}/auth/me`);
+          const response = await axios.get(`${API_BASE_URL}/auth/me`);
           setUser(response.data);
           setToken(storedToken);
         } catch {
@@ -75,7 +73,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const login = async (email: string, password: string): Promise<void> => {
     try {
-      const response = await axios.post(`${API_URL}/auth/login`, { email, password });
+      const response = await axios.post(`${API_BASE_URL}/auth/login`, { email, password });
       const { token: newToken, user: userData } = response.data;
       localStorage.setItem('auth_token', newToken);
       axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
@@ -95,7 +93,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const register = async (name: string, email: string, password: string): Promise<AuthResponse> => {
-    const response = await axios.post(`${API_URL}/auth/register`, {
+    const response = await axios.post(`${API_BASE_URL}/auth/register`, {
       full_name: name,
       email,
       password,

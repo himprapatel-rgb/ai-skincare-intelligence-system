@@ -3,7 +3,7 @@ Google OAuth Service for social login.
 Sprint: Final Features - Google OAuth Integration
 """
 import logging
-from typing import Optional, Dict, Any
+from typing import Any, Dict, Optional
 
 import httpx
 
@@ -14,6 +14,14 @@ logger = logging.getLogger(__name__)
 GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token"
 GOOGLE_USERINFO_URL = "https://www.googleapis.com/oauth2/v3/userinfo"
 GOOGLE_CERTS_URL = "https://www.googleapis.com/oauth2/v3/certs"
+
+
+class GoogleAuthError(Exception):
+    """Raised when Google OAuth fails; message is safe to show to the user."""
+
+    def __init__(self, message: str):
+        self.message = message
+        super().__init__(message)
 
 
 class GoogleAuthService:
@@ -31,9 +39,40 @@ class GoogleAuthService:
     def redirect_uri(self):
         return f"{settings.FRONTEND_URL}/auth/google/callback"
     
-    async def exchange_code_for_tokens(self, code: str) -> Optional[Dict[str, Any]]:
-        """Exchange authorization code for access and ID tokens."""
-        logger.info(f"Google OAuth: client_id={self.client_id[:20] if self.client_id else 'None'}..., redirect_uri={self.redirect_uri}")
+    def _user_friendly_token_error(self, status_code: int, body: Any) -> str:
+        """Build a user-friendly message from Google token endpoint error."""
+        error_code = ""
+        error_desc = ""
+        if isinstance(body, dict):
+            error_code = body.get("error") or ""
+            error_desc = body.get("error_description") or ""
+        if not error_code and isinstance(body, str) and body.strip().startswith("{"):
+            try:
+                import json
+                parsed = json.loads(body)
+                error_code = parsed.get("error") or ""
+                error_desc = parsed.get("error_description") or ""
+            except Exception:
+                pass
+        parts = [f"Google sign-in failed (HTTP {status_code})."]
+        if error_code:
+            parts.append(f"Error: {error_code}.")
+            if error_code == "redirect_uri_mismatch":
+                parts.append(
+                    f"Add this exact URL to 'Authorized redirect URIs' in Google Cloud Console: {self.redirect_uri}"
+                )
+            elif error_desc:
+                parts.append(str(error_desc))
+        elif error_desc:
+            parts.append(str(error_desc))
+        return " ".join(parts)
+
+    async def exchange_code_for_tokens(
+        self, code: str, redirect_uri: Optional[str] = None
+    ) -> Optional[Dict[str, Any]]:
+        """Exchange authorization code for access and ID tokens. Raises GoogleAuthError on token endpoint failure."""
+        uri = redirect_uri or self.redirect_uri
+        logger.info(f"Google OAuth: client_id={self.client_id[:20] if self.client_id else 'None'}..., redirect_uri={uri}")
         
         if not self.client_id or not self.client_secret:
             logger.error("Google OAuth not configured - missing client_id or client_secret")
@@ -48,17 +87,24 @@ class GoogleAuthService:
                         "client_secret": self.client_secret,
                         "code": code,
                         "grant_type": "authorization_code",
-                        "redirect_uri": self.redirect_uri,
+                        "redirect_uri": uri,
                     },
                     timeout=30.0,
                 )
                 
                 if response.status_code != 200:
-                    logger.error(f"Google token exchange failed (status={response.status_code}): {response.text}")
-                    return None
+                    try:
+                        body = response.json()
+                    except Exception:
+                        body = response.text
+                    logger.error(f"Google token exchange failed (status={response.status_code}): {body}")
+                    msg = self._user_friendly_token_error(response.status_code, body)
+                    raise GoogleAuthError(msg)
                 
                 logger.info("Google token exchange successful")
                 return response.json()
+            except GoogleAuthError:
+                raise
             except Exception as e:
                 logger.error(f"Google token exchange error: {e}")
                 return None
@@ -82,13 +128,15 @@ class GoogleAuthService:
                 logger.error(f"Google userinfo error: {e}")
                 return None
     
-    async def verify_and_get_user(self, code: str) -> Optional[Dict[str, Any]]:
+    async def verify_and_get_user(
+        self, code: str, redirect_uri: Optional[str] = None
+    ) -> Optional[Dict[str, Any]]:
         """
         Complete OAuth flow: exchange code and get user info.
         Returns user data: email, name, picture, email_verified
         """
         # Exchange code for tokens
-        tokens = await self.exchange_code_for_tokens(code)
+        tokens = await self.exchange_code_for_tokens(code, redirect_uri=redirect_uri)
         if not tokens:
             return None
         

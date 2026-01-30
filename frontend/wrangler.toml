@@ -1,0 +1,10 @@
+# Cloudflare Pages Configuration for Pellicura Frontend
+# https://developers.cloudflare.com/pages/
+
+name = "pellicura"
+compatibility_date = "2024-01-01"
+pages_build_output_dir = "dist"
+
+# Environment variables for production (build-time for Vite)
+[vars]
+  VITE_API_URL = "https://pellicura-api.fly.dev/api/v1"

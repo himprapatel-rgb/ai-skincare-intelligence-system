@@ -3,11 +3,13 @@ import React, { Suspense } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { ToastProvider } from "./context/ToastContext";
+import { ShelfProvider } from "./context/ShelfContext";
 import AppLayout from "./components/AppLayout";
 import DevBanner from "./components/DevBanner";
 import LoadingScreen from "./components/LoadingScreen";
 import { ToastContainer } from "./components/Toast";
 import { ErrorBoundary } from "./components/ErrorBoundary";
+import NetworkStatus from "./components/NetworkStatus";
 
 // Page Imports - Lazy loaded for faster initial load
 const HomePage = React.lazy(() => import("./pages/HomePage"));
@@ -55,8 +57,10 @@ const NotFoundPage = React.lazy(() => import("./pages/NotFoundPage"));
 export default function App() {
   return (
     <AuthProvider>
-      <ToastProvider>
-        <DevBanner />
+      <ShelfProvider>
+        <ToastProvider>
+          <DevBanner />
+          <NetworkStatus />
         <BrowserRouter>
           <AppLayout>
             <ErrorBoundary>
@@ -119,8 +123,9 @@ export default function App() {
             </ErrorBoundary>
           </AppLayout>
         </BrowserRouter>
-        <ToastContainer />
-      </ToastProvider>
+          <ToastContainer />
+        </ToastProvider>
+      </ShelfProvider>
     </AuthProvider>
   );
 }

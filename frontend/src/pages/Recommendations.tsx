@@ -4,6 +4,7 @@ import { usePageTitle } from '../hooks/usePageTitle';
 import { IconStar, IconAlertTriangle, IconHeart, IconArrowLeft, IconPackage } from '../components/Icons';
 import { SkeletonCardGrid } from '../components/Skeleton';
 import { useToast } from '../context/ToastContext';
+import { API_BASE_URL } from '../config';
 import './Recommendations.css';
 
 const SHELF_STORAGE_KEY = 'shelf_products';
@@ -119,10 +120,9 @@ const Recommendations: React.FC = () => {
   const fetchRecommendations = async () => {
     try {
       setLoading(true);
-      const API_BASE = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
       const token = localStorage.getItem('auth_token');
 
-      const response = await fetch(`${API_BASE}/recommendations`, {
+      const response = await fetch(`${API_BASE_URL}/recommendations`, {
         headers: {
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },

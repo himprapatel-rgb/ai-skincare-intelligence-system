@@ -699,6 +699,195 @@ def run_migrations():
                 "ON product_offers (product_id)"
             )
             
+            # Ingredients persistence migration (2026-01-29)
+            print("  - Adding ingredients_json to shelf_products...")
+            cur.execute(
+                """
+                ALTER TABLE shelf_products
+                ADD COLUMN IF NOT EXISTS ingredients_json JSONB DEFAULT NULL
+                """
+            )
+            
+            # Ensure product_ingredients has proper constraints
+            print("  - Ensuring product_ingredients constraints...")
+            cur.execute(
+                """
+                DO $$
+                BEGIN
+                    IF NOT EXISTS (
+                        SELECT 1 FROM pg_constraint 
+                        WHERE conname = 'uq_product_ingredient'
+                    ) THEN
+                        ALTER TABLE product_ingredients 
+                        ADD CONSTRAINT uq_product_ingredient 
+                        UNIQUE (product_id, ingredient_id);
+                    END IF;
+                EXCEPTION WHEN duplicate_table THEN
+                    NULL;
+                END $$
+                """
+            )
+            
+            # ============================================
+            # PRODUCT CATALOG DATABASE (2026-01-29)
+            # ============================================
+            print("  - Creating Product Catalog tables...")
+            
+            # catalog_products
+            cur.execute("""
+                CREATE TABLE IF NOT EXISTS catalog_products (
+                    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                    barcode VARCHAR(50) UNIQUE,
+                    barcode_type VARCHAR(20),
+                    name VARCHAR(300) NOT NULL,
+                    brand VARCHAR(200) NOT NULL,
+                    category VARCHAR(100) NOT NULL,
+                    subcategory VARCHAR(100),
+                    description TEXT,
+                    size_ml FLOAT,
+                    size_unit VARCHAR(20),
+                    price_usd FLOAT,
+                    price_range VARCHAR(20),
+                    image_front_url VARCHAR(500),
+                    image_back_url VARCHAR(500),
+                    image_ingredients_url VARCHAR(500),
+                    thumbnail_url VARCHAR(500),
+                    images_source VARCHAR(50),
+                    safety_score INTEGER,
+                    safety_summary TEXT,
+                    flagged_ingredients JSONB,
+                    pregnancy_safe BOOLEAN,
+                    sensitive_skin_safe BOOLEAN,
+                    suitable_skin_types VARCHAR[],
+                    targets_concerns VARCHAR[],
+                    is_fragrance_free BOOLEAN DEFAULT FALSE,
+                    is_vegan BOOLEAN DEFAULT FALSE,
+                    is_cruelty_free BOOLEAN DEFAULT FALSE,
+                    is_organic BOOLEAN DEFAULT FALSE,
+                    is_clean_beauty BOOLEAN DEFAULT FALSE,
+                    ingredients_text TEXT,
+                    key_ingredients JSONB,
+                    is_verified BOOLEAN DEFAULT FALSE,
+                    data_quality_score INTEGER,
+                    source VARCHAR(50) NOT NULL,
+                    source_id VARCHAR(255),
+                    view_count INTEGER DEFAULT 0,
+                    scan_count INTEGER DEFAULT 0,
+                    last_scanned_at TIMESTAMPTZ,
+                    created_at TIMESTAMPTZ DEFAULT NOW(),
+                    updated_at TIMESTAMPTZ
+                )
+            """)
+            cur.execute("CREATE INDEX IF NOT EXISTS idx_catalog_products_barcode ON catalog_products(barcode)")
+            cur.execute("CREATE INDEX IF NOT EXISTS idx_catalog_products_brand_name ON catalog_products(brand, name)")
+            cur.execute("CREATE INDEX IF NOT EXISTS idx_catalog_products_category ON catalog_products(category)")
+            cur.execute("CREATE INDEX IF NOT EXISTS idx_catalog_products_source ON catalog_products(source)")
+            
+            # catalog_ingredients
+            cur.execute("""
+                CREATE TABLE IF NOT EXISTS catalog_ingredients (
+                    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                    inci_name VARCHAR(255) NOT NULL UNIQUE,
+                    common_names JSONB DEFAULT '[]'::jsonb,
+                    category VARCHAR(100),
+                    function TEXT,
+                    ewg_score INTEGER,
+                    comedogenic_rating INTEGER,
+                    irritancy_rating INTEGER,
+                    is_harmful BOOLEAN DEFAULT FALSE,
+                    harm_severity VARCHAR(20),
+                    harm_categories VARCHAR[],
+                    harm_reason TEXT,
+                    harm_alternatives VARCHAR[],
+                    avoid_if VARCHAR[],
+                    fda_approved BOOLEAN,
+                    eu_approved BOOLEAN,
+                    banned_countries VARCHAR[],
+                    max_concentration_percent FLOAT,
+                    benefits VARCHAR[],
+                    targets_concerns VARCHAR[],
+                    data_sources JSONB,
+                    created_at TIMESTAMPTZ DEFAULT NOW(),
+                    updated_at TIMESTAMPTZ
+                )
+            """)
+            cur.execute("CREATE INDEX IF NOT EXISTS idx_catalog_ingredients_inci ON catalog_ingredients(inci_name)")
+            
+            # catalog_product_ingredients
+            cur.execute("""
+                CREATE TABLE IF NOT EXISTS catalog_product_ingredients (
+                    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                    product_id UUID NOT NULL REFERENCES catalog_products(id) ON DELETE CASCADE,
+                    ingredient_id UUID NOT NULL REFERENCES catalog_ingredients(id) ON DELETE CASCADE,
+                    position INTEGER NOT NULL,
+                    concentration_percent FLOAT,
+                    is_key_active BOOLEAN DEFAULT FALSE,
+                    created_at TIMESTAMPTZ DEFAULT NOW(),
+                    CONSTRAINT uq_catalog_product_ingredient UNIQUE (product_id, ingredient_id)
+                )
+            """)
+            cur.execute("CREATE INDEX IF NOT EXISTS idx_catalog_prod_ing_product ON catalog_product_ingredients(product_id)")
+            
+            # catalog_product_images
+            cur.execute("""
+                CREATE TABLE IF NOT EXISTS catalog_product_images (
+                    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                    product_id UUID NOT NULL REFERENCES catalog_products(id) ON DELETE CASCADE,
+                    image_url VARCHAR(500) NOT NULL,
+                    thumbnail_url VARCHAR(500),
+                    image_type VARCHAR(50) NOT NULL,
+                    is_primary BOOLEAN DEFAULT FALSE,
+                    width INTEGER,
+                    height INTEGER,
+                    file_size_kb INTEGER,
+                    quality_score INTEGER,
+                    has_white_background BOOLEAN,
+                    source VARCHAR(50),
+                    source_url VARCHAR(500),
+                    created_at TIMESTAMPTZ DEFAULT NOW()
+                )
+            """)
+            
+            # catalog_brands
+            cur.execute("""
+                CREATE TABLE IF NOT EXISTS catalog_brands (
+                    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                    name VARCHAR(200) NOT NULL UNIQUE,
+                    slug VARCHAR(200) NOT NULL UNIQUE,
+                    logo_url VARCHAR(500),
+                    website_url VARCHAR(500),
+                    is_cruelty_free BOOLEAN,
+                    is_vegan BOOLEAN,
+                    is_clean_beauty BOOLEAN,
+                    is_luxury BOOLEAN,
+                    country_of_origin VARCHAR(100),
+                    product_count INTEGER DEFAULT 0,
+                    average_rating FLOAT,
+                    created_at TIMESTAMPTZ DEFAULT NOW(),
+                    updated_at TIMESTAMPTZ
+                )
+            """)
+            
+            # catalog_import_jobs
+            cur.execute("""
+                CREATE TABLE IF NOT EXISTS catalog_import_jobs (
+                    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                    source VARCHAR(50) NOT NULL,
+                    status VARCHAR(20) DEFAULT 'pending',
+                    total_records INTEGER,
+                    processed_records INTEGER DEFAULT 0,
+                    imported_records INTEGER DEFAULT 0,
+                    skipped_records INTEGER DEFAULT 0,
+                    error_records INTEGER DEFAULT 0,
+                    started_at TIMESTAMPTZ,
+                    completed_at TIMESTAMPTZ,
+                    error_log TEXT,
+                    created_at TIMESTAMPTZ DEFAULT NOW()
+                )
+            """)
+            
+            print("  ✓ Product Catalog tables created")
+            
         conn.commit()
         print("  ✓ Migration completed successfully!")
         

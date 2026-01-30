@@ -9,6 +9,7 @@ from sqlalchemy import text
 from sqlalchemy.exc import IntegrityError, ProgrammingError
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
+from middleware.request_tracing import RequestTracingMiddleware
 from app.api.v1 import api_router
 from app.api.v1.products import router as external_products_router
 from app.api.v1.progress import router as progress_router
@@ -16,31 +17,56 @@ from app.api.v1.routines import router as routines_router
 from app.config import settings
 from app.core.security import encrypt_sensitive_data
 from app.database import Base, SessionLocal, engine
-
-# Import ALL models to ensure tables are created at startup
-from app.models.twin_models import *  # Digital Twin models
-from app.models.user import PolicyVersion, User, UserConsent, UserProfile
-from app.models.scan import ScanSession, SkinAnalysis, ConfidenceMetrics, FairnessMetrics
-from app.models.product_models import Product, Ingredient, ProductIngredient, ProductReview
+from app.product_database import create_product_tables, check_product_database_health
 from app.models.analysis_outputs import (
-    ScanOutput, SkinCondition, ScanCondition, ScanRecommendation,
-    ProductRecommendation, GeoLocation, EnvironmentalReading,
-    DailySkinGuidance, Store, ProductStoreAvailability,
-    UserEvent, UserProgressSnapshot
+    DailySkinGuidance,
+    EnvironmentalReading,
+    GeoLocation,
+    ProductRecommendation,
+    ProductStoreAvailability,
+    ScanCondition,
+    ScanOutput,
+    ScanRecommendation,
+    SkinCondition,
+    Store,
+    UserEvent,
+    UserProgressSnapshot,
 )
 from app.models.engagement import (
-    ProductScanSession, ProductScanItem, RoutineRecommendation,
-    RoutineCheckin, UserNotification, NotificationEvent,
-    GeoAlert, ProductOffer
+    GeoAlert,
+    NotificationEvent,
+    ProductOffer,
+    ProductScanItem,
+    ProductScanSession,
+    RoutineCheckin,
+    RoutineRecommendation,
+    UserNotification,
 )
 from app.models.favorites import UserFavorite
 from app.models.goals import SkinGoal
 from app.models.notifications import Notification
-from app.models.shelf import ShelfProduct
+from app.models.product_models import (
+    Ingredient,
+    Product,
+    ProductIngredient,
+    ProductReview,
+)
 from app.models.progress_photo import ProgressPhoto
 from app.models.saved_routine import SavedRoutine
+from app.models.scan import (
+    ConfidenceMetrics,
+    FairnessMetrics,
+    ScanSession,
+    SkinAnalysis,
+)
+from app.models.shelf import ShelfProduct
+
+# Import ALL models to ensure tables are created at startup
+from app.models.twin_models import *  # Digital Twin models
+from app.models.user import PolicyVersion, User, UserConsent, UserProfile
 from app.routers import (  # GDPR & User Management
     admin,
+    catalog,
     consent,
     digital_twin,
     favorites,
@@ -72,6 +98,9 @@ app.add_middleware(GZipMiddleware, minimum_size=1000)
 
 app.add_middleware(TrustedHostMiddleware, allowed_hosts=settings.ALLOWED_HOSTS)
 
+# Task 425: Request tracing with correlation IDs
+app.add_middleware(RequestTracingMiddleware)
+
 
 @app.middleware("http")
 async def add_security_headers(request, call_next):
@@ -97,7 +126,12 @@ def ensure_test_user() -> None:
         # Create all tables from SQLAlchemy models (non-destructive)
         logger.info("Creating database tables (if not exist)...")
         Base.metadata.create_all(bind=engine, checkfirst=True)
-        logger.info("✅ Database tables ensured")
+        logger.info("✅ Main database tables ensured")
+        
+        # Create product catalog tables (separate database)
+        logger.info("Creating product catalog tables...")
+        create_product_tables()
+        logger.info("✅ Product catalog tables ensured")
         
         if engine.dialect.name != "sqlite":
             with engine.begin() as conn:
@@ -329,20 +363,77 @@ def ensure_test_user() -> None:
 
 @app.get("/api/health")
 async def health_check():
-    """Health check endpoint with DB status."""
-    database_status = "ok"
-    status = "healthy"
+    """
+    Health check endpoint with detailed status (Task 421-422).
+    Returns status of both main and product databases.
+    """
+    import time
+    from datetime import datetime
+    
+    checks = {
+        "main_database": {"status": "ok", "latency_ms": 0},
+        "product_database": {"status": "ok", "latency_ms": 0},
+        "api": {"status": "ok"},
+    }
+    overall_status = "healthy"
+    
+    # Main Database health check
+    try:
+        start = time.time()
+        with engine.connect() as conn:
+            conn.execute(text("SELECT 1"))
+        checks["main_database"]["latency_ms"] = int((time.time() - start) * 1000)
+    except Exception as e:
+        checks["main_database"]["status"] = "error"
+        checks["main_database"]["error"] = str(e)[:100]
+        overall_status = "degraded"
+    
+    if checks["main_database"]["latency_ms"] > 500:
+        checks["main_database"]["status"] = "slow"
+        if overall_status == "healthy":
+            overall_status = "degraded"
+    
+    # Product Database health check (separate database)
+    try:
+        product_health = await check_product_database_health()
+        checks["product_database"] = product_health
+        if product_health["status"] == "error":
+            overall_status = "degraded"
+    except Exception as e:
+        checks["product_database"]["status"] = "error"
+        checks["product_database"]["error"] = str(e)[:100]
+    
+    return {
+        "status": overall_status,
+        "service": "ai-skincare-intelligence-system",
+        "version": settings.APP_VERSION,
+        "timestamp": datetime.utcnow().isoformat(),
+        "checks": checks,
+    }
+
+
+@app.get("/api/health/ready")
+async def readiness_check():
+    """
+    Kubernetes-style readiness probe.
+    Returns 200 if service is ready to accept traffic.
+    """
     try:
         with engine.connect() as conn:
             conn.execute(text("SELECT 1"))
+        return {"ready": True}
     except Exception:
-        database_status = "error"
-        status = "degraded"
-    return {
-        "status": status,
-        "service": "ai-skincare-intelligence-system",
-        "database": database_status,
-    }
+        from fastapi import HTTPException
+        raise HTTPException(status_code=503, detail="Database not ready")
+
+
+@app.get("/api/health/live")
+async def liveness_check():
+    """
+    Kubernetes-style liveness probe.
+    Returns 200 if service is alive.
+    """
+    return {"alive": True}
     
 # Mount all routers under /api/v1 for consistency
 app.include_router(api_router, prefix="/api/v1")
@@ -360,6 +451,7 @@ app.include_router(favorites.router, prefix="/api/v1", tags=["favorites"])  # Fa
 app.include_router(notifications.router, prefix="/api/v1", tags=["notifications"])  # Notifications API
 app.include_router(shelf.router, prefix="/api/v1", tags=["shelf"])  # Product Shelf API
 app.include_router(goals.router, prefix="/api/v1", tags=["goals"])  # Skin Goals API
+app.include_router(catalog.router, prefix="/api/v1", tags=["catalog"])  # Product Catalog Database
 
 @app.get("/", tags=["Root"])
 def read_root():

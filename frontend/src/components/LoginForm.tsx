@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -6,6 +6,7 @@ import { ErrorMessage } from './ErrorMessage';
 import { LoadingSpinner } from './LoadingSpinner';
 import { GoogleSignInButton } from './GoogleSignInButton';
 import { IconEye, IconEyeOff } from './Icons';
+import { API_BASE_URL } from '../config';
 
 interface LoginFormProps {
   onSuccess: () => void;
@@ -47,6 +48,22 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegis
   const [error, setError] = useState('');
   const [showVerifyLink, setShowVerifyLink] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [googleRedirectUri, setGoogleRedirectUri] = useState<string | null>(null);
+  const [googleBackendReachable, setGoogleBackendReachable] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    axios
+      .get<{ redirect_uri: string }>(`${API_BASE_URL}/auth/google/redirect-uri`, { timeout: 8000 })
+      .then((res) => {
+        if (!cancelled && res.data?.redirect_uri) setGoogleRedirectUri(res.data.redirect_uri);
+        if (!cancelled) setGoogleBackendReachable(true);
+      })
+      .catch(() => {
+        if (!cancelled) setGoogleBackendReachable(false);
+      });
+    return () => { cancelled = true; };
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -174,6 +191,30 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegis
       </div>
       
       <GoogleSignInButton disabled={loading} />
+      {googleBackendReachable === false && (
+        <p className="auth-google-hint" style={{ marginTop: '8px', fontSize: '0.875rem', color: 'var(--text-gray)' }}>
+          Backend not reachable. Google sign-in may fail. Check that the API is running (e.g. Fly.io or Railway) and that this site&apos;s URL is in CORS.
+        </p>
+      )}
+      {googleRedirectUri && (
+        <details className="auth-google-hint" style={{ marginTop: '8px', fontSize: '0.875rem', textAlign: 'left' }}>
+          <summary style={{ cursor: 'pointer', color: 'var(--text-gray)' }}>Google sign-in not working? Add this redirect URI</summary>
+          <p style={{ marginTop: '6px', marginBottom: '4px', color: 'var(--text-gray)' }}>
+            In Google Cloud Console → APIs &amp; Services → Credentials → your OAuth client → Authorized redirect URIs, add:
+          </p>
+          <code style={{ display: 'block', padding: '8px', background: 'var(--bg-light)', borderRadius: '4px', wordBreak: 'break-all', fontSize: '0.8rem' }}>
+            {googleRedirectUri}
+          </code>
+          <button
+            type="button"
+            className="btn-secondary"
+            style={{ marginTop: '6px', fontSize: '0.8rem' }}
+            onClick={() => navigator.clipboard?.writeText(googleRedirectUri)}
+          >
+            Copy URL
+          </button>
+        </details>
+      )}
       {showVerifyLink && (
         <button
           type="button"

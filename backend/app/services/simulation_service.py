@@ -3,8 +3,8 @@ Digital Twin Simulation Service.
 Sprint: Final Features - Trend-based what-if predictions
 """
 import logging
-from typing import Dict, List, Optional, Any
 from datetime import datetime, timedelta
+from typing import Any, Dict, List, Optional
 
 from sqlalchemy.orm import Session
 

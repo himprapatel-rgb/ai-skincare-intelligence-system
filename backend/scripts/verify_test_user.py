@@ -13,6 +13,7 @@ from app.database import SessionLocal
 from app.models.user import User
 from app.services.auth_service import auth_service
 
+
 def verify_test_user():
     """Verify and update the test user account."""
     db = SessionLocal()

@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { IconStar } from '../components/Icons';
 import { ConfirmModal } from '../components/ConfirmModal';
-import { mockProducts } from '../data/mockProducts';
 import { SkeletonCardGrid } from '../components/Skeleton';
+import { useShelf } from '../context/ShelfContext';
 import './MyShelfPage.css';
 
-interface Product {
+interface DisplayProduct {
   id: string;
   name: string;
   brand: string;
@@ -17,150 +17,131 @@ interface Product {
   notes: string;
   addedDate: string;
   imageUrl?: string;
+  expiryDate?: string;
+  purchaseDate?: string;
+  purchasePrice?: number;
+  wouldRepurchase?: boolean;
 }
-
-const SHELF_STORAGE_KEY = 'shelf_products';
 
 const MyShelfPage: React.FC = () => {
   usePageTitle('My Shelf');
   const navigate = useNavigate();
-  const [products, setProducts] = useState<Product[]>([]);
+  const { 
+    products: shelfProducts, 
+    loading, 
+    totalCount,
+    usingCount,
+    wishlistCount,
+    discontinuedCount,
+    removeFromShelf, 
+    updateProductStatus,
+    updateProduct
+  } = useShelf();
+  
   const [filter, setFilter] = useState<'all' | 'using' | 'wishlist' | 'discontinued'>('all');
   const [searchTerm, setSearchTerm] = useState('');
-  const [loading, setLoading] = useState(true);
   const [confirmRemoveId, setConfirmRemoveId] = useState<string | null>(null);
+  
+  // Task 276: Sorting options
+  const [sortBy, setSortBy] = useState<'recent' | 'name' | 'brand' | 'rating'>('recent');
+  // Task 278: Category filter
+  const [categoryFilter, setCategoryFilter] = useState<string>('all');
 
-  const mergeShelfFromStorage = (list: Product[]): Product[] => {
-    try {
-      const fromStorage = JSON.parse(localStorage.getItem(SHELF_STORAGE_KEY) || '[]');
-      if (!Array.isArray(fromStorage)) return list;
-      const ids = new Set(list.map((p) => p.id));
-      const merged = [...list];
-      fromStorage.forEach((p: Record<string, unknown>) => {
-        const id = String(p.id ?? '');
-        if (!id || ids.has(id)) return;
-        ids.add(id);
-        merged.push({
-          id,
-          name: String(p.name ?? ''),
-          brand: String(p.brand ?? 'Unknown'),
-          category: String(p.category ?? 'General'),
-          rating: Number(p.rating ?? 0),
-          status: (p.status as Product['status']) || 'using',
-          notes: String(p.notes ?? ''),
-          addedDate: String(p.addedDate ?? new Date().toISOString().split('T')[0]),
-          imageUrl: p.imageUrl as string | undefined,
-        });
-      });
-      return merged;
-    } catch {
-      return list;
+  // Transform shelf products to display format
+  const products: DisplayProduct[] = useMemo(() => {
+    return shelfProducts.map(p => ({
+      id: p.id,
+      name: p.product_name,
+      brand: p.product_brand || 'Unknown',
+      category: p.product_category || 'General',
+      rating: p.rating || 0,
+      status: p.status === 'active' ? 'using' as const : 
+              p.status === 'wishlist' ? 'wishlist' as const : 'discontinued' as const,
+      notes: p.notes || '',
+      addedDate: p.created_at ? p.created_at.split('T')[0] : '',
+      imageUrl: p.product_image,
+      expiryDate: p.expiry_date,
+      purchaseDate: p.purchase_date,
+      purchasePrice: p.purchase_price,
+      wouldRepurchase: p.would_repurchase,
+    }));
+  }, [shelfProducts]);
+
+  // Task 278: Get unique categories for filter dropdown
+  const categories = useMemo(() => {
+    const cats = new Set(products.map(p => p.category));
+    return ['all', ...Array.from(cats).sort()];
+  }, [products]);
+
+  const filteredProducts = useMemo(() => {
+    let result = products.filter(product => {
+      const matchesFilter = filter === 'all' || product.status === filter;
+      const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                            product.brand.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesCategory = categoryFilter === 'all' || product.category.toLowerCase() === categoryFilter.toLowerCase();
+      return matchesFilter && matchesSearch && matchesCategory;
+    });
+    
+    // Task 276: Apply sorting
+    switch (sortBy) {
+      case 'name':
+        result = result.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case 'brand':
+        result = result.sort((a, b) => a.brand.localeCompare(b.brand));
+        break;
+      case 'rating':
+        result = result.sort((a, b) => b.rating - a.rating);
+        break;
+      case 'recent':
+      default:
+        result = result.sort((a, b) => 
+          new Date(b.addedDate).getTime() - new Date(a.addedDate).getTime()
+        );
     }
-  };
-
-  useEffect(() => {
-    fetchProducts();
-  }, []);
-
-  const fetchProducts = async () => {
-    try {
-      setLoading(true);
-      const token = localStorage.getItem('token');
-      let list: Product[];
-
-      if (!token) {
-        list = mockProducts;
-      } else {
-        const response = await fetch('/api/v1/shelf', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          if (data.products && data.products.length > 0) {
-            list = data.products.map((p: Record<string, unknown>) => ({
-              id: String(p.id ?? ''),
-              name: String(p.product_name ?? ''),
-              brand: String(p.product_brand ?? 'Unknown'),
-              category: String(p.product_category ?? 'General'),
-              rating: Number(p.rating ?? 0),
-              status: p.status === 'active' ? 'using' : p.status === 'wishlist' ? 'wishlist' : 'discontinued',
-              notes: String(p.notes ?? ''),
-              addedDate: (typeof p.created_at === 'string' ? p.created_at.split('T')[0] : '') || '',
-              imageUrl: p.product_image as string | undefined,
-            }));
-          } else {
-            list = mockProducts;
-          }
-        } else {
-          list = mockProducts;
-        }
-      }
-      setProducts(mergeShelfFromStorage(list));
-    } catch (error) {
-      console.error('Failed to fetch products:', error);
-      setProducts(mergeShelfFromStorage(mockProducts));
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const filteredProducts = products.filter(product => {
-    const matchesFilter = filter === 'all' || product.status === filter;
-    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          product.brand.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesFilter && matchesSearch;
-  });
+    
+    return result;
+  }, [products, filter, searchTerm, categoryFilter, sortBy]);
 
   const handleProductClick = (productId: string) => {
     navigate(`/product/${productId}`);
   };
 
-  const handleUpdateStatus = async (productId: string, newStatus: Product['status']) => {
-    try {
-      const token = localStorage.getItem('token');
-      const apiStatus = newStatus === 'using' ? 'active' : newStatus;
-      
-      await fetch(`/api/v1/shelf/${productId}`, {
-        method: 'PATCH',
-        headers: { 
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ status: apiStatus })
-      });
-      
-      setProducts(prev => prev.map(p => 
-        p.id === productId ? { ...p, status: newStatus } : p
-      ));
-    } catch (error) {
-      console.error('Failed to update status:', error);
-      // Still update UI
-      setProducts(prev => prev.map(p => 
-        p.id === productId ? { ...p, status: newStatus } : p
-      ));
-    }
+  const handleUpdateStatus = async (productId: string, newStatus: DisplayProduct['status']) => {
+    const apiStatus = newStatus === 'using' ? 'active' : newStatus;
+    await updateProductStatus(productId, apiStatus as 'active' | 'wishlist' | 'discontinued');
   };
 
   const handleRemoveProduct = (productId: string) => {
     setConfirmRemoveId(productId);
   };
 
+  const handleRatingChange = async (productId: string, newRating: number) => {
+    await updateProduct(productId, { rating: newRating });
+  };
+
+  const handleWouldRepurchaseToggle = async (productId: string, current: boolean | undefined) => {
+    await updateProduct(productId, { would_repurchase: !current });
+  };
+
+  // Helper to check if expiry is approaching (within 30 days)
+  const isExpiryApproaching = (expiryDate?: string) => {
+    if (!expiryDate) return false;
+    const expiry = new Date(expiryDate);
+    const now = new Date();
+    const thirtyDays = 30 * 24 * 60 * 60 * 1000;
+    return expiry.getTime() - now.getTime() < thirtyDays && expiry.getTime() > now.getTime();
+  };
+
+  const isExpired = (expiryDate?: string) => {
+    if (!expiryDate) return false;
+    return new Date(expiryDate) < new Date();
+  };
+
   const doRemoveProduct = async () => {
     if (!confirmRemoveId) return;
-    try {
-      const token = localStorage.getItem('token');
-      await fetch(`/api/v1/shelf/${confirmRemoveId}`, {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      setProducts(prev => prev.filter(p => p.id !== confirmRemoveId));
-    } catch (error) {
-      console.error('Failed to remove product:', error);
-      setProducts(prev => prev.filter(p => p.id !== confirmRemoveId));
-    } finally {
-      setConfirmRemoveId(null);
-    }
+    await removeFromShelf(confirmRemoveId);
+    setConfirmRemoveId(null);
   };
 
   if (loading) {
@@ -241,37 +222,71 @@ const MyShelfPage: React.FC = () => {
             className={filter === 'all' ? 'active' : ''}
             onClick={() => setFilter('all')}
           >
-            All ({products.length})
+            All ({totalCount})
           </button>
           <button 
             className={filter === 'using' ? 'active' : ''}
             onClick={() => setFilter('using')}
           >
-            Using ({products.filter(p => p.status === 'using').length})
+            Using ({usingCount})
           </button>
           <button 
             className={filter === 'wishlist' ? 'active' : ''}
             onClick={() => setFilter('wishlist')}
           >
-            Wishlist ({products.filter(p => p.status === 'wishlist').length})
+            Wishlist ({wishlistCount})
           </button>
           <button 
             className={filter === 'discontinued' ? 'active' : ''}
             onClick={() => setFilter('discontinued')}
           >
-            Discontinued ({products.filter(p => p.status === 'discontinued').length})
+            Discontinued ({discontinuedCount})
           </button>
         </div>
-        <button className="add-product-btn" onClick={() => navigate('/scan')}>
+        <button className="add-product-btn" onClick={() => navigate('/scanner')}>
           Add Product
         </button>
+      </div>
+
+      {/* Task 276-278: Sort and Category Filter */}
+      <div className="myshelf-filters">
+        <div className="filter-group">
+          <label htmlFor="sort-select">Sort by:</label>
+          <select 
+            id="sort-select"
+            value={sortBy} 
+            onChange={(e) => setSortBy(e.target.value as 'recent' | 'name' | 'brand' | 'rating')}
+            className="filter-select"
+          >
+            <option value="recent">Recently Added</option>
+            <option value="name">Name (A-Z)</option>
+            <option value="brand">Brand (A-Z)</option>
+            <option value="rating">Highest Rated</option>
+          </select>
+        </div>
+        <div className="filter-group">
+          <label htmlFor="category-select">Category:</label>
+          <select 
+            id="category-select"
+            value={categoryFilter} 
+            onChange={(e) => setCategoryFilter(e.target.value)}
+            className="filter-select"
+          >
+            {categories.map(cat => (
+              <option key={cat} value={cat}>
+                {cat === 'all' ? 'All Categories' : cat}
+              </option>
+            ))}
+          </select>
+        </div>
+        <span className="results-count">{filteredProducts.length} products</span>
       </div>
 
       {filteredProducts.length === 0 ? (
         <div className="empty-state">
           <h3>No products on your shelf yet</h3>
           <p>Add products from recommendations or scan a product to build your collection.</p>
-          <button className="btn-primary" onClick={() => navigate('/scan')}>
+          <button className="btn-primary" onClick={() => navigate('/scanner')}>
             Add Your First Product
           </button>
         </div>
@@ -311,18 +326,54 @@ const MyShelfPage: React.FC = () => {
                 <p className="brand">{product.brand}</p>
                 <p className="category">{product.category}</p>
                 
-                <div className="rating">
+                <div className="rating interactive-rating">
                   {Array.from({ length: 5 }).map((_, index) => (
-                    <IconStar
+                    <button
                       key={index}
-                      size={14}
-                      strokeWidth={2}
-                      fill={index < Math.floor(product.rating) ? 'currentColor' : 'none'}
-                      style={{ marginRight: '4px' }}
-                    />
+                      type="button"
+                      className="star-button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleRatingChange(product.id, index + 1);
+                      }}
+                      aria-label={`Rate ${index + 1} stars`}
+                    >
+                      <IconStar
+                        size={16}
+                        strokeWidth={2}
+                        fill={index < Math.floor(product.rating) ? '#f59e0b' : 'none'}
+                        color={index < Math.floor(product.rating) ? '#f59e0b' : '#d1d5db'}
+                      />
+                    </button>
                   ))}
-                  <span>{product.rating}</span>
+                  <span className="rating-value">{product.rating > 0 ? product.rating : '-'}</span>
                 </div>
+                
+                {/* Would Repurchase Toggle */}
+                <div className="repurchase-toggle">
+                  <button
+                    type="button"
+                    className={`repurchase-btn ${product.wouldRepurchase ? 'yes' : ''}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleWouldRepurchaseToggle(product.id, product.wouldRepurchase);
+                    }}
+                  >
+                    {product.wouldRepurchase ? '✓ Would Repurchase' : 'Would Repurchase?'}
+                  </button>
+                </div>
+                
+                {/* Expiry Warning */}
+                {product.expiryDate && (
+                  <div className={`expiry-badge ${isExpired(product.expiryDate) ? 'expired' : isExpiryApproaching(product.expiryDate) ? 'warning' : ''}`}>
+                    {isExpired(product.expiryDate) 
+                      ? '⚠️ Expired' 
+                      : isExpiryApproaching(product.expiryDate)
+                        ? `⏰ Expires ${new Date(product.expiryDate).toLocaleDateString()}`
+                        : `Expires ${new Date(product.expiryDate).toLocaleDateString()}`
+                    }
+                  </div>
+                )}
                 
                 {product.notes && (
                   <p className="notes">{product.notes}</p>
@@ -331,7 +382,7 @@ const MyShelfPage: React.FC = () => {
                 <div className="product-actions">
                   <select 
                     value={product.status}
-                    onChange={(e) => handleUpdateStatus(product.id, e.target.value as Product['status'])}
+                    onChange={(e) => handleUpdateStatus(product.id, e.target.value as DisplayProduct['status'])}
                     className="status-select"
                   >
                     <option value="using">Using</option>

@@ -2,10 +2,11 @@
 """
 Test login endpoint to debug authentication issues.
 """
+import json
 import os
 import sys
+
 import requests
-import json
 
 # Get API URL from environment or use production
 API_URL = os.getenv("API_URL", "https://ai-skincare-intelligence-system-production.up.railway.app/api/v1")

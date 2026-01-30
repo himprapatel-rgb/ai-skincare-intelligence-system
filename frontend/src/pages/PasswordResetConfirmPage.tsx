@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { IconLock, IconCheck, IconAlertCircle } from '../components/Icons';
+import { API_BASE_URL } from '../config';
 import './CommonStyles.css';
 import './PasswordResetPage.css';
 
@@ -44,7 +45,7 @@ const PasswordResetConfirmPage: React.FC = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('/api/v1/auth/password-reset/confirm', {
+      const response = await fetch(`${API_BASE_URL}/auth/password-reset/confirm`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 

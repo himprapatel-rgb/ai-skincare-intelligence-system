@@ -3,6 +3,8 @@
 FastAPI router for product search, recommendations, and ingredient analysis.
 Created: December 13, 2025
 """
+import json
+import re
 from typing import List, Optional
 from uuid import UUID
 
@@ -11,6 +13,7 @@ from sqlalchemy.orm import Session
 
 from app.core.security import get_current_user
 from app.database import get_db
+from app.product_database import get_product_db, ProductSessionLocal
 from app.models.product_models import Ingredient, Product, ProductReview
 from app.models.user import User
 from app.schemas.product_schemas import (
@@ -23,6 +26,12 @@ from app.schemas.product_schemas import (
     ReviewsListResponse,
     SafetyAnalysis,
 )
+from app.services.ingredient_safety import analyze_ingredients_list
+from app.services.ingredient_service import (
+    build_ingredients_snapshot,
+    save_product_ingredients,
+)
+from app.services.product_catalog import ProductCatalogService
 
 router = APIRouter(
     prefix="/api/v1/products",
@@ -287,10 +296,12 @@ async def create_product_review(
     )
 
 
+import logging
+
+import httpx
+
 # ===== Barcode Scanning Endpoint (FR28) =====
 from pydantic import BaseModel
-import httpx
-import logging
 
 logger = logging.getLogger(__name__)
 
@@ -315,7 +326,8 @@ class BarcodeScanResponse(BaseModel):
 @router.post("/scan-barcode", response_model=BarcodeScanResponse)
 async def scan_barcode(
     request: BarcodeScanRequest,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    product_db: Session = Depends(get_product_db)
 ):
     """
     Scan a product barcode and return product information with safety analysis.
@@ -323,11 +335,41 @@ async def scan_barcode(
     SRS: FR28 - Barcode Scanning
     Sprint: GUI-2
     
-    First checks local database, then falls back to OpenBeautyFacts API.
+    Priority order:
+    1. Check Product Catalog (pre-computed data, instant response) - SEPARATE DB
+    2. Check local products table
+    3. Fall back to OpenBeautyFacts API
     """
     barcode = request.barcode.strip()
     
-    # 1. Check local database first
+    # 0. Check Product Catalog FIRST (instant, pre-computed data!)
+    # Uses SEPARATE product database for scalability
+    try:
+        catalog = ProductCatalogService(product_db)
+        catalog_product = catalog.lookup_barcode(barcode)
+        
+        if catalog_product:
+            logger.info(f"Catalog HIT for barcode: {barcode}")
+            return BarcodeScanResponse(
+                found=True,
+                product={
+                    "id": catalog_product["id"],
+                    "name": catalog_product["name"],
+                    "brand": catalog_product["brand"],
+                    "barcode": barcode,
+                    "category": catalog_product["category"],
+                    "image_url": catalog_product.get("image_url"),
+                },
+                safety_rating=catalog_product.get("safety_score", 80),
+                suitability_score=75,
+                ingredients=catalog_product.get("ingredients", []),
+                warnings=[f["name"] for f in (catalog_product.get("flagged_ingredients") or [])[:3]],
+                source="catalog",
+            )
+    except Exception as e:
+        logger.warning(f"Catalog lookup failed: {e}")
+    
+    # 1. Check local database (legacy products table)
     product = db.query(Product).filter(Product.upc == barcode).first()
     
     if product:
@@ -394,15 +436,52 @@ async def scan_barcode(
                                 warnings.append(f"Contains {irritant}")
                                 safety_score -= 10
                     
+                    # Extract product data
+                    product_name = obf_product.get("product_name", "Unknown Product")
+                    brand_name = obf_product.get("brands", "Unknown Brand")
+                    category_name = obf_product.get("categories", "").split(",")[0] if obf_product.get("categories") else "other"
+                    image_url = obf_product.get("image_front_url") or obf_product.get("image_url")
+                    
+                    # AUTO-SAVE: Save to local database for future lookups
+                    saved_product_id = barcode
+                    try:
+                        new_product = Product(
+                            brand=brand_name,
+                            name=product_name,
+                            category=category_name or "other",
+                            upc=barcode,
+                            product_image_url=image_url,
+                            primary_concerns=[],
+                            skin_types=[],
+                        )
+                        db.add(new_product)
+                        db.commit()
+                        db.refresh(new_product)
+                        saved_product_id = str(new_product.id)
+                        logger.info(f"Auto-saved product from barcode: {barcode} - {brand_name} {product_name}")
+                        
+                        # SAVE INGREDIENTS: Persist ingredients to database
+                        if ingredients:
+                            saved_count = save_product_ingredients(
+                                db=db,
+                                product_id=new_product.id,
+                                ingredients=ingredients,
+                                key_ingredients=None  # Barcode scan doesn't get percentages
+                            )
+                            logger.info(f"Saved {saved_count} ingredients for barcode product {barcode}")
+                    except Exception as e:
+                        logger.warning(f"Failed to auto-save barcode product: {e}")
+                        db.rollback()
+                    
                     return BarcodeScanResponse(
                         found=True,
                         product={
-                            "id": barcode,
-                            "name": obf_product.get("product_name", "Unknown Product"),
-                            "brand": obf_product.get("brands", "Unknown Brand"),
+                            "id": saved_product_id,
+                            "name": product_name,
+                            "brand": brand_name,
                             "barcode": barcode,
-                            "category": obf_product.get("categories", "").split(",")[0] if obf_product.get("categories") else None,
-                            "image_url": obf_product.get("image_url"),
+                            "category": category_name,
+                            "image_url": image_url,
                         },
                         safety_rating=max(0, safety_score),
                         suitability_score=70,
@@ -423,3 +502,540 @@ async def scan_barcode(
         warnings=None,
         source="not_found",
     )
+
+
+import base64
+import os
+
+# ===== Product Image Recognition Endpoint (FR28 Enhanced) =====
+import openai
+
+
+class ProductImageRequest(BaseModel):
+    """Request schema for product image recognition."""
+    image_data: str  # Base64 encoded image
+
+
+class KeyIngredient(BaseModel):
+    """Key ingredient with concentration percentage."""
+    name: str
+    percentage: Optional[str] = None  # e.g., "10%", "2%"
+
+
+class FlaggedIngredient(BaseModel):
+    """A flagged harmful/concerning ingredient."""
+    name: str  # Official name (e.g., "Parabens")
+    matched_term: str  # What was matched in the ingredient list
+    severity: str  # "high", "moderate", "low"
+    categories: List[str]  # ["irritant", "allergen", etc.]
+    reason: str  # Why it's flagged
+    alternatives: List[str]  # Safer alternatives
+    avoid_if: List[str]  # Conditions where extra caution needed
+
+
+class SafetyReport(BaseModel):
+    """Comprehensive safety analysis report for a product."""
+    flagged_ingredients: List[FlaggedIngredient]
+    total_flagged: int
+    high_severity_count: int
+    moderate_severity_count: int
+    low_severity_count: int
+    safety_score: int  # 0-100, higher = safer
+    recommendations: List[str]
+    is_pregnancy_safe: bool
+    is_sensitive_skin_safe: bool
+    
+    
+class ProductImageResponse(BaseModel):
+    """Response schema for product image recognition."""
+    found: bool
+    product_name: Optional[str] = None
+    brand: Optional[str] = None
+    category: Optional[str] = None
+    key_ingredients: Optional[List[KeyIngredient]] = None  # Active ingredients with percentages
+    ingredients: Optional[List[str]] = None  # Full ingredient list
+    description: Optional[str] = None
+    confidence: Optional[float] = None
+    matched_product: Optional[dict] = None
+    safety_rating: Optional[int] = None
+    suitability_score: Optional[int] = None
+    warnings: Optional[List[str]] = None
+    safety_report: Optional[SafetyReport] = None  # Detailed safety analysis
+    product_image_url: Optional[str] = None  # Clean product image URL
+    image_source: Optional[str] = None  # Where the image came from
+
+
+async def fetch_clean_product_image(brand: str, product_name: str) -> tuple[Optional[str], Optional[str]]:
+    """
+    Fetch a clean product image with white background from various sources.
+    Priority: 1. Open Beauty Facts (best quality)  2. Open Food Facts  3. None
+    
+    Returns: (image_url, source) tuple
+    """
+    try:
+        async with httpx.AsyncClient(timeout=15.0) as client:
+            search_query = f"{brand} {product_name}".replace(" ", "+")
+            
+            # Try Open Beauty Facts search - prefer high-res images
+            obf_url = f"https://world.openbeautyfacts.org/cgi/search.pl?search_terms={search_query}&search_simple=1&action=process&json=1&page_size=10"
+            response = await client.get(obf_url)
+            
+            if response.status_code == 200:
+                data = response.json()
+                products = data.get("products", [])
+                
+                # Sort by image quality - prefer front images, then large images
+                for product in products:
+                    # Priority: front_url > selected_images > image_url
+                    possible_images = []
+                    
+                    # Check for high-res front image (best quality, usually white bg)
+                    if product.get("image_front_url"):
+                        possible_images.append(product["image_front_url"])
+                    
+                    # Check selected_images for front display
+                    selected = product.get("selected_images", {})
+                    front_display = selected.get("front", {}).get("display", {})
+                    if front_display:
+                        # Get highest resolution available
+                        for lang in ["en", "fr", "de", ""]:
+                            if front_display.get(lang):
+                                possible_images.append(front_display[lang])
+                                break
+                    
+                    # Fallback to regular image
+                    if product.get("image_url"):
+                        possible_images.append(product["image_url"])
+                    
+                    # Try each image URL
+                    for image_url in possible_images:
+                        if not image_url:
+                            continue
+                        try:
+                            # Verify image is accessible and get size
+                            img_check = await client.head(image_url, timeout=5.0)
+                            if img_check.status_code == 200:
+                                # Prefer larger images (better quality)
+                                content_length = img_check.headers.get("content-length", "0")
+                                if int(content_length) > 5000:  # At least 5KB
+                                    return (image_url, "open_beauty_facts")
+                        except:
+                            continue
+            
+            # Try Open Food Facts as fallback
+            off_url = f"https://world.openfoodfacts.org/cgi/search.pl?search_terms={search_query}&search_simple=1&action=process&json=1&page_size=5"
+            response = await client.get(off_url)
+            
+            if response.status_code == 200:
+                data = response.json()
+                products = data.get("products", [])
+                
+                for product in products:
+                    # Prefer front images
+                    image_url = product.get("image_front_url") or product.get("image_url")
+                    if image_url:
+                        try:
+                            img_check = await client.head(image_url, timeout=5.0)
+                            if img_check.status_code == 200:
+                                return (image_url, "open_food_facts")
+                        except:
+                            continue
+                        
+    except Exception as e:
+        logger.warning(f"Failed to fetch product image: {e}")
+    
+    return (None, None)
+
+
+@router.post("/identify-from-image", response_model=ProductImageResponse)
+async def identify_product_from_image(
+    request: ProductImageRequest,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+    product_db: Session = Depends(get_product_db)
+):
+    """
+    Identify a beauty/skincare product from an image using AI vision.
+    
+    SRS: FR28 - Product Scanner (Enhanced with Image Recognition)
+    
+    Uses OpenAI GPT-4 Vision to:
+    1. Identify product name, brand, and category
+    2. Extract visible ingredients if shown
+    3. Match against Product Catalog (SEPARATE DATABASE)
+    4. Provide safety analysis
+    5. Auto-save new products to catalog
+    """
+    try:
+        # Get OpenAI API key
+        openai_key = os.getenv("OPENAI_API_KEY")
+        if not openai_key:
+            logger.error("OPENAI_API_KEY environment variable is not set")
+            raise HTTPException(
+                status_code=503,
+                detail="AI image recognition service not configured. Please contact support."
+            )
+        
+        # Validate key format (should start with sk-)
+        if not openai_key.startswith("sk-"):
+            logger.error("OPENAI_API_KEY appears to be invalid (doesn't start with sk-)")
+            raise HTTPException(
+                status_code=503,
+                detail="AI service configuration error. Please contact support."
+            )
+        
+        # Prepare image data
+        image_data = request.image_data
+        if image_data.startswith("data:"):
+            # Extract base64 part from data URL
+            image_data = image_data.split(",")[1]
+        
+        # Call OpenAI Vision API
+        client = openai.OpenAI(api_key=openai_key)
+        
+        response = client.chat.completions.create(
+            model="gpt-4o",
+            messages=[
+                {
+                    "role": "system",
+                    "content": """You are an expert at identifying beauty and skincare products from photos.
+
+YOUR GOAL: Identify the product even from blurry, angled, or low-quality photos.
+
+IDENTIFICATION STRATEGY:
+1. FIRST: Look for any visible text - brand name, product name, even partial words
+2. SECOND: Recognize the product by its distinctive packaging - color, shape, design, logo
+3. THIRD: Use your extensive knowledge of popular skincare/beauty products to match visual cues
+4. FOURTH: If you see a partial brand name or logo, infer the full brand (e.g., "Cera" -> "CeraVe", "Neutro" -> "Neutrogena")
+
+COMMON BRANDS TO RECOGNIZE BY PACKAGING:
+- CeraVe: Blue/white packaging, minimalist design
+- Neutrogena: Orange/white accents, clean design  
+- The Ordinary: White dropper bottles, minimalist black text
+- La Roche-Posay: White/blue, pharmacy style
+- Olay: Red/white, elegant curves
+- Cetaphil: Green/white, gentle branding
+- Paula's Choice: Teal/white modern design
+- Drunk Elephant: Colorful, playful bottles
+- Tatcha: Purple/gold, Japanese aesthetic
+- Sunday Riley: Colorful, luxury feel
+- Kiehl's: Apothecary brown bottles
+
+BE CONFIDENT: Even if the image is blurry, make your best educated guess based on:
+- Partial text you can read
+- Package shape and color
+- Brand design patterns you recognize
+- Common products that match the visual
+
+Extract:
+1. Product name (your best guess, even if partially visible)
+2. Brand name (infer from logo/colors if text unclear)
+3. Category (cleanser, moisturizer, serum, sunscreen, toner, mask, exfoliant, eye cream, lip care, body care, hair care, other)
+4. Key ingredients with percentages if shown
+5. Full ingredient list if visible
+6. Size if visible
+
+Respond in JSON format:
+{
+    "product_name": "string",
+    "brand": "string", 
+    "category": "string",
+    "key_ingredients": [{"name": "Niacinamide", "percentage": "10%"}] or null,
+    "ingredients": ["Water", "Glycerin", ...] or null,
+    "size": "string or null",
+    "description": "brief description",
+    "confidence": 0.0-1.0
+}
+
+IMPORTANT: 
+- Set confidence 0.5-0.7 if you're guessing based on partial info
+- Set confidence 0.8-1.0 if you clearly read the product info
+- ONLY return null if you truly cannot identify ANY product (just a random object)
+- Always try to provide product_name and brand - guess if needed!"""
+                },
+                {
+                    "role": "user",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Identify this skincare/beauty product. It may be blurry or at an angle - use your knowledge to recognize the brand and product from any visible text, colors, packaging shape, or logo design."
+                        },
+                        {
+                            "type": "image_url",
+                            "image_url": {
+                                "url": f"data:image/jpeg;base64,{image_data}",
+                                "detail": "auto"  # Let AI choose detail level for flexibility
+                            }
+                        }
+                    ]
+                }
+            ],
+            max_tokens=1000,
+            temperature=0.3  # Slightly higher to allow educated guessing
+        )
+        
+        # Parse AI response
+        ai_text = response.choices[0].message.content
+        
+        # Extract JSON from response
+        # Try to find JSON in the response
+        json_match = re.search(r'\{[\s\S]*\}', ai_text)
+        if not json_match:
+            logger.warning(f"Could not parse AI response: {ai_text}")
+            return ProductImageResponse(found=False)
+        
+        ai_result = json.loads(json_match.group())
+        
+        if not ai_result.get("product_name"):
+            return ProductImageResponse(found=False)
+        
+        product_name = ai_result.get("product_name")
+        brand = ai_result.get("brand")
+        category = ai_result.get("category")
+        ingredients = ai_result.get("ingredients") or []
+        confidence = ai_result.get("confidence", 0.8)
+        
+        # Extract key ingredients with percentages
+        key_ingredients_raw = ai_result.get("key_ingredients") or []
+        key_ingredients = []
+        for ki in key_ingredients_raw:
+            if isinstance(ki, dict):
+                key_ingredients.append(KeyIngredient(
+                    name=ki.get("name", ""),
+                    percentage=ki.get("percentage")
+                ))
+            elif isinstance(ki, str):
+                # Handle simple string format like "Niacinamide 10%"
+                key_ingredients.append(KeyIngredient(name=ki))
+        
+        # Try to find matching product in database
+        matched_product = None
+        product_image_url = None
+        image_source = None
+        
+        if product_name and brand:
+            # CATALOG FIRST: Check Product Catalog for pre-computed data
+            # Uses SEPARATE product database for scalability
+            try:
+                catalog = ProductCatalogService(product_db)
+                catalog_product = catalog.lookup_by_name_brand(product_name, brand)
+                
+                if catalog_product:
+                    logger.info(f"Catalog HIT for AI-identified product: {brand} - {product_name}")
+                    # Use catalog data with pre-computed safety!
+                    return ProductImageResponse(
+                        found=True,
+                        product_name=catalog_product["name"],
+                        brand=catalog_product["brand"],
+                        category=catalog_product["category"],
+                        key_ingredients=[KeyIngredient(**ki) for ki in (catalog_product.get("key_ingredients") or [])],
+                        ingredients=catalog_product.get("ingredients", []),
+                        description=catalog_product.get("description"),
+                        confidence=confidence,
+                        matched_product={
+                            "id": catalog_product["id"],
+                            "name": catalog_product["name"],
+                            "brand": catalog_product["brand"],
+                            "category": catalog_product["category"],
+                            "image_url": catalog_product.get("image_url"),
+                        },
+                        safety_rating=catalog_product.get("safety_score", 80),
+                        suitability_score=75,
+                        warnings=None,
+                        safety_report=SafetyReport(
+                            flagged_ingredients=[FlaggedIngredient(**f) for f in (catalog_product.get("flagged_ingredients") or [])],
+                            total_flagged=len(catalog_product.get("flagged_ingredients") or []),
+                            high_severity_count=0,
+                            moderate_severity_count=0,
+                            low_severity_count=0,
+                            safety_score=catalog_product.get("safety_score", 80),
+                            recommendations=[],
+                            is_pregnancy_safe=catalog_product.get("pregnancy_safe", True),
+                            is_sensitive_skin_safe=catalog_product.get("sensitive_skin_safe", True),
+                        ) if catalog_product.get("safety_score") else None,
+                        product_image_url=catalog_product.get("image_url"),
+                        image_source="catalog"
+                    )
+            except Exception as e:
+                logger.warning(f"Catalog lookup failed for AI product: {e}")
+            
+            # Fall back to local products database
+            db_product = db.query(Product).filter(
+                Product.name.ilike(f"%{product_name}%"),
+                Product.brand.ilike(f"%{brand}%")
+            ).first()
+            
+            if db_product:
+                matched_product = {
+                    "id": str(db_product.id),
+                    "name": db_product.name,
+                    "brand": db_product.brand,
+                    "category": db_product.category,
+                    "image_url": db_product.product_image_url,
+                }
+                if db_product.product_image_url:
+                    product_image_url = db_product.product_image_url
+                    image_source = "database"
+        
+        # If no image found in database, search online for a clean product image
+        if not product_image_url and brand and product_name:
+            fetched_image, fetched_source = await fetch_clean_product_image(brand, product_name)
+            if fetched_image:
+                product_image_url = fetched_image
+                image_source = fetched_source or "online"
+        
+        # AUTO-SAVE: If product not in database and confidence is high, save it
+        if not matched_product and product_name and brand and confidence >= 0.7:
+            try:
+                # Save to legacy products table
+                new_product = Product(
+                    brand=brand,
+                    name=product_name,
+                    category=category or "other",
+                    product_image_url=product_image_url,
+                    primary_concerns=[],
+                    skin_types=[],
+                )
+                db.add(new_product)
+                db.commit()
+                db.refresh(new_product)
+                
+                matched_product = {
+                    "id": str(new_product.id),
+                    "name": new_product.name,
+                    "brand": new_product.brand,
+                    "category": new_product.category,
+                    "image_url": new_product.product_image_url,
+                }
+                logger.info(f"Auto-saved new product: {brand} - {product_name}")
+                
+                # ALSO ADD TO CATALOG: Save to Product Catalog (SEPARATE DATABASE)
+                # This enables fast lookups for future scans
+                try:
+                    catalog = ProductCatalogService(product_db)
+                    key_ing_dicts_for_catalog = [
+                        {"name": ki.name, "percentage": ki.percentage}
+                        for ki in key_ingredients
+                    ] if key_ingredients else None
+                    
+                    catalog.add_from_scan(
+                        name=product_name,
+                        brand=brand,
+                        category=category or "other",
+                        ingredients=ingredients,
+                        key_ingredients=key_ing_dicts_for_catalog,
+                        image_url=product_image_url,
+                        source="ai_scan"
+                    )
+                    logger.info(f"Added to Product Catalog DB: {brand} - {product_name}")
+                except Exception as catalog_err:
+                    logger.warning(f"Failed to add to product catalog: {catalog_err}")
+                
+                # SAVE INGREDIENTS: Persist ingredients to database with percentages
+                if ingredients:
+                    # Convert key_ingredients to dict format for saving
+                    key_ing_dicts = [
+                        {"name": ki.name, "percentage": ki.percentage}
+                        for ki in key_ingredients
+                    ] if key_ingredients else None
+                    
+                    saved_count = save_product_ingredients(
+                        db=db,
+                        product_id=new_product.id,
+                        ingredients=ingredients,
+                        key_ingredients=key_ing_dicts
+                    )
+                    logger.info(f"Saved {saved_count} ingredients for AI-identified product")
+            except Exception as e:
+                logger.warning(f"Failed to auto-save product: {e}")
+                db.rollback()
+        
+        # Comprehensive safety analysis using ingredient safety database
+        all_ingredients_to_analyze = ingredients.copy()
+        # Also analyze key ingredients
+        for ki in key_ingredients:
+            if ki.name not in all_ingredients_to_analyze:
+                all_ingredients_to_analyze.append(ki.name)
+        
+        safety_analysis = analyze_ingredients_list(all_ingredients_to_analyze)
+        
+        # Build safety report
+        safety_report = SafetyReport(
+            flagged_ingredients=[
+                FlaggedIngredient(
+                    name=f["name"],
+                    matched_term=f["matched_term"],
+                    severity=f["severity"],
+                    categories=f["categories"],
+                    reason=f["reason"],
+                    alternatives=f["alternatives"],
+                    avoid_if=f["avoid_if"]
+                )
+                for f in safety_analysis["flagged_ingredients"]
+            ],
+            total_flagged=safety_analysis["total_flagged"],
+            high_severity_count=safety_analysis["high_severity_count"],
+            moderate_severity_count=safety_analysis["moderate_severity_count"],
+            low_severity_count=safety_analysis["low_severity_count"],
+            safety_score=safety_analysis["safety_score"],
+            recommendations=safety_analysis["recommendations"],
+            is_pregnancy_safe=safety_analysis["is_pregnancy_safe"],
+            is_sensitive_skin_safe=safety_analysis["is_sensitive_skin_safe"]
+        )
+        
+        # Generate simple warnings from flagged ingredients
+        warnings = []
+        for flagged in safety_analysis["flagged_ingredients"]:
+            if flagged["severity"] == "high":
+                warnings.append(f"⚠️ {flagged['name']}: {flagged['reason']}")
+            elif flagged["severity"] == "moderate":
+                warnings.append(f"⚡ {flagged['name']}: {flagged['reason']}")
+        
+        return ProductImageResponse(
+            found=True,
+            product_name=product_name,
+            brand=brand,
+            category=category,
+            key_ingredients=key_ingredients if key_ingredients else None,
+            ingredients=ingredients[:15],  # Limit to 15 ingredients
+            description=ai_result.get("description"),
+            confidence=confidence,
+            matched_product=matched_product,
+            safety_rating=safety_analysis["safety_score"],
+            suitability_score=75,  # TODO: Calculate based on user skin profile
+            warnings=warnings if warnings else None,
+            safety_report=safety_report,
+            product_image_url=product_image_url,
+            image_source=image_source
+        )
+        
+    except openai.AuthenticationError as e:
+        logger.error(f"OpenAI authentication error: {e}")
+        raise HTTPException(
+            status_code=503,
+            detail="AI service authentication failed. Please check API key configuration."
+        )
+    except openai.RateLimitError as e:
+        logger.error(f"OpenAI rate limit: {e}")
+        raise HTTPException(
+            status_code=429,
+            detail="AI service is busy. Please try again in a moment."
+        )
+    except openai.APIError as e:
+        logger.error(f"OpenAI API error: {e}")
+        raise HTTPException(
+            status_code=503,
+            detail="AI service temporarily unavailable. Please try again later."
+        )
+    except json.JSONDecodeError as e:
+        logger.error(f"JSON parse error from AI response: {e}")
+        return ProductImageResponse(found=False)
+    except HTTPException:
+        # Re-raise HTTP exceptions without wrapping
+        raise
+    except Exception as e:
+        logger.error(f"Product identification error: {type(e).__name__}: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to identify product. Please try again with a clearer image."
+        )

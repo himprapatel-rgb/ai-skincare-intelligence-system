@@ -3,11 +3,11 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { API_BASE_URL } from '../config';
 import './EmailVerificationPage.css';
 
 type VerificationState = 'idle' | 'verifying' | 'verified' | 'error' | 'sent';
-
-const API_URL = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
+const API_URL = API_BASE_URL;
 
 export const EmailVerificationPage: React.FC = () => {
   usePageTitle('Verify Email');

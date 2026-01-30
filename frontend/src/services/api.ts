@@ -1,7 +1,6 @@
 import axios, { AxiosInstance, AxiosError } from 'axios';
 import { ApiError } from '../types/scan';
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
+import { API_BASE_URL } from '../config';
 
 const MAX_RETRIES = 3;
 const INITIAL_DELAY_MS = 1000;
@@ -58,7 +57,18 @@ class ApiClient {
           return this.client.request(config);
         }
         const status = error.response?.status || 500;
-        let detail = error.response?.data?.detail || error.message || 'An unexpected error occurred';
+        const rawDetail = error.response?.data?.detail;
+        let detail: string;
+        if (typeof rawDetail === 'string' && rawDetail.trim()) {
+          detail = rawDetail;
+        } else if (Array.isArray(rawDetail) && rawDetail.length > 0) {
+          const first = rawDetail[0];
+          detail = typeof first === 'object' && first !== null && 'msg' in first
+            ? String((first as { msg: unknown }).msg)
+            : String(first);
+        } else {
+          detail = error.message || 'An unexpected error occurred';
+        }
         if (status === 429) {
           detail = 'Too many requests. Please try again in a few minutes.';
         } else if (status === 401) {

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { IconDownload, IconCheckCircle, IconFileText, IconArrowLeft } from '../components/Icons';
+import { API_BASE_URL } from '../config';
 import './CommonStyles.css';
 import './DataExportPage.css';
 
@@ -21,9 +22,8 @@ const DataExportPage: React.FC = () => {
     setExportComplete(false);
     
     try {
-      const API_BASE = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
       const token = localStorage.getItem('auth_token');
-      const response = await fetch(`${API_BASE}/profile/export`, {
+      const response = await fetch(`${API_BASE_URL}/profile/export`, {
         headers: {
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },

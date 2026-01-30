@@ -3,13 +3,14 @@
 Quick test script to verify SMTP email configuration.
 Run with: python test_email.py your_email@example.com
 """
-import sys
 import os
+import sys
 
 # Add the app to path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from app.config import settings
+
 
 def test_smtp_config():
     """Check if SMTP is configured."""

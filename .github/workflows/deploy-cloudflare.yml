@@ -1,0 +1,51 @@
+name: Deploy Frontend to Production
+
+# PRODUCTION DEPLOYS REQUIRE MANUAL APPROVAL
+# Only runs when manually triggered from GitHub Actions UI
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type "deploy" to confirm production deployment'
+        required: true
+        type: string
+
+jobs:
+  deploy:
+    name: Deploy to Cloudflare Pages Production
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.confirm == 'deploy' }}
+    defaults:
+      run:
+        working-directory: ./frontend
+    
+    steps:
+      - name: Confirm deployment
+        run: echo "🚀 Deploying to PRODUCTION with approval..."
+      
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build frontend
+        run: npm run build
+        env:
+          VITE_API_URL: https://pellicura-api.fly.dev/api/v1
+          VITE_GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+      
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=pellicura --commit-dirty=true
+          workingDirectory: frontend

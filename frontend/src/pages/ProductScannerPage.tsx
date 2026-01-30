@@ -766,45 +766,96 @@ const ProductScannerPage: React.FC = () => {
           </div>
         )}
 
-        {/* Photo Mode */}
+        {/* Photo Mode - Enhanced (Tasks 101-150) */}
         {scanMode === 'photo' && !scannedProduct && !processing && (
           <div className="scanner-section">
             <div className="scanner-card photo-mode">
               <h2>Take Product Photo</h2>
               <p>Take a clear photo of the product packaging or label</p>
               
-              <div className="photo-upload-area">
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileChange}
-                  id="product-photo-input"
-                  style={{ position: 'absolute', opacity: 0, width: '1px', height: '1px' }}
-                />
-                <label htmlFor="product-photo-input" className="upload-label" style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                  <IconUpload size={48} strokeWidth={1.5} />
-                  <span className="upload-text">Click to upload photo</span>
-                  <span className="upload-hint">For best results, capture the full product label</span>
-                </label>
-                <button 
-                  type="button"
-                  onClick={() => fileInputRef.current?.click()}
-                  className="btn-primary"
-                  style={{ 
-                    marginTop: '16px', 
-                    padding: '12px 24px', 
-                    fontSize: '1rem',
-                    backgroundColor: '#3b82f6',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '8px',
-                    cursor: 'pointer',
-                    fontWeight: '600'
-                  }}
-                >
-                  Choose File
-                </button>
+              {/* Task 101-103: Photo capture options */}
+              <div className="photo-capture-options">
+                {/* Option 1: Use device camera directly */}
+                <div className="capture-option">
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    capture="environment"
+                    onChange={handleFileChange}
+                    id="product-camera-input"
+                    style={{ display: 'none' }}
+                  />
+                  <button 
+                    type="button"
+                    onClick={() => {
+                      // Set capture attribute for mobile cameras
+                      if (fileInputRef.current) {
+                        fileInputRef.current.setAttribute('capture', 'environment');
+                        fileInputRef.current.click();
+                      }
+                    }}
+                    className="btn-primary capture-btn"
+                  >
+                    <IconCamera size={24} />
+                    <span>Take Photo</span>
+                    <span className="btn-hint">Opens your camera</span>
+                  </button>
+                </div>
+                
+                {/* Divider */}
+                <div className="capture-divider">
+                  <span>or</span>
+                </div>
+                
+                {/* Option 2: Upload from gallery */}
+                <div className="capture-option">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    id="product-gallery-input"
+                    style={{ display: 'none' }}
+                  />
+                  <button 
+                    type="button"
+                    onClick={() => {
+                      const input = document.getElementById('product-gallery-input') as HTMLInputElement;
+                      if (input) {
+                        input.removeAttribute('capture');
+                        input.click();
+                      }
+                    }}
+                    className="btn-secondary upload-btn"
+                  >
+                    <IconUpload size={24} />
+                    <span>Upload Photo</span>
+                    <span className="btn-hint">From gallery or files</span>
+                  </button>
+                </div>
+              </div>
+              
+              {/* Task 127: Drag and drop zone */}
+              <div 
+                className="photo-drop-zone"
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  e.currentTarget.classList.add('drag-over');
+                }}
+                onDragLeave={(e) => {
+                  e.currentTarget.classList.remove('drag-over');
+                }}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  e.currentTarget.classList.remove('drag-over');
+                  const file = e.dataTransfer.files[0];
+                  if (file && file.type.startsWith('image/')) {
+                    handlePhotoCapture(file);
+                  }
+                }}
+              >
+                <IconUpload size={32} strokeWidth={1.5} className="drop-icon" />
+                <span>Drag & drop an image here</span>
               </div>
               
               <div className="photo-tips">

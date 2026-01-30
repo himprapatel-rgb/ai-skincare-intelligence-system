@@ -1,0 +1,64 @@
+# One-time: Add CNAME records in Cloudflare so pellicura.com points to Railway frontend.
+# Run manually from GitHub Actions tab.
+name: Set Cloudflare DNS for Railway
+
+on:
+  workflow_dispatch:
+
+jobs:
+  set-dns:
+    name: Add CNAME records for pellicura.com
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Zone ID for pellicura.com
+        id: zone
+        run: |
+          resp=$(curl -s -X GET "https://api.cloudflare.com/client/v4/zones?name=pellicura.com" \
+            -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
+            -H "Content-Type: application/json")
+          zone_id=$(echo "$resp" | jq -r '.result[0].id')
+          if [ "$zone_id" = "null" ] || [ -z "$zone_id" ]; then
+            echo "::error::Could not find zone for pellicura.com. Check CLOUDFLARE_API_TOKEN and domain."
+            exit 1
+          fi
+          echo "zone_id=$zone_id" >> $GITHUB_OUTPUT
+          echo "Found Zone ID: $zone_id"
+
+      - name: Remove existing @ and www records (if any)
+        run: |
+          zone="${{ steps.zone.outputs.zone_id }}"
+          token="${{ secrets.CLOUDFLARE_API_TOKEN }}"
+          for name in "pellicura.com" "www.pellicura.com"; do
+            ids=$(curl -s "https://api.cloudflare.com/client/v4/zones/$zone/dns_records?name=$name" \
+              -H "Authorization: Bearer $token" | jq -r '.result[].id')
+            for id in $ids; do
+              [ -n "$id" ] && curl -s -X DELETE "https://api.cloudflare.com/client/v4/zones/$zone/dns_records/$id" \
+                -H "Authorization: Bearer $token" | jq '.success'
+            done
+          done
+
+      - name: Add CNAME @ (root) → j62m06la.up.railway.app
+        run: |
+          curl -s -X POST "https://api.cloudflare.com/client/v4/zones/${{ steps.zone.outputs.zone_id }}/dns_records" \
+            -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            --data '{
+              "type": "CNAME",
+              "name": "@",
+              "content": "j62m06la.up.railway.app",
+              "ttl": 1,
+              "proxied": true
+            }' | jq '.success, .errors, .result'
+
+      - name: Add CNAME www → fcqgs166.up.railway.app
+        run: |
+          curl -s -X POST "https://api.cloudflare.com/client/v4/zones/${{ steps.zone.outputs.zone_id }}/dns_records" \
+            -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            --data '{
+              "type": "CNAME",
+              "name": "www",
+              "content": "fcqgs166.up.railway.app",
+              "ttl": 1,
+              "proxied": true
+            }' | jq '.success, .errors, .result'

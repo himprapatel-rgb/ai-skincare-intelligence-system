@@ -401,6 +401,23 @@ class GoogleAuthRequest(BaseModel):
     code: str
 
 
+class GoogleRedirectUriResponse(BaseModel):
+    """Public config so frontend can show the exact redirect URI for Google Console."""
+    redirect_uri: str
+
+
+@router.get(
+    "/google/redirect-uri",
+    response_model=GoogleRedirectUriResponse,
+    summary="Google OAuth redirect URI",
+    description="Returns the redirect URI this backend uses for Google OAuth. Add this exact URL to Authorized redirect URIs in Google Cloud Console.",
+)
+def google_redirect_uri():
+    """Return the redirect URI the backend sends to Google (for config verification)."""
+    base = (settings.FRONTEND_URL or "").rstrip("/")
+    return GoogleRedirectUriResponse(redirect_uri=f"{base}/auth/google/callback")
+
+
 @router.post(
     "/google",
     response_model=AuthResponse,

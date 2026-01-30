@@ -20,6 +20,7 @@ const GoogleCallbackPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [processing, setProcessing] = useState(true);
   const [slowMessage, setSlowMessage] = useState(false);
+  const [backendRedirectUri, setBackendRedirectUri] = useState<string | null>(null);
 
   useEffect(() => {
     const code = searchParams.get('code');
@@ -100,6 +101,18 @@ const GoogleCallbackPage: React.FC = () => {
     };
   }, [searchParams, navigate, loginWithToken]);
 
+  // When showing an error, fetch the backend's redirect URI so the user can add it to Google Console
+  useEffect(() => {
+    if (!error) return;
+    let cancelled = false;
+    api.get<{ redirect_uri: string }>('/auth/google/redirect-uri', { timeout: 5000 })
+      .then((res) => {
+        if (!cancelled && res.data?.redirect_uri) setBackendRedirectUri(res.data.redirect_uri);
+      })
+      .catch(() => { /* ignore */ });
+    return () => { cancelled = true; };
+  }, [error]);
+
   if (processing && !error) {
     return (
       <div className="google-callback-page">
@@ -128,7 +141,25 @@ const GoogleCallbackPage: React.FC = () => {
           <div className="error-icon">✕</div>
           <h2>Sign-in Failed</h2>
           <p>{error}</p>
-          <button onClick={() => navigate('/auth')} className="btn-primary">
+          {backendRedirectUri && (
+            <div className="callback-redirect-hint" style={{ marginTop: '1rem', textAlign: 'left' }}>
+              <strong>Add this URL to Authorized redirect URIs in Google Cloud Console:</strong>
+              <code style={{ display: 'block', marginTop: '0.5rem', padding: '0.5rem', background: '#f5f5f5', borderRadius: 4, wordBreak: 'break-all' }}>
+                {backendRedirectUri}
+              </code>
+              <button
+                type="button"
+                className="btn-secondary"
+                style={{ marginTop: '0.5rem' }}
+                onClick={() => {
+                  navigator.clipboard?.writeText(backendRedirectUri);
+                }}
+              >
+                Copy URL
+              </button>
+            </div>
+          )}
+          <button onClick={() => navigate('/auth')} className="btn-primary" style={{ marginTop: '1rem' }}>
             Back to Sign In
           </button>
         </div>

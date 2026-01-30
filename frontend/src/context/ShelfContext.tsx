@@ -5,7 +5,8 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
 import { useAuth } from './AuthContext';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
+import { API_BASE_URL } from '../config';
+const API_BASE = API_BASE_URL;
 
 // Ingredient with optional percentage
 export interface KeyIngredient {

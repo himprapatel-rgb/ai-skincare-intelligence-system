@@ -5,7 +5,8 @@
  * Provides fast lookups, search, and filtering capabilities.
  */
 
-const API_BASE = import.meta.env.VITE_API_URL || 'https://pellicura-api.fly.dev/api/v1';
+import { API_BASE_URL } from '../config';
+const API_BASE = API_BASE_URL;
 
 export interface CatalogProduct {
   id: string;

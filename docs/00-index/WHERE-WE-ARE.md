@@ -1,6 +1,6 @@
 # Where We Are – Project Status
 
-**Last Updated:** January 27, 2026
+**Last Updated:** January 26, 2026
 
 ---
 
@@ -13,8 +13,8 @@
 | **Staging (Fly.io + Cloudflare)** | ✅ Live | `develop` → auto-deploy |
 | **Production (Fly.io + Cloudflare)** | ✅ Live | `main` → manual deploy |
 | **Database** | ✅ Railway PostgreSQL | Main DB; product catalog can use same or second DB |
-| **Railway deployment** | 📄 Documented | Backend + product DB deploy guide added |
-| **Google Sign-In** | ⚠️ Needs secrets | Set `GOOGLE_CLIENT_ID` (GitHub + Fly.io) and `GOOGLE_CLIENT_SECRET` (Fly.io) |
+| **Railway deployment** | 📄 Documented | Backend + product DB deploy; **two-DB checklist:** [Railway-Two-Databases-Setup.md](../05-deployment/Railway-Two-Databases-Setup.md) |
+| **Google Sign-In** | 📄 Setup guide | Code in place; set secrets per [Google-SSO-Setup.md](../05-deployment/Google-SSO-Setup.md) |
 
 ---
 
@@ -54,27 +54,36 @@
 
 ---
 
-## 4. Just done (next)
+## 4. Just done
 
-- **Scanner UX:** "Checking catalog..." during barcode/photo lookup; "From catalog" badge when result is from product catalog (Tasks 426–430).
+- **Railway two databases:** `PRODUCT_DATABASE_URL` set on backend (ai-skincare-intelligence-system) → Postgres-rvCO. Main DB (**Postgres**) + product catalog DB (**Postgres-rvCO**) both wired; backend redeployed. Extra Postgres (Postgres-UWpR, Postgres-iS8Z) can be deleted in Railway dashboard if unused.
+- **Product DB empty:** If the product DB had no tables, run once: `cd backend && python scripts/create_catalog_tables.py` with `PRODUCT_DATABASE_URL` set to Postgres-rvCO URL. See [Railway-Two-Databases-Setup.md](../05-deployment/Railway-Two-Databases-Setup.md) “If the product database is empty”.
+- **Frontend:** Single API base in `frontend/src/config.ts`; all pages use it. Relative fetch URLs fixed (notifications, auth, goals); auth token key unified to `auth_token`.
+- **Scanner UX:** "Checking catalog..." during barcode/photo lookup; "From catalog" badge when result is from product catalog.
 
-## 5. Still To Do (your side)
+## 5. What’s next (pick any)
 
-1. **Google Sign-In (if you want it):**
-   - GitHub Secrets: `GOOGLE_CLIENT_ID`
-   - Fly.io (staging/production): `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`
-   - See `docs/05-deployment/Required-Secrets.md`
+| Priority | Action | Why |
+|----------|--------|-----|
+| **1** | **Verify both DBs** | Confirm health shows both DBs ok after redeploy. Run: `python backend/scripts/verify_two_databases.py --url https://ai-skincare-intelligence-system-production.up.railway.app` |
+| **2** | **Seed product catalog** | Populate the product DB with real data so barcode/photo lookups return catalog results. Run OBF importer (see below). |
+| **3** | **Google Sign-In** | If you want Google login: set `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` on Fly.io (and GitHub Secrets for staging builds). |
+| **4** | **Fly.io two DBs (optional)** | Staging/production on Fly.io can also use two DBs: set `PRODUCT_DATABASE_URL` there to a second Postgres if you want catalog separate on Fly too. |
+| **5** | **Deploy latest to production** | If Railway production was built from an older branch, merge and redeploy so `/api/health` shows `checks.main_database` and `checks.product_database`. |
 
-2. **Product catalog on live envs:**
-   - On Fly.io: either leave `PRODUCT_DATABASE_URL` unset (use main DB) or set it to a second Postgres URL.
-   - On Railway: follow `Railway-Product-Database-Deploy.md` (Option A or B).
+## 6. Still To Do (your side)
 
-3. **Optional:** Run OBF import to fill catalog:  
-   `PRODUCT_DATABASE_URL=$DATABASE_URL python backend/scripts/import_obf_catalog.py --source api --limit 1000`
+1. **Google Sign-In:** Code is in place. Set secrets per [Google-SSO-Setup.md](../05-deployment/Google-SSO-Setup.md) (GitHub: `GOOGLE_CLIENT_ID`; Fly.io: `GOOGLE_CLIENT_ID` + `GOOGLE_CLIENT_SECRET` for staging and production).
+
+2. **Product catalog on live envs:** Railway two-DB is done. On Fly.io, set `PRODUCT_DATABASE_URL` if you want a separate catalog there too.
+
+3. **Optional – seed product catalog (Railway):**  
+   From your machine (with `PRODUCT_DATABASE_URL` from Railway or same as product DB):  
+   `cd backend && python scripts/import_obf_catalog.py --source api --limit 1000`
 
 ---
 
-## 6. Key Files
+## 7. Key Files
 
 | Purpose | Path |
 |---------|------|

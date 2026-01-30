@@ -137,7 +137,7 @@ const DigitalTwinTimelinePage: React.FC = () => {
       <text x="50%" y="560" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="20" fill="#6b7c93">Snapshot image unavailable</text>
     </svg>`
   )}`;
-  const apiBase = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
+  const apiBase = API_BASE_URL;
   const apiOrigin = apiBase.replace(/\/api\/v1\/?$/, '');
   const getSafeImageUrl = (url?: string) => {
     if (!url || url.trim().length === 0) {

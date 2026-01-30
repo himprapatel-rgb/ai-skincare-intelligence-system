@@ -41,8 +41,7 @@ interface AuthContextType {
 // Create context
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// API base URL
-const API_URL = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
+import { API_BASE_URL } from '../config';
 
 // Provider component
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -75,7 +74,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const login = async (email: string, password: string): Promise<void> => {
     try {
-      const response = await axios.post(`${API_URL}/auth/login`, { email, password });
+      const response = await axios.post(`${API_BASE_URL}/auth/login`, { email, password });
       const { token: newToken, user: userData } = response.data;
       localStorage.setItem('auth_token', newToken);
       axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
@@ -95,7 +94,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const register = async (name: string, email: string, password: string): Promise<AuthResponse> => {
-    const response = await axios.post(`${API_URL}/auth/register`, {
+    const response = await axios.post(`${API_BASE_URL}/auth/register`, {
       full_name: name,
       email,
       password,

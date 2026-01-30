@@ -8,7 +8,8 @@ import { usePageTitle } from '../hooks/usePageTitle';
 import { useShelf } from '../context/ShelfContext';
 import './ProductDetailsPage.css';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
+import { API_BASE_URL } from '../config';
+const API_BASE = API_BASE_URL;
 
 interface ProductDetails {
   id: string;
@@ -161,6 +162,7 @@ const ProductDetailsPage: React.FC = () => {
   const [reviewError, setReviewError] = useState('');
   const [imageZoomed, setImageZoomed] = useState(false);
   const [compareIds, setCompareIds] = useState<string[]>(() => getCompareIds());
+  const [fromCatalog, setFromCatalog] = useState(false);
 
   const handleAddToCompare = () => {
     if (!product?.id) return;
@@ -172,6 +174,7 @@ const ProductDetailsPage: React.FC = () => {
     
     try {
       setLoading(true);
+      setFromCatalog(false);
       
       // First, check if product is on user's shelf
       const shelfProduct = shelfProducts.find(p => 
@@ -206,6 +209,13 @@ const ProductDetailsPage: React.FC = () => {
           brand: productData.brand,
           imageUrl: productData.imageUrl,
         });
+        // Check if this product exists in catalog (for "From catalog" badge)
+        try {
+          const catRes = await fetch(`${API_BASE}/catalog/product/${id}`);
+          if (catRes.ok) setFromCatalog(true);
+        } catch {
+          setFromCatalog(false);
+        }
       } else {
         // Try to fetch from products API
         try {
@@ -238,6 +248,12 @@ const ProductDetailsPage: React.FC = () => {
               brand: productData.brand,
               imageUrl: productData.imageUrl,
             });
+            try {
+              const catRes = await fetch(`${API_BASE}/catalog/product/${id}`);
+              if (catRes.ok) setFromCatalog(true);
+            } catch {
+              setFromCatalog(false);
+            }
           } else {
             // Product not found - show basic info
             setProduct({
@@ -423,8 +439,15 @@ const ProductDetailsPage: React.FC = () => {
         
         <div className="product-info-section">
           <h1>{product.name}</h1>
-          <p className="brand">{product.brand}</p>
-          <p className="category">{product.category}</p>
+          <div className="product-meta-row">
+            <p className="brand">{product.brand}</p>
+            <p className="category">{product.category}</p>
+            {fromCatalog && (
+              <span className="from-catalog-badge" title="This product is in our verified catalog">
+                From catalog
+              </span>
+            )}
+          </div>
           
           {/* Only show rating if we have real data */}
           {product.rating !== undefined && product.rating > 0 && (

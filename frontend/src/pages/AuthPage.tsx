@@ -5,6 +5,7 @@ import { LoginForm } from '../components/LoginForm';
 import { RegisterForm } from '../components/RegisterForm';
 import { IconCamera, IconSparkles, IconBarChart } from '../components/Icons';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { API_BASE_URL } from '../config';
 import './AuthPage.css';
 
 const FOCUSABLE = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
@@ -15,7 +16,7 @@ export const AuthPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const authCardRef = useRef<HTMLDivElement>(null);
-  const API_URL = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
+  const API_URL = API_BASE_URL;
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);

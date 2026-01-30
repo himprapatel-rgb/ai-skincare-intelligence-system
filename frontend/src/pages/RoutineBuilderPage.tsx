@@ -83,9 +83,8 @@ const RoutineBuilderPage: React.FC = () => {
     const fetchRoutines = async () => {
       try {
         setIsLoading(true);
-        const API_BASE = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
         const token = localStorage.getItem('auth_token');
-        const response = await fetch(`${API_BASE}/routines`, {
+        const response = await fetch(`${API_BASE_URL}/routines`, {
           headers: {
             ...(token ? { Authorization: `Bearer ${token}` } : {}),
           },
@@ -181,7 +180,8 @@ const RoutineBuilderPage: React.FC = () => {
 
   const handleSaveRoutine = async () => {
     try {
-      const API_BASE = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
+      import { API_BASE_URL } from '../config';
+const API_BASE = API_BASE_URL;
       const token = localStorage.getItem('auth_token');
       const steps = currentRoutine;
       const description = steps
@@ -202,7 +202,7 @@ const RoutineBuilderPage: React.FC = () => {
       };
 
       const existingId = routineIds[activeTime];
-      const response = await fetch(`${API_BASE}/routines${existingId ? `/${existingId}` : ''}`, {
+      const response = await fetch(`${API_BASE_URL}/routines${existingId ? `/${existingId}` : ''}`, {
         method: existingId ? 'PUT' : 'POST',
         headers: {
           'Content-Type': 'application/json',

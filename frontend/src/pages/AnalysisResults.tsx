@@ -7,6 +7,7 @@ import { BreadcrumbJsonLd } from '../components/BreadcrumbJsonLd';
 import { getScanHistory, getScanResult } from '../services/scanApi';
 import { useToast } from '../context/ToastContext';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { API_BASE_URL } from '../config';
 import './AnalysisResults.css';
 
 interface SkinAnalysis {
@@ -40,7 +41,7 @@ const AnalysisResults: React.FC = () => {
   const [savedToFavorites, setSavedToFavorites] = useState(false);
   const [exporting, setExporting] = useState<'pdf' | 'image' | null>(null);
   const exportContainerRef = useRef<HTMLDivElement>(null);
-  const apiBase = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
+  const apiBase = API_BASE_URL;
   const apiOrigin = apiBase.replace(/\/api\/v1\/?$/, '');
   const buildScanImageUrl = (scanId?: string) => (scanId ? `${apiOrigin}/api/v1/scan/${scanId}/image` : '');
 

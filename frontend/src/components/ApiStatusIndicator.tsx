@@ -4,7 +4,8 @@
  */
 import { useState, useEffect } from 'react';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'https://pellicura-api.fly.dev/api/v1';
+import { API_BASE_URL } from '../config';
+const API_BASE = API_BASE_URL;
 
 // Health check URL - use /api/health instead of /api/v1 which returns 404
 function getHealthUrl(): string {

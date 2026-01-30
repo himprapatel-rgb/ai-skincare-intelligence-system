@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IconSparkles, IconScan, IconZap, IconShield, IconBarChart, IconCheck } from '../components/Icons';
+import { API_BASE_URL } from '../config';
 import './OnboardingPage.css';
 
 const ONBOARDING_PROGRESS_KEY = 'onboarding_progress';
@@ -97,7 +98,8 @@ const OnboardingPage: React.FC = () => {
         throw new Error('Please complete all required fields.');
       }
 
-      const API_BASE = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
+      import { API_BASE_URL } from '../config';
+      const API_BASE = API_BASE_URL;
       const token = localStorage.getItem('auth_token');
       const payload = {
         goals: formData.goals.map((goal) => goal.toLowerCase().replace(/\s+/g, '_')),
@@ -107,7 +109,7 @@ const OnboardingPage: React.FC = () => {
         climate: 'temperate',
       };
 
-      const response = await fetch(`${API_BASE}/profile/baseline`, {
+      const response = await fetch(`${API_BASE_URL}/profile/baseline`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

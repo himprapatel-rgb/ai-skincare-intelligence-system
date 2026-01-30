@@ -5,6 +5,8 @@ import {
   IconPackage, IconLeaf, IconSun, IconSearch, IconCheck, IconPlus,
   IconArrowUp, IconArrowDown, IconArrowLeft
 } from '../components/Icons';
+import { API_BASE_URL } from '../config';
+import { API_BASE_URL } from '../config';
 import './CommonStyles.css';
 import './SkinGoalsPage.css';
 
@@ -74,12 +76,12 @@ const SkinGoalsPage: React.FC = () => {
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('auth_token');
       const selectedGoals = goals.filter(g => g.selected).sort((a, b) => a.priority - b.priority);
       
       // Create/update goals via API
       for (const goal of selectedGoals) {
-        await fetch('/api/v1/goals', {
+        await fetch(`${API_BASE_URL}/goals`, {
           method: 'POST',
           headers: { 
             'Authorization': `Bearer ${token}`,

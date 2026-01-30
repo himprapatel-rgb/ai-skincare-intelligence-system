@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { IconBell, IconCheck, IconX, IconSettings, IconClock, IconTrendingUp, IconAlertCircle, IconInfo, IconChevronRight } from '../components/Icons';
+import { API_BASE_URL } from '../config';
 import './NotificationCenterPage.css';
 
 interface Notification {
@@ -28,10 +29,10 @@ const NotificationCenterPage: React.FC = () => {
 
   const fetchNotifications = async () => {
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('auth_token');
       if (!token) return;
       
-      const response = await fetch('/api/v1/notifications', {
+      const response = await fetch(`${API_BASE_URL}/notifications`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       
@@ -55,8 +56,8 @@ const NotificationCenterPage: React.FC = () => {
 
   const markAsRead = async (id: string) => {
     try {
-      const token = localStorage.getItem('token');
-      await fetch(`/api/v1/notifications/${id}/read`, {
+      const token = localStorage.getItem('auth_token');
+      await fetch(`${API_BASE_URL}/notifications/${id}/read`, {
         method: 'PATCH',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -88,8 +89,8 @@ const NotificationCenterPage: React.FC = () => {
 
   const deleteNotification = async (id: string) => {
     try {
-      const token = localStorage.getItem('token');
-      await fetch(`/api/v1/notifications/${id}`, {
+      const token = localStorage.getItem('auth_token');
+      await fetch(`${API_BASE_URL}/notifications/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });

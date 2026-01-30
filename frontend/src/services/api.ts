@@ -1,7 +1,6 @@
 import axios, { AxiosInstance, AxiosError } from 'axios';
 import { ApiError } from '../types/scan';
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
+import { API_BASE_URL } from '../config';
 
 const MAX_RETRIES = 3;
 const INITIAL_DELAY_MS = 1000;

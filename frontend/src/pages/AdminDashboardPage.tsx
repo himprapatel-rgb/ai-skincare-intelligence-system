@@ -21,9 +21,8 @@ const AdminDashboardPage: React.FC = () => {
       try {
         setIsLoading(true);
         setHasError(false);
-        const API_BASE = import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
         const token = localStorage.getItem('auth_token');
-        const response = await fetch(`${API_BASE}/admin/summary`, {
+        const response = await fetch(`${API_BASE_URL}/admin/summary`, {
           headers: {
             ...(token ? { Authorization: `Bearer ${token}` } : {}),
           },

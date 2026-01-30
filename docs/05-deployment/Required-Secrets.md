@@ -189,25 +189,18 @@ fly secrets set PRODUCT_DATABASE_URL="postgresql://..." --app pellicura-api
 
 | Service | Secret Name | Where to Set | Purpose |
 |---------|-------------|--------------|---------|
-| Google OAuth | `GOOGLE_CLIENT_ID` | GitHub Secrets + Fly.io | Google Sign-In button |
+| Google OAuth | `GOOGLE_CLIENT_ID` | GitHub Secrets + Fly.io | Google Sign-In button (frontend build + backend) |
 | Google OAuth | `GOOGLE_CLIENT_SECRET` | Fly.io only | Backend OAuth exchange |
 
-**Setup Steps:**
-1. Go to [Google Cloud Console](https://console.cloud.google.com/apis/credentials)
-2. Create a new OAuth 2.0 Client ID
-3. Set authorized JavaScript origins:
-   - `https://staging.pellicura.pages.dev` (staging)
-   - `https://pellicura.pages.dev` (production)
-4. Set authorized redirect URIs:
-   - `https://staging.pellicura.pages.dev/auth/google/callback` (staging)
-   - `https://pellicura.pages.dev/auth/google/callback` (production)
-5. Copy Client ID and Client Secret
-6. Add to GitHub Secrets: `GOOGLE_CLIENT_ID`
-7. Add to Fly.io:
-   ```bash
-   fly secrets set GOOGLE_CLIENT_ID="your-client-id" --app pellicura-api-staging
-   fly secrets set GOOGLE_CLIENT_SECRET="your-client-secret" --app pellicura-api-staging
-   ```
+**Full step-by-step:** See **[Google-SSO-Setup.md](./Google-SSO-Setup.md)**.
+
+**Quick steps:**
+1. [Google Cloud Console](https://console.cloud.google.com/apis/credentials) → Create OAuth 2.0 Client ID (Web application).
+2. Authorized JavaScript origins: `https://staging.pellicura.pages.dev`, `https://pellicura.com`, `https://www.pellicura.com`.
+3. Authorized redirect URIs: `https://staging.pellicura.pages.dev/auth/google/callback`, `https://pellicura.com/auth/google/callback`, `https://www.pellicura.com/auth/google/callback`.
+4. GitHub Secrets → `GOOGLE_CLIENT_ID` (Client ID).
+5. Fly.io staging: `fly secrets set GOOGLE_CLIENT_ID="..." GOOGLE_CLIENT_SECRET="..." --app pellicura-api-staging`
+6. Fly.io production: `fly secrets set GOOGLE_CLIENT_ID="..." GOOGLE_CLIENT_SECRET="..." --app pellicura-api`
 
 ### Optional Integrations
 
@@ -231,7 +224,7 @@ fly secrets set PRODUCT_DATABASE_URL="postgresql://..." --app pellicura-api
 | `FLY_API_TOKEN_STAGING` | Run `fly tokens create deploy -x 999999h` | ✅ Set |
 | `CLOUDFLARE_ACCOUNT_ID` | Cloudflare Dashboard → Overview → Account ID | ✅ Set |
 | `CLOUDFLARE_API_TOKEN` | Cloudflare Dashboard → Profile → API Tokens → Create | ✅ Set |
-| `GOOGLE_CLIENT_ID` | Google Cloud Console → Credentials → OAuth 2.0 | ⬜ **MISSING** |
+| `GOOGLE_CLIENT_ID` | Google Cloud Console → Credentials → OAuth 2.0. See [Google-SSO-Setup.md](./Google-SSO-Setup.md) | ⬜ Set for Google SSO |
 
 **Add secrets at:** https://github.com/himprapatel-rgb/ai-skincare-intelligence-system/settings/secrets/actions
 

@@ -5,6 +5,16 @@
 
 ---
 
+## Two databases both up and running
+
+If you want **both** databases on Railway (main DB + product catalog DB), use this checklist:
+
+→ **[Railway-Two-Databases-Setup.md](./Railway-Two-Databases-Setup.md)** – step-by-step: add second PostgreSQL, set `PRODUCT_DATABASE_URL`, verify both DBs.
+
+Below: full deploy guide and Option A (single DB) vs Option B (two DBs).
+
+---
+
 ## Deploy backend on Railway
 
 Your repo is already set up for Railway:
@@ -47,8 +57,8 @@ The app uses a **two-database architecture**:
 
 **On Railway you can:**
 
-1. **Option A (simplest):** Use one PostgreSQL database for both. Do not set `PRODUCT_DATABASE_URL`. The app will use `DATABASE_URL` for the catalog and create catalog tables in the same database.
-2. **Option B:** Add a second PostgreSQL service on Railway for the product catalog and set `PRODUCT_DATABASE_URL` to its connection string.
+1. **Option B (two databases – recommended):** Add a second PostgreSQL service for the product catalog and set `PRODUCT_DATABASE_URL`. Both DBs run separately and store their own data. See **[Railway-Two-Databases-Setup.md](./Railway-Two-Databases-Setup.md)** for the checklist.
+2. **Option A (single DB):** Use one PostgreSQL for both. Do not set `PRODUCT_DATABASE_URL`; the app uses `DATABASE_URL` for the catalog and creates catalog tables in the same database.
 
 ---
 

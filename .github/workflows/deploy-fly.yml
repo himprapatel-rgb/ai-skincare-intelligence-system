@@ -10,11 +10,12 @@ on:
         required: true
         type: string
 
+# DISABLED: Production backend now on Railway. See DEPLOYMENT_URLS.md.
 jobs:
   deploy:
-    name: Deploy to Fly.io Production
+    name: Deploy to Fly.io Production (DISABLED - use Railway)
     runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.confirm == 'deploy' }}
+    if: false  # Fly.io disabled; production on Railway
     defaults:
       run:
         working-directory: ./backend

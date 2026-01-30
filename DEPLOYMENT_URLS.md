@@ -19,8 +19,8 @@ Pellicura is an **AI-powered skincare intelligence app** that:
 
 | Component | URL | Platform | Status |
 |-----------|-----|----------|--------|
-| **Frontend** | https://pellicura.com | Cloudflare Pages | ✅ Live |
-| **Backend API** | https://pellicura-api.fly.dev | Fly.io | ✅ Live |
+| **Frontend** | https://pellicura.com (→ Railway) | Railway | ✅ Live |
+| **Backend API** | https://ai-skincare-intelligence-system-production.up.railway.app | Railway | ✅ Live |
 | **Database** | Railway PostgreSQL | Railway | ✅ Operational |
 
 ### Production API Endpoints
@@ -35,13 +35,13 @@ Pellicura is an **AI-powered skincare intelligence app** that:
 | Component | URL | Platform | Status |
 |-----------|-----|----------|--------|
 | **Frontend** | https://staging.pellicura.pages.dev | Cloudflare Pages | ✅ Live |
-| **Backend API** | https://pellicura-api-staging.fly.dev | Fly.io | ✅ Live |
+| **Backend API** | https://ai-skincare-intelligence-system-production.up.railway.app | Railway (shared) | ✅ Live |
 | **Database** | Railway PostgreSQL (shared) | Railway | ✅ Operational |
 
 ### Staging API Endpoints
-- Health Check: `https://pellicura-api-staging.fly.dev/api/health`
-- API Docs: `https://pellicura-api-staging.fly.dev/docs`
-- API v1: `https://pellicura-api-staging.fly.dev/api/v1/`
+- Health Check: `https://ai-skincare-intelligence-system-production.up.railway.app/api/health`
+- API Docs: `https://ai-skincare-intelligence-system-production.up.railway.app/docs`
+- API v1: `https://ai-skincare-intelligence-system-production.up.railway.app/api/v1/`
 
 ---
 
@@ -64,26 +64,27 @@ Pellicura is an **AI-powered skincare intelligence app** that:
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                    PELLICURA INFRASTRUCTURE                      │
+│                    (All on Railway + Cloudflare DNS)             │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                  │
 │   STAGING                           PRODUCTION                   │
 │   ───────                           ──────────                   │
 │                                                                  │
 │   staging.pellicura.pages.dev       pellicura.com               │
+│   (Cloudflare Pages)               (Cloudflare DNS → Railway)   │
 │           │                              │                       │
-│           ▼                              ▼                       │
-│   Cloudflare Pages                 Cloudflare Pages             │
-│   (React/Vite)                     (React/Vite)                 │
-│           │                              │                       │
-│           ▼                              ▼                       │
-│   pellicura-api-staging            pellicura-api                │
-│   (Fly.io London)                  (Fly.io London)              │
-│   FastAPI + OpenAI Vision          FastAPI + OpenAI Vision      │
-│           │                              │                       │
-│           └──────────┬───────────────────┘                       │
-│                      ▼                                           │
-│              Railway PostgreSQL                                  │
-│              (User data, scans, products)                        │
+│           └──────────────┬───────────────┘                       │
+│                          ▼                                       │
+│              RAILWAY                                              │
+│   ┌─────────────────┐  ┌─────────────────────────────────────┐  │
+│   │ Frontend        │  │ Backend (FastAPI)                    │  │
+│   │ frontend-*.     │  │ ai-skincare-intelligence-system-     │  │
+│   │ railway.app     │  │ production.up.railway.app            │  │
+│   └────────┬────────┘  └───────────────┬─────────────────────┘  │
+│            │                           │                         │
+│            └─────────────┬─────────────┘                         │
+│                          ▼                                       │
+│              Railway PostgreSQL (main + product catalog)         │
 │                                                                  │
 └─────────────────────────────────────────────────────────────────┘
 ```

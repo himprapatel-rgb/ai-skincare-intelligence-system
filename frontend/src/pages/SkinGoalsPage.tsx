@@ -6,7 +6,6 @@ import {
   IconArrowUp, IconArrowDown, IconArrowLeft
 } from '../components/Icons';
 import { API_BASE_URL } from '../config';
-import { API_BASE_URL } from '../config';
 import './CommonStyles.css';
 import './SkinGoalsPage.css';
 

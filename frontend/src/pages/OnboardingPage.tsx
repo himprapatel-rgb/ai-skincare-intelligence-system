@@ -98,8 +98,6 @@ const OnboardingPage: React.FC = () => {
         throw new Error('Please complete all required fields.');
       }
 
-      import { API_BASE_URL } from '../config';
-      const API_BASE = API_BASE_URL;
       const token = localStorage.getItem('auth_token');
       const payload = {
         goals: formData.goals.map((goal) => goal.toLowerCase().replace(/\s+/g, '_')),

@@ -2,7 +2,7 @@
  * Error Boundary Component (Task 375)
  * Catches JavaScript errors anywhere in child component tree
  */
-import React, { Component, ErrorInfo, ReactNode } from 'react';
+import { Component, ErrorInfo, ReactNode } from 'react';
 
 interface Props {
   children: ReactNode;

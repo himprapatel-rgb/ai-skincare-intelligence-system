@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { IconLock, IconCheck, IconAlertCircle } from '../components/Icons';
 import { API_BASE_URL } from '../config';
-import { API_BASE_URL } from '../config';
 import './CommonStyles.css';
 import './PasswordResetPage.css';
 

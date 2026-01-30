@@ -1,6 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 import { devAutoLogin } from '../utils/devAutoLogin';
 
 // Types
@@ -41,8 +42,6 @@ interface AuthContextType {
 // Create context
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-import { API_BASE_URL } from '../config';
-
 // Provider component
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
@@ -58,7 +57,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       if (storedToken) {
         try {
           axios.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`;
-          const response = await axios.get(`${API_URL}/auth/me`);
+          const response = await axios.get(`${API_BASE_URL}/auth/me`);
           setUser(response.data);
           setToken(storedToken);
         } catch {

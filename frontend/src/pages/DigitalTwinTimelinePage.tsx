@@ -9,6 +9,7 @@ import BeforeAfterCircle from '../components/digital-twin/BeforeAfterCircle';
 import SimulationPanel from '../components/digital-twin/SimulationPanel';
 import LoadingScreen from '../components/LoadingScreen';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { API_BASE_URL } from '../config';
 import '../components/digital-twin/styles/digital-twin.css';
 
 interface ApiStateVector {

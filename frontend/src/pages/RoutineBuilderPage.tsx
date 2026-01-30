@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IconSun, IconMoon, IconBell, IconArrowUp, IconArrowDown, IconX, IconCheck, IconInfo, IconGripVertical } from '../components/Icons';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { API_BASE_URL } from '../config';
 import './RoutineBuilderPage.css';
 
 interface RoutineStep {
@@ -180,8 +181,6 @@ const RoutineBuilderPage: React.FC = () => {
 
   const handleSaveRoutine = async () => {
     try {
-      import { API_BASE_URL } from '../config';
-const API_BASE = API_BASE_URL;
       const token = localStorage.getItem('auth_token');
       const steps = currentRoutine;
       const description = steps

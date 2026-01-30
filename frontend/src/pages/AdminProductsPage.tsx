@@ -97,14 +97,12 @@ const AdminProductsPage: React.FC = () => {
   };
 
   const bulkDelete = async () => {
-    import { API_BASE_URL } from '../config';
-const API_BASE = API_BASE_URL;
     const token = localStorage.getItem('auth_token');
     const ids = Array.from(selectedIds);
     const deleted = new Set<string>();
     for (const id of ids) {
       try {
-        const response = await fetch(`${API_BASE}/admin/products/${id}`, {
+        const response = await fetch(`${API_BASE_URL}/admin/products/${id}`, {
           method: 'DELETE',
           headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}) },
         });

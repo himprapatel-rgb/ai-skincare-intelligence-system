@@ -26,12 +26,10 @@ const AdminUsersPage: React.FC = () => {
   const fetchUsers = useCallback(async (signal?: AbortSignal) => {
     try {
       setIsLoading(true);
-      import { API_BASE_URL } from '../config';
-const API_BASE = API_BASE_URL;
       const token = localStorage.getItem('auth_token');
       const params = new URLSearchParams();
       if (search.trim()) params.set('search', search.trim());
-      const response = await fetch(`${API_BASE}/admin/users?${params.toString()}`, {
+      const response = await fetch(`${API_BASE_URL}/admin/users?${params.toString()}`, {
         signal,
         headers: {
           ...(token ? { Authorization: `Bearer ${token}` } : {}),

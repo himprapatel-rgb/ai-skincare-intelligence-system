@@ -10,9 +10,7 @@ import {
   IconUpload,
   IconCheck,
   IconLoader,
-  IconRefresh,
   IconFlash,
-  IconSwitchCamera,
   IconVolume
 } from '../components/Icons';
 import { usePageTitle } from '../hooks/usePageTitle';
@@ -26,7 +24,6 @@ import {
   parseCameraError,
   getBrowserCameraInstructions,
   getCameraPreference,
-  saveCameraPreference,
   hasTorchSupport,
   toggleTorch,
   warmUpDelay,
@@ -150,22 +147,21 @@ const ProductScannerPage: React.FC = () => {
   const [scanHistory, setScanHistory] = useState<ScanHistoryItem[]>([]);
   
   // Enhanced camera state (Tasks 1-50)
-  const [cameraPermission, setCameraPermission] = useState<CameraPermissionStatus>('unknown');
-  const [cameraCapabilities, setCameraCapabilities] = useState<CameraCapabilities | null>(null);
+  const [_cameraPermission, setCameraPermission] = useState<CameraPermissionStatus>('unknown');
+  const [_cameraCapabilities, setCameraCapabilities] = useState<CameraCapabilities | null>(null);
   const [currentFacingMode, setCurrentFacingMode] = useState<'user' | 'environment'>('environment');
   const [torchEnabled, setTorchEnabled] = useState(false);
   const [hasTorch, setHasTorch] = useState(false);
   const [showManualEntry, setShowManualEntry] = useState(false);
   const [manualBarcode, setManualBarcode] = useState('');
   const [soundEnabled, setSoundEnabled] = useState(true);
-  const [vibrationEnabled, setVibrationEnabled] = useState(true);
-  const [continuousMode, setContinuousMode] = useState(false);
+  const [vibrationEnabled, _setVibrationEnabled] = useState(true);
+  const [continuousMode, _setContinuousMode] = useState(false);
   const [sessionScanCount, setSessionScanCount] = useState(0);
   const [lastScannedBarcode, setLastScannedBarcode] = useState<string | null>(null);
   
   // Camera stream ref for photo capture
   const cameraStreamRef = useRef<MediaStream | null>(null);
-  const videoPreviewRef = useRef<HTMLVideoElement | null>(null);
 
   // Load scan history from localStorage on mount
   useEffect(() => {

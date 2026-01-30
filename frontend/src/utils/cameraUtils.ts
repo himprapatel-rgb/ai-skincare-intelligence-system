@@ -388,7 +388,7 @@ export async function hasTorchSupport(stream: MediaStream): Promise<boolean> {
     const track = stream.getVideoTracks()[0];
     if (!track) return false;
     
-    const capabilities = track.getCapabilities?.();
+    const capabilities = track.getCapabilities?.() as { torch?: boolean } | undefined;
     return capabilities?.torch === true;
   } catch {
     return false;

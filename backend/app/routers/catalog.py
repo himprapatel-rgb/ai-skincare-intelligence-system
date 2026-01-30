@@ -353,6 +353,141 @@ async def create_product(
     return CatalogProductResponse(**product)
 
 
+@router.put("/product/{product_id}", response_model=CatalogProductResponse)
+async def update_product(
+    product_id: str,
+    request: ProductUpdateRequest,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_product_db)
+):
+    """
+    Update a product in the catalog (Task 377).
+    Requires authentication.
+    """
+    catalog = ProductCatalogService(db)
+    product = catalog.update_product(
+        product_id,
+        name=request.name,
+        brand=request.brand,
+        category=request.category,
+        description=request.description,
+        price_usd=request.price_usd,
+        is_verified=request.is_verified
+    )
+    if not product:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Product not found"
+        )
+    return CatalogProductResponse(**product)
+
+
+@router.delete("/product/{product_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_product(
+    product_id: str,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_product_db)
+):
+    """
+    Delete a product from the catalog (Task 378).
+    Requires authentication.
+    """
+    catalog = ProductCatalogService(db)
+    if not catalog.delete_product(product_id):
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Product not found"
+        )
+
+
+@router.post("/product/{product_id}/verify", response_model=CatalogProductResponse)
+async def verify_product(
+    product_id: str,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_product_db)
+):
+    """
+    Mark a product as verified (Task 380).
+    Requires authentication.
+    """
+    catalog = ProductCatalogService(db)
+    product = catalog.verify_product(product_id)
+    if not product:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Product not found"
+        )
+    return CatalogProductResponse(**product)
+
+
+@router.get("/duplicates")
+async def get_duplicates(
+    limit: int = Query(50, ge=1, le=200),
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_product_db)
+):
+    """
+    Find potential duplicate products (Task 391).
+    Requires authentication.
+    """
+    catalog = ProductCatalogService(db)
+    return {"duplicates": catalog.get_duplicates(limit=limit)}
+
+
+@router.get("/data-quality")
+async def get_data_quality(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_product_db)
+):
+    """
+    Get data quality report for the catalog (Task 390).
+    Requires authentication.
+    """
+    catalog = ProductCatalogService(db)
+    return catalog.get_data_quality_report()
+
+
+@router.get("/export")
+async def export_catalog(
+    format: str = Query("json", regex="^(json|csv)$"),
+    limit: int = Query(10000, ge=1, le=50000),
+    offset: int = Query(0, ge=0),
+    category: Optional[str] = Query(None),
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_product_db)
+):
+    """
+    Export catalog as JSON or CSV (Task 394).
+    Requires authentication.
+    """
+    from fastapi.responses import Response, JSONResponse
+    from datetime import datetime
+    catalog = ProductCatalogService(db)
+    data, content_type = catalog.export_products(format=format, limit=limit, offset=offset, category=category)
+    if format == "csv":
+        filename = f"catalog_export_{datetime.utcnow().strftime('%Y%m%d_%H%M')}.csv"
+        return Response(
+            content=data,
+            media_type=content_type,
+            headers={"Content-Disposition": f"attachment; filename={filename}"}
+        )
+    return JSONResponse(content=data)
+
+
+@router.get("/import/jobs")
+async def list_import_jobs(
+    limit: int = Query(20, ge=1, le=100),
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_product_db)
+):
+    """
+    List recent import jobs (Task 388).
+    Requires authentication.
+    """
+    catalog = ProductCatalogService(db)
+    return {"jobs": catalog.list_import_jobs(limit=limit)}
+
+
 @router.get("/brands", response_model=List[BrandResponse])
 async def list_brands(
     limit: int = Query(50, ge=1, le=200),

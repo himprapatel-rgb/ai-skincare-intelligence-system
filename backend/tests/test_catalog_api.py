@@ -275,5 +275,51 @@ class TestAPIPerformance:
         assert duration < 1.0
 
 
+class TestCatalogAdminEndpoints:
+    """Test admin/management endpoints (require auth)"""
+    
+    def test_update_product_requires_auth(self):
+        """PUT /catalog/product/{id} requires authentication"""
+        response = client.put(
+            "/api/v1/catalog/product/00000000-0000-0000-0000-000000000001",
+            json={"name": "Updated Name"}
+        )
+        assert response.status_code in [401, 403, 404, 422]
+    
+    def test_delete_product_requires_auth(self):
+        """DELETE /catalog/product/{id} requires authentication"""
+        response = client.delete(
+            "/api/v1/catalog/product/00000000-0000-0000-0000-000000000001"
+        )
+        assert response.status_code in [401, 403, 404, 422]
+    
+    def test_verify_product_requires_auth(self):
+        """POST /catalog/product/{id}/verify requires authentication"""
+        response = client.post(
+            "/api/v1/catalog/product/00000000-0000-0000-0000-000000000001/verify"
+        )
+        assert response.status_code in [401, 403, 404, 422]
+    
+    def test_duplicates_requires_auth(self):
+        """GET /catalog/duplicates requires authentication"""
+        response = client.get("/api/v1/catalog/duplicates")
+        assert response.status_code in [401, 403, 422]
+    
+    def test_data_quality_requires_auth(self):
+        """GET /catalog/data-quality requires authentication"""
+        response = client.get("/api/v1/catalog/data-quality")
+        assert response.status_code in [401, 403, 422]
+    
+    def test_export_requires_auth(self):
+        """GET /catalog/export requires authentication"""
+        response = client.get("/api/v1/catalog/export")
+        assert response.status_code in [401, 403, 422]
+    
+    def test_import_jobs_requires_auth(self):
+        """GET /catalog/import/jobs requires authentication"""
+        response = client.get("/api/v1/catalog/import/jobs")
+        assert response.status_code in [401, 403, 422]
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])

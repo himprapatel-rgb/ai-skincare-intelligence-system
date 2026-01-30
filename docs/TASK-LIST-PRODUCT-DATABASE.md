@@ -16,9 +16,9 @@
 - ✅ Tasks 201-250: Safety & Analysis Models (pre-computed safety scores)
 - ✅ Tasks 251-300: Import Infrastructure (OBF importer, job tracking)
 - ✅ Tasks 301-350: Scanner Integration (barcode + image scanner use product DB)
-- ✅ Tasks 351-400: API Endpoints (20+ endpoints for catalog, filters, search)
+- ✅ Tasks 351-400: API Endpoints (20+ endpoints + PUT/DELETE/verify/duplicates/data-quality/export/import/jobs)
 - ✅ Tasks 401-450: Frontend Integration (catalogService.ts with full API)
-- ✅ Tasks 451-500: Testing & Verification (test_catalog_api.py with 25 tests)
+- ✅ Tasks 451-500: Testing & Verification (test_catalog_api.py) + Product DB migrations doc
 
 ---
 

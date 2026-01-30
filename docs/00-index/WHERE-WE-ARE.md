@@ -73,7 +73,7 @@
 
 ## 6. Still To Do (your side)
 
-1. **Google Sign-In:** Code is in place. Set secrets per [Google-SSO-Setup.md](../05-deployment/Google-SSO-Setup.md) (GitHub: `GOOGLE_CLIENT_ID`; Fly.io: `GOOGLE_CLIENT_ID` + `GOOGLE_CLIENT_SECRET` for staging and production).
+1. **Google Sign-In:** Code is in place. One-time: run `.\scripts\set-google-secrets-and-fly.ps1` (prompts for Client Secret, adds to GitHub and pushes to Fly.io staging). Or set per [Google-SSO-Setup.md](../05-deployment/Google-SSO-Setup.md) (GitHub: `GOOGLE_CLIENT_ID` + `GOOGLE_CLIENT_SECRET`; then run **Set Fly.io Google Secrets (Staging)** workflow).
 
 2. **Product catalog on live envs:** Railway two-DB is done. On Fly.io, set `PRODUCT_DATABASE_URL` if you want a separate catalog there too.
 

@@ -56,15 +56,22 @@ After the next frontend deploy (staging or production), the Google button will a
 
 The backend exchanges the OAuth code for tokens and creates/logs in the user. It needs both Client ID and Client Secret.
 
-### Option A: One-click via GitHub Actions (recommended)
+### Option A: One-click via GitHub (recommended)
 
-1. **Add one more GitHub Secret** (if not already set):
-   - GitHub → **Settings** → **Secrets and variables** → **Actions** → **New repository secret**.
-   - Name: `GOOGLE_CLIENT_SECRET`
-   - Value: paste the **Client Secret** from Google Cloud Console (same OAuth 2.0 client as `GOOGLE_CLIENT_ID`).
-2. **Run the workflow once:**
-   - GitHub → **Actions** → **Set Fly.io Google Secrets (Staging)** → **Run workflow** → **Run workflow**.
-3. The workflow pushes `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` from GitHub Secrets to Fly.io **pellicura-api-staging**. After it succeeds, Google sign-in on staging should work.
+**From your machine (repo root):**
+
+1. Install [GitHub CLI (gh)](https://cli.github.com) and run `gh auth login` if needed.
+2. Get your **Client Secret** from [Google Cloud Console](https://console.cloud.google.com/apis/credentials) → your OAuth 2.0 Web client.
+3. Run:
+   ```powershell
+   .\scripts\set-google-secrets-and-fly.ps1
+   ```
+   Paste the Client Secret when prompted. The script adds `GOOGLE_CLIENT_SECRET` to GitHub Secrets and triggers **Set Fly.io Google Secrets (Staging)**. When the workflow succeeds, Google sign-in on staging works.
+
+**Or manually:**
+
+1. GitHub → **Settings** → **Secrets and variables** → **Actions** → **New repository secret** → Name: `GOOGLE_CLIENT_SECRET`, Value: your Client Secret.
+2. **Actions** → **Set Fly.io Google Secrets (Staging)** → **Run workflow**.
 
 `FRONTEND_URL` is already set in `fly.staging.toml` for staging; no extra step needed.
 

@@ -306,8 +306,8 @@ npm run dev
 | Variable | Description |
 |----------|-------------|
 | `OPENAI_API_KEY` | OpenAI API key for vision analysis |
-| `GOOGLE_CLIENT_ID` | Google OAuth client ID |
-| `GOOGLE_CLIENT_SECRET` | Google OAuth client secret |
+| `GOOGLE_CLIENT_ID` | Google OAuth client ID (GitHub Secrets + Fly.io) |
+| `GOOGLE_CLIENT_SECRET` | Google OAuth client secret (GitHub Secrets; workflow pushes to Fly.io) |
 | `SMTP_HOST` | SMTP server for emails |
 | `SMTP_USERNAME` | SMTP username |
 | `SMTP_PASSWORD` | SMTP password |

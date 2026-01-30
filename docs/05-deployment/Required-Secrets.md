@@ -229,7 +229,7 @@ fly secrets set PRODUCT_DATABASE_URL="postgresql://..." --app pellicura-api
 
 **Add secrets at:** https://github.com/himprapatel-rgb/ai-skincare-intelligence-system/settings/secrets/actions
 
-**Push Google secrets to Fly.io staging:** After adding `GOOGLE_CLIENT_SECRET`, run **Actions → Set Fly.io Google Secrets (Staging)** once. See [Google-SSO-Setup.md](./Google-SSO-Setup.md).
+**Push Google secrets to Fly.io staging:** Either run **Actions → Set Fly.io Google Secrets (Staging)** once after adding `GOOGLE_CLIENT_SECRET`, or from repo root run `.\scripts\set-google-secrets-and-fly.ps1` (prompts for Client Secret, then sets it in GitHub and triggers the workflow). See [Google-SSO-Setup.md](./Google-SSO-Setup.md) and [scripts/README.md](../../scripts/README.md).
 
 ### Fly.io Secrets (Production)
 - [x] `SECRET_KEY` - JWT signing key

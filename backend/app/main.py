@@ -9,6 +9,7 @@ from sqlalchemy import text
 from sqlalchemy.exc import IntegrityError, ProgrammingError
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
+from middleware.request_tracing import RequestTracingMiddleware
 from app.api.v1 import api_router
 from app.api.v1.products import router as external_products_router
 from app.api.v1.progress import router as progress_router
@@ -95,6 +96,9 @@ app.add_middleware(
 app.add_middleware(GZipMiddleware, minimum_size=1000)
 
 app.add_middleware(TrustedHostMiddleware, allowed_hosts=settings.ALLOWED_HOSTS)
+
+# Task 425: Request tracing with correlation IDs
+app.add_middleware(RequestTracingMiddleware)
 
 
 @app.middleware("http")
@@ -353,20 +357,67 @@ def ensure_test_user() -> None:
 
 @app.get("/api/health")
 async def health_check():
-    """Health check endpoint with DB status."""
-    database_status = "ok"
-    status = "healthy"
+    """
+    Health check endpoint with detailed status (Task 421-422).
+    Returns status of database and other dependencies.
+    """
+    import time
+    from datetime import datetime
+    
+    checks = {
+        "database": {"status": "ok", "latency_ms": 0},
+        "api": {"status": "ok"},
+    }
+    overall_status = "healthy"
+    
+    # Task 422: Database health check with latency
+    try:
+        start = time.time()
+        with engine.connect() as conn:
+            conn.execute(text("SELECT 1"))
+        checks["database"]["latency_ms"] = int((time.time() - start) * 1000)
+    except Exception as e:
+        checks["database"]["status"] = "error"
+        checks["database"]["error"] = str(e)[:100]
+        overall_status = "degraded"
+    
+    # Check if database latency is concerning
+    if checks["database"]["latency_ms"] > 500:
+        checks["database"]["status"] = "slow"
+        if overall_status == "healthy":
+            overall_status = "degraded"
+    
+    return {
+        "status": overall_status,
+        "service": "ai-skincare-intelligence-system",
+        "version": settings.APP_VERSION,
+        "timestamp": datetime.utcnow().isoformat(),
+        "checks": checks,
+    }
+
+
+@app.get("/api/health/ready")
+async def readiness_check():
+    """
+    Kubernetes-style readiness probe.
+    Returns 200 if service is ready to accept traffic.
+    """
     try:
         with engine.connect() as conn:
             conn.execute(text("SELECT 1"))
+        return {"ready": True}
     except Exception:
-        database_status = "error"
-        status = "degraded"
-    return {
-        "status": status,
-        "service": "ai-skincare-intelligence-system",
-        "database": database_status,
-    }
+        from fastapi import HTTPException
+        raise HTTPException(status_code=503, detail="Database not ready")
+
+
+@app.get("/api/health/live")
+async def liveness_check():
+    """
+    Kubernetes-style liveness probe.
+    Returns 200 if service is alive.
+    """
+    return {"alive": True}
     
 # Mount all routers under /api/v1 for consistency
 app.include_router(api_router, prefix="/api/v1")

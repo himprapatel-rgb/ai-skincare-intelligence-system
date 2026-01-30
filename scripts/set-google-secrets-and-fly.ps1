@@ -11,6 +11,13 @@ if (-not (Get-Command gh -ErrorAction SilentlyContinue)) {
 
 $secret = $env:GOOGLE_CLIENT_SECRET
 if (-not $secret -or $secret.Trim() -eq "") {
+    # Non-interactive (e.g. CI or PowerShell -NonInteractive): require env var
+    if ([Environment]::UserInteractive -eq $false) {
+        Write-Host "GOOGLE_CLIENT_SECRET is not set. In a terminal run:"
+        Write-Host '  $env:GOOGLE_CLIENT_SECRET = "your-client-secret-from-google-console"'
+        Write-Host "  .\scripts\set-google-secrets-and-fly.ps1"
+        exit 1
+    }
     Write-Host "Paste your Google OAuth Client Secret (from Google Cloud Console -> Credentials -> your OAuth 2.0 client):"
     $secret = Read-Host
 }

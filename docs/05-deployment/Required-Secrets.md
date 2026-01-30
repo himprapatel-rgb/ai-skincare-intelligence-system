@@ -225,8 +225,11 @@ fly secrets set PRODUCT_DATABASE_URL="postgresql://..." --app pellicura-api
 | `CLOUDFLARE_ACCOUNT_ID` | Cloudflare Dashboard → Overview → Account ID | ✅ Set |
 | `CLOUDFLARE_API_TOKEN` | Cloudflare Dashboard → Profile → API Tokens → Create | ✅ Set |
 | `GOOGLE_CLIENT_ID` | Google Cloud Console → Credentials → OAuth 2.0. See [Google-SSO-Setup.md](./Google-SSO-Setup.md) | ⬜ Set for Google SSO |
+| `GOOGLE_CLIENT_SECRET` | Same OAuth 2.0 client → Client Secret. Used by **Set Fly.io Google Secrets (Staging)** workflow to push to Fly.io | ⬜ Set for Google SSO |
 
 **Add secrets at:** https://github.com/himprapatel-rgb/ai-skincare-intelligence-system/settings/secrets/actions
+
+**Push Google secrets to Fly.io staging:** After adding `GOOGLE_CLIENT_SECRET`, run **Actions → Set Fly.io Google Secrets (Staging)** once. See [Google-SSO-Setup.md](./Google-SSO-Setup.md).
 
 ### Fly.io Secrets (Production)
 - [x] `SECRET_KEY` - JWT signing key

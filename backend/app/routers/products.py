@@ -13,6 +13,7 @@ from sqlalchemy.orm import Session
 
 from app.core.security import get_current_user
 from app.database import get_db
+from app.product_database import get_product_db, ProductSessionLocal
 from app.models.product_models import Ingredient, Product, ProductReview
 from app.models.user import User
 from app.schemas.product_schemas import (
@@ -325,7 +326,8 @@ class BarcodeScanResponse(BaseModel):
 @router.post("/scan-barcode", response_model=BarcodeScanResponse)
 async def scan_barcode(
     request: BarcodeScanRequest,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    product_db: Session = Depends(get_product_db)
 ):
     """
     Scan a product barcode and return product information with safety analysis.
@@ -334,15 +336,16 @@ async def scan_barcode(
     Sprint: GUI-2
     
     Priority order:
-    1. Check Product Catalog (pre-computed data, instant response)
+    1. Check Product Catalog (pre-computed data, instant response) - SEPARATE DB
     2. Check local products table
     3. Fall back to OpenBeautyFacts API
     """
     barcode = request.barcode.strip()
     
     # 0. Check Product Catalog FIRST (instant, pre-computed data!)
+    # Uses SEPARATE product database for scalability
     try:
-        catalog = ProductCatalogService(db)
+        catalog = ProductCatalogService(product_db)
         catalog_product = catalog.lookup_barcode(barcode)
         
         if catalog_product:
@@ -648,7 +651,8 @@ async def fetch_clean_product_image(brand: str, product_name: str) -> tuple[Opti
 async def identify_product_from_image(
     request: ProductImageRequest,
     current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    product_db: Session = Depends(get_product_db)
 ):
     """
     Identify a beauty/skincare product from an image using AI vision.
@@ -658,8 +662,9 @@ async def identify_product_from_image(
     Uses OpenAI GPT-4 Vision to:
     1. Identify product name, brand, and category
     2. Extract visible ingredients if shown
-    3. Match against local database
+    3. Match against Product Catalog (SEPARATE DATABASE)
     4. Provide safety analysis
+    5. Auto-save new products to catalog
     """
     try:
         # Get OpenAI API key
@@ -810,8 +815,9 @@ IMPORTANT:
         
         if product_name and brand:
             # CATALOG FIRST: Check Product Catalog for pre-computed data
+            # Uses SEPARATE product database for scalability
             try:
-                catalog = ProductCatalogService(db)
+                catalog = ProductCatalogService(product_db)
                 catalog_product = catalog.lookup_by_name_brand(product_name, brand)
                 
                 if catalog_product:
@@ -903,9 +909,10 @@ IMPORTANT:
                 }
                 logger.info(f"Auto-saved new product: {brand} - {product_name}")
                 
-                # ALSO ADD TO CATALOG: Save to Product Catalog with pre-computed safety
+                # ALSO ADD TO CATALOG: Save to Product Catalog (SEPARATE DATABASE)
+                # This enables fast lookups for future scans
                 try:
-                    catalog = ProductCatalogService(db)
+                    catalog = ProductCatalogService(product_db)
                     key_ing_dicts_for_catalog = [
                         {"name": ki.name, "percentage": ki.percentage}
                         for ki in key_ingredients
@@ -920,9 +927,9 @@ IMPORTANT:
                         image_url=product_image_url,
                         source="ai_scan"
                     )
-                    logger.info(f"Added to catalog: {brand} - {product_name}")
+                    logger.info(f"Added to Product Catalog DB: {brand} - {product_name}")
                 except Exception as catalog_err:
-                    logger.warning(f"Failed to add to catalog: {catalog_err}")
+                    logger.warning(f"Failed to add to product catalog: {catalog_err}")
                 
                 # SAVE INGREDIENTS: Persist ingredients to database with percentages
                 if ingredients:

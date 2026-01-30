@@ -26,6 +26,16 @@ interface ProductDetails {
   concerns?: string[];
   howToUse?: string;
   benefits?: string[];
+  // Task 226-250: Enhanced product details
+  usageTime?: 'morning' | 'evening' | 'both';  // Task 234
+  usageFrequency?: string;                      // Task 235: daily, weekly, etc.
+  layeringOrder?: number;                       // Task 236: 1=cleanser, 2=toner, etc.
+  waitTime?: string;                            // Task 237: wait time after application
+  amountPerUse?: string;                        // Task 238: pea-sized, etc.
+  pairsWellWith?: string[];                     // Task 239
+  avoidCombiningWith?: string[];                // Task 240
+  size?: string;                                // Product size
+  shelfLife?: string;                           // Task 225
 }
 
 interface Review {
@@ -72,6 +82,43 @@ function getCompareIds(): string[] {
   } catch {
     return [];
   }
+}
+
+// Task 234: Smart usage time based on category
+function getCategoryUsageTime(category: string): string {
+  const cat = category?.toLowerCase() || '';
+  if (cat.includes('sunscreen') || cat.includes('spf')) return '☀️ Morning only';
+  if (cat.includes('retinol') || cat.includes('night') || cat.includes('sleeping')) return '🌙 Evening only';
+  if (cat.includes('serum') || cat.includes('treatment')) return '☀️🌙 AM or PM';
+  if (cat.includes('cleanser') || cat.includes('moisturizer') || cat.includes('toner')) return '☀️🌙 AM & PM';
+  return '☀️🌙 As needed';
+}
+
+// Task 236: Step order based on category
+function getCategoryOrder(category: string): string {
+  const cat = category?.toLowerCase() || '';
+  if (cat.includes('cleanser') || cat.includes('clean')) return 'Step 1 - Cleanse';
+  if (cat.includes('toner') || cat.includes('essence')) return 'Step 2 - Tone';
+  if (cat.includes('serum') || cat.includes('ampoule')) return 'Step 3 - Treat';
+  if (cat.includes('eye')) return 'Step 4 - Eye area';
+  if (cat.includes('moisturizer') || cat.includes('cream') || cat.includes('lotion')) return 'Step 5 - Moisturize';
+  if (cat.includes('sunscreen') || cat.includes('spf')) return 'Step 6 - Protect (AM)';
+  if (cat.includes('mask')) return 'Weekly treatment';
+  if (cat.includes('exfoliant') || cat.includes('peel')) return '2-3x per week';
+  return 'As directed';
+}
+
+// Task 238: Amount per use based on category
+function getCategoryAmount(category: string): string {
+  const cat = category?.toLowerCase() || '';
+  if (cat.includes('serum') || cat.includes('oil')) return '2-3 drops';
+  if (cat.includes('cleanser')) return 'Dime-sized';
+  if (cat.includes('moisturizer') || cat.includes('cream')) return 'Pea-sized';
+  if (cat.includes('sunscreen')) return '2 finger lengths';
+  if (cat.includes('toner') || cat.includes('essence')) return '3-4 drops or cotton pad';
+  if (cat.includes('eye')) return 'Rice grain';
+  if (cat.includes('mask')) return 'Thin even layer';
+  return 'As directed';
 }
 
 function addToCompare(productId: string): string[] {
@@ -477,11 +524,39 @@ const ProductDetailsPage: React.FC = () => {
         <div className="tab-content">
           {activeTab === 'overview' && (
             <div className="overview-tab">
+              {/* Task 234-238: Usage Information Card */}
+              <section className="usage-info-card">
+                <h3>Usage Guide</h3>
+                <div className="usage-grid">
+                  <div className="usage-item">
+                    <span className="usage-label">Best Time</span>
+                    <span className="usage-value">
+                      {product.usageTime === 'morning' ? '☀️ Morning' :
+                       product.usageTime === 'evening' ? '🌙 Evening' :
+                       product.usageTime === 'both' ? '☀️🌙 AM & PM' :
+                       getCategoryUsageTime(product.category)}
+                    </span>
+                  </div>
+                  <div className="usage-item">
+                    <span className="usage-label">Frequency</span>
+                    <span className="usage-value">{product.usageFrequency || 'Daily'}</span>
+                  </div>
+                  <div className="usage-item">
+                    <span className="usage-label">Step Order</span>
+                    <span className="usage-value">{getCategoryOrder(product.category)}</span>
+                  </div>
+                  <div className="usage-item">
+                    <span className="usage-label">Amount</span>
+                    <span className="usage-value">{product.amountPerUse || getCategoryAmount(product.category)}</span>
+                  </div>
+                </div>
+              </section>
+
               {product.benefits && product.benefits.length > 0 && (
                 <section>
                   <h3>Key Benefits</h3>
-                  <ul>
-                    {product.benefits.map((benefit, idx) => <li key={idx}>{benefit}</li>)}
+                  <ul className="benefits-list">
+                    {product.benefits.map((benefit, idx) => <li key={idx}>✓ {benefit}</li>)}
                   </ul>
                 </section>
               )}
@@ -506,6 +581,25 @@ const ProductDetailsPage: React.FC = () => {
                 </section>
               )}
 
+              {/* Task 239-240: Product pairing tips */}
+              {(product.pairsWellWith?.length || product.avoidCombiningWith?.length) && (
+                <section className="pairing-section">
+                  <h3>Pairing Guide</h3>
+                  {product.pairsWellWith && product.pairsWellWith.length > 0 && (
+                    <div className="pairing-good">
+                      <strong>✓ Pairs well with:</strong>
+                      <span>{product.pairsWellWith.join(', ')}</span>
+                    </div>
+                  )}
+                  {product.avoidCombiningWith && product.avoidCombiningWith.length > 0 && (
+                    <div className="pairing-avoid">
+                      <strong>⚠ Avoid combining with:</strong>
+                      <span>{product.avoidCombiningWith.join(', ')}</span>
+                    </div>
+                  )}
+                </section>
+              )}
+
               {/* Show message if no detailed info available */}
               {!product.benefits?.length && !product.keyIngredients?.length && !product.howToUse && (
                 <section className="no-data-message">
@@ -520,11 +614,78 @@ const ProductDetailsPage: React.FC = () => {
             <div className="ingredients-tab">
               <h3>Full Ingredient List</h3>
               {product.ingredients && product.ingredients.length > 0 ? (
-                <div className="ingredients-list">
-                  {product.ingredients.map((ing, idx) => (
-                    <span key={idx} className="ingredient-item">{ing}</span>
-                  ))}
-                </div>
+                <>
+                  {/* Task 206: Ingredient search */}
+                  <div className="ingredient-controls">
+                    <input
+                      type="text"
+                      placeholder="Search ingredients..."
+                      className="ingredient-search"
+                      onChange={(e) => {
+                        const search = e.target.value.toLowerCase();
+                        document.querySelectorAll('.ingredient-item').forEach((el) => {
+                          const text = el.textContent?.toLowerCase() || '';
+                          (el as HTMLElement).style.display = text.includes(search) ? '' : 'none';
+                        });
+                      }}
+                    />
+                    <span className="ingredient-count">{product.ingredients.length} ingredients</span>
+                  </div>
+                  
+                  {/* Task 207-208: Ingredient list with safety indicators */}
+                  <div className="ingredients-list">
+                    {product.ingredients.map((ing, idx) => {
+                      // Task 207: Highlight concerning ingredients
+                      const ingLower = ing.toLowerCase();
+                      const isConcern = ['fragrance', 'parfum', 'alcohol denat', 'denatured alcohol', 
+                        'sodium lauryl sulfate', 'sls', 'formaldehyde'].some(c => ingLower.includes(c));
+                      const isAllergen = ['methylisothiazolinone', 'methylchloroisothiazolinone', 
+                        'lanolin', 'propylene glycol'].some(a => ingLower.includes(a));
+                      const isActive = ['niacinamide', 'retinol', 'vitamin c', 'ascorbic acid', 
+                        'hyaluronic acid', 'salicylic acid', 'glycolic acid', 'ceramide'].some(a => ingLower.includes(a));
+                      
+                      let className = 'ingredient-item';
+                      let tooltip = '';
+                      if (isActive) {
+                        className += ' ingredient-active';
+                        tooltip = 'Active ingredient';
+                      } else if (isConcern) {
+                        className += ' ingredient-concern';
+                        tooltip = 'May cause sensitivity';
+                      } else if (isAllergen) {
+                        className += ' ingredient-allergen';
+                        tooltip = 'Potential allergen';
+                      }
+                      
+                      return (
+                        <span 
+                          key={idx} 
+                          className={className}
+                          title={tooltip || `Position ${idx + 1} in formula`}
+                        >
+                          {ing}
+                          {idx < 5 && <span className="ingredient-rank">Top {idx + 1}</span>}
+                        </span>
+                      );
+                    })}
+                  </div>
+                  
+                  {/* Task 210: Ingredient legend */}
+                  <div className="ingredient-legend">
+                    <div className="legend-item">
+                      <span className="legend-dot active"></span>
+                      <span>Active ingredients</span>
+                    </div>
+                    <div className="legend-item">
+                      <span className="legend-dot concern"></span>
+                      <span>May cause sensitivity</span>
+                    </div>
+                    <div className="legend-item">
+                      <span className="legend-dot allergen"></span>
+                      <span>Potential allergen</span>
+                    </div>
+                  </div>
+                </>
               ) : (
                 <div className="no-ingredients-message">
                   <p>Ingredient list not available for this product.</p>

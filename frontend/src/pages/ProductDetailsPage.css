@@ -757,6 +757,209 @@
   }
 }
 
+/* Task 206: Ingredient controls */
+.ingredient-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.ingredient-search {
+  flex: 1;
+  min-width: 200px;
+  padding: 10px 14px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  font-size: 0.9rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.ingredient-search:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.ingredient-count {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+/* Task 207-208: Ingredient safety indicators */
+.ingredient-item {
+  position: relative;
+}
+
+.ingredient-item.ingredient-active {
+  background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+  border-color: #22c55e;
+  color: #166534;
+}
+
+.ingredient-item.ingredient-concern {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  border-color: #f59e0b;
+  color: #92400e;
+}
+
+.ingredient-item.ingredient-allergen {
+  background: linear-gradient(135deg, #fee2e2, #fecaca);
+  border-color: #ef4444;
+  color: #991b1b;
+}
+
+.ingredient-rank {
+  display: inline-block;
+  font-size: 0.65rem;
+  padding: 2px 4px;
+  background: var(--primary);
+  color: white;
+  border-radius: 4px;
+  margin-left: 4px;
+  vertical-align: middle;
+}
+
+/* Task 210: Ingredient legend */
+.ingredient-legend {
+  display: flex;
+  gap: 16px;
+  margin-top: 16px;
+  padding: 12px;
+  background: var(--bg-secondary);
+  border-radius: var(--border-radius-md);
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.legend-dot.active {
+  background: #22c55e;
+}
+
+.legend-dot.concern {
+  background: #f59e0b;
+}
+
+.legend-dot.allergen {
+  background: #ef4444;
+}
+
+/* Task 234-238: Usage Guide Card */
+.usage-info-card {
+  background: linear-gradient(135deg, #eff6ff, #e0f2fe);
+  border: 1px solid #bfdbfe;
+  border-radius: var(--border-radius-lg);
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.usage-info-card h3 {
+  color: #1e40af;
+  margin-bottom: 16px;
+  font-size: 1rem;
+}
+
+.usage-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+@media (min-width: 600px) {
+  .usage-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.usage-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.usage-label {
+  font-size: 0.75rem;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.usage-value {
+  font-weight: 600;
+  color: #1e293b;
+  font-size: 0.9rem;
+}
+
+/* Benefits list */
+.benefits-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.benefits-list li {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+.benefits-list li:last-child {
+  border-bottom: none;
+}
+
+/* Task 239-240: Pairing Section */
+.pairing-section {
+  background: var(--bg-secondary);
+  border-radius: var(--border-radius-lg);
+  padding: 16px;
+}
+
+.pairing-good,
+.pairing-avoid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 0;
+}
+
+.pairing-good {
+  color: #166534;
+}
+
+.pairing-avoid {
+  color: #991b1b;
+  border-top: 1px solid var(--border-color);
+  margin-top: 8px;
+  padding-top: 16px;
+}
+
+.pairing-good strong,
+.pairing-avoid strong {
+  font-size: 0.9rem;
+}
+
+.pairing-good span,
+.pairing-avoid span {
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+
 /* No ingredients message */
 .no-ingredients-message {
   padding: 24px;

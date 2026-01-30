@@ -9,8 +9,8 @@ import { api } from '../services/api';
 import { usePageTitle } from '../hooks/usePageTitle';
 import './GoogleCallbackPage.css';
 
-/** Timeout for backend /auth/google (ms). Slightly under api client timeout so we can show a message. */
-const AUTH_GOOGLE_TIMEOUT_MS = 25000;
+/** Timeout for backend /auth/google (ms). Long enough for Fly.io cold starts (often 30–60s). */
+const AUTH_GOOGLE_TIMEOUT_MS = 60000;
 
 const GoogleCallbackPage: React.FC = () => {
   usePageTitle('Signing in');
@@ -62,7 +62,9 @@ const GoogleCallbackPage: React.FC = () => {
         const isTimeout = err && typeof err === 'object' && 'code' in err && (err as { code?: string }).code === 'ECONNABORTED';
         const isAbort = err && typeof err === 'object' && 'name' in err && (err as { name?: string }).name === 'CanceledError';
         if (isTimeout || isAbort) {
-          setError('Sign-in is taking too long. The server may be starting up. Please try "Continue with Google" again.');
+          setError(
+            'The server took too long to respond (staging often "wakes up" in 30–60 seconds). Please try "Continue with Google" again — the second attempt is usually faster.'
+          );
         } else {
           // API client rejects with { detail, status }; axios error has response.data.detail; backend detail can be string or array
           const o = err && typeof err === 'object' ? err as Record<string, unknown> : null;
@@ -121,7 +123,7 @@ const GoogleCallbackPage: React.FC = () => {
           <h2>Signing in with Google...</h2>
           <p>
             {slowMessage
-              ? 'This is taking longer than usual — the server may be starting. Please wait a bit longer or try again.'
+              ? 'This is taking longer than usual — the server may be waking up (staging can take 30–60 seconds). You can wait or go back and try again; the second attempt is usually faster.'
               : 'Please wait while we complete your authentication.'}
           </p>
           {slowMessage && (

@@ -133,13 +133,21 @@ const ProductDetailsPage: React.FC = () => {
       
       if (shelfProduct) {
         // Product found on shelf - use that data
+        // Extract ingredients from ingredients_json if available
+        const ingredientsSnapshot = shelfProduct.ingredients_json;
+        const ingredients = ingredientsSnapshot?.ingredients || [];
+        const keyIngredients = ingredientsSnapshot?.key_ingredients?.map(ki => 
+          ki.percentage ? `${ki.name} ${ki.percentage}` : ki.name
+        ) || [];
+        
         const productData: ProductDetails = {
           id: shelfProduct.id,
           name: shelfProduct.product_name,
           brand: shelfProduct.product_brand || 'Unknown Brand',
           category: shelfProduct.product_category || 'Skincare',
           description: shelfProduct.notes || undefined,
-          ingredients: [],
+          ingredients: ingredients,
+          keyIngredients: keyIngredients.length > 0 ? keyIngredients : undefined,
           imageUrl: shelfProduct.product_image,
           // No fake ratings/reviews/prices - only show if we have real data
         };
@@ -511,11 +519,23 @@ const ProductDetailsPage: React.FC = () => {
           {activeTab === 'ingredients' && (
             <div className="ingredients-tab">
               <h3>Full Ingredient List</h3>
-              <div className="ingredients-list">
-                {product.ingredients.map((ing, idx) => (
-                  <span key={idx} className="ingredient-item">{ing}</span>
-                ))}
-              </div>
+              {product.ingredients && product.ingredients.length > 0 ? (
+                <div className="ingredients-list">
+                  {product.ingredients.map((ing, idx) => (
+                    <span key={idx} className="ingredient-item">{ing}</span>
+                  ))}
+                </div>
+              ) : (
+                <div className="no-ingredients-message">
+                  <p>Ingredient list not available for this product.</p>
+                  <p>Tips to get ingredient data:</p>
+                  <ul>
+                    <li>Scan the product again with the ingredients list visible in the photo</li>
+                    <li>Use barcode scanning for products in our database</li>
+                    <li>Take a clear photo of the back label showing all ingredients</li>
+                  </ul>
+                </div>
+              )}
             </div>
           )}
           

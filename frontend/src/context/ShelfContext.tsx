@@ -105,6 +105,11 @@ export const ShelfProvider: React.FC<{ children: ReactNode }> = ({ children }) =
             rating: Number(p.rating ?? 0),
             notes: String(p.notes ?? ''),
             created_at: p.created_at as string | undefined,
+            expiry_date: p.expiry_date as string | undefined,
+            purchase_date: p.purchase_date as string | undefined,
+            purchase_price: p.purchase_price as number | undefined,
+            would_repurchase: p.would_repurchase as boolean | undefined,
+            ingredients_json: p.ingredients_json as IngredientsSnapshot | undefined,
           })));
         }
       } else {

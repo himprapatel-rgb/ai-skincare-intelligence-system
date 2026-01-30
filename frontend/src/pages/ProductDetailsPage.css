@@ -756,3 +756,35 @@
     margin-bottom: 20px;
   }
 }
+
+/* No ingredients message */
+.no-ingredients-message {
+  padding: 24px;
+  background: var(--bg-secondary);
+  border-radius: var(--border-radius-lg);
+  text-align: center;
+}
+
+.no-ingredients-message p {
+  margin-bottom: 16px;
+  color: var(--text-secondary);
+}
+
+.no-ingredients-message p:first-child {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.no-ingredients-message ul {
+  text-align: left;
+  display: inline-block;
+  list-style: disc;
+  padding-left: 20px;
+  color: var(--text-secondary);
+}
+
+.no-ingredients-message li {
+  margin-bottom: 8px;
+  line-height: 1.5;
+}

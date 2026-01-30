@@ -28,13 +28,22 @@
 
 ## 2. Configure Cloudflare DNS
 
+### Option A: One-click via GitHub Actions (recommended)
+
+1. Push this repo to GitHub (workflow is in `.github/workflows/set-cloudflare-dns-railway.yml`).
+2. Go to **GitHub** → **Actions** → **Set Cloudflare DNS for Railway**.
+3. Click **Run workflow** → **Run workflow**.
+4. The workflow uses `CLOUDFLARE_API_TOKEN` from GitHub Secrets to add the CNAME records.
+
+### Option B: Manual in Cloudflare Dashboard
+
 1. Go to [Cloudflare Dashboard](https://dash.cloudflare.com) → your domain **pellicura.com** → **DNS**.
 2. Add or update records:
 
 | Type | Name | Content | Proxy |
 |------|------|---------|-------|
-| CNAME | www | frontend-production-0415.up.railway.app | Proxied (orange cloud) or DNS only |
-| CNAME | @ | frontend-production-0415.up.railway.app | Proxied or DNS only |
+| CNAME | @ | j62m06la.up.railway.app | Proxied (recommended) |
+| CNAME | www | fcqgs166.up.railway.app | Proxied (recommended) |
 
 **Note:** For apex (@) domain, Cloudflare supports CNAME flattening. If Railway gives a different target, use that. Some setups use `A` records; follow Railway’s instructions.
 

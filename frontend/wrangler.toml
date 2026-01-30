@@ -7,4 +7,4 @@ pages_build_output_dir = "dist"
 
 # Environment variables for production (build-time for Vite)
 [vars]
-  VITE_API_URL = "https://pellicura-api.fly.dev/api/v1"
+  VITE_API_URL = "https://ai-skincare-intelligence-system-production.up.railway.app/api/v1"

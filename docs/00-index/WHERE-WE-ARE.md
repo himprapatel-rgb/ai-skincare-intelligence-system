@@ -45,9 +45,10 @@
 
 | Environment | Frontend | Backend | Database |
 |-------------|----------|---------|----------|
-| **Staging** | staging.pellicura.pages.dev (Cloudflare) | pellicura-api-staging.fly.dev (Fly.io) | Railway PostgreSQL |
-| **Production** | pellicura.com (Cloudflare) | pellicura-api.fly.dev (Fly.io) | Railway PostgreSQL |
-| **Railway (optional)** | — | Deploy backend via Railway | Same Railway Postgres or second DB for catalog |
+| **Staging** | staging.pellicura.pages.dev (Cloudflare Pages) | Railway | Railway PostgreSQL |
+| **Production** | pellicura.com (Cloudflare DNS → Railway) | Railway | Railway PostgreSQL |
+
+**All on Railway.** Domain pellicura.com uses Cloudflare for DNS only. See [Railway-All-Cloudflare-DNS.md](../05-deployment/Railway-All-Cloudflare-DNS.md).
 
 - **Branch flow:** `develop` → staging; `main` → production (manual).
 - **Railway:** Backend + product DB deploy steps in `docs/05-deployment/Railway-Product-Database-Deploy.md` and `Railway-Environment-Variables-Setup.md`.

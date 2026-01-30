@@ -23,11 +23,12 @@ The app already has Google OAuth in the code (frontend button, callback page, ba
    - `https://pellicura.com`
    - `https://www.pellicura.com`
    - (Optional for local dev: `http://localhost:5173`)
-8. **Authorized redirect URIs** (add both):
-   - `https://staging.pellicura.pages.dev/auth/google/callback`
+8. **Authorized redirect URIs** (add **exactly** these; Google is strict):
+   - `https://staging.pellicura.pages.dev/auth/google/callback` (staging – **required**)
    - `https://pellicura.com/auth/google/callback`
    - `https://www.pellicura.com/auth/google/callback`
    - (Optional for local dev: `http://localhost:5173/auth/google/callback`)
+   - **If you see "Error 400: redirect_uri_mismatch"** → add the exact callback URL above in Google Console → Credentials → your OAuth client → Authorized redirect URIs.
 9. Click **Create**.
 10. Copy the **Client ID** and **Client Secret** (you’ll set these as secrets below).
 
@@ -92,6 +93,21 @@ fly secrets set FRONTEND_URL="https://pellicura.com" --app pellicura-api
 2. **Production:** Same on https://pellicura.com/auth after production deploy.
 
 If the button doesn’t appear, the frontend was built without `GOOGLE_CLIENT_ID` (check GitHub Secret and redeploy). If click fails with “redirect_uri mismatch”, the redirect URI in Google Console must exactly match your frontend origin + `/auth/google/callback`, and backend `FRONTEND_URL` must match that origin.
+
+---
+
+## Troubleshooting: “Google sign-in not working”
+
+Use this checklist:
+
+| # | Check | What to do |
+|---|--------|------------|
+| 1 | **Redirect URI in Google Console** | On the Sign In page, expand **“Google sign-in not working? Add this redirect URI”** and copy the URL. In [Google Cloud Console → Credentials](https://console.cloud.google.com/apis/credentials) → your OAuth 2.0 client → **Authorized redirect URIs**, add that exact URL (no trailing slash). Save. |
+| 2 | **Authorized JavaScript origins** | In the same OAuth client, **Authorized JavaScript origins** must include your frontend origin (e.g. `https://staging.pellicura.pages.dev` or `https://pellicura.com`). |
+| 3 | **Fly.io backend secrets** | In [Fly.io](https://fly.io) → your app (e.g. `pellicura-api-staging`) → **Secrets**, set `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`. Redeploy if needed. |
+| 4 | **FRONTEND_URL on Fly.io** | Backend must use the same frontend origin for the redirect URI. Staging: `FRONTEND_URL=https://staging.pellicura.pages.dev` (set in `fly.staging.toml` or secrets). Production: `FRONTEND_URL=https://pellicura.com` (or your canonical domain). |
+| 5 | **Backend reachable** | If the Sign In page shows “Backend not reachable”, the API is down or CORS is blocking. Check Fly.io app status, health (`/api/health`), and that your frontend origin is in the backend’s `ALLOWED_ORIGINS`. |
+| 6 | **Timeout / cold start** | On Fly.io, the first request after idle can take 30–60s. Wait or try “Continue with Google” again; the second attempt is usually fast. |
 
 ---
 

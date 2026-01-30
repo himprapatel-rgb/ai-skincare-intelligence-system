@@ -12,10 +12,13 @@ The Pellicura (AI Skincare Intelligence System) uses a modern cloud-native archi
 | Component | Provider | Service |
 |-----------|----------|---------|
 | Frontend Hosting | Cloudflare | Pages |
-| Backend Hosting | Fly.io | Docker Containers |
-| Database | Railway | PostgreSQL |
+| Backend Hosting | Fly.io | Docker Containers (staging + production) |
+| Database (main) | Railway | PostgreSQL (users, auth, scans, shelf, routines) |
+| Database (catalog) | Railway | Optional second PostgreSQL (products, ingredients, brands) |
 | DNS & CDN | Cloudflare | DNS, SSL, CDN |
 | CI/CD | GitHub | Actions |
+
+**Note:** Backend can also run on Railway (optional); Fly.io apps can scale to zero when idle (cold starts on first request).
 
 ---
 
@@ -64,12 +67,12 @@ The Pellicura (AI Skincare Intelligence System) uses a modern cloud-native archi
 │                               ▼                                         │
 │         ┌─────────────────────────────────────────────┐                 │
 │         │              RAILWAY                        │                 │
-│         │  ┌─────────────────────────────────────┐    │                 │
-│         │  │         PostgreSQL Database         │    │                 │
-│         │  │  • Managed backups                  │    │                 │
-│         │  │  • Connection pooling               │    │                 │
-│         │  │  • Automatic failover               │    │                 │
-│         │  └─────────────────────────────────────┘    │                 │
+│         │  ┌─────────────────┐ ┌─────────────────┐  │                 │
+│         │  │ Main PostgreSQL │ │ Product Catalog  │  │                 │
+│         │  │ (DATABASE_URL)  │ │ (PRODUCT_DB_URL) │  │                 │
+│         │  │ users, scans,   │ │ products,         │  │                 │
+│         │  │ shelf, routines │ │ ingredients, etc. │  │                 │
+│         │  └─────────────────┘ └─────────────────┘  │                 │
 │         └─────────────────────────────────────────────┘                 │
 │                                                                          │
 └─────────────────────────────────────────────────────────────────────────┘
@@ -94,6 +97,8 @@ The Pellicura (AI Skincare Intelligence System) uses a modern cloud-native archi
 | Frontend | https://staging.pellicura.pages.dev | Global (Cloudflare CDN) |
 | Backend | https://pellicura-api-staging.fly.dev | London (lhr) |
 | Database | Railway PostgreSQL (shared) | US East |
+
+**Fly.io behaviour:** Staging and production backends on Fly.io can **scale to zero** when idle. The first request after idle may take 30–60 seconds (cold start); subsequent requests are fast. Railway backends typically stay warm.
 
 ---
 

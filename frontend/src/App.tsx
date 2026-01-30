@@ -9,6 +9,7 @@ import DevBanner from "./components/DevBanner";
 import LoadingScreen from "./components/LoadingScreen";
 import { ToastContainer } from "./components/Toast";
 import { ErrorBoundary } from "./components/ErrorBoundary";
+import NetworkStatus from "./components/NetworkStatus";
 
 // Page Imports - Lazy loaded for faster initial load
 const HomePage = React.lazy(() => import("./pages/HomePage"));
@@ -59,6 +60,7 @@ export default function App() {
       <ShelfProvider>
         <ToastProvider>
           <DevBanner />
+          <NetworkStatus />
         <BrowserRouter>
           <AppLayout>
             <ErrorBoundary>

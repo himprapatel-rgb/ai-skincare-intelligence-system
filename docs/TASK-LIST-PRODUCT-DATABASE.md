@@ -6,11 +6,14 @@
 - **Main Database (Railway PostgreSQL)**: Users, authentication, scans, shelf, routines
 - **Product Catalog Database (NEW - Separate)**: Products, ingredients, brands, images, safety data
 
-**Progress:** 100/500 tasks completed (20%)
+**Progress:** 200/500 tasks completed (40%)
 
 ### Completed:
 - ✅ Tasks 1-50: Database Infrastructure (config, multi-DB setup, ProductBase)
-- ✅ Tasks 51-100: Product Data Models (already complete in catalog_models.py)
+- ✅ Tasks 51-100: Product Data Models (CatalogProduct, CatalogIngredient)
+- ✅ Tasks 101-150: Ingredient Data Models (safety data, CatalogProductIngredient)
+- ✅ Tasks 151-200: Brand & Category Models (CatalogBrand, CatalogProductImage)
+- ✅ Tasks 251-300: Import Infrastructure (OBF importer, job tracking)
 - ✅ Tasks 301-350: Scanner Integration (barcode + image scanner use product DB)
 
 ---

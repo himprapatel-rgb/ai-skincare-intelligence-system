@@ -69,10 +69,15 @@ CATEGORY_MAP = {
 
 
 def get_database_connection():
-    """Get database connection from environment."""
-    database_url = os.getenv("DATABASE_URL")
+    """Get database connection for product catalog.
+    
+    Uses PRODUCT_DATABASE_URL if set, otherwise falls back to DATABASE_URL.
+    This supports the two-database architecture.
+    """
+    # Prefer product database URL for catalog operations
+    database_url = os.getenv("PRODUCT_DATABASE_URL") or os.getenv("DATABASE_URL")
     if not database_url:
-        raise ValueError("DATABASE_URL environment variable is not set")
+        raise ValueError("PRODUCT_DATABASE_URL or DATABASE_URL environment variable is not set")
     return psycopg2.connect(database_url)
 
 

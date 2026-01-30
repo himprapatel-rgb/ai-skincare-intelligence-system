@@ -12,7 +12,7 @@ echo Setting GOOGLE_CLIENT_SECRET in GitHub Actions secrets...
 gh secret set GOOGLE_CLIENT_SECRET --body "%GOOGLE_CLIENT_SECRET%"
 
 echo Triggering workflow: Set Fly.io Google Secrets (Staging)...
-gh workflow run "Set Fly.io Google Secrets (Staging).yml"
+gh workflow run set-fly-google-secrets.yml
 
 echo Done. Check Actions: https://github.com/himprapatel-rgb/ai-skincare-intelligence-system/actions
 exit /b 0

@@ -31,7 +31,7 @@ Write-Host "Setting GOOGLE_CLIENT_SECRET in GitHub Actions secrets..."
 $secret | gh secret set GOOGLE_CLIENT_SECRET --repo "$(gh repo view --json nameWithOwner -q .nameWithOwner)"
 
 Write-Host "Triggering workflow: Set Fly.io Google Secrets (Staging)..."
-gh workflow run "Set Fly.io Google Secrets (Staging).yml" --repo "$(gh repo view --json nameWithOwner -q .nameWithOwner)"
+gh workflow run set-fly-google-secrets.yml --repo "$(gh repo view --json nameWithOwner -q .nameWithOwner)"
 
 Write-Host "Done. Check Actions tab for workflow status; when it succeeds, Google sign-in on staging will work."
 Write-Host "  https://github.com/$(gh repo view --json nameWithOwner -q .nameWithOwner)/actions"

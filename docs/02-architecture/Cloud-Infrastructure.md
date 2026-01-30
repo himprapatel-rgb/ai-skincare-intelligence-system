@@ -11,14 +11,15 @@ The Pellicura (AI Skincare Intelligence System) uses a modern cloud-native archi
 
 | Component | Provider | Service |
 |-----------|----------|---------|
-| Frontend Hosting | Cloudflare | Pages |
-| Backend Hosting | Fly.io | Docker Containers (staging + production) |
-| Database (main) | Railway | PostgreSQL (users, auth, scans, shelf, routines) |
-| Database (catalog) | Railway | Optional second PostgreSQL (products, ingredients, brands) |
-| DNS & CDN | Cloudflare | DNS, SSL, CDN |
+| Frontend (production) | Railway | Node/React (pellicura.com) |
+| Frontend (staging) | Cloudflare | Pages (staging.pellicura.pages.dev) |
+| Backend | Railway | FastAPI Docker |
+| Database (main) | Railway | PostgreSQL |
+| Database (catalog) | Railway | PostgreSQL (separate) |
+| DNS | Cloudflare | pellicura.com → Railway |
 | CI/CD | GitHub | Actions |
 
-**Note:** Backend can also run on Railway (optional); Fly.io apps can scale to zero when idle (cold starts on first request).
+**All production on Railway.** Domain pellicura.com uses Cloudflare for DNS only. See [Railway-All-Cloudflare-DNS.md](../05-deployment/Railway-All-Cloudflare-DNS.md).
 
 ---
 

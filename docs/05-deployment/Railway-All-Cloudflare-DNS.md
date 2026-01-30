@@ -28,12 +28,11 @@
 
 ## 2. Configure Cloudflare DNS
 
-### Option A: One-click via GitHub Actions (recommended)
+### Option A: One-click via GitHub Actions
 
-1. Push this repo to GitHub (workflow is in `.github/workflows/set-cloudflare-dns-railway.yml`).
+1. **Create a Cloudflare API token** with `Zone:Zone:Read` and `Zone:DNS:Edit` (Dashboard → Profile → API Tokens → Create). Add it to GitHub Secrets as `CLOUDFLARE_API_TOKEN` (or create `CLOUDFLARE_DNS_TOKEN` if your existing token is Pages-only).
 2. Go to **GitHub** → **Actions** → **Set Cloudflare DNS for Railway**.
-3. Click **Run workflow** → **Run workflow**.
-4. The workflow uses `CLOUDFLARE_API_TOKEN` from GitHub Secrets to add the CNAME records.
+3. Click **Run workflow**. If the zone lookup fails, get your Zone ID from Cloudflare Dashboard → pellicura.com → Overview (right sidebar) and pass it as the `zone_id` input.
 
 ### Option B: Manual in Cloudflare Dashboard
 

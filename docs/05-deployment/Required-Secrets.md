@@ -14,7 +14,7 @@ These secrets must be configured in GitHub → Settings → Secrets and variable
 |-------------|-------------|---------------|
 | `FLY_API_TOKEN` | Fly.io deployment token | Run `flyctl tokens create deploy` in terminal |
 | `CLOUDFLARE_ACCOUNT_ID` | Cloudflare account identifier | Cloudflare Dashboard → Overview → Account ID |
-| `CLOUDFLARE_API_TOKEN` | Cloudflare API token for Pages | Cloudflare Dashboard → Profile → API Tokens → Create Token |
+| `CLOUDFLARE_API_TOKEN` | Cloudflare API token (Pages + DNS if using set-cloudflare-dns-railway workflow) | Cloudflare Dashboard → Profile → API Tokens. For DNS workflow: needs Zone:Read, Zone:DNS:Edit |
 
 ### Setting Up GitHub Secrets
 

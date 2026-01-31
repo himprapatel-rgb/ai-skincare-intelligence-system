@@ -2,23 +2,12 @@
 
 ## Google OAuth (one-time setup)
 
-**Set Google Client Secret in GitHub and Railway**
+**Primary: Set variables in Railway Dashboard**
 
-1. Get your **Client Secret** from [Google Cloud Console](https://console.cloud.google.com/apis/credentials) → your OAuth 2.0 Web client.
-2. From the repo root, run:
+1. Get **Client ID** and **Client Secret** from [Google Cloud Console](https://console.cloud.google.com/apis/credentials) → your OAuth 2.0 Web client.
+2. **Railway Dashboard** → Backend service → Variables: add `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `FRONTEND_URL`.
+3. **Railway Dashboard** → Frontend service → Variables: add `VITE_GOOGLE_CLIENT_ID` (same as Client ID). Redeploy frontend.
 
-   **PowerShell:**
-   ```powershell
-   .\scripts\set-google-secrets-and-fly.ps1
-   ```
-   Paste the Client Secret when prompted. Or set env first: `$env:GOOGLE_CLIENT_SECRET = "your-client-secret-here"` then run the script.
+See **[docs/05-deployment/Google-SSO-Setup.md](../docs/05-deployment/Google-SSO-Setup.md)** for full steps.
 
-   **CMD (Command Prompt):**
-   ```cmd
-   set GOOGLE_CLIENT_SECRET=your-client-secret-here
-   scripts\set-google-secrets-and-fly.cmd
-   ```
-
-3. The script adds `GOOGLE_CLIENT_SECRET` to GitHub Actions secrets. Also set `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` in Railway backend Variables for Google sign-in.
-
-**Requires:** [GitHub CLI (gh)](https://cli.github.com) installed and logged in (`gh auth login`).
+**Legacy (Fly.io):** `set-google-secrets-and-fly.ps1` / `.cmd` – for GitHub→Fly.io. Fly.io is deprecated; use Railway.

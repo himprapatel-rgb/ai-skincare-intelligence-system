@@ -62,11 +62,13 @@
 
 **Frontend service:**
 - `VITE_API_URL` = https://ai-skincare-intelligence-system-production.up.railway.app/api/v1
-- `VITE_GOOGLE_CLIENT_ID` = (your Google OAuth client ID)
+- `VITE_GOOGLE_CLIENT_ID` = (your Google OAuth client ID) – required for "Continue with Google"
 
 **Backend service:**
 - `FRONTEND_URL` = https://pellicura.com
-- `ALLOWED_ORIGINS` = pellicura.com, www.pellicura.com, frontend-production-0415.up.railway.app, localhost (production only)
+- `GOOGLE_CLIENT_ID` = (your Google OAuth client ID)
+- `GOOGLE_CLIENT_SECRET` = (your Google OAuth client secret)
+- `ALLOWED_ORIGINS` = optional – pellicura.com is always in defaults
 
 ---
 

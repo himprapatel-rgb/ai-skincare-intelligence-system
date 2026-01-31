@@ -1,8 +1,10 @@
 # Google Single Sign-On (SSO) Setup
 
-**Last Updated:** January 26, 2026
+**Last Updated:** January 31, 2026
 
-The app already has Google OAuth in the code (frontend button, callback page, backend `/auth/google`). You only need to create OAuth credentials and set secrets.
+**Status:** ✅ Working – Google sign-in is live on pellicura.com.
+
+The app has Google OAuth in the code (frontend button, callback page, backend `/auth/google`). Set credentials in Railway and Google Console.
 
 ---
 
@@ -18,129 +20,76 @@ The app already has Google OAuth in the code (frontend button, callback page, ba
    - Save.
 5. Application type: **Web application**.
 6. Name: e.g. **Pellicura Web**.
-7. **Authorized JavaScript origins** (add both):
-   - `https://staging.pellicura.pages.dev`
+7. **Authorized JavaScript origins** (add):
    - `https://pellicura.com`
    - `https://www.pellicura.com`
-   - (Optional for local dev: `http://localhost:5173`)
-8. **Authorized redirect URIs** (add **exactly** these; Google is strict):
-   - `https://staging.pellicura.pages.dev/auth/google/callback` (staging – **required**)
+   - `https://frontend-production-0415.up.railway.app`
+   - (Optional: `http://localhost:5173`)
+8. **Authorized redirect URIs** (add **exactly**; Google is strict):
    - `https://pellicura.com/auth/google/callback`
    - `https://www.pellicura.com/auth/google/callback`
-   - (Optional for local dev: `http://localhost:5173/auth/google/callback`)
-   - **If you see "Error 400: redirect_uri_mismatch"** → add the exact callback URL above in Google Console → Credentials → your OAuth client → Authorized redirect URIs.
+   - `https://frontend-production-0415.up.railway.app/auth/google/callback`
+   - (Optional: `http://localhost:5173/auth/google/callback`)
 9. Click **Create**.
-10. Copy the **Client ID** and **Client Secret** (you’ll set these as secrets below).
+10. Copy the **Client ID** and **Client Secret**.
 
 ---
 
-## 2. GitHub Secret (for frontend build)
+## 2. Railway Backend variables
 
-The frontend needs the Client ID at **build time** so the “Continue with Google” button is shown and works.
+Set in **Railway Dashboard** → your project → **Backend service** → **Variables**:
 
-1. GitHub → your repo → **Settings** → **Secrets and variables** → **Actions**.
-2. **New repository secret**:
-   - Name: `GOOGLE_CLIENT_ID`
-   - Value: paste the **Client ID** from step 1.
-3. Save.
+| Variable | Value |
+|----------|-------|
+| `GOOGLE_CLIENT_ID` | Your Client ID from step 1 |
+| `GOOGLE_CLIENT_SECRET` | Your Client Secret from step 1 |
+| `FRONTEND_URL` | `https://pellicura.com` (or your canonical frontend URL) |
 
-Your workflows already use it:
-- **Staging:** `deploy-staging.yml` passes `VITE_GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}` when building the frontend.
-- **Production:** `deploy-cloudflare.yml` does the same for production builds.
-
-After the next frontend deploy (staging or production), the Google button will appear on the auth page.
+Redeploy the backend after adding these.
 
 ---
 
-## 3. Railway Backend variables
+## 3. Railway Frontend variables
 
-The backend exchanges the OAuth code for tokens and creates/logs in the user. It needs both Client ID and Client Secret.
+Set in **Railway Dashboard** → **Frontend service** → **Variables**:
 
-### Option A: One-click via GitHub (recommended)
+| Variable | Value |
+|----------|-------|
+| `VITE_GOOGLE_CLIENT_ID` | Same Client ID as backend |
+| `VITE_API_URL` | `https://ai-skincare-intelligence-system-production.up.railway.app/api/v1` |
 
-**From your machine (repo root):**
-
-1. Install [GitHub CLI (gh)](https://cli.github.com) and run `gh auth login` if needed.
-2. Get your **Client Secret** from [Google Cloud Console](https://console.cloud.google.com/apis/credentials) → your OAuth 2.0 Web client.
-3. Run:
-   ```powershell
-   .\scripts\set-google-secrets-and-fly.ps1
-   ```
-   Paste the Client Secret when prompted. The script adds `GOOGLE_CLIENT_SECRET` to GitHub Secrets and triggers **Set Fly.io Google Secrets (Staging)**. When the workflow succeeds, Google sign-in on staging works.
-
-**Or manually:**
-
-1. GitHub → **Settings** → **Secrets and variables** → **Actions** → **New repository secret** → Name: `GOOGLE_CLIENT_SECRET`, Value: your Client Secret.
-2. **Actions** → **Set Fly.io Google Secrets (Staging)** → **Run workflow**.
-
-`FRONTEND_URL` is already set in `Railway Variables` for staging; no extra step needed.
-
-### Option B: Set secrets manually with Fly CLI
-
-**Staging (pellicura-api-staging):**
-
-```bash
-fly secrets set GOOGLE_CLIENT_ID="YOUR_CLIENT_ID" --app pellicura-api-staging
-fly secrets set GOOGLE_CLIENT_SECRET="YOUR_CLIENT_SECRET" --app pellicura-api-staging
-```
-
-Ensure `FRONTEND_URL` matches your staging frontend (so redirect_uri matches Google):
-
-```bash
-# If not already set in Railway Variables or secrets:
-fly secrets set FRONTEND_URL="https://staging.pellicura.pages.dev" --app pellicura-api-staging
-```
-
-### Production (pellicura-api)
-
-```bash
-fly secrets set GOOGLE_CLIENT_ID="YOUR_CLIENT_ID" --app pellicura-api
-fly secrets set GOOGLE_CLIENT_SECRET="YOUR_CLIENT_SECRET" --app pellicura-api
-```
-
-Ensure `FRONTEND_URL` matches your production frontend:
-
-```bash
-fly secrets set FRONTEND_URL="https://pellicura.com" --app pellicura-api
-```
-
-(Use `https://www.pellicura.com` if that’s the canonical URL.)
+Redeploy the frontend after adding `VITE_GOOGLE_CLIENT_ID` (required at build time).
 
 ---
 
-## 4. Verify
+## 4. GitHub Secret (optional – for CI builds)
 
-1. **Staging:** Open https://staging.pellicura.pages.dev/auth → you should see **Continue with Google**. Click it → Google → redirect back → signed in.
-2. **Production:** Same on https://pellicura.com/auth after production deploy.
+If your frontend is built by GitHub Actions (e.g. deploy-cloudflare), add:
 
-If the button doesn’t appear, the frontend was built without `GOOGLE_CLIENT_ID` (check GitHub Secret and redeploy). If click fails with “redirect_uri mismatch”, the redirect URI in Google Console must exactly match your frontend origin + `/auth/google/callback`, and backend `FRONTEND_URL` must match that origin.
+- **GitHub** → Settings → Secrets → `GOOGLE_CLIENT_ID` = your Client ID
 
 ---
 
-## Troubleshooting: “Google sign-in not working”
+## 5. Verify
 
-Use this checklist:
+1. Open https://pellicura.com/auth
+2. Click **Continue with Google**
+3. Sign in with Google → redirect back → signed in
 
-| # | Check | What to do |
-|---|--------|------------|
-| 1 | **Redirect URI in Google Console** | On the Sign In page, expand **“Google sign-in not working? Add this redirect URI”** and copy the URL. In [Google Cloud Console → Credentials](https://console.cloud.google.com/apis/credentials) → your OAuth 2.0 client → **Authorized redirect URIs**, add that exact URL (no trailing slash). Save. |
-| 2 | **Authorized JavaScript origins** | In the same OAuth client, **Authorized JavaScript origins** must include your frontend origin (e.g. `https://staging.pellicura.pages.dev` or `https://pellicura.com`). |
-| 3 | **Fly.io backend secrets** | Railway Dashboard → backend service → **Variables**. Set `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`. Redeploy if needed. |
-| 4 | **FRONTEND_URL on Fly.io** | Backend must use the same frontend origin for the redirect URI. Staging: `FRONTEND_URL=https://staging.pellicura.pages.dev` (set in `Railway Variables` or secrets). Production: `FRONTEND_URL=https://pellicura.com` (or your canonical domain). |
-| 5 | **Backend reachable** | If the Sign In page shows “Backend not reachable”, the API is down or CORS is blocking. Check Railway service status, health (`/api/health`), and that your frontend origin is in the backend’s `ALLOWED_ORIGINS`. |
-| 6 | **Timeout / cold start** | On Fly.io, the first request after idle can take 30–60s. Wait or try “Continue with Google” again; the second attempt is usually fast. |
+---
+
+## Troubleshooting
+
+See **[GOOGLE-LOGIN-TROUBLESHOOTING.md](../11-working/GOOGLE-LOGIN-TROUBLESHOOTING.md)** for common issues (Network Error, redirect_uri_mismatch, etc.).
 
 ---
 
 ## Summary
 
-| Where            | Secret / setting       | Purpose                          |
-|------------------|------------------------|----------------------------------|
-| GitHub Secrets   | `GOOGLE_CLIENT_ID`     | Frontend build → Google button   |
-| GitHub Secrets   | `GOOGLE_CLIENT_SECRET` | Frontend build (if needed)       |
-| Railway          | `GOOGLE_CLIENT_ID`     | Backend OAuth exchange           |
-| Railway          | `GOOGLE_CLIENT_SECRET` | Backend OAuth exchange           |
-| Railway          | `FRONTEND_URL`         | Must be production frontend origin |
-| Google Console   | OAuth client           | Authorized origins + redirect URIs |
-
-After these are set, Google SSO works as before.
+| Where | Variable | Purpose |
+|-------|----------|---------|
+| Railway Backend | `GOOGLE_CLIENT_ID` | OAuth code exchange |
+| Railway Backend | `GOOGLE_CLIENT_SECRET` | OAuth code exchange |
+| Railway Backend | `FRONTEND_URL` | Redirect URI base |
+| Railway Frontend | `VITE_GOOGLE_CLIENT_ID` | Google button (build-time) |
+| Google Console | OAuth client | Authorized origins + redirect URIs |

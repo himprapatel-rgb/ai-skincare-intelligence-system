@@ -114,15 +114,26 @@ Pellicura is an **AI-powered skincare intelligence app** that:
 |----------|-------------|
 | `DATABASE_URL` | PostgreSQL connection string |
 | `SECRET_KEY` | JWT signing key |
+| `FRONTEND_URL` | Frontend origin (e.g. https://pellicura.com) |
 | `OPENAI_API_KEY` | OpenAI API for skin analysis |
+| `GOOGLE_CLIENT_ID` | Google OAuth (for sign-in) ✅ |
+| `GOOGLE_CLIENT_SECRET` | Google OAuth (for sign-in) ✅ |
+
+### Railway Frontend
+| Variable | Description |
+|----------|-------------|
+| `VITE_API_URL` | Backend API URL |
+| `VITE_GOOGLE_CLIENT_ID` | Google OAuth (for "Continue with Google" button) ✅ |
 
 ---
 
 ## Documentation
 
 - **Deployment Guide**: [docs/05-deployment/Deployment-Guide.md](docs/05-deployment/Deployment-Guide.md)
+- **Google SSO Setup**: [docs/05-deployment/Google-SSO-Setup.md](docs/05-deployment/Google-SSO-Setup.md)
+- **Railway + Cloudflare**: [docs/05-deployment/Railway-All-Cloudflare-DNS.md](docs/05-deployment/Railway-All-Cloudflare-DNS.md)
 - **Skin Analysis AI**: [docs/02-architecture/Skin-Analysis-AI.md](docs/02-architecture/Skin-Analysis-AI.md)
 - **Cloud Infrastructure**: [docs/02-architecture/Cloud-Infrastructure.md](docs/02-architecture/Cloud-Infrastructure.md)
 - **Quick Start**: [docs/00-index/Quick-Start.md](docs/00-index/Quick-Start.md)
 
-**Last Reviewed**: January 26, 2026
+**Last Reviewed**: January 31, 2026

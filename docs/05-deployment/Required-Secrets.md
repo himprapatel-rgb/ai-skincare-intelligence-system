@@ -1,6 +1,6 @@
 # Required Secrets & Environment Variables
 
-**Last Updated:** January 26, 2026
+**Last Updated:** January 31, 2026
 
 ---
 
@@ -109,13 +109,9 @@ Format: `postgresql://user:password@host:port/database`
 
 ### Setting Up Product Database
 
-```bash
-# Option 1: Use same database (tables are separate)
-fly secrets set PRODUCT_DATABASE_URL="$DATABASE_URL" --app pellicura-api
-
-# Option 2: Create separate database on Railway and use that URL
-fly secrets set PRODUCT_DATABASE_URL="postgresql://..." --app pellicura-api
-```
+Set in **Railway Dashboard** → backend service → Variables:
+- **Option 1:** Use same DB – set `PRODUCT_DATABASE_URL` = same as `DATABASE_URL`
+- **Option 2:** Create a second PostgreSQL on Railway – set `PRODUCT_DATABASE_URL` to its connection string
 
 ---
 
@@ -138,11 +134,10 @@ fly secrets set PRODUCT_DATABASE_URL="postgresql://..." --app pellicura-api
 
 **Quick steps:**
 1. [Google Cloud Console](https://console.cloud.google.com/apis/credentials) → Create OAuth 2.0 Client ID (Web application).
-2. Authorized JavaScript origins: `https://staging.pellicura.pages.dev`, `https://pellicura.com`, `https://www.pellicura.com`.
-3. Authorized redirect URIs: `https://staging.pellicura.pages.dev/auth/google/callback`, `https://pellicura.com/auth/google/callback`, `https://www.pellicura.com/auth/google/callback`.
-4. GitHub Secrets → `GOOGLE_CLIENT_ID` (Client ID).
-5. Fly.io staging: `fly secrets set GOOGLE_CLIENT_ID="..." GOOGLE_CLIENT_SECRET="..." --app pellicura-api-staging`
-6. Fly.io production: `fly secrets set GOOGLE_CLIENT_ID="..." GOOGLE_CLIENT_SECRET="..." --app pellicura-api`
+2. Authorized JavaScript origins: `https://pellicura.com`, `https://www.pellicura.com`, `https://frontend-production-0415.up.railway.app`.
+3. Authorized redirect URIs: `https://pellicura.com/auth/google/callback`, `https://www.pellicura.com/auth/google/callback`, `https://frontend-production-0415.up.railway.app/auth/google/callback`.
+4. **Railway Backend** → Variables: `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `FRONTEND_URL`.
+5. **Railway Frontend** → Variables: `VITE_GOOGLE_CLIENT_ID` (same as Client ID). Redeploy frontend.
 
 ### Optional Integrations
 
@@ -164,17 +159,16 @@ fly secrets set PRODUCT_DATABASE_URL="postgresql://..." --app pellicura-api
 |--------|------------|--------|
 | `CLOUDFLARE_ACCOUNT_ID` | Cloudflare Dashboard → Overview → Account ID | ✅ Set |
 | `CLOUDFLARE_API_TOKEN` | Cloudflare Dashboard → Profile → API Tokens → Create | ✅ Set |
-| `GOOGLE_CLIENT_ID` | Google Cloud Console → Credentials → OAuth 2.0. See [Google-SSO-Setup.md](./Google-SSO-Setup.md) | ⬜ Set for Google SSO |
-| `GOOGLE_CLIENT_SECRET` | Same OAuth 2.0 client → Client Secret. Used by **Set Fly.io Google Secrets (Staging)** workflow to push to Fly.io | ⬜ Set for Google SSO |
+| `GOOGLE_CLIENT_ID` | Google Cloud Console → Credentials → OAuth 2.0. See [Google-SSO-Setup.md](./Google-SSO-Setup.md) | For Railway frontend build (if using GitHub Actions) |
 
 **Add secrets at:** https://github.com/himprapatel-rgb/ai-skincare-intelligence-system/settings/secrets/actions
 
-**Google OAuth:** Run `.\scripts\set-google-secrets-and-fly.ps1` to add `GOOGLE_CLIENT_SECRET` to GitHub. Set both `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` in Railway backend Variables.
+**Google OAuth:** Set `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` in **Railway backend** Variables. Set `VITE_GOOGLE_CLIENT_ID` in **Railway frontend** Variables. See [Google-SSO-Setup.md](./Google-SSO-Setup.md).
 
 ### Railway Backend Variables
-- [x] `SECRET_KEY`, `DATABASE_URL`, `FRONTEND_URL`, `ALLOWED_ORIGINS`
+- [x] `SECRET_KEY`, `DATABASE_URL`, `FRONTEND_URL`
 - [x] `OPENAI_API_KEY` - For skin analysis
-- [ ] `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` - For Google Sign-In
+- [x] `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` - For Google Sign-In ✅
 
 ---
 

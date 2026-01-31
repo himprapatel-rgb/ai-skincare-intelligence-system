@@ -1,6 +1,6 @@
 # Google Login Troubleshooting (Railway)
 
-If you're unable to log in via Google, follow these checks:
+**Status:** Google sign-in is working on pellicura.com. If you have issues, follow these checks:
 
 ---
 

@@ -1,6 +1,6 @@
 # Where We Are – Project Status
 
-**Last Updated:** January 26, 2026
+**Last Updated:** January 31, 2026
 
 ---
 
@@ -13,7 +13,7 @@
 | **Production (Railway)** | ✅ Live | `main` → Railway auto-deploy |
 | **Database** | ✅ Railway PostgreSQL | Main DB; product catalog can use same or second DB |
 | **Railway deployment** | 📄 Documented | Backend + product DB deploy; **two-DB checklist:** [Railway-Two-Databases-Setup.md](../05-deployment/Railway-Two-Databases-Setup.md) |
-| **Google Sign-In** | 📄 Setup guide | Code in place; set secrets per [Google-SSO-Setup.md](../05-deployment/Google-SSO-Setup.md) |
+| **Google Sign-In** | ✅ Working | Live on pellicura.com. See [Google-SSO-Setup.md](../05-deployment/Google-SSO-Setup.md) |
 
 ---
 
@@ -67,16 +67,12 @@
 |----------|--------|-----|
 | **1** | **Verify both DBs** | Confirm health shows both DBs ok after redeploy. Run: `python backend/scripts/verify_two_databases.py --url https://ai-skincare-intelligence-system-production.up.railway.app` |
 | **2** | **Seed product catalog** | Populate the product DB with real data so barcode/photo lookups return catalog results. Run OBF importer (see below). |
-| **3** | **Google Sign-In** | Set `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` on Railway (and GitHub Secrets for frontend builds). |
-| **5** | **Deploy latest to production** | If Railway production was built from an older branch, merge and redeploy so `/api/health` shows `checks.main_database` and `checks.product_database`. |
 
-## 6. Still To Do (your side)
+## 6. Still To Do (optional)
 
-1. **Google Sign-In:** Code is in place. Set `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` on Railway backend. Add redirect URIs in Google Console: `https://pellicura.com/auth/google/callback`, `https://www.pellicura.com/auth/google/callback`. See [Google-SSO-Setup.md](../05-deployment/Google-SSO-Setup.md).
+1. **Product catalog:** Railway two-DB is done. **Google Sign-In** ✅ working.
 
-2. **Product catalog:** Railway two-DB is done.
-
-3. **Optional – seed product catalog (Railway):**  
+2. **Optional – seed product catalog (Railway):**  
    From your machine (with `PRODUCT_DATABASE_URL` from Railway or same as product DB):  
    `cd backend && python scripts/import_obf_catalog.py --source api --limit 1000`
 
@@ -94,6 +90,8 @@
 | Railway product DB deploy | `docs/05-deployment/Railway-Product-Database-Deploy.md` |
 | Deployment URLs | `DEPLOYMENT_URLS.md` |
 | Required secrets | `docs/05-deployment/Required-Secrets.md` |
+| Google SSO setup | `docs/05-deployment/Google-SSO-Setup.md` |
+| Google login troubleshooting | `docs/11-working/GOOGLE-LOGIN-TROUBLESHOOTING.md` |
 
 ---
 

@@ -264,18 +264,15 @@ npm run dev
 
 | Service | Platform | URL | Status |
 |---------|----------|-----|--------|
-| **Frontend (Production)** | Cloudflare Pages | https://pellicura.pages.dev | ✅ Live |
-| **Frontend (Staging)** | Cloudflare Pages | https://staging.pellicura.pages.dev | ✅ Live |
-| **Backend (Production)** | Fly.io | https://pellicura-api.fly.dev | ✅ Live |
-| **Backend (Staging)** | Fly.io | https://pellicura-api-staging.fly.dev | ✅ Live |
+| **Frontend** | Railway | https://pellicura.com | ✅ Live |
+| **Backend** | Railway | https://ai-skincare-intelligence-system-production.up.railway.app | ✅ Live |
 | **Database** | Railway PostgreSQL | Private | ✅ Live |
 
 ### CI/CD Pipelines
 
-| Branch | Frontend | Backend |
-|--------|----------|---------|
-| `main` | → Production (Railway) | Railway auto-deploy |
-| `develop` | → Staging (Cloudflare Pages) | Staging frontend |
+| Branch | Deploys To |
+|--------|------------|
+| `main` | Production (Railway – frontend + backend) |
 
 ### Deployment Workflow
 
@@ -306,8 +303,8 @@ npm run dev
 | Variable | Description |
 |----------|-------------|
 | `OPENAI_API_KEY` | OpenAI API key for vision analysis |
-| `GOOGLE_CLIENT_ID` | Google OAuth client ID (GitHub Secrets + Fly.io) |
-| `GOOGLE_CLIENT_SECRET` | Google OAuth client secret (GitHub Secrets; workflow pushes to Fly.io) |
+| `GOOGLE_CLIENT_ID` | Google OAuth client ID (Railway backend + frontend) |
+| `GOOGLE_CLIENT_SECRET` | Google OAuth client secret (Railway backend) |
 | `SMTP_HOST` | SMTP server for emails |
 | `SMTP_USERNAME` | SMTP username |
 | `SMTP_PASSWORD` | SMTP password |

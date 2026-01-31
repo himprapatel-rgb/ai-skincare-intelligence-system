@@ -380,12 +380,13 @@
 
 .status-select {
   flex: 1;
-  padding: 10px 12px;
+  min-height: 48px;
+  padding: var(--spacing-sm) var(--spacing-md);
   border: 1px solid var(--border);
-  border-radius: 8px; /* Brand guideline: 8px */
+  border-radius: var(--border-radius-md);
   background: var(--bg-white);
-  font-size: 0.95rem;
-  color: var(--text-dark);
+  font-size: var(--font-size-base);
+  color: var(--text-primary);
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -393,26 +394,26 @@
 .status-select:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(31, 111, 235, 0.1);
+  box-shadow: var(--focus-shadow);
 }
 
 .btn-remove {
+  min-height: 48px;
   background: var(--danger);
   color: white;
   border: none;
-  border-radius: 8px; /* Brand guideline: 8px */
-  padding: 10px 16px;
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-sm) var(--spacing-md);
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: var(--font-size-base);
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.2);
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-remove:hover {
   background: #b91c1c;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+  filter: brightness(0.95);
 }
 
 .empty-state {

@@ -171,6 +171,7 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 body {
@@ -349,6 +350,13 @@ select:focus {
     grid-template-columns: 1fr !important;
     gap: var(--spacing-lg);
   }
+}
+
+/* Table horizontal scroll on mobile (Task 910) */
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: var(--spacing-md);
 }
 
 /* Form full-width on mobile (Task 905) */

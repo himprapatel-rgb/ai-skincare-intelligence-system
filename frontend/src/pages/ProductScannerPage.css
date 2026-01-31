@@ -1070,20 +1070,23 @@
 
 .product-actions {
   display: flex;
-  gap: 16px;
+  gap: var(--spacing-md);
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .product-actions .btn-primary,
 .product-actions .btn-secondary {
-  padding: 12px 24px;
-  border-radius: 8px;
+  min-height: 48px;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: var(--border-radius-md);
   font-weight: 600;
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   cursor: pointer;
   transition: all 0.2s ease;
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
 }
 
 .product-actions .btn-primary {

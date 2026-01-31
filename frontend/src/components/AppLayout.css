@@ -33,14 +33,16 @@
 ============================================= */
 
 .app-header {
+  position: -webkit-sticky;
   position: sticky;
   top: 0;
-  z-index: var(--z-index-sticky, 100);
+  z-index: var(--z-index-sticky);
   background: rgba(255, 255, 255, 0.95);
   border-bottom: 1px solid var(--border-color);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-x: hidden;
 }
 
 .app-header.scrolled {
@@ -449,6 +451,7 @@
   visibility: hidden;
   pointer-events: none;
   max-height: calc(100vh - 80px);
+  overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),

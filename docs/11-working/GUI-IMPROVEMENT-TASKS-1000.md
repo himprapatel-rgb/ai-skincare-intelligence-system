@@ -266,14 +266,14 @@
 
 ## Progress Summary
 
-- **Completed:** 81
-  - Batch 1–11: (previous)
-  - Batch 12: 903 (nav overflow), 906 (touch 48px), 907 (html overflow-x), 910 (table-responsive), 931 (sticky iOS), 751–760 (product actions)
+- **Completed:** 86
+  - Batch 1–12: (previous)
+  - Batch 13: 941–950 (safe area), 512 (nav transition), 812–820 (trend cards, dashboard header)
 - **Total:** 1000
-- **In Progress:** Batch 13
+- **In Progress:** Batch 14
 
 ---
 
 ## Next Batch
 
-941–950 (safe area), 512–520 (header polish), 812–820 (dashboard charts)
+521–530 (footer), 611–620 (empty state audit), 305–310 (card headers)

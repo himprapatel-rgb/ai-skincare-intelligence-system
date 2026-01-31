@@ -138,45 +138,45 @@
 }
 
 .trend-analysis {
-  margin-top: 32px;
-  padding-top: 32px;
+  margin-top: var(--spacing-xl);
+  padding-top: var(--spacing-xl);
   border-top: 1px solid var(--border);
 }
 
 .trend-analysis h3 {
-  font-size: 1.25rem;
+  font-size: var(--font-size-xl);
   font-weight: 600;
-  color: var(--text-dark);
-  margin-bottom: 16px;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-md);
 }
 
 .trend-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
+  gap: var(--spacing-md);
 }
 
 .trend-card {
-  background: var(--bg-light);
-  border-radius: 12px;
-  padding: 20px;
+  background: var(--bg-tertiary);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-lg);
   border: 1px solid var(--border);
 }
 
 .trend-label {
-  font-size: 0.875rem;
-  color: var(--text-gray);
-  margin-bottom: 8px;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-sm);
   font-weight: 500;
 }
 
 .trend-value {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 1.125rem;
+  gap: var(--spacing-sm);
+  font-size: var(--font-size-lg);
   font-weight: 600;
-  margin-bottom: 8px;
+  margin-bottom: var(--spacing-sm);
 }
 
 .trend-value.positive {
@@ -184,13 +184,13 @@
 }
 
 .trend-value.negative {
-  color: var(--secondary);
+  color: var(--warning);
 }
 
 .trend-description {
-  font-size: 0.875rem;
-  color: var(--text-gray);
-  line-height: 1.5;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  line-height: var(--line-height-relaxed);
 }
 
 @media (max-width: 768px) {

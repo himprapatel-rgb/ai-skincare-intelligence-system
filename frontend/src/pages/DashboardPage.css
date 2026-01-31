@@ -93,9 +93,9 @@
 
 .stat-card {
   background: var(--bg-white);
-  border-radius: 12px; /* Brand guideline: 12px for cards */
-  padding: 32px 24px;
-  box-shadow: var(--shadow);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-xl) var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
   border: 1px solid var(--border);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;

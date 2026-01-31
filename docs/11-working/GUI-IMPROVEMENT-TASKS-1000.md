@@ -266,17 +266,14 @@
 
 ## Progress Summary
 
-- **Completed:** 12
-  - 304 (product card alignment), 607–608 (empty states), 701 (placeholder)
-  - 201 (btn min-height 48px), 202 (focus-visible ring), 203 (disabled contrast)
-  - 401 (input focus ring), 404 (input min-height 44px)
-  - 508 (skip-link focus), 906 (touch targets 44px), 907 (overflow-x hidden ✓)
-  - 6 (focus-ring token)
+- **Completed:** 24
+  - Batch 1: 201–203, 401, 404, 508, 906, 907, 6, 304, 607–608, 701
+  - Batch 2: 301–302, 305, 307, 309–310 (cards), 411–415 (Auth form), 501–502 (nav), 10 (z-index)
 - **Total:** 1000
-- **In Progress:** Continuing P0/P1 batch
+- **In Progress:** Batch 3
 
 ---
 
-## Next Batch (Immediate Work)
+## Next Batch
 
-305–310, 411–420 (form audit), 501–507 (nav)
+503–504, 505, 551 (mobile nav), 441 (search), 702 (product tabs)

@@ -110,8 +110,9 @@ async def add_security_headers(request, call_next):
     response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
     response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()"
     response.headers["Cross-Origin-Opener-Policy"] = "same-origin"
-    # Allow scan images to load across the frontend + backend domains.
-    if request.url.path.startswith("/api/v1/scan/") and request.url.path.endswith("/image"):
+    # API responses must be readable by cross-origin frontends (pellicura.com → Railway backend).
+    # "same-site" would block responses when frontend and backend are on different domains.
+    if request.url.path.startswith("/api/"):
         response.headers["Cross-Origin-Resource-Policy"] = "cross-origin"
     else:
         response.headers["Cross-Origin-Resource-Policy"] = "same-site"

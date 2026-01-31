@@ -124,7 +124,14 @@
 }
 
 .chart-container {
-  margin-bottom: 32px;
+  margin-bottom: var(--spacing-xl);
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.chart-container > div {
+  min-width: min(100%, 400px);
 }
 
 .trend-analysis {

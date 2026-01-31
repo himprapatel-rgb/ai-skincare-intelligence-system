@@ -110,12 +110,12 @@
 .product-image-zoom-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.85);
-  z-index: 9999;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: var(--z-index-modal);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px;
+  padding: var(--spacing-lg);
   cursor: pointer;
 }
 
@@ -125,28 +125,37 @@
   object-fit: contain;
   border-radius: var(--border-radius-md);
   cursor: default;
+  pointer-events: none;
 }
 
 .product-image-zoom-close {
   position: absolute;
-  top: 16px;
-  right: 16px;
+  top: var(--spacing-md);
+  right: var(--spacing-md);
   width: 44px;
   height: 44px;
+  min-width: 44px;
+  min-height: 44px;
   border: none;
   background: rgba(255, 255, 255, 0.2);
   color: #fff;
   font-size: 1.5rem;
   line-height: 1;
   cursor: pointer;
-  border-radius: 50%;
+  border-radius: var(--border-radius-full);
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background 0.2s ease;
 }
 
 .product-image-zoom-close:hover {
   background: rgba(255, 255, 255, 0.3);
+}
+
+.product-image-zoom-close:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 2px;
 }
 
 .placeholder-image {
@@ -392,8 +401,8 @@
 
 .key-ingredients {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--spacing-sm);
 }
 
 .ingredient-card {

@@ -60,34 +60,32 @@
 
 /* Dashboard Stats Grid */
 .dashboard-stats {
-  max-width: 1200px;
-  margin: 0 auto 48px;
-  padding: 0 24px;
+  max-width: var(--max-width-xl);
+  margin: 0 auto var(--spacing-2xl);
+  padding: 0 var(--spacing-lg);
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
+  gap: var(--spacing-lg);
   align-items: stretch;
 }
 @media (max-width: 640px) {
   .dashboard-stats {
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-}
-@media (min-width: 641px) and (max-width: 900px) {
-  .dashboard-stats {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-@media (max-width: 640px) {
-  .dashboard-stats {
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: var(--spacing-md);
+    padding: 0 var(--spacing-md);
   }
 }
+
 @media (min-width: 641px) and (max-width: 900px) {
   .dashboard-stats {
     grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+  }
+}
+
+@media (min-width: 901px) {
+  .dashboard-stats {
+    gap: var(--spacing-lg);
   }
 }
 
@@ -131,13 +129,13 @@
 
 .stat-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 4px 12px rgba(31, 111, 235, 0.15);
+  box-shadow: var(--shadow-card-hover);
   border-color: var(--primary);
 }
 
 .stat-card:focus-visible {
-  outline: 2px solid var(--primary);
-  outline-offset: 2px;
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
 }
 
 .stat-card.primary {
@@ -273,35 +271,39 @@
 
 .action-card {
   background: var(--bg-light);
-  border-radius: 8px; /* Brand guideline: 8px */
-  padding: 24px;
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-lg);
   border: 2px solid transparent;
   cursor: pointer;
   transition: all 0.2s ease;
   text-align: left;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  align-items: flex-start;
+  gap: var(--spacing-sm);
   appearance: none;
   border: none;
   width: 100%;
+  min-height: 44px;
 }
 
 .action-card:hover {
-  background: rgba(31, 111, 235, 0.05);
+  background: var(--primary-light);
   border-color: var(--primary);
   transform: translateY(-2px);
 }
 
 .action-card:focus-visible {
-  outline: 2px solid var(--primary);
-  outline-offset: 2px;
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
 }
 
 .action-icon {
   width: 48px;
   height: 48px;
-  border-radius: 8px;
+  min-width: 48px;
+  min-height: 48px;
+  border-radius: var(--border-radius-md);
   background: var(--bg-white);
   display: flex;
   align-items: center;
@@ -340,12 +342,11 @@
 .activity-item {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 16px 20px;
-  background: #ffffff;
-  border-radius: 12px;
-  border: 1px solid #e2e8f0;
-  transition: all 0.2s ease;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-lg);
+  background: var(--bg-white);
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border);
   transition: all 0.2s ease;
 }
 

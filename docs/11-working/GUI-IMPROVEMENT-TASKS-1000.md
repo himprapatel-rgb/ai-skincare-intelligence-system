@@ -266,14 +266,14 @@
 
 ## Progress Summary
 
-- **Completed:** 41
-  - Batch 1–4: (previous)
-  - Batch 5: 707 (product header mobile), 708 (rating bar), 709 (scanner card), 710 (recommendations grid), 741 (review form), 551 (mobile CTA focus)
+- **Completed:** 47
+  - Batch 1–5: (previous)
+  - Batch 6: 711–720 (zoom overlay), 721–730 (key ingredients), 801–807 (stat card, action card, chart, grid)
 - **Total:** 1000
-- **In Progress:** Batch 6
+- **In Progress:** Batch 7
 
 ---
 
 ## Next Batch
 
-711–720 (product image zoom), 721–730 (key ingredients), 801–807 (dashboard)
+731–740 (flagged ingredients), 751–760 (product actions), 808–810 (notification, skin goals)

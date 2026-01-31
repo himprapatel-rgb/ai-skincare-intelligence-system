@@ -13,6 +13,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
 COPY app /app/app
+COPY middleware /app/middleware
 COPY scripts /app/backend/scripts
 COPY migrations /app/backend/migrations
 

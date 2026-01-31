@@ -132,6 +132,20 @@ npm test -- --coverage
 npm test -- --watch
 ```
 
+#### E2E Tests (Playwright)
+```bash
+cd frontend
+npm run e2e
+```
+
+**Login-protected tests** require `E2E_EMAIL` and `E2E_PASSWORD`:
+
+1. Copy `frontend/env.e2e.example` to `frontend/.env.e2e`
+2. Fill in your test account credentials (create one via /auth if needed)
+3. Run `npm run e2e` — the config loads `.env.e2e` automatically
+
+Optional: `PLAYWRIGHT_BASE_URL` to test against local dev (`http://localhost:5173`) or another URL.
+
 ## Test Categories
 
 ### 1. Unit Tests (@pytest.mark.unit)

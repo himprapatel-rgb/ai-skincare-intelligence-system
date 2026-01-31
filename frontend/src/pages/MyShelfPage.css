@@ -3,8 +3,8 @@
 .myshelf-page {
   min-height: 100vh;
   background: var(--bg-light);
-  padding: 40px 24px;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  padding: var(--spacing-2xl) var(--spacing-lg);
+  font-family: var(--font-family);
 }
 
 .myshelf-container {
@@ -14,76 +14,79 @@
 
 .myshelf-header {
   text-align: center;
-  margin-bottom: 48px;
+  margin-bottom: var(--spacing-2xl);
 }
 
 .myshelf-header h1 {
-  font-size: 2rem; /* Brand guideline: 48px / 3rem for H1 */
-  font-weight: 700; /* Brand guideline: Bold */
-  color: var(--text-dark); /* Deep Navy */
-  margin-bottom: 12px;
-  line-height: 1.2; /* Brand guideline */
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: var(--spacing-sm);
+  line-height: var(--line-height-tight);
   letter-spacing: -0.5px;
 }
 
 .myshelf-header .subtitle {
   color: var(--text-gray);
-  font-size: 1.125rem; /* Brand guideline: 18px Body Large */
-  line-height: 1.6;
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-relaxed);
 }
 
 .myshelf-onboarding {
   background: var(--bg-white);
   border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: var(--shadow);
-  margin-bottom: 24px;
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: var(--spacing-lg);
 }
 
 .myshelf-onboarding h2 {
-  margin-bottom: 16px;
+  margin-bottom: var(--spacing-md);
   color: var(--text-dark);
+  font-size: var(--font-size-xl);
+  font-weight: 600;
 }
 
 .myshelf-onboarding-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 16px;
+  gap: var(--spacing-md);
 }
 
 .myshelf-onboarding-grid h3 {
-  margin-bottom: 6px;
-  font-size: 1rem;
+  margin-bottom: var(--spacing-xs);
+  font-size: var(--font-size-base);
+  font-weight: 600;
   color: var(--text-dark);
 }
 
 .myshelf-onboarding-grid p {
   margin: 0;
   color: var(--text-gray);
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
 }
 
 .myshelf-controls {
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
+  gap: var(--spacing-md);
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 32px;
+  margin-bottom: var(--spacing-xl);
   background: var(--bg-white);
-  padding: 24px;
-  border-radius: 12px; /* Brand guideline: 12px for cards */
-  box-shadow: var(--shadow);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-sm);
   border: 1px solid var(--border);
 }
 
 .add-product-btn {
-  background: linear-gradient(135deg, var(--primary) 0%, #5a8bff 100%);
-  color: #ffffff;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  color: var(--white);
   border: none;
-  padding: 14px 24px;
-  border-radius: 12px;
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: var(--border-radius-md);
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
@@ -385,25 +388,26 @@
 
 .empty-state {
   text-align: center;
-  padding: 80px 40px;
+  padding: var(--spacing-3xl) var(--spacing-2xl);
   background: var(--bg-white);
   border: 1px solid var(--border);
-  border-radius: 12px; /* Brand guideline: 12px for cards */
-  box-shadow: var(--shadow);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-sm);
 }
 
 .empty-state h3 {
-  font-size: 1.5rem; /* Brand guideline: 24px / 1.5rem for H3 */
+  font-size: var(--font-size-2xl);
   font-weight: 600;
   color: var(--text-dark);
-  margin-bottom: 12px;
-  line-height: 1.4;
+  margin-bottom: var(--spacing-sm);
+  line-height: var(--line-height-snug);
 }
 
 .empty-state p {
   color: var(--text-gray);
-  font-size: 1rem;
-  line-height: 1.6;
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-relaxed);
+  margin-bottom: var(--spacing-lg);
 }
 
 @media (max-width: 768px) {

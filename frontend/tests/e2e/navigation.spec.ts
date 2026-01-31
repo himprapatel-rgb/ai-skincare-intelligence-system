@@ -41,8 +41,8 @@ async function login(page: import("@playwright/test").Page) {
   // Wait for the auth form to be visible
   await page.waitForSelector('input[type="email"], input[id="email"]', { timeout: 10000 });
   
-  const emailInput = page.getByLabel("Email").or(page.locator('input[type="email"]'));
-  const passwordInput = page.getByLabel("Password").or(page.locator('input[type="password"]'));
+  const emailInput = page.getByRole("textbox", { name: "Email", exact: true });
+  const passwordInput = page.locator('input#password');
   
   await emailInput.fill(email);
   await passwordInput.fill(password);

@@ -5,7 +5,7 @@
 .page-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 40px 24px;
+  padding: var(--spacing-2xl) var(--spacing-lg);
   width: 100%;
 }
 
@@ -18,63 +18,66 @@
   justify-content: center;
   align-items: center;
   min-height: 400px;
-  font-size: 1.2rem;
-  color: var(--primary, #1f6feb);
+  font-size: var(--font-size-lg);
+  color: var(--primary);
 }
 
 .error-message {
-  background-color: #ffe4e1;
-  color: #b42318;
-  padding: 12px 16px;
-  border-radius: 8px;
-  margin: 16px 0;
+  background-color: var(--danger-light);
+  color: var(--danger);
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius-md);
+  margin: var(--spacing-md) 0;
 }
 
 .success-message {
-  background-color: #e6f8ec;
-  color: #0f7a2f;
-  padding: 12px 16px;
-  border-radius: 8px;
-  margin: 16px 0;
+  background-color: var(--success-light);
+  color: var(--success);
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius-md);
+  margin: var(--spacing-md) 0;
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--primary) 0%, #5a8bff 100%);
-  color: white;
-  padding: 12px 24px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  color: var(--white);
+  padding: var(--spacing-md) var(--spacing-lg);
   border: none;
-  border-radius: 999px;
-  font-size: 1rem;
+  border-radius: var(--border-radius-md);
+  font-size: var(--font-size-base);
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: all 0.2s ease;
 }
 
 .btn-primary:hover {
-  background-color: var(--primary-hover, #1e4fd6);
+  background: var(--primary-hover);
 }
 
 .btn-primary:disabled {
-  background-color: #ccc;
+  background-color: var(--gray-300);
   cursor: not-allowed;
 }
 
 .btn-secondary {
-  background-color: #ffffff;
-  color: var(--primary, #1f6feb);
-  padding: 12px 24px;
-  border: 1px solid rgba(31, 111, 235, 0.2);
-  border-radius: 999px;
-  font-size: 1rem;
+  background-color: var(--white);
+  color: var(--primary);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius-md);
+  font-size: var(--font-size-base);
+  font-weight: 600;
   cursor: pointer;
 }
 
 .btn-outline {
   background-color: transparent;
-  color: var(--primary, #1f6feb);
-  padding: 12px 24px;
-  border: 2px solid rgba(31, 111, 235, 0.4);
-  border-radius: 999px;
-  font-size: 1rem;
+  color: var(--primary);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border: 2px solid var(--primary);
+  border-radius: var(--border-radius-md);
+  font-size: var(--font-size-base);
+  font-weight: 600;
   cursor: pointer;
 }
 

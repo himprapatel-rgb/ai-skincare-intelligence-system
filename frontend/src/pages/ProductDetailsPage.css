@@ -154,17 +154,18 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 16px;
+  gap: 12px;
   height: 260px;
-  color: #94a3b8;
-  background: linear-gradient(145deg, #f0f4ff 0%, #e8f0fe 50%, #dbeafe 100%);
-  border-radius: 16px;
-  border: 1px solid rgba(59, 130, 246, 0.1);
+  color: var(--text-muted);
+  background: linear-gradient(145deg, var(--bg-tertiary) 0%, var(--primary-light) 50%, var(--accent-light) 100%);
+  border-radius: var(--border-radius-lg);
+  border: 1px dashed var(--border-color);
 }
 
 .placeholder-image span {
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   font-weight: 500;
+  color: var(--text-secondary);
 }
 
 .product-info-section {
@@ -662,8 +663,16 @@
 
 .no-reviews {
   text-align: center;
-  padding: 48px 24px;
-  color: var(--text-muted);
+  padding: var(--spacing-2xl) var(--spacing-xl);
+  color: var(--text-secondary);
+  background: var(--bg-tertiary);
+  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--border-color);
+}
+
+.no-reviews p {
+  margin: 0 0 var(--spacing-lg);
+  font-size: var(--font-size-base);
 }
 
 @media (max-width: 768px) {
@@ -885,17 +894,19 @@
 
 /* Task 234-238: Usage Guide Card */
 .usage-info-card {
-  background: linear-gradient(135deg, #eff6ff, #e0f2fe);
-  border: 1px solid #bfdbfe;
+  background: linear-gradient(135deg, var(--primary-light), var(--accent-light));
+  border: 1px solid var(--border-color);
   border-radius: var(--border-radius-lg);
-  padding: 20px;
-  margin-bottom: 24px;
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
 }
 
 .usage-info-card h3 {
-  color: #1e40af;
-  margin-bottom: 16px;
-  font-size: 1rem;
+  color: var(--primary-dark);
+  margin-bottom: var(--spacing-md);
+  font-size: var(--font-size-base);
+  font-weight: 600;
 }
 
 .usage-grid {
@@ -917,8 +928,8 @@
 }
 
 .usage-label {
-  font-size: 0.75rem;
-  color: #64748b;
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }

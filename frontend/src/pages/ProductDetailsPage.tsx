@@ -718,6 +718,9 @@ const ProductDetailsPage: React.FC = () => {
                     <li>Use barcode scanning for products in our database</li>
                     <li>Take a clear photo of the back label showing all ingredients</li>
                   </ul>
+                  <Link to="/scanner" className="ingredient-cta">
+                    Scan product to add ingredients
+                  </Link>
                 </div>
               )}
             </div>
@@ -896,6 +899,12 @@ const ProductDetailsPage: React.FC = () => {
               ) : (
                 <div className="no-reviews">
                   <p>No reviews yet. Be the first to review this product!</p>
+                  <button
+                    className="btn-primary"
+                    onClick={() => setShowReviewForm(true)}
+                  >
+                    Write a Review
+                  </button>
                 </div>
               )}
             </div>

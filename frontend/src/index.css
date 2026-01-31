@@ -378,6 +378,27 @@ select:focus {
   margin: 0;
 }
 
+/* Search input consistency (Task 441) */
+.search-bar input,
+.search-input,
+.favorites-search-input,
+.history-search-input {
+  min-height: 44px;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border);
+  font-size: var(--font-size-base);
+}
+
+.search-bar input:focus,
+.search-input:focus,
+.favorites-search-input:focus,
+.history-search-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: var(--focus-shadow);
+}
+
 /* Dropdown stacking (Tasks 541–550) - custom dropdowns */
 [role="listbox"],
 [role="menu"].dropdown-menu {

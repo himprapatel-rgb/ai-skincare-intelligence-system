@@ -266,14 +266,14 @@
 
 ## Progress Summary
 
-- **Completed:** 103
-  - Batch 1–15: (previous)
-  - Batch 16: 321 (card-body), 431 (review form), 561 (aria-current), 306 (Recommendations card)
+- **Completed:** 108
+  - Batch 1–16: (previous)
+  - Batch 17: 441 (search input), 581 (back button), 601 (empty state icon mobile)
 - **Total:** 1000
-- **In Progress:** Batch 17
+- **In Progress:** Batch 18
 
 ---
 
 ## Next Batch
 
-331–340 (card image), 441 (search), 581 (back button), 601–602 (empty state icon)
+602 (empty CTA), 371–380 (card responsive), 409 (checkbox alignment)

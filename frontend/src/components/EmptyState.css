@@ -19,6 +19,14 @@
 .empty-state-icon svg {
   width: 64px;
   height: 64px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+  .empty-state-icon svg {
+    width: 56px;
+    height: 56px;
+  }
 }
 
 .empty-state-title {

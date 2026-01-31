@@ -30,17 +30,16 @@
   margin-right: 4px;
 }
 
-.back-button {
+.product-details-page .back-button {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 12px;
-  border-radius: var(--border-radius-md);
-  background: var(--white);
-  border: 1px solid var(--border-color);
+  gap: var(--spacing-xs);
+  min-height: 44px;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--bg-white);
+  border: 1px solid var(--border);
   color: var(--text-secondary);
-  font-weight: 600;
-  margin-bottom: 24px;
+  margin-bottom: var(--spacing-lg);
 }
 
 .back-button:hover {

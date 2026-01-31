@@ -152,11 +152,13 @@
   --focus-ring-offset: 2px;
   --focus-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
 
-  /* Z-index scale */
+  /* Z-index scale (Tasks 541–550) */
   --z-index-dropdown: 1000;
   --z-index-sticky: 100;
   --z-index-modal: 2000;
   --z-index-toast: 3000;
+  /* Select/dropdown menus should stack above cards */
+  --z-index-select: 1050;
 }
 
 /* Reset & Base Styles */
@@ -369,6 +371,12 @@ select:focus {
   font-weight: 600;
   color: var(--text-primary);
   margin: 0;
+}
+
+/* Dropdown stacking (Tasks 541–550) - custom dropdowns */
+[role="listbox"],
+[role="menu"].dropdown-menu {
+  z-index: var(--z-index-dropdown);
 }
 
 /* Table horizontal scroll on mobile (Task 910) */
@@ -666,11 +674,11 @@ select:focus {
    ============================================================ */
 
 .card {
-  background: #ffffff;
-  border-radius: var(--radius-xl);
-  border: 1px solid rgba(226, 232, 240, 0.8);
-  box-shadow: var(--shadow-card);
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+  background: var(--bg-white);
+  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
               box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
               border-color 0.3s ease;
 }
@@ -678,19 +686,19 @@ select:focus {
 .card-hover:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-card-hover);
-  border-color: rgba(59, 130, 246, 0.2);
+  border-color: var(--primary);
 }
 
 .card-padding {
-  padding: 28px;
+  padding: var(--spacing-xl);
 }
 
 .card-padding-sm {
-  padding: 20px;
+  padding: var(--spacing-lg);
 }
 
 .card-padding-lg {
-  padding: 36px;
+  padding: var(--spacing-xl);
 }
 
 /* Glass Card variant */
@@ -717,7 +725,7 @@ select:focus {
 /* Gradient border card */
 .card-gradient-border {
   position: relative;
-  background: #ffffff;
+  background: var(--bg-white);
   border: none;
 }
 

@@ -12,7 +12,6 @@ These secrets must be configured in GitHub → Settings → Secrets and variable
 
 | Secret Name | Description | How to Obtain |
 |-------------|-------------|---------------|
-| `FLY_API_TOKEN` | Fly.io deployment token | Run `flyctl tokens create deploy` in terminal |
 | `CLOUDFLARE_ACCOUNT_ID` | Cloudflare account identifier | Cloudflare Dashboard → Overview → Account ID |
 | `CLOUDFLARE_API_TOKEN` | Cloudflare API token (Pages + DNS if using set-cloudflare-dns-railway workflow) | Cloudflare Dashboard → Profile → API Tokens. For DNS workflow: needs Zone:Read, Zone:DNS:Edit |
 
@@ -26,76 +25,19 @@ These secrets must be configured in GitHub → Settings → Secrets and variable
 
 ---
 
-## Fly.io Secrets (Backend)
+## Railway Backend Variables
 
-These secrets are stored in Fly.io and injected as environment variables.
+Set in Railway Dashboard → backend service → Variables.
 
-### Production (pellicura-api)
-
-| Secret Name | Description | Required |
-|-------------|-------------|----------|
+| Variable | Description | Required |
+|----------|-------------|----------|
 | `SECRET_KEY` | JWT signing key (32+ chars) | Yes |
-| `ALGORITHM` | JWT algorithm (HS256) | Yes |
-| `ACCESS_TOKEN_EXPIRE_MINUTES` | Token expiry in minutes | Yes |
 | `DATABASE_URL` | PostgreSQL connection string | Yes |
-| `RUN_MIGRATIONS` | Enable migrations on deploy | Yes |
-| `ALLOW_PROD_MIGRATIONS` | Allow production migrations | Yes |
-| `APP_NAME` | Application name | No |
-| `SENDGRID_API_KEY` | SendGrid email API key | Optional |
-| `OPENAI_API_KEY` | OpenAI API key | Optional |
-| `CLOUDINARY_URL` | Cloudinary connection string | Optional |
-
-### Staging (pellicura-api-staging)
-
-Same secrets as production, with staging-specific values.
-
-### Managing Fly.io Secrets
-
-```bash
-# Set a secret
-flyctl secrets set SECRET_KEY="your-secure-key-here" --app pellicura-api
-
-# Set multiple secrets
-flyctl secrets set \
-  SECRET_KEY="key" \
-  DATABASE_URL="postgresql://..." \
-  --app pellicura-api
-
-# List all secrets (names only, values hidden)
-flyctl secrets list --app pellicura-api
-
-# Remove a secret
-flyctl secrets unset SECRET_KEY --app pellicura-api
-```
-
----
-
-## Environment Variables in fly.toml
-
-These are non-sensitive configuration values set in `fly.toml`.
-
-### Production (backend/fly.toml)
-
-```toml
-[env]
-  PORT = "8000"
-  ENV = "production"
-  DEBUG = "false"
-  ALLOWED_ORIGINS = "[\"https://pellicura.com\",\"https://www.pellicura.com\"]"
-  ALLOWED_HOSTS = "[\"*\"]"
-  FRONTEND_URL = "https://pellicura.com"
-```
-
-### Staging (backend/fly.staging.toml)
-
-```toml
-[env]
-  PORT = "8000"
-  ENV = "staging"
-  DEBUG = "true"
-  ALLOWED_ORIGINS = "[\"https://staging.pellicura.pages.dev\"]"
-  FRONTEND_URL = "https://staging.pellicura.pages.dev"
-```
+| `FRONTEND_URL` | Frontend origin (e.g. https://pellicura.com) | Yes |
+| `ALLOWED_ORIGINS` | JSON array of CORS origins | Yes |
+| `OPENAI_API_KEY` | OpenAI API for skin analysis | Optional |
+| `GOOGLE_CLIENT_ID` | Google OAuth | For Google Sign-In |
+| `GOOGLE_CLIENT_SECRET` | Google OAuth | For Google Sign-In |
 
 ---
 
@@ -116,7 +58,7 @@ In `.github/workflows/deploy-cloudflare.yml`:
 - name: Build frontend
   run: npm run build
   env:
-    VITE_API_URL: https://pellicura-api.fly.dev/api/v1
+    VITE_API_URL: https://ai-skincare-intelligence-system-production.up.railway.app/api/v1
 ```
 
 ---
@@ -189,8 +131,8 @@ fly secrets set PRODUCT_DATABASE_URL="postgresql://..." --app pellicura-api
 
 | Service | Secret Name | Where to Set | Purpose |
 |---------|-------------|--------------|---------|
-| Google OAuth | `GOOGLE_CLIENT_ID` | GitHub Secrets + Fly.io | Google Sign-In button (frontend build + backend) |
-| Google OAuth | `GOOGLE_CLIENT_SECRET` | Fly.io only | Backend OAuth exchange |
+| Google OAuth | `GOOGLE_CLIENT_ID` | GitHub Secrets + Railway | Google Sign-In (frontend build + backend) |
+| Google OAuth | `GOOGLE_CLIENT_SECRET` | GitHub Secrets + Railway | Backend OAuth exchange |
 
 **Full step-by-step:** See **[Google-SSO-Setup.md](./Google-SSO-Setup.md)**.
 
@@ -220,8 +162,6 @@ fly secrets set PRODUCT_DATABASE_URL="postgresql://..." --app pellicura-api
 
 | Secret | How to Get | Status |
 |--------|------------|--------|
-| `FLY_API_TOKEN` | Run `fly tokens create deploy -x 999999h` | ✅ Set |
-| `FLY_API_TOKEN_STAGING` | Run `fly tokens create deploy -x 999999h` | ✅ Set |
 | `CLOUDFLARE_ACCOUNT_ID` | Cloudflare Dashboard → Overview → Account ID | ✅ Set |
 | `CLOUDFLARE_API_TOKEN` | Cloudflare Dashboard → Profile → API Tokens → Create | ✅ Set |
 | `GOOGLE_CLIENT_ID` | Google Cloud Console → Credentials → OAuth 2.0. See [Google-SSO-Setup.md](./Google-SSO-Setup.md) | ⬜ Set for Google SSO |
@@ -229,21 +169,12 @@ fly secrets set PRODUCT_DATABASE_URL="postgresql://..." --app pellicura-api
 
 **Add secrets at:** https://github.com/himprapatel-rgb/ai-skincare-intelligence-system/settings/secrets/actions
 
-**Push Google secrets to Fly.io staging:** Either run **Actions → Set Fly.io Google Secrets (Staging)** once after adding `GOOGLE_CLIENT_SECRET`, or from repo root run `.\scripts\set-google-secrets-and-fly.ps1` (prompts for Client Secret, then sets it in GitHub and triggers the workflow). See [Google-SSO-Setup.md](./Google-SSO-Setup.md) and [scripts/README.md](../../scripts/README.md).
+**Google OAuth:** Run `.\scripts\set-google-secrets-and-fly.ps1` to add `GOOGLE_CLIENT_SECRET` to GitHub. Set both `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` in Railway backend Variables.
 
-### Fly.io Secrets (Production)
-- [x] `SECRET_KEY` - JWT signing key
-- [x] `DATABASE_URL` - From Railway
-- [x] `RUN_MIGRATIONS=true`
-- [x] `ALLOW_PROD_MIGRATIONS=true`
-- [x] `ALGORITHM=HS256`
-- [x] `ACCESS_TOKEN_EXPIRE_MINUTES=60`
+### Railway Backend Variables
+- [x] `SECRET_KEY`, `DATABASE_URL`, `FRONTEND_URL`, `ALLOWED_ORIGINS`
 - [x] `OPENAI_API_KEY` - For skin analysis
-
-### Fly.io Secrets (Staging)
-- [x] Same as production with staging-specific values
-- [ ] `GOOGLE_CLIENT_ID` - **MISSING** - For Google Sign-In
-- [ ] `GOOGLE_CLIENT_SECRET` - **MISSING** - For Google OAuth
+- [ ] `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` - For Google Sign-In
 
 ---
 

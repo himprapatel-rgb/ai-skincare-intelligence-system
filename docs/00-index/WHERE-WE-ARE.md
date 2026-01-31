@@ -10,8 +10,8 @@
 |------|--------|--------|
 | **Scanner & Barcode (500 tasks)** | ✅ 100% complete | Camera, photo, AI recognition, My Shelf, product details |
 | **Product Database (500 tasks)** | ✅ 100% complete | Two-DB architecture, catalog API, scanner integration |
-| **Staging (Fly.io + Cloudflare)** | ✅ Live | `develop` → auto-deploy |
-| **Production (Fly.io + Cloudflare)** | ✅ Live | `main` → manual deploy |
+| **Staging (Railway + Cloudflare Pages)** | ✅ Live | `develop` → auto-deploy |
+| **Production (Railway)** | ✅ Live | `main` → Railway auto-deploy |
 | **Database** | ✅ Railway PostgreSQL | Main DB; product catalog can use same or second DB |
 | **Railway deployment** | 📄 Documented | Backend + product DB deploy; **two-DB checklist:** [Railway-Two-Databases-Setup.md](../05-deployment/Railway-Two-Databases-Setup.md) |
 | **Google Sign-In** | 📄 Setup guide | Code in place; set secrets per [Google-SSO-Setup.md](../05-deployment/Google-SSO-Setup.md) |
@@ -68,8 +68,7 @@
 |----------|--------|-----|
 | **1** | **Verify both DBs** | Confirm health shows both DBs ok after redeploy. Run: `python backend/scripts/verify_two_databases.py --url https://ai-skincare-intelligence-system-production.up.railway.app` |
 | **2** | **Seed product catalog** | Populate the product DB with real data so barcode/photo lookups return catalog results. Run OBF importer (see below). |
-| **3** | **Google Sign-In** | If you want Google login: set `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` on Fly.io (and GitHub Secrets for staging builds). |
-| **4** | **Fly.io two DBs (optional)** | Staging/production on Fly.io can also use two DBs: set `PRODUCT_DATABASE_URL` there to a second Postgres if you want catalog separate on Fly too. |
+| **3** | **Google Sign-In** | Set `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` on Railway (and GitHub Secrets for frontend builds). |
 | **5** | **Deploy latest to production** | If Railway production was built from an older branch, merge and redeploy so `/api/health` shows `checks.main_database` and `checks.product_database`. |
 
 ## 6. Still To Do (your side)
@@ -99,4 +98,4 @@
 
 ---
 
-**In short:** Scanner and product database work are complete (1,000 tasks). Staging and production are live on Fly.io + Cloudflare with Railway for the DB. Railway backend + product DB deployment is documented; remaining steps are setting Google OAuth secrets (if needed) and configuring the product catalog DB on your chosen environment.
+**In short:** Scanner and product database work are complete (1,000 tasks). Staging and production are live on Railway (frontend, backend, database). Cloudflare: DNS for pellicura.com, Pages for staging frontend. No Fly.io.

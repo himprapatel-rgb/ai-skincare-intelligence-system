@@ -1,7 +1,8 @@
 @echo off
-REM Add GOOGLE_CLIENT_SECRET to GitHub Secrets and trigger Fly.io staging.
+REM Add GOOGLE_CLIENT_SECRET to GitHub Secrets (for frontend builds).
+REM Backend: Set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in Railway dashboard.
 REM Usage: set GOOGLE_CLIENT_SECRET=your-client-secret
-REM        scripts\set-google-secrets-and-fly.cmd
+REM        scripts\set-google-secrets.cmd
 
 where gh >nul 2>&1
 if errorlevel 1 goto no_gh
@@ -11,10 +12,7 @@ if "%GOOGLE_CLIENT_SECRET%"=="" goto no_secret
 echo Setting GOOGLE_CLIENT_SECRET in GitHub Actions secrets...
 gh secret set GOOGLE_CLIENT_SECRET --body "%GOOGLE_CLIENT_SECRET%"
 
-echo Triggering workflow: Set Fly.io Google Secrets (Staging)...
-gh workflow run set-fly-google-secrets.yml
-
-echo Done. Check Actions: https://github.com/himprapatel-rgb/ai-skincare-intelligence-system/actions
+echo Done. Set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in Railway dashboard for backend.
 exit /b 0
 
 :no_gh

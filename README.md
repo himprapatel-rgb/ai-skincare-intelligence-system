@@ -17,7 +17,7 @@
 |----------|-----|
 | **Production Frontend** | [pellicura.pages.dev](https://pellicura.pages.dev) |
 | **Staging Frontend** | [staging.pellicura.pages.dev](https://staging.pellicura.pages.dev) |
-| **Production Backend** | [pellicura-api.fly.dev](https://pellicura-api.fly.dev) |
+| **Production Backend** | [ai-skincare-intelligence-system-production.up.railway.app](https://ai-skincare-intelligence-system-production.up.railway.app) |
 | **Staging Backend** | [pellicura-api-staging.fly.dev](https://pellicura-api-staging.fly.dev) |
 | **API Documentation** | `/api/docs` (Swagger UI) |
 | **GitHub Repository** | [github.com/himprapatel-rgb/ai-skincare-intelligence-system](https://github.com/himprapatel-rgb/ai-skincare-intelligence-system) |
@@ -128,9 +128,9 @@ The AI Skincare Intelligence System is a full-stack web application that uses ar
 ### Infrastructure (Current → Target)
 | Technology | Purpose | Migration Target |
 |------------|---------|------------------|
-| **Railway** | Current Hosting | → Cloudflare/Fly.io |
+| **Railway** | Current Hosting | Frontend, Backend, Database |
 | **Cloudflare Pages** | Frontend CDN | ✅ Target |
-| **Fly.io** | Backend Hosting | ✅ Target |
+| **Railway** | Backend + Frontend + DB | ✅ Live |
 | **Neon** | Serverless PostgreSQL | ✅ Target |
 | **GitHub Actions** | CI/CD pipelines | Unchanged |
 | **Docker** | Containerization | Unchanged |
@@ -274,8 +274,8 @@ npm run dev
 
 | Branch | Frontend | Backend |
 |--------|----------|---------|
-| `main` | → Production (Cloudflare) | → Production (Fly.io) |
-| `develop` | → Staging (Cloudflare) | → Staging (Fly.io) |
+| `main` | → Production (Railway) | Railway auto-deploy |
+| `develop` | → Staging (Cloudflare Pages) | Staging frontend |
 
 ### Deployment Workflow
 
@@ -403,7 +403,7 @@ For questions or issues, please open a GitHub issue or contact the development t
 |-----------|--------|------|
 | MVP Development | ✅ Complete | 2026-01 |
 | 500 Task Checklist | ✅ 500/500 Complete | 2026-01-28 |
-| Fly.io + Cloudflare Migration | ✅ Complete | 2026-01-29 |
+| Railway-Only Infrastructure | ✅ Complete | 2026-01-31 |
 | Product Scanner Enhancements | ✅ Complete | 2026-01-29 |
 | Ingredient Safety System | ✅ Complete | 2026-01-29 |
 | Production Launch | ✅ Live | 2026-01-29 |
@@ -427,4 +427,4 @@ For questions or issues, please open a GitHub issue or contact the development t
 
 *Last updated: January 29, 2026*  
 *Domain: pellicura.pages.dev*  
-*Status: Production Live on Fly.io + Cloudflare*
+*Status: Production Live on Railway (no Fly.io)*

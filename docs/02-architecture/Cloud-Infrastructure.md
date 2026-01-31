@@ -41,31 +41,11 @@ The Pellicura (AI Skincare Intelligence System) uses a modern cloud-native archi
 │         └────────┬────────┘       └────────┬────────┘                   │
 │                  │                         │                            │
 │                  ▼                         ▼                            │
-│         ┌─────────────────────────────────────────────┐                 │
-│         │           CLOUDFLARE PAGES                  │                 │
-│         │  • Static hosting (React/Vite)              │                 │
-│         │  • Global CDN                               │                 │
-│         │  • Automatic SSL                            │                 │
-│         │  • DDoS protection                          │                 │
+│         │  pellicura.com → Cloudflare DNS → Railway                    │
+│         │  staging → Cloudflare Pages                                  │
 │         └────────────────────┬────────────────────────┘                 │
-│                              │ API Requests                             │
+│                              │                                          │
 │                              ▼                                          │
-│         ┌─────────────────────────────────────────────┐                 │
-│         │              FLY.IO (London)                │                 │
-│         │  ┌─────────────────┐ ┌─────────────────┐    │                 │
-│         │  │ pellicura-api   │ │pellicura-api-   │    │                 │
-│         │  │  (Production)   │ │   staging       │    │                 │
-│         │  │                 │ │                 │    │                 │
-│         │  │ • FastAPI       │ │ • FastAPI       │    │                 │
-│         │  │ • Docker        │ │ • Docker        │    │                 │
-│         │  │ • Auto-scaling  │ │ • Auto-scaling  │    │                 │
-│         │  │ • Auto-stop     │ │ • Auto-stop     │    │                 │
-│         │  └────────┬────────┘ └────────┬────────┘    │                 │
-│         └───────────┼───────────────────┼─────────────┘                 │
-│                     │                   │                               │
-│                     └─────────┬─────────┘                               │
-│                               │                                         │
-│                               ▼                                         │
 │         ┌─────────────────────────────────────────────┐                 │
 │         │              RAILWAY                        │                 │
 │         │  ┌─────────────────┐ ┌─────────────────┐  │                 │
@@ -88,7 +68,7 @@ The Pellicura (AI Skincare Intelligence System) uses a modern cloud-native archi
 | Service | URL | Region |
 |---------|-----|--------|
 | Frontend | https://pellicura.com | Global (Cloudflare CDN) |
-| Backend | https://pellicura-api.fly.dev | London (lhr) |
+| Backend | https://ai-skincare-intelligence-system-production.up.railway.app | Railway |
 | Database | Railway PostgreSQL | US East |
 
 ### Staging
@@ -96,10 +76,10 @@ The Pellicura (AI Skincare Intelligence System) uses a modern cloud-native archi
 | Service | URL | Region |
 |---------|-----|--------|
 | Frontend | https://staging.pellicura.pages.dev | Global (Cloudflare CDN) |
-| Backend | https://pellicura-api-staging.fly.dev | London (lhr) |
+| Backend | https://ai-skincare-intelligence-system-production.up.railway.app | Railway (shared) |
 | Database | Railway PostgreSQL (shared) | US East |
 
-**Fly.io behaviour:** Staging and production backends on Fly.io can **scale to zero** when idle. The first request after idle may take 30–60 seconds (cold start); subsequent requests are fast. Railway backends typically stay warm.
+**Railway:** Backend stays warm; no cold starts. Frontend and backend both deploy from GitHub.
 
 ---
 
@@ -136,7 +116,7 @@ The Pellicura (AI Skincare Intelligence System) uses a modern cloud-native archi
 │   ┌─────────────────────────────────────────────────────────┐   │
 │   │  STAGING                      PRODUCTION                │   │
 │   │  staging.pellicura.pages.dev  pellicura.com             │   │
-│   │  pellicura-api-staging        pellicura-api             │   │
+│   │  Staging (CF Pages)           Production (Railway)      │   │
 │   └─────────────────────────────────────────────────────────┘   │
 │                                                                  │
 └─────────────────────────────────────────────────────────────────┘

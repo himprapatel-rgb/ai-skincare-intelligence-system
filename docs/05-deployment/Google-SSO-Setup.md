@@ -52,7 +52,7 @@ After the next frontend deploy (staging or production), the Google button will a
 
 ---
 
-## 3. Fly.io Backend secrets (staging and production)
+## 3. Railway Backend variables
 
 The backend exchanges the OAuth code for tokens and creates/logs in the user. It needs both Client ID and Client Secret.
 
@@ -73,7 +73,7 @@ The backend exchanges the OAuth code for tokens and creates/logs in the user. It
 1. GitHub → **Settings** → **Secrets and variables** → **Actions** → **New repository secret** → Name: `GOOGLE_CLIENT_SECRET`, Value: your Client Secret.
 2. **Actions** → **Set Fly.io Google Secrets (Staging)** → **Run workflow**.
 
-`FRONTEND_URL` is already set in `fly.staging.toml` for staging; no extra step needed.
+`FRONTEND_URL` is already set in `Railway Variables` for staging; no extra step needed.
 
 ### Option B: Set secrets manually with Fly CLI
 
@@ -87,7 +87,7 @@ fly secrets set GOOGLE_CLIENT_SECRET="YOUR_CLIENT_SECRET" --app pellicura-api-st
 Ensure `FRONTEND_URL` matches your staging frontend (so redirect_uri matches Google):
 
 ```bash
-# If not already set in fly.staging.toml or secrets:
+# If not already set in Railway Variables or secrets:
 fly secrets set FRONTEND_URL="https://staging.pellicura.pages.dev" --app pellicura-api-staging
 ```
 
@@ -125,9 +125,9 @@ Use this checklist:
 |---|--------|------------|
 | 1 | **Redirect URI in Google Console** | On the Sign In page, expand **“Google sign-in not working? Add this redirect URI”** and copy the URL. In [Google Cloud Console → Credentials](https://console.cloud.google.com/apis/credentials) → your OAuth 2.0 client → **Authorized redirect URIs**, add that exact URL (no trailing slash). Save. |
 | 2 | **Authorized JavaScript origins** | In the same OAuth client, **Authorized JavaScript origins** must include your frontend origin (e.g. `https://staging.pellicura.pages.dev` or `https://pellicura.com`). |
-| 3 | **Fly.io backend secrets** | In [Fly.io](https://fly.io) → your app (e.g. `pellicura-api-staging`) → **Secrets**, set `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`. Redeploy if needed. |
-| 4 | **FRONTEND_URL on Fly.io** | Backend must use the same frontend origin for the redirect URI. Staging: `FRONTEND_URL=https://staging.pellicura.pages.dev` (set in `fly.staging.toml` or secrets). Production: `FRONTEND_URL=https://pellicura.com` (or your canonical domain). |
-| 5 | **Backend reachable** | If the Sign In page shows “Backend not reachable”, the API is down or CORS is blocking. Check Fly.io app status, health (`/api/health`), and that your frontend origin is in the backend’s `ALLOWED_ORIGINS`. |
+| 3 | **Fly.io backend secrets** | Railway Dashboard → backend service → **Variables**. Set `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`. Redeploy if needed. |
+| 4 | **FRONTEND_URL on Fly.io** | Backend must use the same frontend origin for the redirect URI. Staging: `FRONTEND_URL=https://staging.pellicura.pages.dev` (set in `Railway Variables` or secrets). Production: `FRONTEND_URL=https://pellicura.com` (or your canonical domain). |
+| 5 | **Backend reachable** | If the Sign In page shows “Backend not reachable”, the API is down or CORS is blocking. Check Railway service status, health (`/api/health`), and that your frontend origin is in the backend’s `ALLOWED_ORIGINS`. |
 | 6 | **Timeout / cold start** | On Fly.io, the first request after idle can take 30–60s. Wait or try “Continue with Google” again; the second attempt is usually fast. |
 
 ---
@@ -137,12 +137,10 @@ Use this checklist:
 | Where            | Secret / setting       | Purpose                          |
 |------------------|------------------------|----------------------------------|
 | GitHub Secrets   | `GOOGLE_CLIENT_ID`     | Frontend build → Google button   |
-| Fly.io Staging   | `GOOGLE_CLIENT_ID`     | Backend OAuth exchange           |
-| Fly.io Staging   | `GOOGLE_CLIENT_SECRET` | Backend OAuth exchange           |
-| Fly.io Staging   | `FRONTEND_URL`         | Must be staging frontend origin  |
-| Fly.io Production| `GOOGLE_CLIENT_ID`     | Backend OAuth exchange           |
-| Fly.io Production| `GOOGLE_CLIENT_SECRET` | Backend OAuth exchange           |
-| Fly.io Production| `FRONTEND_URL`         | Must be production frontend origin |
+| GitHub Secrets   | `GOOGLE_CLIENT_SECRET` | Frontend build (if needed)       |
+| Railway          | `GOOGLE_CLIENT_ID`     | Backend OAuth exchange           |
+| Railway          | `GOOGLE_CLIENT_SECRET` | Backend OAuth exchange           |
+| Railway          | `FRONTEND_URL`         | Must be production frontend origin |
 | Google Console   | OAuth client           | Authorized origins + redirect URIs |
 
 After these are set, Google SSO works as before.

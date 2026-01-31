@@ -1,6 +1,6 @@
-# Add GOOGLE_CLIENT_SECRET to GitHub Secrets and trigger Fly.io staging to receive both Google secrets.
+# Add GOOGLE_CLIENT_SECRET to GitHub Secrets (for frontend builds).
+# Backend runs on Railway: set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in Railway dashboard.
 # Requires: gh CLI (https://cli.github.com), logged in (gh auth login).
-# GOOGLE_CLIENT_ID is already in GitHub Secrets; this script adds GOOGLE_CLIENT_SECRET and runs the Fly workflow.
 
 $ErrorActionPreference = "Stop"
 
@@ -11,11 +11,10 @@ if (-not (Get-Command gh -ErrorAction SilentlyContinue)) {
 
 $secret = $env:GOOGLE_CLIENT_SECRET
 if (-not $secret -or $secret.Trim() -eq "") {
-    # Non-interactive (e.g. CI or PowerShell -NonInteractive): require env var
     if ([Environment]::UserInteractive -eq $false) {
         Write-Host "GOOGLE_CLIENT_SECRET is not set. In a terminal run:"
         Write-Host '  $env:GOOGLE_CLIENT_SECRET = "your-client-secret-from-google-console"'
-        Write-Host "  .\scripts\set-google-secrets-and-fly.ps1"
+        Write-Host "  .\scripts\set-google-secrets.ps1"
         exit 1
     }
     Write-Host "Paste your Google OAuth Client Secret (from Google Cloud Console -> Credentials -> your OAuth 2.0 client):"
@@ -30,8 +29,5 @@ if (-not $secret -or $secret.Trim() -eq "") {
 Write-Host "Setting GOOGLE_CLIENT_SECRET in GitHub Actions secrets..."
 $secret | gh secret set GOOGLE_CLIENT_SECRET --repo "$(gh repo view --json nameWithOwner -q .nameWithOwner)"
 
-Write-Host "Triggering workflow: Set Fly.io Google Secrets (Staging)..."
-gh workflow run set-fly-google-secrets.yml --repo "$(gh repo view --json nameWithOwner -q .nameWithOwner)"
-
-Write-Host "Done. Check Actions tab for workflow status; when it succeeds, Google sign-in on staging will work."
-Write-Host "  https://github.com/$(gh repo view --json nameWithOwner -q .nameWithOwner)/actions"
+Write-Host "Done. GitHub secret set."
+Write-Host "Backend: Set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in Railway dashboard for the backend service."

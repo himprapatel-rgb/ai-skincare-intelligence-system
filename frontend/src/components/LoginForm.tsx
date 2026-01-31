@@ -193,7 +193,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegis
       <GoogleSignInButton disabled={loading} />
       {googleBackendReachable === false && (
         <p className="auth-google-hint" style={{ marginTop: '8px', fontSize: '0.875rem', color: 'var(--text-gray)' }}>
-          Backend not reachable. Google sign-in may fail. Check that the API is running (e.g. Fly.io or Railway) and that this site&apos;s URL is in CORS.
+          Backend not reachable. Google sign-in may fail. Check that the API is running (Railway) and that this site&apos;s URL is in CORS.
         </p>
       )}
       {googleRedirectUri && (

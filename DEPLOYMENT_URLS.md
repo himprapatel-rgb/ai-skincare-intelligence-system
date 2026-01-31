@@ -24,9 +24,9 @@ Pellicura is an **AI-powered skincare intelligence app** that:
 | **Database** | Railway PostgreSQL | Railway | ✅ Operational |
 
 ### Production API Endpoints
-- Health Check: `https://pellicura-api.fly.dev/api/health`
-- API Docs: `https://pellicura-api.fly.dev/docs`
-- API v1: `https://pellicura-api.fly.dev/api/v1/`
+- Health Check: `https://ai-skincare-intelligence-system-production.up.railway.app/api/health`
+- API Docs: `https://ai-skincare-intelligence-system-production.up.railway.app/docs`
+- API v1: `https://ai-skincare-intelligence-system-production.up.railway.app/api/v1/`
 
 ---
 
@@ -120,8 +120,6 @@ Pellicura is an **AI-powered skincare intelligence app** that:
 
 | File | Purpose |
 |------|---------|
-| `backend/fly.toml` | Production backend (Fly.io) |
-| `backend/fly.staging.toml` | Staging backend (Fly.io) |
 | `frontend/wrangler.toml` | Frontend (Cloudflare Pages) |
 | `.github/workflows/deploy-*.yml` | CI/CD pipelines |
 
@@ -132,13 +130,12 @@ Pellicura is an **AI-powered skincare intelligence app** that:
 ### GitHub Actions
 | Secret | Description |
 |--------|-------------|
-| `FLY_API_TOKEN` | Fly.io deployment token |
 | `CLOUDFLARE_ACCOUNT_ID` | Cloudflare account ID |
 | `CLOUDFLARE_API_TOKEN` | Cloudflare API token |
 
-### Fly.io Backend
-| Secret | Description |
-|--------|-------------|
+### Railway Backend
+| Variable | Description |
+|----------|-------------|
 | `DATABASE_URL` | PostgreSQL connection string |
 | `SECRET_KEY` | JWT signing key |
 | `OPENAI_API_KEY` | OpenAI API for skin analysis |

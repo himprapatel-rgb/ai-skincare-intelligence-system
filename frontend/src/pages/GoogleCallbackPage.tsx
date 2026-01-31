@@ -9,7 +9,7 @@ import { api } from '../services/api';
 import { usePageTitle } from '../hooks/usePageTitle';
 import './GoogleCallbackPage.css';
 
-/** Timeout for backend /auth/google (ms). Long enough for Fly.io cold starts (often 30–60s). */
+/** Timeout for backend /auth/google (ms). */
 const AUTH_GOOGLE_TIMEOUT_MS = 60000;
 
 const GoogleCallbackPage: React.FC = () => {

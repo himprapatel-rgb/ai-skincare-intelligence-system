@@ -329,28 +329,32 @@
 
 .product-details-tabs {
   max-width: var(--max-width-xl);
-  margin: 0 auto 64px;
-  background: var(--white);
-  border: 1px solid var(--border-color);
+  margin: 0 auto var(--spacing-3xl);
+  background: var(--bg-white);
+  border: 1px solid var(--border);
   border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow-sm);
 }
 
 .tabs-header {
   display: flex;
-  gap: 8px;
-  border-bottom: 1px solid var(--border-color);
-  padding: 12px;
+  gap: var(--spacing-sm);
+  border-bottom: 1px solid var(--border);
+  padding: var(--spacing-sm);
   flex-wrap: wrap;
 }
 
 .tabs-header button {
   background: transparent;
   border: none;
+  min-height: 44px;
   padding: 10px 16px;
   border-radius: var(--border-radius-md);
   font-weight: 600;
+  font-size: var(--font-size-base);
   color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .tabs-header button.active {
@@ -362,8 +366,13 @@
   color: var(--primary);
 }
 
+.tabs-header button:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
+}
+
 .tab-content {
-  padding: 24px;
+  padding: var(--spacing-lg);
 }
 
 .overview-tab section {

@@ -180,19 +180,25 @@
 
 .search-bar input {
   min-width: 240px;
-  padding: 12px 16px; /* Brand guideline: 12px 16px */
+  min-height: 44px;
+  padding: 12px 16px;
   border: 1px solid var(--border);
-  border-radius: 8px; /* Brand guideline: 8px */
-  background: var(--bg-light);
-  font-size: 1rem; /* Brand guideline: 16px Body */
+  border-radius: var(--border-radius-md);
+  background: var(--bg-tertiary);
+  font-size: var(--font-size-base);
   transition: all 0.2s ease;
 }
 
-.search-bar input:focus {
+.search-bar input::placeholder {
+  color: var(--placeholder-color);
+}
+
+.search-bar input:focus,
+.search-bar input:focus-visible {
   outline: none;
   border-color: var(--primary);
   background: var(--bg-white);
-  box-shadow: 0 0 0 3px rgba(31, 111, 235, 0.1);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 
 .filter-tabs {

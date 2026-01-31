@@ -3,11 +3,11 @@
 .recommendations-page {
   min-height: 100vh;
   background: var(--bg-secondary);
-  padding: 40px 24px;
+  padding: var(--spacing-2xl) var(--spacing-lg);
 }
 
 .recommendations-container {
-  max-width: 1200px;
+  max-width: var(--max-width-xl);
   margin: 0 auto;
 }
 
@@ -15,18 +15,18 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 48px;
-  gap: 24px;
+  margin-bottom: var(--spacing-2xl);
+  gap: var(--spacing-lg);
   flex-wrap: wrap;
 }
 
 .recommendations-header h1 {
-  font-size: 2rem; /* Brand guideline: 48px / 3rem for H1 */
-  font-weight: 700; /* Brand guideline: Bold */
-  color: var(--text-primary); /* Deep Navy */
-  margin-bottom: 12px;
-  line-height: 1.2; /* Brand guideline */
-  letter-spacing: -0.5px;
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-md);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight);
 }
 
 .recommendations-header h1 .gradient-text {

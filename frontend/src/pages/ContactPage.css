@@ -8,33 +8,39 @@
 
 .contact-hero {
   text-align: center;
-  padding: 80px 24px 60px;
-  max-width: 800px;
+  padding: var(--spacing-3xl) var(--spacing-lg) var(--spacing-2xl);
+  max-width: var(--max-width-lg);
   margin: 0 auto;
 }
 
 .contact-hero h1 {
-  font-size: 2rem; /* Brand guideline: 48px / 3rem for H1 */
-  font-weight: 700; /* Brand guideline: Bold */
-  color: var(--text-dark); /* Deep Navy */
-  margin-bottom: 24px;
-  line-height: 1.2;
-  letter-spacing: -0.5px;
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-dark);
+  margin-bottom: var(--spacing-lg);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight);
 }
 
 .contact-hero p {
-  font-size: 1.125rem; /* Brand guideline: 18px Body Large */
-  color: var(--text-gray);
-  line-height: 1.6;
+  font-size: var(--font-size-lg);
+  color: var(--text-secondary);
+  line-height: var(--line-height-relaxed);
 }
 
 .contact-container {
-  max-width: 1200px;
+  max-width: var(--max-width-xl);
   margin: 0 auto;
-  padding: 60px 24px;
+  padding: var(--spacing-2xl) var(--spacing-lg);
   display: grid;
   grid-template-columns: 1fr 2fr;
-  gap: 48px;
+  gap: var(--spacing-2xl);
+}
+
+@media (max-width: 768px) {
+  .contact-container {
+    grid-template-columns: 1fr;
+  }
 }
 
 .contact-info {
@@ -45,30 +51,30 @@
 
 .info-card {
   background: var(--bg-white);
-  padding: 32px;
-  border-radius: 12px; /* Brand guideline: 12px for cards */
-  box-shadow: var(--shadow);
+  padding: var(--spacing-xl);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-sm);
   border: 1px solid var(--border);
   text-align: center;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .info-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 4px 12px rgba(31, 111, 235, 0.15);
+  box-shadow: var(--shadow-card-hover);
   border-color: var(--primary);
 }
 
 .social-card .social-links {
-  margin-top: 16px;
+  margin-top: var(--spacing-md);
   display: flex;
   justify-content: center;
-  gap: 12px;
+  gap: var(--spacing-md);
 }
 
 .social-card .social-links a {
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   border-radius: 999px;
   border: 1px solid var(--border);
   display: inline-flex;

@@ -159,13 +159,13 @@
 .product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 24px;
+  gap: var(--spacing-lg);
 }
 
 .product-card {
-  background: var(--white);
-  border: 1px solid var(--border-color);
-  border-radius: 12px; /* Brand guideline: 12px for cards */
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius-md);
   overflow: hidden;
   transition: all 0.3s ease;
   box-shadow: var(--shadow-sm);

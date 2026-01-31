@@ -453,7 +453,13 @@
 }
 
 .review-form .form-group {
-  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.review-form .form-group:not(:last-child) {
+  margin-bottom: var(--spacing-md);
 }
 
 .review-form label {
@@ -467,16 +473,18 @@
 .review-form textarea,
 .review-form select {
   width: 100%;
-  padding: 12px;
-  border: 1px solid var(--border-color);
+  min-height: 44px;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid var(--border);
   border-radius: var(--border-radius-md);
-  font-size: 0.95rem;
+  font-size: var(--font-size-base);
   font-family: inherit;
 }
 
 .review-form textarea {
   resize: vertical;
   min-height: 100px;
+  padding: var(--spacing-md);
 }
 
 .review-form input:focus,
@@ -484,7 +492,7 @@
 .review-form select:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px var(--primary-light);
+  box-shadow: var(--focus-shadow);
 }
 
 .star-rating-input {
@@ -577,24 +585,24 @@
 
 .rating-bar-row {
   display: grid;
-  grid-template-columns: 50px 1fr 30px;
+  grid-template-columns: minmax(44px, 50px) 1fr minmax(28px, 36px);
   align-items: center;
-  gap: 12px;
-  font-size: 0.85rem;
+  gap: var(--spacing-sm);
+  font-size: var(--font-size-sm);
   color: var(--text-secondary);
 }
 
 .bar-bg {
   height: 8px;
-  background: var(--border-color);
-  border-radius: 4px;
+  background: var(--border);
+  border-radius: var(--border-radius-sm);
   overflow: hidden;
 }
 
 .bar-fill {
   height: 100%;
   background: var(--warning);
-  border-radius: 4px;
+  border-radius: var(--border-radius-sm);
   transition: width 0.3s ease;
 }
 
@@ -774,15 +782,22 @@
 
 @media (max-width: 480px) {
   .product-details-page {
-    padding: 24px 16px;
+    padding: var(--spacing-lg) var(--spacing-md);
+  }
+
+  .product-header {
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .product-image-section {
+    max-width: 280px;
+    margin: 0 auto;
+    padding: var(--spacing-md);
   }
 
   .product-info-section h1 {
     font-size: 1.75rem;
-  }
-
-  .product-image-section {
-    padding: 16px;
   }
 
   .rating-section {
@@ -790,7 +805,7 @@
   }
 
   .tab-content {
-    padding: 16px;
+    padding: var(--spacing-md);
   }
 
   .ingredient-item {

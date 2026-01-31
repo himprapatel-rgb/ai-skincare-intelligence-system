@@ -555,6 +555,7 @@
   align-items: center;
   justify-content: center;
   min-height: 48px;
+  min-width: 48px;
   padding: 14px 20px;
   border-radius: var(--border-radius-md);
   text-align: center;
@@ -563,6 +564,14 @@
   background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
   text-decoration: none;
   box-shadow: var(--shadow-sm);
+  border: none;
+  cursor: pointer;
+}
+
+.app-nav-mobile-btn-primary:focus-visible,
+.app-nav-mobile-cta:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 2px;
 }
 
 .app-nav-mobile-cta {
@@ -571,6 +580,7 @@
   justify-content: center;
   gap: var(--spacing-sm);
   min-height: 48px;
+  min-width: 48px;
   margin-top: var(--spacing-md);
   padding: var(--spacing-md) var(--spacing-lg);
   border-radius: var(--border-radius-md);

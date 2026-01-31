@@ -7,6 +7,8 @@ import { Component, ErrorInfo, ReactNode } from 'react';
 interface Props {
   children: ReactNode;
   fallback?: ReactNode;
+  /** Called when user clicks Try Again - e.g. navigate to home for a clean slate */
+  onRetry?: () => void;
 }
 
 interface State {
@@ -49,6 +51,7 @@ class ErrorBoundary extends Component<Props, State> {
   }
 
   private handleRetry = () => {
+    this.props.onRetry?.();
     this.setState({ hasError: false, error: null, errorInfo: null });
   };
 
@@ -73,7 +76,7 @@ class ErrorBoundary extends Component<Props, State> {
             <div className="error-suggestions">
               <h4>Try these steps:</h4>
               <ol>
-                <li>Click "Try Again" below</li>
+                <li>Click &quot;Try Again&quot; to return home, then try your action again</li>
                 <li>Refresh the page</li>
                 <li>Clear your browser cache</li>
                 <li>Try a different browser</li>

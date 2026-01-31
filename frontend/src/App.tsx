@@ -1,6 +1,6 @@
 // src/App.tsx - Premium GUI v3 - Complete Frontend
 import React, { Suspense } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { ToastProvider } from "./context/ToastContext";
 import { ShelfProvider } from "./context/ShelfContext";
@@ -54,6 +54,59 @@ const SkinTypeGuidePage = React.lazy(() => import("./pages/SkinTypeGuidePage"));
 const VideoTutorialsPage = React.lazy(() => import("./pages/VideoTutorialsPage"));
 const NotFoundPage = React.lazy(() => import("./pages/NotFoundPage"));
 
+function AppRoutes() {
+  const navigate = useNavigate();
+  return (
+    <ErrorBoundary onRetry={() => navigate("/", { replace: true })}>
+      <Suspense fallback={<LoadingScreen message="Loading page..." fullscreen={false} />}>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/auth" element={<AuthPage />} />
+          <Route path="/password-reset" element={<PasswordResetPage />} />
+          <Route path="/password-reset/confirm" element={<PasswordResetConfirmPage />} />
+          <Route path="/verify-email" element={<EmailVerificationPage />} />
+          <Route path="/auth/google/callback" element={<GoogleCallbackPage />} />
+          <Route path="/scan" element={<ScanPage />} />
+          <Route path="/analysis/:analysisId" element={<AnalysisResults />} />
+          <Route path="/analysis/demo" element={<SampleReportPage />} />
+          <Route path="/history" element={<HistoryPage />} />
+          <Route path="/comparison" element={<ComparisonPage />} />
+          <Route path="/digital-twin" element={<DigitalTwinTimelinePage />} />
+          <Route path="/recommendations" element={<Recommendations />} />
+          <Route path="/discover" element={<Recommendations />} />
+          <Route path="/product/:id" element={<ProductDetailsPage />} />
+          <Route path="/product/compare" element={<ProductComparePage />} />
+          <Route path="/routine-builder" element={<RoutineBuilderPage />} />
+          <Route path="/routines" element={<RoutineBuilderPage />} />
+          <Route path="/favorites" element={<FavoritesPage />} />
+          <Route path="/myshelf" element={<MyShelfPage />} />
+          <Route path="/scanner" element={<ProductScannerPage />} />
+          <Route path="/onboarding" element={<OnboardingPage />} />
+          <Route path="/profile" element={<ProfileSettingsPage />} />
+          <Route path="/consent" element={<ConsentPage />} />
+          <Route path="/skin-goals" element={<SkinGoalsPage />} />
+          <Route path="/progress" element={<ProgressTrackingPage />} />
+          <Route path="/export" element={<DataExportPage />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/notifications" element={<NotificationCenterPage />} />
+          <Route path="/admin" element={<AdminDashboardPage />} />
+          <Route path="/admin/users" element={<AdminUsersPage />} />
+          <Route path="/admin/products" element={<AdminProductsPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/privacy" element={<PrivacyPage />} />
+          <Route path="/terms" element={<TermsPage />} />
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/ingredients" element={<IngredientDictionaryPage />} />
+          <Route path="/skin-type-guide" element={<SkinTypeGuidePage />} />
+          <Route path="/tutorials" element={<VideoTutorialsPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </Suspense>
+    </ErrorBoundary>
+  );
+}
+
 export default function App() {
   return (
     <AuthProvider>
@@ -61,68 +114,11 @@ export default function App() {
         <ToastProvider>
           <DevBanner />
           <NetworkStatus />
-        <BrowserRouter>
-          <AppLayout>
-            <ErrorBoundary>
-              <Suspense fallback={<LoadingScreen message="Loading page..." fullscreen={false} />}>
-                <Routes>
-            {/* Public Routes */}
-            <Route path="/" element={<HomePage />} />
-            <Route path="/auth" element={<AuthPage />} />
-            <Route path="/password-reset" element={<PasswordResetPage />} />
-            <Route path="/password-reset/confirm" element={<PasswordResetConfirmPage />} />
-            <Route path="/verify-email" element={<EmailVerificationPage />} />
-            <Route path="/auth/google/callback" element={<GoogleCallbackPage />} />
-            
-            {/* Skin Analysis Routes */}
-            <Route path="/scan" element={<ScanPage />} />
-            <Route path="/analysis/:analysisId" element={<AnalysisResults />} />
-            <Route path="/analysis/demo" element={<SampleReportPage />} />
-            <Route path="/history" element={<HistoryPage />} />
-            <Route path="/comparison" element={<ComparisonPage />} />
-            <Route path="/digital-twin" element={<DigitalTwinTimelinePage />} />
-            
-            {/* Product Recommendation Routes */}
-            <Route path="/recommendations" element={<Recommendations />} />
-            <Route path="/discover" element={<Recommendations />} />
-            <Route path="/product/:id" element={<ProductDetailsPage />} />
-            <Route path="/product/compare" element={<ProductComparePage />} />
-            <Route path="/routine-builder" element={<RoutineBuilderPage />} />
-            <Route path="/routines" element={<RoutineBuilderPage />} />
-            <Route path="/favorites" element={<FavoritesPage />} />
-            <Route path="/myshelf" element={<MyShelfPage />} />
-            <Route path="/scanner" element={<ProductScannerPage />} />
-            
-            {/* User Profile Routes */}
-            <Route path="/onboarding" element={<OnboardingPage />} />
-            <Route path="/profile" element={<ProfileSettingsPage />} />
-            <Route path="/consent" element={<ConsentPage />} />
-            <Route path="/skin-goals" element={<SkinGoalsPage />} />
-            <Route path="/progress" element={<ProgressTrackingPage />} />
-            <Route path="/export" element={<DataExportPage />} />
-            <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/notifications" element={<NotificationCenterPage />} />
-            <Route path="/admin" element={<AdminDashboardPage />} />
-            <Route path="/admin/users" element={<AdminUsersPage />} />
-            <Route path="/admin/products" element={<AdminProductsPage />} />
-
-                    {/* Legal & Information Pages */}
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/privacy" element={<PrivacyPage />} />
-          <Route path="/terms" element={<TermsPage />} />
-            <Route path="/blog" element={<BlogPage />} />
-            <Route path="/ingredients" element={<IngredientDictionaryPage />} />
-            <Route path="/skin-type-guide" element={<SkinTypeGuidePage />} />
-            <Route path="/tutorials" element={<VideoTutorialsPage />} />
-            
-                  {/* 404 */}
-                  <Route path="*" element={<NotFoundPage />} />
-                </Routes>
-              </Suspense>
-            </ErrorBoundary>
-          </AppLayout>
-        </BrowserRouter>
+          <BrowserRouter>
+            <AppLayout>
+              <AppRoutes />
+            </AppLayout>
+          </BrowserRouter>
           <ToastContainer />
         </ToastProvider>
       </ShelfProvider>

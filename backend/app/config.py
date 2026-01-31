@@ -2,8 +2,39 @@
 Application configuration settings.
 """
 
+import json
+from typing import Any
+
 from pydantic import Field
 from pydantic_settings import BaseSettings
+
+
+def _parse_list_str(value: Any) -> list[str]:
+    """Parse list from env: JSON array, comma-separated, or single string."""
+    if isinstance(value, list):
+        return value
+    if not isinstance(value, str):
+        return []
+    s = value.strip()
+    if not s:
+        return []
+    if s.startswith("["):
+        try:
+            out = json.loads(s)
+            return out if isinstance(out, list) else [s]
+        except json.JSONDecodeError:
+            pass
+    return [x.strip() for x in s.split(",") if x.strip()]
+
+
+DEFAULT_ORIGINS = [
+    "http://localhost:3000", "http://localhost:5173", "http://localhost:19006",
+    "http://localhost:8081", "https://himprapatel-rgb.github.io",
+    "https://ai-skincare-intelligence-system-production.up.railway.app",
+    "https://frontend-production-0415.up.railway.app",
+    "https://pellicura.com", "https://www.pellicura.com",
+]
+DEFAULT_HOSTS = ["*", "healthcheck.railway.app", "ai-skincare-intelligence-system-production.up.railway.app"]
 
 
 class Settings(BaseSettings):
@@ -38,30 +69,21 @@ class Settings(BaseSettings):
         description="Frontend base URL for email verification links",
     )
 
-    # CORS Settings
-    ALLOWED_ORIGINS: list[str] = Field(
-        default=[
-            "http://localhost:3000",  # Next.js dev
-            "http://localhost:5173",  # Vite dev
-            "http://localhost:19006",  # Expo web
-            "http://localhost:8081",  # Expo mobile
-            "https://himprapatel-rgb.github.io",  # GitHub Pages production
-            "https://ai-skincare-intelligence-system-production.up.railway.app",  # Railway backend
-            "https://frontend-production-0415.up.railway.app",  # Railway frontend
-            "https://pellicura.com",  # Production custom domain
-            "https://www.pellicura.com",  # Production custom domain with www
-        ],
-        description="List of allowed CORS origins",
-    )
+    # CORS Settings - stored as str to avoid pydantic-settings JSON decode of env
+    allowed_origins_raw: str | None = Field(default=None, alias="ALLOWED_ORIGINS")
+    allowed_hosts_raw: str | None = Field(default=None, alias="ALLOWED_HOSTS")
 
-    ALLOWED_HOSTS: list[str] = Field(
-        default=[
-            "*",
-            "healthcheck.railway.app",  # Railway health checks
-            "ai-skincare-intelligence-system-production.up.railway.app",
-        ],
-        description="Allowed hostnames for TrustedHostMiddleware",
-    )
+    @property
+    def ALLOWED_ORIGINS(self) -> list[str]:
+        if not self.allowed_origins_raw or not self.allowed_origins_raw.strip():
+            return DEFAULT_ORIGINS
+        return _parse_list_str(self.allowed_origins_raw) or DEFAULT_ORIGINS
+
+    @property
+    def ALLOWED_HOSTS(self) -> list[str]:
+        if not self.allowed_hosts_raw or not self.allowed_hosts_raw.strip():
+            return DEFAULT_HOSTS
+        return _parse_list_str(self.allowed_hosts_raw) or DEFAULT_HOSTS
 
     # External AI provider keys
     GPTGPT_API_KEY: str | None = Field(
@@ -149,9 +171,7 @@ class Settings(BaseSettings):
         description="Model version identifier for tracking"
     )
 
-    class Config:
-        env_file = ".env"
-        case_sensitive = True
+    model_config = {"env_file": ".env", "case_sensitive": True, "populate_by_name": True}
 
 
 # Create settings instance

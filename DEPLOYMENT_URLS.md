@@ -1,7 +1,7 @@
 # AI Skincare Intelligence System - Deployment URLs
 
-**Last Updated**: January 26, 2026  
-**Current Status:** Production ✅ | Staging ✅ | Database ✅
+**Last Updated**: January 31, 2026  
+**Current Status:** Production only ✅ | Database ✅
 
 ---
 
@@ -30,32 +30,13 @@ Pellicura is an **AI-powered skincare intelligence app** that:
 
 ---
 
-## Staging Environment
-
-| Component | URL | Platform | Status |
-|-----------|-----|----------|--------|
-| **Frontend** | https://staging.pellicura.pages.dev | Cloudflare Pages | ✅ Live |
-| **Backend API** | https://ai-skincare-intelligence-system-production.up.railway.app | Railway (shared) | ✅ Live |
-| **Database** | Railway PostgreSQL (shared) | Railway | ✅ Operational |
-
-### Staging API Endpoints
-- Health Check: `https://ai-skincare-intelligence-system-production.up.railway.app/api/health`
-- API Docs: `https://ai-skincare-intelligence-system-production.up.railway.app/docs`
-- API v1: `https://ai-skincare-intelligence-system-production.up.railway.app/api/v1/`
-
----
-
-## Git Branches & Deployment
+## Deployment
 
 | Branch | Deploys To | Trigger |
 |--------|------------|---------|
-| `develop` | Staging | ✅ Auto on push |
-| `main` | Production | 🔒 Manual only (requires approval) |
+| `main` | Production (Railway) | Push or manual |
 
-### Workflow
-1. **Development**: Push to `develop` → Auto-deploys to Staging
-2. **Testing**: Test on staging.pellicura.pages.dev
-3. **Production**: Manual deploy from GitHub Actions (requires typing "deploy")
+**Production only** – no staging environment.
 
 ---
 
@@ -64,18 +45,13 @@ Pellicura is an **AI-powered skincare intelligence app** that:
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                    PELLICURA INFRASTRUCTURE                      │
-│                    (All on Railway + Cloudflare DNS)             │
+│                    Production only • Railway + Cloudflare DNS    │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                  │
-│   STAGING                           PRODUCTION                   │
-│   ───────                           ──────────                   │
-│                                                                  │
-│   staging.pellicura.pages.dev       pellicura.com               │
-│   (Cloudflare Pages)               (Cloudflare DNS → Railway)   │
-│           │                              │                       │
-│           └──────────────┬───────────────┘                       │
-│                          ▼                                       │
-│              RAILWAY                                              │
+│   pellicura.com (Cloudflare DNS)                                 │
+│              │                                                   │
+│              ▼                                                   │
+│   RAILWAY                                                         │
 │   ┌─────────────────┐  ┌─────────────────────────────────────┐  │
 │   │ Frontend        │  │ Backend (FastAPI)                    │  │
 │   │ frontend-*.     │  │ ai-skincare-intelligence-system-     │  │
@@ -84,7 +60,7 @@ Pellicura is an **AI-powered skincare intelligence app** that:
 │            │                           │                         │
 │            └─────────────┬─────────────┘                         │
 │                          ▼                                       │
-│              Railway PostgreSQL (main + product catalog)         │
+│   PostgreSQL: main DB + product catalog (2 databases)            │
 │                                                                  │
 └─────────────────────────────────────────────────────────────────┘
 ```
@@ -108,11 +84,11 @@ Pellicura is an **AI-powered skincare intelligence app** that:
 - **CI/CD**: https://github.com/himprapatel-rgb/ai-skincare-intelligence-system/actions
 
 ### GitHub Actions Workflows
-| Workflow | Trigger | Deploys To |
-|----------|---------|------------|
-| `deploy-cloudflare.yml` | Push to `main` (frontend changes) | Production Frontend |
-| `deploy-fly.yml` | Push to `main` (backend changes) | Production Backend |
-| `deploy-staging.yml` | Push to `develop` | Staging (both) |
+| Workflow | Trigger | Purpose |
+|----------|---------|---------|
+| `deploy-cloudflare.yml` | Manual | Cloudflare Pages (optional if using Railway frontend) |
+| `deploy-fly.yml` | Disabled | Fly.io deprecated |
+| `deploy-staging.yml` | Disabled | Staging removed – production only |
 
 ---
 

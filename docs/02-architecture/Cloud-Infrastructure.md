@@ -11,15 +11,14 @@ The Pellicura (AI Skincare Intelligence System) uses a modern cloud-native archi
 
 | Component | Provider | Service |
 |-----------|----------|---------|
-| Frontend (production) | Railway | Node/React (pellicura.com) |
-| Frontend (staging) | Cloudflare | Pages (staging.pellicura.pages.dev) |
+| Frontend | Railway | Node/React (pellicura.com) |
 | Backend | Railway | FastAPI Docker |
 | Database (main) | Railway | PostgreSQL |
 | Database (catalog) | Railway | PostgreSQL (separate) |
 | DNS | Cloudflare | pellicura.com → Railway |
 | CI/CD | GitHub | Actions |
 
-**All production on Railway.** Domain pellicura.com uses Cloudflare for DNS only. See [Railway-All-Cloudflare-DNS.md](../05-deployment/Railway-All-Cloudflare-DNS.md).
+**Production only.** Frontend, backend, and two databases on Railway. Cloudflare for DNS. See [Railway-All-Cloudflare-DNS.md](../05-deployment/Railway-All-Cloudflare-DNS.md).
 
 ---
 
@@ -32,18 +31,9 @@ The Pellicura (AI Skincare Intelligence System) uses a modern cloud-native archi
 │                                                                          │
 │                              [Users]                                     │
 │                                 │                                        │
-│                    ┌────────────┴────────────┐                          │
-│                    │                         │                          │
-│                    ▼                         ▼                          │
-│         ┌─────────────────┐       ┌─────────────────┐                   │
-│         │  pellicura.com  │       │ staging.pellicura│                  │
-│         │   (Production)  │       │   .pages.dev     │                  │
-│         └────────┬────────┘       └────────┬────────┘                   │
-│                  │                         │                            │
-│                  ▼                         ▼                            │
-│         │  pellicura.com → Cloudflare DNS → Railway                    │
-│         │  staging → Cloudflare Pages                                  │
-│         └────────────────────┬────────────────────────┘                 │
+│                                 ▼                                        │
+│                    pellicura.com (Cloudflare DNS → Railway)              │
+│                                 │                                        │
 │                              │                                          │
 │                              ▼                                          │
 │         ┌─────────────────────────────────────────────┐                 │
@@ -63,23 +53,14 @@ The Pellicura (AI Skincare Intelligence System) uses a modern cloud-native archi
 
 ## Environment Details
 
-### Production
-
-| Service | URL | Region |
-|---------|-----|--------|
-| Frontend | https://pellicura.com | Global (Cloudflare CDN) |
+| Service | URL | Platform |
+|---------|-----|----------|
+| Frontend | https://pellicura.com | Railway (Cloudflare DNS) |
 | Backend | https://ai-skincare-intelligence-system-production.up.railway.app | Railway |
-| Database | Railway PostgreSQL | US East |
+| Database (main) | PostgreSQL | Railway |
+| Database (catalog) | PostgreSQL | Railway |
 
-### Staging
-
-| Service | URL | Region |
-|---------|-----|--------|
-| Frontend | https://staging.pellicura.pages.dev | Global (Cloudflare CDN) |
-| Backend | https://ai-skincare-intelligence-system-production.up.railway.app | Railway (shared) |
-| Database | Railway PostgreSQL (shared) | US East |
-
-**Railway:** Backend stays warm; no cold starts. Frontend and backend both deploy from GitHub.
+**Production only.** No staging. Frontend and backend deploy from GitHub.
 
 ---
 
@@ -90,34 +71,13 @@ The Pellicura (AI Skincare Intelligence System) uses a modern cloud-native archi
 │                        CI/CD PIPELINE                            │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                  │
-│   [Developer]                                                    │
+│   [Developer] → git push to main                                 │
 │       │                                                          │
 │       ▼                                                          │
-│   git push                                                       │
+│   Railway auto-deploys (frontend + backend)                      │
 │       │                                                          │
 │       ▼                                                          │
-│   ┌─────────────────────────────────────────────────────────┐   │
-│   │                    GitHub Actions                        │   │
-│   │  ┌─────────────────┐     ┌─────────────────┐            │   │
-│   │  │ Push to develop │     │  Push to main   │            │   │
-│   │  │                 │     │                 │            │   │
-│   │  │ → Staging       │     │ → Production    │            │   │
-│   │  │   deployment    │     │   deployment    │            │   │
-│   │  └────────┬────────┘     └────────┬────────┘            │   │
-│   └───────────┼──────────────────────┼──────────────────────┘   │
-│               │                      │                          │
-│               ▼                      ▼                          │
-│   ┌───────────────────┐  ┌───────────────────┐                  │
-│   │ deploy-staging.yml│  │deploy-cloudflare  │                  │
-│   │                   │  │deploy-fly.yml     │                  │
-│   └─────────┬─────────┘  └─────────┬─────────┘                  │
-│             │                      │                            │
-│             ▼                      ▼                            │
-│   ┌─────────────────────────────────────────────────────────┐   │
-│   │  STAGING                      PRODUCTION                │   │
-│   │  staging.pellicura.pages.dev  pellicura.com             │   │
-│   │  Staging (CF Pages)           Production (Railway)      │   │
-│   └─────────────────────────────────────────────────────────┘   │
+│   PRODUCTION: pellicura.com (Railway)                            │
 │                                                                  │
 └─────────────────────────────────────────────────────────────────┘
 ```
@@ -127,23 +87,18 @@ The Pellicura (AI Skincare Intelligence System) uses a modern cloud-native archi
 ## Git Branching Strategy
 
 ```
-main (production)
+main (production) – push deploys to Railway
   │
-  ├── develop (staging)
-  │     │
-  │     ├── feature/feature-1
-  │     ├── feature/feature-2
-  │     └── bugfix/bug-1
-  │
-  └── hotfix/critical-fix (emergency production fixes)
+  ├── feature/feature-1
+  ├── feature/feature-2
+  └── hotfix/critical-fix
 ```
 
 ### Branch Rules
 
 | Branch | Deploys To | Protection |
 |--------|------------|------------|
-| `main` | Production | Protected, requires PR |
-| `develop` | Staging | Default branch |
+| `main` | Production | Protected |
 | `feature/*` | None (local only) | None |
 | `bugfix/*` | None (local only) | None |
 | `hotfix/*` | Production (after merge) | None |

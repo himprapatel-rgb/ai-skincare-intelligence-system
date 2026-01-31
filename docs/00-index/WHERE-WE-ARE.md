@@ -10,7 +10,6 @@
 |------|--------|--------|
 | **Scanner & Barcode (500 tasks)** | ✅ 100% complete | Camera, photo, AI recognition, My Shelf, product details |
 | **Product Database (500 tasks)** | ✅ 100% complete | Two-DB architecture, catalog API, scanner integration |
-| **Staging (Railway + Cloudflare Pages)** | ✅ Live | `develop` → auto-deploy |
 | **Production (Railway)** | ✅ Live | `main` → Railway auto-deploy |
 | **Database** | ✅ Railway PostgreSQL | Main DB; product catalog can use same or second DB |
 | **Railway deployment** | 📄 Documented | Backend + product DB deploy; **two-DB checklist:** [Railway-Two-Databases-Setup.md](../05-deployment/Railway-Two-Databases-Setup.md) |
@@ -22,7 +21,7 @@
 
 - **Docs:** `docs/TASK-LIST-1-500.md`
 - **Done:** Camera/barcode, photo capture, AI recognition, My Shelf (filters, sort), product details (ingredients, overview, usage guide), error handling (ErrorBoundary, NetworkStatus), performance (LazyImage), API (health, tracing), DB indexes, unit + E2E tests.
-- **Live on:** Staging + Production (Fly.io backend, Cloudflare frontend).
+- **Live on:** Production (Railway frontend + backend).
 
 ---
 
@@ -43,14 +42,14 @@
 
 ## 3. Deployment
 
-| Environment | Frontend | Backend | Database |
-|-------------|----------|---------|----------|
-| **Staging** | staging.pellicura.pages.dev (Cloudflare Pages) | Railway | Railway PostgreSQL |
-| **Production** | pellicura.com (Cloudflare DNS → Railway) | Railway | Railway PostgreSQL |
+| Component | Platform | URL |
+|-----------|----------|-----|
+| **Frontend** | Railway | pellicura.com (Cloudflare DNS → Railway) |
+| **Backend** | Railway | ai-skincare-intelligence-system-production.up.railway.app |
+| **Database** | Railway | PostgreSQL (main + product catalog) |
+| **DNS** | Cloudflare | pellicura.com |
 
-**All on Railway.** Domain pellicura.com uses Cloudflare for DNS only. See [Railway-All-Cloudflare-DNS.md](../05-deployment/Railway-All-Cloudflare-DNS.md).
-
-- **Branch flow:** `develop` → staging; `main` → production (manual).
+**Production only.** No staging. See [Railway-All-Cloudflare-DNS.md](../05-deployment/Railway-All-Cloudflare-DNS.md).
 - **Railway:** Backend + product DB deploy steps in `docs/05-deployment/Railway-Product-Database-Deploy.md` and `Railway-Environment-Variables-Setup.md`.
 
 ---
@@ -73,9 +72,9 @@
 
 ## 6. Still To Do (your side)
 
-1. **Google Sign-In:** Code is in place. One-time: run `.\scripts\set-google-secrets-and-fly.ps1` (prompts for Client Secret, adds to GitHub and pushes to Fly.io staging). Or set per [Google-SSO-Setup.md](../05-deployment/Google-SSO-Setup.md) (GitHub: `GOOGLE_CLIENT_ID` + `GOOGLE_CLIENT_SECRET`; then run **Set Fly.io Google Secrets (Staging)** workflow).
+1. **Google Sign-In:** Code is in place. Set `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` on Railway backend. Add redirect URIs in Google Console: `https://pellicura.com/auth/google/callback`, `https://www.pellicura.com/auth/google/callback`. See [Google-SSO-Setup.md](../05-deployment/Google-SSO-Setup.md).
 
-2. **Product catalog on live envs:** Railway two-DB is done. On Fly.io, set `PRODUCT_DATABASE_URL` if you want a separate catalog there too.
+2. **Product catalog:** Railway two-DB is done.
 
 3. **Optional – seed product catalog (Railway):**  
    From your machine (with `PRODUCT_DATABASE_URL` from Railway or same as product DB):  
@@ -98,4 +97,4 @@
 
 ---
 
-**In short:** Scanner and product database work are complete (1,000 tasks). Staging and production are live on Railway (frontend, backend, database). Cloudflare: DNS for pellicura.com, Pages for staging frontend. No Fly.io.
+**In short:** Scanner and product database work are complete (1,000 tasks). Production only on Railway (frontend, backend, two databases). Cloudflare for DNS (pellicura.com). No staging, no Fly.io.

@@ -398,8 +398,6 @@ def confirm_password_reset(
 
 # Allowed redirect URIs for Google OAuth (must match Google Console). Frontend can pass redirect_uri when using shared backend.
 ALLOWED_GOOGLE_REDIRECT_URIS = [
-    "https://staging.pellicura.pages.dev/auth/google/callback",
-    "https://pellicura.pages.dev/auth/google/callback",
     "https://pellicura.com/auth/google/callback",
     "https://www.pellicura.com/auth/google/callback",
     "https://frontend-production-0415.up.railway.app/auth/google/callback",

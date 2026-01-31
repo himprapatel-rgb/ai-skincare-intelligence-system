@@ -1,15 +1,12 @@
+# DISABLED: Production-only architecture. No staging environment.
 name: Deploy to Staging
 
 on:
-  push:
-    branches:
-      - develop
-      - staging
   workflow_dispatch:
 
-# Staging uses Railway backend (no cold starts). Fly.io staging backend deploy disabled (was failing).
 jobs:
   deploy-frontend:
+    if: false  # Staging disabled - production only
     name: Deploy Frontend to Staging
     runs-on: ubuntu-latest
     defaults:

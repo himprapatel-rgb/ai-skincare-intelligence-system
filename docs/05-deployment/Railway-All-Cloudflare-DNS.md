@@ -66,7 +66,7 @@
 
 **Backend service:**
 - `FRONTEND_URL` = https://pellicura.com
-- `ALLOWED_ORIGINS` = includes pellicura.com, www.pellicura.com, frontend-production-0415.up.railway.app
+- `ALLOWED_ORIGINS` = pellicura.com, www.pellicura.com, frontend-production-0415.up.railway.app, localhost (production only)
 
 ---
 

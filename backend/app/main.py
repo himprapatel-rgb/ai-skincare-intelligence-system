@@ -96,7 +96,9 @@ app.add_middleware(
 )
 app.add_middleware(GZipMiddleware, minimum_size=1000)
 
-app.add_middleware(TrustedHostMiddleware, allowed_hosts=settings.ALLOWED_HOSTS)
+# TrustedHostMiddleware: skip when wildcard present (Railway proxy Host can vary)
+if "*" not in (settings.ALLOWED_HOSTS or []):
+    app.add_middleware(TrustedHostMiddleware, allowed_hosts=settings.ALLOWED_HOSTS or [])
 
 # Task 425: Request tracing with correlation IDs
 app.add_middleware(RequestTracingMiddleware)

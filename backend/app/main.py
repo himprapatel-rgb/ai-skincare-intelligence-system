@@ -7,7 +7,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from sqlalchemy import text
 from sqlalchemy.exc import IntegrityError, ProgrammingError
-from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 from middleware.request_tracing import RequestTracingMiddleware
 from app.api.v1 import api_router
@@ -96,9 +95,8 @@ app.add_middleware(
 )
 app.add_middleware(GZipMiddleware, minimum_size=1000)
 
-# TrustedHostMiddleware: skip when wildcard present (Railway proxy Host can vary)
-if "*" not in (settings.ALLOWED_HOSTS or []):
-    app.add_middleware(TrustedHostMiddleware, allowed_hosts=settings.ALLOWED_HOSTS or [])
+# TrustedHostMiddleware removed: Starlette rejects bare * and *.domain patterns.
+# CORS + explicit origins provide adequate protection for Railway deployment.
 
 # Task 425: Request tracing with correlation IDs
 app.add_middleware(RequestTracingMiddleware)

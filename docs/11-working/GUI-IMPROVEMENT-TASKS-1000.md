@@ -266,14 +266,14 @@
 
 ## Progress Summary
 
-- **Completed:** 47
-  - Batch 1–5: (previous)
-  - Batch 6: 711–720 (zoom overlay), 721–730 (key ingredients), 801–807 (stat card, action card, chart, grid)
+- **Completed:** 53
+  - Batch 1–6: (previous)
+  - Batch 7: 731–740 (flagged ingredients), 751–760 (product actions), 808–810 (notification, skin goals, routine steps)
 - **Total:** 1000
-- **In Progress:** Batch 7
+- **In Progress:** Batch 8
 
 ---
 
 ## Next Batch
 
-731–740 (flagged ingredients), 751–760 (product actions), 808–810 (notification, skin goals)
+811–820 (chart axis), 821–830 (progress photo grid), 831–840 (dashboard empty), 901–905

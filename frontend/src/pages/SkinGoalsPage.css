@@ -25,36 +25,37 @@
 .skin-goals-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 16px;
+  gap: var(--spacing-md);
 }
 
 .skin-goals-item {
   width: 100%;
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 20px;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg);
   background: var(--bg-white);
-  border-radius: 12px; /* Brand guideline: 12px for cards */
+  border-radius: var(--border-radius-md);
   border: 2px solid var(--border);
   cursor: pointer;
-  color: var(--text-dark);
+  color: var(--text-primary);
   text-align: left;
   transition: all 0.2s ease;
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-sm);
+  min-height: 72px;
 }
 
 .skin-goals-item:hover {
   border-color: var(--primary);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(31, 111, 235, 0.15);
+  box-shadow: var(--shadow-card-hover);
 }
 
 .skin-goals-item.selected {
   background: var(--primary);
   color: white;
   border-color: var(--primary);
-  box-shadow: 0 4px 12px rgba(31, 111, 235, 0.3);
+  box-shadow: var(--shadow-primary);
 }
 
 .skin-goals-icon {
@@ -94,6 +95,8 @@
   justify-content: center;
   color: var(--primary);
   flex-shrink: 0;
+  min-width: 44px;
+  min-height: 44px;
 }
 
 .skin-goals-toggle svg {

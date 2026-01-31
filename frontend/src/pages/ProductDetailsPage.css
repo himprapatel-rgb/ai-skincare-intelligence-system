@@ -51,24 +51,27 @@
 .product-details-actions-row {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--spacing-sm);
   flex-wrap: wrap;
-  margin-bottom: 24px;
+  margin-bottom: var(--spacing-lg);
 }
 
 .product-details-actions-row .compare-link {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
   padding: 8px 14px;
   border-radius: var(--border-radius-md);
   background: transparent;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border);
   color: var(--primary);
   font-weight: 600;
   text-decoration: none;
-  font-size: 0.9375rem;
+  font-size: var(--font-size-base);
 }
 
 .product-details-actions-row .compare-link:hover {
-  background: rgba(31, 111, 235, 0.08);
+  background: var(--primary-light);
   border-color: var(--primary);
 }
 
@@ -289,18 +292,20 @@
 
 .action-buttons {
   display: flex;
-  gap: 12px;
+  gap: var(--spacing-sm);
   flex-wrap: wrap;
-  margin-top: 8px;
+  margin-top: var(--spacing-sm);
+  align-items: center;
 }
 
 .product-details-page .btn-primary,
 .product-details-page .btn-secondary,
 .product-details-page .btn-outline {
+  min-height: 44px;
   padding: 12px 20px;
   border-radius: var(--border-radius-md);
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: var(--font-size-base);
   border: 1px solid transparent;
   transition: all 0.2s ease;
 }

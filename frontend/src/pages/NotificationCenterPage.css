@@ -63,10 +63,11 @@
 }
 
 .btn-mark-all {
+  min-height: 44px;
   padding: 8px 16px;
-  background: var(--white);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius-md);
   color: var(--text-primary);
   font-weight: 500;
   cursor: pointer;
@@ -80,10 +81,12 @@
 }
 
 .btn-settings {
+  min-height: 44px;
+  min-width: 44px;
   padding: 8px;
-  background: var(--white);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius-md);
   color: var(--text-secondary);
   cursor: pointer;
   transition: all 0.2s ease;
@@ -139,10 +142,11 @@
 }
 
 .filter-btn {
+  min-height: 44px;
   padding: 8px 16px;
-  background: var(--white);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius-md);
   color: var(--text-secondary);
   font-weight: 500;
   cursor: pointer;
@@ -167,26 +171,26 @@
 }
 
 .notification-item {
-  background: var(--white);
-  border-radius: 12px;
-  padding: 20px;
+  background: var(--bg-white);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-lg);
   box-shadow: var(--shadow-sm);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border);
   display: grid;
   grid-template-columns: 48px 1fr auto;
-  gap: 16px;
+  gap: var(--spacing-md);
   align-items: start;
   transition: all 0.2s ease;
 }
 
 .notification-item:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-md);
 }
 
 .notification-item.unread {
   border-left: 4px solid var(--primary);
-  background: rgba(31, 111, 235, 0.05);
+  background: var(--primary-light);
 }
 
 .notification-icon {

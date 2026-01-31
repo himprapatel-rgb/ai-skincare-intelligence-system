@@ -3,9 +3,9 @@ FROM node:20-slim AS builder
 
 WORKDIR /app
 
-# Install deps
+# Install deps (legacy-peer-deps for @tensorflow-models/blazeface vs tfjs peer conflict)
 COPY package.json package-lock.json ./
-RUN npm ci
+RUN npm ci --legacy-peer-deps
 
 # Build (VITE_* from Railway env at build time)
 COPY . .

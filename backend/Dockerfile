@@ -1,6 +1,6 @@
 FROM python:3.11-slim
 
-# Cache bust: 2026-01-27-v3 (trigger deploy)
+# Cache bust: 2026-01-31-v1 (fix deploy)
 WORKDIR /app
 
 # Install system dependencies

@@ -55,7 +55,11 @@ class Settings(BaseSettings):
     )
 
     ALLOWED_HOSTS: list[str] = Field(
-        default=["*"],
+        default=[
+            "*",
+            "healthcheck.railway.app",  # Railway health checks
+            "ai-skincare-intelligence-system-production.up.railway.app",
+        ],
         description="Allowed hostnames for TrustedHostMiddleware",
     )
 

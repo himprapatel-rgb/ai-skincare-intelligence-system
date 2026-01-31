@@ -17,8 +17,8 @@ app.get('/health', (req, res) => {
 // 2. Handle SPA Fallback.
 // Only if a request didn't match a static file above,
 // serve index.html to allow React Router to handle the URL.
-// Use /(.*) instead of * - path-to-regexp v7+ rejects bare *
-app.get('/(.*)', (req, res) => {
+// Use RegExp to bypass path-to-regexp v7+ strict syntax (rejects * and /(.*))
+app.get(/.*/, (req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 

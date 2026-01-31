@@ -765,8 +765,8 @@
 
 /* Main Footer */
 .app-footer-main {
-  padding: 64px 24px 48px;
-  background: #ffffff;
+  padding: var(--spacing-3xl) var(--spacing-lg) var(--spacing-2xl);
+  background: var(--bg-white);
 }
 
 .app-footer-container {
@@ -774,7 +774,24 @@
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1.3fr 2fr;
-  gap: 64px;
+  gap: var(--spacing-3xl);
+}
+
+@media (max-width: 768px) {
+  .app-footer-container {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-xl);
+  }
+
+  .app-footer-links {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .app-footer-links {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Brand Section */
@@ -845,31 +862,39 @@
 .app-footer-links {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 32px;
+  gap: var(--spacing-xl);
+  align-items: start;
 }
 
 .app-footer-column h4 {
-  font-size: 0.8rem;
+  font-size: var(--font-size-xs);
   font-weight: 600;
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  margin-bottom: 20px;
+  margin-bottom: var(--spacing-md);
 }
 
 .app-footer-column a {
   display: block;
   color: var(--text-secondary);
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
   font-weight: 500;
-  padding: 6px 0;
+  padding: var(--spacing-sm) 0;
   text-decoration: none;
-  transition: all 0.15s ease;
+  transition: color 0.15s ease;
+}
+
+@media (max-width: 768px) {
+  .app-footer-column a {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
 }
 
 .app-footer-column a:hover {
   color: var(--primary);
-  padding-left: 4px;
 }
 
 /* Bottom Bar */
@@ -1103,9 +1128,13 @@
 }
 
 .app-layout .card-header {
-  border-bottom: 1px solid var(--border-color);
-  padding-bottom: 12px;
-  margin-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.app-layout .card-header h2,
+.app-layout .card-header h3 {
   color: var(--text-primary);
 }
 
@@ -1148,10 +1177,10 @@
 }
 
 .app-layout .empty-state {
-  background: #ffffff;
-  border: 1px solid var(--border-color);
-  border-radius: 16px;
-  padding: 32px;
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-xl);
   text-align: center;
   box-shadow: var(--shadow-sm);
 }

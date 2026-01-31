@@ -142,12 +142,14 @@
 
 .empty-state {
   text-align: center;
-  padding: 60px 20px;
-  color: var(--text-secondary, #4b5b76);
+  padding: var(--spacing-2xl) var(--spacing-lg);
+  color: var(--text-secondary);
 }
 
 .empty-state h3 {
-  margin-bottom: 12px;
+  margin-bottom: var(--spacing-sm);
+  font-size: var(--font-size-xl);
+  color: var(--text-primary);
 }
 
 .page-header {

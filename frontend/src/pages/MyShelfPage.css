@@ -416,25 +416,25 @@
   filter: brightness(0.95);
 }
 
-.empty-state {
+.myshelf-page .empty-state {
   text-align: center;
-  padding: var(--spacing-3xl) var(--spacing-2xl);
+  padding: var(--spacing-2xl) var(--spacing-lg);
   background: var(--bg-white);
   border: 1px solid var(--border);
   border-radius: var(--border-radius-md);
   box-shadow: var(--shadow-sm);
 }
 
-.empty-state h3 {
-  font-size: var(--font-size-2xl);
+.myshelf-page .empty-state h3 {
+  font-size: var(--font-size-xl);
   font-weight: 600;
-  color: var(--text-dark);
+  color: var(--text-primary);
   margin-bottom: var(--spacing-sm);
   line-height: var(--line-height-snug);
 }
 
-.empty-state p {
-  color: var(--text-gray);
+.myshelf-page .empty-state p {
+  color: var(--text-secondary);
   font-size: var(--font-size-base);
   line-height: var(--line-height-relaxed);
   margin-bottom: var(--spacing-lg);

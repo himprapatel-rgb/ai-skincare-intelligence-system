@@ -266,14 +266,14 @@
 
 ## Progress Summary
 
-- **Completed:** 86
-  - Batch 1–12: (previous)
-  - Batch 13: 941–950 (safe area), 512 (nav transition), 812–820 (trend cards, dashboard header)
+- **Completed:** 91
+  - Batch 1–13: (previous)
+  - Batch 14: 521–530 (footer), 611–620 (empty state), 305–310 (card headers)
 - **Total:** 1000
-- **In Progress:** Batch 14
+- **In Progress:** Batch 15
 
 ---
 
 ## Next Batch
 
-521–530 (footer), 611–620 (empty state audit), 305–310 (card headers)
+311–320 (card audit), 421–430 (profile forms), 541–550 (dropdown z-index)

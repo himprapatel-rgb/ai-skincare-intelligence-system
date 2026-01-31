@@ -248,18 +248,18 @@
 
 .dashboard-section {
   background: var(--bg-white);
-  border-radius: 12px; /* Brand guideline: 12px for cards */
-  padding: 32px;
-  box-shadow: var(--shadow);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-xl);
+  box-shadow: var(--shadow-sm);
   border: 1px solid var(--border);
 }
 
 .dashboard-section h2 {
-  font-size: 1.5rem; /* Brand guideline: 24px / 1.5rem for H3 */
-  font-weight: 600; /* Brand guideline: Semibold */
-  color: var(--text-dark); /* Deep Navy */
-  margin-bottom: 24px;
-  line-height: 1.4; /* Brand guideline */
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-lg);
+  line-height: var(--line-height-snug);
 }
 
 /* Quick Actions */

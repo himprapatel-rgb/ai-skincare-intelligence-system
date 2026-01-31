@@ -353,6 +353,24 @@ select:focus {
   }
 }
 
+/* Card header consistency (Tasks 305–310) */
+.card-header,
+.section-card-header {
+  margin-bottom: var(--spacing-lg);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 1px solid var(--border);
+}
+
+.card-header h2,
+.card-header h3,
+.section-card-header h2,
+.section-card-header h3 {
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
 /* Table horizontal scroll on mobile (Task 910) */
 .table-responsive {
   overflow-x: auto;

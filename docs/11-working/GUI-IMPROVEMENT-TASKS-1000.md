@@ -266,14 +266,14 @@
 
 ## Progress Summary
 
-- **Completed:** 69
-  - Batch 1–9: (previous)
-  - Batch 10: 908 (ConsentModal tokens), 921–930 (font scaling, 1024px + 360px), 981–990 (high contrast)
+- **Completed:** 75
+  - Batch 1–10: (previous)
+  - Batch 11: 901–902 (breakpoints, tablet), 904 (product grid 1-col), 905 (form full-width), 731–740 (flagged mobile), 991 (responsive audit)
 - **Total:** 1000
-- **In Progress:** Batch 11
+- **In Progress:** Batch 12
 
 ---
 
 ## Next Batch
 
-901–905, 991–1000 (responsive audit), 731–740 (flagged ingredients)
+903 (nav overflow), 906–907 (touch, scroll), 931–940 (sticky iOS), 751–760 (product actions)

@@ -317,22 +317,51 @@ select:focus {
   }
 }
 
-/* Container */
+/* Container - Tasks 901, 902, 991 */
 .container {
   max-width: var(--max-width-xl);
   margin: 0 auto;
   padding: 0 var(--spacing-lg);
 }
 
+@media (max-width: 1024px) {
+  .container {
+    padding: 0 var(--spacing-lg);
+  }
+}
+
 @media (max-width: 768px) {
   .container {
-    padding: 0 20px;
+    padding: 0 var(--spacing-md);
   }
 }
 
 @media (max-width: 480px) {
   .container {
-    padding: 0 16px;
+    padding: 0 var(--spacing-md);
+  }
+}
+
+/* Product grid 1-col on mobile (Task 904) */
+@media (max-width: 768px) {
+  .product-grid,
+  .products-grid {
+    grid-template-columns: 1fr !important;
+    gap: var(--spacing-lg);
+  }
+}
+
+/* Form full-width on mobile (Task 905) */
+@media (max-width: 768px) {
+  form .form-group input,
+  form .form-group select,
+  form .form-group textarea,
+  form input,
+  form select,
+  form textarea {
+    width: 100% !important;
+    max-width: 100%;
+    box-sizing: border-box;
   }
 }
 

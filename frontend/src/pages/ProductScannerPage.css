@@ -952,6 +952,31 @@
   color: var(--text-primary);
 }
 
+@media (max-width: 768px) {
+  .flagged-ingredients-section {
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .flagged-ingredients-section h3 {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--spacing-md);
+  }
+
+  .flagged-item {
+    padding: var(--spacing-sm);
+  }
+
+  .flagged-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .severity-badge {
+    align-self: flex-start;
+  }
+}
+
 .safety-recommendations {
   margin-top: var(--spacing-lg);
   padding: var(--spacing-md);

@@ -266,14 +266,14 @@
 
 ## Progress Summary
 
-- **Completed:** 113
-  - Batch 1–17: (previous)
-  - Batch 18: 602 (empty CTA), 371 (card responsive), 409 (checkbox alignment)
+- **Completed:** 118
+  - Batch 1–18: (previous)
+  - Batch 19: 411–420 (Auth form tokens), 604 (spinner gap), 661 (retry button)
 - **Total:** 1000
-- **In Progress:** Batch 19
+- **In Progress:** Batch 20
 
 ---
 
 ## Next Batch
 
-411–420 (Auth form), 604 (spinner), 661 (retry button)
+291–300 (button hover), 381 (empty card), 471 (form buttons align)

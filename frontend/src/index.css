@@ -976,12 +976,12 @@ a:focus-visible {
   color: var(--primary);
 }
 
-/* Loading Spinner Styles */
+/* Loading Spinner Styles (Task 604) */
 .loading-spinner {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: var(--spacing-sm);
 }
 
 .loading-spinner__spinner {

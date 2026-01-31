@@ -510,7 +510,8 @@
 
 .history-table-wrapper {
   overflow-x: auto;
-  border-radius: 8px;
+  -webkit-overflow-scrolling: touch;
+  border-radius: var(--border-radius-md);
 }
 
 .history-table {

@@ -317,6 +317,7 @@ const ComparisonPage: React.FC = () => {
           <div className="card comparison-card">
             <div className="card-header"><h3>Concern Changes</h3></div>
             <div className="card-content">
+              <div className="comparison-table-wrapper">
               <table className="comparison-table">
                 <thead>
                   <tr>
@@ -339,6 +340,7 @@ const ComparisonPage: React.FC = () => {
                   ))}
                 </tbody>
               </table>
+              </div>
             </div>
           </div>
         </>

@@ -1133,7 +1133,7 @@
 
 @media (max-width: 480px) {
   .product-scanner-page {
-    padding: 24px 16px;
+    padding: var(--spacing-lg) var(--spacing-md);
   }
 
   .page-header h1 {
@@ -1141,20 +1141,39 @@
   }
 
   .scanner-card {
-    padding: 20px 16px;
+    padding: var(--spacing-lg) var(--spacing-md);
   }
 
   .scanner-header h2 {
     font-size: 1.2rem;
   }
 
+  .camera-container {
+    max-width: 100%;
+    min-height: 200px;
+    border-radius: var(--border-radius-md);
+  }
+
+  .scanner-frame {
+    width: 85%;
+    height: 35%;
+    min-height: 120px;
+  }
+
+  .scanner-hint {
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    bottom: var(--spacing-md);
+  }
+
   .btn-toggle-camera {
     padding: 10px 16px;
     font-size: 0.9rem;
+    min-height: 44px;
   }
 
   .error-card {
-    padding: 32px 20px;
+    padding: var(--spacing-xl) var(--spacing-lg);
   }
 
   .product-info-card {

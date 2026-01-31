@@ -13,6 +13,18 @@
   max-width: 1400px;
 }
 
+@media (max-width: 768px) {
+  .page-container {
+    padding: var(--spacing-xl) var(--spacing-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .page-container {
+    padding: var(--spacing-lg) var(--spacing-md);
+  }
+}
+
 .loading-spinner {
   display: flex;
   justify-content: center;

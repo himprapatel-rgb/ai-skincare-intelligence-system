@@ -266,14 +266,14 @@
 
 ## Progress Summary
 
-- **Completed:** 60
-  - Batch 1–7: (previous)
-  - Batch 8: 811–820 (chart), 821–830 (history/photo grid), 831–840 (dashboard empty), 901–905 (breakpoints, nav overflow, form full-width)
+- **Completed:** 66
+  - Batch 1–8: (previous)
+  - Batch 9: 908 (modal full-screen mobile), 909 (scanner viewport), 910 (table scroll), 911–920 (page-container padding), 971–980 (reduce motion)
 - **Total:** 1000
-- **In Progress:** Batch 9
+- **In Progress:** Batch 10
 
 ---
 
 ## Next Batch
 
-908–910 (modal, scanner viewport, table scroll), 911–920 (mobile padding), 971–980 (reduce motion)
+921–930 (font scaling), 908 ConsentModal var fix, 981–990 (high contrast)

@@ -756,7 +756,7 @@ a:focus-visible {
   opacity: 1;
 }
 
-/* Reduce motion for users who prefer it */
+/* Reduce motion for users who prefer it (Task 971–980) */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -764,6 +764,16 @@ a:focus-visible {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  .card:hover,
+  .stat-card:hover,
+  .product-card:hover {
+    transform: none !important;
   }
 }
 

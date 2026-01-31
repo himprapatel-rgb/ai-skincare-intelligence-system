@@ -175,8 +175,16 @@
   color: var(--primary);
 }
 
+.comparison-table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 0 -16px;
+  padding: 0 16px;
+}
+
 .comparison-table {
   width: 100%;
+  min-width: 320px;
   border-collapse: collapse;
   margin-top: 24px;
 }

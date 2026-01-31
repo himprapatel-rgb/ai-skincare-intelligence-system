@@ -75,9 +75,13 @@ class Settings(BaseSettings):
 
     @property
     def ALLOWED_ORIGINS(self) -> list[str]:
-        if not self.allowed_origins_raw or not self.allowed_origins_raw.strip():
-            return DEFAULT_ORIGINS
-        return _parse_list_str(self.allowed_origins_raw) or DEFAULT_ORIGINS
+        """CORS allowed origins. Always includes production frontends (pellicura.com, Railway)."""
+        extra = _parse_list_str(self.allowed_origins_raw) if self.allowed_origins_raw and self.allowed_origins_raw.strip() else []
+        combined = list(DEFAULT_ORIGINS)
+        for o in extra:
+            if o and o not in combined:
+                combined.append(o)
+        return combined
 
     @property
     def ALLOWED_HOSTS(self) -> list[str]:

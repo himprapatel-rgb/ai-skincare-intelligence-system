@@ -350,3 +350,27 @@ class TestApiToDatabaseFlow:
             ShelfProduct.product_name == "API Test Product"
         ).first()
         assert shelf is not None
+
+    def test_add_to_shelf_with_ingredients_snapshot(self, client, auth_headers, test_db):
+        """POST /shelf with ingredients_json preserves snapshot (scan->shelf flow)."""
+        from app.models.shelf import ShelfProduct
+
+        payload = {
+            "external_product_id": "barcode-3337875559782",
+            "product_name": "CeraVe Moisturizing Cream",
+            "product_brand": "CeraVe",
+            "product_category": "moisturizer",
+            "ingredients_json": {
+                "ingredients": ["Water", "Glycerin", "Cetearyl Alcohol"],
+                "key_ingredients": [{"name": "Ceramides", "percentage": "3"}],
+            },
+        }
+        resp = client.post("/api/v1/shelf", json=payload, headers=auth_headers)
+        assert resp.status_code in [200, 201]
+        shelf = test_db.query(ShelfProduct).filter(
+            ShelfProduct.external_product_id == "barcode-3337875559782"
+        ).first()
+        assert shelf is not None
+        assert shelf.ingredients_json is not None
+        assert "ingredients" in shelf.ingredients_json
+        assert shelf.ingredients_json["ingredients"] == ["Water", "Glycerin", "Cetearyl Alcohol"]

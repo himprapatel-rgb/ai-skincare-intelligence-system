@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Html5Qrcode, Html5QrcodeSupportedFormats } from 'html5-qrcode';
 import { 
   IconScan, 
@@ -1147,9 +1147,17 @@ const ProductScannerPage: React.FC = () => {
                 
                 {!token && (
                   <p className="login-hint">
-                    <a href="/login">Log in</a> to save products to your shelf
+                    <Link to="/auth">Log in</Link> to save products to your shelf
                   </p>
                 )}
+                <div className="view-details-row">
+                  <Link 
+                    to={`/product/${encodeURIComponent(scannedProduct.id)}`} 
+                    className="btn-view-details"
+                  >
+                    View full product details →
+                  </Link>
+                </div>
               </div>
             </div>
           </div>

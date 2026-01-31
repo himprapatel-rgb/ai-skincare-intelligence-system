@@ -2,7 +2,7 @@
 
 ## Summary
 
-Comprehensive testing of the AI Skincare Intelligence System after deployment fixes (middleware, config, TrustedHost, path-to-regexp, server.js).
+Comprehensive testing of the AI Skincare Intelligence System. Last run: all suites passing.
 
 ---
 
@@ -35,15 +35,16 @@ Comprehensive testing of the AI Skincare Intelligence System after deployment fi
 - **Build**: ✅ Success (`npm run build`)
 - **E2E (Playwright)**: 24 passed, 6 skipped (login-protected), 0 failed
 
-## Deployment (Railway)
+## Deployment (Railway) – Live smoke tests
 
 | Endpoint | Status |
 |----------|--------|
 | Backend `/api/health` | ✅ healthy (main DB + product DB ok) |
 | Backend `/api/health/live` | ✅ alive |
 | Catalog `/api/v1/catalog/health` | ✅ healthy |
-| Frontend | ✅ 200 |
-| pellicura.com | ✅ 200 |
+| Auth `/auth/google/redirect-uri` | ✅ ok |
+| Frontend (pellicura.com) | ✅ 200 |
+| API root | ✅ 200 |
 
 ---
 

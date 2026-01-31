@@ -60,6 +60,12 @@ test.describe('Product Scanner Page', () => {
     // No error messages should be visible initially
     await expect(page.locator('.error-card')).not.toBeVisible();
   });
+
+  test('Scanner page has expected structure and guide', async ({ page }) => {
+    await expect(page.locator('button:has-text("Scan Barcode")')).toBeVisible();
+    await expect(page.locator('text=How Product Scanner Works')).toBeVisible();
+    await expect(page.locator('text=Barcode Scanning')).toBeVisible();
+  });
 });
 
 test.describe('Scanner Authentication', () => {

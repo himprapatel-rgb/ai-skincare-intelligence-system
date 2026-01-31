@@ -299,6 +299,31 @@
   font-weight: 600;
 }
 
+.btn-view-details {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 10px 20px;
+  color: var(--primary);
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  border: 2px solid var(--primary);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.btn-view-details:hover {
+  background: var(--primary);
+  color: white;
+}
+
+.view-details-row {
+  text-align: center;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
 /* Guide Enhancements */
 .guide-icon {
   width: 56px;
@@ -575,10 +600,17 @@
 
 .product-info-card {
   background: var(--bg-white);
-  border-radius: 12px;
+  border-radius: 16px;
   padding: 32px;
-  box-shadow: var(--shadow);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   border: 1px solid var(--border);
+}
+
+/* Improve product result card visual hierarchy */
+.product-results .card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
 .card-header {

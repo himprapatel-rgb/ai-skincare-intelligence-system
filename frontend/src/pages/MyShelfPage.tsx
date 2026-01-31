@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { usePageTitle } from '../hooks/usePageTitle';
-import { IconStar } from '../components/Icons';
+import { IconStar, IconPackage } from '../components/Icons';
 import { ConfirmModal } from '../components/ConfirmModal';
 import { SkeletonCardGrid } from '../components/Skeleton';
 import { useShelf } from '../context/ShelfContext';
@@ -244,6 +244,7 @@ const MyShelfPage: React.FC = () => {
           </button>
         </div>
         <button className="add-product-btn" onClick={() => navigate('/scanner')}>
+          <IconPackage size={20} strokeWidth={2} />
           Add Product
         </button>
       </div>

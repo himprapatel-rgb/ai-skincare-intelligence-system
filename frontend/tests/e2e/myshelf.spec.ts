@@ -68,6 +68,16 @@ test.describe('My Shelf Page', () => {
     const hasEmptyState = (await emptyState.count()) > 0;
     expect(hasProducts || hasEmptyState).toBeTruthy();
   });
+
+  test('Empty state Add Your First Product navigates to scanner', async ({ page }) => {
+    const emptyState = page.locator('.empty-state');
+    await expect(emptyState.or(page.locator('.products-grid'))).toBeVisible({ timeout: 15000 });
+    const addFirstBtn = page.locator('button:has-text("Add Your First Product")');
+    if ((await addFirstBtn.count()) > 0) {
+      await addFirstBtn.click();
+      await expect(page).toHaveURL(/.*scanner/);
+    }
+  });
 });
 
 test.describe('My Shelf Search', () => {

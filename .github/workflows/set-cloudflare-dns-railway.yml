@@ -7,7 +7,11 @@ on:
   workflow_dispatch:
     inputs:
       zone_id:
-        description: 'Cloudflare Zone ID (optional - get from CF Dashboard > pellicura.com > Overview)'
+        description: 'Zone ID (optional)'
+        required: false
+        type: string
+      account_id:
+        description: 'Account ID - used to find Zone ID if zone_id not provided'
         required: false
         type: string
 
@@ -19,22 +23,32 @@ jobs:
       - name: Get Zone ID
         id: zone
         run: |
-          if [ -n "${{ github.event.inputs.zone_id }}" ]; then
-            echo "zone_id=${{ github.event.inputs.zone_id }}" >> $GITHUB_OUTPUT
-            echo "Using provided Zone ID"
+          token="${{ secrets.CLOUDFLARE_API_TOKEN }}"
+          zone_id="${{ github.event.inputs.zone_id }}"
+          account_id="${{ github.event.inputs.account_id }}"
+
+          if [ -n "$zone_id" ]; then
+            echo "Using provided Zone ID: $zone_id"
           else
-            resp=$(curl -s -X GET "https://api.cloudflare.com/client/v4/zones?name=pellicura.com" \
-              -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
-              -H "Content-Type: application/json")
-            echo "API response (masked): $(echo "$resp" | jq -c 'if .success then {success, result_count: (.result | length)} else {success, errors} end')"
-            zone_id=$(echo "$resp" | jq -r '.result[0].id')
-            if [ "$zone_id" = "null" ] || [ -z "$zone_id" ]; then
-              echo "::error::Could not find zone. Add Zone ID as workflow input, or use a token with Zone:Read + Zone:DNS:Edit. Get Zone ID: Cloudflare Dashboard > pellicura.com > Overview (right sidebar)"
-              exit 1
+            if [ -n "$account_id" ]; then
+              echo "Fetching zones for account $account_id..."
+              resp=$(curl -s "https://api.cloudflare.com/client/v4/zones?account.id=$account_id" \
+                -H "Authorization: Bearer $token" -H "Content-Type: application/json")
+            else
+              resp=$(curl -s "https://api.cloudflare.com/client/v4/zones?name=pellicura.com" \
+                -H "Authorization: Bearer $token" -H "Content-Type: application/json")
             fi
-            echo "zone_id=$zone_id" >> $GITHUB_OUTPUT
-            echo "Found Zone ID: $zone_id"
+            echo "API: $(echo "$resp" | jq -c 'if .success then {ok: true, count: (.result | length)} else {ok: false, errors} end')"
+            zone_id=$(echo "$resp" | jq -r '.result[] | select(.name == "pellicura.com") | .id' | head -1)
+            [ -z "$zone_id" ] && zone_id=$(echo "$resp" | jq -r '.result[0].id')
           fi
+
+          if [ -z "$zone_id" ] || [ "$zone_id" = "null" ]; then
+            echo "::error::Could not find zone. Try account_id input or zone_id. Token needs Zone:Read + Zone:DNS:Edit."
+            exit 1
+          fi
+          echo "zone_id=$zone_id" >> $GITHUB_OUTPUT
+          echo "Zone ID: $zone_id"
 
       - name: Remove existing @ and www records (if any)
         run: |

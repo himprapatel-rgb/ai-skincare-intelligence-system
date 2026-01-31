@@ -378,8 +378,9 @@ async def scan_barcode(
         warnings = []
         safety_score = 85  # Default good score
         
-        if product.ingredients:
-            ingredients = [ing.strip() for ing in product.ingredients.split(",")[:10]]
+        ingredients_text = getattr(product, "ingredients", None) or ""
+        if ingredients_text:
+            ingredients = [ing.strip() for ing in str(ingredients_text).split(",")[:10] if ing.strip()]
             
             # Check for common allergens/irritants
             irritants = ["fragrance", "alcohol denat", "sodium lauryl sulfate", "parabens"]

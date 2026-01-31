@@ -40,6 +40,15 @@ def _compile_array_sqlite(_type, _compiler, **_kwargs):
 def _compile_uuid_sqlite(_type, _compiler, **_kwargs):
     return "CHAR(36)"
 
+# Ensure product catalog tables exist for catalog API tests
+@pytest.fixture(scope="session", autouse=True)
+def _ensure_product_tables():
+    """Create product catalog tables once per test session"""
+    from app.product_database import create_product_tables
+    create_product_tables()
+    yield
+
+
 # Configure engine based on database type
 if SQLALCHEMY_DATABASE_URL.startswith("sqlite"):
     engine = create_engine(

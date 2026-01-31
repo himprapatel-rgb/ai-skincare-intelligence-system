@@ -2,12 +2,17 @@
 Tests for Product Catalog API (Tasks 451-475)
 Tests the separate product database functionality.
 """
+import os
 import pytest
 from fastapi.testclient import TestClient
 from unittest.mock import patch, MagicMock
 
 from app.main import app
 
+# Skip PostgreSQL-only tests (to_tsvector, @>, etc.) when using SQLite
+def _is_sqlite():
+    u = (os.getenv("PRODUCT_DATABASE_URL") or os.getenv("DATABASE_URL") or "").lower()
+    return "sqlite" in u
 
 client = TestClient(app)
 
@@ -63,8 +68,9 @@ class TestCatalogLookup:
 
 
 class TestCatalogSearch:
-    """Test catalog search endpoints"""
-    
+    """Test catalog search endpoints (PostgreSQL: to_tsvector)"""
+
+    @pytest.mark.skipif(_is_sqlite(), reason="Search uses PostgreSQL to_tsvector")
     def test_search_endpoint(self):
         """Task 456: Search endpoint works"""
         response = client.get(
@@ -76,7 +82,8 @@ class TestCatalogSearch:
         assert "products" in data
         assert "total" in data
         assert "query" in data
-    
+
+    @pytest.mark.skipif(_is_sqlite(), reason="Search uses PostgreSQL to_tsvector")
     def test_search_with_category_filter(self):
         """Task 457: Search with category filter"""
         response = client.get(
@@ -86,7 +93,8 @@ class TestCatalogSearch:
         assert response.status_code == 200
         data = response.json()
         assert "products" in data
-    
+
+    @pytest.mark.skipif(_is_sqlite(), reason="Search uses PostgreSQL to_tsvector")
     def test_search_with_brand_filter(self):
         """Task 458: Search with brand filter"""
         response = client.get(
@@ -209,8 +217,9 @@ class TestProductsByIngredient:
 
 
 class TestSafeProducts:
-    """Test safe products endpoints"""
-    
+    """Test safe products endpoints (PostgreSQL: JSONB @>)"""
+
+    @pytest.mark.skipif(_is_sqlite(), reason="Uses PostgreSQL JSONB @> operator")
     def test_products_safe_for_skin_type(self):
         """Task 471: Products safe for skin type"""
         response = client.get("/api/v1/catalog/products/safe-for/oily")

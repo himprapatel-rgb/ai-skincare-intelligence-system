@@ -191,7 +191,7 @@
 }
 
 .product-content {
-  padding: 24px;
+  padding: var(--spacing-lg);
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -201,22 +201,22 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: var(--spacing-sm);
 }
 
 .product-category {
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   color: var(--primary);
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.05em;
   font-weight: 600;
 }
 
 .product-rating {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-size: 0.85rem;
+  gap: var(--spacing-xs);
+  font-size: var(--font-size-sm);
   font-weight: 600;
   color: var(--text-secondary);
 }
@@ -226,21 +226,21 @@
 }
 
 .product-name {
-  font-size: 1.25rem; /* Brand guideline: 20px / 1.25rem for H4 */
+  font-size: var(--font-size-xl);
   font-weight: 600;
   color: var(--text-primary);
-  margin-bottom: 8px;
-  line-height: 1.4;
+  margin-bottom: var(--spacing-sm);
+  line-height: var(--line-height-snug);
 }
 
 .product-brand {
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   color: var(--text-secondary);
-  margin-bottom: 12px;
+  margin-bottom: var(--spacing-sm);
 }
 
 .product-concerns {
-  margin-bottom: 16px;
+  margin-bottom: var(--spacing-md);
 }
 
 .product-concerns p {

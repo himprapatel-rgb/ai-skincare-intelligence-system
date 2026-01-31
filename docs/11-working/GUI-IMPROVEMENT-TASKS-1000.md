@@ -266,14 +266,14 @@
 
 ## Progress Summary
 
-- **Completed:** 96
-  - Batch 1–14: (previous)
-  - Batch 15: 311–320 (card tokens), 421–430 (profile forms), 541–550 (z-index tokens)
+- **Completed:** 103
+  - Batch 1–15: (previous)
+  - Batch 16: 321 (card-body), 431 (review form), 561 (aria-current), 306 (Recommendations card)
 - **Total:** 1000
-- **In Progress:** Batch 16
+- **In Progress:** Batch 17
 
 ---
 
 ## Next Batch
 
-321–330 (card-body), 431–440 (review/consent forms), 551–560 (mobile nav aria)
+331–340 (card image), 441 (search), 581 (back button), 601–602 (empty state icon)

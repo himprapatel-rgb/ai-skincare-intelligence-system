@@ -487,7 +487,7 @@
   display: block;
   font-weight: 600;
   color: var(--text-primary);
-  margin-bottom: 8px;
+  margin-bottom: var(--spacing-xs);
 }
 
 .review-form input[type="text"],

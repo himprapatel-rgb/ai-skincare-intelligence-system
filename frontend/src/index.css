@@ -355,6 +355,11 @@ select:focus {
   }
 }
 
+/* Card body padding (Tasks 321–330) */
+.card-body {
+  padding: var(--spacing-lg);
+}
+
 /* Card header consistency (Tasks 305–310) */
 .card-header,
 .section-card-header {

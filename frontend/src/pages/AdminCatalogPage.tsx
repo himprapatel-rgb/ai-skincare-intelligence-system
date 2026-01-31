@@ -113,7 +113,7 @@ const AdminCatalogPage: React.FC = () => {
       <div className="admin-catalog-page page-container">
         <h1>Catalog Admin</h1>
         <p className="admin-catalog-msg">Please log in to view catalog admin.</p>
-        <Link to="/login" className="btn-primary">Log in</Link>
+        <Link to="/auth" className="btn-primary">Log in</Link>
       </div>
     );
   }

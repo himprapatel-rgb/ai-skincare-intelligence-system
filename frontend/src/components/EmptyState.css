@@ -64,11 +64,11 @@
   min-height: 48px;
   padding: var(--spacing-sm) var(--spacing-lg);
   border-radius: var(--border-radius-md);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-base);
   cursor: pointer;
   background: var(--primary);
-  color: #fff;
+  color: var(--white);
   border: none;
   transition: background 0.2s, transform 0.1s;
 }

@@ -5,35 +5,35 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 20px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  padding: var(--spacing-lg);
 }
 
 .callback-container {
-  background: white;
-  border-radius: 16px;
-  padding: 48px;
+  background: var(--bg-white);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-2xl);
   text-align: center;
   max-width: 400px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-xl);
 }
 
 .callback-container h2 {
-  margin: 20px 0 10px;
-  color: #1a1a2e;
-  font-size: 24px;
+  margin: var(--spacing-lg) 0 var(--spacing-md);
+  color: var(--text-primary);
+  font-size: var(--font-size-2xl);
 }
 
 .callback-container p {
-  color: #666;
-  margin-bottom: 24px;
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-lg);
 }
 
 .callback-container .loading-spinner {
   width: 48px;
   height: 48px;
-  border: 4px solid #e0e0e0;
-  border-top-color: #667eea;
+  border: 4px solid var(--gray-200);
+  border-top-color: var(--primary);
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin: 0 auto;
@@ -48,33 +48,41 @@
 .callback-container.error .error-icon {
   width: 64px;
   height: 64px;
-  background: #fee2e2;
-  color: #dc2626;
+  background: var(--danger-light);
+  color: var(--danger);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 32px;
-  font-weight: bold;
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
   margin: 0 auto;
 }
 
 .callback-container .btn-primary {
-  display: inline-block;
-  padding: 12px 32px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-md) var(--spacing-xl);
+  min-height: 48px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  color: var(--white);
   border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 500;
+  border-radius: var(--border-radius-md);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .callback-container .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  box-shadow: var(--focus-shadow);
+}
+
+.callback-container .btn-primary:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
 }
 
 /* Dark mode */

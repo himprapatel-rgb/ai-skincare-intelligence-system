@@ -13,20 +13,20 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 60px;
-  color: white;
+  padding: var(--spacing-3xl);
+  color: var(--white);
 }
 
 .auth-brand {
-  margin-bottom: 48px;
+  margin-bottom: var(--spacing-2xl);
 }
 
 .auth-brand h1 {
-  font-size: 2rem; /* Brand guideline: 48px / 3rem for H1 */
-  font-weight: 700; /* Brand guideline: Bold */
-  margin-bottom: 16px;
-  letter-spacing: -0.5px;
-  line-height: 1.2; /* Brand guideline */
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--spacing-md);
+  letter-spacing: var(--letter-spacing-tight);
+  line-height: var(--line-height-tight);
 }
 
 .auth-brand p {

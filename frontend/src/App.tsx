@@ -44,6 +44,7 @@ const NotificationCenterPage = React.lazy(() => import("./pages/NotificationCent
 const AdminDashboardPage = React.lazy(() => import("./pages/AdminDashboardPage"));
 const AdminUsersPage = React.lazy(() => import("./pages/AdminUsersPage"));
 const AdminProductsPage = React.lazy(() => import("./pages/AdminProductsPage"));
+const AdminCatalogPage = React.lazy(() => import("./pages/AdminCatalogPage"));
 const AboutPage = React.lazy(() => import("./pages/AboutPage"));
 const ContactPage = React.lazy(() => import("./pages/ContactPage"));
 const PrivacyPage = React.lazy(() => import("./pages/PrivacyPage"));
@@ -92,6 +93,7 @@ function AppRoutes() {
           <Route path="/admin" element={<AdminDashboardPage />} />
           <Route path="/admin/users" element={<AdminUsersPage />} />
           <Route path="/admin/products" element={<AdminProductsPage />} />
+          <Route path="/admin/catalog" element={<AdminCatalogPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/privacy" element={<PrivacyPage />} />

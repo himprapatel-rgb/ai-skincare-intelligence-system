@@ -283,11 +283,20 @@ a:hover {
   }
 }
 
-/* Images */
+/* Images - responsive */
 img {
   max-width: 100%;
   height: auto;
   display: block;
+}
+
+/* Reduced motion (WCAG 2.3.3) */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* Buttons */
@@ -300,18 +309,29 @@ button {
   touch-action: manipulation; /* Prevent double-tap zoom */
 }
 
-/* Inputs */
-input, textarea, select {
+/* Inputs - min 44px touch target for single-line (WCAG 2.5.5) */
+input:not([type="checkbox"]):not([type="radio"]),
+select {
   font-family: inherit;
   font-size: var(--font-size-base);
+  min-height: 44px;
+}
+
+textarea {
+  font-family: inherit;
+  font-size: var(--font-size-base);
+  min-height: 88px;
 }
 
 input:focus,
+input:focus-visible,
 textarea:focus,
-select:focus {
+textarea:focus-visible,
+select:focus,
+select:focus-visible {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(31, 111, 235, 0.12);
+  box-shadow: var(--focus-shadow);
 }
 
 /* Mobile: Prevent zoom on input focus (iOS) */

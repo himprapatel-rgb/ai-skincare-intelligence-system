@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { api } from '../services/api';
 import './ConsentPage.css';
 
@@ -267,8 +267,8 @@ const ConsentPage: React.FC = () => {
             <h3>Your Rights</h3>
             <p>
               You have the right to access, modify, or delete your data at any time. You can also withdraw 
-              your consent for optional data processing. Learn more in our <a href="/privacy">Privacy Policy</a> and 
-              <a href="/terms">Terms of Service</a>.
+              your consent for optional data processing. Learn more in our <Link to="/privacy">Privacy Policy</Link> and{' '}
+              <Link to="/terms">Terms of Service</Link>.
             </p>
           </div>
 

@@ -1,0 +1,108 @@
+.admin-catalog-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+}
+
+.admin-catalog-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.admin-catalog-msg {
+  color: var(--text-secondary);
+  margin: var(--spacing-md) 0;
+}
+
+.admin-catalog-error {
+  color: var(--danger);
+  padding: var(--spacing-sm);
+  background: rgba(185, 28, 28, 0.08);
+  border-radius: var(--border-radius-md);
+}
+
+.admin-catalog-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.admin-catalog-section h2 {
+  margin: 0 0 var(--spacing-xs);
+  font-size: var(--font-size-lg);
+  color: var(--text-primary);
+}
+
+.admin-catalog-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.admin-catalog-card {
+  background: var(--bg-white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.admin-catalog-card .card-label {
+  display: block;
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.admin-catalog-card .card-value {
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.admin-catalog-card.status-ok,
+.admin-catalog-card.status-healthy {
+  border-color: var(--success);
+  background: rgba(34, 197, 94, 0.06);
+}
+
+.admin-catalog-card.warning {
+  border-color: var(--warning);
+  background: rgba(234, 179, 8, 0.06);
+}
+
+.admin-catalog-suggestions {
+  margin: 0;
+  padding-left: var(--spacing-lg);
+  color: var(--text-secondary);
+}
+
+.admin-catalog-muted {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.admin-catalog-duplicates {
+  margin: 0;
+  padding-left: var(--spacing-lg);
+  font-size: var(--font-size-sm);
+}
+
+.admin-catalog-duplicates li {
+  margin-bottom: var(--spacing-xs);
+}
+
+.admin-catalog-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+}
+
+.admin-catalog-actions .btn-primary,
+.admin-catalog-actions .btn-secondary {
+  min-height: 44px;
+}

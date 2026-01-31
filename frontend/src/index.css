@@ -223,11 +223,30 @@ h4 {
 h5 { font-size: var(--font-size-lg); }
 h6 { font-size: var(--font-size-base); }
 
-/* Responsive typography */
+/* Responsive typography (Tasks 921–930) */
+@media (max-width: 1024px) {
+  h1 { font-size: var(--font-size-5xl); }
+  h2 { font-size: var(--font-size-4xl); }
+  h3 { font-size: var(--font-size-2xl); }
+}
+
 @media (max-width: 768px) {
   h1 { font-size: var(--font-size-4xl); }
   h2 { font-size: var(--font-size-3xl); }
   h3 { font-size: var(--font-size-xl); }
+  h4 { font-size: var(--font-size-lg); }
+}
+
+@media (max-width: 480px) {
+  h1 { font-size: var(--font-size-3xl); }
+  h2 { font-size: var(--font-size-2xl); }
+  h3 { font-size: var(--font-size-lg); }
+  h4 { font-size: var(--font-size-base); }
+  h5 { font-size: var(--font-size-sm); }
+}
+
+@media (max-width: 360px) {
+  html { font-size: 15px; }
 }
 
 p {
@@ -777,18 +796,53 @@ a:focus-visible {
   }
 }
 
-/* High contrast mode support */
+/* High contrast mode support (Tasks 981–990) */
 @media (prefers-contrast: high) {
   :root {
     --border-color: #000000;
+    --text-primary: #000000;
+    --text-secondary: #0a0a0a;
+    --text-muted: #1a1a1a;
   }
-  
-  .btn-primary {
-    border: 2px solid #000000;
+
+  body {
+    color: #000000;
   }
-  
-  .input {
-    border-width: 2px;
+
+  a {
+    color: #0000cc;
+    text-decoration: underline;
+  }
+
+  .btn-primary,
+  .btn-secondary,
+  .btn-outline,
+  .btn {
+    border: 2px solid #000000 !important;
+  }
+
+  input,
+  textarea,
+  select,
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    border-width: 2px !important;
+    border-color: #000000 !important;
+  }
+
+  .card,
+  .product-card,
+  .stat-card,
+  .notification-item,
+  .action-card,
+  .consent-modal {
+    border: 2px solid #000000 !important;
+  }
+
+  *:focus-visible {
+    outline: 3px solid #000000 !important;
+    outline-offset: 2px;
   }
 }
 

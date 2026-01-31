@@ -266,14 +266,14 @@
 
 ## Progress Summary
 
-- **Completed:** 66
-  - Batch 1–8: (previous)
-  - Batch 9: 908 (modal full-screen mobile), 909 (scanner viewport), 910 (table scroll), 911–920 (page-container padding), 971–980 (reduce motion)
+- **Completed:** 69
+  - Batch 1–9: (previous)
+  - Batch 10: 908 (ConsentModal tokens), 921–930 (font scaling, 1024px + 360px), 981–990 (high contrast)
 - **Total:** 1000
-- **In Progress:** Batch 10
+- **In Progress:** Batch 11
 
 ---
 
 ## Next Batch
 
-921–930 (font scaling), 908 ConsentModal var fix, 981–990 (high contrast)
+901–905, 991–1000 (responsive audit), 731–740 (flagged ingredients)

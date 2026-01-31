@@ -253,16 +253,16 @@
 /* Dropdown Menu */
 .app-nav-dropdown-menu {
   position: absolute;
-  top: calc(100% + 8px);
+  top: calc(100% + var(--spacing-sm));
   right: 0;
   min-width: 240px;
-  background: #ffffff;
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
-  padding: 8px;
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: var(--spacing-sm);
   animation: dropdownFadeIn 0.2s ease;
-  z-index: 200;
+  z-index: var(--z-index-dropdown);
 }
 
 @keyframes dropdownFadeIn {
@@ -279,8 +279,8 @@
 .app-nav-dropdown-header {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
 }
 
 .app-nav-dropdown-name {
@@ -323,8 +323,13 @@
 }
 
 .app-nav-dropdown-item:hover {
-  background: rgba(31, 111, 235, 0.06);
+  background: var(--primary-light);
   color: var(--primary);
+}
+
+.app-nav-dropdown-item:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: -2px;
 }
 
 .app-nav-dropdown-logout {
@@ -332,7 +337,7 @@
 }
 
 .app-nav-dropdown-logout:hover {
-  background: rgba(255, 59, 48, 0.08);
+  background: var(--danger-light);
   color: var(--danger);
 }
 
@@ -598,7 +603,12 @@
   }
   
   .app-logo-text {
-    font-size: 1.1rem;
+    font-size: var(--font-size-lg);
+  }
+
+  .app-logo-mark {
+    width: 32px;
+    height: 32px;
   }
   
   .app-nav-mobile {

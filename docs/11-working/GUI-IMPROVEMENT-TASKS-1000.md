@@ -277,4 +277,4 @@
 
 ## Next Batch
 
-506 (dropdown), 510 (logo mobile), 703–704 (ingredient tabs), 706 (review card)
+707–708, 709–710, 741 (review form), 551 (mobile CTA touch)

@@ -398,17 +398,18 @@
 
 .ingredient-card {
   background: var(--bg-tertiary);
-  padding: 12px;
+  padding: var(--spacing-sm);
   border-radius: var(--border-radius-md);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border);
   text-align: center;
   font-weight: 600;
+  word-break: break-word;
 }
 
 .ingredients-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: var(--spacing-sm);
 }
 
 .ingredient-item {
@@ -416,8 +417,11 @@
   border-radius: var(--border-radius-full);
   background: var(--accent-light);
   color: var(--text-secondary);
-  border: 1px solid var(--border-color);
-  font-size: 0.85rem;
+  border: 1px solid var(--border);
+  font-size: var(--font-size-sm);
+  max-width: 100%;
+  word-break: break-word;
+  white-space: normal;
 }
 
 /* Reviews Tab Styles */
@@ -425,9 +429,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: var(--spacing-lg);
   flex-wrap: wrap;
-  gap: 12px;
+  gap: var(--spacing-sm);
 }
 
 .reviews-header h3 {
@@ -435,16 +439,17 @@
 }
 
 .write-review-btn {
+  min-height: 44px;
   padding: 10px 20px !important;
 }
 
 /* Review Form */
 .review-form {
   background: var(--bg-tertiary);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border);
   border-radius: var(--border-radius-md);
-  padding: 24px;
-  margin-bottom: 24px;
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
 }
 
 .review-form .form-group {

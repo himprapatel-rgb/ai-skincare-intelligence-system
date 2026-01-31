@@ -60,15 +60,12 @@ test.describe('My Shelf Page', () => {
   });
 
   test('Task 489: Should show empty state when no products', async ({ page }) => {
-    // If empty, should show helpful message
+    // Wait for loading to finish - then either empty state or product grid appears
     const emptyState = page.locator('.empty-state');
     const productGrid = page.locator('.products-grid');
-    
-    // Either products are shown or empty state
-    const hasProducts = await productGrid.count() > 0;
-    const hasEmptyState = await emptyState.count() > 0;
-    
-    // One of these should be true
+    await expect(emptyState.or(productGrid)).toBeVisible({ timeout: 15000 });
+    const hasProducts = (await productGrid.count()) > 0;
+    const hasEmptyState = (await emptyState.count()) > 0;
     expect(hasProducts || hasEmptyState).toBeTruthy();
   });
 });

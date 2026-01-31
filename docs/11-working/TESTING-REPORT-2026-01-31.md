@@ -19,7 +19,7 @@ Comprehensive testing of the AI Skincare Intelligence System after deployment fi
 | Scan | 8 | 0 | 0 |
 | Security | 8 | 0 | 0 |
 | Service Utils | 6 | 0 | 0 |
-| **Total** | **81+** | **0** | **9** |
+| **Total** | **80** | **0** | **10** |
 
 ### Fixes Applied
 
@@ -33,7 +33,17 @@ Comprehensive testing of the AI Skincare Intelligence System after deployment fi
 ## Frontend
 
 - **Build**: ✅ Success (`npm run build`)
-- **E2E (Playwright)**: 30 tests available; requires running app
+- **E2E (Playwright)**: 24 passed, 6 skipped (login-protected), 0 failed
+
+## Deployment (Railway)
+
+| Endpoint | Status |
+|----------|--------|
+| Backend `/api/health` | ✅ healthy (main DB + product DB ok) |
+| Backend `/api/health/live` | ✅ alive |
+| Catalog `/api/v1/catalog/health` | ✅ healthy |
+| Frontend | ✅ 200 |
+| pellicura.com | ✅ 200 |
 
 ---
 

@@ -266,14 +266,14 @@
 
 ## Progress Summary
 
-- **Completed:** 53
-  - Batch 1–6: (previous)
-  - Batch 7: 731–740 (flagged ingredients), 751–760 (product actions), 808–810 (notification, skin goals, routine steps)
+- **Completed:** 60
+  - Batch 1–7: (previous)
+  - Batch 8: 811–820 (chart), 821–830 (history/photo grid), 831–840 (dashboard empty), 901–905 (breakpoints, nav overflow, form full-width)
 - **Total:** 1000
-- **In Progress:** Batch 8
+- **In Progress:** Batch 9
 
 ---
 
 ## Next Batch
 
-811–820 (chart axis), 821–830 (progress photo grid), 831–840 (dashboard empty), 901–905
+908–910 (modal, scanner viewport, table scroll), 911–920 (mobile padding), 971–980 (reduce motion)

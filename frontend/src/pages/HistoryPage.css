@@ -197,11 +197,11 @@
 
 .history-item {
   background: var(--bg-white);
-  border-radius: 12px; /* Brand guideline: 12px for cards */
-  padding: 24px;
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-lg);
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: var(--spacing-lg);
 }
 @media (max-width: 600px) {
   .history-item {
@@ -254,10 +254,12 @@
 .history-thumbnail {
   width: 80px;
   height: 80px;
-  border-radius: 12px;
+  min-width: 80px;
+  min-height: 80px;
+  border-radius: var(--border-radius-md);
   object-fit: cover;
   border: 2px solid var(--border);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-sm);
   flex-shrink: 0;
 }
 

@@ -182,11 +182,21 @@
 .form-group select,
 .form-group textarea {
   width: 100%;
+  max-width: 100%;
   min-height: 44px;
-  padding: 12px;
-  border: 1px solid var(--border-color);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid var(--border);
   border-radius: var(--border-radius-md);
   font-size: var(--font-size-base);
+}
+
+@media (max-width: 768px) {
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    box-sizing: border-box;
+  }
 }
 
 .form-group input:focus,

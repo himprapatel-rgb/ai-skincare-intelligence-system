@@ -266,12 +266,13 @@
 
 ## Progress Summary
 
-- **Completed:** 30
+- **Completed:** 35
   - Batch 1: 201–203, 401, 404, 508, 906, 907, 6, 304, 607–608, 701
   - Batch 2: 301–302, 305, 307, 309–310, 411–415, 501–502, 505, 10
-  - Batch 3: 503 (mobile animation), 504 (active ✓), 441 (search), 551 (touch targets), 702 (tabs)
+  - Batch 3: 503, 504, 441, 551, 702
+  - Batch 4: 506 (dropdown), 510 (logo mobile), 703 (ingredient wrap), 706 (review card)
 - **Total:** 1000
-- **In Progress:** Batch 4
+- **In Progress:** Batch 5
 
 ---
 

@@ -22,20 +22,22 @@ jobs:
     steps:
       - name: Get Zone ID
         id: zone
+        env:
+          ZONE_ID_SECRET: ${{ secrets.CLOUDFLARE_ZONE_ID }}
         run: |
           token="${{ secrets.CLOUDFLARE_API_TOKEN }}"
           zone_id="${{ github.event.inputs.zone_id }}"
+          [ -z "$zone_id" ] && zone_id="$ZONE_ID_SECRET"
           account_id="${{ github.event.inputs.account_id }}"
 
           if [ -n "$zone_id" ]; then
             echo "Using provided Zone ID: $zone_id"
           else
-            if [ -n "$account_id" ]; then
-              echo "Fetching zones for account $account_id..."
-              resp=$(curl -s "https://api.cloudflare.com/client/v4/zones?account.id=$account_id" \
-                -H "Authorization: Bearer $token" -H "Content-Type: application/json")
-            else
-              resp=$(curl -s "https://api.cloudflare.com/client/v4/zones?name=pellicura.com" \
+            echo "Fetching zones (trying name=pellicura.com first, then all zones)..."
+            resp=$(curl -s "https://api.cloudflare.com/client/v4/zones?name=pellicura.com" \
+              -H "Authorization: Bearer $token" -H "Content-Type: application/json")
+            if [ "$(echo "$resp" | jq '.result | length')" = "0" ] && [ -n "$account_id" ]; then
+              resp=$(curl -s "https://api.cloudflare.com/client/v4/zones" \
                 -H "Authorization: Bearer $token" -H "Content-Type: application/json")
             fi
             echo "API: $(echo "$resp" | jq -c 'if .success then {ok: true, count: (.result | length)} else {ok: false, errors} end')"

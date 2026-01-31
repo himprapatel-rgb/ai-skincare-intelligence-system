@@ -266,14 +266,14 @@
 
 ## Progress Summary
 
-- **Completed:** 108
-  - Batch 1–16: (previous)
-  - Batch 17: 441 (search input), 581 (back button), 601 (empty state icon mobile)
+- **Completed:** 113
+  - Batch 1–17: (previous)
+  - Batch 18: 602 (empty CTA), 371 (card responsive), 409 (checkbox alignment)
 - **Total:** 1000
-- **In Progress:** Batch 18
+- **In Progress:** Batch 19
 
 ---
 
 ## Next Batch
 
-602 (empty CTA), 371–380 (card responsive), 409 (checkbox alignment)
+411–420 (Auth form), 604 (spinner), 661 (retry button)

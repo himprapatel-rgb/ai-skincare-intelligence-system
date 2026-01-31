@@ -346,6 +346,15 @@ select:focus {
   }
 }
 
+/* Card responsive (Tasks 371–380) */
+@media (max-width: 768px) {
+  .card-padding,
+  .card-padding-sm,
+  .card-padding-lg {
+    padding: var(--spacing-md);
+  }
+}
+
 /* Product grid 1-col on mobile (Task 904) */
 @media (max-width: 768px) {
   .product-grid,
@@ -397,6 +406,31 @@ select:focus {
   outline: none;
   border-color: var(--primary);
   box-shadow: var(--focus-shadow);
+}
+
+/* Checkbox/radio alignment (Task 409) */
+input[type="checkbox"],
+input[type="radio"] {
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  min-height: 20px;
+  accent-color: var(--primary);
+  vertical-align: middle;
+  margin-right: var(--spacing-sm);
+}
+
+.checkbox-group label,
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.checkbox-group input[type="checkbox"],
+.checkbox-label input[type="checkbox"] {
+  margin-right: 0;
+  flex-shrink: 0;
 }
 
 /* Dropdown stacking (Tasks 541–550) - custom dropdowns */

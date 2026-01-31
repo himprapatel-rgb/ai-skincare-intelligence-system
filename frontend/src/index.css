@@ -140,6 +140,11 @@
   --max-width-md: 768px;
   --max-width-lg: 1024px;
   --max-width-xl: 1280px;
+
+  /* Focus & Accessibility */
+  --focus-ring: 2px solid var(--primary);
+  --focus-ring-offset: 2px;
+  --focus-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
 }
 
 /* Reset & Base Styles */

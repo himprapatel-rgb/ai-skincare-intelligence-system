@@ -85,6 +85,7 @@
   background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
   color: var(--white);
   border: none;
+  min-height: 48px;
   padding: var(--spacing-md) var(--spacing-lg);
   border-radius: var(--border-radius-md);
   font-weight: 600;
@@ -212,13 +213,14 @@
 }
 
 .filter-tabs button {
-  padding: 12px 24px; /* Brand guideline: 12px 24px */
+  min-height: 44px;
+  padding: 12px 24px;
   border: 2px solid var(--border);
-  border-radius: 8px; /* Brand guideline: 8px */
+  border-radius: var(--border-radius-md);
   background: var(--bg-white);
   color: var(--text-gray);
   font-weight: 500;
-  font-size: 1rem; /* Brand guideline: 16px Body */
+  font-size: var(--font-size-base);
   cursor: pointer;
   transition: all 0.2s ease;
 }

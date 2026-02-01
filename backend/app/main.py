@@ -70,6 +70,7 @@ from app.routers import (  # GDPR & User Management
     admin,
     catalog,
     consent,
+    content,
     digital_twin,
     favorites,
     goals,

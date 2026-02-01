@@ -22,7 +22,7 @@
 
 | Document | Description |
 |----------|-------------|
-| [TASK-LIST-1-500.md](./TASK-LIST-1-500.md) | All 500 tasks - 100% complete |
+| [Active Tasks](./12-tasks/ACTIVE-TASKS.md) | Current tasks (legacy lists in [99-archive/task-lists-legacy](./99-archive/task-lists-legacy/)) |
 | [ZERO-DOWNTIME-MIGRATION-PLAN.md](./ZERO-DOWNTIME-MIGRATION-PLAN.md) | Cloudflare migration (2026-01-29) |
 | [CLOUDFLARE-MIGRATION-PLAN.md](./CLOUDFLARE-MIGRATION-PLAN.md) | Architecture details |
 | [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md) | Current & target deployment |
@@ -85,6 +85,8 @@
 | See all 31 frontend pages | [Pages Status](./06-operations/Pages-Created-Status.md) |
 | Review sprint history | [Sprint Index](./07-sprints/README.md) |
 | See current priorities | [Product Backlog](./03-product/Product-Backlog-V5.md) |
+| See active tasks | [12-tasks/ACTIVE-TASKS.md](./12-tasks/ACTIVE-TASKS.md) |
+| Follow dev workflow | [13-workflow/DEVELOPMENT-WORKFLOW.md](./13-workflow/DEVELOPMENT-WORKFLOW.md) |
 | Check production URLs | [README (root)](../README.md#live-production-urls) |
 | Set up development environment | [Quick Start](./00-index/Quick-Start.md) |
 | Deploy to production | [Deployment Guide](./05-deployment/Deployment-Guide.md) |

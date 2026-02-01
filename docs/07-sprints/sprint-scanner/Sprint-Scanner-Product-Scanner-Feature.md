@@ -278,7 +278,7 @@ Scan → Identify → Check DB → (Not Found) → External API → Auto-Save �
 
 - [Database Schema](../02-architecture/Database-Schema.md)
 - [Skin Analysis AI](../02-architecture/Skin-Analysis-AI.md)
-- [Task List 1-500](../TASK-LIST-1-500.md)
+- [Task List 1-500 (archived)](../../99-archive/task-lists-legacy/TASK-LIST-1-500.md)
 
 ---
 

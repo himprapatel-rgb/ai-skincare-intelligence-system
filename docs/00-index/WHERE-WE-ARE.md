@@ -10,7 +10,7 @@
 |------|--------|--------|
 | **Scanner & Barcode (500 tasks)** | ✅ 100% complete | Camera, photo, AI recognition, My Shelf, product details |
 | **Product Database (500 tasks)** | ✅ 100% complete | Two-DB architecture, catalog API, scanner integration |
-| **GUI (4,200 tasks)** | ✅ Complete | Design tokens, mobile, a11y across 42 pages. See [PER-PAGE-GUI-TASKS-4200.md](../11-working/PER-PAGE-GUI-TASKS-4200.md) |
+| **GUI (4,200 tasks)** | ✅ Complete | Design tokens, mobile, a11y across 42 pages. See [COMPLETED](../12-tasks/COMPLETED.md) |
 | **Production (Railway)** | ✅ Live | `main` → Railway auto-deploy. pellicura.com |
 | **Database** | ✅ Railway PostgreSQL | Main DB + product catalog (two-DB) |
 | **Google Sign-In** | ✅ Working | Live on pellicura.com |
@@ -20,7 +20,7 @@
 
 ## 1. Product Scanner & Barcode (500 tasks – done)
 
-- **Docs:** `docs/TASK-LIST-1-500.md`
+- **Docs:** `docs/99-archive/task-lists-legacy/TASK-LIST-1-500.md`
 - **Done:** Camera/barcode, photo capture, AI recognition, My Shelf (filters, sort), product details (ingredients, overview, usage guide), error handling (ErrorBoundary, NetworkStatus), performance (LazyImage), API (health, tracing), DB indexes, unit + E2E tests.
 - **Live on:** Production (Railway frontend + backend).
 
@@ -28,7 +28,7 @@
 
 ## 2. Product Database (500 tasks – done)
 
-- **Docs:** `docs/TASK-LIST-PRODUCT-DATABASE.md`
+- **Docs:** `docs/99-archive/task-lists-legacy/TASK-LIST-PRODUCT-DATABASE.md`
 - **Done:**
   - Two-DB support: `DATABASE_URL` (main) + optional `PRODUCT_DATABASE_URL` (catalog).
   - Backend: `app/product_database.py`, `ProductBase`, catalog models, catalog router (barcode/lookup/search/product/stats/categories/brands/ingredients/popular/recent/vegan/pregnancy-safe/fragrance-free/safe-for/health).
@@ -83,8 +83,10 @@
 
 | Purpose | Path |
 |---------|------|
-| Scanner task list (500) | `docs/TASK-LIST-1-500.md` |
-| Product DB task list (500) | `docs/TASK-LIST-PRODUCT-DATABASE.md` |
+| **Active tasks** | [docs/12-tasks/ACTIVE-TASKS.md](../12-tasks/ACTIVE-TASKS.md) |
+| **Development workflow** | [docs/13-workflow/DEVELOPMENT-WORKFLOW.md](../13-workflow/DEVELOPMENT-WORKFLOW.md) |
+| Scanner task list (archived) | `docs/99-archive/task-lists-legacy/TASK-LIST-1-500.md` |
+| Product DB task list (archived) | `docs/99-archive/task-lists-legacy/TASK-LIST-PRODUCT-DATABASE.md` |
 | Product DB config | `backend/app/product_database.py` |
 | Catalog API | `backend/app/routers/catalog.py` |
 | Catalog service (frontend) | `frontend/src/services/catalogService.ts` |
@@ -93,6 +95,19 @@
 | Required secrets | `docs/05-deployment/Required-Secrets.md` |
 | Google SSO setup | `docs/05-deployment/Google-SSO-Setup.md` |
 | Google login troubleshooting | `docs/11-working/GOOGLE-LOGIN-TROUBLESHOOTING.md` |
+
+---
+
+---
+
+## 8. Systematic Development
+
+| What | Where |
+|------|-------|
+| **Active tasks** | [12-tasks/ACTIVE-TASKS.md](../12-tasks/ACTIVE-TASKS.md) |
+| **Workflow** | [13-workflow/DEVELOPMENT-WORKFLOW.md](../13-workflow/DEVELOPMENT-WORKFLOW.md) |
+| **Testing checklist** | [13-workflow/TESTING-CHECKLIST.md](../13-workflow/TESTING-CHECKLIST.md) |
+| **Proposal** | [SYSTEMATIC-DEVELOPMENT-PROPOSAL.md](SYSTEMATIC-DEVELOPMENT-PROPOSAL.md) |
 
 ---
 

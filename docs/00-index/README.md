@@ -16,6 +16,8 @@
 | **Work on frontend** | [FRONTEND_GUIDE.md](../FRONTEND_GUIDE.md) |
 | **Understand database** | [DATABASE_SCHEMA.md](../DATABASE_SCHEMA.md) |
 | **Check system design** | [ARCHITECTURE.md](../ARCHITECTURE.md) |
+| **See active tasks** | [12-tasks/ACTIVE-TASKS.md](../12-tasks/ACTIVE-TASKS.md) |
+| **Development workflow** | [13-workflow/DEVELOPMENT-WORKFLOW.md](../13-workflow/DEVELOPMENT-WORKFLOW.md) |
 
 ---
 
@@ -63,12 +65,21 @@ docs/
 │   ├── 04-VISUAL-IDENTITY.md
 │   └── ...
 │
-├── 11-working/             # Working documents
-│   ├── AGILE-ITERATION-PROTOCOL.md
-│   └── AI-AGILE-ITERATION-LOG.md
+├── 11-working/             # Working notes (troubleshooting, integration)
+│   └── README.md
+│
+├── 12-tasks/               # ★ Tasks (single source)
+│   ├── ACTIVE-TASKS.md
+│   ├── BACKLOG.md
+│   └── COMPLETED.md
+│
+├── 13-workflow/            # ★ Development process
+│   ├── DEVELOPMENT-WORKFLOW.md
+│   └── TESTING-CHECKLIST.md
 │
 ├── 99-archive/             # Archived documents
-│   └── legacy/
+│   ├── legacy/
+│   └── task-lists-legacy/
 │
 ├── ARCHITECTURE.md         ★ System architecture
 ├── BACKEND_GUIDE.md        ★ Backend development guide

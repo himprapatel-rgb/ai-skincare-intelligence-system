@@ -416,7 +416,7 @@ For questions or issues, please open a GitHub issue or contact the development t
 
 | Document | Description |
 |----------|-------------|
-| [TASK-LIST-1-500.md](./docs/TASK-LIST-1-500.md) | All 500 tasks completed |
+| [Active Tasks](./docs/12-tasks/ACTIVE-TASKS.md) | Current tasks (see [WHERE-WE-ARE](./docs/00-index/WHERE-WE-ARE.md)) |
 | [DATABASE_SCHEMA.md](./docs/DATABASE_SCHEMA.md) | Complete database documentation |
 | [ARCHITECTURE.md](./docs/ARCHITECTURE.md) | System architecture |
 

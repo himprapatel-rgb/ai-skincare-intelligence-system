@@ -217,58 +217,85 @@ const ProductDetailsPage: React.FC = () => {
           setFromCatalog(false);
         }
       } else {
-        // Try to fetch from products API
+        // Try multiple sources: catalog (by id or barcode), then products (by upc)
+        const mapToProduct = (data: Record<string, unknown>, sourceId: string): ProductDetails => ({
+          id: String(data.id ?? sourceId),
+          name: String(data.name ?? data.product_name ?? 'Unknown Product'),
+          brand: String(data.brand ?? data.product_brand ?? 'Unknown Brand'),
+          category: String(data.category ?? data.product_category ?? 'Skincare'),
+          description: data.description as string | undefined,
+          ingredients: (data.ingredients as string[]) || [],
+          imageUrl: (data.image_url ?? data.product_image ?? data.product_image_url) as string | undefined,
+          rating: data.average_rating as number | undefined,
+          reviews: data.review_count as number | undefined,
+          price: data.price_usd != null ? String(data.price_usd) : (data.price as string | undefined),
+          keyIngredients: data.key_ingredients as ProductDetails['keyIngredients'],
+          suitable: data.suitable_skin_types as string[] | undefined,
+          concerns: (data.targets_concerns ?? data.addresses_concerns) as string[] | undefined,
+          howToUse: data.how_to_use as string | undefined,
+          benefits: data.benefits as string[] | undefined,
+        });
+
+        let productData: ProductDetails | null = null;
+
+        // 1. Try catalog by product id (UUID)
         try {
-          const response = await fetch(`${API_BASE}/products/${id}`);
-          if (response.ok) {
-            const data = await response.json();
-            const productData: ProductDetails = {
-              id: data.id || id,
-              name: data.name || data.product_name || 'Unknown Product',
-              brand: data.brand || data.product_brand || 'Unknown Brand',
-              category: data.category || data.product_category || 'Skincare',
-              description: data.description,
-              ingredients: data.ingredients || [],
-              imageUrl: data.image_url || data.product_image,
-              // Only include rating if it's real data from API
-              rating: data.average_rating || undefined,
-              reviews: data.review_count || undefined,
-              price: data.price || undefined,
-              keyIngredients: data.key_ingredients,
-              suitable: data.suitable_skin_types,
-              concerns: data.addresses_concerns,
-              howToUse: data.how_to_use,
-              benefits: data.benefits,
-            };
-            setProduct(productData);
-            setInShelf(isOnShelf(id));
-            addToRecentlyViewed({
-              id: productData.id,
-              name: productData.name,
-              brand: productData.brand,
-              imageUrl: productData.imageUrl,
-            });
-            try {
-              const catRes = await fetch(`${API_BASE}/catalog/product/${id}`);
-              if (catRes.ok) setFromCatalog(true);
-            } catch {
-              setFromCatalog(false);
-            }
-          } else {
-            // Product not found - show basic info
-            setProduct({
-              id: id,
-              name: 'Product Not Found',
-              brand: 'Unknown',
-              category: 'Unknown',
-              ingredients: [],
-            });
+          const catRes = await fetch(`${API_BASE}/catalog/product/${id}`);
+          if (catRes.ok) {
+            const data = await catRes.json();
+            productData = mapToProduct(data, id);
+            setFromCatalog(true);
           }
         } catch {
-          // API error - show basic info
+          /* try next */
+        }
+
+        // 2. Try catalog by barcode (when id looks like barcode)
+        if (!productData && /^\d{8,14}$/.test(id)) {
+          try {
+            const barcodeRes = await fetch(`${API_BASE}/catalog/barcode/${id}`);
+            if (barcodeRes.ok) {
+              const barcodeData = await barcodeRes.json();
+              if (barcodeData.found && barcodeData.product) {
+                const p = barcodeData.product;
+                productData = mapToProduct(p, id);
+                setFromCatalog(true);
+              }
+            }
+          } catch {
+            /* try next */
+          }
+        }
+
+        // 3. Try products API (legacy, lookup by upc)
+        if (!productData) {
+          try {
+            const prodRes = await fetch(`${API_BASE}/products/${id}`);
+            if (prodRes.ok) {
+              const data = await prodRes.json();
+              productData = mapToProduct(
+                { ...data, image_url: data.product_image_url ?? data.image_url },
+                id
+              );
+            }
+          } catch {
+            /* try next */
+          }
+        }
+
+        if (productData) {
+          setProduct(productData);
+          setInShelf(isOnShelf(id));
+          addToRecentlyViewed({
+            id: productData.id,
+            name: productData.name,
+            brand: productData.brand,
+            imageUrl: productData.imageUrl,
+          });
+        } else {
           setProduct({
             id: id,
-            name: 'Product Details Unavailable',
+            name: 'Product Not Found',
             brand: 'Unknown',
             category: 'Unknown',
             ingredients: [],

@@ -75,7 +75,7 @@ No new features; only polish, consistency, and quality.
 - [ ] My Shelf: Make filter counts badges
 - [ ] Product Scanner: Remove redundant "Click Start Camera" text
 - [ ] Product Scanner: Strengthen tab active state
-- [ ] **Product Scanner: Fix scanner→product detail data mismatch** (critical) (barcode lookup finds product, but /product/:id shows Not Found)
+- [x] **Product Scanner: Fix scanner→product detail data mismatch** (resolved: barcode link + catalog/products multi-source fetch)
 - [ ] Product Scanner: Remove black device frame; center Start Camera
 - [ ] Product Scanner: Simplify "EAN-13, UPC..." to "Works with most barcodes"
 - [ ] Product Scanner: Fix "Recently Scanned" text wrapping bug

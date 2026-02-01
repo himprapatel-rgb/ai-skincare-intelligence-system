@@ -117,6 +117,7 @@ const placeholderImage =
 // Scan history item stored in localStorage
 interface ScanHistoryItem {
   id: string;
+  barcode?: string;
   name: string;
   brand: string;
   imageUrl?: string;
@@ -256,6 +257,7 @@ const ProductScannerPage: React.FC = () => {
   const addToScanHistory = (product: ScannedProduct) => {
     const historyItem: ScanHistoryItem = {
       id: product.id,
+      barcode: product.barcode,
       name: product.name,
       brand: product.brand,
       imageUrl: product.imageUrl,
@@ -569,7 +571,7 @@ const ProductScannerPage: React.FC = () => {
       };
       
       const success = await addToShelfContext({
-        external_product_id: scannedProduct.id,
+        external_product_id: scannedProduct.barcode || scannedProduct.id,
         product_name: scannedProduct.name,
         product_brand: scannedProduct.brand,
         product_category: scannedProduct.category,
@@ -1152,7 +1154,7 @@ const ProductScannerPage: React.FC = () => {
                 )}
                 <div className="view-details-row">
                   <Link 
-                    to={`/product/${encodeURIComponent(scannedProduct.id)}`} 
+                    to={`/product/${encodeURIComponent(scannedProduct.barcode || scannedProduct.id)}`} 
                     className="btn-view-details"
                   >
                     View full product details →
@@ -1221,7 +1223,7 @@ const ProductScannerPage: React.FC = () => {
               <div 
                 key={item.id} 
                 className="history-card"
-                onClick={() => navigate(`/product/${item.id}`)}
+                onClick={() => navigate(`/product/${item.barcode || item.id}`)}
                 role="button"
                 tabIndex={0}
               >

@@ -97,7 +97,7 @@
 - ⚠️ **BUG**: Floating button overlaps input
 
 ### Test 2: View Full Product Details
-- ❌ **CRITICAL**: Click "View full product details" → `/product/301871373164` shows "Product Not Found"
+- ✅ **FIXED**: Scanner now uses barcode for link; ProductDetailsPage tries catalog/barcode + catalog/product + products
 - ❌ "Unknown UNKNOWN" brand, placeholder image, no ingredients
 - **Root cause**: Scanner and product detail page use different data sources
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { IconMail, IconClock, IconMessageCircle, IconMapPin, IconCheckCircle, IconInstagram, IconTwitter, IconLinkedin, IconTiktok } from '../components/Icons';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { SOCIAL_LINKS } from '../config';
 import './ContactPage.css';
 
 const ContactPage: React.FC = () => {
@@ -99,16 +100,16 @@ const ContactPage: React.FC = () => {
             <h3>Social Support</h3>
             <p>Reach out on your favorite platform</p>
             <div className="social-links">
-              <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram">
+              <a href={SOCIAL_LINKS.instagram} target="_blank" rel="noreferrer" aria-label="Instagram">
                 <IconInstagram size={18} strokeWidth={2} />
               </a>
-              <a href="https://x.com" target="_blank" rel="noreferrer" aria-label="X">
+              <a href={SOCIAL_LINKS.x} target="_blank" rel="noreferrer" aria-label="X">
                 <IconTwitter size={18} strokeWidth={2} />
               </a>
-              <a href="https://tiktok.com" target="_blank" rel="noreferrer" aria-label="TikTok">
+              <a href={SOCIAL_LINKS.tiktok} target="_blank" rel="noreferrer" aria-label="TikTok">
                 <IconTiktok size={18} strokeWidth={2} />
               </a>
-              <a href="https://linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+              <a href={SOCIAL_LINKS.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn">
                 <IconLinkedin size={18} strokeWidth={2} />
               </a>
             </div>

@@ -1,6 +1,7 @@
 import React, { useMemo, useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { IconInstagram, IconBrandX, IconLinkedin, IconTiktok, IconMenu, IconX, IconUser, IconChevronDown, IconChevronRight, IconLogOut, IconSettings, IconScan, IconPackage, IconHeart, IconHistory, IconBookOpen, IconFileText, IconDownload } from './Icons';
+import { SOCIAL_LINKS } from '../config';
 import { useAuth } from '../context/AuthContext';
 import { BackToTop } from './BackToTop';
 import { OfflineBanner } from './OfflineBanner';
@@ -354,16 +355,16 @@ const displayName = nameParts.length > 1
               </Link>
               <p className="app-footer-tagline">Clinical-grade skin analysis powered by advanced AI. Your personalized path to healthier skin.</p>
               <div className="app-footer-socials">
-                <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram">
+                <a href={SOCIAL_LINKS.instagram} target="_blank" rel="noreferrer" aria-label="Instagram">
                   <IconInstagram size={18} strokeWidth={2} />
                 </a>
-              <a href="https://x.com" target="_blank" rel="noreferrer" aria-label="X">
-                <IconBrandX size={18} />
-              </a>
-                <a href="https://tiktok.com" target="_blank" rel="noreferrer" aria-label="TikTok">
+                <a href={SOCIAL_LINKS.x} target="_blank" rel="noreferrer" aria-label="X">
+                  <IconBrandX size={18} />
+                </a>
+                <a href={SOCIAL_LINKS.tiktok} target="_blank" rel="noreferrer" aria-label="TikTok">
                   <IconTiktok size={18} strokeWidth={2} />
                 </a>
-                <a href="https://linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+                <a href={SOCIAL_LINKS.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn">
                   <IconLinkedin size={18} strokeWidth={2} />
                 </a>
               </div>

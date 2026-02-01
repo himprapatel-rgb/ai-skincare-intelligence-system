@@ -12,6 +12,7 @@ export default defineConfig(({ mode }) => ({
   build: {
     outDir: 'dist',
     sourcemap: mode !== 'production',
+    chunkSizeWarningLimit: 600,
     rollupOptions: {
       output: {
         manualChunks(id) {
@@ -21,7 +22,6 @@ export default defineConfig(({ mode }) => ({
           if (id.includes('recharts')) return 'recharts';
         },
       },
-      chunkSizeWarningLimit: 600,
     },
   },
   test: {

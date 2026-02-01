@@ -56,6 +56,7 @@ export { Info as IconInfo } from 'lucide-react';
 export { HelpCircle as IconHelpCircle } from 'lucide-react';
 export { Brain as IconBrain } from 'lucide-react';
 export { FileText as IconFileText } from 'lucide-react';
+export { Video as IconVideo } from 'lucide-react';
 export { BookOpen as IconBookOpen } from 'lucide-react';
 export { Trash2 as IconTrash2 } from 'lucide-react';
 export { Lock as IconLock } from 'lucide-react';

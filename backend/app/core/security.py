@@ -143,22 +143,30 @@ async def get_current_user_optional(
         return None
 
 
-def _get_admin_allowlist() -> set[str]:
+def _get_admin_allowlist() -> tuple[set[str], bool]:
+    """Return (allowlist, allow_all). allow_all=True means any is_admin user can access (testing only)."""
     raw = settings.ADMIN_EMAIL_ALLOWLIST or ""
-    return {item.strip().lower() for item in raw.split(",") if item.strip()}
+    if raw.strip().lower() == "*":
+        return set(), True
+    return {item.strip().lower() for item in raw.split(",") if item.strip()}, False
 
 
 async def get_current_admin(
     current_user: User = Depends(get_current_user),
 ) -> User:
-    """Ensure user is an admin and in allowlist."""
-    allowlist = _get_admin_allowlist()
-    if not allowlist:
+    """Ensure user is an admin and in allowlist (or allow_all for testing)."""
+    allowlist, allow_all = _get_admin_allowlist()
+    if not allow_all and not allowlist:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Admin access is not configured.",
         )
-    if not current_user.is_admin or current_user.email.lower() not in allowlist:
+    if not current_user.is_admin:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Admin access denied.",
+        )
+    if not allow_all and current_user.email.lower() not in allowlist:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Admin access denied.",

@@ -40,6 +40,9 @@
 ### External Services
 - **[Setup-GPTGPT.md](./Setup-GPTGPT.md)** - GPTGPT API configuration
 
+### Admin Access
+- **[Admin-Setup.md](./Admin-Setup.md)** - How to log in to the Admin page (`/admin`)
+
 ---
 
 ## Documentation Guidelines

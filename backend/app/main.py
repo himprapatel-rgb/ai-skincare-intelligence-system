@@ -62,6 +62,7 @@ from app.models.shelf import ShelfProduct
 
 # Import ALL models to ensure tables are created at startup
 from app.models.twin_models import *  # Digital Twin models
+from app.models.content import Blog, NewsItem, Video
 from app.models.user import PolicyVersion, User, UserConsent, UserProfile
 from app.routers import (  # GDPR & User Management
     admin,
@@ -453,6 +454,7 @@ app.include_router(notifications.router, prefix="/api/v1", tags=["notifications"
 app.include_router(shelf.router, prefix="/api/v1", tags=["shelf"])  # Product Shelf API
 app.include_router(goals.router, prefix="/api/v1", tags=["goals"])  # Skin Goals API
 app.include_router(catalog.router, prefix="/api/v1", tags=["catalog"])  # Product Catalog Database
+app.include_router(content.router, prefix="/api/v1", tags=["content"])  # Public blogs, videos, news
 
 @app.get("/", tags=["Root"])
 def read_root():

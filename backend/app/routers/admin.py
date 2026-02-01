@@ -1,11 +1,12 @@
 """Admin router for administrative operations."""
 
 import logging
+import re
 import subprocess
 import sys
 from datetime import datetime
 from pathlib import Path
-from typing import Optional
+from typing import List, Optional
 
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query
 from pydantic import BaseModel
@@ -14,11 +15,23 @@ from sqlalchemy.orm import Session
 
 from app.core.security import get_current_admin
 from app.database import get_db
+from app.models.content import Blog, NewsItem, Video
 from app.models.product_models import Product
 from app.models.saved_routine import SavedRoutine
 from app.models.scan import ScanSession
 from app.models.twin_models import SkinStateSnapshot
 from app.models.user import User
+from app.schemas.content_schemas import (
+    BlogCreate,
+    BlogResponse,
+    BlogUpdate,
+    NewsCreate,
+    NewsResponse,
+    NewsUpdate,
+    VideoCreate,
+    VideoResponse,
+    VideoUpdate,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -544,5 +557,217 @@ async def delete_product(
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
     db.delete(product)
+    db.commit()
+    return None
+
+
+# --- Content (Blogs, Videos, News) ---
+
+def _slugify(text: str) -> str:
+    s = re.sub(r"[^\w\s-]", "", text.lower())
+    return re.sub(r"[-\s]+", "-", s).strip("-")[:80]
+
+
+# Blogs
+@router.get("/blogs", response_model=List[BlogResponse])
+def admin_list_blogs(
+    limit: int = Query(50, ge=1, le=200),
+    offset: int = Query(0, ge=0),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_admin),
+):
+    items = db.query(Blog).order_by(Blog.sort_order.asc(), Blog.created_at.desc()).offset(offset).limit(limit).all()
+    return items
+
+
+@router.post("/blogs", response_model=BlogResponse, status_code=201)
+def admin_create_blog(
+    payload: BlogCreate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_admin),
+):
+    slug = payload.slug or _slugify(payload.title)
+    blog = Blog(
+        title=payload.title,
+        slug=slug,
+        excerpt=payload.excerpt,
+        content=payload.content,
+        cover_image_url=payload.cover_image_url,
+        read_time_min=payload.read_time_min,
+        published=payload.published,
+        published_at=payload.published_at,
+        sort_order=payload.sort_order,
+    )
+    db.add(blog)
+    db.commit()
+    db.refresh(blog)
+    return blog
+
+
+@router.patch("/blogs/{blog_id}", response_model=BlogResponse)
+def admin_update_blog(
+    blog_id: int,
+    payload: BlogUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_admin),
+):
+    blog = db.query(Blog).filter(Blog.id == blog_id).first()
+    if not blog:
+        raise HTTPException(status_code=404, detail="Blog not found")
+    data = payload.model_dump(exclude_unset=True)
+    if "title" in data and "slug" not in data:
+        data["slug"] = _slugify(data["title"])
+    for k, v in data.items():
+        setattr(blog, k, v)
+    db.commit()
+    db.refresh(blog)
+    return blog
+
+
+@router.delete("/blogs/{blog_id}", status_code=204)
+def admin_delete_blog(
+    blog_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_admin),
+):
+    blog = db.query(Blog).filter(Blog.id == blog_id).first()
+    if not blog:
+        raise HTTPException(status_code=404, detail="Blog not found")
+    db.delete(blog)
+    db.commit()
+    return None
+
+
+# Videos
+@router.get("/videos", response_model=List[VideoResponse])
+def admin_list_videos(
+    limit: int = Query(50, ge=1, le=200),
+    offset: int = Query(0, ge=0),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_admin),
+):
+    items = db.query(Video).order_by(Video.sort_order.asc(), Video.created_at.desc()).offset(offset).limit(limit).all()
+    return items
+
+
+@router.post("/videos", response_model=VideoResponse, status_code=201)
+def admin_create_video(
+    payload: VideoCreate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_admin),
+):
+    video = Video(
+        title=payload.title,
+        description=payload.description,
+        video_url=payload.video_url,
+        thumbnail_url=payload.thumbnail_url,
+        duration_sec=payload.duration_sec,
+        difficulty=payload.difficulty,
+        published=payload.published,
+        sort_order=payload.sort_order,
+    )
+    db.add(video)
+    db.commit()
+    db.refresh(video)
+    return video
+
+
+@router.patch("/videos/{video_id}", response_model=VideoResponse)
+def admin_update_video(
+    video_id: int,
+    payload: VideoUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_admin),
+):
+    video = db.query(Video).filter(Video.id == video_id).first()
+    if not video:
+        raise HTTPException(status_code=404, detail="Video not found")
+    for k, v in payload.model_dump(exclude_unset=True).items():
+        setattr(video, k, v)
+    db.commit()
+    db.refresh(video)
+    return video
+
+
+@router.delete("/videos/{video_id}", status_code=204)
+def admin_delete_video(
+    video_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_admin),
+):
+    video = db.query(Video).filter(Video.id == video_id).first()
+    if not video:
+        raise HTTPException(status_code=404, detail="Video not found")
+    db.delete(video)
+    db.commit()
+    return None
+
+
+# News
+@router.get("/news", response_model=List[NewsResponse])
+def admin_list_news(
+    limit: int = Query(50, ge=1, le=200),
+    offset: int = Query(0, ge=0),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_admin),
+):
+    items = (
+        db.query(NewsItem)
+        .order_by(NewsItem.sort_order.asc(), NewsItem.published_at.desc().nullslast(), NewsItem.created_at.desc())
+        .offset(offset)
+        .limit(limit)
+        .all()
+    )
+    return items
+
+
+@router.post("/news", response_model=NewsResponse, status_code=201)
+def admin_create_news(
+    payload: NewsCreate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_admin),
+):
+    news = NewsItem(
+        title=payload.title,
+        body=payload.body,
+        link_url=payload.link_url,
+        is_featured=payload.is_featured,
+        published=payload.published,
+        published_at=payload.published_at,
+        sort_order=payload.sort_order,
+    )
+    db.add(news)
+    db.commit()
+    db.refresh(news)
+    return news
+
+
+@router.patch("/news/{news_id}", response_model=NewsResponse)
+def admin_update_news(
+    news_id: int,
+    payload: NewsUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_admin),
+):
+    news = db.query(NewsItem).filter(NewsItem.id == news_id).first()
+    if not news:
+        raise HTTPException(status_code=404, detail="News item not found")
+    for k, v in payload.model_dump(exclude_unset=True).items():
+        setattr(news, k, v)
+    db.commit()
+    db.refresh(news)
+    return news
+
+
+@router.delete("/news/{news_id}", status_code=204)
+def admin_delete_news(
+    news_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_admin),
+):
+    news = db.query(NewsItem).filter(NewsItem.id == news_id).first()
+    if not news:
+        raise HTTPException(status_code=404, detail="News item not found")
+    db.delete(news)
     db.commit()
     return None

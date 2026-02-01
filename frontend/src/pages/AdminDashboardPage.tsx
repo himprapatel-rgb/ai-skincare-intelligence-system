@@ -87,6 +87,9 @@ const AdminDashboardPage: React.FC = () => {
         <Link to="/admin/users" className="btn btn-primary">Manage Users</Link>
         <Link to="/admin/products" className="btn btn-secondary">Manage Products</Link>
         <Link to="/admin/catalog" className="btn btn-secondary">Catalog Admin</Link>
+        <Link to="/admin/blogs" className="btn btn-secondary">Manage Blogs</Link>
+        <Link to="/admin/videos" className="btn btn-secondary">Manage Videos</Link>
+        <Link to="/admin/news" className="btn btn-secondary">Manage News</Link>
       </div>
     </div>
   );

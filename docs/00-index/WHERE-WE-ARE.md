@@ -98,6 +98,7 @@
 | Required secrets | `docs/05-deployment/Required-Secrets.md` |
 | Google SSO setup | `docs/05-deployment/Google-SSO-Setup.md` |
 | Google login troubleshooting | `docs/11-working/GOOGLE-LOGIN-TROUBLESHOOTING.md` |
+| **Admin page login** | [docs/06-operations/Admin-Setup.md](../06-operations/Admin-Setup.md) |
 
 ---
 

@@ -1,0 +1,130 @@
+.admin-news-page .admin-content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.admin-news-page .back-link {
+  display: inline-block;
+  margin-bottom: 8px;
+  color: var(--text-gray);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.admin-news-page .back-link:hover {
+  color: var(--primary);
+}
+
+.admin-news-page .admin-form-card {
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+  box-shadow: var(--shadow-sm);
+}
+
+.admin-news-page .form-group {
+  margin-bottom: 16px;
+}
+
+.admin-news-page .form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.admin-news-page .form-group input,
+.admin-news-page .form-group textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.admin-news-page .checkbox-row {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.admin-news-page .form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.admin-news-page .admin-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-news-page .admin-list-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.admin-news-page .admin-list-body h3 {
+  margin: 0 0 4px;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-news-page .admin-list-body .badge {
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  background: var(--primary);
+  color: white;
+  border-radius: 999px;
+}
+
+.admin-news-page .admin-meta {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-gray);
+}
+
+.admin-news-page .admin-list-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.admin-news-page .btn-icon {
+  padding: 8px;
+  border: none;
+  background: transparent;
+  color: var(--text-gray);
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.admin-news-page .btn-icon:hover {
+  background: rgba(59, 130, 246, 0.1);
+  color: var(--primary);
+}
+
+.admin-news-page .btn-icon.danger:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--danger);
+}
+
+.admin-news-page .admin-loading,
+.admin-news-page .admin-empty {
+  padding: 40px;
+  text-align: center;
+  color: var(--text-gray);
+}

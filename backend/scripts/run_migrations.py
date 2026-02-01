@@ -887,6 +887,71 @@ def run_migrations():
             """)
             
             print("  ✓ Product Catalog tables created")
+            # Content tables: blogs, videos, news (admin-managed)
+            print("  - Ensuring content tables exist...")
+            cur.execute(
+                """
+                CREATE TABLE IF NOT EXISTS blogs (
+                    id SERIAL PRIMARY KEY,
+                    title VARCHAR(255) NOT NULL,
+                    slug VARCHAR(255) UNIQUE NOT NULL,
+                    excerpt TEXT,
+                    content TEXT,
+                    cover_image_url VARCHAR(500),
+                    read_time_min INTEGER DEFAULT 5,
+                    published BOOLEAN DEFAULT TRUE,
+                    published_at TIMESTAMPTZ,
+                    sort_order INTEGER DEFAULT 0,
+                    created_at TIMESTAMPTZ DEFAULT NOW(),
+                    updated_at TIMESTAMPTZ
+                )
+                """
+            )
+            cur.execute(
+                "CREATE INDEX IF NOT EXISTS idx_blogs_published ON blogs (published)"
+            )
+            cur.execute(
+                "CREATE INDEX IF NOT EXISTS idx_blogs_slug ON blogs (slug)"
+            )
+            cur.execute(
+                """
+                CREATE TABLE IF NOT EXISTS videos (
+                    id SERIAL PRIMARY KEY,
+                    title VARCHAR(255) NOT NULL,
+                    description TEXT,
+                    video_url VARCHAR(500) NOT NULL,
+                    thumbnail_url VARCHAR(500),
+                    duration_sec INTEGER,
+                    difficulty VARCHAR(50) DEFAULT 'Beginner',
+                    published BOOLEAN DEFAULT TRUE,
+                    sort_order INTEGER DEFAULT 0,
+                    created_at TIMESTAMPTZ DEFAULT NOW(),
+                    updated_at TIMESTAMPTZ
+                )
+                """
+            )
+            cur.execute(
+                "CREATE INDEX IF NOT EXISTS idx_videos_published ON videos (published)"
+            )
+            cur.execute(
+                """
+                CREATE TABLE IF NOT EXISTS news_items (
+                    id SERIAL PRIMARY KEY,
+                    title VARCHAR(255) NOT NULL,
+                    body TEXT,
+                    link_url VARCHAR(500),
+                    is_featured BOOLEAN DEFAULT FALSE,
+                    published BOOLEAN DEFAULT TRUE,
+                    published_at TIMESTAMPTZ DEFAULT NOW(),
+                    sort_order INTEGER DEFAULT 0,
+                    created_at TIMESTAMPTZ DEFAULT NOW(),
+                    updated_at TIMESTAMPTZ
+                )
+                """
+            )
+            cur.execute(
+                "CREATE INDEX IF NOT EXISTS idx_news_items_published ON news_items (published)"
+            )
             
         conn.commit()
         print("  ✓ Migration completed successfully!")

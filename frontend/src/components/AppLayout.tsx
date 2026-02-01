@@ -5,6 +5,7 @@ import { SOCIAL_LINKS } from '../config';
 import { useAuth } from '../context/AuthContext';
 import { BackToTop } from './BackToTop';
 import { OfflineBanner } from './OfflineBanner';
+import { AddToHomeScreenPrompt } from './AddToHomeScreenPrompt';
 import { ApiStatusIndicator } from './ApiStatusIndicator';
 import { BottomNav } from './BottomNav';
 import './AppLayout.css';
@@ -55,6 +56,14 @@ const displayName = nameParts.length > 1
     setMobileMenuOpen(false);
     setUserDropdownOpen(false);
   }, [location.pathname]);
+
+  // Task 10000: Mark standalone mode for app-like styling
+  useEffect(() => {
+    const isStandalone =
+      window.matchMedia('(display-mode: standalone)').matches ||
+      (navigator as Navigator & { standalone?: boolean }).standalone === true;
+    document.documentElement.dataset.standalone = isStandalone ? 'true' : undefined;
+  }, []);
   const breadcrumbs = useMemo(() => {
     const segments = location.pathname.split('/').filter(Boolean);
     const labelMap: Record<string, string> = {
@@ -100,6 +109,7 @@ const displayName = nameParts.length > 1
     <div className="app-layout">
       <a className="skip-link" href="#main-content">Skip to main content</a>
       <OfflineBanner />
+      <AddToHomeScreenPrompt />
       <header className={`app-header${scrolled ? ' scrolled' : ''}`}>
         <div className="app-header-container">
           {/* Logo */}

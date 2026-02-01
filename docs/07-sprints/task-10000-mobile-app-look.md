@@ -1,8 +1,18 @@
 # Task 10000: Mobile App Look in Mobile Browser
 
-**Status:** In Progress  
+**Status:** Complete  
 **Priority:** High  
 **Sprint:** GUI Polish
+
+## How to Test
+
+```bash
+# Test production (pellicura.com)
+cd frontend && npm run e2e:mobile-app
+
+# Test local (starts dev server if needed)
+PLAYWRIGHT_BASE_URL=http://localhost:3000 npm run e2e:mobile-app
+```
 
 ---
 
@@ -56,12 +66,18 @@ Make Pellicura feel like a native mobile app when opened in a mobile browser (Ch
 - `min-height: 100dvh` – dynamic viewport height
 - Safe-area insets on body, bottom nav, main content
 
-### 4. Optional Improvements (Future)
+### 4. Add to Home Screen Prompt ✅
+
+- **AddToHomeScreenPrompt** – Banner shown on mobile (when not in standalone) encouraging install
+- **iOS** – "Tap Share, then Add to Home Screen"
+- **Android** – Install button when `beforeinstallprompt` fires
+- Dismissible (sessionStorage); hidden when launched from home screen
+
+### 5. Optional Improvements (Future)
 
 - [ ] Add splash screen images for iOS (`apple-touch-startup-image`)
 - [ ] Add proper 192x192 and 512x512 PNG icons (maskable) for Android
 - [ ] Service worker for offline support
-- [ ] Install prompt ("Add to Home Screen") for first-time mobile visitors
 
 ---
 

@@ -208,6 +208,11 @@ button, a, [role="button"] {
   }
 }
 
+/* Task 10000: Standalone (Add to Home Screen) – data attr for future styling */
+html[data-standalone="true"] {
+  /* App runs from home screen – no browser chrome */
+}
+
 /* Tablet app mode */
 @media (min-width: 769px) and (max-width: 1024px) {
   html {

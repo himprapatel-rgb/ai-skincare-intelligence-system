@@ -1,0 +1,98 @@
+/* Task 10000: Add to Home Screen prompt - app-like mobile UX */
+.add-to-home-prompt {
+  position: fixed;
+  bottom: calc(64px + env(safe-area-inset-bottom, 0px));
+  left: max(12px, env(safe-area-inset-left));
+  right: max(12px, env(safe-area-inset-right));
+  z-index: 999;
+  background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+  color: white;
+  padding: 12px 16px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  animation: add-to-home-slide-up 0.3s ease-out;
+}
+
+@keyframes add-to-home-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.add-to-home-prompt-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.add-to-home-prompt-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.add-to-home-prompt-content {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+}
+
+.add-to-home-prompt-icon {
+  flex-shrink: 0;
+  opacity: 0.95;
+}
+
+.add-to-home-prompt-content strong {
+  display: block;
+  font-size: 0.95rem;
+  margin-bottom: 2px;
+}
+
+.add-to-home-prompt-content p {
+  margin: 0;
+  font-size: 0.8rem;
+  opacity: 0.95;
+  line-height: 1.35;
+}
+
+.add-to-home-prompt-btn {
+  flex-shrink: 0;
+  background: white;
+  color: #2563eb;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.add-to-home-prompt-btn:hover {
+  background: #eff6ff;
+}
+
+/* Only show on mobile - desktop gets no prompt */
+@media (min-width: 769px) {
+  .add-to-home-prompt {
+    display: none;
+  }
+}

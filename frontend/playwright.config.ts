@@ -5,8 +5,9 @@ import { config as loadEnv } from "dotenv";
 loadEnv({ path: ".env.e2e" });
 
 const baseURL =
-  process.env.PLAYWRIGHT_BASE_URL ??
-  "https://frontend-production-0415.up.railway.app/";
+  process.env.PLAYWRIGHT_BASE_URL ?? "https://pellicura.com/";
+
+const useLocal = baseURL.includes("localhost");
 
 export default defineConfig({
   testDir: "./tests/e2e",
@@ -18,4 +19,13 @@ export default defineConfig({
     viewport: { width: 1280, height: 800 },
     // Playwright uses its own Chromium (npx playwright install). NOT Google Chrome – no profile/permission issues.
   },
+  // Task 10000: auto-start dev server when testing locally
+  webServer: useLocal
+    ? {
+        command: "npm run dev",
+        url: "http://localhost:3000",
+        reuseExistingServer: true,
+        timeout: 60_000,
+      }
+    : undefined,
 });

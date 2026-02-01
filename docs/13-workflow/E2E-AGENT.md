@@ -1,8 +1,10 @@
-# E2E Agent – 24/7 GUI Testing
+# E2E Agent
 
-Automated testing that runs around the clock **without hitting paid APIs** (ML, Skinive, etc.).
+**→ See [docs/agents/e2e-agent/](../agents/e2e-agent/README.md)**
 
 ---
+
+<!-- Legacy content below -->
 
 ## What it does
 

@@ -85,6 +85,7 @@
 | See all 31 frontend pages | [Pages Status](./06-operations/Pages-Created-Status.md) |
 | Review sprint history | [Sprint Index](./07-sprints/README.md) |
 | See current priorities | [Product Backlog](./03-product/Product-Backlog-V5.md) |
+| See agents (E2E, Improvement, Human, API Smoke) | [agents/README.md](./agents/README.md) |
 | See active tasks | [12-tasks/ACTIVE-TASKS.md](./12-tasks/ACTIVE-TASKS.md) |
 | Follow dev workflow | [13-workflow/DEVELOPMENT-WORKFLOW.md](./13-workflow/DEVELOPMENT-WORKFLOW.md) |
 | Check production URLs | [README (root)](../README.md#live-production-urls) |

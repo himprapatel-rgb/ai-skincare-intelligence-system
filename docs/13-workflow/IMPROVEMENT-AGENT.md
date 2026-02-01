@@ -1,9 +1,10 @@
-# Improvement Agent – 24/7 Design & Architecture Improvements
+# Improvement Agent
 
-Runs continuously to **improve design and architecture** without adding new features.  
-Works alongside the [E2E Testing Agent](E2E-AGENT.md).
+**→ See [docs/agents/improvement-agent/](../agents/improvement-agent/README.md)**
 
 ---
+
+<!-- Legacy content below -->
 
 ## Agents Overview
 

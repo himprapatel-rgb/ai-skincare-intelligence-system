@@ -15,9 +15,7 @@
 | **Database** | ✅ Railway PostgreSQL | Main DB + product catalog (two-DB) |
 | **Google Sign-In** | ✅ Working | Live on pellicura.com |
 | **Deployment docs** | ✅ Railway-only | Fly.io removed from [Deployment-Guide.md](../05-deployment/Deployment-Guide.md) |
-| **E2E Agent** | ✅ Running | 24/7 GUI tests (no paid APIs). See [E2E-AGENT.md](../13-workflow/E2E-AGENT.md) |
-| **Improvement Agent** | ✅ Running | Daily lint-fix + Improvement of the Day. See [IMPROVEMENT-AGENT.md](../13-workflow/IMPROVEMENT-AGENT.md) |
-| **Human Agent** | ✅ Running | Daily login + image upload, acts like user. Uses Playwright Chromium (no Chrome). [HUMAN-AGENT.md](../13-workflow/HUMAN-AGENT.md) |
+| **Agents** | ✅ Running | See [docs/agents/](../agents/README.md) |
 
 ---
 
@@ -107,6 +105,7 @@
 
 | What | Where |
 |------|-------|
+| **Agents (4)** | [docs/agents/](../agents/README.md) – E2E, Improvement, Human, API Smoke |
 | **Active tasks** | [12-tasks/ACTIVE-TASKS.md](../12-tasks/ACTIVE-TASKS.md) |
 | **Workflow** | [13-workflow/DEVELOPMENT-WORKFLOW.md](../13-workflow/DEVELOPMENT-WORKFLOW.md) |
 | **Testing checklist** | [13-workflow/TESTING-CHECKLIST.md](../13-workflow/TESTING-CHECKLIST.md) |

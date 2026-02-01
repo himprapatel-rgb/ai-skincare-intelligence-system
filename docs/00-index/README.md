@@ -16,6 +16,7 @@
 | **Work on frontend** | [FRONTEND_GUIDE.md](../FRONTEND_GUIDE.md) |
 | **Understand database** | [DATABASE_SCHEMA.md](../DATABASE_SCHEMA.md) |
 | **Check system design** | [ARCHITECTURE.md](../ARCHITECTURE.md) |
+| **See agents** | [agents/README.md](../agents/README.md) – E2E, Improvement, Human, API Smoke |
 | **See active tasks** | [12-tasks/ACTIVE-TASKS.md](../12-tasks/ACTIVE-TASKS.md) |
 | **Development workflow** | [13-workflow/DEVELOPMENT-WORKFLOW.md](../13-workflow/DEVELOPMENT-WORKFLOW.md) |
 
@@ -73,9 +74,16 @@ docs/
 │   ├── BACKLOG.md
 │   └── COMPLETED.md
 │
-├── 13-workflow/            # ★ Development process
+├── 13-workflow/            # Development process
 │   ├── DEVELOPMENT-WORKFLOW.md
 │   └── TESTING-CHECKLIST.md
+│
+├── agents/                 # ★ 24/7 agents (E2E, Improvement, Human, API Smoke)
+│   ├── README.md
+│   ├── e2e-agent/
+│   ├── improvement-agent/
+│   ├── human-agent/
+│   └── api-smoke/
 │
 ├── 99-archive/             # Archived documents
 │   ├── legacy/

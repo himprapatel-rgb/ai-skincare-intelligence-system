@@ -1,9 +1,10 @@
-# Human Agent – Acts Like a Real User
+# Human Agent
 
-Logs in with credentials, uploads images (skin + product), navigates like a human.  
-Uses **Playwright's Chromium** – not Google Chrome.
+**→ See [docs/agents/human-agent/](../agents/human-agent/README.md)**
 
 ---
+
+<!-- Legacy content below -->
 
 ## No Google Chrome Required
 

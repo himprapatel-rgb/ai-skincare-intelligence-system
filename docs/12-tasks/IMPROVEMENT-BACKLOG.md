@@ -56,11 +56,15 @@ No new features; only polish, consistency, and quality.
 
 ## From UI/UX Audit 2026
 
-*See [docs/08-audits/UI-UX-Design-Audit-2026.md](../08-audits/UI-UX-Design-Audit-2026.md)*
+*See [UI-UX-Design-Audit-2026.md](../08-audits/UI-UX-Design-Audit-2026.md) | [Detailed Audit Feb 2026](../08-audits/UI-UX-Design-Audit-Detailed-2026.md)*
 
 - [ ] Homepage: Fix CTA button hierarchy (secondary = ghost)
+- [ ] Homepage: Nav active state 3-4px underline (not 2px)
 - [ ] Homepage: Align card shadows across feature + stats cards
 - [ ] Homepage: Pick one FAQ accordion icon (› or +)
+- [ ] Homepage: Replace "AS FEATURED IN" text with actual brand logos (critical)
+- [ ] Homepage: Subheadline contrast WCAG AA (20px or darken)
+- [ ] Homepage: Trust badge icons—filled not outlined, card order
 - [ ] Scan: Add 12px spacing to instructions checklist
 - [ ] Scan: Move disclaimer below upload, reduce opacity
 - [ ] Dashboard: Align stats card styling (consistent fill/outline)
@@ -71,6 +75,8 @@ No new features; only polish, consistency, and quality.
 - [ ] My Shelf: Make filter counts badges
 - [ ] Product Scanner: Remove redundant "Click Start Camera" text
 - [ ] Product Scanner: Strengthen tab active state
+- [ ] Homepage: Stats—star icons for rating, animated counters
+- [ ] Homepage: How It Works arrows 32px, fix overlap
 - [ ] History: Add "Start first scan" empty-state CTA
 - [ ] Favorites: Add "Discover products" empty-state CTA
 - [ ] Auth: Improve Google OAuth button prominence

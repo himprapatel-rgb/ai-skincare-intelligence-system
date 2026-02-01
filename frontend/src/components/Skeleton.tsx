@@ -111,6 +111,53 @@ export const SkeletonCardGrid: React.FC<{ count?: number; hasImage?: boolean }> 
   </div>
 );
 
+// Product details skeleton (Task 10001 H1)
+export const SkeletonProductDetails: React.FC = () => (
+  <div className="product-details-page" style={{ padding: '16px' }}>
+    <div className="skeleton skeleton-button" style={{ width: 80, height: 40, marginBottom: 16 }} />
+    <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr)', gap: 24, maxWidth: 1200, margin: '0 auto' }}>
+      <div className="skeleton skeleton-image" style={{ aspectRatio: '1', maxWidth: 360, borderRadius: 12 }} />
+      <div>
+        <div className="skeleton skeleton-heading" style={{ height: 28, width: '80%', marginBottom: 12 }} />
+        <div className="skeleton skeleton-text" style={{ marginBottom: 8 }} />
+        <div className="skeleton skeleton-text" style={{ width: '60%', marginBottom: 24 }} />
+        <div className="skeleton skeleton-button" style={{ width: 160, height: 48 }} />
+      </div>
+    </div>
+  </div>
+);
+
+// Analysis results skeleton (Task 10001 H1)
+export const SkeletonAnalysis: React.FC = () => (
+  <div className="analysis-results" style={{ padding: '24px 16px' }}>
+    <div className="results-container" style={{ maxWidth: 1200, margin: '0 auto' }}>
+      <div className="skeleton" style={{ height: 120, borderRadius: 12, marginBottom: 24 }} />
+      <div className="skeleton" style={{ height: 200, borderRadius: 12, marginBottom: 24 }} />
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: 16 }}>
+        {[1, 2, 3, 4, 5, 6].map((i) => (
+          <div key={i} className="skeleton" style={{ height: 100, borderRadius: 12 }} />
+        ))}
+      </div>
+    </div>
+  </div>
+);
+
+// History list skeleton (Task 10001 H1) – list rows only, parent provides header/filters
+export const SkeletonHistoryList: React.FC = () => (
+  <div className="skeleton-history-list" style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+    {[1, 2, 3, 4, 5].map((i) => (
+      <div key={i} style={{ display: 'flex', gap: 16, padding: 16, background: 'var(--bg-white)', borderRadius: 12, border: '1px solid var(--border)' }}>
+        <div className="skeleton" style={{ width: 80, height: 80, borderRadius: 8, flexShrink: 0 }} />
+        <div style={{ flex: 1 }}>
+          <div className="skeleton skeleton-text" style={{ marginBottom: 8 }} />
+          <div className="skeleton skeleton-text" style={{ width: '60%', marginBottom: 4 }} />
+          <div className="skeleton skeleton-text" style={{ width: 40 }} />
+        </div>
+      </div>
+    ))}
+  </div>
+);
+
 // Page skeleton (common loading layout)
 export const SkeletonPage: React.FC<{ title?: boolean; stats?: number; cards?: number }> = ({ 
   title = true,

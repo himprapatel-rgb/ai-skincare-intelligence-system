@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { IconCamera, IconStar, IconZap, IconBarChart, IconScan, IconSearch } from '../components/Icons';
 import { getScanHistory } from '../services/scanApi';
 import { usePageTitle } from '../hooks/usePageTitle';
-import LoadingScreen from '../components/LoadingScreen';
+import { SkeletonHistoryList } from '../components/Skeleton';
 import './HistoryPage.css';
 
 interface ScanHistory {
@@ -157,7 +157,7 @@ const HistoryPage: React.FC = () => {
         )}
 
         {loading ? (
-          <LoadingScreen message="Loading history" fullscreen={false} />
+          <SkeletonHistoryList />
         ) : filteredHistory.length === 0 ? (
           <div className="empty-state">
             <div className="empty-state-icon">

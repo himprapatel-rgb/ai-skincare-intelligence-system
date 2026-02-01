@@ -223,6 +223,18 @@
 }
 
 /* =============================================
+   G3. Toast - above bottom nav on mobile
+============================================= */
+@media (max-width: 768px) {
+  .toast-container {
+    bottom: calc(80px + env(safe-area-inset-bottom));
+    left: 16px;
+    right: 16px;
+    max-width: none;
+  }
+}
+
+/* =============================================
    E. Buttons & Tap Feedback (opacity only - safe)
 ============================================= */
 
@@ -248,5 +260,21 @@
   [role="button"],
   .bottom-nav-item {
     transition: opacity 0.12s ease;
+  }
+
+  /* E3: Disabled state - clear visual difference */
+  button:disabled,
+  .btn-primary:disabled,
+  .btn-secondary:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+
+  /* E4: Loading state - spinner visible on buttons */
+  .btn-primary .loading-spinner,
+  .btn-primary .loading-spinner__spinner,
+  button .loading-spinner {
+    min-width: 20px;
+    min-height: 20px;
   }
 }

@@ -4,6 +4,7 @@ import { api } from '../services/api';
 import { IconArrowLeft, IconStar, IconAlertTriangle } from '../components/Icons';
 import { BreadcrumbJsonLd } from '../components/BreadcrumbJsonLd';
 import LoadingScreen from '../components/LoadingScreen';
+import { SkeletonProductDetails } from '../components/Skeleton';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { useShelf } from '../context/ShelfContext';
 import './ProductDetailsPage.css';
@@ -433,7 +434,7 @@ const ProductDetailsPage: React.FC = () => {
   };
 
   if (loading) {
-    return <div className="product-details-page"><div className="loading-spinner">Loading...</div></div>;
+    return <SkeletonProductDetails />;
   }
 
   if (!product) {

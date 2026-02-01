@@ -22,6 +22,13 @@
 - **F6**: Dashboard – padding, stats layout
 - **F8**: Profile/Settings – full-width container, edge-to-edge on mobile
 
+## Implemented (Phase 3)
+
+- **H1**: Skeleton loaders – ProductDetailsPage, AnalysisResults, HistoryPage (SkeletonProductDetails, SkeletonAnalysis, SkeletonHistoryList)
+- **G3**: Toast positioning – above bottom nav on mobile (`bottom: 80px + safe-area`)
+- **E3**: Disabled button state – opacity 0.55, cursor not-allowed
+- **E4**: Loading state – spinner sizing for buttons
+
 ---
 
 ## What’s Done (Task 10000)

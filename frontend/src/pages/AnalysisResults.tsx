@@ -4,6 +4,7 @@ import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
 import { IconScan, IconHome, IconCheck, IconAlertTriangle, IconArrowLeft, IconCopy, IconShare2, IconBrandX, IconHeart, IconDownload, getSkinConcernIcon } from '../components/Icons';
 import { BreadcrumbJsonLd } from '../components/BreadcrumbJsonLd';
+import { SkeletonAnalysis } from '../components/Skeleton';
 import { getScanHistory, getScanResult } from '../services/scanApi';
 import { useToast } from '../context/ToastContext';
 import { usePageTitle } from '../hooks/usePageTitle';
@@ -275,14 +276,7 @@ const AnalysisResults: React.FC = () => {
   };
 
   if (loading) {
-    return (
-      <div className="analysis-results">
-        <div className="analysis-loading">
-          <div className="analysis-loading-spinner"></div>
-          <p>Loading analysis results...</p>
-        </div>
-      </div>
-    );
+    return <SkeletonAnalysis />;
   }
 
   if (error || !analysis) {

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 import './styles/premium-polish.css'
+import './styles/mobile-app-polish.css'
 
 // Task 10000: Remove splash when app mounts (app-like loading)
 const splash = document.getElementById('app-splash')

@@ -56,7 +56,7 @@ No new features; only polish, consistency, and quality.
 
 ## From UI/UX Audit 2026
 
-*See [UI-UX-Design-Audit-2026.md](../08-audits/UI-UX-Design-Audit-2026.md) | [Detailed Feb](../08-audits/UI-UX-Design-Audit-Detailed-2026.md) | [Product Scanner](../08-audits/Product-Scanner-Audit-2026.md) | [My Shelf](../08-audits/My-Shelf-Audit-2026.md)*
+*See [UI-UX-Design-Audit-2026.md](../08-audits/UI-UX-Design-Audit-2026.md) | [Detailed Feb](../08-audits/UI-UX-Design-Audit-Detailed-2026.md) | [Product Scanner](../08-audits/Product-Scanner-Audit-2026.md) | [My Shelf](../08-audits/My-Shelf-Audit-2026.md) | [Link Testing](../08-audits/Link-Testing-Report-2026.md)*
 
 - [ ] Homepage: Fix CTA button hierarchy (secondary = ghost)
 - [ ] Homepage: Nav active state 3-4px underline (not 2px)

@@ -1,10 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { useScrollToHash } from '../hooks/useScrollToHash';
 import './PrivacyPage.css';
 
 const PrivacyPage: React.FC = () => {
   usePageTitle('Privacy Policy');
+  useScrollToHash();
   const navigate = useNavigate();
 
   return (

@@ -2,10 +2,12 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IconBrain, IconShield, IconBookOpen, IconZap, IconAlertTriangle, IconTarget, IconHeart, IconCheckCircle } from '../components/Icons';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { useScrollToHash } from '../hooks/useScrollToHash';
 import './AboutPage.css';
 
 const AboutPage: React.FC = () => {
   usePageTitle('About', 'Learn about SkinCareAI: AI-powered skin analysis, personalized routines, and skincare science.');
+  useScrollToHash();
   const navigate = useNavigate();
 
   return (

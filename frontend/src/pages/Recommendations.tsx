@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { IconStar, IconAlertTriangle, IconHeart, IconArrowLeft, IconPackage } from '../components/Icons';
 import { SkeletonCardGrid } from '../components/Skeleton';
@@ -46,7 +46,6 @@ interface Product {
 
 const Recommendations: React.FC = () => {
   usePageTitle('Recommendations');
-  const navigate = useNavigate();
   const toast = useToast();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -120,6 +119,7 @@ const Recommendations: React.FC = () => {
   const fetchRecommendations = async () => {
     try {
       setLoading(true);
+      setError(null);
       const token = localStorage.getItem('auth_token');
 
       const response = await fetch(`${API_BASE_URL}/recommendations`, {
@@ -129,7 +129,9 @@ const Recommendations: React.FC = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to fetch recommendations');
+        const data = await response.json().catch(() => ({}));
+        const msg = (data as { detail?: string }).detail || `Failed to fetch (${response.status})`;
+        throw new Error(msg);
       }
 
       const data = await response.json();
@@ -148,6 +150,8 @@ const Recommendations: React.FC = () => {
       setProducts(items.length > 0 ? items : fallbackProducts);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
+      setProducts(fallbackProducts);
+      toast.info('Showing sample recommendations. Sign in for personalized picks.');
     } finally {
       setLoading(false);
     }
@@ -279,7 +283,7 @@ const Recommendations: React.FC = () => {
     );
   }
 
-  if (error) {
+  if (error && products.length === 0) {
     return (
       <div className="recommendations-page">
         <div className="recommendations-container">
@@ -291,11 +295,11 @@ const Recommendations: React.FC = () => {
               <h2>Error loading recommendations</h2>
               <p>{error}</p>
               <button
-                onClick={() => navigate('/')}
+                onClick={() => { setError(null); fetchRecommendations(); }}
                 className="btn-primary"
                 type="button"
               >
-                Return to Dashboard
+                Try Again
               </button>
             </div>
           </div>
@@ -312,7 +316,11 @@ const Recommendations: React.FC = () => {
             <h1>
               Product <span className="gradient-text">Recommendations</span>
             </h1>
-            <p>Personalized picks based on your latest skin analysis.</p>
+            <p>
+              {error && products.length > 0
+                ? 'Sample picks — sign in for personalized recommendations.'
+                : 'Personalized picks based on your latest skin analysis.'}
+            </p>
           </div>
           <Link to="/dashboard" className="btn-secondary back-button">
             <IconArrowLeft size={18} strokeWidth={2} />

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { IconMail, IconClock, IconMessageCircle, IconMapPin, IconCheckCircle, IconInstagram, IconTwitter, IconLinkedin, IconTiktok } from '../components/Icons';
 import { usePageTitle } from '../hooks/usePageTitle';
 import './ContactPage.css';
@@ -7,12 +7,22 @@ import './ContactPage.css';
 const ContactPage: React.FC = () => {
   usePageTitle('Contact');
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     subject: '',
     message: ''
   });
+  const [subjectPreFilled, setSubjectPreFilled] = useState(false);
+
+  useEffect(() => {
+    const subject = searchParams.get('subject');
+    if (subject && !subjectPreFilled) {
+      setFormData((prev) => ({ ...prev, subject }));
+      setSubjectPreFilled(true);
+    }
+  }, [searchParams, subjectPreFilled]);
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 

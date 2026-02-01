@@ -53,3 +53,33 @@ test.describe("Tablet viewport (768x1024)", () => {
     expect(overflow).toBe(false);
   });
 });
+
+test.describe("Mobile key pages (375px)", () => {
+  test.use({ viewport: { width: 375, height: 667 } });
+
+  test("Scan page loads", async ({ page }) => {
+    await page.goto("/scan", { waitUntil: "networkidle" });
+    await expect(page.getByRole("heading", { name: /skin analysis|analyze/i })).toBeVisible({ timeout: 5000 });
+  });
+
+  test("My Shelf page loads", async ({ page }) => {
+    await page.goto("/myshelf", { waitUntil: "networkidle" });
+    await expect(page.getByRole("heading", { name: /my shelf|shelf/i })).toBeVisible({ timeout: 5000 });
+  });
+
+  test("Profile page loads", async ({ page }) => {
+    await page.goto("/profile", { waitUntil: "networkidle" });
+    await expect(page.getByRole("heading", { name: /profile|account/i })).toBeVisible({ timeout: 5000 });
+  });
+
+  test("About page loads", async ({ page }) => {
+    await page.goto("/about", { waitUntil: "networkidle" });
+    await expect(page.getByRole("heading", { name: /about/i })).toBeVisible({ timeout: 5000 });
+  });
+
+  test("No horizontal overflow on About", async ({ page }) => {
+    await page.goto("/about", { waitUntil: "networkidle" });
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
+    expect(overflow).toBe(false);
+  });
+});

@@ -159,6 +159,43 @@ const AdminUsersPage: React.FC = () => {
           </tbody>
         </table>
         </div>
+
+        <div className="admin-users-cards" role="region" aria-label="Users list">
+          {sortedUsers.map((user) => (
+            <div key={user.id} className="admin-user-card">
+              <div className="admin-user-card-header">
+                <strong>{user.email}</strong>
+                <span className="admin-user-card-name">{user.full_name || '—'}</span>
+              </div>
+              <div className="admin-user-card-toggles">
+                <label className="admin-user-card-toggle">
+                  <span>Active</span>
+                  <input
+                    type="checkbox"
+                    checked={user.is_active}
+                    onChange={(e) => updateUser(user.id, { is_active: e.target.checked })}
+                  />
+                </label>
+                <label className="admin-user-card-toggle">
+                  <span>Verified</span>
+                  <input
+                    type="checkbox"
+                    checked={user.is_verified}
+                    onChange={(e) => updateUser(user.id, { is_verified: e.target.checked })}
+                  />
+                </label>
+                <label className="admin-user-card-toggle">
+                  <span>Admin</span>
+                  <input
+                    type="checkbox"
+                    checked={user.is_admin}
+                    onChange={(e) => updateUser(user.id, { is_admin: e.target.checked })}
+                  />
+                </label>
+              </div>
+            </div>
+          ))}
+        </div>
           {users.length === 0 && (
             <div className="admin-card admin-empty-state" role="status">
               <p className="admin-empty-title">No users yet</p>

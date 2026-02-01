@@ -172,3 +172,71 @@
     padding: 12px;
   }
 }
+
+/* Mobile card layout (replaces table on small screens) */
+.admin-users-cards {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .admin-users-table-wrapper {
+    display: none;
+  }
+
+  .admin-users-cards {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  .admin-user-card {
+    background: var(--bg-white);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .admin-user-card-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .admin-user-card-header strong {
+    font-size: var(--font-size-base);
+    color: var(--text-primary);
+    word-break: break-all;
+  }
+
+  .admin-user-card-name {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+  }
+
+  .admin-user-card-toggles {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .admin-user-card-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 44px;
+    padding: var(--spacing-sm) 0;
+    cursor: pointer;
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+  }
+
+  .admin-user-card-toggle input {
+    width: 44px;
+    height: 24px;
+    accent-color: var(--primary);
+  }
+}

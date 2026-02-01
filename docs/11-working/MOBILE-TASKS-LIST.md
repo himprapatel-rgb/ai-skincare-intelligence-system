@@ -62,7 +62,7 @@
 
 | ID | Task | Status |
 |----|------|--------|
-| 35 | ScanPage mobile: full width upload, larger tap target | ⬜ |
+| 35 | ScanPage mobile: full width upload, larger tap target, safe-area | ✅ |
 | 36 | AnalysisResults mobile: responsive charts, scroll | ⬜ |
 | 37 | ProductScannerPage mobile: full-screen feel | ⬜ |
 | 38 | MyShelfPage mobile: 1-col grid, filters wrap | ⬜ |
@@ -102,7 +102,7 @@
 | 67 | EmailVerificationPage mobile | ⬜ |
 | 68 | SampleReportPage mobile | ⬜ |
 | 69 | AdminDashboardPage mobile | ⬜ |
-| 70 | AdminUsersPage mobile: table → cards or scroll | ⬜ |
+| 70 | AdminUsersPage mobile: table → cards or scroll | ✅ |
 | 71 | AdminProductsPage mobile | ⬜ |
 | 72 | AdminCatalogPage mobile | ⬜ |
 | 73 | NotFoundPage mobile | ⬜ |

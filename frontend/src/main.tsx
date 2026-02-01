@@ -18,6 +18,4 @@ if (splash) {
     setTimeout(() => splash.remove(), 250)
   }
   requestAnimationFrame(() => requestAnimationFrame(hide))
-  // Fallback: ensure splash never blocks interaction if React is slow
-  setTimeout(hide, 3000)
 }

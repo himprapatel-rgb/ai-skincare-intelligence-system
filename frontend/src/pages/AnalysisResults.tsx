@@ -90,10 +90,18 @@ const AnalysisResults: React.FC = () => {
       (analysis as { recommendations?: string[] }).recommendations ||
       [];
 
+    const rawSkinType =
+      (summary as { skin_type?: string }).skin_type ||
+      (analysis as { skin_type?: string }).skin_type ||
+      (result as { skin_type?: string }).skin_type;
+    const skinType = typeof rawSkinType === 'string' && rawSkinType.trim()
+      ? rawSkinType.trim()
+      : 'Unknown';
+
     return {
       id: analysisId || 'unknown',
       userId: '',
-      skinType: 'Not provided',
+      skinType,
       concerns,
       severity: Object.fromEntries(
         Object.entries(scores).map(([key, value]) => [key, Math.round(value)])
@@ -252,6 +260,18 @@ const AnalysisResults: React.FC = () => {
     if (severity >= 40) return 'Mild (40–59%): Some visibility; good candidate for at-home care.';
     if (severity >= 20) return 'Light (20–39%): Slight; maintenance and prevention recommended.';
     return 'Clear (0–19%): Minimal or none detected; keep up your routine.';
+  };
+
+  /** Format metric key for display: dark_circles → Dark Circles */
+  const formatMetricName = (key: string): string =>
+    key.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+
+  /** Confidence interpretation for accessibility */
+  const getConfidenceInterpretation = (pct: number): string => {
+    if (pct >= 80) return 'Excellent – High image quality and analysis certainty';
+    if (pct >= 60) return 'Good – Reliable results; minor lighting variations may affect precision';
+    if (pct >= 40) return 'Fair – Consider retaking with better lighting for improved accuracy';
+    return 'Low – Retake with clearer, front-facing photo for better analysis';
   };
 
   if (loading) {
@@ -428,12 +448,15 @@ const AnalysisResults: React.FC = () => {
             : 'No concerns detected.'}
         </div>
 
-        <div className="confidence-row">
-          <span>Confidence Score:</span>
-          <div className="confidence-bar">
+        <div className="confidence-row" role="group" aria-labelledby="confidence-label">
+          <span id="confidence-label">Confidence Score:</span>
+          <div className="confidence-bar" aria-hidden>
             <div className="confidence-fill" style={{ width: `${analysis.confidence}%` }}></div>
           </div>
           <span className="confidence-value">{analysis.confidence}%</span>
+          <span className="confidence-interpretation" title={getConfidenceInterpretation(analysis.confidence)}>
+            {getConfidenceInterpretation(analysis.confidence)}
+          </span>
         </div>
 
         <div className="results-grid">
@@ -441,16 +464,30 @@ const AnalysisResults: React.FC = () => {
             <h2>Analyzed Image</h2>
             <div className="analysis-image">
               {analysis.imageUrl ? (
-                <img src={analysis.imageUrl} alt="Skin analysis" loading="lazy" width={400} height={300} />
-              ) : (
-                <div className="analysis-image-fallback">
-                  <IconScan size={32} strokeWidth={2} />
-                  <div>
-                    <strong>{failureMessage ? 'No image available' : 'Image processed but not stored'}</strong>
-                    <span>{failureMessage ? 'We do not store images when scans fail.' : 'Your analysis is complete, but the image was not saved.'}</span>
-                  </div>
+                <img
+                  src={analysis.imageUrl}
+                  alt="Skin analysis"
+                  loading="lazy"
+                  width={400}
+                  height={300}
+                  onError={(e) => {
+                    const target = e.currentTarget;
+                    target.style.display = 'none';
+                    const fallback = target.nextElementSibling;
+                    if (fallback instanceof HTMLElement) fallback.style.display = 'flex';
+                  }}
+                />
+              ) : null}
+              <div
+                className="analysis-image-fallback"
+                style={{ display: analysis.imageUrl ? 'none' : 'flex' }}
+              >
+                <IconScan size={32} strokeWidth={2} />
+                <div>
+                  <strong>{failureMessage ? 'No image available' : 'Image processed but not stored'}</strong>
+                  <span>{failureMessage ? 'We do not store images when scans fail.' : 'Your analysis is complete, but the image was not saved.'}</span>
                 </div>
-              )}
+              </div>
             </div>
           </div>
 
@@ -479,7 +516,9 @@ const AnalysisResults: React.FC = () => {
           <h2>Severity Analysis</h2>
           <div className="severity-grid">
             {Object.keys(analysis.severity).length > 0 ? (
-              Object.entries(analysis.severity).map(([concern, value]) => {
+              Object.entries(analysis.severity)
+                .sort(([, a], [, b]) => (b as number) - (a as number))
+                .map(([concern, value]) => {
                 const ConcernIcon = getSkinConcernIcon(concern);
                 return (
                   <div key={concern} className="severity-card">
@@ -488,7 +527,7 @@ const AnalysisResults: React.FC = () => {
                         <span className="severity-icon">
                           <ConcernIcon size={20} strokeWidth={2} />
                         </span>
-                        <h3 className="severity-title">{concern}</h3>
+                        <h3 className="severity-title">{formatMetricName(concern)}</h3>
                       </div>
                       <span className={`severity-pill ${getSeverityColor(value)}`} title={getSeverityTooltip(value)}>
                         {getSeverityLabel(value)}
@@ -509,26 +548,21 @@ const AnalysisResults: React.FC = () => {
 
         <div className="result-card metric-explanations">
           <h2>How to Read Your Scores</h2>
+          <p className="metric-explanation-intro">
+            For most metrics (acne, redness, pores, etc.), <strong>lower is better</strong>. For hydration, <strong>higher is better</strong>.
+          </p>
           <div className="metric-grid">
             <div>
-              <h3>Acne</h3>
-              <p>Higher values indicate more visible breakouts or inflammation.</p>
+              <h3>Acne, Redness, Pores, Texture, Oiliness, Wrinkles, Dark Circles, Pigmentation, Sensitivity</h3>
+              <p>Higher % = more visible concern. Lower scores indicate healthier skin in that area.</p>
             </div>
             <div>
-              <h3>Texture</h3>
-              <p>Measures surface smoothness. Lower scores suggest roughness.</p>
+              <h3>Dehydration / Hydration</h3>
+              <p>Higher % = better moisture balance. Lower scores may suggest need for hydrating products.</p>
             </div>
             <div>
-              <h3>Hydration</h3>
-              <p>Reflects moisture balance. Higher is generally healthier.</p>
-            </div>
-            <div>
-              <h3>Redness</h3>
-              <p>Tracks visible irritation or sensitivity flare-ups.</p>
-            </div>
-            <div>
-              <h3>Score Ranges</h3>
-              <p>80–100 = strong, 60–79 = moderate, 40–59 = mild, below 40 = needs care.</p>
+              <h3>Severity Labels</h3>
+              <p>Clear (0–19%) &rarr; Light (20–39%) &rarr; Mild (40–59%) &rarr; Moderate (60–79%) &rarr; Severe (80–100%).</p>
             </div>
           </div>
         </div>

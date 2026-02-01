@@ -144,8 +144,10 @@ def _run_mock_analysis(scan: ScanSession) -> dict:
         "scan_id": str(scan.id),  # Convert UUID to string for JSON
         "status": "completed",
         "skin_mood": "balanced",
+        "skin_type": ["normal", "oily", "dry", "combination", "sensitive"][base_score % 5],
         "summary": {
             "overall_score": (base_score + 50) % 100,
+            "skin_type": ["normal", "oily", "dry", "combination", "sensitive"][base_score % 5],
             "concerns": ["redness", "acne", "pigmentation", "dehydration", "sensitivity"],
             "scores": {
                 "redness": (base_score + 15) % 100,

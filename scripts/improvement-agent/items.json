@@ -41,6 +41,8 @@
   "Product Scanner: Fix scanner to product detail data mismatch",
   "Product Scanner: Remove device frame, center Start Camera",
   "Product Scanner: Fix Recently Scanned text wrapping",
+  "My Shelf: Fix duplicate product entries",
+  "My Shelf: Ingredient list from shelf when empty",
   "Homepage: Replace Featured In text with actual logos",
   "Homepage: Nav active state 3-4px underline",
   "Homepage: Trust badge icons and card order",

@@ -27,6 +27,7 @@
 
 ## Done this week
 
+- [x] My Shelf audit fixes: icon, badges, search width, category capitalize, card height (2026-02-01)
 - [x] Product Scanner→Product Detail data mismatch resolved (barcode link + multi-source fetch) (2026-02-01)
 - [x] Product Scanner: BackToTop z-index overlap fix; Recently Scanned text wrap (2026-02-01)
 - [x] Product Scanner Audit 2026 documented

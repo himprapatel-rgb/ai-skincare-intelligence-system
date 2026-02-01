@@ -18,12 +18,28 @@
 }
 
 .myshelf-header h1 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
   font-size: var(--font-size-2xl);
   font-weight: 700;
   color: var(--text-dark);
   margin-bottom: var(--spacing-sm);
   line-height: var(--line-height-tight);
   letter-spacing: -0.5px;
+}
+
+.myshelf-header h1 .title-icon {
+  flex-shrink: 0;
+  color: var(--primary);
+}
+
+.myshelf-header h1 .count-badge {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--text-gray);
 }
 
 .myshelf-header .subtitle {
@@ -219,6 +235,9 @@
 }
 
 .filter-tabs button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   min-height: 44px;
   padding: 12px 24px;
   border: 2px solid var(--border);
@@ -241,6 +260,23 @@
   color: white;
   border-color: var(--primary);
   box-shadow: 0 4px 12px rgba(31, 111, 235, 0.2);
+}
+
+.filter-tabs .tab-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.filter-tabs button.active .tab-badge {
+  background: rgba(255, 255, 255, 0.3);
 }
 
 .products-grid {
@@ -273,6 +309,7 @@
   display: flex;
   flex-direction: column;
   gap: 0;
+  min-height: 380px;
   transition: all 0.2s ease;
   min-height: 0;
 }

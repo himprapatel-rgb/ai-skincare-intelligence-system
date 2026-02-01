@@ -185,7 +185,10 @@ const MyShelfPage: React.FC = () => {
   return (
     <div className="myshelf-page">
       <div className="myshelf-header">
-        <h1>My Shelf</h1>
+        <h1>
+          <IconPackage size={32} strokeWidth={2} className="title-icon" aria-hidden />
+          My Shelf {totalCount > 0 && <span className="count-badge">({totalCount})</span>}
+        </h1>
         <p className="subtitle">Manage your skincare collection</p>
       </div>
 
@@ -275,7 +278,7 @@ const MyShelfPage: React.FC = () => {
           >
             {categories.map(cat => (
               <option key={cat} value={cat}>
-                {cat === 'all' ? 'All Categories' : cat}
+                {cat === 'all' ? 'All Categories' : cat.charAt(0).toUpperCase() + cat.slice(1).toLowerCase()}
               </option>
             ))}
           </select>

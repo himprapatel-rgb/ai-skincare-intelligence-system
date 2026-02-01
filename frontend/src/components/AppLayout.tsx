@@ -129,11 +129,17 @@ const displayName = nameParts.length > 1
                   {/* User Dropdown */}
                   <div className="app-nav-user-dropdown" ref={userDropdownRef}>
                     <button 
+                      type="button"
                       className="app-nav-user-trigger"
-                      onClick={() => setUserDropdownOpen(!userDropdownOpen)}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setUserDropdownOpen((prev) => !prev);
+                      }}
                       aria-expanded={userDropdownOpen}
                       aria-controls="user-dropdown-menu"
-                      aria-haspopup="true"
+                      aria-haspopup="menu"
+                      aria-label={`Account menu for ${displayName}`}
                       onKeyDown={(e) => {
                         if (e.key === 'Escape') setUserDropdownOpen(false);
                       }}

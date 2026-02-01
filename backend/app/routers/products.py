@@ -319,7 +319,9 @@ class BarcodeScanResponse(BaseModel):
     safety_rating: Optional[int] = None
     suitability_score: Optional[int] = None
     ingredients: Optional[List[str]] = None
+    key_ingredients: Optional[List[dict]] = None
     warnings: Optional[List[str]] = None
+    safety_report: Optional[dict] = None
     source: str = "database"
 
 
@@ -350,6 +352,27 @@ async def scan_barcode(
         
         if catalog_product:
             logger.info(f"Catalog HIT for barcode: {barcode}")
+            flagged = catalog_product.get("flagged_ingredients") or []
+            warnings = [f["name"] for f in flagged[:5]] if flagged else []
+            safety_report = None
+            if flagged:
+                safety_report = {
+                    "flagged_ingredients": [
+                        {
+                            "name": f.get("name", "Unknown"),
+                            "severity": f.get("severity", "moderate"),
+                            "reason": f.get("reason", "Flagged ingredient"),
+                            "categories": f.get("categories", []),
+                            "alternatives": f.get("alternatives", []),
+                            "avoid_if": f.get("avoid_if", []),
+                        }
+                        for f in flagged
+                    ],
+                    "total_flagged": len(flagged),
+                    "recommendations": [],
+                    "is_pregnancy_safe": catalog_product.get("pregnancy_safe", True),
+                    "is_sensitive_skin_safe": catalog_product.get("sensitive_skin_safe", True),
+                }
             return BarcodeScanResponse(
                 found=True,
                 product={
@@ -363,7 +386,9 @@ async def scan_barcode(
                 safety_rating=catalog_product.get("safety_score", 80),
                 suitability_score=75,
                 ingredients=catalog_product.get("ingredients", []),
-                warnings=[f["name"] for f in (catalog_product.get("flagged_ingredients") or [])[:3]],
+                key_ingredients=catalog_product.get("key_ingredients"),
+                warnings=warnings,
+                safety_report=safety_report,
                 source="catalog",
             )
     except Exception as e:
@@ -375,21 +400,43 @@ async def scan_barcode(
     if product:
         # Analyze ingredients
         ingredients = []
-        warnings = []
-        safety_score = 85  # Default good score
-        
         ingredients_text = getattr(product, "ingredients", None) or ""
         if ingredients_text:
-            ingredients = [ing.strip() for ing in str(ingredients_text).split(",")[:10] if ing.strip()]
-            
-            # Check for common allergens/irritants
-            irritants = ["fragrance", "alcohol denat", "sodium lauryl sulfate", "parabens"]
-            for ing in ingredients:
-                for irritant in irritants:
-                    if irritant.lower() in ing.lower():
-                        warnings.append(f"Contains {irritant}")
-                        safety_score -= 10
-        
+            ingredients = [ing.strip() for ing in str(ingredients_text).split(",")[:15] if ing.strip()]
+
+        # Full safety analysis for shelf storage
+        safety_report = None
+        warnings = []
+        if ingredients:
+            safety_analysis = analyze_ingredients_list(ingredients)
+            safety_report = {
+                "flagged_ingredients": [
+                    {
+                        "name": f["name"],
+                        "matched_term": f["matched_term"],
+                        "severity": f["severity"],
+                        "categories": f["categories"],
+                        "reason": f["reason"],
+                        "alternatives": f.get("alternatives", []),
+                        "avoid_if": f.get("avoid_if", []),
+                    }
+                    for f in safety_analysis["flagged_ingredients"]
+                ],
+                "total_flagged": safety_analysis["total_flagged"],
+                "high_severity_count": safety_analysis["high_severity_count"],
+                "moderate_severity_count": safety_analysis["moderate_severity_count"],
+                "low_severity_count": safety_analysis["low_severity_count"],
+                "safety_score": safety_analysis["safety_score"],
+                "recommendations": safety_analysis["recommendations"],
+                "is_pregnancy_safe": safety_analysis["is_pregnancy_safe"],
+                "is_sensitive_skin_safe": safety_analysis["is_sensitive_skin_safe"],
+            }
+            for flagged in safety_analysis["flagged_ingredients"]:
+                if flagged["severity"] == "high":
+                    warnings.append(f"Contains {flagged['name']}: {flagged['reason']}")
+                elif flagged["severity"] == "moderate":
+                    warnings.append(f"Contains {flagged['name']}")
+
         return BarcodeScanResponse(
             found=True,
             product={
@@ -400,10 +447,12 @@ async def scan_barcode(
                 "category": product.category,
                 "image_url": product.image_url,
             },
-            safety_rating=max(0, safety_score),
-            suitability_score=78,  # TODO: Calculate based on user profile
+            safety_rating=safety_report["safety_score"] if safety_report else 85,
+            suitability_score=78,
             ingredients=ingredients,
-            warnings=list(set(warnings)),
+            key_ingredients=None,
+            warnings=list(set(warnings)) if warnings else [],
+            safety_report=safety_report,
             source="database",
         )
     
@@ -422,27 +471,50 @@ async def scan_barcode(
                     ingredients = []
                     if obf_product.get("ingredients_text"):
                         ingredients = [
-                            ing.strip() 
-                            for ing in obf_product["ingredients_text"].split(",")[:10]
+                            ing.strip()
+                            for ing in obf_product["ingredients_text"].split(",")[:15]
+                            if ing.strip()
                         ]
-                    
-                    # Basic safety analysis
+
+                    # Full safety analysis for shelf storage (same as photo scan)
+                    safety_report = None
                     warnings = []
-                    safety_score = 80
-                    
-                    irritants = ["fragrance", "parfum", "alcohol denat", "sls"]
-                    for ing in ingredients:
-                        for irritant in irritants:
-                            if irritant.lower() in ing.lower():
-                                warnings.append(f"Contains {irritant}")
-                                safety_score -= 10
-                    
+                    if ingredients:
+                        safety_analysis = analyze_ingredients_list(ingredients)
+                        safety_report = {
+                            "flagged_ingredients": [
+                                {
+                                    "name": f["name"],
+                                    "matched_term": f["matched_term"],
+                                    "severity": f["severity"],
+                                    "categories": f["categories"],
+                                    "reason": f["reason"],
+                                    "alternatives": f.get("alternatives", []),
+                                    "avoid_if": f.get("avoid_if", []),
+                                }
+                                for f in safety_analysis["flagged_ingredients"]
+                            ],
+                            "total_flagged": safety_analysis["total_flagged"],
+                            "high_severity_count": safety_analysis["high_severity_count"],
+                            "moderate_severity_count": safety_analysis["moderate_severity_count"],
+                            "low_severity_count": safety_analysis["low_severity_count"],
+                            "safety_score": safety_analysis["safety_score"],
+                            "recommendations": safety_analysis["recommendations"],
+                            "is_pregnancy_safe": safety_analysis["is_pregnancy_safe"],
+                            "is_sensitive_skin_safe": safety_analysis["is_sensitive_skin_safe"],
+                        }
+                        for flagged in safety_analysis["flagged_ingredients"]:
+                            if flagged["severity"] == "high":
+                                warnings.append(f"Contains {flagged['name']}: {flagged['reason']}")
+                            elif flagged["severity"] == "moderate":
+                                warnings.append(f"Contains {flagged['name']}")
+
                     # Extract product data
                     product_name = obf_product.get("product_name", "Unknown Product")
                     brand_name = obf_product.get("brands", "Unknown Brand")
                     category_name = obf_product.get("categories", "").split(",")[0] if obf_product.get("categories") else "other"
                     image_url = obf_product.get("image_front_url") or obf_product.get("image_url")
-                    
+
                     # AUTO-SAVE: Save to local database for future lookups
                     saved_product_id = barcode
                     try:
@@ -460,7 +532,7 @@ async def scan_barcode(
                         db.refresh(new_product)
                         saved_product_id = str(new_product.id)
                         logger.info(f"Auto-saved product from barcode: {barcode} - {brand_name} {product_name}")
-                        
+
                         # SAVE INGREDIENTS: Persist ingredients to database
                         if ingredients:
                             saved_count = save_product_ingredients(
@@ -473,7 +545,7 @@ async def scan_barcode(
                     except Exception as e:
                         logger.warning(f"Failed to auto-save barcode product: {e}")
                         db.rollback()
-                    
+
                     return BarcodeScanResponse(
                         found=True,
                         product={
@@ -484,10 +556,12 @@ async def scan_barcode(
                             "category": category_name,
                             "image_url": image_url,
                         },
-                        safety_rating=max(0, safety_score),
+                        safety_rating=safety_report["safety_score"] if safety_report else 80,
                         suitability_score=70,
                         ingredients=ingredients,
-                        warnings=list(set(warnings)),
+                        key_ingredients=None,
+                        warnings=list(set(warnings)) if warnings else [],
+                        safety_report=safety_report,
                         source="openbeautyfacts",
                     )
     except Exception as e:
@@ -500,7 +574,9 @@ async def scan_barcode(
         safety_rating=None,
         suitability_score=None,
         ingredients=None,
+        key_ingredients=None,
         warnings=None,
+        safety_report=None,
         source="not_found",
     )
 

@@ -104,7 +104,10 @@ const MyShelfPage: React.FC = () => {
   }, [products, filter, searchTerm, categoryFilter, sortBy]);
 
   const handleProductClick = (productId: string) => {
-    navigate(`/product/${productId}`);
+    const shelfProduct = shelfProducts.find(p => p.id === productId);
+    navigate(`/product/${productId}`, {
+      state: shelfProduct ? { shelfProduct } : undefined,
+    });
   };
 
   const handleUpdateStatus = async (productId: string, newStatus: DisplayProduct['status']) => {

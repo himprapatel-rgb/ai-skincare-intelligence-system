@@ -63,13 +63,34 @@ export async function installAgentApiMock(page: Page) {
       if (
         url.includes("/catalog/") ||
         url.includes("/products") ||
-        url.includes("/user-products") ||
-        url.includes("/shelf")
+        url.includes("/user-products")
       ) {
         return route.fulfill({
           status: 200,
           contentType: "application/json",
           body: mockBody([]),
+        });
+      }
+      if (url.includes("/shelf") && method === "GET") {
+        return route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: mockBody({ products: [], total: 0, by_status: {} }),
+        });
+      }
+      if (url.includes("/shelf") && method === "POST") {
+        return route.fulfill({
+          status: 201,
+          contentType: "application/json",
+          body: mockBody({
+            id: 1,
+            product_name: "Test Product",
+            product_brand: "Test Brand",
+            product_category: "Serum",
+            status: "active",
+            ingredients_json: { ingredients: [], key_ingredients: [], safety_rating: 85, suitability_score: 80 },
+            created_at: new Date().toISOString(),
+          }),
         });
       }
 

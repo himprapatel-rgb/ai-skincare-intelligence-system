@@ -4,6 +4,7 @@ Sprint: GUI-2 - Story: Product Shelf API
 
 Provides endpoints for managing user's product inventory.
 """
+import copy
 import logging
 import uuid
 from datetime import datetime
@@ -207,8 +208,8 @@ async def add_to_shelf(
             detail="Product already on shelf"
         )
     
-    # Add timestamp to ingredients snapshot
-    ingredients_data = product_data.ingredients_json
+    # Deep copy ingredients snapshot to avoid mutating request; ensure captured_at is set
+    ingredients_data = copy.deepcopy(product_data.ingredients_json) if product_data.ingredients_json else None
     if ingredients_data:
         ingredients_data["captured_at"] = datetime.utcnow().isoformat()
     

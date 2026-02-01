@@ -1,0 +1,18 @@
+# Keep Backend Awake - Prevents Railway cold start / Network Error on login
+# Railway sleeps after ~10 min of no traffic. This pings every 8 min.
+name: Keep Backend Awake
+
+on:
+  schedule:
+    - cron: "*/8 * * * *"  # Every 8 minutes
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping health endpoint
+        run: |
+          curl -sSf --connect-timeout 15 --max-time 30 \
+            "https://ai-skincare-intelligence-system-production.up.railway.app/api/health" \
+            -o /dev/null -w "HTTP %{http_code}\n" || true

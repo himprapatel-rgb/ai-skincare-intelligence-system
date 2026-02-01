@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, useLocation, Link } from 'react-router-dom';
 import { api } from '../services/api';
-import { IconArrowLeft, IconStar } from '../components/Icons';
+import { IconArrowLeft, IconStar, IconAlertTriangle } from '../components/Icons';
 import { BreadcrumbJsonLd } from '../components/BreadcrumbJsonLd';
 import LoadingScreen from '../components/LoadingScreen';
 import { usePageTitle } from '../hooks/usePageTitle';
@@ -10,6 +10,23 @@ import './ProductDetailsPage.css';
 
 import { API_BASE_URL } from '../config';
 const API_BASE = API_BASE_URL;
+
+interface FlaggedIngredient {
+  name: string;
+  severity: 'high' | 'moderate' | 'low';
+  reason: string;
+  categories?: string[];
+  alternatives?: string[];
+  avoid_if?: string[];
+}
+
+interface SafetyReport {
+  flagged_ingredients: FlaggedIngredient[];
+  total_flagged?: number;
+  recommendations?: string[];
+  is_pregnancy_safe?: boolean;
+  is_sensitive_skin_safe?: boolean;
+}
 
 interface ProductDetails {
   id: string;
@@ -27,6 +44,11 @@ interface ProductDetails {
   concerns?: string[];
   howToUse?: string;
   benefits?: string[];
+  // From scan snapshot (when viewed from shelf)
+  safetyRating?: number;
+  suitabilityScore?: number;
+  safetyReport?: SafetyReport;
+  warnings?: string[];
   // Task 226-250: Enhanced product details
   usageTime?: 'morning' | 'evening' | 'both';  // Task 234
   usageFrequency?: string;                      // Task 235: daily, weekly, etc.
@@ -136,7 +158,9 @@ function addToCompare(productId: string): string[] {
 const ProductDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
   const { products: shelfProducts, isOnShelf, addToShelf, removeFromShelf } = useShelf();
+  const shelfProductFromState = (location.state as { shelfProduct?: typeof shelfProducts[0] } | null)?.shelfProduct;
   const [product, setProduct] = useState<ProductDetails | null>(null);
   const [loading, setLoading] = useState(true);
   const [inShelf, setInShelf] = useState(false);
@@ -171,25 +195,25 @@ const ProductDetailsPage: React.FC = () => {
 
   const fetchProductDetails = useCallback(async () => {
     if (!id) return;
-    
+
     try {
       setLoading(true);
       setFromCatalog(false);
-      
-      // First, check if product is on user's shelf
-      const shelfProduct = shelfProducts.find(p => 
-        p.id === id || p.product_id === id || p.external_product_id === id
-      );
+
+      // Prefer shelf product from navigation state (from My Shelf click) - has full scan data
+      const shelfProduct =
+        shelfProductFromState && (shelfProductFromState.id === id || shelfProductFromState.external_product_id === id)
+          ? shelfProductFromState
+          : shelfProducts.find((p) => p.id === id || p.product_id === id || p.external_product_id === id);
       
       if (shelfProduct) {
-        // Product found on shelf - use that data
-        // Extract ingredients from ingredients_json if available
+        // Product found on shelf - use that data (including scan snapshot)
         const ingredientsSnapshot = shelfProduct.ingredients_json;
         const ingredients = ingredientsSnapshot?.ingredients || [];
-        const keyIngredients = ingredientsSnapshot?.key_ingredients?.map(ki => 
+        const keyIngredients = ingredientsSnapshot?.key_ingredients?.map(ki =>
           ki.percentage ? `${ki.name} ${ki.percentage}` : ki.name
         ) || [];
-        
+
         const productData: ProductDetails = {
           id: shelfProduct.id,
           name: shelfProduct.product_name,
@@ -199,7 +223,11 @@ const ProductDetailsPage: React.FC = () => {
           ingredients: ingredients,
           keyIngredients: keyIngredients.length > 0 ? keyIngredients : undefined,
           imageUrl: shelfProduct.product_image,
-          // No fake ratings/reviews/prices - only show if we have real data
+          // Scan snapshot - safety data preserved when adding from scanner
+          safetyRating: ingredientsSnapshot?.safety_rating,
+          suitabilityScore: ingredientsSnapshot?.suitability_score,
+          safetyReport: ingredientsSnapshot?.safety_report,
+          warnings: ingredientsSnapshot?.warnings,
         };
         setProduct(productData);
         setInShelf(true);
@@ -307,7 +335,7 @@ const ProductDetailsPage: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }, [id, shelfProducts, isOnShelf]);
+  }, [id, shelfProducts, shelfProductFromState, isOnShelf]);
 
   const fetchReviews = useCallback(async () => {
     if (!id) return;
@@ -574,6 +602,117 @@ const ProductDetailsPage: React.FC = () => {
         <div className="tab-content">
           {activeTab === 'overview' && (
             <div className="overview-tab">
+              {/* Safety Ratings & Concerns (from scan snapshot when product from shelf) */}
+              {(product.safetyRating != null || product.suitabilityScore != null) && (
+                <section className="safety-ratings-section">
+                  <h3>Safety Analysis</h3>
+                  <div className="safety-ratings-grid">
+                    {product.safetyRating != null && (
+                      <div
+                        className="safety-rating-card"
+                        style={{
+                          '--rating-color': product.safetyRating >= 80 ? 'var(--primary)' : product.safetyRating >= 60 ? 'var(--secondary)' : '#dc2626',
+                          '--rating-width': `${product.safetyRating}%`,
+                        } as React.CSSProperties}
+                      >
+                        <div className="rating-label">Safety Rating</div>
+                        <div className="rating-value">{product.safetyRating}/100</div>
+                        <div className="rating-bar"><div className="rating-fill" /></div>
+                      </div>
+                    )}
+                    {product.suitabilityScore != null && (
+                      <div
+                        className="safety-rating-card"
+                        style={{
+                          '--rating-color': product.suitabilityScore >= 80 ? 'var(--primary)' : product.suitabilityScore >= 60 ? 'var(--secondary)' : '#dc2626',
+                          '--rating-width': `${product.suitabilityScore}%`,
+                        } as React.CSSProperties}
+                      >
+                        <div className="rating-label">Suitability Score</div>
+                        <div className="rating-value">{product.suitabilityScore}/100</div>
+                        <div className="rating-bar"><div className="rating-fill" /></div>
+                      </div>
+                    )}
+                  </div>
+                </section>
+              )}
+
+              {product.safetyReport && product.safetyReport.flagged_ingredients.length > 0 && (
+                <section className="flagged-ingredients-section">
+                  <h3>
+                    <IconAlertTriangle size={20} strokeWidth={2} className="icon-inline warning-icon" />
+                    Ingredient Safety Concerns ({product.safetyReport.total_flagged ?? product.safetyReport.flagged_ingredients.length})
+                  </h3>
+                  <div className="flagged-list">
+                    {product.safetyReport.flagged_ingredients.map((flagged, idx) => (
+                      <div key={idx} className={`flagged-item severity-${flagged.severity}`}>
+                        <div className="flagged-header">
+                          <span className="flagged-name">{flagged.name}</span>
+                          <span className={`severity-badge ${flagged.severity}`}>
+                            {flagged.severity === 'high' ? '⚠️ Avoid' : flagged.severity === 'moderate' ? '⚡ Caution' : 'ℹ️ Note'}
+                          </span>
+                        </div>
+                        <p className="flagged-reason">{flagged.reason}</p>
+                        {flagged.categories && flagged.categories.length > 0 && (
+                          <div className="flagged-categories">
+                            {flagged.categories.map((cat, catIdx) => (
+                              <span key={catIdx} className="category-tag">{cat.replace('_', ' ')}</span>
+                            ))}
+                          </div>
+                        )}
+                        {flagged.alternatives && flagged.alternatives.length > 0 && flagged.alternatives[0] !== 'None - avoid completely' && (
+                          <div className="flagged-alternatives">
+                            <strong>Safer alternatives:</strong> {flagged.alternatives.join(', ')}
+                          </div>
+                        )}
+                        {flagged.avoid_if && flagged.avoid_if.length > 0 && (
+                          <div className="flagged-avoid">
+                            <strong>Extra caution for:</strong> {flagged.avoid_if.join(', ')}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                  {product.safetyReport.recommendations && product.safetyReport.recommendations.length > 0 && (
+                    <div className="safety-recommendations">
+                      <h4>Recommendations</h4>
+                      <ul>
+                        {product.safetyReport.recommendations.map((rec, idx) => (
+                          <li key={idx}>{rec}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  <div className="safety-badges">
+                    {product.safetyReport.is_pregnancy_safe !== undefined && (
+                      product.safetyReport.is_pregnancy_safe ? (
+                        <span className="safety-badge safe">🤰 Pregnancy Safe</span>
+                      ) : (
+                        <span className="safety-badge warning">🤰 Check with Doctor</span>
+                      )
+                    )}
+                    {product.safetyReport.is_sensitive_skin_safe !== undefined && (
+                      product.safetyReport.is_sensitive_skin_safe ? (
+                        <span className="safety-badge safe">✓ Sensitive Skin Friendly</span>
+                      ) : (
+                        <span className="safety-badge warning">⚡ May Irritate Sensitive Skin</span>
+                      )
+                    )}
+                  </div>
+                </section>
+              )}
+
+              {product.warnings && product.warnings.length > 0 && !product.safetyReport?.flagged_ingredients?.length && (
+                <section className="warnings-section">
+                  <h3><IconAlertTriangle size={20} strokeWidth={2} className="icon-inline warning-icon" /> Warnings</h3>
+                  <ul className="warnings-list">
+                    {product.warnings.map((warning, idx) => (
+                      <li key={idx}><IconAlertTriangle size={16} strokeWidth={2} className="icon-inline warning-icon" /> {warning}</li>
+                    ))}
+                  </ul>
+                </section>
+              )}
+
               {/* Task 234-238: Usage Information Card */}
               <section className="usage-info-card">
                 <h3>Usage Guide</h3>
@@ -651,7 +790,8 @@ const ProductDetailsPage: React.FC = () => {
               )}
 
               {/* Show message if no detailed info available */}
-              {!product.benefits?.length && !product.keyIngredients?.length && !product.howToUse && (
+              {!product.benefits?.length && !product.keyIngredients?.length && !product.howToUse &&
+               !product.safetyReport?.flagged_ingredients?.length && !product.safetyRating && !product.suitabilityScore && (
                 <section className="no-data-message">
                   <p>Detailed product information is not yet available for this product.</p>
                   <p>You can help by adding notes to this product from your shelf.</p>

@@ -431,10 +431,15 @@ const ProductScannerPage: React.FC = () => {
             barcode: barcode,
             imageUrl: data.product.image_url,
             category: data.product.category,
+            keyIngredients: data.key_ingredients?.map((ki: { name: string; percentage?: string }) => ({
+              name: ki.name,
+              percentage: ki.percentage,
+            })) ?? [],
             ingredients: data.ingredients || [],
             safetyRating: data.safety_rating || 0,
             suitabilityScore: data.suitability_score || 0,
             warnings: data.warnings || [],
+            safetyReport: data.safety_report || undefined,
             source: 'barcode',
             dataSource: data.source,
           };
@@ -561,13 +566,40 @@ const ProductScannerPage: React.FC = () => {
     
     setAddingToShelf(true);
     try {
-      // Build ingredients snapshot for persistent storage
+      // Build full scan snapshot for persistent storage (ingredients + safety data)
+      const ingredientsList: string[] = Array.isArray(scannedProduct.ingredients)
+        ? scannedProduct.ingredients
+        : [];
+      const flagged = scannedProduct.safetyReport?.flagged_ingredients;
       const ingredientsSnapshot = {
-        ingredients: scannedProduct.ingredients || [],
+        ingredients: ingredientsList,
         key_ingredients: (scannedProduct.keyIngredients || []).map(ki => ({
           name: ki.name,
           percentage: ki.percentage || null
-        }))
+        })),
+        captured_at: new Date().toISOString(),
+        safety_rating: scannedProduct.safetyRating ?? undefined,
+        suitability_score: scannedProduct.suitabilityScore ?? undefined,
+        safety_report: scannedProduct.safetyReport && Array.isArray(flagged) ? {
+          flagged_ingredients: flagged.map(f => ({
+            name: f.name,
+            matched_term: f.matched_term,
+            severity: f.severity,
+            categories: f.categories,
+            reason: f.reason,
+            alternatives: f.alternatives,
+            avoid_if: f.avoid_if
+          })),
+          total_flagged: scannedProduct.safetyReport.total_flagged,
+          high_severity_count: scannedProduct.safetyReport.high_severity_count,
+          moderate_severity_count: scannedProduct.safetyReport.moderate_severity_count,
+          low_severity_count: scannedProduct.safetyReport.low_severity_count,
+          safety_score: scannedProduct.safetyReport.safety_score,
+          recommendations: scannedProduct.safetyReport.recommendations,
+          is_pregnancy_safe: scannedProduct.safetyReport.is_pregnancy_safe,
+          is_sensitive_skin_safe: scannedProduct.safetyReport.is_sensitive_skin_safe
+        } : undefined,
+        warnings: scannedProduct.warnings?.length ? scannedProduct.warnings : undefined
       };
       
       const success = await addToShelfContext({

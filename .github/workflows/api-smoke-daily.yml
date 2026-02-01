@@ -14,7 +14,7 @@ jobs:
       - name: Health check
         id: health
         run: |
-          code=$(curl -s -o /dev/null -w "%{http_code}" --connect-timeout 10 "https://ai-skincare-intelligence-system-production.up.railway.app/api/v1/health" || echo "000")
+          code=$(curl -s -o /dev/null -w "%{http_code}" --connect-timeout 10 "https://ai-skincare-intelligence-system-production.up.railway.app/api/health" || echo "000")
           echo "status=$code" >> $GITHUB_OUTPUT
           [ "$code" = "200" ] || exit 1
         continue-on-error: true
@@ -27,7 +27,7 @@ jobs:
             const title = `[API Smoke] Backend health check failed - ${new Date().toISOString().slice(0,10)}`;
             const body = `## API health check failed
 
-            **Backend:** https://ai-skincare-intelligence-system-production.up.railway.app/api/v1/health
+            **Backend:** https://ai-skincare-intelligence-system-production.up.railway.app/api/health
             **Run:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
             ### Action needed

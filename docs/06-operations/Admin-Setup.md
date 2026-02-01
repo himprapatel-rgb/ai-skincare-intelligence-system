@@ -8,6 +8,8 @@ How to log in to the Admin page (`/admin`) on pellicura.com.
 
 **Symptom:** Login fails with "Network Error" or "Cannot reach the server."
 
+**Root cause:** Railway backend sleeps after ~10 min of no traffic. First request after sleep times out (cold start 30–60s). See [Login-Issues-Root-Causes.md](./Login-Issues-Root-Causes.md) for full details and **permanent fix** (keep-awake workflow).
+
 **Likely causes:**
 1. **Backend unreachable** – Railway backend may be sleeping (cold start) or down. Wait 30–60 seconds and try again.
 2. **Wrong API URL** – Frontend was built with wrong `VITE_API_URL`. Redeploy frontend with correct URL: `https://ai-skincare-intelligence-system-production.up.railway.app/api/v1`

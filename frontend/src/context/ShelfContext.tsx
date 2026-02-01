@@ -14,11 +14,39 @@ export interface KeyIngredient {
   percentage?: string | null;
 }
 
-// Ingredient snapshot stored with shelf product
+// Safety report from scan (stored with shelf product)
+export interface FlaggedIngredientSnapshot {
+  name: string;
+  matched_term?: string;
+  severity: 'high' | 'moderate' | 'low';
+  categories?: string[];
+  reason: string;
+  alternatives?: string[];
+  avoid_if?: string[];
+}
+
+export interface SafetyReportSnapshot {
+  flagged_ingredients: FlaggedIngredientSnapshot[];
+  total_flagged?: number;
+  high_severity_count?: number;
+  moderate_severity_count?: number;
+  low_severity_count?: number;
+  safety_score?: number;
+  recommendations?: string[];
+  is_pregnancy_safe?: boolean;
+  is_sensitive_skin_safe?: boolean;
+}
+
+// Ingredient snapshot stored with shelf product (includes scan safety data)
 export interface IngredientsSnapshot {
   ingredients: string[];
   key_ingredients: KeyIngredient[];
   captured_at?: string;
+  /** From scan - safety data preserved when adding to shelf */
+  safety_rating?: number;
+  suitability_score?: number;
+  safety_report?: SafetyReportSnapshot;
+  warnings?: string[];
 }
 
 export interface ShelfProduct {

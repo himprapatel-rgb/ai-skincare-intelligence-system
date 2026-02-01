@@ -31,6 +31,8 @@ const PROTECTED_ROUTES = [
   "/favorites",
   "/skin-goals",
   "/export",
+  "/admin",
+  "/admin/content",
 ];
 
 // Public pages - no auth

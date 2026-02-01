@@ -8,7 +8,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import List, Optional
 
-from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query
+from fastapi import APIRouter, BackgroundTasks, Depends, File, HTTPException, Query, UploadFile
 from pydantic import BaseModel
 from sqlalchemy import text
 from sqlalchemy.orm import Session
@@ -36,6 +36,11 @@ from app.schemas.content_schemas import (
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/admin", tags=["admin"])
+
+# Upload directory for admin images (blog covers, video thumbnails)
+UPLOADS_DIR = Path(__file__).resolve().parent.parent.parent / "uploads"
+ALLOWED_IMAGE_TYPES = {"image/jpeg", "image/png", "image/webp", "image/gif"}
+MAX_IMAGE_SIZE = 5 * 1024 * 1024  # 5MB
 
 
 class SeedResponse(BaseModel):
@@ -559,6 +564,27 @@ async def delete_product(
     db.delete(product)
     db.commit()
     return None
+
+
+# --- Image Upload ---
+
+@router.post("/upload-image")
+async def upload_image(
+    file: UploadFile = File(...),
+    current_user: User = Depends(get_current_admin),
+):
+    """Upload an image (blog cover, video thumbnail). Returns URL for use in cover_image_url or thumbnail_url."""
+    if file.content_type not in ALLOWED_IMAGE_TYPES:
+        raise HTTPException(400, detail="Allowed types: JPEG, PNG, WebP, GIF")
+    contents = await file.read()
+    if len(contents) > MAX_IMAGE_SIZE:
+        raise HTTPException(400, detail="Max file size 5MB")
+    UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
+    ext = "jpg" if file.content_type == "image/jpeg" else "png" if file.content_type == "image/png" else "webp" if file.content_type == "image/webp" else "gif"
+    name = f"{datetime.utcnow().strftime('%Y%m%d')}_{datetime.utcnow().timestamp():.0f}_{current_user.id}.{ext}"
+    path = UPLOADS_DIR / name
+    path.write_bytes(contents)
+    return {"url": f"/uploads/{name}"}
 
 
 # --- Content (Blogs, Videos, News) ---

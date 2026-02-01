@@ -29,6 +29,31 @@
   margin-top: 4px;
 }
 
+.admin-quick-upload {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(99, 102, 241, 0.06) 100%);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 8px;
+}
+
+.admin-quick-upload h3 {
+  margin: 0 0 4px;
+  font-size: 1.15rem;
+}
+
+.admin-quick-upload p {
+  margin: 0 0 16px;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.admin-content-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .admin-actions {
   display: flex;
   flex-wrap: wrap;

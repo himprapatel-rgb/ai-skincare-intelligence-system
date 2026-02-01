@@ -48,6 +48,7 @@ const AdminCatalogPage = React.lazy(() => import("./pages/AdminCatalogPage"));
 const AdminBlogsPage = React.lazy(() => import("./pages/AdminBlogsPage"));
 const AdminVideosPage = React.lazy(() => import("./pages/AdminVideosPage"));
 const AdminNewsPage = React.lazy(() => import("./pages/AdminNewsPage"));
+const AdminContentPage = React.lazy(() => import("./pages/AdminContentPage"));
 const AboutPage = React.lazy(() => import("./pages/AboutPage"));
 const ContactPage = React.lazy(() => import("./pages/ContactPage"));
 const PrivacyPage = React.lazy(() => import("./pages/PrivacyPage"));
@@ -97,6 +98,7 @@ function AppRoutes() {
           <Route path="/admin/users" element={<AdminUsersPage />} />
           <Route path="/admin/products" element={<AdminProductsPage />} />
           <Route path="/admin/catalog" element={<AdminCatalogPage />} />
+          <Route path="/admin/content" element={<AdminContentPage />} />
           <Route path="/admin/blogs" element={<AdminBlogsPage />} />
           <Route path="/admin/videos" element={<AdminVideosPage />} />
           <Route path="/admin/news" element={<AdminNewsPage />} />

@@ -35,6 +35,7 @@ export async function installAgentApiMock(page: Page) {
             full_name: "Agent User",
             is_active: true,
             is_verified: true,
+            is_admin: true,
           }),
         });
       }
@@ -95,6 +96,22 @@ export async function installAgentApiMock(page: Page) {
             progress: 100,
             result: { overall_score: 75 },
           }),
+        });
+      }
+
+      // Admin (summary, blogs, videos, news)
+      if (url.includes("/admin/summary")) {
+        return route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: mockBody({ user_count: 1, active_user_count: 1, scan_count: 0, product_count: 0, routine_count: 0, snapshot_count: 0 }),
+        });
+      }
+      if (url.includes("/admin/blogs") || url.includes("/admin/videos") || url.includes("/admin/news")) {
+        return route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: mockBody([]),
         });
       }
 

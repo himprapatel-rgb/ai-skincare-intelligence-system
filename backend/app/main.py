@@ -1,8 +1,10 @@
-
 import logging
-from datetime import date, datetime
+from pathlib import Path
 
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
+from datetime import date, datetime
+
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from sqlalchemy import text
@@ -455,6 +457,11 @@ app.include_router(shelf.router, prefix="/api/v1", tags=["shelf"])  # Product Sh
 app.include_router(goals.router, prefix="/api/v1", tags=["goals"])  # Skin Goals API
 app.include_router(catalog.router, prefix="/api/v1", tags=["catalog"])  # Product Catalog Database
 app.include_router(content.router, prefix="/api/v1", tags=["content"])  # Public blogs, videos, news
+
+# Admin image uploads (blog covers, video thumbnails)
+_uploads_dir = Path(__file__).resolve().parent.parent / "uploads"
+_uploads_dir.mkdir(parents=True, exist_ok=True)
+app.mount("/uploads", StaticFiles(directory=str(_uploads_dir)), name="uploads")
 
 @app.get("/", tags=["Root"])
 def read_root():

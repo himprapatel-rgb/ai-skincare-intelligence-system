@@ -83,13 +83,17 @@ const AdminDashboardPage: React.FC = () => {
         </div>
       )}
 
+      <div className="admin-quick-upload">
+        <h3>Upload blogs & videos</h3>
+        <p>Add blog posts, video tutorials, and news from one place.</p>
+        <Link to="/admin/content" className="btn btn-primary admin-content-cta">Manage Content →</Link>
+      </div>
+
       <div className="admin-actions">
-        <Link to="/admin/users" className="btn btn-primary">Manage Users</Link>
+        <Link to="/admin/content" className="btn btn-secondary">Blogs, Videos, News</Link>
+        <Link to="/admin/users" className="btn btn-secondary">Manage Users</Link>
         <Link to="/admin/products" className="btn btn-secondary">Manage Products</Link>
         <Link to="/admin/catalog" className="btn btn-secondary">Catalog Admin</Link>
-        <Link to="/admin/blogs" className="btn btn-secondary">Manage Blogs</Link>
-        <Link to="/admin/videos" className="btn btn-secondary">Manage Videos</Link>
-        <Link to="/admin/news" className="btn btn-secondary">Manage News</Link>
       </div>
     </div>
   );

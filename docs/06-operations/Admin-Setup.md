@@ -136,6 +136,20 @@ For temporary testing, you can:
 Once logged in as admin, you can access:
 
 - `/admin` — Dashboard (summary stats)
+- `/admin/content` — **Upload blogs & videos** (tabbed: Blogs, Videos, News)
 - `/admin/users` — Manage users
 - `/admin/products` — Manage products
 - `/admin/catalog` — Catalog admin
+
+---
+
+## Upload blogs & videos
+
+1. Go to **Admin** → **Manage Content** (or `/admin/content`)
+2. Use the **Blogs** tab to add blog posts — title, excerpt, content, cover image (1200×630px). Paste a URL or click **Upload** to upload an image.
+3. Use the **Videos** tab to add video tutorials — title, video URL (YouTube/Vimeo), thumbnail (1280×720px). Paste a URL or click **Upload** for the thumbnail.
+4. Use the **News** tab to add news items for the homepage.
+
+**Image sizes:**
+- Blog cover: 1200×630px recommended
+- Video thumbnail: 1280×720px recommended

@@ -3,28 +3,28 @@
 .history-page {
   min-height: 100vh;
   background: var(--bg-light);
-  padding: 40px 24px;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  padding: var(--spacing-2xl) var(--spacing-lg);
+  font-family: var(--font-family);
 }
 
 .history-container {
-  max-width: 1200px;
+  max-width: var(--max-width-xl);
   margin: 0 auto;
 }
 
 /* Header Section */
 .history-header {
   text-align: center;
-  margin-bottom: 48px;
+  margin-bottom: var(--spacing-2xl);
 }
 
 .history-header h1 {
-  font-size: 2rem; /* Brand guideline: 48px / 3rem for H1 */
-  font-weight: 700; /* Brand guideline: Bold */
-  color: var(--text-dark); /* Deep Navy */
-  margin-bottom: 12px;
-  line-height: 1.2; /* Brand guideline */
-  letter-spacing: -0.5px;
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-dark);
+  margin-bottom: var(--spacing-md);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight);
 }
 
 .history-header h1 .gradient-text {
@@ -35,45 +35,46 @@
 }
 
 .history-header p {
-  color: var(--text-gray);
-  font-size: 1.125rem; /* Brand guideline: 18px Body Large */
-  line-height: 1.6;
+  color: var(--text-secondary);
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-relaxed);
 }
 
 /* Filter Buttons */
 .history-filters {
   display: flex;
-  gap: 12px;
-  margin-bottom: 32px;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-xl);
   flex-wrap: wrap;
   justify-content: center;
 }
 
 .filter-btn {
-  padding: 12px 24px; /* Brand guideline: 12px 24px */
+  padding: var(--spacing-md) var(--spacing-lg);
+  min-height: 44px;
   background: var(--bg-white);
   border: 2px solid var(--border);
-  border-radius: 8px; /* Brand guideline: 8px */
-  color: var(--text-gray);
-  font-weight: 500;
-  font-size: 1rem; /* Brand guideline: 16px Body */
+  border-radius: var(--border-radius-md);
+  color: var(--text-secondary);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-base);
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-sm);
 }
 
 .filter-btn:hover {
   border-color: var(--primary);
   color: var(--primary);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(31, 111, 235, 0.15);
+  box-shadow: var(--shadow-card-hover);
 }
 
 .filter-btn.active {
   background: var(--primary);
   border-color: var(--primary);
-  color: white;
-  box-shadow: 0 4px 12px rgba(31, 111, 235, 0.3);
+  color: var(--white);
+  box-shadow: var(--shadow-primary);
 }
 
 .history-toolbar {

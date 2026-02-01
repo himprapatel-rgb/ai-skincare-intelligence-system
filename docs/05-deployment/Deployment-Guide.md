@@ -13,35 +13,34 @@
 ```
                          [Users]
                             │
-                   ┌────────┴────────┐
-                   │                 │
-            [pellicura.com]    [staging.pellicura.pages.dev]
-                   │                 │
-           [Cloudflare Pages]  [Cloudflare Pages]
-                   │                 │
-                   ▼                 ▼
-    [pellicura-api.fly.dev]  [pellicura-api-staging.fly.dev]
-                   │                 │
-                   └────────┬────────┘
+                     [pellicura.com]
                             │
-                   [Railway PostgreSQL]
+                     [Cloudflare DNS]
+                            │
+              ┌──────────────┴──────────────┐
+              │                             │
+    [Railway Frontend]            [Railway Backend]
+              │                             │
+              └──────────────┬──────────────┘
+                             │
+                    [Railway PostgreSQL]
+                         (main + product)
 ```
 
 ### 1.2 Environments
 
 | Environment | Frontend | Backend | Branch | Auto-Deploy |
 |-------------|----------|---------|--------|-------------|
-| Production | pellicura.com | pellicura-api.fly.dev | main | Yes |
-| Staging | staging.pellicura.pages.dev | pellicura-api-staging.fly.dev | develop | Yes |
+| Production | pellicura.com (Railway) | Railway | main | Yes |
 
 ### 1.3 Infrastructure Providers
 
 | Component | Provider | Purpose |
 |-----------|----------|---------|
-| Frontend Hosting | Cloudflare Pages | Static site hosting, CDN, SSL |
-| Backend Hosting | Fly.io | Docker containers, auto-scaling |
-| Database | Railway | PostgreSQL managed database |
-| Domain/DNS | Cloudflare | DNS management, SSL certificates |
+| Frontend Hosting | Railway | Docker, static serving |
+| Backend Hosting | Railway | Docker, FastAPI |
+| Database | Railway | PostgreSQL (main + product catalog) |
+| Domain/DNS | Cloudflare | DNS only (pellicura.com → Railway) |
 | CI/CD | GitHub Actions | Automated deployments |
 
 ---
@@ -57,15 +56,13 @@ python --version # 3.10+
 git --version
 
 # CLI Tools
-flyctl version   # Fly.io CLI
-npx wrangler -v  # Cloudflare Wrangler CLI
+railway version  # Optional: Railway CLI
 ```
 
 ### 2.2 Required Accounts
 - **GitHub**: Source control and CI/CD
-- **Fly.io**: Backend hosting (flyctl auth login)
-- **Cloudflare**: Frontend hosting and DNS
-- **Railway**: PostgreSQL database
+- **Railway**: Frontend, backend, and databases
+- **Cloudflare**: DNS for pellicura.com
 
 ---
 
@@ -180,84 +177,33 @@ python scripts/run_migrations.py
 
 ### 4.2 Manual Deployment
 
-#### Deploy Backend to Fly.io
+#### Deploy to Railway
+Deployment is automated via GitHub Actions when pushing to `main`. Frontend and backend are separate Railway services.
+
+**Manual deploy (Railway CLI):**
 ```bash
-cd backend
+# Install Railway CLI: npm i -g @railway/cli
+railway login
+railway link  # Link to project
 
-# Deploy to staging
-flyctl deploy --config fly.staging.toml --app pellicura-api-staging
+# Deploy backend
+cd backend && railway up
 
-# Deploy to production
-flyctl deploy --config fly.toml --app pellicura-api
-```
-
-#### Deploy Frontend to Cloudflare Pages
-```bash
-cd frontend
-
-# Build with appropriate API URL
-VITE_API_URL=https://pellicura-api.fly.dev/api/v1 npm run build
-
-# Deploy to production
-npx wrangler pages deploy dist --project-name pellicura
-
-# Deploy to staging (branch deploy)
-npx wrangler pages deploy dist --project-name pellicura --branch staging
+# Deploy frontend
+cd frontend && railway up
 ```
 
 ---
 
 ## 5. Configuration Files
 
-### 5.1 Backend - Production (fly.toml)
-```toml
-app = "pellicura-api"
-primary_region = "lhr"
+### 5.1 Railway (railway.toml / railway.json)
+- See root `railway.toml` and `railway.json` for build/start commands
+- Frontend: `frontend/` with Dockerfile
+- Backend: `backend/` with Dockerfile
 
-[build]
-  dockerfile = "Dockerfile"
-
-[env]
-  PORT = "8000"
-  ENV = "production"
-  DEBUG = "false"
-  ALLOWED_ORIGINS = "[\"https://pellicura.com\",\"https://www.pellicura.com\"]"
-  FRONTEND_URL = "https://pellicura.com"
-
-[http_service]
-  internal_port = 8000
-  force_https = true
-  auto_stop_machines = "stop"
-  auto_start_machines = true
-  min_machines_running = 0
-
-[[vm]]
-  memory = "512mb"
-  cpu_kind = "shared"
-  cpus = 1
-```
-
-### 5.2 Backend - Staging (fly.staging.toml)
-```toml
-app = "pellicura-api-staging"
-primary_region = "lhr"
-
-[env]
-  ENV = "staging"
-  DEBUG = "true"
-  ALLOWED_ORIGINS = "[\"https://staging.pellicura.pages.dev\"]"
-  FRONTEND_URL = "https://staging.pellicura.pages.dev"
-```
-
-### 5.3 Frontend (wrangler.toml)
-```toml
-name = "pellicura"
-compatibility_date = "2024-01-01"
-pages_build_output_dir = "dist"
-
-[vars]
-  VITE_API_URL = "https://pellicura-api.fly.dev/api/v1"
-```
+### 5.2 Environment Variables
+Set in Railway Dashboard per service. See `docs/05-deployment/Required-Secrets.md` for full list.
 
 ---
 
@@ -267,15 +213,14 @@ pages_build_output_dir = "dist"
 
 | Workflow | File | Trigger | Target |
 |----------|------|---------|--------|
-| Deploy Frontend (Prod) | deploy-cloudflare.yml | Push to main (frontend/) | Cloudflare Pages |
-| Deploy Backend (Prod) | deploy-fly.yml | Push to main (backend/) | Fly.io |
-| Deploy Staging | deploy-staging.yml | Push to develop | Both staging envs |
+| Deploy Frontend | deploy-frontend.yml | Push to main (frontend/) | Railway |
+| Deploy Backend | deploy.yml | Push to main (backend/) | Railway |
 
 ### 6.2 Required GitHub Secrets
 
 | Secret | Description | How to Get |
 |--------|-------------|------------|
-| `FLY_API_TOKEN` | Fly.io deployment token | `flyctl tokens create deploy` |
+| `RAILWAY_TOKEN` | Railway deployment token | Railway Dashboard → Account → Tokens |
 | `CLOUDFLARE_ACCOUNT_ID` | Cloudflare account ID | Cloudflare Dashboard → Overview |
 | `CLOUDFLARE_API_TOKEN` | Cloudflare API token | Cloudflare Dashboard → API Tokens |
 
@@ -330,21 +275,10 @@ Expected response:
 }
 ```
 
-### 8.2 Fly.io Monitoring
-```bash
-# Check app status
-flyctl status --app pellicura-api
-
-# View logs
-flyctl logs --app pellicura-api
-
-# SSH into container
-flyctl ssh console --app pellicura-api
-```
-
-### 8.3 Cloudflare Analytics
-- Access via Cloudflare Dashboard → Pages → pellicura → Analytics
-- View requests, bandwidth, and geographic distribution
+### 8.2 Railway Monitoring
+- Access via Railway Dashboard → Select project → Each service has a Deployments and Logs tab
+- View logs, metrics, and deployment history
+- Health checks: Backend `/api/v1/health`, Frontend root
 
 ---
 
@@ -365,17 +299,9 @@ flyctl ssh console --app pellicura-api
 | `RUN_MIGRATIONS` | Run migrations on start | true |
 | `ALLOW_PROD_MIGRATIONS` | Allow prod migrations | true |
 
-### 9.2 Setting Fly.io Secrets
-```bash
-# Set a secret
-flyctl secrets set SECRET_KEY="your-secret" --app pellicura-api
-
-# List secrets
-flyctl secrets list --app pellicura-api
-
-# Unset a secret
-flyctl secrets unset SECRET_KEY --app pellicura-api
-```
+### 9.2 Setting Railway Variables
+- Go to Railway Dashboard → Project → Service → Variables
+- Add or edit environment variables (secrets are encrypted)
 
 ---
 
@@ -386,7 +312,7 @@ flyctl secrets unset SECRET_KEY --app pellicura-api
 | Issue | Solution |
 |-------|----------|
 | CORS errors | Check ALLOWED_ORIGINS includes frontend URL |
-| 502 Bad Gateway | Check Fly.io logs: `flyctl logs --app pellicura-api` |
+| 502 Bad Gateway | Check Railway logs in Dashboard |
 | Database connection failed | Verify DATABASE_URL secret is set |
 | Frontend shows "API offline" | Check VITE_API_URL at build time |
 | Deployment stuck | Check GitHub Actions logs |
@@ -421,7 +347,7 @@ flyctl deploy --image <previous-image-id> --app pellicura-api
 
 ## 11. Security Checklist
 
-- [x] SSL/TLS enabled (Fly.io and Cloudflare automatic)
+- [x] SSL/TLS enabled (Railway and Cloudflare automatic)
 - [x] Environment variables secured as secrets
 - [x] CORS configured correctly
 - [x] Rate limiting enabled (middleware)
@@ -434,14 +360,12 @@ flyctl deploy --image <previous-image-id> --app pellicura-api
 ## 12. Cost Optimization
 
 ### 12.1 Current Setup (Free/Low Cost)
-- **Fly.io**: Free tier includes 3 shared VMs, auto-stop when idle
-- **Cloudflare Pages**: Free tier, unlimited requests
-- **Railway**: $5/month credit, database only
+- **Railway**: Hobby plan ($5/month credit), frontend + backend + databases
+- **Cloudflare**: DNS only (free)
 
 ### 12.2 Scaling Considerations
-- Fly.io: Upgrade VM size or add more machines
+- Railway: Upgrade plan for higher limits
 - Cloudflare: Paid plans for advanced features
-- Railway: Upgrade for higher database limits
 
 ---
 

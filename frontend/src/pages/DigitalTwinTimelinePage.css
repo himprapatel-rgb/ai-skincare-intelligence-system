@@ -3,20 +3,20 @@
 .digital-twin-page {
   min-height: 100vh;
   background: var(--bg-light);
-  padding: 40px 24px;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  padding: var(--spacing-2xl) var(--spacing-lg);
+  font-family: var(--font-family);
 }
 
-.icon-inline {
+.digital-twin-page .icon-inline {
   display: inline-block;
   vertical-align: middle;
-  margin-right: 8px;
+  margin-right: var(--spacing-sm);
 }
 
-.icon-inline-lg {
+.digital-twin-page .icon-inline-lg {
   display: inline-block;
   vertical-align: middle;
-  margin-right: 12px;
+  margin-right: var(--spacing-md);
 }
 
 .trend-icon {
@@ -24,43 +24,43 @@
 }
 
 .digital-twin-container {
-  max-width: 1400px;
+  max-width: var(--max-width-xl);
   margin: 0 auto;
 }
 
-.page-header {
+.digital-twin-page .page-header {
   text-align: center;
-  margin-bottom: 48px;
+  margin-bottom: var(--spacing-2xl);
 }
 
-.page-header h1 {
-  font-size: 2rem;
-  font-weight: 700;
+.digital-twin-page .page-header h1 {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
   color: var(--text-dark);
-  margin-bottom: 12px;
-  line-height: 1.2;
-  letter-spacing: -0.5px;
+  margin-bottom: var(--spacing-md);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight);
 }
 
-.page-header p {
-  font-size: 1.125rem;
-  color: var(--text-gray);
-  line-height: 1.6;
+.digital-twin-page .page-header p {
+  font-size: var(--font-size-lg);
+  color: var(--text-secondary);
+  line-height: var(--line-height-relaxed);
 }
 
 .twin-explainer {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 20px;
-  margin-bottom: 32px;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
 }
 
 .twin-explainer-card {
   background: var(--bg-white);
-  border-radius: 14px;
-  padding: 20px;
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-lg);
   border: 1px solid var(--border);
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-sm);
 }
 
 .twin-explainer-card h3 {

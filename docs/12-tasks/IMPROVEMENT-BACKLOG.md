@@ -56,7 +56,7 @@ No new features; only polish, consistency, and quality.
 
 ## From UI/UX Audit 2026
 
-*See [UI-UX-Design-Audit-2026.md](../08-audits/UI-UX-Design-Audit-2026.md) | [Detailed Audit Feb 2026](../08-audits/UI-UX-Design-Audit-Detailed-2026.md)*
+*See [UI-UX-Design-Audit-2026.md](../08-audits/UI-UX-Design-Audit-2026.md) | [Detailed Feb](../08-audits/UI-UX-Design-Audit-Detailed-2026.md) | [Product Scanner](../08-audits/Product-Scanner-Audit-2026.md)*
 
 - [ ] Homepage: Fix CTA button hierarchy (secondary = ghost)
 - [ ] Homepage: Nav active state 3-4px underline (not 2px)
@@ -75,6 +75,10 @@ No new features; only polish, consistency, and quality.
 - [ ] My Shelf: Make filter counts badges
 - [ ] Product Scanner: Remove redundant "Click Start Camera" text
 - [ ] Product Scanner: Strengthen tab active state
+- [ ] **Product Scanner: Fix scanner→product detail data mismatch** (critical) (barcode lookup finds product, but /product/:id shows Not Found)
+- [ ] Product Scanner: Remove black device frame; center Start Camera
+- [ ] Product Scanner: Simplify "EAN-13, UPC..." to "Works with most barcodes"
+- [ ] Product Scanner: Fix "Recently Scanned" text wrapping bug
 - [ ] Homepage: Stats—star icons for rating, animated counters
 - [ ] Homepage: How It Works arrows 32px, fix overlap
 - [ ] History: Add "Start first scan" empty-state CTA

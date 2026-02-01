@@ -1213,7 +1213,7 @@ const ProductScannerPage: React.FC = () => {
         <section className="scan-history-section">
           <div className="section-header">
             <h2>Recently Scanned</h2>
-            <p>Your last {scanHistory.length} scanned product{scanHistory.length > 1 ? 's' : ''}</p>
+            <p className="scan-history-subtitle">Your last {scanHistory.length} scanned <span style={{ whiteSpace: 'nowrap' }}>product{scanHistory.length !== 1 ? 's' : ''}</span></p>
           </div>
           
           <div className="history-grid">

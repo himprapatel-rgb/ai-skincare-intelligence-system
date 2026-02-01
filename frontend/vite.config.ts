@@ -16,11 +16,12 @@ export default defineConfig(({ mode }) => ({
       output: {
         manualChunks(id) {
           if (!id.includes('node_modules')) return;
-          // Only split heavy ML libraries - keep React ecosystem together
           if (id.includes('@mediapipe')) return 'mediapipe';
           if (id.includes('@tensorflow')) return 'tensorflow';
+          if (id.includes('recharts')) return 'recharts';
         },
       },
+      chunkSizeWarningLimit: 600,
     },
   },
   test: {

@@ -3,7 +3,7 @@
 .product-details-page {
   min-height: 100vh;
   background: var(--bg-secondary);
-  padding: 40px 24px;
+  padding: var(--spacing-2xl) var(--spacing-lg);
   font-family: var(--font-family);
   color: var(--text-primary);
 }
@@ -11,7 +11,7 @@
 .product-details-page .loading-spinner,
 .product-details-page .error {
   text-align: center;
-  padding: 48px 24px;
+  padding: var(--spacing-2xl) var(--spacing-lg);
   color: var(--text-secondary);
 }
 

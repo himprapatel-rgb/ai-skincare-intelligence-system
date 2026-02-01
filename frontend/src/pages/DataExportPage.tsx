@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { IconDownload, IconCheckCircle, IconFileText, IconArrowLeft } from '../components/Icons';
+import { useToast } from '../context/ToastContext';
 import { API_BASE_URL } from '../config';
 import './CommonStyles.css';
 import './DataExportPage.css';
@@ -10,6 +11,7 @@ import './DataExportPage.css';
  * GDPR compliant data export functionality
  */
 const DataExportPage: React.FC = () => {
+  const toast = useToast();
   const [exportFormat, setExportFormat] = useState<'json' | 'pdf'>('json');
   const [includeAnalysis, setIncludeAnalysis] = useState(true);
   const [includeProfile, setIncludeProfile] = useState(true);
@@ -70,7 +72,7 @@ const DataExportPage: React.FC = () => {
       setExportComplete(true);
     } catch (error) {
       console.error('Export failed:', error);
-      alert('Export failed. Please try again.');
+      toast?.error('Export failed. Please try again.');
     } finally {
       setIsExporting(false);
     }

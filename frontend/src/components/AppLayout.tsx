@@ -107,7 +107,7 @@ const displayName = nameParts.length > 1
           </Link>
           
           {/* Desktop Navigation */}
-          <nav className="app-nav app-nav-desktop">
+          <nav className="app-nav app-nav-desktop" aria-label="Main navigation">
             <div className="app-nav-links">
               <Link className={`app-nav-link${location.pathname === '/' ? ' active' : ''}`} to="/" aria-current={location.pathname === '/' ? 'page' : undefined}>Home</Link>
               <Link className={`app-nav-link${location.pathname.startsWith('/scan') ? ' active' : ''}`} to="/scan" title="Start a free skin analysis" aria-current={location.pathname.startsWith('/scan') ? 'page' : undefined} onMouseEnter={() => void import('../pages/ScanPage')}>Skin Analysis</Link>
@@ -284,9 +284,9 @@ const displayName = nameParts.length > 1
               <h3>Get Personalized Skin Tips</h3>
               <p>Join 50,000+ others getting weekly skincare insights powered by AI.</p>
             </div>
-            <form className="app-footer-newsletter-form" onSubmit={(e) => e.preventDefault()}>
+            <form className="app-footer-newsletter-form" onSubmit={(e) => e.preventDefault()} aria-label="Newsletter signup">
               <input type="email" placeholder="Enter your email" aria-label="Email for newsletter" />
-              <button type="submit">Subscribe</button>
+              <button type="submit" aria-label="Subscribe to newsletter">Subscribe</button>
             </form>
           </div>
         </div>

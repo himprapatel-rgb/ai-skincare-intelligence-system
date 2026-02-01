@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { 
   IconZap, IconScan, IconClock, IconShield, IconBookOpen, 
@@ -61,6 +61,7 @@ const HomePage: React.FC = () => {
               <IconClock size={16} strokeWidth={2} className="inline-icon" />
               Takes ~30 seconds &bull; No signup required &bull; Delete your photo anytime
             </p>
+            <Link to="/about" className="hero-learn-more">Learn more</Link>
           </div>
         </div>
         <div className="hero-visual">

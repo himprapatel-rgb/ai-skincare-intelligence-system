@@ -181,6 +181,26 @@ html {
   overflow-x: hidden;
 }
 
+/* Mobile app mode: reduce overscroll bounce, app-like feel */
+@media (max-width: 768px) {
+  html, body {
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Tablet app mode */
+@media (min-width: 769px) and (max-width: 1024px) {
+  html {
+    /* Tablet-specific baseline */
+  }
+}
+
+/* Desktop app mode - full layout */
+@media (min-width: 1025px) {
+  /* Desktop keeps default behavior */
+}
+
 body {
   font-family: var(--font-family);
   font-size: var(--font-size-base);

@@ -708,9 +708,25 @@
   padding-bottom: calc(48px + env(safe-area-inset-bottom));
 }
 
+/* Mobile app: full-viewport content area, minimal padding */
 @media (max-width: 768px) {
+  .app-main {
+    padding: var(--spacing-md) 0;
+    min-height: calc(100dvh - 56px);
+    display: flex;
+    flex-direction: column;
+  }
+
   .app-main.app-main-with-bottom-nav {
     padding-bottom: calc(80px + env(safe-area-inset-bottom));
+    min-height: calc(100dvh - 56px - 64px);
+  }
+}
+
+/* Tablet app: balanced padding */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .app-main {
+    padding: var(--spacing-xl) var(--spacing-lg);
   }
 }
 

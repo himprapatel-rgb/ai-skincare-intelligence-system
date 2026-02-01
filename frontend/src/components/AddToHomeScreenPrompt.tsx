@@ -8,6 +8,7 @@ import { IconX, IconDownload } from './Icons';
 import './AddToHomeScreenPrompt.css';
 
 const STORAGE_KEY = 'pellicura_install_prompt_dismissed';
+const DISMISS_DAYS = 7;
 
 function isMobile(): boolean {
   if (typeof window === 'undefined') return false;
@@ -34,8 +35,11 @@ export function AddToHomeScreenPrompt() {
 
   useEffect(() => {
     if (!isMobile() || isStandalone()) return;
-    const dismissed = sessionStorage.getItem(STORAGE_KEY);
-    if (dismissed) return;
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const ts = parseInt(raw, 10);
+      if (!isNaN(ts) && Date.now() - ts < DISMISS_DAYS * 24 * 60 * 60 * 1000) return;
+    }
 
     const handler = (e: Event) => {
       e.preventDefault();
@@ -52,7 +56,7 @@ export function AddToHomeScreenPrompt() {
 
   const handleDismiss = () => {
     setVisible(false);
-    sessionStorage.setItem(STORAGE_KEY, '1');
+    localStorage.setItem(STORAGE_KEY, String(Date.now()));
   };
 
   const handleInstall = async () => {

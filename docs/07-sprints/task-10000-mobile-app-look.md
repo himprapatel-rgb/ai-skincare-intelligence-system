@@ -73,10 +73,20 @@ Make Pellicura feel like a native mobile app when opened in a mobile browser (Ch
 - **Android** – Install button when `beforeinstallprompt` fires
 - Dismissible (sessionStorage); hidden when launched from home screen
 
-### 5. Optional Improvements (Future)
+### 5. App Icons & Splash ✅
 
-- [ ] Add splash screen images for iOS (`apple-touch-startup-image`)
-- [ ] Add proper 192x192 and 512x512 PNG icons (maskable) for Android
+- **PNG icons** – 192×192, 512×512, 180×180 (apple-touch-icon) generated from icon.svg
+- **Manifest** – Uses PNG icons with `any` and `maskable` purposes
+- **iOS splash** – apple-touch-startup-image for iPhone 14 Pro Max (1284×2778)
+- **Script** – `npm run generate-icons` to regenerate when icon.svg changes
+
+### 6. Install Prompt ✅
+
+- Dismissed state stored in localStorage for 7 days (was session-only)
+
+### 7. Optional Improvements (Future)
+
+- [ ] More splash screen sizes for other iPhone models
 - [ ] Service worker for offline support
 
 ---

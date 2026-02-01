@@ -172,6 +172,232 @@
 
 ---
 
+## 10. HISTORY PAGE (/history)
+
+### Design Issues
+- Filter tabs (All, 7 days, 30 days) may lack clear active state
+- Empty state when no scans—needs CTA to start first scan
+- Scan cards: image thumbnails may use placeholders
+- Sort dropdown placement relative to filters
+
+### Recommendations
+- Add "Start your first scan" empty-state CTA
+- Skeleton loading for history cards
+- Date formatting consistency (relative vs absolute)
+
+---
+
+## 11. ANALYSIS RESULTS (/analysis/:id)
+
+### Design Issues
+- Score display may lack visual hierarchy
+- Concern/attribute breakdown cards consistency
+- "View recommendations" CTA prominence
+- Breadcrumb and back navigation clarity
+
+### Recommendations
+- Visual score gauge or radial progress
+- Expandable concern sections
+- Clear next-step CTAs
+
+---
+
+## 12. PRODUCT DETAILS (/product/:id)
+
+### Design Issues
+- Ingredient list layout and readability
+- Image gallery vs single image
+- Add to shelf / favorite buttons placement
+- Related products section consistency
+
+### Recommendations
+- Ingredient search/filter
+- Image zoom or lightbox
+- "Why for you" personalization
+
+---
+
+## 13. FAVORITES PAGE (/favorites)
+
+### Design Issues
+- Empty state when no favorites
+- Card layout alignment with My Shelf
+- Remove confirmation modal styling
+- Sort/filter consistency with other list pages
+
+### Recommendations
+- "Discover products" empty-state CTA
+- Bulk remove option
+- Match score explanation
+
+---
+
+## 14. AUTH PAGE (/auth)
+
+### Design Issues
+- Sign in / Sign up tab clarity
+- Google OAuth button prominence and styling
+- Form validation feedback (inline vs toast)
+- Password visibility toggle
+- "Forgot password" link visibility
+
+### Recommendations
+- Social login hierarchy
+- Loading state on submit
+- Remember me option
+
+---
+
+## 15. PROFILE PAGE (/profile)
+
+### Design Issues
+- Tab navigation (Personal, Skin, Goals, etc.)—many tabs may feel overwhelming
+- Long form sections; consider progressive disclosure
+- Profile photo upload area prominence
+- Save button placement (sticky vs inline)
+
+### Recommendations
+- Collapsible or accordion sections
+- Progress indicator for profile completeness
+- Auto-save or draft indicator
+
+---
+
+## 16. CONTACT PAGE (/contact)
+
+### Design Issues
+- Form field spacing and label alignment
+- Info cards (Email, Live Chat, Location) visual hierarchy
+- Social links styling
+- Success message after submit
+
+### Recommendations
+- Map integration (if applicable)
+- Response time expectation
+- FAQ link before form
+
+---
+
+## 17. PRIVACY & TERMS (/privacy, /terms)
+
+### Design Issues
+- Long text blocks; poor scannability
+- Table of contents navigation
+- Last updated date prominence
+- Mobile readability
+
+### Recommendations
+- Sticky TOC on desktop
+- Section anchors for sharing
+- Print-friendly styling
+
+---
+
+## 18. DATA EXPORT (/export)
+
+### Design Issues
+- Checkbox options clarity (Profile, Products, Analysis)
+- Format selection (JSON/PDF) prominence
+- Export button and loading state
+- Success/error feedback
+
+### Recommendations
+- Preview of what will be exported
+- Email option for large exports
+- Clear data scope explanation
+
+---
+
+## 19. ADMIN PAGES (/admin, /admin/users, /admin/products, /admin/catalog)
+
+### Design Issues
+- Table density and readability
+- Mobile card view (if present) consistency
+- Action buttons (edit, delete) placement
+- Pagination and search
+
+### Recommendations
+- Bulk actions
+- Export table data
+- Role/permission indicators
+
+---
+
+## 20. INGREDIENT DICTIONARY (/ingredients)
+
+### Design Issues
+- Search and filter layout
+- Ingredient card consistency
+- Alphabetical navigation
+- Empty search state
+
+### Recommendations
+- Ingredient categories
+- Safety/concentration info
+- Link to products containing ingredient
+
+---
+
+## 21. SKIN TYPE GUIDE (/skin-type-guide)
+
+### Design Issues
+- Content hierarchy
+- Visual aids (images/icons) per skin type
+- CTA to take skin quiz
+
+### Recommendations
+- Interactive skin type selector
+- Comparison table
+- Product recommendations by type
+
+---
+
+## 22. BLOG & TUTORIALS (/blog, /tutorials)
+
+### Design Issues
+- Card grid consistency
+- Featured vs list layout
+- Video embed styling
+- Empty/placeholder content
+
+### Recommendations
+- Category filters
+- Reading time estimate
+- Share buttons
+
+---
+
+## 23. NOT FOUND (404)
+
+### Design Issues
+- Message clarity and tone
+- CTA to go home
+- Visual treatment (illustration vs text only)
+
+### Recommendations
+- Friendly illustration
+- Search or sitemap link
+- Report broken link option
+
+---
+
+## Summary
+
+| Page | Priority | Key Issues |
+|------|----------|------------|
+| Homepage | High | CTA hierarchy, card shadows, trust logos |
+| Scan | High | Upload zone, progress states |
+| Dashboard | High | Stats consistency, placeholders, empty states |
+| Digital Twin | Medium | Chart readability, legend |
+| About | Medium | White space, timeline |
+| Recommendations | Medium | Filters, placeholders, pagination |
+| Routine Builder | Medium | Tab animation, drag handles |
+| My Shelf | Medium | Duplicates, badges |
+| Product Scanner | Medium | Tabs, redundant text |
+| History–22 | Medium–Low | Per-section fixes |
+
+---
+
 ## Next Steps
 
 1. Add actionable items to [IMPROVEMENT-BACKLOG.md](../12-tasks/IMPROVEMENT-BACKLOG.md)

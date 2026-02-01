@@ -71,6 +71,16 @@ No new features; only polish, consistency, and quality.
 - [ ] My Shelf: Make filter counts badges
 - [ ] Product Scanner: Remove redundant "Click Start Camera" text
 - [ ] Product Scanner: Strengthen tab active state
+- [ ] History: Add "Start first scan" empty-state CTA
+- [ ] Favorites: Add "Discover products" empty-state CTA
+- [ ] Auth: Improve Google OAuth button prominence
+- [ ] Profile: Collapsible/accordion for long sections
+- [ ] Contact: Form field spacing and success message
+- [ ] Privacy/Terms: Sticky TOC, improve scannability
+- [ ] Data Export: Clear data scope explanation
+- [ ] Admin: Table density, bulk actions
+- [ ] Ingredient Dictionary: Search empty state
+- [ ] 404: Friendly illustration and CTA
 
 ---
 

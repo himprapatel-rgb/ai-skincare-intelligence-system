@@ -37,5 +37,15 @@
   "Dashboard: Fix Product Image placeholder",
   "Dashboard: Empty-state CTAs",
   "My Shelf: Filter counts as badges",
-  "Product Scanner: Strengthen tab active state"
+  "Product Scanner: Strengthen tab active state",
+  "History: Start first scan empty-state CTA",
+  "Favorites: Discover products empty-state CTA",
+  "Auth: Improve Google OAuth button prominence",
+  "Profile: Collapsible sections",
+  "Contact: Form spacing and success message",
+  "Privacy/Terms: Sticky TOC",
+  "Data Export: Data scope explanation",
+  "Admin: Table density and bulk actions",
+  "Ingredient Dictionary: Search empty state",
+  "404: Friendly illustration and CTA"
 ]

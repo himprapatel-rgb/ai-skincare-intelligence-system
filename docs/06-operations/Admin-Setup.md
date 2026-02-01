@@ -4,6 +4,21 @@ How to log in to the Admin page (`/admin`) on pellicura.com.
 
 ---
 
+## "Sign-in Failed - Network Error"
+
+**Symptom:** Login fails with "Network Error" or "Cannot reach the server."
+
+**Likely causes:**
+1. **Backend unreachable** – Railway backend may be sleeping (cold start) or down. Wait 30–60 seconds and try again.
+2. **Wrong API URL** – Frontend was built with wrong `VITE_API_URL`. Redeploy frontend with correct URL: `https://ai-skincare-intelligence-system-production.up.railway.app/api/v1`
+3. **CORS** – Your origin must be in `ALLOWED_ORIGINS`. Defaults include `pellicura.com`, `localhost:3000`, `localhost:5173`. Add custom origins in Railway backend variables.
+
+**Quick checks:**
+- Open `https://ai-skincare-intelligence-system-production.up.railway.app/api/health` in your browser. If it loads, the backend is up.
+- Check Railway Dashboard → backend service → Deployments and Logs.
+
+---
+
 ## Requirements
 
 Admin access needs **both** of these:

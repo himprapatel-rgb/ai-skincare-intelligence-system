@@ -18,6 +18,8 @@ const REMEMBER_EMAIL_KEY = 'login_remember_email';
 /** Map API error strings to user-friendly auth messages (Task 222) */
 function toFriendlyAuthError(detail: string, status?: number): string {
   const s = (detail || '').toLowerCase();
+  if (s.includes('network') || s.includes('econnrefused') || s.includes('econnreset'))
+    return 'Cannot reach the server. Check your internet connection and try again. If the problem persists, the service may be temporarily unavailable.';
   if (status === 401 || (s.includes('invalid') && (s.includes('credential') || s.includes('password'))))
     return 'Email or password is incorrect. Please check and try again.';
   if (s.includes('verify') || s.includes('verification')) return detail || 'Please verify your email to sign in.';
@@ -84,7 +86,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegis
       if (axios.isAxiosError(err)) {
         const detail = err.response?.data?.detail || err.response?.data?.message;
         const raw = typeof detail === 'string' ? detail : '';
-        const message = toFriendlyAuthError(raw, err.response?.status) || raw || 'Login failed. Please try again.';
+        const fallback = !err.response ? err.message : '';
+        const message = toFriendlyAuthError(raw || fallback, err.response?.status) || raw || fallback || 'Login failed. Please try again.';
         console.error('Login API error:', {
           status: err.response?.status,
           data: err.response?.data,

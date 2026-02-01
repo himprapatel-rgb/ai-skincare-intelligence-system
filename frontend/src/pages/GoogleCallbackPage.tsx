@@ -69,29 +69,38 @@ const GoogleCallbackPage: React.FC = () => {
         } else {
           // API client rejects with { detail, status }; axios error has response.data.detail; backend detail can be string or array
           const o = err && typeof err === 'object' ? err as Record<string, unknown> : null;
-          const responseData = o?.response && typeof o.response === 'object' && o.response !== null
-            ? (o.response as { data?: unknown }).data
-            : undefined;
-          const raw =
-            o?.detail ??
-            (responseData && typeof responseData === 'object' && responseData !== null && 'detail' in responseData
-              ? (responseData as { detail: unknown }).detail
-              : undefined);
-          let detailMsg: string;
-          if (typeof raw === 'string' && raw.trim()) {
-            detailMsg = raw;
-          } else if (Array.isArray(raw) && raw.length > 0) {
-            const first = raw[0];
-            detailMsg = typeof first === 'object' && first !== null && 'msg' in first
-              ? String((first as { msg: unknown }).msg)
-              : String(first);
-          } else if (typeof o?.message === 'string' && o.message.trim()) {
-            detailMsg = o.message;
+          const errMsg = typeof o?.message === 'string' ? o.message : '';
+          const isNetworkError = !o?.response && (errMsg.toLowerCase().includes('network') || errMsg.includes('ECONNREFUSED') || errMsg.includes('ECONNRESET'));
+
+          if (isNetworkError) {
+            setError(
+              'Cannot reach the server. The backend may be starting up (can take 30–60 seconds). Check your internet connection and try again.'
+            );
           } else {
-            detailMsg =
-              'Failed to complete Google sign-in. If this keeps happening, add your sign-in callback URL to Authorized redirect URIs in Google Cloud Console, and ensure the backend has Google OAuth configured.';
+            const responseData = o?.response && typeof o.response === 'object' && o.response !== null
+              ? (o.response as { data?: unknown }).data
+              : undefined;
+            const raw =
+              o?.detail ??
+              (responseData && typeof responseData === 'object' && responseData !== null && 'detail' in responseData
+                ? (responseData as { detail: unknown }).detail
+                : undefined);
+            let detailMsg: string;
+            if (typeof raw === 'string' && raw.trim()) {
+              detailMsg = raw;
+            } else if (Array.isArray(raw) && raw.length > 0) {
+              const first = raw[0];
+              detailMsg = typeof first === 'object' && first !== null && 'msg' in first
+                ? String((first as { msg: unknown }).msg)
+                : String(first);
+            } else if (errMsg.trim()) {
+              detailMsg = errMsg;
+            } else {
+              detailMsg =
+                'Failed to complete Google sign-in. If this keeps happening, add your sign-in callback URL to Authorized redirect URIs in Google Cloud Console, and ensure the backend has Google OAuth configured.';
+            }
+            setError(detailMsg);
           }
-          setError(detailMsg);
         }
         setProcessing(false);
       }

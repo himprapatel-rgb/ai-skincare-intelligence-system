@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { jsPDF } from 'jspdf';
 import { IconDownload, IconCheckCircle, IconFileText, IconArrowLeft } from '../components/Icons';
 import { useToast } from '../context/ToastContext';
 import { API_BASE_URL } from '../config';
@@ -64,9 +65,62 @@ const DataExportPage: React.FC = () => {
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
       } else {
-        // PDF generation would require a library like jsPDF
-        // For now, show alert
-        alert('PDF export will be available soon. Please use JSON format for now.');
+        const pdf = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'a4' });
+        const pageW = pdf.internal.pageSize.getWidth();
+        const margin = 40;
+        const lineHeight = 14;
+        let y = margin;
+
+        const addTitle = (title: string) => {
+          if (y > margin + lineHeight) y += lineHeight;
+          pdf.setFontSize(14);
+          pdf.setFont('helvetica', 'bold');
+          pdf.text(title, margin, y);
+          y += lineHeight * 1.5;
+        };
+        const addText = (text: string, wrap = true) => {
+          pdf.setFontSize(10);
+          pdf.setFont('helvetica', 'normal');
+          const maxW = pageW - margin * 2;
+          const lines = wrap ? pdf.splitTextToSize(text, maxW) : [text];
+          for (const line of lines) {
+            if (y > 750) { pdf.addPage(); y = margin; }
+            pdf.text(line, margin, y);
+            y += lineHeight;
+          }
+        };
+
+        addTitle('SkinCareAI – Data Export');
+        addText(`Exported: ${exportData.export_timestamp ?? new Date().toISOString()}`);
+        y += lineHeight;
+
+        if (exportData.user) {
+          addTitle('User');
+          addText(JSON.stringify(exportData.user, null, 2));
+        }
+        if (includeProfile && exportData.profile) {
+          addTitle('Profile');
+          addText(JSON.stringify(exportData.profile, null, 2));
+        }
+        if (includeProducts && exportData.products) {
+          addTitle('Products (Favorites)');
+          addText(JSON.stringify(exportData.products, null, 2));
+        }
+        if (includeAnalysis && exportData.analysis) {
+          addTitle('Analysis History');
+          const arr = exportData.analysis as unknown[];
+          addText(Array.isArray(arr) ? `${arr.length} analysis record(s)` : '—');
+          if (Array.isArray(arr) && arr.length > 0) {
+            arr.slice(0, 10).forEach((item, i) => {
+              const s = JSON.stringify(item);
+              addText(`  [${i + 1}] ${s.slice(0, 200)}${s.length > 200 ? '...' : ''}`);
+            });
+            if (arr.length > 10) addText(`  ... and ${arr.length - 10} more (full data in JSON export)`);
+          }
+        }
+
+        pdf.save(`skincare-data-export-${new Date().toISOString().split('T')[0]}.pdf`);
+        toast?.success('PDF downloaded');
       }
       
       setExportComplete(true);

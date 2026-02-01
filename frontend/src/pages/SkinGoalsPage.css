@@ -3,23 +3,23 @@
 .skin-goals-page {
   min-height: 100vh;
   background: var(--bg-light);
-  padding: 40px 24px;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  padding: var(--spacing-xl) var(--spacing-lg);
+  font-family: var(--font-family);
 }
 
 .skin-goals-container {
-  max-width: 900px;
+  max-width: var(--max-width-lg);
   margin: 0 auto;
 }
 
 .skin-goals-page h1 {
-  font-size: 2rem; /* Brand guideline: 48px / 3rem for H1 */
-  font-weight: 700; /* Brand guideline: Bold */
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
   color: var(--text-dark);
-  margin-bottom: 32px;
+  margin-bottom: var(--spacing-lg);
   text-align: center;
-  line-height: 1.2;
-  letter-spacing: -0.5px;
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight);
 }
 
 .skin-goals-grid {
@@ -53,7 +53,7 @@
 
 .skin-goals-item.selected {
   background: var(--primary);
-  color: white;
+  color: var(--white);
   border-color: var(--primary);
   box-shadow: var(--shadow-primary);
 }

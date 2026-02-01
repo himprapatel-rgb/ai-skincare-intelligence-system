@@ -2,14 +2,15 @@
 
 .profile-settings-page {
   min-height: 100vh;
-  background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+  background: linear-gradient(180deg, var(--gray-50) 0%, var(--gray-100) 100%);
   padding: 0;
+  font-family: var(--font-family);
 }
 
 /* Hero Banner */
 .profile-hero-banner {
-  background: linear-gradient(135deg, #2563eb 0%, #7c3aed 50%, #6366f1 100%);
-  padding: 60px 24px 100px;
+  background: var(--gradient-primary);
+  padding: var(--spacing-2xl) var(--spacing-lg) var(--spacing-3xl);
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -29,24 +30,24 @@
 }
 
 .profile-hero-banner h1 {
-  color: #ffffff;
-  font-size: 2.25rem;
-  font-weight: 700;
-  margin-bottom: 8px;
+  color: var(--white);
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--spacing-sm);
   position: relative;
   z-index: 1;
 }
 
 .profile-hero-banner .profile-subtitle {
   color: rgba(255, 255, 255, 0.9);
-  font-size: 1.1rem;
+  font-size: var(--font-size-lg);
   position: relative;
   z-index: 1;
 }
 
 .profile-container {
   max-width: var(--max-width-xl);
-  margin: -60px auto 40px;
+  margin: calc(-1 * var(--spacing-2xl)) auto var(--spacing-xl);
   background: var(--bg-white);
   border-radius: var(--border-radius-lg);
   padding: 0;

@@ -38,6 +38,7 @@ Set in Railway Dashboard → backend service → Variables.
 | `OPENAI_API_KEY` | OpenAI API for skin analysis | Optional |
 | `GOOGLE_CLIENT_ID` | Google OAuth | For Google Sign-In |
 | `GOOGLE_CLIENT_SECRET` | Google OAuth | For Google Sign-In |
+| `SUMMARY_TOKEN` | Secret for internal endpoints (db-status, fix-test-user) | Optional; set to fix test user via API |
 
 ---
 

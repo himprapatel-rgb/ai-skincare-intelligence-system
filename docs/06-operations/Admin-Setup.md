@@ -119,6 +119,58 @@ For temporary testing, you can:
 
 ---
 
+## Regular users can't log in
+
+**Symptom:** User gets "Email not verified" or "Please verify your email to sign in."
+
+**Cause:** Verification emails never arrived (SMTP not configured, went to spam, etc.).
+
+**Fix:** Use the internal verify-user API to manually verify them:
+
+```bash
+curl -X POST "https://ai-skincare-intelligence-system-production.up.railway.app/api/v1/internal/verify-user" \
+  -H "Content-Type: application/json" \
+  -H "X-SUMMARY-TOKEN: YOUR_TOKEN" \
+  -d '{"email": "user@example.com"}'
+```
+
+Replace `user@example.com` with their email. Requires `SUMMARY_TOKEN` set in Railway.
+
+---
+
+## Test user login (himanshu@test.com)
+
+If you can't log in with `himanshu@test.com` / `Test1234!`:
+
+### Option A: Fix via API (no local DB access)
+
+1. In Railway → backend → **Variables**, add `SUMMARY_TOKEN` (any secret string, e.g. a random 32-char value).
+2. Call the fix endpoint (replace `YOUR_TOKEN` and `YOUR_BACKEND_URL`):
+
+```bash
+curl -X POST "https://ai-skincare-intelligence-system-production.up.railway.app/api/v1/internal/fix-test-user" \
+  -H "X-SUMMARY-TOKEN: YOUR_TOKEN"
+```
+
+3. Check database status:
+
+```bash
+curl "https://ai-skincare-intelligence-system-production.up.railway.app/api/v1/internal/db-status" \
+  -H "X-SUMMARY-TOKEN: YOUR_TOKEN"
+```
+
+Returns: `database`, `user_count`, `test_user_exists`, `test_user_verified`, `test_user_active`.
+
+### Option B: Fix via local script (with DATABASE_URL)
+
+1. **Check the user:** Run `python scripts/check_user.py` (with `DATABASE_URL` set).
+2. **Create or fix the user:** Run `python scripts/verify_test_user.py`.
+3. **Get DATABASE_URL:** Railway → PostgreSQL → Variables → copy the URL.
+
+**Windows:** Use `backend\scripts\check_user.bat` and `backend\scripts\verify_test_user.bat`.
+
+---
+
 ## Troubleshooting
 
 | Issue | Solution |

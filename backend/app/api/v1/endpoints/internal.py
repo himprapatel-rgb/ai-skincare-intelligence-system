@@ -300,3 +300,133 @@ def get_scin_count(
         return {"count": count}
     finally:
         db.close()
+
+
+# ========== Database & Login Troubleshooting ==========
+
+@router.get("/db-status")
+def get_db_status(
+    x_summary_token: str | None = Header(None)
+) -> Any:
+    """Check if main database is reachable and return basic stats.
+    Requires X-SUMMARY-TOKEN header. Use to verify database is working."""
+    if not settings.SUMMARY_TOKEN or x_summary_token != settings.SUMMARY_TOKEN:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized"
+        )
+    from app.database import SessionLocal
+    from app.models.user import User
+    from sqlalchemy import text
+
+    db = SessionLocal()
+    try:
+        db.execute(text("SELECT 1"))
+        user_count = db.query(User).count()
+        test_user = db.query(User).filter(User.email == "himanshu@test.com").first()
+        return {
+            "database": "ok",
+            "user_count": user_count,
+            "test_user_exists": test_user is not None,
+            "test_user_verified": test_user.is_verified if test_user else False,
+            "test_user_active": test_user.is_active if test_user else False,
+        }
+    except Exception as e:
+        return {
+            "database": "error",
+            "error": str(e)[:200],
+        }
+    finally:
+        db.close()
+
+
+class VerifyUserRequest(BaseModel):
+    email: str
+
+
+@router.post("/verify-user")
+def verify_user_by_email(
+    body: VerifyUserRequest,
+    x_summary_token: str | None = Header(None)
+) -> Any:
+    """Set is_verified=true and is_active=true for any user. Use when a regular
+    user can't log in because verification email never arrived (SMTP issues, spam).
+    Requires X-SUMMARY-TOKEN header."""
+    if not settings.SUMMARY_TOKEN or x_summary_token != settings.SUMMARY_TOKEN:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized"
+        )
+    from app.database import SessionLocal
+    from app.models.user import User
+
+    db = SessionLocal()
+    try:
+        user = db.query(User).filter(User.email == body.email.strip().lower()).first()
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        user.is_verified = True
+        user.is_active = True
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+        return {"email": user.email, "message": "User verified. They can now log in."}
+    except HTTPException:
+        raise
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=str(e)[:200])
+    finally:
+        db.close()
+
+
+@router.post("/fix-test-user")
+def fix_test_user(
+    x_summary_token: str | None = Header(None)
+) -> Any:
+    """Create or fix himanshu@test.com (verified, active, password Test1234!).
+    Requires X-SUMMARY-TOKEN header. Call when login fails for test user."""
+    if not settings.SUMMARY_TOKEN or x_summary_token != settings.SUMMARY_TOKEN:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized"
+        )
+    from app.database import SessionLocal
+    from app.models.user import User
+    from app.services.auth_service import auth_service
+
+    db = SessionLocal()
+    try:
+        email = "himanshu@test.com"
+        user = db.query(User).filter(User.email == email).first()
+        if not user:
+            hashed = auth_service.hash_password("Test1234!")
+            user = User(
+                email=email,
+                hashed_password=hashed,
+                full_name="Himanshu Patel",
+                is_active=True,
+                is_verified=True,
+            )
+            db.add(user)
+            db.commit()
+            db.refresh(user)
+            return {"action": "created", "email": email, "message": "Test user created. Log in with Test1234!"}
+        needs_update = False
+        if not user.is_verified:
+            user.is_verified = True
+            needs_update = True
+        if not user.is_active:
+            user.is_active = True
+            needs_update = True
+        if not auth_service.verify_password(user.hashed_password, "Test1234!"):
+            user.hashed_password = auth_service.hash_password("Test1234!")
+            needs_update = True
+        if needs_update:
+            db.add(user)
+            db.commit()
+            db.refresh(user)
+            return {"action": "updated", "email": email, "message": "Test user fixed. Log in with Test1234!"}
+        return {"action": "ok", "email": email, "message": "Test user already verified and active."}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=str(e)[:200])
+    finally:
+        db.close()

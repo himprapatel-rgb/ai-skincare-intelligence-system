@@ -92,9 +92,14 @@
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
-  min-height: 300px;
+  min-height: 280px;
   border-radius: 12px;
   overflow: hidden;
+  background: var(--bg-tertiary, #f1f5f9);
+  border: 1px solid var(--border);
+}
+
+.barcode-scanner-container.active {
   background: #1a1a1a;
 }
 
@@ -107,6 +112,22 @@
 .barcode-scanner-container.active video {
   width: 100%;
   height: auto;
+}
+
+.scanner-start-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.btn-toggle-camera-centered {
+  min-width: 180px;
+}
+
+.camera-placeholder .placeholder-main {
+  font-size: 1rem;
+  color: var(--text-gray);
+  margin: 12px 0 0;
 }
 
 .scanning-indicator {

@@ -27,6 +27,10 @@
 
 ## Done this week
 
+- [x] DB verification: Both DBs ok; catalog 0 products (seed with import_obf_catalog)
+- [x] Dashboard: Empty-state CTAs for 0 Products / 0 Routines
+- [x] Product Scanner: Lighter frame, centered Start Camera, simplified placeholder text
+- [x] Analysis Results: Hide failed scans in comparison table
 - [x] My Shelf audit fixes: icon, badges, search width, category capitalize, card height (2026-02-01)
 - [x] Product Scanner→Product Detail data mismatch resolved (barcode link + multi-source fetch) (2026-02-01)
 - [x] Product Scanner: BackToTop z-index overlap fix; Recently Scanned text wrap (2026-02-01)

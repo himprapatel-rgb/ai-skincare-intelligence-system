@@ -656,23 +656,13 @@ const ProductScannerPage: React.FC = () => {
             <div className="scanner-card">
               <div className="scanner-header">
                 <h2>Scan Product Barcode</h2>
-                <div className="scanner-controls">
-                  {/* Task 69: Session scan count */}
-                  {sessionScanCount > 0 && (
-                    <span className="scan-count" title="Products scanned this session">
-                      {sessionScanCount} scanned
-                    </span>
-                  )}
-                  <button 
-                    onClick={cameraActive ? stopBarcodeScanner : startBarcodeScanner}
-                    className="btn-toggle-camera"
-                  >
-                    {cameraActive ? 'Stop Camera' : 'Start Camera'}
-                  </button>
-                </div>
+                {sessionScanCount > 0 && (
+                  <span className="scan-count" title="Products scanned this session">
+                    {sessionScanCount} scanned
+                  </span>
+                )}
               </div>
               
-              {/* Task 76-80: Enhanced scanner overlay with scan zone */}
               <div 
                 id="barcode-scanner" 
                 ref={scannerContainerRef}
@@ -681,8 +671,7 @@ const ProductScannerPage: React.FC = () => {
                 {!cameraActive && (
                   <div className="camera-placeholder">
                     <IconCamera size={64} strokeWidth={1.5} />
-                    <p>Click "Start Camera" to scan barcodes</p>
-                    <p className="hint">Supports EAN-13, EAN-8, UPC, QR codes, Code128, Code39</p>
+                    <p className="placeholder-main">Works with most product barcodes</p>
                   </div>
                 )}
                 
@@ -699,6 +688,15 @@ const ProductScannerPage: React.FC = () => {
                     <p className="scan-hint">Center barcode in the box</p>
                   </div>
                 )}
+              </div>
+              
+              <div className="scanner-start-row">
+                <button 
+                  onClick={cameraActive ? stopBarcodeScanner : startBarcodeScanner}
+                  className="btn-toggle-camera btn-toggle-camera-centered"
+                >
+                  {cameraActive ? 'Stop Camera' : 'Start Camera'}
+                </button>
               </div>
               
               {/* Task 40, 90: Quick scanner controls */}

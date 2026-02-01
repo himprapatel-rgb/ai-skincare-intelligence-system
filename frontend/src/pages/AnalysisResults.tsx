@@ -595,7 +595,11 @@ const AnalysisResults: React.FC = () => {
             >
               Compare with previous
             </button>
-            {previousScans.length > 0 && (
+            {(() => {
+              const completedScans = previousScans
+                .filter((p) => String(p.status || '').toLowerCase() !== 'failed')
+                .filter((p) => p.scan_id !== analysisId);
+              return completedScans.length > 0 && (
               <div className="history-table-wrapper">
                 <table className="history-table">
                   <thead>
@@ -606,7 +610,7 @@ const AnalysisResults: React.FC = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {previousScans.slice(0, 5).map((prev) => (
+                    {completedScans.slice(0, 5).map((prev) => (
                       <tr key={prev.scan_id}>
                         <td>{prev.created_at ? new Date(prev.created_at).toLocaleDateString() : '—'}</td>
                         <td>{prev.status}</td>
@@ -620,7 +624,8 @@ const AnalysisResults: React.FC = () => {
                   </tbody>
                 </table>
               </div>
-            )}
+            );
+            })()}
           </div>
         )}
 

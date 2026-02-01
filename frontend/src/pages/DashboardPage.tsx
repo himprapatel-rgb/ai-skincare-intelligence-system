@@ -289,6 +289,9 @@ const DashboardPage: React.FC = () => {
           <div className="stat-content">
             <h3>{data.productsInShelf}</h3>
             <p>My Products</p>
+            {data.productsInShelf === 0 && (
+              <span className="stat-cta">Add your first product</span>
+            )}
           </div>
         </button>
 
@@ -299,6 +302,9 @@ const DashboardPage: React.FC = () => {
           <div className="stat-content">
             <h3>{data.activeRoutines}</h3>
             <p>Active Routines</p>
+            {data.activeRoutines === 0 && (
+              <span className="stat-cta">Build your routine</span>
+            )}
           </div>
         </button>
       </div>

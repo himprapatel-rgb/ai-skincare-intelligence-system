@@ -69,14 +69,14 @@ No new features; only polish, consistency, and quality.
 - [ ] Scan: Move disclaimer below upload, reduce opacity
 - [ ] Dashboard: Align stats card styling (consistent fill/outline)
 - [ ] Dashboard: Fix "Product Image" placeholder—use proper graphic
-- [ ] Dashboard: Add empty-state CTAs for 0 Products / 0 Routines
+- [x] Dashboard: Add empty-state CTAs for 0 Products / 0 Routines
 - [ ] Recommendations: Add star icons to ratings
 - [ ] My Shelf: Fix duplicate product entries (data bug)
 - [ ] My Shelf: Make filter counts badges
 - [ ] Product Scanner: Remove redundant "Click Start Camera" text
 - [ ] Product Scanner: Strengthen tab active state
 - [x] **Product Scanner: Fix scanner→product detail data mismatch** (resolved: barcode link + catalog/products multi-source fetch)
-- [ ] Product Scanner: Remove black device frame; center Start Camera
+- [x] Product Scanner: Remove black device frame (inactive state); center Start Camera
 - [ ] Product Scanner: Simplify "EAN-13, UPC..." to "Works with most barcodes"
 - [x] Product Scanner: Fix "Recently Scanned" text wrapping bug
 - [ ] Homepage: Stats—star icons for rating, animated counters
@@ -92,7 +92,8 @@ No new features; only polish, consistency, and quality.
 - [ ] Ingredient Dictionary: Search empty state
 - [ ] 404: Friendly illustration and CTA
 - [x] Analysis Results: Dark_circles → Dark Circles; Skin Type Unknown; confidence interpretation; 2-col severity; disclaimer contrast; image fallback; score scale clarity
-- [ ] Analysis Results: Hide failed scans; add comparison chart; sticky header
+- [x] Analysis Results: Hide failed scans in comparison table
+- [ ] Analysis Results: Add comparison chart; sticky header
 
 ---
 

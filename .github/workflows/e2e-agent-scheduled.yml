@@ -1,0 +1,75 @@
+# E2E Agent - Runs 24/7, tests GUI (mobile, tablet, desktop) without hitting paid APIs.
+# API calls are mocked. On failure: creates a GitHub Issue.
+name: E2E Agent (24/7 GUI Tests)
+
+on:
+  schedule:
+    # Every 4 hours (6 runs/day) to stay within free tier
+    - cron: "0 */4 * * *"
+  workflow_dispatch: # Allow manual run
+
+env:
+  AGENT_MOCK_API: "true"
+  PLAYWRIGHT_BASE_URL: "https://pellicura.com"
+
+jobs:
+  agent:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install deps
+        working-directory: frontend
+        run: npm ci
+
+      - name: Install Playwright
+        working-directory: frontend
+        run: npx playwright install --with-deps chromium
+
+      - name: Run E2E Agent (GUI only, no paid APIs)
+        id: agent
+        working-directory: frontend
+        run: |
+          npx playwright test agent-gui --reporter=list
+        continue-on-error: true
+
+      - name: Upload traces on failure
+        if: failure() && steps.agent.outcome == 'failure'
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-traces-${{ github.run_number }}
+          path: frontend/test-results/
+
+      - name: Create Issue on failure
+        if: failure() && steps.agent.outcome == 'failure'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = `[E2E Agent] GUI tests failed - ${new Date().toISOString().slice(0,10)}`;
+            const body = `## E2E Agent failure
+
+            **Run:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            **Commit:** ${{ github.sha }}
+            **Time:** ${new Date().toISOString()}
+
+            ### Action needed
+            - Check the [workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details
+            - Download traces from artifacts
+            - Fix the failing GUI/functionality
+            - Re-run the agent manually to verify
+
+            Tests run against **pellicura.com** with API mocking (no paid API calls).`;
+            const { data } = await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title,
+              body,
+            });
+            core.notice(`Created issue #${data.number}`);
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

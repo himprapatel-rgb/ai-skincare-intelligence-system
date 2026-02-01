@@ -27,6 +27,7 @@
 
 ## Done this week
 
+- [x] E2E Agent – 24/7 GUI testing (no paid API calls) (2026-01-26)
 - [x] Systematic development structure (2026-01-26)
 - [x] Mobile/Tablet/Desktop app viewport modes (2026-01-26)
 - [x] Admin Users mobile card layout (2026-01-26)

@@ -1,0 +1,45 @@
+# API Smoke - Runs once daily. Hits /health only (no paid ML/catalog calls).
+# If API is down, creates a GitHub Issue.
+name: API Smoke (Daily)
+
+on:
+  schedule:
+    - cron: "0 8 * * *"  # 08:00 UTC daily
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Health check
+        id: health
+        run: |
+          code=$(curl -s -o /dev/null -w "%{http_code}" --connect-timeout 10 "https://ai-skincare-intelligence-system-production.up.railway.app/api/v1/health" || echo "000")
+          echo "status=$code" >> $GITHUB_OUTPUT
+          [ "$code" = "200" ] || exit 1
+        continue-on-error: true
+
+      - name: Create Issue if API down
+        if: failure() && steps.health.outcome == 'failure'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = `[API Smoke] Backend health check failed - ${new Date().toISOString().slice(0,10)}`;
+            const body = `## API health check failed
+
+            **Backend:** https://ai-skincare-intelligence-system-production.up.railway.app/api/v1/health
+            **Run:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+            ### Action needed
+            - Check Railway logs for the backend service
+            - Verify DATABASE_URL and other env vars
+            - API may need restart or repair`;
+            const { data } = await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title,
+              body,
+            });
+            core.notice(`Created issue #${data.number}`);
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

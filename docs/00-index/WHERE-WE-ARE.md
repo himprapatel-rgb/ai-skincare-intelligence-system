@@ -15,6 +15,7 @@
 | **Database** | ✅ Railway PostgreSQL | Main DB + product catalog (two-DB) |
 | **Google Sign-In** | ✅ Working | Live on pellicura.com |
 | **Deployment docs** | ✅ Railway-only | Fly.io removed from [Deployment-Guide.md](../05-deployment/Deployment-Guide.md) |
+| **E2E Agent** | ✅ Running | 24/7 GUI tests (no paid APIs). See [E2E-AGENT.md](../13-workflow/E2E-AGENT.md) |
 
 ---
 

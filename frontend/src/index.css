@@ -146,6 +146,11 @@
   --breakpoint-mobile: 768px;
   --breakpoint-tablet: 1024px;
   --breakpoint-desktop: 1280px;
+  --bp-xs: 480px;
+  --bp-sm: 600px;
+  --bp-md: 768px;
+  --bp-lg: 1024px;
+  --bp-xl: 1280px;
 
   /* Focus & Accessibility */
   --focus-ring: 2px solid var(--primary);
@@ -183,6 +188,8 @@ body {
   color: var(--text-primary);
   background-color: var(--bg-primary);
   overflow-x: hidden; /* Prevent horizontal scroll on mobile */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: var(--font-weight-normal);

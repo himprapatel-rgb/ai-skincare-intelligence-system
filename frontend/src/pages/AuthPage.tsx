@@ -66,6 +66,11 @@ export const AuthPage: React.FC = () => {
   };
   return (
     <div className="auth-page">
+      {/* Mobile-only compact brand (shows when auth-left hidden) */}
+      <div className="auth-mobile-brand" aria-hidden="true">
+        <h1>SkinCareAI</h1>
+        <p>AI-powered skin analysis</p>
+      </div>
       {/* Left Panel - Branding */}
       <div className="auth-left">
         <div className="auth-brand">

@@ -1,10 +1,11 @@
 import React, { useMemo, useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { IconInstagram, IconBrandX, IconLinkedin, IconTiktok, IconMenu, IconX, IconUser, IconChevronDown, IconLogOut, IconSettings, IconScan } from './Icons';
+import { IconInstagram, IconBrandX, IconLinkedin, IconTiktok, IconMenu, IconX, IconUser, IconChevronDown, IconChevronRight, IconLogOut, IconSettings, IconScan, IconPackage, IconHeart, IconHistory, IconBookOpen, IconFileText, IconDownload } from './Icons';
 import { useAuth } from '../context/AuthContext';
 import { BackToTop } from './BackToTop';
 import { OfflineBanner } from './OfflineBanner';
 import { ApiStatusIndicator } from './ApiStatusIndicator';
+import { BottomNav } from './BottomNav';
 import './AppLayout.css';
 
 type AppLayoutProps = {
@@ -24,6 +25,8 @@ const displayName = nameParts.length > 1
   const userInitial = (user?.full_name?.[0] || user?.email?.[0] || 'U').toUpperCase();
   
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [featuresExpanded, setFeaturesExpanded] = useState(false);
+  const [learnExpanded, setLearnExpanded] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const userDropdownRef = useRef<HTMLDivElement>(null);
@@ -202,54 +205,100 @@ const displayName = nameParts.length > 1
         </div>
         
         {/* Mobile Navigation */}
-        <nav className={`app-nav-mobile${mobileMenuOpen ? ' open' : ''}`}>
-          <div className="app-nav-mobile-links">
-            <Link className={`app-nav-mobile-link${location.pathname === '/' ? ' active' : ''}`} to="/" aria-current={location.pathname === '/' ? 'page' : undefined}>Home</Link>
-            <Link className={`app-nav-mobile-link${location.pathname.startsWith('/scan') ? ' active' : ''}`} to="/scan" title="Start a free skin analysis" aria-current={location.pathname.startsWith('/scan') ? 'page' : undefined}>Skin Analysis</Link>
-            <Link className={`app-nav-mobile-link${location.pathname.startsWith('/dashboard') ? ' active' : ''}`} to="/dashboard" title="View your dashboard" aria-current={location.pathname.startsWith('/dashboard') ? 'page' : undefined}>Dashboard</Link>
-            <Link className={`app-nav-mobile-link${location.pathname.startsWith('/digital-twin') ? ' active' : ''}`} to="/digital-twin" aria-current={location.pathname.startsWith('/digital-twin') ? 'page' : undefined}>Digital Twin</Link>
-            <Link className={`app-nav-mobile-link${location.pathname.startsWith('/about') ? ' active' : ''}`} to="/about" aria-current={location.pathname.startsWith('/about') ? 'page' : undefined}>About</Link>
-            {isAuthenticated && user?.is_admin && (
-              <Link className={`app-nav-mobile-link${location.pathname.startsWith('/admin') ? ' active' : ''}`} to="/admin" aria-current={location.pathname.startsWith('/admin') ? 'page' : undefined}>Admin</Link>
-            )}
-          </div>
-          
-          <div className="app-nav-mobile-divider" />
-          
-          {isAuthenticated ? (
-            <div className="app-nav-mobile-user">
-              <div className="app-nav-mobile-user-info">
-                <span className="app-nav-avatar">{userInitial}</span>
-                <div>
-                  <p className="app-nav-mobile-user-name">{displayName}</p>
-                  <p className="app-nav-mobile-user-email">{user?.email}</p>
+        <nav className={`app-nav-mobile${mobileMenuOpen ? ' open' : ''}`} aria-label="Mobile navigation">
+          <div className="app-nav-mobile-scroll">
+            <div className="app-nav-mobile-links">
+              <Link className={`app-nav-mobile-link${location.pathname === '/' ? ' active' : ''}`} to="/">Home</Link>
+              <Link className={`app-nav-mobile-link${location.pathname.startsWith('/scan') ? ' active' : ''}`} to="/scan">Skin Analysis</Link>
+              <Link className={`app-nav-mobile-link${location.pathname.startsWith('/dashboard') ? ' active' : ''}`} to="/dashboard">Dashboard</Link>
+              <Link className={`app-nav-mobile-link${location.pathname.startsWith('/digital-twin') ? ' active' : ''}`} to="/digital-twin">Digital Twin</Link>
+              <Link className={`app-nav-mobile-link${location.pathname.startsWith('/about') ? ' active' : ''}`} to="/about">About</Link>
+              {isAuthenticated && user?.is_admin && (
+                <Link className={`app-nav-mobile-link${location.pathname.startsWith('/admin') ? ' active' : ''}`} to="/admin">Admin</Link>
+              )}
+
+              {/* Features (expandable) */}
+              <div className="app-nav-mobile-section">
+                <button
+                  type="button"
+                  className={`app-nav-mobile-expand${featuresExpanded ? ' expanded' : ''}`}
+                  onClick={() => setFeaturesExpanded(!featuresExpanded)}
+                  aria-expanded={featuresExpanded}
+                  aria-controls="mobile-features"
+                >
+                  <IconPackage size={18} strokeWidth={2} />
+                  <span>Features</span>
+                  <IconChevronRight size={18} strokeWidth={2} className="chevron" />
+                </button>
+                <div id="mobile-features" className={`app-nav-mobile-sublinks${featuresExpanded ? ' open' : ''}`}>
+                  <Link className={`app-nav-mobile-link sub${location.pathname === '/myshelf' ? ' active' : ''}`} to="/myshelf"><IconPackage size={16} /> My Shelf</Link>
+                  <Link className={`app-nav-mobile-link sub${location.pathname === '/favorites' ? ' active' : ''}`} to="/favorites"><IconHeart size={16} /> Favorites</Link>
+                  <Link className={`app-nav-mobile-link sub${location.pathname.startsWith('/routine-builder') ? ' active' : ''}`} to="/routine-builder">Routine Builder</Link>
+                  <Link className={`app-nav-mobile-link sub${location.pathname === '/scanner' ? ' active' : ''}`} to="/scanner">Product Scanner</Link>
+                  <Link className={`app-nav-mobile-link sub${location.pathname === '/recommendations' ? ' active' : ''}`} to="/recommendations">Recommendations</Link>
+                  <Link className={`app-nav-mobile-link sub${location.pathname === '/history' ? ' active' : ''}`} to="/history"><IconHistory size={16} /> History</Link>
                 </div>
               </div>
-              <Link className="app-nav-mobile-link" to="/profile">My Profile</Link>
-              <Link className="app-nav-mobile-link" to="/notifications">Notifications</Link>
-              <button
-                className="app-nav-mobile-link app-nav-mobile-logout"
-                onClick={() => {
-                  logout();
-                  navigate('/');
-                }}
-              >
-                Sign Out
-              </button>
+
+              {/* Learn (expandable) */}
+              <div className="app-nav-mobile-section">
+                <button
+                  type="button"
+                  className={`app-nav-mobile-expand${learnExpanded ? ' expanded' : ''}`}
+                  onClick={() => setLearnExpanded(!learnExpanded)}
+                  aria-expanded={learnExpanded}
+                  aria-controls="mobile-learn"
+                >
+                  <IconBookOpen size={18} strokeWidth={2} />
+                  <span>Learn</span>
+                  <IconChevronRight size={18} strokeWidth={2} className="chevron" />
+                </button>
+                <div id="mobile-learn" className={`app-nav-mobile-sublinks${learnExpanded ? ' open' : ''}`}>
+                  <Link className={`app-nav-mobile-link sub${location.pathname === '/ingredients' ? ' active' : ''}`} to="/ingredients"><IconFileText size={16} /> Ingredient Dictionary</Link>
+                  <Link className={`app-nav-mobile-link sub${location.pathname === '/skin-type-guide' ? ' active' : ''}`} to="/skin-type-guide">Skin Type Guide</Link>
+                  <Link className={`app-nav-mobile-link sub${location.pathname === '/tutorials' ? ' active' : ''}`} to="/tutorials">Video Tutorials</Link>
+                </div>
+              </div>
             </div>
-          ) : (
-            <div className="app-nav-mobile-auth">
-              <Link className="app-nav-mobile-btn-secondary" to="/auth">Sign In</Link>
-              <Link className="app-nav-mobile-btn-primary" to="/auth?mode=register">Get Started Free</Link>
-            </div>
-          )}
-          
-          {!location.pathname.startsWith('/scan') && (
-            <Link className="app-nav-mobile-cta" to="/scan" title="Start a free skin analysis">
-              <IconScan size={20} strokeWidth={2} />
-              <span>Start Free Skin Scan</span>
-            </Link>
-          )}
+
+            <div className="app-nav-mobile-divider" />
+
+            {isAuthenticated ? (
+              <div className="app-nav-mobile-user">
+                <div className="app-nav-mobile-user-info">
+                  <span className="app-nav-avatar">{userInitial}</span>
+                  <div>
+                    <p className="app-nav-mobile-user-name">{displayName}</p>
+                    <p className="app-nav-mobile-user-email">{user?.email}</p>
+                  </div>
+                </div>
+                <Link className="app-nav-mobile-link" to="/profile"><IconUser size={18} /> My Profile</Link>
+                <Link className="app-nav-mobile-link" to="/profile?tab=settings"><IconSettings size={18} /> Settings</Link>
+                <Link className="app-nav-mobile-link" to="/export"><IconDownload size={18} /> Data Export</Link>
+                <Link className="app-nav-mobile-link" to="/notifications">Notifications</Link>
+                <button
+                  type="button"
+                  className="app-nav-mobile-link app-nav-mobile-logout"
+                  onClick={() => { logout(); navigate('/'); }}
+                >
+                  <IconLogOut size={18} />
+                  Sign Out
+                </button>
+              </div>
+            ) : (
+              <div className="app-nav-mobile-auth">
+                <Link className="app-nav-mobile-btn-secondary" to="/auth">Sign In</Link>
+                <Link className="app-nav-mobile-btn-primary" to="/auth?mode=register">Get Started Free</Link>
+              </div>
+            )}
+
+            {!location.pathname.startsWith('/scan') && (
+              <Link className="app-nav-mobile-cta" to="/scan" title="Start a free skin analysis">
+                <IconScan size={20} strokeWidth={2} />
+                <span>Start Free Skin Scan</span>
+              </Link>
+            )}
+          </div>
         </nav>
       </header>
 
@@ -270,10 +319,11 @@ const displayName = nameParts.length > 1
         </div>
       )}
 
-      <main className="app-main" id="main-content" role="main">
+      <main className="app-main app-main-with-bottom-nav" id="main-content" role="main">
         {children}
       </main>
 
+      <BottomNav />
       <BackToTop />
 
       <footer className="app-footer" role="contentinfo">

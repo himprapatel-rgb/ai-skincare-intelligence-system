@@ -250,6 +250,20 @@
   align-items: stretch;
 }
 
+@media (max-width: 768px) {
+  .products-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .search-bar input {
+    min-width: 0;
+    width: 100%;
+  }
+}
+
 .product-card {
   background: var(--bg-white);
   border-radius: var(--border-radius-md);

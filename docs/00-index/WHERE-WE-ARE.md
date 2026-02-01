@@ -16,6 +16,7 @@
 | **Google Sign-In** | ✅ Working | Live on pellicura.com |
 | **Deployment docs** | ✅ Railway-only | Fly.io removed from [Deployment-Guide.md](../05-deployment/Deployment-Guide.md) |
 | **Agents** | ✅ Running | See [docs/agents/](../agents/README.md) |
+| **UI/UX Audit 2026** | ✅ Logged | [docs/08-audits/UI-UX-Design-Audit-2026.md](../08-audits/UI-UX-Design-Audit-2026.md) → fed into Improvement Backlog |
 
 ---
 

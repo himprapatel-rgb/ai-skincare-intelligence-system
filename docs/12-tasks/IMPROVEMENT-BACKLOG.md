@@ -54,4 +54,24 @@ No new features; only polish, consistency, and quality.
 
 ---
 
+## From UI/UX Audit 2026
+
+*See [docs/08-audits/UI-UX-Design-Audit-2026.md](../08-audits/UI-UX-Design-Audit-2026.md)*
+
+- [ ] Homepage: Fix CTA button hierarchy (secondary = ghost)
+- [ ] Homepage: Align card shadows across feature + stats cards
+- [ ] Homepage: Pick one FAQ accordion icon (› or +)
+- [ ] Scan: Add 12px spacing to instructions checklist
+- [ ] Scan: Move disclaimer below upload, reduce opacity
+- [ ] Dashboard: Align stats card styling (consistent fill/outline)
+- [ ] Dashboard: Fix "Product Image" placeholder—use proper graphic
+- [ ] Dashboard: Add empty-state CTAs for 0 Products / 0 Routines
+- [ ] Recommendations: Add star icons to ratings
+- [ ] My Shelf: Fix duplicate product entries (data bug)
+- [ ] My Shelf: Make filter counts badges
+- [ ] Product Scanner: Remove redundant "Click Start Camera" text
+- [ ] Product Scanner: Strengthen tab active state
+
+---
+
 **Usage:** Improvement Agent picks one item per day, creates an Issue. Cursor or human implements.

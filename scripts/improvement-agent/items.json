@@ -30,5 +30,12 @@
   "Verify all pages at 375px have no horizontal scroll",
   "Ensure touch targets >= 44px on mobile",
   "Test sticky headers/footers with safe-area-inset",
-  "Verify bottom nav doesn't overlap content"
+  "Verify bottom nav doesn't overlap content",
+  "Homepage: Fix CTA button hierarchy (secondary ghost)",
+  "Homepage: Align card shadows",
+  "Scan: Add spacing to instructions checklist",
+  "Dashboard: Fix Product Image placeholder",
+  "Dashboard: Empty-state CTAs",
+  "My Shelf: Filter counts as badges",
+  "Product Scanner: Strengthen tab active state"
 ]

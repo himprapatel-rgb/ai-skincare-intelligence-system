@@ -4,6 +4,17 @@
  */
 
 /* =============================================
+   B1. Page Transitions (global)
+============================================= */
+@keyframes pageFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.page-transition-wrap {
+  animation: pageFadeIn 0.2s ease-out;
+}
+
+/* =============================================
    A. Layout & Chrome
 ============================================= */
 
@@ -119,6 +130,95 @@
   .auth-form input,
   .auth-form button {
     min-height: 48px;
+  }
+
+  /* F2: Scan page */
+  .scan-page {
+    padding: 16px;
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+
+  /* F3: Product Scanner */
+  .product-scanner-page {
+    padding: 16px;
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+  .mode-selector {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .mode-btn {
+    flex: 1;
+    min-width: 120px;
+    justify-content: center;
+  }
+
+  /* F5: Product Details */
+  .product-details-page {
+    padding: 16px;
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+  .product-header {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  /* F6: Dashboard */
+  .dashboard-page {
+    padding: 16px;
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+  .dashboard-stats {
+    padding: 0;
+  }
+
+  /* F8: Profile/Settings */
+  .profile-settings-page,
+  .profile-container {
+    border-radius: 0;
+  }
+  .profile-container {
+    margin-left: 0;
+    margin-right: 0;
+    box-shadow: none;
+    border-left: none;
+    border-right: none;
+  }
+}
+
+/* =============================================
+   G1. Modals - Mobile app feel
+============================================= */
+@media (max-width: 768px) {
+  .confirm-modal-overlay,
+  .consent-modal-overlay {
+    padding: 0;
+    align-items: flex-end;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .confirm-modal,
+  .consent-modal {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 16px 16px 0 0;
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+    padding-bottom: max(24px, env(safe-area-inset-bottom));
+  }
+  /* Drag handle for bottom-sheet feel */
+  .confirm-modal::before,
+  .consent-modal::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 4px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 2px;
+    margin: 12px auto 8px;
   }
 }
 

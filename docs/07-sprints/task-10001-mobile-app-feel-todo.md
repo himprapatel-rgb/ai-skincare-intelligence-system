@@ -12,6 +12,16 @@
 - E1–E2: Primary buttons, opacity-only tap feedback (no transform)
 - F1, F4, F7: Home hero CTA, My Shelf cards, Auth form
 
+## Implemented (Phase 2)
+
+- **B1**: Page transitions – fade-in on route change (AppLayout page-transition-wrap)
+- **G1**: Modal styling – bottom-sheet feel, drag handle, safe-area padding (ConfirmModal, ConsentModal)
+- **F2**: Scan page – consistent padding
+- **F3**: Product Scanner – padding, mode selector touch-friendly
+- **F5**: Product Details – padding, single-column header on mobile
+- **F6**: Dashboard – padding, stats layout
+- **F8**: Profile/Settings – full-width container, edge-to-edge on mobile
+
 ---
 
 ## What’s Done (Task 10000)

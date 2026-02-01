@@ -4,8 +4,20 @@ import App from './App.tsx'
 import './index.css'
 import './styles/premium-polish.css'
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+// Task 10000: Remove splash when app mounts (app-like loading)
+const splash = document.getElementById('app-splash')
+const root = ReactDOM.createRoot(document.getElementById('root')!)
+root.render(
   <React.StrictMode>
     <App />
   </React.StrictMode>,
 )
+if (splash) {
+  const hide = () => {
+    splash.classList.add('hidden')
+    setTimeout(() => splash.remove(), 250)
+  }
+  requestAnimationFrame(() => requestAnimationFrame(hide))
+  // Fallback: ensure splash never blocks interaction if React is slow
+  setTimeout(hide, 3000)
+}

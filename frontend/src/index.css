@@ -184,13 +184,14 @@ html {
   text-size-adjust: 100%;
 }
 
-/* Task 10000: Mobile app feel – no tap flash, faster touch */
+/* Task 10000: Mobile app feel – faster touch, visible tap feedback */
 button, a, [role="button"], input, select, textarea {
-  -webkit-tap-highlight-color: transparent;
-  tap-highlight-color: transparent;
-}
-button, a, [role="button"] {
   touch-action: manipulation;
+}
+/* Subtle tap highlight so taps feel responsive (not fully transparent) */
+button, a, [role="button"] {
+  -webkit-tap-highlight-color: rgba(37, 99, 235, 0.15);
+  tap-highlight-color: rgba(37, 99, 235, 0.15);
 }
 
 /* Mobile app mode: reduce overscroll bounce, app-like feel (Task 10000) */
@@ -206,11 +207,30 @@ button, a, [role="button"] {
   body {
     min-height: 100dvh;
   }
+  /* Tap feedback – instant visual response so mobile feels interactive */
+  button:active, a:active, [role="button"]:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+  button, a, [role="button"] {
+    transition: opacity 0.1s ease, transform 0.1s ease;
+  }
+  /* Ensure touch targets are at least 44px (WCAG) */
+  .bottom-nav a, .bottom-nav button {
+    min-height: 44px;
+    min-width: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
-/* Task 10000: Standalone (Add to Home Screen) – data attr for future styling */
+/* Task 10000: Standalone (Add to Home Screen) – full app feel */
 html[data-standalone="true"] {
   /* App runs from home screen – no browser chrome */
+}
+html[data-standalone="true"] .bottom-nav {
+  box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.08);
 }
 
 /* Tablet app mode */

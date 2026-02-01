@@ -50,6 +50,17 @@
   color: var(--primary);
 }
 
+/* Mobile: tap feedback so nav feels responsive */
+@media (max-width: 768px) {
+  .bottom-nav-item {
+    transition: color 0.2s ease, transform 0.1s ease, opacity 0.1s ease;
+  }
+  .bottom-nav-item:active {
+    opacity: 0.8;
+    transform: scale(0.95);
+  }
+}
+
 .bottom-nav-item svg {
   flex-shrink: 0;
 }

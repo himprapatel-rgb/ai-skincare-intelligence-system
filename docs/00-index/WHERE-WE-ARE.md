@@ -1,6 +1,6 @@
 # Where We Are – Project Status
 
-**Last Updated:** January 31, 2026
+**Last Updated:** January 2026
 
 ---
 
@@ -10,10 +10,11 @@
 |------|--------|--------|
 | **Scanner & Barcode (500 tasks)** | ✅ 100% complete | Camera, photo, AI recognition, My Shelf, product details |
 | **Product Database (500 tasks)** | ✅ 100% complete | Two-DB architecture, catalog API, scanner integration |
-| **Production (Railway)** | ✅ Live | `main` → Railway auto-deploy |
-| **Database** | ✅ Railway PostgreSQL | Main DB; product catalog can use same or second DB |
-| **Railway deployment** | 📄 Documented | Backend + product DB deploy; **two-DB checklist:** [Railway-Two-Databases-Setup.md](../05-deployment/Railway-Two-Databases-Setup.md) |
-| **Google Sign-In** | ✅ Working | Live on pellicura.com. See [Google-SSO-Setup.md](../05-deployment/Google-SSO-Setup.md) |
+| **GUI (4,200 tasks)** | ✅ Complete | Design tokens, mobile, a11y across 42 pages. See [PER-PAGE-GUI-TASKS-4200.md](../11-working/PER-PAGE-GUI-TASKS-4200.md) |
+| **Production (Railway)** | ✅ Live | `main` → Railway auto-deploy. pellicura.com |
+| **Database** | ✅ Railway PostgreSQL | Main DB + product catalog (two-DB) |
+| **Google Sign-In** | ✅ Working | Live on pellicura.com |
+| **Deployment docs** | ✅ Railway-only | Fly.io removed from [Deployment-Guide.md](../05-deployment/Deployment-Guide.md) |
 
 ---
 

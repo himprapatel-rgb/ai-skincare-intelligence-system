@@ -3,60 +3,60 @@
 .privacy-page {
   min-height: 100vh;
   background: var(--bg-light);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: var(--font-family);
 }
 
 .privacy-hero {
   text-align: center;
-  padding: 80px 24px 60px;
-  max-width: 1200px;
+  padding: var(--spacing-3xl) var(--spacing-lg) var(--spacing-2xl);
+  max-width: var(--max-width-xl);
   margin: 0 auto;
   background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-  border-radius: 0 0 24px 24px;
+  border-radius: 0 0 var(--border-radius-xl) var(--border-radius-xl);
 }
 
 .privacy-hero h1 {
-  font-size: 2rem; /* Brand guideline: 48px / 3rem for H1 */
-  font-weight: 700; /* Brand guideline: Bold */
-  color: white;
-  margin-bottom: 16px;
-  line-height: 1.2;
-  letter-spacing: -0.5px;
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--white);
+  margin-bottom: var(--spacing-md);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight);
 }
 
 .effective-date {
-  font-size: 0.9375rem;
+  font-size: var(--font-size-sm);
   color: rgba(255, 255, 255, 0.95);
-  margin: 0 0 4px;
+  margin: 0 0 var(--spacing-xs);
 }
 .last-updated {
-  font-size: 1rem; /* Brand guideline: 16px Body */
+  font-size: var(--font-size-base);
   color: rgba(255, 255, 255, 0.9);
   font-style: italic;
-  margin: 0 0 12px;
+  margin: 0 0 var(--spacing-md);
 }
 .privacy-summary {
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   color: rgba(255, 255, 255, 0.95);
   max-width: 560px;
   margin: 0 auto;
-  line-height: 1.4;
+  line-height: var(--line-height-relaxed);
 }
 
 .privacy-toc {
-  max-width: 900px;
-  margin: 0 auto 24px;
-  padding: 20px 24px;
+  max-width: var(--max-width-lg);
+  margin: 0 auto var(--spacing-lg);
+  padding: var(--spacing-lg) var(--spacing-lg);
   background: var(--bg-white);
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-sm);
 }
 .privacy-toc-title {
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
   color: var(--text-dark);
-  margin: 0 0 12px;
+  margin: 0 0 var(--spacing-md);
 }
 .privacy-toc ul {
   list-style: none;

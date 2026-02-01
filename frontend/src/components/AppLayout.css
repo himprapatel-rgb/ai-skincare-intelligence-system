@@ -156,6 +156,14 @@
   background: rgba(31, 111, 235, 0.06);
 }
 
+.app-nav-link:focus-visible,
+.app-nav-user-trigger:focus-visible,
+.app-nav-cta:focus-visible,
+.app-nav-cta-secondary:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
 .app-nav-link.active {
   color: var(--primary);
   font-weight: 600;
@@ -230,8 +238,8 @@
 }
 
 .app-nav-avatar {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--primary) 0%, #5a8bff 100%);
   color: #ffffff;

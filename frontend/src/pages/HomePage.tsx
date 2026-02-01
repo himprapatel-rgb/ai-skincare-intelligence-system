@@ -3,8 +3,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { 
   IconZap, IconScan, IconClock, IconShield, IconBookOpen, 
-  IconTrash2, IconCheckCircle, IconBarChart, IconSearch, 
-  IconSparkles, IconTrendingUp, IconCheck, IconStar
+  IconBarChart, IconSearch, IconSparkles, IconTrendingUp, 
+  IconCheck, IconStar
 } from '../components/Icons';
 import './HomePage.css';
 
@@ -53,7 +53,7 @@ const HomePage: React.FC = () => {
                 </span>
                 Start Free Skin Scan
               </button>
-              <button className="btn-secondary btn-ghost" onClick={() => navigate('/analysis/demo')}>
+              <button className="btn-secondary btn-ghost-hero" onClick={() => navigate('/analysis/demo')}>
                 See Sample Report
               </button>
             </div>
@@ -90,32 +90,32 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* Trust Badges - Enhanced with cards */}
+      {/* Trust Badges - Privacy first, then Encrypted, Research, Delete */}
       <section className="trust-badges-section">
         <div className="trust-badges-grid">
+          <div className="trust-badge-card trust-badge-privacy">
+            <span className="trust-badge-icon">
+              <IconShield size={28} strokeWidth={2.5} fill="currentColor" />
+            </span>
+            <span className="trust-badge-text">Privacy-First Processing</span>
+          </div>
           <div className="trust-badge-card trust-badge-security">
             <span className="trust-badge-icon">
-              <IconShield size={28} strokeWidth={2} />
+              <IconShield size={28} strokeWidth={2.5} fill="currentColor" />
             </span>
             <span className="trust-badge-text">Encrypted Uploads</span>
           </div>
           <div className="trust-badge-card trust-badge-research">
             <span className="trust-badge-icon">
-              <IconBookOpen size={28} strokeWidth={2} />
+              <IconBookOpen size={28} strokeWidth={2.5} fill="currentColor" />
             </span>
-            <span className="trust-badge-text">Built on Dermatology Research</span>
+            <span className="trust-badge-text">Dermatology Research</span>
           </div>
           <div className="trust-badge-card trust-badge-delete">
             <span className="trust-badge-icon">
-              <IconTrash2 size={28} strokeWidth={2} />
+              <IconShield size={28} strokeWidth={2.5} fill="currentColor" />
             </span>
             <span className="trust-badge-text">Delete Data Anytime</span>
-          </div>
-          <div className="trust-badge-card trust-badge-privacy">
-            <span className="trust-badge-icon">
-              <IconCheckCircle size={28} strokeWidth={2} />
-            </span>
-            <span className="trust-badge-text">Privacy-First Processing</span>
           </div>
         </div>
       </section>

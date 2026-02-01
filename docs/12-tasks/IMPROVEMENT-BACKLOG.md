@@ -58,13 +58,13 @@ No new features; only polish, consistency, and quality.
 
 *See [UI-UX-Design-Audit-2026.md](../08-audits/UI-UX-Design-Audit-2026.md) | [Detailed Feb](../08-audits/UI-UX-Design-Audit-Detailed-2026.md) | [Product Scanner](../08-audits/Product-Scanner-Audit-2026.md) | [My Shelf](../08-audits/My-Shelf-Audit-2026.md) | [Link Testing](../08-audits/Link-Testing-Report-2026.md) | [Analysis Results](../08-audits/Analysis-Results-Audit-2026.md)*
 
-- [ ] Homepage: Fix CTA button hierarchy (secondary = ghost)
+- [x] Homepage: Fix CTA button hierarchy (secondary = ghost)
 - [ ] Homepage: Nav active state 3-4px underline (not 2px)
 - [ ] Homepage: Align card shadows across feature + stats cards
 - [ ] Homepage: Pick one FAQ accordion icon (› or +)
 - [ ] Homepage: Replace "AS FEATURED IN" text with actual brand logos (critical)
 - [ ] Homepage: Subheadline contrast WCAG AA (20px or darken)
-- [ ] Homepage: Trust badge icons—filled not outlined, card order
+- [x] Homepage: Trust badge icons—filled, card order (Privacy→Encrypted→Research→Delete)
 - [ ] Scan: Add 12px spacing to instructions checklist
 - [ ] Scan: Move disclaimer below upload, reduce opacity
 - [ ] Dashboard: Align stats card styling (consistent fill/outline)

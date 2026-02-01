@@ -76,8 +76,9 @@
 1. **Product catalog:** Railway two-DB is done. **Google Sign-In** ✅ working.
 
 2. **Optional – seed product catalog (Railway):**  
-   From your machine (with `PRODUCT_DATABASE_URL` from Railway or same as product DB):  
-   `cd backend && python scripts/import_obf_catalog.py --source api --limit 1000`
+   From your machine (set `PRODUCT_DATABASE_URL` from Railway dashboard first):  
+   - Windows: `backend\scripts\seed_catalog.bat`  
+   - Or: `cd backend && python scripts/import_obf_catalog.py --source api --limit 1000`
 
 ---
 

@@ -191,7 +191,7 @@ const displayName = nameParts.length > 1
                 </>
               )}
               
-              {!location.pathname.startsWith('/scan') && !location.pathname.startsWith('/analysis') && (
+              {!isAuthenticated && !location.pathname.startsWith('/scan') && !location.pathname.startsWith('/analysis') && (
                 <Link className="app-nav-cta" to="/scan" title="Start a free skin analysis" onMouseEnter={() => void import('../pages/ScanPage')}>
                   <IconScan size={18} strokeWidth={2} />
                   <span>Free Scan</span>
@@ -299,7 +299,7 @@ const displayName = nameParts.length > 1
               </div>
             )}
 
-            {!location.pathname.startsWith('/scan') && (
+            {!isAuthenticated && !location.pathname.startsWith('/scan') && (
               <Link className="app-nav-mobile-cta" to="/scan" title="Start a free skin analysis">
                 <IconScan size={20} strokeWidth={2} />
                 <span>Start Free Skin Scan</span>
@@ -319,7 +319,7 @@ const displayName = nameParts.length > 1
                 ) : (
                   <span className="app-breadcrumb-current" aria-current="page">{crumb.label}</span>
                 )}
-                {index < breadcrumbs.length - 1 && <span className="app-breadcrumb-separator">/</span>}
+                {index < breadcrumbs.length - 1 && <span className="app-breadcrumb-separator" aria-hidden>›</span>}
               </span>
             ))}
           </div>

@@ -1,0 +1,68 @@
+# Human Agent – Acts like a real user: login, upload images, navigate.
+# Uses Playwright's Chromium (NOT Google Chrome – runs in CI without browser install).
+# Runs daily. Requires E2E_EMAIL, E2E_PASSWORD secrets. Mocks paid APIs.
+name: Human Agent (Daily)
+
+on:
+  schedule:
+    - cron: "0 10 * * *"  # 10:00 UTC daily
+  workflow_dispatch:
+
+jobs:
+  human:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install deps
+        working-directory: frontend
+        run: npm ci
+
+      - name: Install Playwright Chromium
+        working-directory: frontend
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Human Agent (login, upload, human-like flow)
+        id: human
+        working-directory: frontend
+        env:
+          HUMAN_AGENT: "true"
+          PLAYWRIGHT_BASE_URL: "https://pellicura.com"
+          E2E_EMAIL: ${{ secrets.E2E_EMAIL }}
+          E2E_PASSWORD: ${{ secrets.E2E_PASSWORD }}
+        run: |
+          npx playwright test human-agent --reporter=list
+        continue-on-error: true
+
+      - name: Upload traces on failure
+        if: failure() && steps.human.outcome == 'failure'
+        uses: actions/upload-artifact@v4
+        with:
+          name: human-agent-traces-${{ github.run_number }}
+          path: frontend/test-results/
+
+      - name: Create Issue on failure
+        if: failure() && steps.human.outcome == 'failure'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = `[Human Agent] Login/upload flow failed - ${new Date().toISOString().slice(0,10)}`;
+            const body = `## Human Agent failure
+
+            **Run:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            **Time:** ${new Date().toISOString()}
+
+            The Human Agent (login, image upload, navigation) failed. Check traces in artifacts.`;
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title,
+              body,
+            });
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

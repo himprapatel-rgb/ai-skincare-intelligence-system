@@ -50,6 +50,16 @@ export async function installAgentApiMock(page: Page) {
 
       // Catalog / Products
       if (
+        url.includes("/identify-from-image") ||
+        url.includes("/scan-barcode")
+      ) {
+        return route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: mockBody({ product: null, message: "No match (mock)" }),
+        });
+      }
+      if (
         url.includes("/catalog/") ||
         url.includes("/products") ||
         url.includes("/user-products") ||
@@ -63,11 +73,28 @@ export async function installAgentApiMock(page: Page) {
       }
 
       // Scans / Analysis (expensive - always mock)
-      if (url.includes("/scan") || url.includes("/analysis") || url.includes("/analyze")) {
+      if (url.includes("/scan/init") && method === "POST") {
         return route.fulfill({
           status: 200,
           contentType: "application/json",
-          body: mockBody({ id: 1, status: "completed" }),
+          body: mockBody({ session_id: "mock-session-1" }),
+        });
+      }
+      if (
+        (url.includes("/scan/") && (url.includes("/upload") || url.includes("/status") || url.includes("/results"))) ||
+        url.includes("/analysis") ||
+        url.includes("/analyze")
+      ) {
+        return route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: mockBody({
+            id: 1,
+            session_id: "mock-session-1",
+            status: "completed",
+            progress: 100,
+            result: { overall_score: 75 },
+          }),
         });
       }
 

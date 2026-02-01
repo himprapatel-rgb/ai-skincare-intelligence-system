@@ -9,7 +9,10 @@ Automated testing that runs around the clock **without hitting paid APIs** (ML, 
 | Component | Schedule | What |
 |-----------|----------|------|
 | **E2E Agent** | Every 4 hours | Tests GUI (mobile, tablet, desktop), all pages, nav, layout. API calls **mocked**. |
+| **Human Agent** | Daily | Login, upload images, navigate like a user. See [HUMAN-AGENT.md](HUMAN-AGENT.md). |
 | **API Smoke** | Once daily | Hits `/api/v1/health` only. Reports if backend is down. |
+
+**Browser:** All use Playwright's Chromium – **not** Google Chrome. No profile or permission issues.
 
 ---
 

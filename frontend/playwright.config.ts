@@ -16,5 +16,6 @@ export default defineConfig({
     baseURL,
     headless: true,
     viewport: { width: 1280, height: 800 },
+    // Playwright uses its own Chromium (npx playwright install). NOT Google Chrome – no profile/permission issues.
   },
 });

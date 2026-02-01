@@ -179,13 +179,32 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  /* Task 10000: Prevent iOS font scaling on orientation change */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
-/* Mobile app mode: reduce overscroll bounce, app-like feel */
+/* Task 10000: Mobile app feel – no tap flash, faster touch */
+button, a, [role="button"], input, select, textarea {
+  -webkit-tap-highlight-color: transparent;
+  tap-highlight-color: transparent;
+}
+button, a, [role="button"] {
+  touch-action: manipulation;
+}
+
+/* Mobile app mode: reduce overscroll bounce, app-like feel (Task 10000) */
 @media (max-width: 768px) {
   html, body {
     overscroll-behavior: none;
     -webkit-overflow-scrolling: touch;
+  }
+  /* Dynamic viewport for correct mobile height (browser chrome) */
+  html {
+    min-height: 100dvh;
+  }
+  body {
+    min-height: 100dvh;
   }
 }
 

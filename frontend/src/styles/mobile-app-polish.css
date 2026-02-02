@@ -33,18 +33,63 @@
     min-height: 56px;
   }
 
-  /* A2: Consistent page padding */
+  /* A2: Consistent page padding – ALL pages */
   .app-main .page-container,
+  .page-container,
   .myshelf-page,
   .auth-page .auth-right,
-  .hero-section {
+  .hero-section,
+  .homepage,
+  .about-page,
+  .contact-page,
+  .privacy-page,
+  .terms-page,
+  .blog-page .page-container,
+  .blog-container,
+  .password-reset-page,
+  .email-verification-page,
+  .google-callback-page,
+  .scan-page,
+  .analysis-results,
+  .sample-report-page,
+  .history-page,
+  .comparison-page,
+  .dt-page,
+  .recommendations-page,
+  .product-details-page,
+  .product-compare-page,
+  .routine-builder-page,
+  .favorites-page,
+  .product-scanner-page,
+  .onboarding-page,
+  .profile-settings-page,
+  .consent-page,
+  .skin-type-page .page-container,
+  .skin-type-container,
+  .progress-tracking-page,
+  .notification-center-page,
+  .ingredient-page .page-container,
+  .ingredient-container,
+  .video-page .page-container,
+  .video-container,
+  .not-found-page,
+  .admin-dashboard-page,
+  .admin-users-page,
+  .admin-products-page,
+  .admin-catalog-page,
+  .admin-content-page,
+  .admin-blogs-page,
+  .admin-videos-page,
+  .admin-news-page {
     padding-left: max(16px, env(safe-area-inset-left));
     padding-right: max(16px, env(safe-area-inset-right));
   }
 
-  /* A3: No horizontal scroll – avoid overflow on app-main; don't block scroll on app-layout */
+  /* A3: No horizontal scroll; explicit scroll on main for mobile */
   .app-main {
     overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     max-width: 100vw;
   }
 
@@ -186,6 +231,101 @@
     box-shadow: none;
     border-left: none;
     border-right: none;
+  }
+
+  /* ===== ALL PAGES – app-like mobile feel ===== */
+  .about-page,
+  .contact-page,
+  .contact-container,
+  .privacy-page,
+  .terms-page {
+    padding: 16px;
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+  .history-page,
+  .comparison-page,
+  .recommendations-page,
+  .routine-builder-page,
+  .favorites-page,
+  .notification-center-page,
+  .progress-tracking-page,
+  .consent-page,
+  .onboarding-page {
+    padding: 16px;
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+  .password-reset-page,
+  .email-verification-page,
+  .google-callback-page {
+    padding: 16px;
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+  .product-compare-page,
+  .sample-report-page,
+  .analysis-results {
+    padding: 16px;
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+  .dt-page {
+    padding: 16px;
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+  .ingredient-page,
+  .skin-type-page,
+  .video-page,
+  .blog-page {
+    padding: 16px;
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+  .not-found-page {
+    padding: 24px 16px;
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+  /* Admin pages */
+  .admin-dashboard-page,
+  .admin-users-page,
+  .admin-products-page,
+  .admin-catalog-page,
+  .admin-content-page,
+  .admin-blogs-page,
+  .admin-videos-page,
+  .admin-news-page {
+    padding: 16px;
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+  /* Full-width primary buttons on all pages */
+  .btn-primary,
+  .view-btn,
+  .add-product-btn {
+    min-height: 48px;
+    padding: 14px 24px;
+  }
+  /* Single-column layout for multi-column content on mobile */
+  .contact-page .contact-container,
+  .about-page [class*="grid"],
+  [class*="recommendations"] [class*="grid"],
+  .comparison-page [class*="grid"] {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .history-page .history-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  /* Section spacing */
+  .page-header {
+    margin-bottom: 20px;
+  }
+  .page-header h1 {
+    font-size: 1.5rem;
   }
 }
 

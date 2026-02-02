@@ -184,12 +184,8 @@ html {
   text-size-adjust: 100%;
 }
 
-/* Task 10000: Mobile app feel – faster touch (buttons/inputs only; avoid blocking scroll) */
-button, input, select, textarea {
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-}
-a, [role="button"] {
+/* Task 10000: tap highlight only – avoid touch-action on mobile (can block scroll) */
+button, a, input, select, textarea, [role="button"] {
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -361,7 +357,6 @@ button {
   border: none;
   outline: none;
   min-height: 44px; /* Mobile touch target minimum */
-  touch-action: manipulation; /* Prevent double-tap zoom */
 }
 
 /* Inputs - min 44px touch target for single-line (WCAG 2.5.5) */

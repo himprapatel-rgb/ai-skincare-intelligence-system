@@ -42,9 +42,8 @@
     padding-right: max(16px, env(safe-area-inset-right));
   }
 
-  /* A3: No horizontal scroll (reinforce) */
-  .app-main,
-  .app-layout {
+  /* A3: No horizontal scroll – avoid overflow on app-main; don't block scroll on app-layout */
+  .app-main {
     overflow-x: hidden;
     max-width: 100vw;
   }

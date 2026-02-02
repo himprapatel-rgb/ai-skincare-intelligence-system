@@ -184,17 +184,20 @@ html {
   text-size-adjust: 100%;
 }
 
-/* Task 10000: Mobile app feel – faster touch */
-button, a, [role="button"], input, select, textarea {
+/* Task 10000: Mobile app feel – faster touch (buttons/inputs only; avoid blocking scroll) */
+button, input, select, textarea {
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
+a, [role="button"] {
+  -webkit-tap-highlight-color: transparent;
+}
 
-/* Mobile app mode: reduce overscroll bounce, app-like feel (Task 10000) */
+/* Mobile app mode: app-like feel (Task 10000) */
 @media (max-width: 768px) {
   html, body {
-    overscroll-behavior: none;
     -webkit-overflow-scrolling: touch;
+    /* Don't use overscroll-behavior: none – it can block scroll on some mobile browsers */
   }
   /* Dynamic viewport for correct mobile height (browser chrome) */
   html {
@@ -231,7 +234,8 @@ body {
   line-height: var(--line-height-normal);
   color: var(--text-primary);
   background-color: var(--bg-primary);
-  overflow-x: hidden; /* Prevent horizontal scroll on mobile */
+  overflow-x: hidden;
+  overflow-y: auto; /* Explicitly allow vertical scroll */
   word-wrap: break-word;
   overflow-wrap: break-word;
   -webkit-font-smoothing: antialiased;

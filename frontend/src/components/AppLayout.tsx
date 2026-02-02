@@ -4,6 +4,7 @@ import { IconInstagram, IconBrandX, IconLinkedin, IconTiktok, IconMenu, IconX, I
 import { SOCIAL_LINKS } from '../config';
 import { useAuth } from '../context/AuthContext';
 import { BackToTop } from './BackToTop';
+import { RouteLoadingBar } from './RouteLoadingBar';
 import { OfflineBanner } from './OfflineBanner';
 import { AddToHomeScreenPrompt } from './AddToHomeScreenPrompt';
 import { ApiStatusIndicator } from './ApiStatusIndicator';
@@ -110,6 +111,7 @@ const displayName = nameParts.length > 1
       <a className="skip-link" href="#main-content">Skip to main content</a>
       <OfflineBanner />
       <AddToHomeScreenPrompt />
+      <RouteLoadingBar />
       <header className={`app-header${scrolled ? ' scrolled' : ''}`}>
         <div className="app-header-container">
           {/* Logo */}

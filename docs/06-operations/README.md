@@ -42,6 +42,10 @@
 
 ### Admin Access
 - **[Admin-Setup.md](./Admin-Setup.md)** - How to log in to the Admin page (`/admin`)
+- **[Login-Issues-Root-Causes.md](./Login-Issues-Root-Causes.md)** - Login issues, why they happen, and permanent fixes (Network Error, cold start, email verification)
+
+### Data & Database
+- **[Web-App-Data-Saved-To-Database.md](./Web-App-Data-Saved-To-Database.md)** - What the web app saves to the DB, which tables, and how to verify
 
 ---
 

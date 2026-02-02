@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { usePageTitle } from '../hooks/usePageTitle';
 import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { useShelf } from '../context/ShelfContext';
 import { IconBarChart, IconCamera, IconPackage, IconSparkles, IconTrendingUp, IconScan } from '../components/Icons';
+import { usePageTitle } from '../hooks/usePageTitle';
 import { getScanHistory } from '../services/scanApi';
+import { api } from '../services/api';
+import { getUploadFullUrl } from '../config';
 import './ProfileSettingsPage.css';
 
 interface UserProfile {
@@ -193,18 +195,40 @@ const ProfileSettingsPage: React.FC = () => {
 
   const fetchUserProfile = useCallback(async () => {
     try {
+      const res = await api.get<{
+        first_name?: string | null;
+        last_name?: string | null;
+        profile_photo_url?: string | null;
+        phone_number?: string | null;
+        [k: string]: unknown;
+      }>('/profile');
+      const p = res.data;
+      const fullName = [p.first_name, p.last_name].filter(Boolean).join(' ') || user?.full_name || 'User';
+      let photoUrl = p.profile_photo_url || '';
+      if (photoUrl && !photoUrl.startsWith('http')) {
+        photoUrl = getUploadFullUrl(photoUrl);
+      }
+      const updates = {
+        name: fullName,
+        email: user?.email || '',
+        profilePhoto: photoUrl,
+        phone: p.phone_number || ''
+      };
       setProfile((prev) => {
-        const nextProfile = {
-          ...prev,
-          name: user?.full_name || 'User',
-          email: user?.email || 'user@example.com'
-        };
-        initialProfileRef.current = nextProfile;
-        return nextProfile;
+        const next = { ...prev, ...updates };
+        initialProfileRef.current = next;
+        return next;
       });
       setIsDirty(false);
-    } catch (err) {
-      console.error('Failed to fetch profile:', err);
+    } catch (err: unknown) {
+      const status = (err as { response?: { status?: number } })?.response?.status;
+      if (status === 404) {
+        setProfile((prev) => ({
+          ...prev,
+          name: user?.full_name || prev.name || 'User',
+          email: user?.email || prev.email || 'user@example.com'
+        }));
+      }
     }
   }, [user]);
 
@@ -295,15 +319,31 @@ const ProfileSettingsPage: React.FC = () => {
     setError('');
     setSuccess(false);
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const nameParts = profile.name.trim().split(/\s+/, 2);
+      const first_name = nameParts[0] || '';
+      const last_name = nameParts[1] || '';
+      const profile_photo_url = profile.profilePhoto?.startsWith('data:') ? undefined : (profile.profilePhoto || undefined);
+      await api.patch('/profile', {
+        first_name,
+        last_name,
+        phone_number: profile.phone || undefined,
+        profile_photo_url,
+      });
       setSuccess(true);
       toast.success('Profile updated successfully.');
       initialProfileRef.current = profile;
       setIsDirty(false);
       setTimeout(() => setSuccess(false), 3000);
-    } catch (err) {
-      setError('Failed to update profile. Please try again.');
-      toast.error('Failed to update profile.');
+    } catch (err: unknown) {
+      const status = (err as { response?: { status?: number; data?: { detail?: string } } })?.response?.status;
+      const detail = (err as { response?: { data?: { detail?: string } } })?.response?.data?.detail;
+      if (status === 404) {
+        setError('Profile not found. Complete onboarding first to create your profile.');
+        toast.error('Complete onboarding first.');
+      } else {
+        setError(detail || 'Failed to update profile. Please try again.');
+        toast.error('Failed to update profile.');
+      }
     } finally {
       setLoading(false);
     }
@@ -321,15 +361,31 @@ const ProfileSettingsPage: React.FC = () => {
     });
   };
 
-  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfile(prev => ({ ...prev, profilePhoto: reader.result as string }));
-        toast.success('Profile photo updated.');
-      };
-      reader.readAsDataURL(file);
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please select an image file (JPEG, PNG, WebP, GIF).');
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('Image must be under 5MB.');
+      return;
+    }
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      const res = await api.post<{ url: string }>('/profile/upload-photo', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      const relativeUrl = res.data?.url || '';
+      const fullUrl = relativeUrl.startsWith('http') ? relativeUrl : getUploadFullUrl(relativeUrl);
+      setProfile(prev => ({ ...prev, profilePhoto: fullUrl }));
+      setIsDirty(true);
+      toast.success('Profile photo ready. Click Save to persist.');
+    } catch (err) {
+      const msg = (err as { response?: { data?: { detail?: string } } })?.response?.data?.detail || 'Upload failed.';
+      toast.error(msg);
     }
   };
 

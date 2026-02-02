@@ -1,8 +1,9 @@
 import logging
 from datetime import datetime
+from pathlib import Path
 from typing import Optional
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
 from sqlalchemy.orm import Session
 
 from app.core.audit import log_profile_event
@@ -18,6 +19,29 @@ from app.schemas.profile import ProfileCreate, ProfileResponse, ProfileUpdate
 
 router = APIRouter(prefix="/profile", tags=["profile"])
 logger = logging.getLogger(__name__)
+
+UPLOADS_DIR = Path(__file__).resolve().parent.parent.parent / "uploads"
+ALLOWED_IMAGE_TYPES = {"image/jpeg", "image/png", "image/webp", "image/gif"}
+MAX_IMAGE_SIZE = 5 * 1024 * 1024  # 5MB
+
+
+@router.post("/upload-photo")
+async def upload_profile_photo(
+    file: UploadFile = File(...),
+    current_user: User = Depends(get_current_user),
+):
+    """Upload a profile photo. Returns URL to use in profile_photo_url. Any authenticated user."""
+    if file.content_type not in ALLOWED_IMAGE_TYPES:
+        raise HTTPException(400, detail="Allowed types: JPEG, PNG, WebP, GIF")
+    contents = await file.read()
+    if len(contents) > MAX_IMAGE_SIZE:
+        raise HTTPException(400, detail="Max file size 5MB")
+    UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
+    ext = "jpg" if file.content_type == "image/jpeg" else "png" if file.content_type == "image/png" else "webp" if file.content_type == "image/webp" else "gif"
+    name = f"profile_{current_user.id}_{datetime.utcnow().strftime('%Y%m%d%H%M%S')}.{ext}"
+    path = UPLOADS_DIR / name
+    path.write_bytes(contents)
+    return {"url": f"/uploads/{name}"}
 
 
 def _build_profile_response(profile: UserProfile) -> ProfileResponse:

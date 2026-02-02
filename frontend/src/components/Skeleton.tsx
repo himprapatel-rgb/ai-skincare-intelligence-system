@@ -113,7 +113,7 @@ export const SkeletonCardGrid: React.FC<{ count?: number; hasImage?: boolean }> 
 
 // Product details skeleton (Task 10001 H1)
 export const SkeletonProductDetails: React.FC = () => (
-  <div className="product-details-page" style={{ padding: '16px' }}>
+  <div className="product-details-page skeleton-product-details-wrap" style={{ padding: '16px', minHeight: 400 }}>
     <div className="skeleton skeleton-button" style={{ width: 80, height: 40, marginBottom: 16 }} />
     <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr)', gap: 24, maxWidth: 1200, margin: '0 auto' }}>
       <div className="skeleton skeleton-image" style={{ aspectRatio: '1', maxWidth: 360, borderRadius: 12 }} />
@@ -155,6 +155,42 @@ export const SkeletonHistoryList: React.FC = () => (
         </div>
       </div>
     ))}
+  </div>
+);
+
+// Digital Twin Timeline skeleton (Task 10001 H1)
+export const SkeletonDigitalTwin: React.FC = () => (
+  <div className="dt-page skeleton-dt-wrap" style={{ padding: '24px 16px 60px' }}>
+    <div className="dt-container" style={{ maxWidth: 1200, margin: '0 auto', display: 'grid', gap: 24 }}>
+      <div className="dt-hero" style={{ background: 'var(--bg-white)', border: '1px solid var(--border)', borderRadius: 20, padding: 24 }}>
+        <div style={{ marginBottom: 20 }}>
+          <div className="skeleton skeleton-heading" style={{ height: 28, width: 280, marginBottom: 8 }} />
+          <div className="skeleton skeleton-text" style={{ width: 320 }} />
+        </div>
+        <div style={{ display: 'flex', gap: 16, alignItems: 'center', background: 'var(--gray-50)', padding: 16, borderRadius: 16 }}>
+          <div className="skeleton" style={{ width: 64, height: 48, borderRadius: 8 }} />
+          <div className="skeleton" style={{ width: 80, height: 32 }} />
+          <div className="skeleton" style={{ width: 60, height: 32 }} />
+        </div>
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: 16 }}>
+        {[1, 2, 3, 4].map((i) => (
+          <div key={i} className="skeleton skeleton-stat" style={{ minHeight: 100, borderRadius: 12 }} />
+        ))}
+      </div>
+      <div className="skeleton" style={{ height: 200, borderRadius: 12 }} />
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+        {[1, 2, 3].map((i) => (
+          <div key={i} style={{ display: 'flex', gap: 16, padding: 16, background: 'var(--bg-white)', borderRadius: 12, border: '1px solid var(--border)' }}>
+            <div className="skeleton" style={{ width: 72, height: 72, borderRadius: 8, flexShrink: 0 }} />
+            <div style={{ flex: 1 }}>
+              <div className="skeleton skeleton-text" style={{ marginBottom: 8 }} />
+              <div className="skeleton skeleton-text" style={{ width: '60%', marginBottom: 4 }} />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
   </div>
 );
 

@@ -278,3 +278,93 @@
     min-height: 20px;
   }
 }
+
+/* =============================================
+   D. Forms & inputs (Task 10001)
+============================================= */
+@media (max-width: 768px) {
+  /* D1: Input styling - full-width, clear focus */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="search"],
+  input[type="number"],
+  textarea,
+  select {
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 16px; /* Prevents iOS zoom on focus */
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  input:focus,
+  textarea:focus,
+  select:focus {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+  /* D2: Touch targets - min 44px */
+  select.filter-select,
+  .filter-select,
+  .history-sort-select {
+    min-height: 48px;
+    padding: 12px 40px 12px 16px;
+  }
+  /* D3: Keyboard - scroll into view, prevent overlap */
+  input:focus,
+  textarea:focus {
+    scroll-margin-top: 80px;
+    scroll-margin-bottom: 100px;
+  }
+  /* D4: Native date/number - preserve native picker */
+  input[type="date"],
+  input[type="time"],
+  input[type="datetime-local"],
+  input[type="month"] {
+    min-height: 48px;
+  }
+}
+
+/* =============================================
+   G2. Filter selects - bottom-sheet feel on mobile
+============================================= */
+@media (max-width: 768px) {
+  .filter-select,
+  .myshelf-filters select,
+  .history-sort-select {
+    min-height: 48px;
+    font-size: 1rem;
+    border-radius: 12px;
+    padding: 14px 44px 14px 16px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+  }
+}
+
+/* =============================================
+   H2. No layout shift - skeleton min-height
+============================================= */
+.skeleton-history-list,
+.skeleton-container,
+.product-details-page .skeleton,
+.analysis-results .skeleton {
+  min-height: 120px;
+}
+.skeleton-product-details-wrap {
+  min-height: 400px;
+}
+.skeleton-dt-wrap {
+  min-height: 400px;
+}
+
+/* =============================================
+   H3. Smooth scroll
+============================================= */
+@media (max-width: 768px) {
+  html {
+    scroll-behavior: smooth;
+  }
+}

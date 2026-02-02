@@ -24,6 +24,13 @@
 
 ## Implemented (Phase 3)
 
+- **H1**: Skeleton loaders – SkeletonDigitalTwin for Digital Twin Timeline (replaces LoadingScreen)
+- **G3**: Toast above bottom nav (already in Phase 1/2)
+- **Add-to-home prompt**: Positioned above bottom nav (80px)
+- **H2**: Skeleton min-height for skeleton-dt-wrap (no layout shift)
+
+## Implemented (Phase 3)
+
 - **H1**: Skeleton loaders – ProductDetailsPage, AnalysisResults, HistoryPage (SkeletonProductDetails, SkeletonAnalysis, SkeletonHistoryList)
 - **G3**: Toast positioning – above bottom nav on mobile (`bottom: 80px + safe-area`)
 - **E3**: Disabled button state – opacity 0.55, cursor not-allowed

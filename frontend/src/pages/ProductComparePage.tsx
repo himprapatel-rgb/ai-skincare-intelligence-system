@@ -1,6 +1,7 @@
 import React, { useMemo, useState, useEffect } from 'react';
-import { useSearchParams, useNavigate, Link } from 'react-router-dom';
-import { IconArrowLeft, IconStar } from '../components/Icons';
+import { useSearchParams, Link } from 'react-router-dom';
+import { IconStar } from '../components/Icons';
+import { BackButton } from '../components/BackButton';
 import { usePageTitle } from '../hooks/usePageTitle';
 import './ProductComparePage.css';
 
@@ -65,7 +66,6 @@ function getProduct(id: string): CompareProduct | null {
 
 const ProductComparePage: React.FC = () => {
   const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
   const idsParam = searchParams.get('ids') || '';
   const ids = useMemo(() => idsParam.split(',').map((s) => s.trim()).filter(Boolean).slice(0, 4), [idsParam]);
   const [products, setProducts] = useState<CompareProduct[]>([]);
@@ -83,10 +83,7 @@ const ProductComparePage: React.FC = () => {
           <h1>Compare Products</h1>
           <p className="compare-empty-desc">Add at least 2 products to compare. Use &quot;Add to compare&quot; on product pages or recommendations.</p>
           <Link to="/recommendations" className="btn-primary">Browse recommendations</Link>
-          <button type="button" className="btn-secondary" onClick={() => navigate(-1)}>
-            <IconArrowLeft size={18} strokeWidth={2} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
-            Back
-          </button>
+          <BackButton />
         </div>
       </div>
     );
@@ -97,10 +94,7 @@ const ProductComparePage: React.FC = () => {
       <div className="product-compare-container">
         <div className="compare-header">
           <h1>Compare products</h1>
-          <button type="button" className="btn-secondary compare-back" onClick={() => navigate(-1)}>
-            <IconArrowLeft size={18} strokeWidth={2} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
-            Back
-          </button>
+          <BackButton className="compare-back" />
         </div>
         <div className="compare-grid" style={{ gridTemplateColumns: `repeat(${products.length}, 1fr)` }}>
           {products.map((product) => (

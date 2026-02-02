@@ -1,7 +1,7 @@
 /* Task 10000: Add to Home Screen prompt - app-like mobile UX */
 .add-to-home-prompt {
   position: fixed;
-  bottom: calc(64px + env(safe-area-inset-bottom, 0px));
+  bottom: calc(80px + env(safe-area-inset-bottom, 0px)); /* Above bottom nav */
   left: max(12px, env(safe-area-inset-left));
   right: max(12px, env(safe-area-inset-right));
   z-index: 999;

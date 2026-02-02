@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate, useLocation, Link } from 'react-router-dom';
 import { api } from '../services/api';
-import { IconArrowLeft, IconStar, IconAlertTriangle } from '../components/Icons';
+import { IconStar, IconAlertTriangle, IconShare2 } from '../components/Icons';
 import { BreadcrumbJsonLd } from '../components/BreadcrumbJsonLd';
+import { BackButton } from '../components/BackButton';
 import LoadingScreen from '../components/LoadingScreen';
 import { SkeletonProductDetails } from '../components/Skeleton';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { useShelf } from '../context/ShelfContext';
+import { useToast } from '../context/ToastContext';
 import './ProductDetailsPage.css';
 
 import { API_BASE_URL } from '../config';
@@ -160,6 +162,7 @@ const ProductDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const location = useLocation();
+  const toast = useToast();
   const { products: shelfProducts, isOnShelf, addToShelf, removeFromShelf } = useShelf();
   const shelfProductFromState = (location.state as { shelfProduct?: typeof shelfProducts[0] } | null)?.shelfProduct;
   const [product, setProduct] = useState<ProductDetails | null>(null);
@@ -451,10 +454,7 @@ const ProductDetailsPage: React.FC = () => {
         ]}
       />
       <div className="product-details-actions-row">
-        <button className="back-button" onClick={() => navigate(-1)}>
-          <IconArrowLeft size={16} strokeWidth={2} className="icon-inline" />
-          Back
-        </button>
+        <BackButton />
         {compareIds.length >= 2 && (
           <Link to={`/product/compare?ids=${compareIds.slice(0, 4).join(',')}`} className="compare-link">
             Compare ({compareIds.length})
@@ -574,6 +574,28 @@ const ProductDetailsPage: React.FC = () => {
             <button className="btn-outline" onClick={() => navigate('/routine-builder')}>
               Add to Routine
             </button>
+            {typeof navigator !== 'undefined' && navigator.share && (
+              <button
+                type="button"
+                className="btn-outline"
+                onClick={async () => {
+                  try {
+                    await navigator.share({
+                      title: product.name,
+                      text: `${product.name} by ${product.brand}`,
+                      url: window.location.href,
+                    });
+                    toast.success('Shared successfully');
+                  } catch (err) {
+                    if ((err as Error).name !== 'AbortError') toast.error('Could not share');
+                  }
+                }}
+                aria-label="Share product"
+              >
+                <IconShare2 size={16} strokeWidth={2} className="icon-inline" />
+                Share
+              </button>
+            )}
           </div>
         </div>
       </div>

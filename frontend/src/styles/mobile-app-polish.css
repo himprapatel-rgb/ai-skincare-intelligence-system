@@ -203,6 +203,18 @@
   .homepage .hero-reassurance {
     font-size: 0.85rem;
   }
+  
+  /* F1c: Home – CRITICAL FIX: Hide decorative circles that overlap text */
+  .cta-section::after,
+  .cta-section::before,
+  .hero::after {
+    display: none !important;
+  }
+  
+  /* F1d: Home – Hide duplicate sticky CTA (hero already has CTAs + we have bottom nav) */
+  .mobile-sticky-cta {
+    display: none !important;
+  }
 
   /* F4: My Shelf - product cards */
   .myshelf-page {

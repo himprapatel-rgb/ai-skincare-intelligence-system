@@ -48,6 +48,7 @@
 
 .bottom-nav-item.active {
   color: var(--primary);
+  background: transparent;
 }
 
 .bottom-nav-item svg {

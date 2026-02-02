@@ -112,6 +112,25 @@
   .container {
     max-width: 100%;
   }
+
+  /* A6: App-only – no footer, no breadcrumbs (mobile = app, not full website) */
+  .app-footer {
+    display: none !important;
+  }
+  .app-breadcrumbs {
+    display: none !important;
+  }
+  /* Utility: hide on mobile (use class="desktop-only" for web-only content) */
+  .desktop-only {
+    display: none !important;
+  }
+}
+
+/* Utility: hide on desktop (use class="mobile-only" for app-only content) */
+@media (min-width: 769px) {
+  .mobile-only {
+    display: none !important;
+  }
 }
 
 /* =============================================
@@ -154,6 +173,35 @@
   .hero-cta .btn-secondary {
     width: 100%;
     justify-content: center;
+  }
+
+  /* F1b: Home – app-only: hide marketing / long copy on mobile */
+  .homepage .as-featured-section {
+    display: none;
+  }
+  .homepage .trust-badges-section .trust-badge-text {
+    font-size: 0.9rem;
+  }
+  .homepage .stats-section .section-header p,
+  .homepage .results-preview .section-header p,
+  .homepage .how-it-works .section-header p,
+  .homepage .testimonials-section .section-header p {
+    display: none;
+  }
+  .homepage .result-card p {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .homepage .step-card p {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .homepage .hero-reassurance {
+    font-size: 0.85rem;
   }
 
   /* F4: My Shelf - product cards */
@@ -208,6 +256,25 @@
   .product-header {
     grid-template-columns: 1fr;
     gap: 20px;
+  }
+  /* F5b: Product Details – app-only: shorten long copy on mobile */
+  .product-details-page .description {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* F5c: About – app-only: shorten long paragraphs on mobile */
+  .about-page .mission-content p,
+  .about-page .story-card p {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .about-page .about-subtitle {
+    font-size: 0.95rem;
   }
 
   /* F6: Dashboard */

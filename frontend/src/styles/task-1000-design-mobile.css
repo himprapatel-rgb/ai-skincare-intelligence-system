@@ -1,0 +1,95 @@
+/**
+ * Task 1000: Design & Mobile App – Consolidation layer
+ * Supplements mobile-app-polish.css and index.css
+ * Last updated: Task 1000 implementation
+ */
+
+/* =============================================
+   DS6: Focus states – ensure keyboard users can see focus
+============================================= */
+button:focus-visible,
+a:focus-visible,
+[role="button"]:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* =============================================
+   ML: Breakpoint helpers (480px for small phones)
+============================================= */
+@media (max-width: 480px) {
+  .page-header h1 {
+    font-size: 1.25rem;
+  }
+  .profile-hero-banner h1 {
+    font-size: 1.25rem;
+  }
+}
+
+/* =============================================
+   PP: Recommendations grid – single column on mobile
+============================================= */
+@media (max-width: 768px) {
+  .recommendations-page .products-grid,
+  .recommendations-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+/* =============================================
+   PP: Favorites grid – single column
+============================================= */
+@media (max-width: 768px) {
+  .favorites-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+/* =============================================
+   PP: About page – container padding
+============================================= */
+@media (max-width: 768px) {
+  .about-container {
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+  .about-page .story-grid,
+  .about-page .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+/* =============================================
+   PP: Routine Builder – time selector, step cards
+============================================= */
+@media (max-width: 768px) {
+  .routine-builder-page {
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+  .time-selector {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .time-selector .time-btn {
+    width: 100%;
+    min-height: 48px;
+  }
+}
+
+/* =============================================
+   PP: Comparison page – single column
+============================================= */
+@media (max-width: 768px) {
+  .comparison-page .comparison-grid,
+  .comparison-page [class*="grid"] {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}

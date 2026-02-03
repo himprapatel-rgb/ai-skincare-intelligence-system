@@ -1,7 +1,9 @@
 import React from 'react';
+import { usePageTitle } from '../hooks/usePageTitle';
 import './VideoTutorialsPage.css';
 
 const VideoTutorialsPage: React.FC = () => {
+  usePageTitle('Video Tutorials', 'Short walkthroughs for every feature.');
   return (
     <div className="video-page app-page">
       <header className="app-header-card">

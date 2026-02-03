@@ -186,6 +186,57 @@
   gap: 16px;
 }
 
+/* Guest/error state: feature preview + CTAs to reduce empty viewport */
+.dt-guest-content {
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.dt-guest-card {
+  padding: 28px;
+}
+
+.dt-guest-heading {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin: 0 0 12px 0;
+}
+
+.dt-guest-desc {
+  color: var(--text-gray);
+  line-height: 1.6;
+  margin: 0 0 16px 0;
+}
+
+.dt-guest-features {
+  margin: 0 0 20px 0;
+  padding-left: 20px;
+  color: var(--text-gray);
+  line-height: 1.6;
+}
+
+.dt-guest-features li {
+  margin-bottom: 6px;
+}
+
+.dt-guest-hint {
+  font-size: 0.9rem;
+  color: var(--text-gray);
+  margin: 0 0 20px 0;
+}
+
+.dt-guest-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: flex-start;
+}
+
+.dt-guest-actions .btn {
+  min-width: 140px;
+}
+
 .dt-select {
   display: flex;
   align-items: center;

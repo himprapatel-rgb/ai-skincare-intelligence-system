@@ -375,7 +375,7 @@ const displayName = nameParts.length > 1
       )}
 
       <main className="app-main app-main-with-bottom-nav" id="main-content" role="main">
-        <div key={location.pathname} className="page-transition-wrap">
+        <div key={location.pathname + location.key} className="page-transition-wrap">
           {children}
         </div>
       </main>

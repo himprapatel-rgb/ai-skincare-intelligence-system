@@ -12,6 +12,12 @@
   margin: 0 auto;
 }
 
+@media (min-width: 769px) {
+  .video-container {
+    min-height: 55vh;
+  }
+}
+
 .page-header {
   text-align: center;
 }

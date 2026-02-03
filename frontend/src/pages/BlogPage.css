@@ -12,6 +12,12 @@
   margin: 0 auto;
 }
 
+@media (min-width: 769px) {
+  .blog-container {
+    min-height: 55vh;
+  }
+}
+
 .blog-page .page-header {
   text-align: center;
 }

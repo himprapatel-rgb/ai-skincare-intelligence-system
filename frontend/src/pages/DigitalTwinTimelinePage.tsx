@@ -321,16 +321,29 @@ const DigitalTwinTimelinePage: React.FC = () => {
 
   if (hasError) {
     return (
-      <div className="dt-page app-page">
+      <div className="dt-page app-page dt-page--guest">
         <header className="app-header-card">
           <h1>Digital Twin</h1>
-          <p className="app-header-subtitle">We couldn&apos;t load your timeline</p>
+          <p className="app-header-subtitle">Visualize your skin transformation over time</p>
         </header>
-        <div className="app-page-content dt-container">
-          <section className="dt-card">
-            <p>Tap below to try again or go back to your dashboard.</p>
-            <div className="dt-card-body">
-              <button type="button" className="btn btn-primary" onClick={() => window.location.reload()}>
+        <div className="app-page-content dt-container dt-guest-content">
+          <section className="dt-card dt-guest-card">
+            <h2 className="dt-guest-heading">What is Digital Twin?</h2>
+            <p className="dt-guest-desc">
+              Your Digital Twin tracks skin scores, concerns, and progress across scans. See trends, compare before/after, and run &quot;what-if&quot; simulations.
+            </p>
+            <ul className="dt-guest-features">
+              <li>Score and trend chart over time</li>
+              <li>Before/after snapshot comparison</li>
+              <li>Top concerns and improvements</li>
+              <li>Simulate impact of routines</li>
+            </ul>
+            <p className="dt-guest-hint">Sign in to load your timeline, or try again if you're already signed in.</p>
+            <div className="dt-card-body dt-guest-actions">
+              <button type="button" className="btn btn-primary" onClick={() => navigate('/auth')}>
+                Log in to access
+              </button>
+              <button type="button" className="btn btn-secondary" onClick={() => setRefreshKey((k) => k + 1)}>
                 Try again
               </button>
             </div>
@@ -351,7 +364,7 @@ const DigitalTwinTimelinePage: React.FC = () => {
           <section className="dt-card">
             <p>Complete a scan to generate your first digital twin snapshot.</p>
             <div className="dt-card-body">
-              <button type="button" className="btn-primary" onClick={() => navigate('/scan')}>
+              <button type="button" className="btn btn-primary" onClick={() => navigate('/scan')}>
                 Start a Scan
               </button>
             </div>

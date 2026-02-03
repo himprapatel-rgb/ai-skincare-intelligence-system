@@ -194,19 +194,34 @@ const DashboardPage: React.FC = () => {
 
   if (!user) {
     return (
-      <div className="dashboard-page app-page">
+      <div className="dashboard-page app-page dashboard-page--guest">
         <header className="app-header-card dashboard-hero">
           <h1>Your Dashboard</h1>
           <p className="app-header-subtitle">Track your skin and routines in one place</p>
         </header>
-        <div className="app-page-content">
+        <div className="app-page-content dashboard-guest-content">
           <EmptyState
             icon={<IconCamera size={48} strokeWidth={2} />}
             title="Sign in to see your dashboard"
             description="View your skin score, scan history, shelf, and personalized next steps."
-            actionLabel="Sign In"
-            onAction={() => navigate('/auth')}
           />
+          <div className="dashboard-guest-preview">
+            <p className="dashboard-guest-preview-title">What you&apos;ll get</p>
+            <ul>
+              <li>Skin health score and trend over time</li>
+              <li>Scan history and before/after comparison</li>
+              <li>My Shelf and personalized recommendations</li>
+              <li>Routine builder and reminders</li>
+            </ul>
+          </div>
+          <div className="dashboard-guest-actions">
+            <button type="button" className="btn btn-primary" onClick={() => navigate('/auth')}>
+              Sign In
+            </button>
+            <button type="button" className="btn btn-secondary" onClick={() => navigate('/auth?mode=register')}>
+              Create Account
+            </button>
+          </div>
         </div>
       </div>
     );

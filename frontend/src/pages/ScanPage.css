@@ -199,13 +199,14 @@
 .scan-container {
   max-width: 900px;
   margin: 0 auto;
-  padding: 60px 24px 80px;
+  padding: 60px 24px 48px;
 }
 
 .scan-content {
   background: var(--bg-white);
   border-radius: 12px; /* Brand guideline: 12px for cards */
   padding: 56px 48px;
+  min-height: min(560px, 58vh);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Brand guideline */
   border: 1px solid var(--border);
 }

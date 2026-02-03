@@ -12,6 +12,12 @@
   margin: 0 auto;
 }
 
+@media (min-width: 769px) {
+  .ingredient-container {
+    min-height: 55vh;
+  }
+}
+
 .ingredient-page .page-header {
   text-align: center;
 }

@@ -12,13 +12,12 @@ const TYPES = [
 const SkinTypeGuidePage: React.FC = () => {
   usePageTitle('Skin Type Guide');
   return (
-    <div className="skin-type-page">
-      <div className="page-container skin-type-container">
-        <div className="page-header">
-          <h1>Skin Type Guide</h1>
-          <p>Identify your skin type and choose products with confidence.</p>
-        </div>
-
+    <div className="skin-type-page app-page">
+      <header className="app-header-card">
+        <h1>Skin Type Guide</h1>
+        <p className="app-header-subtitle">Identify your type and choose products with confidence.</p>
+      </header>
+      <div className="app-page-content skin-type-container">
         <div className="skin-type-grid">
           {TYPES.map((t) => (
             <div key={t.name} className="skin-type-card">

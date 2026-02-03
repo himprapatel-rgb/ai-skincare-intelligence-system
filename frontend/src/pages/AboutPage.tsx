@@ -11,19 +11,12 @@ const AboutPage: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="about-page">
-      <div className="about-container">
-        {/* Hero Section */}
-        <section className="about-hero">
-          <div className="about-hero-content">
-            <h1 className="about-title">About SkinCareAI</h1>
-            <p className="about-subtitle">
-              AI-powered skin analysis for everyone, everywhere
-            </p>
-          </div>
-        </section>
-
-        {/* Mission Section */}
+    <div className="about-page app-page">
+      <header className="app-header-card">
+        <h1>About SkinCareAI</h1>
+        <p className="app-header-subtitle">AI skin analysis for everyone, everywhere.</p>
+      </header>
+      <div className="app-page-content about-container">
         <section className="about-section">
           <h2 className="section-title">Our Mission</h2>
           <div className="mission-content">

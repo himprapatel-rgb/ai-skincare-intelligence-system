@@ -43,12 +43,11 @@ const PasswordResetPage: React.FC = () => {
 
   if (isSubmitted) {
     return (
-      <div className="page-container password-reset-page">
-        <div className="card password-reset-card">
-          <div className="card-header">
-            <h2>Check Your Email</h2>
-          </div>
-          <div className="card-content password-reset-content">
+      <div className="password-reset-page app-page">
+        <div className="app-page-content">
+        <div className="app-card password-reset-card">
+          <h2 className="password-reset-title">Check your email</h2>
+          <div className="password-reset-content">
             <div className="password-reset-icon">
               <IconMail size={48} strokeWidth={2} />
             </div>
@@ -68,21 +67,20 @@ const PasswordResetPage: React.FC = () => {
             </div>
           </div>
         </div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="page-container password-reset-page">
-      <div className="card password-reset-card">
-        <div className="card-header">
-          <h2>Reset Password</h2>
+    <div className="password-reset-page app-page">
+      <div className="app-page-content">
+      <div className="app-card password-reset-card">
+          <h2 className="password-reset-title">Reset password</h2>
           <p className="password-reset-note">
-            Enter your email and we'll send you a reset link
+            Enter your email and we'll send you a reset link.
           </p>
-        </div>
-        <div className="card-content">
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className="password-reset-form">
             {error && (
               <div className="alert alert-error password-reset-alert">
                 {error}
@@ -110,10 +108,7 @@ const PasswordResetPage: React.FC = () => {
             </button>
           </form>
           <div className="password-reset-footer">
-            <Link to="/auth" className="password-reset-link">
-              <IconArrowLeft size={16} strokeWidth={2} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
-              Back to Login
-            </Link>
+            <Link to="/auth" className="password-reset-link">Back to login</Link>
           </div>
         </div>
       </div>

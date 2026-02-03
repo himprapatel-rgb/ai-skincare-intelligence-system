@@ -285,8 +285,8 @@ const Recommendations: React.FC = () => {
 
   if (error && products.length === 0) {
     return (
-      <div className="recommendations-page">
-        <div className="recommendations-container">
+      <div className="recommendations-page app-page">
+        <div className="recommendations-container app-page-content">
           <div className="recommendations-state error">
             <div className="recommendations-error">
               <div className="error-icon">

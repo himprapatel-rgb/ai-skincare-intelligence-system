@@ -5,6 +5,7 @@ import './ConsentPage.css';
 
 interface ConsentOptions {
   dataCollection: boolean;
+  locationAndDevice: boolean;
   analytics: boolean;
   marketing: boolean;
   thirdParty: boolean;
@@ -19,6 +20,7 @@ const ConsentPage: React.FC = () => {
   const navigate = useNavigate();
   const [consents, setConsents] = useState<ConsentOptions>({
     dataCollection: false,
+    locationAndDevice: false,
     analytics: false,
     marketing: false,
     thirdParty: false
@@ -52,7 +54,12 @@ const ConsentPage: React.FC = () => {
             // Load any stored granular preferences
             const stored = localStorage.getItem('userConsents');
             if (stored) {
-              setConsents(JSON.parse(stored));
+              try {
+                const parsed = JSON.parse(stored);
+                setConsents(prev => ({ ...prev, ...parsed }));
+              } catch {
+                /* ignore */
+              }
             }
           }
         } catch {
@@ -80,6 +87,7 @@ const ConsentPage: React.FC = () => {
   const handleAcceptAll = () => {
     setConsents({
       dataCollection: true,
+      locationAndDevice: true,
       analytics: true,
       marketing: true,
       thirdParty: true
@@ -89,6 +97,7 @@ const ConsentPage: React.FC = () => {
   const handleRejectAll = () => {
     setConsents({
       dataCollection: false,
+      locationAndDevice: false,
       analytics: false,
       marketing: false,
       thirdParty: false
@@ -132,11 +141,11 @@ const ConsentPage: React.FC = () => {
 
   if (initialLoading) {
     return (
-      <div className="consent-page">
-        <div className="consent-container">
+      <div className="consent-page app-page">
+        <div className="app-page-content consent-container">
           <div className="consent-header">
-            <h1>Loading...</h1>
-            <p className="subtitle">Fetching your consent preferences</p>
+            <h1>Loading…</h1>
+            <p className="subtitle">Fetching your preferences</p>
           </div>
         </div>
       </div>
@@ -144,15 +153,15 @@ const ConsentPage: React.FC = () => {
   }
 
   return (
-    <div className="consent-page">
-      <div className="consent-container">
-        <div className="consent-header">
-          <h1>Your Privacy Matters</h1>
-          <p className="subtitle">We value your privacy and want to be transparent about how we use your data</p>
-          {hasExistingConsent && (
-            <p className="consent-existing-notice">You have previously accepted our policies. You can update your preferences below.</p>
-          )}
-        </div>
+    <div className="consent-page app-page">
+      <header className="app-header-card">
+        <h1>Your privacy</h1>
+        <p className="app-header-subtitle">We collect data like other apps — you choose what’s optional.</p>
+      </header>
+      <div className="app-page-content consent-container">
+        {hasExistingConsent && (
+          <p className="consent-existing-notice">You’ve accepted before. Update optional preferences below.</p>
+        )}
 
         <form onSubmit={handleSubmit} className="consent-form">
           <div className="consent-section">
@@ -187,7 +196,33 @@ const ConsentPage: React.FC = () => {
             <div className="consent-item">
               <div className="consent-header-item">
                 <div className="consent-title">
-                  <h3>Analytics & Performance</h3>
+                  <h3>Location & device data</h3>
+                  <span className="badge-optional">Optional</span>
+                </div>
+                <label className="switch">
+                  <input
+                    type="checkbox"
+                    checked={consents.locationAndDevice}
+                    onChange={() => handleConsentChange('locationAndDevice')}
+                  />
+                  <span className="slider"></span>
+                </label>
+              </div>
+              <p className="consent-summary">Like other apps, we may use location and device info to personalize your experience.</p>
+              <p className="consent-description">
+                With your permission we may collect approximate location, device type, and language to improve recommendations and app experience. You can turn this off anytime.
+              </p>
+              <ul className="consent-details">
+                <li>Approximate location (country/region)</li>
+                <li>Device type and OS</li>
+                <li>Language and time zone</li>
+              </ul>
+            </div>
+
+            <div className="consent-item">
+              <div className="consent-header-item">
+                <div className="consent-title">
+                  <h3>Analytics & performance</h3>
                   <span className="badge-optional">Optional</span>
                 </div>
                 <label className="switch">
@@ -264,11 +299,9 @@ const ConsentPage: React.FC = () => {
           </div>
 
           <div className="privacy-info">
-            <h3>Your Rights</h3>
+            <h3>Your rights</h3>
             <p>
-              You have the right to access, modify, or delete your data at any time. You can also withdraw 
-              your consent for optional data processing. Learn more in our <Link to="/privacy">Privacy Policy</Link> and{' '}
-              <Link to="/terms">Terms of Service</Link>.
+              You can access, change, or delete your data anytime and withdraw optional consents. See our <Link to="/privacy">Privacy Policy</Link> and <Link to="/terms">Terms</Link>.
             </p>
           </div>
 
@@ -302,8 +335,7 @@ const ConsentPage: React.FC = () => {
         </form>
 
         <div className="consent-footer">
-          <p>Last updated: January 2026</p>
-          <p>You can change these preferences at any time in your settings.</p>
+          <p>Last updated: January 2026. Change preferences anytime in Settings.</p>
         </div>
       </div>
     </div>

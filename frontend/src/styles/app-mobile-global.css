@@ -1,0 +1,113 @@
+/* ============================================================
+   APP MOBILE GLOBAL — Make every page feel like a native app
+   Applied when viewport is mobile; reinforces safe areas, touch, and chrome.
+   Design tokens: use --space-4 (16px), --radius-lg (12px), --breakpoint-mobile (768px).
+   ============================================================ */
+
+@media (max-width: 768px) {
+  /* Mobile spacing token for content (single breakpoint) */
+  .app-page-content {
+    padding-left: max(var(--space-4, 16px), env(safe-area-inset-left));
+    padding-right: max(var(--space-4, 16px), env(safe-area-inset-right));
+  }
+
+  /* Cards: consistent radius (design token) */
+  .app-card,
+  .app-list-group,
+  .app-header-card {
+    border-radius: var(--radius-lg, 14px);
+  }
+
+  /* Prevent overscroll bounce on iOS (optional; keeps app-like feel) */
+  html {
+    overscroll-behavior-y: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  body {
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+
+  #root {
+    min-height: 100%;
+  }
+
+  .app-layout main,
+  .app-layout .app-main {
+    padding-bottom: max(88px, calc(80px + env(safe-area-inset-bottom)));
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .app-page {
+    padding-bottom: max(100px, calc(88px + env(safe-area-inset-bottom)));
+  }
+
+  /* Touch targets: minimum 44px */
+  button:not(.btn-icon-small):not(.btn-action),
+  .app-page .btn,
+  .app-page a.btn,
+  a.app-list-item,
+  .app-nav-mobile-link,
+  .filter-tabs-scroll button,
+  .myshelf-pills button {
+    min-height: 44px;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="search"],
+  input[type="password"],
+  input[type="number"],
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+
+  * {
+    -webkit-tap-highlight-color: rgba(79, 70, 229, 0.12);
+  }
+
+  /* Focus visible: keyboard/screen reader users */
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible,
+  [tabindex="0"]:focus-visible {
+    outline: 2px solid var(--primary, #2563eb);
+    outline-offset: 2px;
+  }
+}
+
+/* Respect reduced motion (accessibility) */
+@media (max-width: 768px) {
+  @media (prefers-reduced-motion: reduce) {
+    .page-transition-wrap,
+    .onboarding-page .progress-step,
+    .scan-page *,
+    .btn-primary,
+    .btn-secondary,
+    [class*="animation"],
+    [class*="transition"] {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* Standalone/PWA: even more app-like (when added to home screen) */
+@media (max-width: 768px) {
+  [data-standalone="true"] .app-page {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  [data-standalone="true"] .app-header-card,
+  [data-standalone="true"] .myshelf-hero,
+  [data-standalone="true"] .app-header {
+    padding-top: max(16px, env(safe-area-inset-top));
+  }
+}

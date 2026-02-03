@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { IconCamera, IconStar, IconZap, IconBarChart, IconScan, IconSearch } from '../components/Icons';
+import { IconCamera, IconStar, IconZap, IconBarChart, IconScan, IconSearch, IconRefresh } from '../components/Icons';
 import { getScanHistory } from '../services/scanApi';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { SkeletonHistoryList } from '../components/Skeleton';
@@ -117,10 +117,24 @@ const HistoryPage: React.FC = () => {
   return (
     <div className="history-page app-page">
       <div className="history-container app-page-content">
-        <div className="history-header">
-          <h1>Scan History</h1>
-          <p>Track your skin progress over time</p>
-        </div>
+        <header className="app-header-card history-header">
+          <div className="history-header-row">
+            <div>
+              <h1>Scan History</h1>
+              <p className="app-header-subtitle">Track your skin progress over time</p>
+            </div>
+            <button
+              type="button"
+              className="history-refresh-btn"
+              onClick={() => fetchHistory()}
+              disabled={loading}
+              aria-label="Refresh list"
+              title="Refresh"
+            >
+              <IconRefresh size={20} strokeWidth={2} className={loading ? 'spin' : ''} />
+            </button>
+          </div>
+        </header>
 
         <div className="history-filters">
           <button className={`filter-btn ${filter === 'all' ? 'active' : ''}`} onClick={() => setFilter('all')}>All Time</button>

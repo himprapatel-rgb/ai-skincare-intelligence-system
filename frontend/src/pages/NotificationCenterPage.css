@@ -1,114 +1,85 @@
-/* Notification Center Page - Brand-Aligned Design */
+/* Notification Center Page - App-style, mobile-first */
 
-.notification-center-page {
-  min-height: 100vh;
+.notification-center-page.app-page {
   background: var(--bg-secondary);
-  padding: var(--spacing-2xl) var(--spacing-lg);
-  font-family: var(--font-family);
 }
 
-.notification-center-page .icon-inline-lg {
-  display: inline-block;
+.notification-center-page .app-header-card {
+  margin-bottom: 0;
+  position: relative;
+}
+
+.notif-header-icon {
   vertical-align: middle;
-  margin-right: var(--spacing-md);
+  margin-right: 8px;
+}
+
+.notif-header-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.notification-center-page .btn-mark-all {
+  min-height: 40px;
+  padding: 8px 14px;
+  background: rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 10px;
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.notification-center-page .btn-mark-all:hover {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.notification-center-page .btn-settings {
+  min-height: 40px;
+  min-width: 40px;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notification-center-page .btn-settings:hover {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.notification-center-page .app-page-content {
+  padding-top: 20px;
+}
+
+.settings-card.app-card {
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.settings-card-title {
+  margin: 0 0 16px 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.settings-card-body {
+  padding: 0;
 }
 
 .notification-center-page .icon-inline-right {
   display: inline-block;
   vertical-align: middle;
-  margin-left: var(--spacing-xs);
-}
-
-.notification-container {
-  max-width: var(--max-width-lg);
-  margin: 0 auto;
-}
-
-.notification-center-page .page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: var(--spacing-xl);
-  flex-wrap: wrap;
-  gap: var(--spacing-md);
-}
-
-.header-content {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-md);
-}
-
-.notification-center-page .page-header h1 {
-  font-size: var(--font-size-2xl);
-  font-weight: var(--font-weight-bold);
-  color: var(--text-primary);
-  margin: 0;
-  line-height: var(--line-height-tight);
-  letter-spacing: var(--letter-spacing-tight);
-}
-
-.unread-badge {
-  background: var(--primary);
-  color: var(--white);
-  padding: var(--spacing-xs) var(--spacing-md);
-  border-radius: var(--border-radius-full);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
-}
-
-.header-actions {
-  display: flex;
-  gap: var(--spacing-md);
-  align-items: center;
-}
-
-.btn-mark-all {
-  min-height: 44px;
-  padding: 8px 16px;
-  background: var(--bg-white);
-  border: 1px solid var(--border);
-  border-radius: var(--border-radius-md);
-  color: var(--text-primary);
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.btn-mark-all:hover {
-  background: var(--primary);
-  color: white;
-  border-color: var(--primary);
-}
-
-.btn-settings {
-  min-height: 44px;
-  min-width: 44px;
-  padding: 8px;
-  background: var(--bg-white);
-  border: 1px solid var(--border);
-  border-radius: var(--border-radius-md);
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.btn-settings:hover {
-  background: var(--primary);
-  color: white;
-  border-color: var(--primary);
-}
-
-.settings-card {
-  background: var(--white);
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--border-color);
-  margin-bottom: 24px;
+  margin-left: 4px;
 }
 
 .setting-item {

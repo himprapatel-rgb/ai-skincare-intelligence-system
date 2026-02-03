@@ -173,15 +173,15 @@ const ComparisonPage: React.FC = () => {
   const overallChange = getOverallChange();
 
   return (
-    <div className="page-container comparison-page">
-      <div className="page-header comparison-header">
-        <h1>Compare Analyses</h1>
-        <p>Select two analyses to compare your skin progress</p>
-      </div>
-
-      <div className="card comparison-card">
-        <div className="card-header"><h3>Select Analyses to Compare</h3></div>
-        <div className="card-content comparison-selects">
+    <div className="comparison-page app-page">
+      <header className="app-header-card">
+        <h1>Compare analyses</h1>
+        <p className="app-header-subtitle">Pick two scans to see how your skin has changed</p>
+      </header>
+      <div className="app-page-content">
+      <div className="app-card comparison-card">
+        <h3 className="comparison-card-title">Select two analyses</h3>
+        <div className="comparison-selects">
           <div className="comparison-select">
             <label className="comparison-label">First Analysis (Newer)</label>
             <select
@@ -213,10 +213,9 @@ const ComparisonPage: React.FC = () => {
 
       {analysis1 && analysis2 && (
         <>
-          {/* Side-by-Side Image Comparison */}
-          <div className="card comparison-card" ref={comparisonCardRef}>
-            <div className="card-header">
-              <h3>Visual Comparison</h3>
+          <div className="app-card comparison-card" ref={comparisonCardRef}>
+            <div className="comparison-card-header-row">
+              <h3>Visual comparison</h3>
               <div className="comparison-actions-header">
                 <button onClick={handleShareComparison} className="btn-icon-small" title="Share">
                   <IconShare2 size={18} strokeWidth={2} />
@@ -226,8 +225,7 @@ const ComparisonPage: React.FC = () => {
                 </button>
               </div>
             </div>
-            <div className="card-content">
-              <div className="comparison-images">
+            <div className="comparison-images">
                 <div className="comparison-image-container">
                   <img 
                     src={analysis1.imageUrl || analysis1.thumbnail} 
@@ -256,13 +254,11 @@ const ComparisonPage: React.FC = () => {
                   </div>
                 </div>
               </div>
-            </div>
           </div>
 
-          {/* Overall Score Summary */}
-          <div className="card comparison-card">
-            <div className="card-header"><h3>Overall Score Comparison</h3></div>
-            <div className="card-content">
+          <div className="app-card comparison-card">
+            <h3 className="comparison-card-title">Overall score</h3>
+            <div>
               <div className="comparison-summary">
                 <div className="comparison-score-card">
                   <div className="comparison-score-date">{analysis1.date}</div>
@@ -300,11 +296,10 @@ const ComparisonPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Timeline Chart */}
           {chartData.length > 0 && (
-            <div className="card comparison-card">
-              <div className="card-header"><h3>Progress Timeline</h3></div>
-              <div className="card-content">
+            <div className="app-card comparison-card">
+              <h3 className="comparison-card-title">Progress timeline</h3>
+              <div>
                 <ResponsiveContainer width="100%" height={300}>
                   <LineChart data={chartData}>
                     <CartesianGrid strokeDasharray="3 3" />
@@ -368,7 +363,8 @@ const ComparisonPage: React.FC = () => {
       )}
 
       <div className="comparison-actions">
-        <Link to="/history" className="btn btn-secondary">View All History</Link>
+        <Link to="/history" className="btn btn-secondary">View all history</Link>
+      </div>
       </div>
     </div>
   );

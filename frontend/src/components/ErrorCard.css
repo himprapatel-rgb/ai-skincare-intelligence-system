@@ -1,0 +1,42 @@
+/* ErrorCard – page/section error with one primary action (mobile app pattern) */
+.error-card {
+  text-align: center;
+  padding: var(--space-6, 24px);
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.error-card-icon {
+  color: var(--warning, #f59e0b);
+  margin-bottom: var(--space-4, 16px);
+  display: flex;
+  justify-content: center;
+}
+
+.error-card-title {
+  font-size: var(--font-size-lg, 1.125rem);
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--text-primary);
+  margin-bottom: var(--space-2, 8px);
+}
+
+.error-card-message {
+  font-size: var(--font-size-base, 1rem);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-6, 24px);
+  line-height: var(--line-height-relaxed, 1.65);
+}
+
+.error-card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3, 12px);
+}
+
+.error-card-actions .btn-primary {
+  min-height: 44px;
+}
+
+.error-card-actions .btn-secondary {
+  min-height: 44px;
+}

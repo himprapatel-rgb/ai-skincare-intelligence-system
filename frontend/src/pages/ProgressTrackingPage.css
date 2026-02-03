@@ -1,38 +1,31 @@
-/* Progress Tracking Page - Brand-Aligned Design */
+/* Progress Tracking Page - App-style, mobile-first */
 
-.progress-tracking-page {
-  min-height: 100vh;
-  background: var(--bg-light);
-  padding: var(--spacing-2xl) var(--spacing-lg);
-  font-family: var(--font-family);
+.progress-tracking-page.app-page {
+  background: var(--bg-secondary, #f8fafc);
 }
 
-.progress-container {
-  max-width: var(--max-width-xl);
-  margin: 0 auto;
+.progress-tracking-page .app-header-card { margin-bottom: 0; }
+
+.progress-header-icon {
+  vertical-align: middle;
+  margin-right: 8px;
 }
 
-.progress-tracking-page h1 {
-  font-size: var(--font-size-2xl);
-  font-weight: var(--font-weight-bold);
-  color: var(--text-dark);
-  margin-bottom: var(--spacing-md);
-  line-height: var(--line-height-tight);
-  letter-spacing: var(--letter-spacing-tight);
+.progress-tracking-page .app-page-content {
+  padding-top: 20px;
 }
 
-.progress-tracking-page > p {
-  font-size: var(--font-size-lg);
+.progress-loading-text {
+  text-align: center;
+  padding: 2rem;
   color: var(--text-secondary);
-  margin-bottom: var(--spacing-2xl);
-  line-height: var(--line-height-relaxed);
 }
 
 .stats-summary {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: var(--spacing-lg);
-  margin-bottom: var(--spacing-2xl);
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
 }
 
 .summary-card {
@@ -66,11 +59,11 @@
 
 .chart-section {
   background: var(--bg-white);
-  border-radius: var(--border-radius-md);
-  padding: var(--spacing-xl);
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--border);
-  margin-bottom: var(--spacing-xl);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--border-color);
+  margin-bottom: 20px;
 }
 
 .chart-header {

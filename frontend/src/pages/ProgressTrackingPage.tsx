@@ -63,19 +63,26 @@ const ProgressTrackingPage: React.FC = () => {
     { id: 4, title: '30-Day Streak', achieved: progressData.length >= 30, date: null },
   ];
 
-  if (isLoading) return <div className="page-container"><p>Loading progress data...</p></div>;
+  if (isLoading) {
+    return (
+      <div className="progress-tracking-page app-page">
+        <div className="app-page-content">
+          <p className="progress-loading-text">Loading progress…</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="progress-tracking-page">
-      <div className="progress-container">
-        <div className="page-header">
-          <h1>
-            <IconTrendingUp size={32} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '12px' }} />
-            Progress Tracking
-          </h1>
-          <p>Monitor your skin health journey over time</p>
-        </div>
-
+    <div className="progress-tracking-page app-page">
+      <header className="app-header-card">
+        <h1>
+          <IconTrendingUp size={24} strokeWidth={2} className="progress-header-icon" aria-hidden />
+          Progress
+        </h1>
+        <p className="app-header-subtitle">Your skin health over time</p>
+      </header>
+      <div className="app-page-content">
         <div className="stats-summary">
           <div className="summary-card">
             <div className="value">{progressData[0]?.overallScore || 0}</div>
@@ -269,7 +276,7 @@ const ProgressTrackingPage: React.FC = () => {
         </div>
 
         <div className="compare-section">
-          <Link to="/comparison" className="btn btn-secondary">Compare Analyses</Link>
+          <Link to="/comparison" className="btn btn-secondary">Compare analyses</Link>
         </div>
       </div>
     </div>

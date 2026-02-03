@@ -194,7 +194,7 @@ const DashboardPage: React.FC = () => {
 
   if (!user) {
     return (
-      <div className="dashboard-page">
+      <div className="dashboard-page app-page">
         <div className="dashboard-empty empty-state">
           <h2>Your Dashboard</h2>
           <p>Sign in to view your skin analysis history and track your progress.</p>
@@ -208,7 +208,7 @@ const DashboardPage: React.FC = () => {
 
   if (loading || !data) {
     return (
-      <div className="dashboard-page dashboard-page--skeleton">
+      <div className="dashboard-page app-page dashboard-page--skeleton">
         <div className="dashboard-header" style={{ marginBottom: 32 }}>
           <SkeletonHeading style={{ width: 280, margin: '0 auto 8px', height: 32 }} />
           <SkeletonText style={{ width: 200, margin: '0 auto' }} />

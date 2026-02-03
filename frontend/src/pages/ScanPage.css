@@ -198,6 +198,13 @@
 }
 
 /* Legal disclaimer (Tasks 245, 246) */
+.scan-tip {
+  font-size: 0.875rem;
+  color: var(--text-secondary, var(--text-gray));
+  margin: 0 auto 12px;
+  text-align: center;
+}
+
 .scan-legal-disclaimer {
   font-size: 0.8125rem;
   color: var(--text-gray);

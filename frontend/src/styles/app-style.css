@@ -203,3 +203,24 @@
     margin-top: 24px;
   }
 }
+
+/* Mobile web: touch-friendly targets and bottom safe area */
+@media (max-width: 768px) {
+  .app-page {
+    padding-bottom: max(88px, calc(80px + env(safe-area-inset-bottom)));
+  }
+  .app-page button:not(.btn-icon-small):not(.btn-action),
+  .app-page .btn,
+  .app-page a.btn {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  .app-page select,
+  .app-page input[type="text"],
+  .app-page input[type="email"],
+  .app-page input[type="search"],
+  .app-page input[type="password"] {
+    min-height: 44px;
+    font-size: 16px; /* avoids iOS zoom on focus */
+  }
+}

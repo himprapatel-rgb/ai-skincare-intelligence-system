@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IconSparkles, IconScan, IconZap, IconShield, IconBarChart, IconCheck } from '../components/Icons';
+import { ConfirmModal } from '../components/ConfirmModal';
 import { API_BASE_URL } from '../config';
 import './OnboardingPage.css';
 
@@ -50,6 +51,7 @@ const OnboardingPage: React.FC = () => {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showBackConfirm, setShowBackConfirm] = useState(false);
 
   useEffect(() => {
     try {
@@ -85,8 +87,20 @@ const OnboardingPage: React.FC = () => {
     if (step < 5) setStep(step + 1);
   };
 
+  const hasFormData = formData.name || formData.age || formData.skinType || formData.concerns.length > 0 || formData.goals.length > 0;
+
   const handleBack = () => {
-    if (step > 1) setStep(step - 1);
+    if (step <= 1) return;
+    if (hasFormData) {
+      setShowBackConfirm(true);
+    } else {
+      setStep(step - 1);
+    }
+  };
+
+  const confirmBack = () => {
+    setShowBackConfirm(false);
+    setStep((s) => s - 1);
   };
 
   const handleSubmit = async () => {
@@ -349,8 +363,18 @@ const OnboardingPage: React.FC = () => {
   };
 
   return (
-    <div className="onboarding-page">
-      <div className="onboarding-container">
+    <div className="onboarding-page app-page">
+      <ConfirmModal
+        open={showBackConfirm}
+        title="Leave onboarding?"
+        message="You've entered some information. If you go back, you can continue later from where you left off."
+        confirmLabel="Leave"
+        cancelLabel="Stay"
+        variant="neutral"
+        onConfirm={confirmBack}
+        onCancel={() => setShowBackConfirm(false)}
+      />
+      <div className="app-page-content onboarding-container">
         <div className="progress-bar" role="progressbar" aria-valuenow={step} aria-valuemin={1} aria-valuemax={5} aria-label={`Step ${step} of 5`}>
           <span className="progress-bar-label">Step {step} of 5</span>
           {[1, 2, 3, 4, 5].map(num => (

@@ -321,8 +321,8 @@ const DigitalTwinTimelinePage: React.FC = () => {
 
   if (hasError) {
     return (
-      <div className="dt-page">
-        <div className="dt-container">
+      <div className="dt-page app-page">
+        <div className="app-page-content dt-container">
           <section className="dt-card">
             <h2>Digital Twin Timeline</h2>
             <p>We couldn't load your digital twin timeline. Please try again.</p>
@@ -334,8 +334,8 @@ const DigitalTwinTimelinePage: React.FC = () => {
 
   if (snapshots.length === 0) {
     return (
-      <div className="dt-page">
-        <div className="dt-container">
+      <div className="dt-page app-page">
+        <div className="app-page-content dt-container">
           <section className="dt-card">
             <h2>Digital Twin Timeline</h2>
             <p>Complete a scan to generate your first digital twin snapshot.</p>
@@ -351,8 +351,8 @@ const DigitalTwinTimelinePage: React.FC = () => {
   }
 
   return (
-    <div className="dt-page">
-      <div className="dt-container">
+    <div className="dt-page app-page">
+      <div className="app-page-content dt-container">
         <HeroSection
           currentScore={latestSnapshot?.overallScore ?? 0}
           skinMood={latestSnapshot?.skinMoodLabel ?? 'Unknown'}

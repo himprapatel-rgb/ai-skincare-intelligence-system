@@ -441,11 +441,15 @@ const ProductDetailsPage: React.FC = () => {
   }
 
   if (!product) {
-    return <div className="product-details-page"><div className="error">Product not found</div></div>;
+    return (
+      <div className="product-details-page app-page">
+        <div className="app-page-content"><div className="error">Product not found</div></div>
+      </div>
+    );
   }
 
   return (
-    <div className="product-details-page">
+    <div className="product-details-page app-page">
       <BreadcrumbJsonLd
         items={[
           { name: 'Home', path: '/' },
@@ -461,6 +465,7 @@ const ProductDetailsPage: React.FC = () => {
           </Link>
         )}
       </div>
+      <div className="app-page-content">
       <div className="product-header">
         <div className="product-image-section">
           {product.imageUrl ? (
@@ -1100,6 +1105,7 @@ const ProductDetailsPage: React.FC = () => {
             </div>
           )}
         </div>
+      </div>
       </div>
     </div>
   );

@@ -1,105 +1,117 @@
-/* Favorites Page - Brand-Aligned Design */
+/* Favorites Page - App-style, mobile-first */
 
-.favorites-page {
-  min-height: 100vh;
-  background: var(--bg-light);
-  padding: var(--spacing-2xl) var(--spacing-lg);
-  font-family: var(--font-family);
+.favorites-page.app-page {
+  background: var(--bg-secondary, #f8fafc);
 }
 
-.favorites-container {
-  max-width: var(--max-width-xl);
-  margin: 0 auto;
+.favorites-header-icon {
+  vertical-align: middle;
+  margin-right: 8px;
 }
 
-.favorites-page h1 {
-  font-size: var(--font-size-2xl);
-  font-weight: var(--font-weight-bold);
-  color: var(--text-dark);
-  margin-bottom: var(--spacing-xl);
-  text-align: center;
-  line-height: var(--line-height-tight);
-  letter-spacing: var(--letter-spacing-tight);
+.favorites-page .app-header-card {
+  margin-bottom: 0;
+}
+
+.favorites-header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.favorites-header-row > div {
+  flex: 1;
+}
+
+.favorites-refresh-btn {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: var(--gray-100, #f1f5f9);
+  border-radius: var(--radius-lg, 12px);
+  color: var(--primary);
+  cursor: pointer;
+}
+
+.favorites-refresh-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.favorites-refresh-btn .spin {
+  animation: favorites-spin 0.8s linear infinite;
+}
+
+@keyframes favorites-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.favorites-page .app-page-content {
+  padding-top: 20px;
+}
+
+.favorites-toolbar {
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.favorites-toolbar-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.favorites-explainer {
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.favorites-explainer h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: var(--text-primary);
+}
+
+.favorites-explainer-p {
+  margin: 0;
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.favorites-card-content {
+  padding: 14px 16px;
 }
 
 .favorites-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: var(--spacing-lg);
-}
-
-.favorites-grid .card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-}
-
-.favorites-grid .card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-card-hover);
-  border-color: var(--primary);
-}
-
-.favorites-grid .card:focus-visible {
-  outline: var(--focus-ring);
-  outline-offset: var(--focus-ring-offset);
-}
-
-.favorite-card {
-  background: var(--bg-white);
-  border-radius: var(--border-radius-lg);
-  padding: var(--spacing-lg);
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--border);
-  transition: all 0.2s ease;
-}
-
-.favorite-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-card-hover);
-  border-color: var(--primary);
-}
-
-.favorites-page .empty-state {
-  text-align: center;
-  padding: var(--spacing-3xl) var(--spacing-2xl);
-  background: var(--bg-white);
-  border-radius: var(--border-radius-lg);
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--border);
-  color: var(--text-secondary);
-}
-
-.favorites-toolbar {
-  margin-bottom: var(--spacing-xl);
-  background: var(--bg-white);
-  padding: var(--spacing-lg);
-  border-radius: var(--border-radius-lg);
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--border);
-}
-
-.favorites-explainer {
-  margin-bottom: 24px;
-  border: 1px solid var(--border);
-  background: var(--bg-white);
-}
-
-.favorites-explainer h3 {
-  margin-bottom: 8px;
-}
-
-.favorites-explainer p {
-  margin: 0;
-  color: var(--text-gray);
-  line-height: 1.6;
-}
-
-.favorites-toolbar-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   gap: 16px;
-  flex-wrap: wrap;
 }
+
+.favorites-grid .app-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.favorites-grid .app-card:focus-within,
+.favorites-grid .app-card:hover {
+  border-color: var(--primary);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.favorites-product-card {
+  padding: 0;
+  overflow: hidden;
+}
+
 
 .favorites-search {
   display: flex;
@@ -129,60 +141,62 @@
   box-shadow: 0 0 0 3px rgba(31, 111, 235, 0.1);
 }
 
-.favorites-empty-search .favorites-empty-content {
-  padding: 24px;
+.favorites-remove {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  cursor: pointer;
 }
 
-.favorites-empty-search .favorites-empty-text {
-  margin-bottom: 12px;
+.favorites-remove:hover {
+  color: var(--danger);
+  background: var(--danger-light, #fee2e2);
 }
 
+.favorites-empty-search {
+  padding: 24px 20px !important;
+}
+
+.favorites-empty-search p {
+  margin-bottom: 16px;
+}
+
+/* Mobile: single column, touch-friendly */
 @media (max-width: 768px) {
-  .favorites-page {
-    padding: 32px 20px;
-  }
-
-  .favorites-page h1 {
-    font-size: 2.2rem;
-  }
-
-  .favorites-toolbar {
-    padding: 20px;
-  }
-
-  .favorites-grid {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-
-  .favorite-card {
-    padding: 20px;
-  }
-}
-
-@media (max-width: 480px) {
-  .favorites-page {
-    padding: 24px 16px;
-  }
-
-  .favorites-page h1 {
-    font-size: 1.8rem;
-  }
-
-  .favorites-toolbar {
-    padding: 16px;
-  }
-
   .favorites-toolbar-content {
     flex-direction: column;
     align-items: stretch;
   }
 
   .favorites-sort select {
+    min-height: 44px;
     width: 100%;
   }
 
-  .empty-state {
-    padding: 60px 24px;
+  .favorites-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .favorites-actions .btn {
+    min-height: 44px;
+  }
+}
+
+@media (max-width: 480px) {
+  .favorites-page .app-page-content {
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+
+  .favorites-toolbar {
+    padding: 12px;
   }
 }

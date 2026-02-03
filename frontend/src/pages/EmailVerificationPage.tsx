@@ -84,8 +84,9 @@ export const EmailVerificationPage: React.FC = () => {
   };
 
   return (
-    <div className="email-verification-page">
-      <div className="email-verification-card">
+    <div className="email-verification-page app-page">
+      <div className="app-page-content">
+      <div className="email-verification-card app-card">
         <h1>Email Verification</h1>
         <p className="subtitle">Confirm your email to unlock your skincare profile.</p>
 
@@ -130,6 +131,7 @@ export const EmailVerificationPage: React.FC = () => {
             <code>{devToken}</code>
           </div>
         )}
+      </div>
       </div>
     </div>
   );

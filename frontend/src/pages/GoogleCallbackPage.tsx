@@ -52,7 +52,20 @@ const GoogleCallbackPage: React.FC = () => {
         clearTimeout(slowTimer);
         if (response.data.token) {
           loginWithToken(response.data.token, response.data.user);
-          navigate('/dashboard', { replace: true });
+          // Mirror AuthPage: new users with no profile go to onboarding
+          try {
+            await api.get('/profile');
+            navigate('/dashboard', { replace: true });
+          } catch (profileErr: unknown) {
+            const status = profileErr && typeof profileErr === 'object' && 'response' in profileErr
+              ? (profileErr as { response?: { status?: number } }).response?.status
+              : undefined;
+            if (status === 404) {
+              navigate('/onboarding', { replace: true });
+            } else {
+              navigate('/dashboard', { replace: true });
+            }
+          }
         } else {
           setError('Failed to authenticate with Google.');
           setProcessing(false);
@@ -127,8 +140,8 @@ const GoogleCallbackPage: React.FC = () => {
 
   if (processing && !error) {
     return (
-      <div className="google-callback-page">
-        <div className="callback-container">
+      <div className="google-callback-page app-page">
+        <div className="app-page-content callback-container">
           <div className="loading-spinner" />
           <h2>Signing in with Google...</h2>
           <p>
@@ -148,8 +161,8 @@ const GoogleCallbackPage: React.FC = () => {
 
   if (error) {
     return (
-      <div className="google-callback-page">
-        <div className="callback-container error">
+      <div className="google-callback-page app-page">
+        <div className="app-page-content callback-container error">
           <div className="error-icon">✕</div>
           <h2>Sign-in Failed</h2>
           <p>{error}</p>

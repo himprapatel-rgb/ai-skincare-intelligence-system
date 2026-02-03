@@ -139,47 +139,34 @@ const DataExportPage: React.FC = () => {
   ];
 
   return (
-    <div className="page-container">
-      <div className="page-header">
+    <div className="data-export-page app-page">
+      <header className="app-header-card">
         <h1>
-          <IconDownload size={32} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '12px' }} />
+          <IconDownload size={24} strokeWidth={2} className="export-header-icon" aria-hidden />
           Export Your Data
         </h1>
-        <p>Download a copy of your personal data (GDPR compliant)</p>
-      </div>
-
+        <p className="app-header-subtitle">Download your data · JSON or PDF · GDPR compliant</p>
+      </header>
+      <div className="app-page-content">
       {exportComplete ? (
-        <div className="card">
-          <div className="card-content export-complete">
-            <div className="export-complete-icon">
-              <IconCheckCircle size={64} strokeWidth={2} />
-            </div>
-            <h2>Export Complete!</h2>
-            <p className="export-complete-text">
-              Your data has been prepared for download.
-            </p>
-            <button className="btn btn-primary" onClick={handleExport} disabled={isExporting}>
-              {isExporting ? (
-                'Preparing...'
-              ) : (
-                <>
-                  <IconDownload size={18} strokeWidth={2} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
-                  Download {exportFormat.toUpperCase()} File
-                </>
-              )}
-            </button>
-            <div className="export-complete-actions">
-              <button className="btn btn-secondary" onClick={() => setExportComplete(false)}>
-                Request Another Export
-              </button>
-            </div>
+        <div className="app-card export-complete">
+          <div className="export-complete-icon">
+            <IconCheckCircle size={56} strokeWidth={2} />
+          </div>
+          <h2>Export complete</h2>
+          <p className="export-complete-text">Your file is ready. Download it below or request another export.</p>
+          <button className="btn btn-primary" onClick={handleExport} disabled={isExporting}>
+            {isExporting ? 'Preparing…' : <><IconDownload size={18} strokeWidth={2} style={{ marginRight: '8px', verticalAlign: 'middle' }} />Download {exportFormat.toUpperCase()}</>}
+          </button>
+          <div className="export-complete-actions">
+            <button type="button" className="btn btn-secondary" onClick={() => setExportComplete(false)}>Export again</button>
           </div>
         </div>
       ) : (
         <>
-          <div className="card export-card">
-            <div className="card-header"><h3>Select Data to Export</h3></div>
-            <div className="card-content">
+          <div className="app-card export-card">
+            <h3 className="export-card-title">Select Data to Export</h3>
+            <div className="export-card-body">
               {dataCategories.map(cat => (
                 <div key={cat.key} className="export-category">
                   <input
@@ -198,9 +185,9 @@ const DataExportPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="card export-card">
-            <div className="card-header"><h3>Export Format</h3></div>
-            <div className="card-content export-format-grid">
+          <div className="app-card export-card">
+            <h3 className="export-card-title">Export Format</h3>
+            <div className="export-format-grid">
               <button
                 type="button"
                 onClick={() => setExportFormat('json')}
@@ -227,9 +214,9 @@ const DataExportPage: React.FC = () => {
               </button>
             </div>
             <p className="export-format-explanation" id="export-format-desc">
-              <strong>JSON</strong> — A single file containing your selected data in a structured format (profile, analysis history, favorites). Use it to back up data or port it to another service. <strong>PDF</strong> — A human-readable report (coming soon) for sharing or printing.
+              <strong>JSON</strong> — Full data backup (profile, analyses, favorites). <strong>PDF</strong> — Human‑readable report for sharing or printing.
             </p>
-            <p className="export-eta" aria-live="polite">Estimated time: under 1 minute for typical data size.</p>
+            <p className="export-eta" aria-live="polite">Usually ready in under a minute.</p>
           </div>
 
           <div className="export-actions">
@@ -255,10 +242,11 @@ const DataExportPage: React.FC = () => {
         </>
       )}
 
-      <div className="card export-note">
-        <div className="card-content export-note-content">
-          <strong>GDPR Notice:</strong> Under GDPR Article 20, you have the right to receive your personal data in a structured, commonly used format. This export includes all data we hold about you.
-        </div>
+      <div className="app-card export-note">
+        <p className="export-note-content">
+          <strong>Your rights:</strong> You can request a copy of your data at any time. This export includes the data we hold for your account.
+        </p>
+      </div>
       </div>
     </div>
   );

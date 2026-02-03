@@ -10,8 +10,8 @@ import './NotFoundPage.css';
 const NotFoundPage: React.FC = () => {
   usePageTitle('Page Not Found');
   return (
-  <div className="not-found-page">
-    <div className="not-found-content">
+  <div className="not-found-page app-page">
+    <div className="app-page-content not-found-content">
       <h1 className="not-found-title">404</h1>
       <p className="not-found-message">Page not found</p>
       <p className="not-found-sub">The page you’re looking for doesn’t exist or has been moved.</p>

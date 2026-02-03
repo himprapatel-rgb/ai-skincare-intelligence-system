@@ -1,7 +1,7 @@
-import React, { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import { usePageTitle } from '../hooks/usePageTitle';
-import { IconStar, IconPackage } from '../components/Icons';
+import { IconStar, IconPackage, IconMoreVertical, IconChevronDown, IconTrash2, IconSearch, IconPlus, IconRefresh } from '../components/Icons';
 import { ConfirmModal } from '../components/ConfirmModal';
 import { SkeletonCardGrid } from '../components/Skeleton';
 import { useShelf } from '../context/ShelfContext';
@@ -33,6 +33,7 @@ const MyShelfPage: React.FC = () => {
     usingCount,
     wishlistCount,
     discontinuedCount,
+    refreshShelf,
     removeFromShelf, 
     updateProductStatus,
     updateProduct
@@ -41,11 +42,24 @@ const MyShelfPage: React.FC = () => {
   const [filter, setFilter] = useState<'all' | 'using' | 'wishlist' | 'discontinued'>('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [confirmRemoveId, setConfirmRemoveId] = useState<string | null>(null);
-  
+  const [onboardingExpanded, setOnboardingExpanded] = useState(false);
+  const [productMenuId, setProductMenuId] = useState<string | null>(null);
+  const productMenuRef = useRef<HTMLDivElement>(null);
+
   // Task 276: Sorting options
   const [sortBy, setSortBy] = useState<'recent' | 'name' | 'brand' | 'rating'>('recent');
   // Task 278: Category filter
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (productMenuRef.current && !productMenuRef.current.contains(e.target as Node)) {
+        setProductMenuId(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   // Transform shelf products to display format
   const products: DisplayProduct[] = useMemo(() => {
@@ -187,120 +201,115 @@ const MyShelfPage: React.FC = () => {
 
   return (
     <div className="myshelf-page app-page">
-      <div className="app-header-card myshelf-hero">
-        <h1>
-          <IconPackage size={28} strokeWidth={2} style={{ verticalAlign: 'middle', marginRight: '8px' }} aria-hidden />
-          My Shelf {totalCount > 0 && <span className="count-badge">({totalCount})</span>}
-        </h1>
-        <p className="app-header-subtitle">Manage your skincare collection</p>
-      </div>
-
-      <div className="app-page-content">
-      <div className="myshelf-onboarding app-card" style={{ padding: '20px', marginBottom: '24px' }}>
-        <h2 className="app-section-title">Build Your Shelf</h2>
-        <h3 style={{ fontSize: '1.1rem', fontWeight: 600, margin: '0 0 12px 0', color: 'var(--text-primary)' }}>Add products in minutes</h3>
-        <div className="myshelf-onboarding-grid">
-          <div>
-            <h3>Add Products Fast</h3>
-            <p>Scan a barcode or pick from recommendations to populate your shelf.</p>
+      <header className="myshelf-hero">
+        <div className="myshelf-hero-inner">
+          <div className="myshelf-hero-icon" aria-hidden>
+            <IconPackage size={28} strokeWidth={2} />
           </div>
-          <div>
-            <h3>Track What Works</h3>
-            <p>Log what you are using to connect routine changes with progress.</p>
+          <div className="myshelf-hero-text">
+            <h1>My Shelf</h1>
+            <p className="myshelf-hero-subtitle">
+              {totalCount > 0 ? (
+                <span className="myshelf-hero-count">{totalCount} product{totalCount !== 1 ? 's' : ''}</span>
+              ) : (
+                'Your skincare collection'
+              )}
+            </p>
           </div>
-          <div>
-            <h3>Expiry Reminders</h3>
-            <p>We help you keep track of open dates so you can replace products on time.</p>
-          </div>
+          <button
+            type="button"
+            className="myshelf-refresh-btn"
+            onClick={() => refreshShelf()}
+            disabled={loading}
+            aria-label="Refresh shelf"
+            title="Refresh"
+          >
+            <IconRefresh size={20} strokeWidth={2} className={loading ? 'spin' : ''} />
+          </button>
         </div>
-      </div>
+      </header>
 
-      <div className="app-section" style={{ marginTop: 0 }}>
-        <h2 className="app-section-title">My Products</h2>
-      </div>
-      <div className="myshelf-controls">
-        <div className="search-bar">
+      <div className="app-page-content myshelf-content">
+      <section className="myshelf-onboarding" aria-label="Tips">
+        <button
+          type="button"
+          className="myshelf-onboarding-toggle"
+          onClick={() => setOnboardingExpanded(!onboardingExpanded)}
+          aria-expanded={onboardingExpanded}
+        >
+          <span className="myshelf-onboarding-headline">Scan or add from recommendations · Track what you use · Get expiry reminders</span>
+          <IconChevronDown size={20} strokeWidth={2} className={`myshelf-onboarding-chevron${onboardingExpanded ? ' open' : ''}`} aria-hidden />
+        </button>
+        {onboardingExpanded && (
+          <div className="myshelf-onboarding-grid">
+            <div className="myshelf-tip"><strong>Add</strong> — Scan a barcode or pick from recommendations.</div>
+            <div className="myshelf-tip"><strong>Track</strong> — Log what you use and see it in your progress.</div>
+            <div className="myshelf-tip"><strong>Remind</strong> — We’ll help you replace products before they expire.</div>
+          </div>
+        )}
+      </section>
+
+      <div className="myshelf-toolbar">
+        <div className="myshelf-search-wrap">
+          <IconSearch size={20} strokeWidth={2} className="myshelf-search-icon" aria-hidden />
           <input
-            type="text"
-            placeholder="Search products..."
+            type="search"
+            className="myshelf-search-input"
+            placeholder="Search shelf..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            aria-label="Search shelf"
           />
         </div>
-
-        <div className="filter-tabs">
-          <button 
-            className={filter === 'all' ? 'active' : ''}
-            onClick={() => setFilter('all')}
-          >
-            All ({totalCount})
-          </button>
-          <button 
-            className={filter === 'using' ? 'active' : ''}
-            onClick={() => setFilter('using')}
-          >
-            Using ({usingCount})
-          </button>
-          <button 
-            className={filter === 'wishlist' ? 'active' : ''}
-            onClick={() => setFilter('wishlist')}
-          >
-            Wishlist ({wishlistCount})
-          </button>
-          <button 
-            className={filter === 'discontinued' ? 'active' : ''}
-            onClick={() => setFilter('discontinued')}
-          >
-            Discontinued ({discontinuedCount})
+        <div className="myshelf-pills-wrap">
+          <div className="myshelf-pills" role="tablist">
+            <button type="button" role="tab" aria-selected={filter === 'all'} className={filter === 'all' ? 'active' : ''} onClick={() => setFilter('all')}>All</button>
+            <button type="button" role="tab" aria-selected={filter === 'using'} className={filter === 'using' ? 'active' : ''} onClick={() => setFilter('using')}>Using</button>
+            <button type="button" role="tab" aria-selected={filter === 'wishlist'} className={filter === 'wishlist' ? 'active' : ''} onClick={() => setFilter('wishlist')}>Wishlist</button>
+            <button type="button" role="tab" aria-selected={filter === 'discontinued'} className={filter === 'discontinued' ? 'active' : ''} onClick={() => setFilter('discontinued')}>Done</button>
+          </div>
+          <button type="button" className="myshelf-add-btn myshelf-add-btn-inline" onClick={() => navigate('/scanner')}>
+            <IconPlus size={20} strokeWidth={2.5} />
+            <span>Add product</span>
           </button>
         </div>
-        <button className="add-product-btn" onClick={() => navigate('/scanner')}>
-          <IconPackage size={20} strokeWidth={2} />
-          Add Product
-        </button>
       </div>
 
-      {/* Task 276-278: Sort and Category Filter */}
-      <div className="myshelf-filters">
-        <div className="filter-group">
-          <label htmlFor="sort-select">Sort by:</label>
-          <select 
-            id="sort-select"
-            value={sortBy} 
-            onChange={(e) => setSortBy(e.target.value as 'recent' | 'name' | 'brand' | 'rating')}
-            className="filter-select"
-          >
-            <option value="recent">Recently Added</option>
-            <option value="name">Name (A-Z)</option>
-            <option value="brand">Brand (A-Z)</option>
-            <option value="rating">Highest Rated</option>
-          </select>
-        </div>
-        <div className="filter-group">
-          <label htmlFor="category-select">Category:</label>
-          <select 
-            id="category-select"
-            value={categoryFilter} 
-            onChange={(e) => setCategoryFilter(e.target.value)}
-            className="filter-select"
-          >
-            {categories.map(cat => (
-              <option key={cat} value={cat}>
-                {cat === 'all' ? 'All Categories' : cat.charAt(0).toUpperCase() + cat.slice(1).toLowerCase()}
-              </option>
-            ))}
-          </select>
-        </div>
-        <span className="results-count">{filteredProducts.length} products</span>
+      <div className="myshelf-sort-row">
+        <select
+          id="sort-select"
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value as 'recent' | 'name' | 'brand' | 'rating')}
+          className="myshelf-sort-select"
+          aria-label="Sort by"
+        >
+          <option value="recent">Recent</option>
+          <option value="name">Name</option>
+          <option value="brand">Brand</option>
+          <option value="rating">Rating</option>
+        </select>
+        <select
+          id="category-select"
+          value={categoryFilter}
+          onChange={(e) => setCategoryFilter(e.target.value)}
+          className="myshelf-sort-select"
+          aria-label="Category"
+        >
+          {categories.map(cat => (
+            <option key={cat} value={cat}>{cat === 'all' ? 'All categories' : cat}</option>
+          ))}
+        </select>
+        <span className="myshelf-results">{filteredProducts.length} shown</span>
       </div>
 
       {filteredProducts.length === 0 ? (
-        <div className="app-empty-state">
-          <div className="app-empty-state-icon"><IconPackage size={32} strokeWidth={2} /></div>
-          <h3>Your shelf is empty</h3>
-          <p>Add products from recommendations or scan a product to build your collection.</p>
-          <button className="btn-primary" onClick={() => navigate('/scanner')}>
-            Add Your First Product
+        <div className="myshelf-empty">
+          <div className="myshelf-empty-icon" aria-hidden><IconPackage size={40} strokeWidth={1.5} /></div>
+          <h2 className="myshelf-empty-title">Your shelf is empty</h2>
+          <p className="myshelf-empty-desc">Add products from recommendations or scan a barcode to start your collection.</p>
+          <button type="button" className="myshelf-add-btn myshelf-empty-cta" onClick={() => navigate('/scanner')}>
+            <IconPlus size={20} strokeWidth={2.5} />
+            Add your first product
           </button>
         </div>
       ) : (
@@ -316,99 +325,69 @@ const MyShelfPage: React.FC = () => {
                 >
                   <img
                     src={product.imageUrl || placeholderImage}
-                    alt={product.name}
+                    alt=""
                     loading="lazy"
                     onError={(event) => {
                       const target = event.currentTarget;
-                      if (target.src !== placeholderImage) {
-                        target.src = placeholderImage;
-                      }
+                      if (target.src !== placeholderImage) target.src = placeholderImage;
                     }}
                   />
                 </button>
               </div>
-              
               <div className="product-info">
-                <button
-                  type="button"
-                  className="product-title-button"
-                  onClick={() => handleProductClick(product.id)}
-                >
+                <button type="button" className="product-title-button" onClick={() => handleProductClick(product.id)}>
                   {product.name}
                 </button>
                 <p className="brand">{product.brand}</p>
-                <p className="category">{product.category}</p>
-                
-                <div className="rating interactive-rating">
+                <span className="product-status-pill" data-status={product.status}>{product.status === 'using' ? 'Using' : product.status === 'wishlist' ? 'Wishlist' : 'Done'}</span>
+                <p className="category product-card-category">{product.category}</p>
+                <div className="rating interactive-rating product-card-rating">
                   {Array.from({ length: 5 }).map((_, index) => (
                     <button
                       key={index}
                       type="button"
                       className="star-button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleRatingChange(product.id, index + 1);
-                      }}
+                      onClick={(e) => { e.stopPropagation(); handleRatingChange(product.id, index + 1); }}
                       aria-label={`Rate ${index + 1} stars`}
                     >
-                      <IconStar
-                        size={16}
-                        strokeWidth={2}
-                        fill={index < Math.floor(product.rating) ? '#f59e0b' : 'none'}
-                        color={index < Math.floor(product.rating) ? '#f59e0b' : '#d1d5db'}
-                      />
+                      <IconStar size={16} strokeWidth={2} fill={index < Math.floor(product.rating) ? '#f59e0b' : 'none'} color={index < Math.floor(product.rating) ? '#f59e0b' : '#d1d5db'} />
                     </button>
                   ))}
                   <span className="rating-value">{product.rating > 0 ? product.rating : '-'}</span>
                 </div>
-                
-                {/* Would Repurchase Toggle */}
-                <div className="repurchase-toggle">
-                  <button
-                    type="button"
-                    className={`repurchase-btn ${product.wouldRepurchase ? 'yes' : ''}`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleWouldRepurchaseToggle(product.id, product.wouldRepurchase);
-                    }}
-                  >
-                    {product.wouldRepurchase ? '✓ Would Repurchase' : 'Would Repurchase?'}
+                <div className="repurchase-toggle product-card-repurchase">
+                  <button type="button" className={`repurchase-btn ${product.wouldRepurchase ? 'yes' : ''}`} onClick={(e) => { e.stopPropagation(); handleWouldRepurchaseToggle(product.id, product.wouldRepurchase); }}>
+                    {product.wouldRepurchase ? '✓ Would repurchase' : 'Would repurchase?'}
                   </button>
                 </div>
-                
-                {/* Expiry Warning */}
                 {product.expiryDate && (
-                  <div className={`expiry-badge ${isExpired(product.expiryDate) ? 'expired' : isExpiryApproaching(product.expiryDate) ? 'warning' : ''}`}>
-                    {isExpired(product.expiryDate) 
-                      ? '⚠️ Expired' 
-                      : isExpiryApproaching(product.expiryDate)
-                        ? `⏰ Expires ${new Date(product.expiryDate).toLocaleDateString()}`
-                        : `Expires ${new Date(product.expiryDate).toLocaleDateString()}`
-                    }
+                  <div className={`expiry-badge product-card-expiry ${isExpired(product.expiryDate) ? 'expired' : isExpiryApproaching(product.expiryDate) ? 'warning' : ''}`}>
+                    {isExpired(product.expiryDate) ? 'Expired' : isExpiryApproaching(product.expiryDate) ? `Expires ${new Date(product.expiryDate).toLocaleDateString()}` : `Expires ${new Date(product.expiryDate).toLocaleDateString()}`}
                   </div>
                 )}
-                
-                {product.notes && (
-                  <p className="notes">{product.notes}</p>
-                )}
-                
-                <div className="product-actions">
-                  <select 
-                    value={product.status}
-                    onChange={(e) => handleUpdateStatus(product.id, e.target.value as DisplayProduct['status'])}
-                    className="status-select"
-                  >
+                {product.notes && <p className="notes product-card-notes">{product.notes}</p>}
+                <div className="product-actions product-card-actions-desk">
+                  <select value={product.status} onChange={(e) => handleUpdateStatus(product.id, e.target.value as DisplayProduct['status'])} className="status-select">
                     <option value="using">Using</option>
                     <option value="wishlist">Wishlist</option>
                     <option value="discontinued">Discontinued</option>
                   </select>
-                  
-                  <button 
-                    className="btn-remove"
-                    onClick={() => handleRemoveProduct(product.id)}
-                  >
-                    Remove
+                  <button type="button" className="btn-remove" onClick={() => handleRemoveProduct(product.id)}>Remove</button>
+                </div>
+                <div className="product-card-actions-mobile" ref={productMenuId === product.id ? productMenuRef : undefined}>
+                  <button type="button" className="product-card-menu-btn" onClick={(e) => { e.stopPropagation(); setProductMenuId(productMenuId === product.id ? null : product.id); }} aria-label="Options" aria-expanded={productMenuId === product.id}>
+                    <IconMoreVertical size={20} strokeWidth={2} />
                   </button>
+                  {productMenuId === product.id && (
+                    <div className="product-card-dropdown" role="menu">
+                      <button type="button" role="menuitem" onClick={() => { handleUpdateStatus(product.id, 'using'); setProductMenuId(null); }}>Using</button>
+                      <button type="button" role="menuitem" onClick={() => { handleUpdateStatus(product.id, 'wishlist'); setProductMenuId(null); }}>Wishlist</button>
+                      <button type="button" role="menuitem" onClick={() => { handleUpdateStatus(product.id, 'discontinued'); setProductMenuId(null); }}>Done</button>
+                      <button type="button" role="menuitem" className="product-card-dropdown-remove" onClick={() => { handleRemoveProduct(product.id); setProductMenuId(null); }}>
+                        <IconTrash2 size={16} strokeWidth={2} /> Remove
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -426,6 +405,10 @@ const MyShelfPage: React.FC = () => {
         onConfirm={doRemoveProduct}
         onCancel={() => setConfirmRemoveId(null)}
       />
+
+      <Link to="/scanner" className="myshelf-fab" aria-label="Add product to shelf">
+        <IconPlus size={24} strokeWidth={2.5} />
+      </Link>
       </div>
     </div>
   );

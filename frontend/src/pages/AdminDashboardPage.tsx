@@ -45,12 +45,13 @@ const AdminDashboardPage: React.FC = () => {
   }, []);
 
   return (
-    <div className="admin-dashboard-page page-container">
-      <div className="page-header">
+    <div className="admin-dashboard-page app-page page-container">
+      <div className="page-header app-header-card">
         <h1>Admin Dashboard</h1>
-        <p>Operational overview and management tools.</p>
+        <p className="app-header-subtitle">Operational overview and management tools.</p>
       </div>
 
+      <div className="app-page-content">
       {isLoading && <div className="admin-card">Loading admin summary...</div>}
       {hasError && <div className="admin-card">Unable to load admin data.</div>}
 
@@ -94,6 +95,7 @@ const AdminDashboardPage: React.FC = () => {
         <Link to="/admin/users" className="btn btn-secondary">Manage Users</Link>
         <Link to="/admin/products" className="btn btn-secondary">Manage Products</Link>
         <Link to="/admin/catalog" className="btn btn-secondary">Catalog Admin</Link>
+      </div>
       </div>
     </div>
   );

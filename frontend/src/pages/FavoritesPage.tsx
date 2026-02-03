@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { IconHeart, IconX, IconPackage, IconStar, IconSearch } from '../components/Icons';
+import { IconHeart, IconX, IconPackage, IconStar, IconSearch, IconRefresh } from '../components/Icons';
 import { ConfirmModal } from '../components/ConfirmModal';
 import { api } from '../services/api';
 import { usePageTitle } from '../hooks/usePageTitle';
@@ -97,20 +97,42 @@ const FavoritesPage: React.FC = () => {
     );
   }, [sortedFavorites, searchTerm]);
 
-  if (isLoading) return <div className="page-container"><p>Loading favorites...</p></div>;
+  if (isLoading) {
+    return (
+      <div className="favorites-page app-page">
+        <div className="app-page-content">
+          <div className="app-empty-state">
+            <p>Loading your favorites…</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="page-container">
-      <div className="page-header">
-        <h1>
-          <IconHeart size={28} strokeWidth={2} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
-          My Favorites
-        </h1>
-        <p>Your saved skincare products ({favorites.length} items)</p>
-      </div>
-
-      <div className="card favorites-toolbar">
-        <div className="card-content favorites-toolbar-content">
+    <div className="favorites-page app-page">
+      <header className="app-header-card favorites-header-row">
+        <div>
+          <h1>
+            <IconHeart size={24} strokeWidth={2} className="favorites-header-icon" aria-hidden />
+            My Favorites
+          </h1>
+          <p className="app-header-subtitle">Your saved products · {favorites.length} {favorites.length === 1 ? 'item' : 'items'}</p>
+        </div>
+        <button
+          type="button"
+          className="favorites-refresh-btn"
+          onClick={() => fetchFavorites()}
+          disabled={isLoading}
+          aria-label="Refresh list"
+          title="Refresh"
+        >
+          <IconRefresh size={20} strokeWidth={2} className={isLoading ? 'spin' : ''} />
+        </button>
+      </header>
+      <div className="app-page-content">
+      <div className="app-card favorites-toolbar">
+        <div className="favorites-toolbar-content">
           <div className="favorites-search" role="search">
             <IconSearch size={18} strokeWidth={2} className="favorites-search-icon" aria-hidden />
             <input
@@ -134,44 +156,36 @@ const FavoritesPage: React.FC = () => {
         </div>
       </div>
 
-      <div className="card favorites-explainer">
-        <div className="card-content">
-          <h3>What does Match % mean?</h3>
-          <p>
-            Match scores combine your skin goals, ingredient preferences, and past results.
-            Higher scores indicate a better fit for your routine and concern profile.
-          </p>
-        </div>
+      <div className="app-card favorites-explainer">
+        <h3>What does Match % mean?</h3>
+        <p className="favorites-explainer-p">
+          Match scores use your skin goals, ingredients you prefer, and past results.
+          Higher scores mean a better fit for your routine.
+        </p>
       </div>
 
       {favorites.length === 0 ? (
-        <div className="card favorites-empty">
-          <div className="card-content favorites-empty-content">
-            <div className="favorites-empty-icon">
-              <IconHeart size={48} strokeWidth={2} />
-            </div>
-            <h3>No Favorites Yet</h3>
-            <p className="favorites-empty-text">Start adding products to your favorites list</p>
-            <Link to="/recommendations" className="btn btn-primary favorites-empty-action">Browse Products</Link>
-          </div>
+        <div className="app-card app-empty-state favorites-empty">
+          <div className="app-empty-state-icon"><IconHeart size={32} strokeWidth={2} /></div>
+          <h3>No Favorites Yet</h3>
+          <p>Add products from recommendations to see them here.</p>
+          <Link to="/recommendations" className="btn btn-primary">Browse Products</Link>
         </div>
       ) : (
         <div className="favorites-grid">
           {searchFilteredFavorites.length === 0 ? (
-            <div className="card favorites-empty favorites-empty-search">
-              <div className="card-content favorites-empty-content">
-                <p className="favorites-empty-text">No favorites match &quot;{searchTerm}&quot;. Try a different search or <Link to="/recommendations">browse products</Link>.</p>
-                <button type="button" className="btn btn-secondary" onClick={() => setSearchTerm('')}>Clear search</button>
-              </div>
+            <div className="app-card app-empty-state favorites-empty-search">
+              <p>No favorites match &quot;{searchTerm}&quot;. Try different words or <Link to="/recommendations">browse products</Link>.</p>
+              <button type="button" className="btn btn-secondary" onClick={() => setSearchTerm('')}>Clear search</button>
             </div>
           ) : searchFilteredFavorites.map(product => (
-            <div key={product.id} className="card">
+            <div key={product.id} className="app-card favorites-product-card">
               <div className="favorites-image">
                 <span className="favorites-image-icon">
                   <IconPackage size={32} strokeWidth={2} />
                 </span>
               </div>
-              <div className="card-content">
+              <div className="favorites-card-content">
                 <div className="favorites-header">
                   <div>
                     <h4 className="favorites-title">{product.name}</h4>
@@ -190,8 +204,8 @@ const FavoritesPage: React.FC = () => {
                 </div>
                 <div className="favorites-actions">
                   <Link to={`/product/${product.id}`} className="btn btn-secondary favorites-action-link">View</Link>
-                  <button onClick={() => handleRemove(product.id)} className="btn favorites-remove" title="Remove">
-                    <IconX size={16} strokeWidth={2} />
+                  <button onClick={() => handleRemove(product.id)} className="btn favorites-remove" type="button" title="Remove from favorites" aria-label="Remove from favorites">
+                    <IconX size={18} strokeWidth={2} />
                   </button>
                 </div>
               </div>
@@ -200,6 +214,7 @@ const FavoritesPage: React.FC = () => {
         </div>
       )}
 
+      </div>
       <ConfirmModal
         open={!!confirmRemoveId}
         title="Remove from favorites"

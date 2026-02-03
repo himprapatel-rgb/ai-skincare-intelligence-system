@@ -140,42 +140,36 @@ const NotificationCenterPage: React.FC = () => {
   const unreadCount = notifications.filter(n => !n.read).length;
 
   return (
-    <div className="notification-center-page">
-      <div className="notification-container">
-        <div className="page-header">
-          <div className="header-content">
-            <h1>
-              <IconBell size={32} strokeWidth={2} className="icon-inline-lg" />
-              Notifications
-            </h1>
-            {unreadCount > 0 && (
-              <span className="unread-badge">{unreadCount} unread</span>
-            )}
-          </div>
-          <div className="header-actions">
-            {unreadCount > 0 && (
-              <button onClick={markAllAsRead} className="btn-mark-all">
-                Mark all as read
-              </button>
-            )}
-            <button 
-              onClick={() => setShowSettings(!showSettings)}
-              className="btn-settings"
-              title={showSettings ? 'Close notification settings' : 'Open notification settings'}
-              aria-label={showSettings ? 'Close notification settings' : 'Open notification settings'}
-            >
-              <IconSettings size={20} strokeWidth={2} />
+    <div className="notification-center-page app-page">
+      <header className="app-header-card">
+        <h1>
+          <IconBell size={24} strokeWidth={2} className="notif-header-icon" aria-hidden />
+          Notifications
+        </h1>
+        <p className="app-header-subtitle">
+          {unreadCount > 0 ? `${unreadCount} unread` : 'All caught up'}
+        </p>
+        <div className="notif-header-actions">
+          {unreadCount > 0 && (
+            <button type="button" onClick={markAllAsRead} className="btn-mark-all">
+              Mark all read
             </button>
-          </div>
+          )}
+          <button
+            type="button"
+            onClick={() => setShowSettings(!showSettings)}
+            className="btn-settings"
+            aria-label={showSettings ? 'Close settings' : 'Notification settings'}
+          >
+            <IconSettings size={20} strokeWidth={2} />
+          </button>
         </div>
-
-        {/* Notification Settings */}
+      </header>
+      <div className="app-page-content">
         {showSettings && (
-          <div className="card settings-card">
-            <div className="card-header">
-              <h2>Notification Settings</h2>
-            </div>
-            <div className="card-content">
+          <div className="app-card settings-card">
+            <h2 className="settings-card-title">Notification preferences</h2>
+            <div className="settings-card-body">
               <div className="setting-item">
                 <label>
                   <input type="checkbox" defaultChecked />
@@ -204,7 +198,6 @@ const NotificationCenterPage: React.FC = () => {
           </div>
         )}
 
-        {/* Filters */}
         <div className="notification-filters">
           <button 
             className={`filter-btn ${filter === 'all' ? 'active' : ''}`}
@@ -238,13 +231,12 @@ const NotificationCenterPage: React.FC = () => {
           </button>
         </div>
 
-        {/* Notifications List */}
         <div className="notifications-list">
           {filteredNotifications.length === 0 ? (
-            <div className="empty-state" role="status">
-              <IconBell size={64} strokeWidth={2} className="empty-state-icon" aria-hidden="true" />
+            <div className="app-card app-empty-state" role="status">
+              <div className="app-empty-state-icon"><IconBell size={32} strokeWidth={2} aria-hidden /></div>
               <h3>No notifications yet</h3>
-              <p className="empty-state-text">When you get reminders, progress updates, or tips, they&apos;ll show up here.</p>
+              <p>Reminders, progress updates, and tips will appear here.</p>
             </div>
           ) : (
             filteredNotifications.map(notification => (

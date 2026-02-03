@@ -40,6 +40,7 @@ export { ArrowLeft as IconArrowLeft } from 'lucide-react';
 export { AlertTriangle as IconAlertTriangle } from 'lucide-react';
 export { RefreshCw as IconRefresh } from 'lucide-react';
 export { Menu as IconMenu } from 'lucide-react';
+export { MoreVertical as IconMoreVertical } from 'lucide-react';
 export { LogOut as IconLogOut } from 'lucide-react';
 export { Flashlight as IconFlash } from 'lucide-react';
 export { SwitchCamera as IconSwitchCamera } from 'lucide-react';

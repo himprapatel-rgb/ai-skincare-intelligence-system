@@ -110,11 +110,13 @@ const ProductComparePage: React.FC = () => {
 
   if (ids.length < 2) {
     return (
-      <div className="product-compare-page">
-        <div className="product-compare-container">
-          <h1>Compare Products</h1>
-          <p className="compare-empty-desc">Add at least 2 products to compare. Use &quot;Add to compare&quot; on product pages or recommendations.</p>
-          <Link to="/recommendations" className="btn-primary">Browse recommendations</Link>
+      <div className="product-compare-page app-page">
+        <div className="app-page-content product-compare-container">
+          <div className="app-card app-empty-state">
+            <h1>Compare products</h1>
+            <p>Add at least 2 products from product pages or recommendations to compare side by side.</p>
+            <Link to="/recommendations" className="btn btn-primary">Browse recommendations</Link>
+          </div>
           <BackButton />
         </div>
       </div>
@@ -123,10 +125,9 @@ const ProductComparePage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="product-compare-page">
-        <div className="product-compare-container">
-          <h1>Compare products</h1>
-          <p>Loading products…</p>
+      <div className="product-compare-page app-page">
+        <div className="app-page-content product-compare-container">
+          <p className="compare-loading">Loading products…</p>
           <BackButton />
         </div>
       </div>
@@ -134,10 +135,13 @@ const ProductComparePage: React.FC = () => {
   }
 
   return (
-    <div className="product-compare-page">
-      <div className="product-compare-container">
+    <div className="product-compare-page app-page">
+      <header className="app-header-card">
+        <h1>Compare products</h1>
+        <p className="app-header-subtitle">{products.length} products</p>
+      </header>
+      <div className="app-page-content product-compare-container">
         <div className="compare-header">
-          <h1>Compare products</h1>
           <BackButton className="compare-back" />
         </div>
         <div className="compare-grid" style={{ gridTemplateColumns: `repeat(${products.length}, 1fr)` }}>

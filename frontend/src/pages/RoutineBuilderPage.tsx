@@ -227,11 +227,11 @@ const RoutineBuilderPage: React.FC = () => {
 
   return (
     <div className="routine-builder-page app-page">
-      <div className="routine-header">
+      <header className="app-header-card routine-hero">
         <h1>Routine Builder</h1>
-        <p>Create your personalized skincare routine</p>
-      </div>
-
+        <p className="app-header-subtitle">Morning & evening — your personalized routine</p>
+      </header>
+      <div className="app-page-content">
       <div className="time-selector">
         <button 
           className={`time-btn ${activeTime === 'morning' ? 'active' : ''}`}
@@ -467,6 +467,7 @@ const RoutineBuilderPage: React.FC = () => {
           <IconCheck size={18} strokeWidth={2} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
           Save Routine
         </button>
+      </div>
       </div>
     </div>
   );

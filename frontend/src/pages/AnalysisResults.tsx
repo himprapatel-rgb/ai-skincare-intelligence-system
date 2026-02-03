@@ -276,28 +276,38 @@ const AnalysisResults: React.FC = () => {
   };
 
   if (loading) {
-    return <SkeletonAnalysis />;
+    return (
+      <div className="app-page">
+        <SkeletonAnalysis />
+      </div>
+    );
   }
 
   if (error || !analysis) {
     return (
-      <div className="analysis-results">
-        <div className="analysis-error">
-          <div className="analysis-error-icon">
-            <IconAlertTriangle size={48} strokeWidth={2} />
+      <div className="analysis-results app-page">
+        <header className="app-header-card">
+          <h1>Skin Analysis</h1>
+          <p className="app-header-subtitle">Something went wrong</p>
+        </header>
+        <div className="app-page-content">
+          <div className="analysis-error">
+            <div className="analysis-error-icon">
+              <IconAlertTriangle size={48} strokeWidth={2} />
+            </div>
+            <h2>Error Loading Results</h2>
+            <p>{error || 'Analysis not found'}</p>
+            <button onClick={() => navigate('/')} className="btn btn-primary">
+              Return to Dashboard
+            </button>
           </div>
-          <h2>Error Loading Results</h2>
-          <p>{error || 'Analysis not found'}</p>
-          <button onClick={() => navigate('/')} className="btn btn-primary">
-            Return to Dashboard
-          </button>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="analysis-results">
+    <div className="analysis-results app-page">
       <BreadcrumbJsonLd
         items={[
           { name: 'Home', path: '/' },
@@ -306,10 +316,10 @@ const AnalysisResults: React.FC = () => {
         ]}
       />
       <div className="results-container">
-        <div className="results-header">
+        <header className="results-header app-header-card">
           <div>
             <h1>Skin Analysis Results</h1>
-            <p>
+            <p className="app-header-subtitle">
               Analysis Date: {new Date(analysis.timestamp).toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'short',
@@ -413,7 +423,8 @@ const AnalysisResults: React.FC = () => {
               Back to Dashboard
             </button>
           </div>
-        </div>
+        </header>
+        <div className="app-page-content">
         <p className="analysis-legal-disclaimer" role="note">
           For informational use only. Not a medical device. See a dermatologist for medical advice.
         </p>
@@ -632,6 +643,7 @@ const AnalysisResults: React.FC = () => {
             <IconHome size={18} strokeWidth={2} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
             Back to Dashboard
           </button>
+        </div>
         </div>
       </div>
     </div>

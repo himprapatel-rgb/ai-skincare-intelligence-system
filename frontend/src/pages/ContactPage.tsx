@@ -53,13 +53,12 @@ const ContactPage: React.FC = () => {
   };
 
   return (
-    <div className="contact-page">
-      <div className="contact-hero">
-        <h1>Get in Touch</h1>
-        <p>Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
-      </div>
-
-      <div className="contact-container">
+    <div className="contact-page app-page">
+      <header className="app-header-card">
+        <h1>Get in touch</h1>
+        <p className="app-header-subtitle">Questions? Send a message and we'll reply soon.</p>
+      </header>
+      <div className="app-page-content contact-container">
         <div className="contact-info">
           <div className="info-card">
             <div className="info-icon">

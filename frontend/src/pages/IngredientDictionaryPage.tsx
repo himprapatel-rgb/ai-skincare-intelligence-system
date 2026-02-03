@@ -33,13 +33,12 @@ const IngredientDictionaryPage: React.FC = () => {
   }, [debouncedQuery]);
 
   return (
-    <div className="ingredient-page">
-      <div className="page-container ingredient-container">
-        <div className="page-header">
-          <h1>Ingredient Dictionary</h1>
-          <p>Search ingredients and learn how they support your skin goals.</p>
-        </div>
-
+    <div className="ingredient-page app-page">
+      <header className="app-header-card">
+        <h1>Ingredient Dictionary</h1>
+        <p className="app-header-subtitle">Search ingredients and see how they support your skin goals.</p>
+      </header>
+      <div className="app-page-content ingredient-container">
         <form className="ingredient-search" role="search" onSubmit={(e) => e.preventDefault()}>
           <input
             type="search"

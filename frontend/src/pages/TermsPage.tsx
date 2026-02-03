@@ -8,14 +8,13 @@ const TermsPage: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="terms-page">
-      <div className="terms-hero">
+    <div className="terms-page app-page">
+      <header className="app-header-card">
         <h1>Terms of Service</h1>
-        <p className="effective-date">Effective: January 2026</p>
-        <p className="last-updated">Last Updated: {new Date().toLocaleDateString()}</p>
-        <p className="terms-summary">By using our app you agree to use the service as intended, accept that skin analysis is for informational use only, and follow our acceptable use policy.</p>
-      </div>
-
+        <p className="app-header-subtitle">Use the app as intended. Skin analysis is informational only.</p>
+      </header>
+      <div className="app-page-content terms-content">
+      <p className="terms-meta">Effective January 2026 · Last updated {new Date().toLocaleDateString()}</p>
       <nav className="terms-toc" aria-label="Terms of Service sections">
           <h2 className="terms-toc-title">On this page</h2>
           <ul>
@@ -147,6 +146,7 @@ const TermsPage: React.FC = () => {
             Contact Us
           </button>
         </section>
+      </div>
       </div>
     </div>
   );

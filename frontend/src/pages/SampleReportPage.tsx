@@ -4,16 +4,14 @@ import './SampleReportPage.css';
 
 const SampleReportPage: React.FC = () => {
   return (
-    <div className="sample-report-page">
-      <main className="sample-report-container sample-report-main">
-        <section className="sample-report-hero">
-          <h1>Sample Skin Analysis Report</h1>
-          <p>
-            This is a preview of the insights you get after uploading a clear selfie.
-            Results are estimates based on visible features and image quality.
-          </p>
-        </section>
-
+    <div className="sample-report-page app-page">
+      <header className="app-header-card sample-report-hero">
+        <h1>Sample Skin Analysis Report</h1>
+        <p className="app-header-subtitle">
+          Preview of the insights you get after uploading a clear selfie. Results are estimates based on visible features and image quality.
+        </p>
+      </header>
+      <main className="app-page-content sample-report-container sample-report-main">
         <section className="sample-report-grid">
           <div className="sample-card">
             <h2>Overall Score</h2>

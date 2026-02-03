@@ -5,13 +5,12 @@ import './BlogPage.css';
 const BlogPage: React.FC = () => {
   usePageTitle('Blog');
   return (
-    <div className="blog-page">
-      <div className="page-container blog-container">
-        <div className="page-header">
-          <h1>SkinCareAI Blog</h1>
-          <p>Skincare tips, routines, and science-backed insights.</p>
-        </div>
-
+    <div className="blog-page app-page">
+      <header className="app-header-card">
+        <h1>Blog</h1>
+        <p className="app-header-subtitle">Tips, routines, and science-backed skincare.</p>
+      </header>
+      <div className="app-page-content blog-container">
         <div className="blog-grid">
           <article className="blog-card">
             <h3>Building a Simple Morning Routine</h3>

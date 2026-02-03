@@ -5,6 +5,7 @@ import {
   IconPackage, IconLeaf, IconSun, IconSearch, IconCheck, IconPlus,
   IconArrowUp, IconArrowDown, IconArrowLeft
 } from '../components/Icons';
+import { useToast } from '../context/ToastContext';
 import { API_BASE_URL } from '../config';
 import './CommonStyles.css';
 import './SkinGoalsPage.css';
@@ -34,6 +35,7 @@ const iconMap: Record<string, React.ReactNode> = {
  * Set and prioritize personal skincare goals for personalized recommendations
  */
 const SkinGoalsPage: React.FC = () => {
+  const toast = useToast();
   const [goals, setGoals] = useState<SkinGoal[]>([
     { id: '1', name: 'Clear Acne', iconKey: 'acne', description: 'Reduce breakouts and blemishes', selected: true, priority: 1 },
     { id: '2', name: 'Anti-Aging', iconKey: 'anti-aging', description: 'Reduce fine lines and wrinkles', selected: false, priority: 0 },
@@ -95,10 +97,10 @@ const SkinGoalsPage: React.FC = () => {
         });
       }
       
-      alert('Goals saved successfully!');
+      toast.success('Goals saved.');
     } catch (error) {
       console.error('Failed to save goals:', error);
-      alert('Goals saved locally. Will sync when connection is available.');
+      toast.info('Saved locally. We’ll sync when you’re back online.');
     } finally {
       setIsSaving(false);
     }
@@ -107,19 +109,19 @@ const SkinGoalsPage: React.FC = () => {
   const selectedGoals = goals.filter(g => g.selected).sort((a, b) => a.priority - b.priority);
 
   return (
-    <div className="page-container">
-      <div className="page-header">
+    <div className="skin-goals-page app-page">
+      <header className="app-header-card">
         <h1>
-          <IconTarget size={32} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '12px' }} />
+          <IconTarget size={24} strokeWidth={2} className="skin-goals-header-icon" aria-hidden />
           Skin Goals
         </h1>
-        <p>Select and prioritize your skincare goals for personalized recommendations</p>
-      </div>
-
+        <p className="app-header-subtitle">Pick and order your goals for better recommendations</p>
+      </header>
+      <div className="app-page-content">
       <div className="skin-goals-grid">
-        <div className="card">
-          <div className="card-header"><h3>Available Goals</h3></div>
-          <div className="card-content">
+        <div className="app-card skin-goals-card">
+          <h3 className="skin-goals-card-title">Available goals</h3>
+          <div className="skin-goals-card-body">
             {goals.map(goal => (
               <button
                 key={goal.id}
@@ -145,9 +147,9 @@ const SkinGoalsPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="card">
-          <div className="card-header"><h3>Your Priorities ({selectedGoals.length} selected)</h3></div>
-          <div className="card-content">
+        <div className="app-card skin-goals-card">
+          <h3 className="skin-goals-card-title">Your priorities ({selectedGoals.length})</h3>
+          <div className="skin-goals-card-body">
             {selectedGoals.length === 0 ? (
               <p style={{ color: 'var(--text-secondary)', textAlign: 'center', padding: '24px' }}>Select goals from the left panel</p>
             ) : (
@@ -172,13 +174,11 @@ const SkinGoalsPage: React.FC = () => {
       </div>
 
       <div className="skin-goals-actions">
-        <Link to="/profile" className="btn btn-secondary">
-          <IconArrowLeft size={16} strokeWidth={2} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
-          Back to Profile
-        </Link>
-        <button onClick={handleSave} className="btn btn-primary" disabled={isSaving}>
-          {isSaving ? 'Saving...' : 'Save Goals'}
+        <Link to="/profile" className="btn btn-secondary">Back to Profile</Link>
+        <button type="button" onClick={handleSave} className="btn btn-primary" disabled={isSaving}>
+          {isSaving ? 'Saving…' : 'Save goals'}
         </button>
+      </div>
       </div>
     </div>
   );

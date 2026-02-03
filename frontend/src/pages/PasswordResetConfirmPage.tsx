@@ -76,7 +76,7 @@ const PasswordResetConfirmPage: React.FC = () => {
   // Success state
   if (success) {
     return (
-      <div className="page-container password-reset-page">
+      <div className="page-container app-page password-reset-page">
         <div className="card password-reset-card">
           <div className="card-header">
             <h2>Password Reset Complete</h2>
@@ -101,7 +101,7 @@ const PasswordResetConfirmPage: React.FC = () => {
   // No token error state
   if (!token) {
     return (
-      <div className="page-container password-reset-page">
+      <div className="page-container app-page password-reset-page">
         <div className="card password-reset-card">
           <div className="card-header">
             <h2>Invalid Reset Link</h2>
@@ -121,7 +121,7 @@ const PasswordResetConfirmPage: React.FC = () => {
   }
 
   return (
-    <div className="page-container password-reset-page">
+    <div className="page-container app-page password-reset-page">
       <div className="card password-reset-card">
         <div className="card-header">
           <h2>Set New Password</h2>

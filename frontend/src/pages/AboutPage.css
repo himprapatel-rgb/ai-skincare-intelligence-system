@@ -1,53 +1,15 @@
-/* About Page - Brand-Aligned Design */
+/* About Page - App-style, mobile-first */
 
-.about-page {
-  min-height: 100vh;
-  background: var(--bg-light);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+.about-page.app-page {
+  background: var(--bg-secondary, #f8fafc);
 }
 
-.about-container {
+.about-page .app-header-card { margin-bottom: 0; }
+
+.about-page .app-page-content.about-container {
+  padding-top: 20px;
+  padding-bottom: 80px;
   max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 24px 80px;
-}
-
-.about-hero {
-  text-align: center;
-  padding: 80px 24px 60px;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.about-hero-content {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  align-items: center;
-}
-
-.about-hero h1 {
-  font-size: 2rem; /* Brand guideline: 48px / 3rem for H1 */
-  font-weight: 700; /* Brand guideline: Bold */
-  color: var(--text-dark); /* Deep Navy */
-  margin-bottom: 24px;
-  line-height: 1.2; /* Brand guideline */
-  letter-spacing: -0.5px;
-}
-
-.about-hero h1 .gradient-text {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.about-hero p {
-  font-size: 1.125rem; /* Brand guideline: 18px Body Large */
-  color: var(--text-gray);
-  line-height: 1.6; /* Brand guideline */
-  max-width: 700px;
-  margin: 0 auto;
 }
 
 .about-section {

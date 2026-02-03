@@ -3,13 +3,12 @@ import './VideoTutorialsPage.css';
 
 const VideoTutorialsPage: React.FC = () => {
   return (
-    <div className="video-page">
-      <div className="page-container video-container">
-        <div className="page-header">
-          <h1>Video Tutorials</h1>
-          <p>Short walkthroughs to help you use every feature with confidence.</p>
-        </div>
-
+    <div className="video-page app-page">
+      <header className="app-header-card">
+        <h1>Video Tutorials</h1>
+        <p className="app-header-subtitle">Short walkthroughs for every feature.</p>
+      </header>
+      <div className="app-page-content video-container">
         <div className="video-grid">
           <div className="video-card">
             <div className="video-thumb-wrap">

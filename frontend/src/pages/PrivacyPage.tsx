@@ -10,13 +10,13 @@ const PrivacyPage: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="privacy-page">
-      <div className="privacy-hero">
+    <div className="privacy-page app-page">
+      <header className="app-header-card">
         <h1>Privacy Policy</h1>
-        <p className="effective-date">Effective: January 2026</p>
-        <p className="last-updated">Last Updated: {new Date().toLocaleDateString()}</p>
-        <p className="privacy-summary">We collect only what we need to run the service, keep your data secure, and never sell it. You can export or delete your data anytime.</p>
-      </div>
+        <p className="app-header-subtitle">We collect only what we need. Your data is secure and never sold. Export or delete anytime.</p>
+      </header>
+      <div className="app-page-content privacy-content">
+      <p className="privacy-meta">Effective January 2026 · Last updated {new Date().toLocaleDateString()}</p>
 
       <nav className="privacy-toc" aria-label="Privacy policy sections">
           <h2 className="privacy-toc-title">On this page</h2>
@@ -28,7 +28,7 @@ const PrivacyPage: React.FC = () => {
             <li><a href="#your-rights">Your Data Protection Rights</a></li>
             <li><a href="#delete">Delete My Data</a></li>
           </ul>
-        </nav>
+      </nav>
       <div className="privacy-container">
         <section className="privacy-section" id="intro">
           <h2>1. Introduction</h2>
@@ -48,6 +48,7 @@ const PrivacyPage: React.FC = () => {
             <li>Profile information (username, profile photo)</li>
             <li>Skin analysis images you upload</li>
             <li>Device and usage information</li>
+            <li>With your consent: approximate location (e.g. country/region), device type, language, and time zone to personalize your experience</li>
           </ul>
 
           <h3>Automatically Collected Information</h3>
@@ -154,6 +155,7 @@ const PrivacyPage: React.FC = () => {
             Contact Us
           </button>
         </section>
+      </div>
       </div>
     </div>
   );

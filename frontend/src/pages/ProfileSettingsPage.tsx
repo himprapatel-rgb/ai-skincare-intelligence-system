@@ -634,6 +634,12 @@ const ProfileSettingsPage: React.FC = () => {
                       <span className="settings-label">Terms &amp; Privacy</span>
                       <IconChevronRight size={20} strokeWidth={2} className="settings-arrow" />
                     </Link>
+                    <Link to="/consent" className="settings-item">
+                      <span className="settings-icon blue"><IconLock size={20} strokeWidth={2} /></span>
+                      <span className="settings-label">Privacy preferences</span>
+                      <span className="settings-value">Manage consent</span>
+                      <IconChevronRight size={20} strokeWidth={2} className="settings-arrow" />
+                    </Link>
                   </div>
                 </div>
 

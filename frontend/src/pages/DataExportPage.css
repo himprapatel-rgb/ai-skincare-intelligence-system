@@ -1,25 +1,34 @@
-/* Data Export Page - Brand-Aligned Design */
+/* Data Export Page - App-style, mobile-first */
 
-.data-export-page {
-  min-height: 100vh;
-  background: var(--bg-light);
-  padding: var(--spacing-2xl) var(--spacing-lg);
-  font-family: var(--font-family);
+.data-export-page.app-page {
+  background: var(--bg-secondary, #f8fafc);
 }
 
-.data-export-container {
-  max-width: var(--max-width-lg);
-  margin: 0 auto;
+.data-export-page .app-header-card { margin-bottom: 0; }
+
+.data-export-page .app-page-content {
+  padding-top: 20px;
 }
 
-.data-export-page h1 {
-  font-size: var(--font-size-2xl);
-  font-weight: var(--font-weight-bold);
-  color: var(--text-dark);
-  margin-bottom: var(--spacing-xl);
-  text-align: center;
-  line-height: var(--line-height-tight);
-  letter-spacing: var(--letter-spacing-tight);
+.export-header-icon {
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+.export-card-title {
+  margin: 0 0 16px 0;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0 4px;
+}
+
+.export-card-body {
+  padding: 0;
+}
+
+.export-card.app-card {
+  padding: 20px;
+  margin-bottom: 16px;
 }
 
 .export-format-grid {
@@ -29,29 +38,9 @@
   margin-bottom: var(--spacing-xl);
 }
 
-.export-card {
-  background: var(--bg-white);
-  border-radius: var(--border-radius-lg);
-  padding: var(--spacing-xl);
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--border);
-  margin-bottom: var(--spacing-lg);
-  transition: all 0.2s ease;
-}
-
-.export-card:hover {
-  transform: translateY(-2px);
-  border-color: var(--primary);
-  box-shadow: var(--focus-shadow);
-}
-
 .export-complete {
   text-align: center;
-  padding: 48px;
-  background: var(--bg-white);
-  border-radius: 12px;
-  box-shadow: var(--shadow);
-  border: 1px solid var(--border);
+  padding: 32px 24px;
 }
 
 .export-complete-icon {
@@ -157,14 +146,17 @@
   margin-bottom: 32px;
 }
 
-.export-note {
-  background: rgba(31, 111, 235, 0.05);
-  border: 1px solid var(--primary);
+.export-note.app-card {
+  padding: 16px;
+  background: color-mix(in srgb, var(--primary) 8%, transparent);
+  border-color: var(--primary-light, #dbeafe);
 }
 
 .export-note-content {
-  color: var(--text-dark);
-  line-height: 1.6;
+  margin: 0;
+  font-size: 0.9375rem;
+  color: var(--text-primary);
+  line-height: 1.5;
 }
 
 .export-format-explanation {
@@ -181,63 +173,42 @@
 }
 
 @media (max-width: 768px) {
-  .data-export-page {
-    padding: 32px 20px;
-  }
-
-  .data-export-page h1 {
-    font-size: 2.2rem;
-  }
-
   .export-format-grid {
     flex-direction: column;
+    gap: 12px;
   }
 
   .export-format-card {
+    min-width: 0;
     width: 100%;
-  }
-
-  .export-card {
-    padding: 24px 20px;
+    min-height: 80px;
+    padding: 20px;
   }
 
   .export-actions {
     flex-direction: column;
     gap: 12px;
+    margin-top: 24px;
   }
 
-  .export-actions button {
+  .export-actions .btn {
     width: 100%;
     min-height: 48px;
-  }
-
-  .export-category {
-    padding: 20px;
   }
 }
 
 @media (max-width: 480px) {
-  .data-export-page {
+  .data-export-page .app-page-content {
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+
+  .export-complete {
     padding: 24px 16px;
-  }
-
-  .data-export-page h1 {
-    font-size: 1.8rem;
-  }
-
-  .export-card {
-    padding: 20px 16px;
   }
 
   .export-format-card {
     padding: 16px;
-  }
-
-  .export-complete {
-    padding: 32px 20px;
-  }
-
-  .export-category {
-    padding: 16px;
+    min-height: 72px;
   }
 }

@@ -8,6 +8,7 @@ import { cameraService } from "../services/cameraService";
 import type { ScanResultResponse } from "../services/scanApi";
 import { validateAndCropFace } from "../utils/faceValidation";
 import { IconCamera, IconScan, IconUpload, IconSearch, IconCheckCircle, IconAlertTriangle, IconFileText, IconCheck, IconX } from '../components/Icons';
+import { ErrorCard } from '../components/ErrorCard';
 import './ScanPage.css';
 
 type UploadMode = 'camera' | 'file';
@@ -199,6 +200,9 @@ export default function ScanPage() {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [uploadMode]);
+
+  /* Release camera when leaving the page (e.g. navigate away) */
+  useEffect(() => () => { stopCamera(); }, [stopCamera]);
 
   const handleCapturedFile = useCallback(
     async (selectedFile: File, rawPreviewUrl: string) => {
@@ -686,6 +690,7 @@ export default function ScanPage() {
 
           {scanStep === 'upload' && (
             <div className="scan-upload-section">
+              <p className="scan-tip" role="note">Tip: Face the light for best results.</p>
               {/* Mode Toggle */}
               <div className="scan-mode-toggle">
                 <button
@@ -907,14 +912,24 @@ export default function ScanPage() {
               )}
 
               {error && (
-                <div className="scan-error">
-                  <div className="error-icon">
-                    <IconAlertTriangle size={32} strokeWidth={2} />
-                  </div>
-                  <div className="error-content">
-                    <strong>Error:</strong> {error}
-                  </div>
-                </div>
+                <ErrorCard
+                  title="Scan issue"
+                  message={error}
+                  actionLabel="Try again"
+                  onAction={() => {
+                    setError(null);
+                    setFile(null);
+                    setPreviewUrl(null);
+                    setCapturePreview(null);
+                    setScanStep('upload');
+                  }}
+                  secondaryLabel="Use file upload"
+                  onSecondary={() => {
+                    setError(null);
+                    setUploadMode('file');
+                    stopCamera();
+                  }}
+                />
               )}
             </div>
           )}

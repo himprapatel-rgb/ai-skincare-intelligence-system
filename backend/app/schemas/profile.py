@@ -8,6 +8,7 @@ SRS Traceability:
 
 Sprint: 1.2 - Story 1.2, 1.6
 """
+import re
 from datetime import date, datetime
 from typing import List, Optional
 
@@ -81,6 +82,15 @@ class ProfileUpdate(BaseModel):
     timezone: Optional[str] = Field(None, max_length=50)
     phone_number: Optional[str] = Field(None, max_length=20)
     profile_photo_url: Optional[str] = Field(None, max_length=500)
+
+    @field_validator('phone_number')
+    @classmethod
+    def validate_phone(cls, v: Optional[str]) -> Optional[str]:
+        if not v or not v.strip():
+            return None
+        if not re.match(r'^\+?[\d\s\-().]{7,20}$', v.strip()):
+            raise ValueError('Invalid phone number format')
+        return v.strip()
     
     # ===== SKIN PROFILE =====
     skin_type: Optional[str] = None

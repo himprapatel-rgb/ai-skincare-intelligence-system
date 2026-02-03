@@ -274,6 +274,14 @@ async def update_profile(
         profile.first_name = update_data["first_name"]
     if "last_name" in update_data:
         profile.last_name = update_data["last_name"]
+    if "first_name" in update_data or "last_name" in update_data:
+        fn = (profile.first_name or "").strip()
+        ln = (profile.last_name or "").strip()
+        if not fn and not ln:
+            raise HTTPException(
+                status_code=400,
+                detail="Full name is required. Provide at least first or last name.",
+            )
     if "date_of_birth" in update_data:
         profile.date_of_birth = update_data["date_of_birth"]
     if "gender" in update_data:

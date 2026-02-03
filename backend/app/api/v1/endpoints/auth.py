@@ -6,7 +6,7 @@ Handles user registration, login, email verification, and password reset.
 import uuid
 from datetime import datetime, timedelta, timezone
 
-from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Request, status
 from pydantic import BaseModel
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
@@ -24,6 +24,7 @@ from app.schemas.user import (
     UserLogin,
     UserResponse,
 )
+from app.core.rate_limit import check_login_rate_limit, record_login_attempt
 from app.services.auth_service import auth_service
 from app.services.email_service import send_verification_email
 
@@ -112,20 +113,24 @@ def register(
     summary="User login",
     description="Authenticate user and return access token",
 )
-def login(user_data: UserLogin, db: Session = Depends(get_db)):
-    """Authenticate user and return access token."""
+def login(request: Request, user_data: UserLogin, db: Session = Depends(get_db)):
+    """Authenticate user and return access token. Rate limited per IP."""
+    check_login_rate_limit(request)
+
     email = user_data.email
     password = user_data.password
-    
+
     # Get user by email
     user = auth_service.get_user_by_email(db, email)
     if not user:
+        record_login_attempt(request)
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid email or password",
         )
 
     if not auth_service.verify_password(user.hashed_password, password):
+        record_login_attempt(request)
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid email or password",

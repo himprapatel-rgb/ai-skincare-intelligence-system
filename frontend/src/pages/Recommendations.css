@@ -342,6 +342,18 @@
   box-shadow: var(--shadow-md);
 }
 
+.btn-view-details {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: white;
+}
+
+.btn-view-details:hover {
+  color: white;
+}
+
 .btn-disabled {
   padding: 10px 20px;
   border-radius: 8px;

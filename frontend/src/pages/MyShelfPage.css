@@ -101,6 +101,96 @@
   padding-bottom: 100px;
 }
 
+/* ----- Expiring soon ----- */
+.myshelf-expiring-soon {
+  background: linear-gradient(135deg, #fef3c7 0%, #fef9c3 100%);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.myshelf-expiring-heading {
+  margin: 0 0 12px 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #b45309;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.myshelf-expiring-icon {
+  font-size: 1.2rem;
+}
+
+.myshelf-expiring-scroll {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.myshelf-expiring-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+
+.myshelf-expiring-card {
+  flex: 0 0 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  background: var(--bg-white);
+  border-radius: 12px;
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  cursor: pointer;
+  text-align: center;
+  transition: box-shadow 0.2s;
+}
+
+.myshelf-expiring-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.myshelf-expiring-thumb {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: var(--bg-secondary);
+}
+
+.myshelf-expiring-name {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.2;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.myshelf-expiring-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 8px;
+}
+
+.myshelf-expiring-badge.warning {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.myshelf-expiring-badge.expired {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
 /* ----- Onboarding (collapsible tips) ----- */
 .myshelf-onboarding {
   background: var(--bg-white);

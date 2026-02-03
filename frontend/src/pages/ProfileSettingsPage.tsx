@@ -10,6 +10,7 @@ import { usePageTitle } from '../hooks/usePageTitle';
 import { getScanHistory } from '../services/scanApi';
 import { api } from '../services/api';
 import { getUploadFullUrl } from '../config';
+import { LoadingSpinner } from '../components/LoadingSpinner';
 import './ProfileSettingsPage.css';
 
 interface UserProfile {
@@ -79,9 +80,10 @@ const ProfileSettingsPage: React.FC = () => {
   const initialProfileRef = useRef<UserProfile | null>(null);
   const settingsFormRef = useRef<HTMLFormElement>(null);
   const [loading, setLoading] = useState(false);
+  const [photoUploading, setPhotoUploading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
-  const [fieldErrors, setFieldErrors] = useState<{ name?: string; email?: string }>({});
+  const [fieldErrors, setFieldErrors] = useState<{ name?: string; email?: string; phone?: string }>({});
   const [isDirty, setIsDirty] = useState(false);
   const [activeTab, setActiveTab] = useState<'personal' | 'skin' | 'goals' | 'lifestyle' | 'notifications' | 'privacy' | 'stats'>('personal');
   const [headerScrolled, setHeaderScrolled] = useState(false);
@@ -329,12 +331,16 @@ const ProfileSettingsPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const nextErrors: { name?: string; email?: string } = {};
+    const nextErrors: { name?: string; email?: string; phone?: string } = {};
     if (!profile.name.trim()) {
       nextErrors.name = 'Full name is required.';
     }
     if (!profile.email.trim()) {
       nextErrors.email = 'Email address is required.';
+    }
+    const phoneTrimmed = profile.phone.trim();
+    if (phoneTrimmed && !/^\+?[\d\s\-().]{7,20}$/.test(phoneTrimmed)) {
+      nextErrors.phone = 'Please enter a valid phone number (e.g. +353 1 234 5678).';
     }
     setFieldErrors(nextErrors);
     if (Object.keys(nextErrors).length > 0) {
@@ -489,9 +495,11 @@ const ProfileSettingsPage: React.FC = () => {
             type="button"
             className="avatar-edit-button"
             onClick={() => fileInputRef.current?.click()}
-            aria-label="Change profile photo"
+            disabled={photoUploading}
+            aria-label={photoUploading ? 'Uploading photo…' : 'Change profile photo'}
+            aria-busy={photoUploading}
           >
-            <IconCamera size={18} strokeWidth={2} />
+            {photoUploading ? <LoadingSpinner size="small" message="" /> : <IconCamera size={18} strokeWidth={2} />}
           </button>
           <input
             ref={fileInputRef}
@@ -673,9 +681,11 @@ const ProfileSettingsPage: React.FC = () => {
                       }
                     }}
                     required
+                    aria-required="true"
                     aria-invalid={Boolean(fieldErrors.name)}
+                    aria-describedby={fieldErrors.name ? 'name-error' : undefined}
                   />
-                  {fieldErrors.name && <span className="field-error">{fieldErrors.name}</span>}
+                  {fieldErrors.name && <span id="name-error" className="field-error" role="alert">{fieldErrors.name}</span>}
                 </div>
                 <div className="form-group">
                   <label htmlFor="email">Email Address *</label>
@@ -703,7 +713,19 @@ const ProfileSettingsPage: React.FC = () => {
               <div className="form-row">
                 <div className="form-group">
                   <label htmlFor="phone">Phone Number (Optional)</label>
-                  <input type="tel" id="phone" value={profile.phone} onChange={(e) => setProfile({ ...profile, phone: e.target.value })} placeholder="+353 xxx xxx xxxx" />
+                  <input
+                    type="tel"
+                    id="phone"
+                    value={profile.phone}
+                    onChange={(e) => {
+                      setProfile({ ...profile, phone: e.target.value });
+                      if (fieldErrors.phone) setFieldErrors((prev) => ({ ...prev, phone: undefined }));
+                    }}
+                    placeholder="+353 1 234 5678"
+                    aria-invalid={Boolean(fieldErrors.phone)}
+                    aria-describedby={fieldErrors.phone ? 'phone-error' : undefined}
+                  />
+                  {fieldErrors.phone && <span id="phone-error" className="field-error">{fieldErrors.phone}</span>}
                 </div>
                 <div className="form-group">
                   <label htmlFor="dateOfBirth">Date of Birth</label>
@@ -1180,8 +1202,8 @@ const ProfileSettingsPage: React.FC = () => {
           
           <div className="form-actions-bar">
             <div className="form-actions">
-            <button type="submit" className="btn-primary" disabled={loading}>
-              {loading ? 'Saving...' : 'Save Changes'}
+            <button type="submit" className="btn-primary" disabled={loading} aria-busy={loading}>
+              {loading ? <><LoadingSpinner size="small" message="" /> Saving...</> : 'Save Changes'}
             </button>
             <button type="button" className="btn-secondary" onClick={fetchUserProfile}>
               Reset
@@ -1197,8 +1219,9 @@ const ProfileSettingsPage: React.FC = () => {
                 className="profile-floating-save-btn"
                 onClick={() => settingsFormRef.current?.requestSubmit()}
                 disabled={loading}
+                aria-busy={loading}
               >
-                {loading ? 'Saving...' : 'Save Changes'}
+                {loading ? <><LoadingSpinner size="small" message="" /> Saving...</> : 'Save Changes'}
               </button>
             </div>
           )}

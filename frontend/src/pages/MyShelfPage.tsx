@@ -114,6 +114,12 @@ const MyShelfPage: React.FC = () => {
     return result;
   }, [products, filter, searchTerm, categoryFilter, sortBy]);
 
+  const expiringSoonProducts = useMemo(() => {
+    return products
+      .filter((p) => p.expiryDate && (isExpiryApproaching(p.expiryDate) || isExpired(p.expiryDate)))
+      .sort((a, b) => new Date(a.expiryDate!).getTime() - new Date(b.expiryDate!).getTime());
+  }, [products]);
+
   const handleProductClick = (productId: string) => {
     const shelfProduct = shelfProducts.find(p => p.id === productId);
     navigate(`/product/${productId}`, {
@@ -227,6 +233,39 @@ const MyShelfPage: React.FC = () => {
       </header>
 
       <div className="app-page-content myshelf-content">
+      {expiringSoonProducts.length > 0 && (
+        <section className="myshelf-expiring-soon" aria-label="Expiring soon">
+          <h2 className="myshelf-expiring-heading">
+            <span className="myshelf-expiring-icon" aria-hidden>⏱</span>
+            Expiring soon ({expiringSoonProducts.length})
+          </h2>
+          <div className="myshelf-expiring-scroll">
+            {expiringSoonProducts.map((product) => (
+              <button
+                key={product.id}
+                type="button"
+                className="myshelf-expiring-card"
+                onClick={() => handleProductClick(product.id)}
+              >
+                <img
+                  src={product.imageUrl || placeholderImage}
+                  alt=""
+                  className="myshelf-expiring-thumb"
+                  onError={(e) => { (e.target as HTMLImageElement).src = placeholderImage; }}
+                />
+                <span className="myshelf-expiring-name">{product.name}</span>
+                <span className={`myshelf-expiring-badge ${isExpired(product.expiryDate) ? 'expired' : 'warning'}`}>
+                  {product.expiryDate
+                    ? (isExpired(product.expiryDate)
+                        ? 'Expired'
+                        : `Expires ${new Date(product.expiryDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}`)
+                    : ''}
+                </span>
+              </button>
+            ))}
+          </div>
+        </section>
+      )}
       <section className="myshelf-onboarding" aria-label="Tips">
         <button
           type="button"

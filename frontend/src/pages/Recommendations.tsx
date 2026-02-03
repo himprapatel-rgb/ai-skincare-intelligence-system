@@ -503,9 +503,9 @@ const Recommendations: React.FC = () => {
                           Buy Now
                         </a>
                       ) : (
-                        <button type="button" className="btn-disabled" disabled>
-                          Unavailable
-                        </button>
+                        <Link to={`/product/${encodeURIComponent(product.id)}`} className="btn-add btn-view-details">
+                          View details
+                        </Link>
                       )}
                     </div>
                   </div>

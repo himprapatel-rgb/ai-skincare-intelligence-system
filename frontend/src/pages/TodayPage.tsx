@@ -12,6 +12,7 @@ import { useShelf } from '../context/ShelfContext';
 import {
   IconSettings,
   IconSun,
+  IconMoon,
   IconStar,
   IconPackage,
   IconArrowRight,
@@ -23,6 +24,7 @@ import {
   getRoutineSteps,
   getCompletedStepsForToday,
   toggleStepForToday,
+  type RoutineType,
 } from '../utils/routineStorage';
 import './TodayPage.css';
 
@@ -36,6 +38,13 @@ interface TodayData {
 
 const WEEKDAY_LABELS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
+/** Placeholder "For You" picks when no API data; show image + why to improve engagement */
+const FOR_YOU_FALLBACK = [
+  { id: 'rec-1', name: 'Barrier Repair Moisturizer', match: 92, why: 'Hydration, barrier support' },
+  { id: 'rec-2', name: 'Vitamin C Serum', match: 88, why: 'Brightening, dark spots' },
+  { id: 'rec-3', name: 'Lightweight SPF 50', match: 85, why: 'Protection, oil-free' },
+];
+
 const TodayPage: React.FC = () => {
   usePageTitle('Today', 'Your skin today – score, routine, and recommendations.');
   const { user, isAuthenticated } = useAuth();
@@ -44,8 +53,29 @@ const TodayPage: React.FC = () => {
   const [data, setData] = useState<TodayData | null>(null);
   const [loading, setLoading] = useState(true);
   const [streak, setStreak] = useState(0);
-  const routineSteps = getRoutineSteps();
-  const [completedSteps, setCompletedSteps] = useState<Set<number>>(getCompletedStepsForToday);
+  const [routineType, setRoutineType] = useState<RoutineType>('morning');
+  const morningSteps = getRoutineSteps('morning');
+  const eveningSteps = getRoutineSteps('evening');
+  const routineSteps = routineType === 'evening' ? eveningSteps : morningSteps;
+  const [completedMorning, setCompletedMorning] = useState<Set<number>>(() => getCompletedStepsForToday('morning'));
+  const [completedEvening, setCompletedEvening] = useState<Set<number>>(() => getCompletedStepsForToday('evening'));
+  const completedSteps = routineType === 'evening' ? completedEvening : completedMorning;
+  const [showTwinIntro, setShowTwinIntro] = useState(() => {
+    try {
+      return !localStorage.getItem('pellicura_digital_twin_intro_seen');
+    } catch {
+      return false;
+    }
+  });
+
+  const dismissTwinIntro = () => {
+    try {
+      localStorage.setItem('pellicura_digital_twin_intro_seen', '1');
+    } catch {
+      /* ignore */
+    }
+    setShowTwinIntro(false);
+  };
 
   useEffect(() => {
     if (!isAuthenticated || !user) {
@@ -91,17 +121,22 @@ const TodayPage: React.FC = () => {
   }, []);
 
   const handleRoutineStepToggle = (index: number) => {
-    const next = toggleStepForToday(index);
-    setCompletedSteps(next);
-    if (next.size === routineSteps.length && !hasCheckedInToday()) {
-      checkInToday();
-      setStreak(getStreak());
+    const next = toggleStepForToday(index, routineType);
+    if (routineType === 'morning') {
+      setCompletedMorning(next);
+      if (next.size === morningSteps.length && !hasCheckedInToday()) {
+        checkInToday();
+        setStreak(getStreak());
+      }
+    } else {
+      setCompletedEvening(next);
     }
   };
 
   const firstName = user?.full_name?.split(' ')[0] || user?.email?.split('@')[0] || 'there';
   const routineDone = completedSteps.size;
   const routineTotal = routineSteps.length;
+  const isStreakMilestone = streak >= 3;
 
   if (!isAuthenticated) {
     return (
@@ -142,13 +177,18 @@ const TodayPage: React.FC = () => {
 
       <div className="today-content">
         {streak > 0 && (
-          <section className="today-card today-card-streak">
+          <section className={`today-card today-card-streak ${isStreakMilestone ? 'today-streak-milestone' : ''}`}>
             <div className="today-streak-header">
               <span className="today-streak-emoji" aria-hidden>🔥</span>
               <span className="today-streak-title">
                 {streak}-Day Streak!
               </span>
             </div>
+            {isStreakMilestone && (
+              <p className="today-streak-celebration">
+                {streak >= 7 ? 'Amazing! Week streak! 🎉' : 'Streak milestone! Keep it up!'}
+              </p>
+            )}
             <div className="today-streak-week" aria-hidden>
               {WEEKDAY_LABELS.map((label, i) => (
                 <span key={i} className="today-streak-day">{label}</span>
@@ -168,7 +208,22 @@ const TodayPage: React.FC = () => {
           ) : (
             <>
               <div className="today-skin-score-box">
-                <span className="today-skin-score">{data.skinScore}</span>
+                <div className="today-skin-ring-wrap" aria-hidden>
+                  <svg className="today-skin-ring" viewBox="0 0 100 100">
+                    <circle className="today-skin-ring-bg" cx="50" cy="50" r="42" fill="none" strokeWidth="8" />
+                    <circle
+                      className="today-skin-ring-fill"
+                      cx="50"
+                      cy="50"
+                      r="42"
+                      fill="none"
+                      strokeWidth="8"
+                      strokeLinecap="round"
+                      strokeDasharray={`${(data.skinScore / 100) * 264} 264`}
+                    />
+                  </svg>
+                  <span className="today-skin-score today-skin-score-inner">{data.skinScore}</span>
+                </div>
                 <span className="today-skin-trend">
                   {data.skinTrend === 'improving' && <>↑ Improving</>}
                   {data.skinTrend === 'stable' && <>→ Stable</>}
@@ -179,17 +234,51 @@ const TodayPage: React.FC = () => {
               <p className="today-skin-meta">
                 {data.scanCount} scan{data.scanCount !== 1 ? 's' : ''} • Based on your latest analysis
               </p>
-              <Link to="/digital-twin" className="today-card-link">
-                View full analysis <IconArrowRight size={18} strokeWidth={2} />
+              {showTwinIntro && (
+                <div className="today-twin-intro" role="region" aria-label="New feature">
+                  <p className="today-twin-intro-text">Track your skin over time with your Digital Twin — timeline, before/after, and What-If simulation.</p>
+                  <div className="today-twin-intro-actions">
+                    <Link to="/digital-twin" className="btn btn-primary btn-sm" onClick={dismissTwinIntro}>
+                      Explore Digital Twin
+                    </Link>
+                    <button type="button" className="btn btn-ghost btn-sm" onClick={dismissTwinIntro} aria-label="Dismiss">
+                      Not now
+                    </button>
+                  </div>
+                </div>
+              )}
+              <Link to="/digital-twin" className="today-card-link today-card-link-twin">
+                <span className="today-twin-badge">Timeline</span>
+                View full analysis & Digital Twin <IconArrowRight size={18} strokeWidth={2} />
               </Link>
             </>
           )}
         </section>
 
         <section className="today-card today-card-routine">
+          <div className="today-routine-tabs">
+            <button
+              type="button"
+              className={`today-routine-tab ${routineType === 'morning' ? 'active' : ''}`}
+              onClick={() => setRoutineType('morning')}
+              aria-pressed={routineType === 'morning'}
+            >
+              <IconSun size={18} strokeWidth={2} />
+              Morning
+            </button>
+            <button
+              type="button"
+              className={`today-routine-tab ${routineType === 'evening' ? 'active' : ''}`}
+              onClick={() => setRoutineType('evening')}
+              aria-pressed={routineType === 'evening'}
+            >
+              <IconMoon size={18} strokeWidth={2} />
+              Evening
+            </button>
+          </div>
           <div className="today-card-head">
-            <span className="today-routine-icon"><IconSun size={20} strokeWidth={2} /></span>
-            <h2 className="today-card-title">Morning routine</h2>
+            <span className="today-routine-icon">{routineType === 'morning' ? <IconSun size={20} strokeWidth={2} /> : <IconMoon size={20} strokeWidth={2} />}</span>
+            <h2 className="today-card-title">{routineType === 'morning' ? 'Morning' : 'Evening'} routine</h2>
             <span className="today-routine-count">
               {routineDone}/{routineTotal} done
             </span>
@@ -229,15 +318,17 @@ const TodayPage: React.FC = () => {
             <Link to="/recommendations" className="today-see-all">See all →</Link>
           </div>
           <div className="today-foryou-tiles">
-            {[92, 88, 85].map((pct, i) => (
+            {FOR_YOU_FALLBACK.map((item) => (
               <button
-                key={i}
+                key={item.id}
                 type="button"
                 className="today-foryou-tile"
                 onClick={() => navigate('/recommendations')}
               >
-                <span className="today-foryou-pct">{pct}%</span>
-                <span className="today-foryou-label">Match</span>
+                <div className="today-foryou-thumb" aria-hidden />
+                <span className="today-foryou-pct">{item.match}%</span>
+                <span className="today-foryou-name">{item.name}</span>
+                <span className="today-foryou-why">Addresses: {item.why}</span>
               </button>
             ))}
           </div>

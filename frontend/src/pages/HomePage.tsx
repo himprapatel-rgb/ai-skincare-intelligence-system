@@ -374,13 +374,7 @@ const HomePage: React.FC = () => {
       </section>
       </div>
 
-      {/* Mobile: floating primary CTA above bottom nav (Bumble-style super app) */}
-      <div className="home-cta-float">
-        <Link to="/scan" className="home-cta-float-btn">
-          <IconScan size={22} strokeWidth={2} />
-          <span>Start Free Skin Scan</span>
-        </Link>
-      </div>
+      {/* Single CTA on home: hero button only (no floating CTA to avoid duplicate) */}
     </div>
   );
 };

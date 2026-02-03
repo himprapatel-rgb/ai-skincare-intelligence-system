@@ -230,6 +230,7 @@
   scroll-snap-type: x proximity;
   -webkit-overflow-scrolling: touch;
   padding-bottom: 2px;
+  padding-right: 8px;
   flex: 1;
   min-width: 0;
 }

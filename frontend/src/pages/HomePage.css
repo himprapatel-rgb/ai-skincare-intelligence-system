@@ -43,21 +43,21 @@
   border-color: rgba(37, 99, 235, 0.4);
 }
 
-/* Mobile: floating primary CTA above bottom nav (Bumble-style super app) */
+/* Mobile: floating CTA (unused on home - hero has single CTA to avoid duplicate) */
 .home-cta-float {
   display: none;
 }
 
 @media (max-width: 768px) {
   .homepage.app-page {
-    padding-bottom: max(160px, calc(140px + env(safe-area-inset-bottom)));
+    padding-bottom: max(108px, calc(96px + env(safe-area-inset-bottom)));
   }
   .home-cta-float {
     display: block;
     position: fixed;
     left: max(16px, env(safe-area-inset-left));
     right: max(16px, env(safe-area-inset-right));
-    bottom: calc(80px + env(safe-area-inset-bottom));
+    bottom: calc(100px + env(safe-area-inset-bottom));
     z-index: calc(var(--z-index-sticky, 100) - 1);
     pointer-events: none;
   }

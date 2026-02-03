@@ -490,8 +490,9 @@
   flex: 1;
   font-weight: 500;
   min-width: 0;
-  word-break: break-word;
-  overflow-wrap: break-word;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .settings-value {

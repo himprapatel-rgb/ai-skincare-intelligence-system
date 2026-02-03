@@ -38,6 +38,7 @@
 /* Dashboard hero uses .app-header-card (see app-style.css) */
 .dashboard-hero {
   margin-bottom: 0;
+  min-height: 72px;
 }
 
 .dashboard-hero-with-refresh {

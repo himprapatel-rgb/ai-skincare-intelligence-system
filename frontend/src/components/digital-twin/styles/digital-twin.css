@@ -133,6 +133,9 @@
   font-size: 1rem;
   font-weight: 600;
   color: var(--text-dark);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  min-width: 0;
 }
 
 .dt-card {

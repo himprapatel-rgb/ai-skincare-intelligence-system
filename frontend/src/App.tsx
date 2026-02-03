@@ -36,7 +36,6 @@ const ProductComparePage = React.lazy(() => import("./pages/ProductComparePage")
 const RoutineBuilderPage = React.lazy(() => import("./pages/RoutineBuilderPage"));
 const FavoritesPage = React.lazy(() => import("./pages/FavoritesPage"));
 const MyShelfPage = React.lazy(() => import("./pages/MyShelfPage"));
-const ProductScannerPage = React.lazy(() => import("./pages/ProductScannerPage"));
 const ProfileSettingsPage = React.lazy(() => import("./pages/ProfileSettingsPage"));
 const OnboardingPage = React.lazy(() => import("./pages/OnboardingPage"));
 const ConsentPage = React.lazy(() => import("./pages/ConsentPage"));

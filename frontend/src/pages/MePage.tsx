@@ -9,7 +9,6 @@ import { usePageTitle } from '../hooks/usePageTitle';
 import { useShelf } from '../context/ShelfContext';
 import { getScanHistory } from '../services/scanApi';
 import { getStreak } from '../utils/streakStorage';
-import { API_BASE_URL } from '../config';
 import {
   IconPackage,
   IconHeart,

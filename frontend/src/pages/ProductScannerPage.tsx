@@ -165,7 +165,7 @@ function getAmount(category: string | undefined): string {
 /** Check for common ingredient conflicts with user's shelf (e.g. Vitamin C + Retinol) */
 function getShelfConflict(
   scannedIngredients: string[],
-  scannedName: string,
+  _scannedName: string,
   shelfProducts: Array<{ product_name: string; ingredients_json?: { ingredients?: string[] } }>
 ): { message: string; productName: string } | null {
   const scannedLower = scannedIngredients.join(' ').toLowerCase();

@@ -7,7 +7,7 @@ import { initScan, uploadScanImage, getScanStatus, getScanResult } from "../serv
 import { cameraService } from "../services/cameraService";
 import type { ScanResultResponse } from "../services/scanApi";
 import { validateAndCropFace } from "../utils/faceValidation";
-import { IconCamera, IconScan, IconUpload, IconSearch, IconCheckCircle, IconFileText, IconCheck, IconX, IconPackage } from '../components/Icons';
+import { IconCamera, IconScan, IconUpload, IconSearch, IconCheckCircle, IconFileText, IconCheck, IconX } from '../components/Icons';
 import { ErrorCard } from '../components/ErrorCard';
 import ProductScannerPage from './ProductScannerPage';
 import './ScanPage.css';

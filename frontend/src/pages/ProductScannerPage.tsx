@@ -130,11 +130,76 @@ interface ScanHistoryItem {
 const SCAN_HISTORY_KEY = 'pellicura_scan_history';
 const MAX_HISTORY_ITEMS = 5;
 
-const ProductScannerPage: React.FC = () => {
-  usePageTitle('Product Scanner');
+/** How to use: best time from category */
+function getUsageTime(category: string | undefined): string {
+  const cat = (category || '').toLowerCase();
+  if (cat.includes('sunscreen') || cat.includes('spf')) return '☀️ Morning only';
+  if (cat.includes('retinol') || cat.includes('night')) return '🌙 Evening only';
+  if (cat.includes('serum') || cat.includes('treatment')) return '☀️🌙 AM or PM';
+  if (cat.includes('cleanser') || cat.includes('moisturizer') || cat.includes('toner')) return '☀️🌙 AM & PM';
+  return '☀️🌙 As needed';
+}
+/** Step order from category */
+function getStepOrder(category: string | undefined): string {
+  const cat = (category || '').toLowerCase();
+  if (cat.includes('cleanser') || cat.includes('clean')) return 'Step 1 – Cleanse';
+  if (cat.includes('toner') || cat.includes('essence')) return 'Step 2 – Tone';
+  if (cat.includes('serum') || cat.includes('ampoule')) return 'Step 3 – Treat';
+  if (cat.includes('eye')) return 'Step 4 – Eye';
+  if (cat.includes('moisturizer') || cat.includes('cream') || cat.includes('lotion')) return 'Step 5 – Moisturize';
+  if (cat.includes('sunscreen') || cat.includes('spf')) return 'Step 6 – Protect (AM)';
+  return 'As directed';
+}
+/** Amount per use from category */
+function getAmount(category: string | undefined): string {
+  const cat = (category || '').toLowerCase();
+  if (cat.includes('serum') || cat.includes('oil')) return '2–3 drops';
+  if (cat.includes('cleanser')) return 'Dime-sized';
+  if (cat.includes('moisturizer') || cat.includes('cream')) return 'Pea-sized';
+  if (cat.includes('sunscreen')) return '2 finger lengths';
+  if (cat.includes('toner') || cat.includes('essence')) return '3–4 drops or cotton pad';
+  if (cat.includes('eye')) return 'Rice grain';
+  return 'As directed';
+}
+
+/** Check for common ingredient conflicts with user's shelf (e.g. Vitamin C + Retinol) */
+function getShelfConflict(
+  scannedIngredients: string[],
+  scannedName: string,
+  shelfProducts: Array<{ product_name: string; ingredients_json?: { ingredients?: string[] } }>
+): { message: string; productName: string } | null {
+  const scannedLower = scannedIngredients.join(' ').toLowerCase();
+  const hasVitaminC = /\b(ascorbic|vitamin\s*c|sodium\s*ascorbyl)\b/i.test(scannedLower);
+  const hasRetinol = /\b(retinol|retinyl|adapalene|tretinoin|retinoid)\b/i.test(scannedLower);
+  const hasAhaBha = /\b(glycolic|lactic|salicylic|aha|bha|beta\s*hydroxy)\b/i.test(scannedLower);
+  for (const shelf of shelfProducts) {
+    const ing = shelf.ingredients_json?.ingredients || [];
+    const shelfLower = ing.join(' ').toLowerCase();
+    const shelfHasRetinol = /\b(retinol|retinyl|adapalene|tretinoin|retinoid)\b/i.test(shelfLower);
+    const shelfHasVitaminC = /\b(ascorbic|vitamin\s*c|sodium\s*ascorbyl)\b/i.test(shelfLower);
+    if (hasVitaminC && shelfHasRetinol) {
+      return { message: 'Don\'t use together. Use Vitamin C in AM, Retinol in PM.', productName: shelf.product_name };
+    }
+    if (hasRetinol && shelfHasVitaminC) {
+      return { message: 'Don\'t use together. Use Vitamin C in AM, Retinol in PM.', productName: shelf.product_name };
+    }
+    if (hasAhaBha && shelfHasRetinol) {
+      return { message: 'Avoid using AHA/BHA with retinol on the same night.', productName: shelf.product_name };
+    }
+  }
+  return null;
+}
+
+interface ProductScannerPageProps {
+  /** When true, render without page header for embedding inside combined Scan tab */
+  embedded?: boolean;
+}
+
+const ProductScannerPage: React.FC<ProductScannerPageProps> = ({ embedded = false }) => {
+  usePageTitle(embedded ? null : 'Product Scanner');
   const navigate = useNavigate();
   const { token } = useAuth();
-  const { addToShelf: addToShelfContext, isOnShelf } = useShelf();
+  const { addToShelf: addToShelfContext, isOnShelf, products: shelfProducts } = useShelf();
   const toast = useToast();
   
   // Scanner state
@@ -148,6 +213,9 @@ const ProductScannerPage: React.FC = () => {
   const [addedToShelf, setAddedToShelf] = useState(false);
   const [addingToShelf, setAddingToShelf] = useState(false);
   const [scanHistory, setScanHistory] = useState<ScanHistoryItem[]>([]);
+  const [showTrackModal, setShowTrackModal] = useState(false);
+  const [trackOpenedDate, setTrackOpenedDate] = useState(() => new Date().toISOString().slice(0, 10));
+  const [trackPAOMonths, setTrackPAOMonths] = useState(6);
   
   // Enhanced camera state (Tasks 1-50)
   const [_cameraPermission, setCameraPermission] = useState<CameraPermissionStatus>('unknown');
@@ -572,11 +640,10 @@ const ProductScannerPage: React.FC = () => {
     }
   };
 
-  // Add to shelf using global context
-  const handleAddToShelf = async () => {
+  // Add to shelf using global context (optional expiry from "Track this product" modal)
+  const handleAddToShelf = async (expiryDate?: string) => {
     if (!scannedProduct || !token) return;
     
-    // Check if already on shelf
     if (isOnShelf(scannedProduct.id)) {
       setAddedToShelf(true);
       setTimeout(() => navigate('/myshelf'), 1500);
@@ -584,6 +651,7 @@ const ProductScannerPage: React.FC = () => {
     }
     
     setAddingToShelf(true);
+    setShowTrackModal(false);
     try {
       // Build full scan snapshot for persistent storage (ingredients + safety data)
       const ingredientsList: string[] = Array.isArray(scannedProduct.ingredients)
@@ -630,7 +698,8 @@ const ProductScannerPage: React.FC = () => {
           ? undefined 
           : scannedProduct.imageUrl,
         status: 'active',
-        ingredients_json: ingredientsSnapshot,  // Store ingredients with shelf product
+        ingredients_json: ingredientsSnapshot,
+        expiry_date: expiryDate || undefined,
       });
       
       if (success) {
@@ -665,14 +734,16 @@ const ProductScannerPage: React.FC = () => {
   };
 
   return (
-    <div className="product-scanner-page app-page">
-      <header className="app-header-card scanner-page-header">
-        <h1>
-          <IconScan size={28} strokeWidth={2} className="icon-inline-lg" aria-hidden />
-          Product Scanner
-        </h1>
-        <p className="app-header-subtitle">Scan barcodes or take photos to identify beauty products</p>
-      </header>
+    <div className={`product-scanner-page app-page${embedded ? ' product-scanner-embedded' : ''}`}>
+      {!embedded && (
+        <header className="app-header-card scanner-page-header">
+          <h1>
+            <IconScan size={28} strokeWidth={2} className="icon-inline-lg" aria-hidden />
+            Product Scanner
+          </h1>
+          <p className="app-header-subtitle">Scan barcodes or take photos to identify beauty products</p>
+        </header>
+      )}
       <div className="scanner-container app-page-content">
         {/* Mode Selector */}
         {!scannedProduct && !processing && (
@@ -963,9 +1034,9 @@ const ProductScannerPage: React.FC = () => {
         {/* Product Results */}
         {scannedProduct && !processing && (
           <div className="product-results">
-            <div className="card product-info-card">
-              <div className="card-header">
-                <h2>Product Identified</h2>
+            <div className="card product-info-card product-result-card">
+              <div className="card-header product-found-header">
+                <h2><span className="product-found-badge" aria-hidden>✅</span> Product found</h2>
                 <button onClick={handleReset} className="btn-icon-small" aria-label="Close">
                   <IconX size={18} strokeWidth={2} />
                 </button>
@@ -1054,17 +1125,66 @@ const ProductScannerPage: React.FC = () => {
                       text: `${scannedProduct.safetyReport.total_flagged} ingredient(s) to review below`
                     });
                   }
+                  const dontMixWith: string[] = [];
+                  scannedProduct.safetyReport?.recommendations?.forEach((r) => {
+                    const lower = r.toLowerCase();
+                    if (lower.includes("don't") && lower.includes("with") || lower.includes('avoid') && lower.includes('together') || lower.includes('retinol') || lower.includes('vitamin c') || lower.includes('aha') || lower.includes('bha')) {
+                      dontMixWith.push(r);
+                    }
+                  });
+                  scannedProduct.safetyReport?.flagged_ingredients?.forEach((f) => {
+                    f.avoid_if?.forEach((a) => { if (a && !dontMixWith.includes(a)) dontMixWith.push(a); });
+                  });
                   return (
+                    <>
                     <div className={`skin-match-card ${isGood ? 'good' : isFair ? 'fair' : 'low'}`}>
-                      <h3 className="skin-match-title">Your skin match</h3>
-                      <div className="skin-match-value">{matchPct}%</div>
+                      <h3 className="skin-match-title">🎯 {matchPct}% match for you</h3>
+                      <div className="skin-match-bar-wrap">
+                        <div className="skin-match-bar" style={{ width: `${matchPct}%` }} />
+                      </div>
+                      <p className="skin-match-sub">Good for you</p>
                       <ul className="skin-match-bullets">
-                        {skinMatchBullets.map((b, i) => (
-                          <li key={i} className={b.type === 'warn' ? 'skin-match-warn' : ''}>
-                            {b.type === 'warn' ? '⚠️' : '✅'} {b.text}
-                          </li>
+                        {skinMatchBullets.filter(b => b.type === 'ok').map((b, i) => (
+                          <li key={i}>✅ {b.text}</li>
                         ))}
                       </ul>
+                      {(skinMatchBullets.some(b => b.type === 'warn') || dontMixWith.length > 0) && (
+                        <>
+                          <p className="skin-match-sub">Watch out</p>
+                          <ul className="skin-match-bullets skin-match-watch">
+                            {skinMatchBullets.filter(b => b.type === 'warn').map((b, i) => (
+                              <li key={i}>⚠️ {b.text}</li>
+                            ))}
+                            {dontMixWith.slice(0, 3).map((text, i) => (
+                              <li key={`dm-${i}`}>⚠️ Don&apos;t mix with: {text}</li>
+                            ))}
+                          </ul>
+                        </>
+                      )}
+                    </div>
+                    <div className="how-to-use-card">
+                      <h3 className="how-to-use-title">📋 How to use</h3>
+                      <ul className="how-to-use-list">
+                        <li>{getUsageTime(scannedProduct.category)}</li>
+                        <li>{getStepOrder(scannedProduct.category)}</li>
+                        <li>{getAmount(scannedProduct.category)}</li>
+                      </ul>
+                    </div>
+                    </>
+                  );
+                })()}
+
+                {/* Ingredient conflict with shelf */}
+                {(() => {
+                  const conflict = getShelfConflict(scannedProduct.ingredients, scannedProduct.name, shelfProducts);
+                  if (!conflict) return null;
+                  return (
+                    <div className="ingredient-conflict-card" role="alert">
+                      <h3 className="ingredient-conflict-title"><IconAlertTriangle size={20} strokeWidth={2} className="icon-inline" /> Ingredient alert</h3>
+                      <p className="ingredient-conflict-text">
+                        This product may conflict with <strong>{conflict.productName}</strong> on your shelf.
+                      </p>
+                      <p className="ingredient-conflict-advice">{conflict.message}</p>
                     </div>
                   );
                 })()}
@@ -1219,28 +1339,105 @@ const ProductScannerPage: React.FC = () => {
                 )}
 
                 {/* Actions */}
-                <div className="product-actions">
+                <div className="product-actions product-actions-grid">
                   {addedToShelf ? (
-                    <button className="btn-success" disabled>
+                    <button className="btn-success product-action-btn" disabled>
                       <IconCheck size={18} strokeWidth={2} className="icon-inline" />
                       Added to Shelf!
                     </button>
                   ) : addingToShelf ? (
-                    <button className="btn-primary" disabled>
+                    <button className="btn-primary product-action-btn" disabled>
                       <IconLoader size={18} strokeWidth={2} className="icon-inline spin" />
                       Adding...
                     </button>
                   ) : (
-                    <button onClick={handleAddToShelf} className="btn-primary" disabled={!token}>
+                    <button
+                      onClick={() => {
+                        if (scannedProduct && isOnShelf(scannedProduct.id)) {
+                          handleAddToShelf();
+                        } else {
+                          setShowTrackModal(true);
+                        }
+                      }}
+                      className="btn-primary product-action-btn"
+                      disabled={!token}
+                    >
                       <IconPackage size={18} strokeWidth={2} className="icon-inline" />
-                      Add to My Shelf
+                      Add to Shelf
                     </button>
                   )}
-                  <button onClick={handleReset} className="btn-secondary">
+                  <Link
+                    to="/routine-builder"
+                    state={{ addProduct: { name: scannedProduct.name, category: scannedProduct.category, suggestedStep: getStepOrder(scannedProduct.category) } }}
+                    className="btn-secondary product-action-btn product-action-routine"
+                  >
+                    <IconCheck size={18} strokeWidth={2} className="icon-inline" />
+                    Add to Routine
+                  </Link>
+                  <button onClick={handleReset} className="btn-secondary product-action-btn product-action-scan">
                     Scan Another
                   </button>
                 </div>
                 
+                {/* Track this product – opened date + PAO for expiry */}
+                {showTrackModal && scannedProduct && (
+                  <div className="track-product-modal-overlay" role="dialog" aria-labelledby="track-product-title" aria-modal="true">
+                    <div className="track-product-modal">
+                      <h3 id="track-product-title">📅 Track this product</h3>
+                      <p className="track-product-desc">We&apos;ll remind you when it expires.</p>
+                      <div className="track-product-field">
+                        <label htmlFor="track-opened">When did you open it?</label>
+                        <input
+                          id="track-opened"
+                          type="date"
+                          value={trackOpenedDate}
+                          onChange={(e) => setTrackOpenedDate(e.target.value)}
+                          max={new Date().toISOString().slice(0, 10)}
+                        />
+                      </div>
+                      <div className="track-product-field">
+                        <label htmlFor="track-pao">PAO (Period After Opening)</label>
+                        <select
+                          id="track-pao"
+                          value={trackPAOMonths}
+                          onChange={(e) => setTrackPAOMonths(Number(e.target.value))}
+                        >
+                          <option value={3}>3 months</option>
+                          <option value={6}>6 months</option>
+                          <option value={12}>12 months</option>
+                          <option value={18}>18 months</option>
+                          <option value={24}>24 months</option>
+                        </select>
+                      </div>
+                      <div className="track-product-actions">
+                        <button
+                          type="button"
+                          className="btn-primary"
+                          onClick={() => {
+                            const d = new Date(trackOpenedDate);
+                            d.setMonth(d.getMonth() + trackPAOMonths);
+                            handleAddToShelf(d.toISOString().slice(0, 10));
+                          }}
+                          disabled={addingToShelf}
+                        >
+                          {addingToShelf ? 'Adding...' : 'Add with expiry'}
+                        </button>
+                        <button
+                          type="button"
+                          className="btn-secondary"
+                          onClick={() => handleAddToShelf()}
+                          disabled={addingToShelf}
+                        >
+                          Add without tracking
+                        </button>
+                        <button type="button" className="btn-ghost" onClick={() => setShowTrackModal(false)}>
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 {!token && (
                   <p className="login-hint">
                     <Link to="/auth">Log in</Link> to save products to your shelf

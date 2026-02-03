@@ -78,6 +78,96 @@
   text-decoration: underline;
 }
 
+.me-profile-stats {
+  display: flex;
+  gap: 16px;
+  margin: 12px 0 10px 0;
+}
+
+.me-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 48px;
+}
+
+.me-stat-value {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--primary);
+  line-height: 1.2;
+}
+
+.me-stat-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Digital Twin promo card */
+.me-twin-card-wrap {
+  margin-bottom: 24px;
+}
+
+.me-twin-card {
+  display: block;
+  padding: 20px;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(124, 58, 237, 0.06) 100%);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-radius: 16px;
+  text-decoration: none;
+  color: var(--text-primary);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.me-twin-card:hover {
+  box-shadow: 0 6px 16px rgba(99, 102, 241, 0.15);
+  border-color: rgba(99, 102, 241, 0.35);
+}
+
+.me-twin-icon {
+  display: inline-flex;
+  color: var(--primary);
+  margin-bottom: 8px;
+}
+
+.me-twin-title {
+  margin: 0 0 8px 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.me-twin-desc {
+  margin: 0 0 12px 0;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.me-twin-meta {
+  margin: 0 0 12px 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.me-twin-meta li + li {
+  margin-top: 4px;
+}
+
+.me-twin-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
 .me-section {
   margin-bottom: 24px;
 }
@@ -103,6 +193,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  min-height: 44px;
   padding: 14px 16px;
   color: var(--text-primary);
   text-decoration: none;
@@ -126,6 +217,9 @@
 
 .me-list-label {
   flex: 1;
+  min-width: 0;
+  overflow-wrap: break-word;
+  word-break: normal;
 }
 
 .me-list-value {

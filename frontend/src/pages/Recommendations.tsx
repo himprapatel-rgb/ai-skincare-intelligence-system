@@ -199,7 +199,7 @@ const Recommendations: React.FC = () => {
       const next = Array.isArray(list) ? [...list, entry] : [entry];
       localStorage.setItem(SHELF_STORAGE_KEY, JSON.stringify(next));
       setShelfIds((prev) => new Set([...prev, product.id]));
-      toast.success('Added to shelf');
+      toast.success('Added to My Shelf');
     } catch {
       toast.error('Could not add to shelf');
     }

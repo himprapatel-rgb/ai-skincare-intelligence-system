@@ -21,6 +21,8 @@ interface DisplayProduct {
   purchaseDate?: string;
   purchasePrice?: number;
   wouldRepurchase?: boolean;
+  /** Match % from scan (suitability_score in ingredients_json) */
+  matchPct?: number | null;
 }
 
 const MyShelfPage: React.FC = () => {
@@ -75,6 +77,9 @@ const MyShelfPage: React.FC = () => {
       purchaseDate: p.purchase_date,
       purchasePrice: p.purchase_price,
       wouldRepurchase: p.would_repurchase,
+      matchPct: (p as { ingredients_json?: { suitability_score?: number } }).ingredients_json?.suitability_score != null
+        ? Math.round(Number((p as { ingredients_json?: { suitability_score?: number } }).ingredients_json?.suitability_score))
+        : undefined,
     }));
   }, [shelfProducts]);
 
@@ -375,7 +380,12 @@ const MyShelfPage: React.FC = () => {
                   {product.name}
                 </button>
                 <p className="brand">{product.brand}</p>
-                <span className="product-status-pill" data-status={product.status}>{product.status === 'using' ? 'Using' : product.status === 'wishlist' ? 'Wishlist' : 'Done'}</span>
+                <div className="product-card-meta-row">
+                  <span className="product-status-pill" data-status={product.status}>{product.status === 'using' ? 'Using' : product.status === 'wishlist' ? 'Wishlist' : 'Done'}</span>
+                  {product.matchPct != null && (
+                    <span className="product-card-match" title="Match for your skin">🎯 {product.matchPct}% Match</span>
+                  )}
+                </div>
                 <p className="category product-card-category">{product.category}</p>
                 <div className="rating interactive-rating product-card-rating">
                   {Array.from({ length: 5 }).map((_, index) => (
@@ -442,7 +452,7 @@ const MyShelfPage: React.FC = () => {
         onCancel={() => setConfirmRemoveId(null)}
       />
 
-      <Link to="/scanner" className="myshelf-fab" aria-label="Add product to shelf">
+      <Link to="/scan?mode=product" className="myshelf-fab" aria-label="Add product to shelf">
         <IconPlus size={24} strokeWidth={2.5} />
       </Link>
       </div>

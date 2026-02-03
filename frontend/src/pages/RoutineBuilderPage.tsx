@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { IconSun, IconMoon, IconBell, IconArrowUp, IconArrowDown, IconX, IconCheck, IconInfo, IconGripVertical } from '../components/Icons';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { API_BASE_URL } from '../config';
@@ -33,10 +33,16 @@ interface ReminderSettings {
   days: string[];
 }
 
+export type AddProductState = { name: string; category?: string; suggestedStep?: string };
+
 const RoutineBuilderPage: React.FC = () => {
   usePageTitle('Routine Builder');
   const navigate = useNavigate();
+  const location = useLocation();
+  const addProductFromScan = (location.state as { addProduct?: AddProductState } | null)?.addProduct;
   const [activeTime, setActiveTime] = useState<'morning' | 'evening'>('morning');
+  const [addProductBanner, setAddProductBanner] = useState<AddProductState | null>(null);
+  const addProductAppliedRef = useRef(false);
   const [morningRoutine, setMorningRoutine] = useState<RoutineStep[]>([
     { id: '1', time: 'morning', order: 1, category: 'Cleanser', productName: 'Gentle Foam Cleanser' },
     { id: '2', time: 'morning', order: 2, category: 'Toner' },
@@ -79,6 +85,57 @@ const RoutineBuilderPage: React.FC = () => {
 
   const currentRoutine = activeTime === 'morning' ? morningRoutine : eveningRoutine;
   const setCurrentRoutine = activeTime === 'morning' ? setMorningRoutine : setEveningRoutine;
+
+  // Apply "Add to Routine" from scan: show banner and switch AM/PM
+  useEffect(() => {
+    const addProduct = addProductFromScan;
+    if (!addProduct || addProductAppliedRef.current) return;
+    addProductAppliedRef.current = true;
+    setAddProductBanner(addProduct);
+    const cat = (addProduct.category || '').toLowerCase();
+    const isEvening = /retinol|treatment|night|sleeping/.test(cat);
+    setActiveTime(isEvening ? 'evening' : 'morning');
+  }, [addProductFromScan]);
+
+  const mapCategoryFromProduct = (c: string): string => {
+    const lower = (c || '').toLowerCase();
+    if (lower.includes('cleans')) return 'Cleanser';
+    if (lower.includes('toner') || lower.includes('essence')) return 'Toner';
+    if (lower.includes('serum') || lower.includes('ampoule')) return 'Serum';
+    if (lower.includes('treatment') || lower.includes('retinol')) return 'Treatment';
+    if (lower.includes('eye')) return 'Eye Cream';
+    if (lower.includes('moistur') || lower.includes('cream') || lower.includes('lotion')) return 'Moisturizer';
+    if (lower.includes('oil')) return 'Oil';
+    if (lower.includes('sunscreen') || lower.includes('spf')) return 'Sunscreen';
+    return 'Serum';
+  };
+
+  const handleAddSuggestedProduct = () => {
+    if (!addProductBanner) return;
+    const isEvening = /retinol|treatment|night|sleeping/.test((addProductBanner.category || '').toLowerCase());
+    const stepCategory = mapCategoryFromProduct(addProductBanner.category || '');
+    const newStep: RoutineStep = {
+      id: `add-${Date.now()}`,
+      time: isEvening ? 'evening' : 'morning',
+      order: 0,
+      category: stepCategory,
+      productName: addProductBanner.name,
+    };
+    if (isEvening) {
+      setEveningRoutine((prev) => {
+        const next = [...prev, { ...newStep, order: prev.length + 1 }];
+        next.forEach((s, i) => { s.order = i + 1; });
+        return next;
+      });
+    } else {
+      setMorningRoutine((prev) => {
+        const next = [...prev, { ...newStep, order: prev.length + 1 }];
+        next.forEach((s, i) => { s.order = i + 1; });
+        return next;
+      });
+    }
+    setAddProductBanner(null);
+  };
 
   useEffect(() => {
     const fetchRoutines = async () => {
@@ -232,6 +289,27 @@ const RoutineBuilderPage: React.FC = () => {
         <p className="app-header-subtitle">Morning & evening — your personalized routine</p>
       </header>
       <div className="app-page-content">
+
+      {addProductBanner && (
+        <div className="routine-add-product-banner" role="status">
+          <div className="routine-add-product-content">
+            <strong>Adding: {addProductBanner.name}</strong>
+            <span className="routine-add-product-suggested">
+              Suggested: {addProductBanner.suggestedStep || mapCategoryFromProduct(addProductBanner.category || '')}
+            </span>
+          </div>
+          <div className="routine-add-product-actions">
+            <button type="button" className="btn-primary btn-sm" onClick={handleAddSuggestedProduct}>
+              <IconCheck size={16} strokeWidth={2} className="icon-inline" />
+              Add to routine
+            </button>
+            <button type="button" className="btn-ghost btn-sm" onClick={() => setAddProductBanner(null)} aria-label="Dismiss">
+              <IconX size={16} strokeWidth={2} />
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="time-selector">
         <button 
           className={`time-btn ${activeTime === 'morning' ? 'active' : ''}`}

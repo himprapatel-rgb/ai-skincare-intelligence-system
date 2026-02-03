@@ -17,10 +17,12 @@
 
 .today-greeting {
   margin: 0;
-  font-size: 1.5rem;
+  font-size: clamp(1.25rem, 4vw + 1rem, 1.5rem);
   font-weight: 700;
   color: var(--text-primary);
   letter-spacing: -0.02em;
+  overflow-wrap: break-word;
+  word-break: normal;
 }
 
 .today-header-actions {
@@ -52,13 +54,109 @@
   margin: 0 auto;
 }
 
+/* Design tokens – futuristic & simple */
 .today-card {
   background: var(--bg-white);
   border-radius: 16px;
   padding: 20px;
   margin-bottom: 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   border: 1px solid var(--border-color);
+}
+
+.today-card-skin-glow .today-skin-ring-wrap {
+  filter: drop-shadow(0 0 12px rgba(99, 102, 241, 0.25));
+}
+
+/* AI Prediction card */
+.today-card-prediction {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.06) 0%, rgba(124, 58, 237, 0.04) 100%);
+  border-color: rgba(99, 102, 241, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 0 20px rgba(99, 102, 241, 0.08);
+}
+
+.today-prediction-title {
+  margin: 0 0 12px 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.today-prediction-statement {
+  margin: 0 0 8px 0;
+  font-size: 1.1rem;
+  color: var(--text-primary);
+}
+
+.today-prediction-delta {
+  color: var(--success, #10B981);
+  font-weight: 600;
+}
+
+.today-prediction-tip {
+  margin: 0 0 14px 0;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.today-prediction-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.today-prediction-link:hover {
+  text-decoration: underline;
+}
+
+/* Mini progress (Before/After) */
+.today-card-progress .today-progress-mini {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.today-progress-thumb {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 72px;
+  padding: 12px;
+  background: var(--bg-secondary);
+  border-radius: 12px;
+}
+
+.today-progress-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+.today-progress-score {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.today-progress-arrow {
+  font-size: 1.25rem;
+  color: var(--text-muted);
+}
+
+.today-progress-meta {
+  margin: 0 0 12px 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
 }
 
 .today-card-title {
@@ -208,6 +306,7 @@
   align-items: center;
   gap: 12px;
   width: 100%;
+  min-height: 44px;
   padding: 10px 0;
   text-align: left;
   background: none;
@@ -331,6 +430,7 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
+  min-height: 44px;
   padding: 10px 12px;
   border: none;
   border-radius: 8px;
@@ -373,11 +473,16 @@
   display: flex;
   gap: 12px;
   margin-bottom: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 4px;
 }
 
 .today-foryou-tile {
-  flex: 1;
-  min-width: 0;
+  flex: 0 0 min(140px, 42vw);
+  min-width: 100px;
+  min-height: 44px;
   padding: 16px;
   border-radius: 12px;
   background: var(--bg-secondary);
@@ -388,6 +493,7 @@
   flex-direction: column;
   align-items: center;
   gap: 4px;
+  scroll-snap-align: start;
 }
 
 .today-foryou-tile:hover {
@@ -399,6 +505,27 @@
   font-size: 1.25rem;
   font-weight: 700;
   color: var(--primary);
+}
+
+.today-foryou-name {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-align: center;
+  overflow-wrap: break-word;
+  word-break: normal;
+  line-height: 1.2;
+  width: 100%;
+}
+
+.today-foryou-why {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-align: center;
+  overflow-wrap: break-word;
+  word-break: normal;
+  line-height: 1.2;
+  width: 100%;
 }
 
 .today-foryou-label {

@@ -8,6 +8,17 @@
   font-family: var(--font-family);
 }
 
+.routine-builder-page h1,
+.routine-builder-page h3,
+.routine-builder-page h4,
+.routine-builder-page p,
+.routine-education h4,
+.routine-education p,
+.routine-tips li {
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+
 .routine-builder-container {
   max-width: var(--max-width-lg);
   margin: 0 auto;
@@ -268,6 +279,33 @@
   color: var(--text-gray);
 }
 
+/* Add product from scan banner */
+.routine-add-product-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding: 16px;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(124, 58, 237, 0.06) 100%);
+  border: 1px solid rgba(99, 102, 241, 0.25);
+  border-radius: 12px;
+}
+.routine-add-product-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.routine-add-product-content strong { color: var(--text-primary); font-size: 1rem; }
+.routine-add-product-suggested { font-size: 0.875rem; color: var(--text-secondary); }
+.routine-add-product-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.routine-add-product-actions .btn-sm { padding: 8px 14px; font-size: 0.875rem; }
+
 /* Time Selector */
 .time-selector {
   display: flex;
@@ -331,12 +369,16 @@
   font-weight: 600;
   color: var(--text-dark);
   margin-bottom: 4px;
+  word-break: normal;
+  overflow-wrap: break-word;
 }
 
 .suggestion-content p {
   font-size: 0.875rem;
   color: var(--text-gray);
   margin: 0;
+  word-break: normal;
+  overflow-wrap: break-word;
 }
 
 .btn-suggest {
@@ -359,6 +401,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
   color: var(--text-gray);
   cursor: grab;
   flex-shrink: 0;
@@ -434,6 +478,8 @@
   background: transparent;
   border: 1px solid var(--border);
   border-radius: 6px;
+  min-width: 44px;
+  min-height: 44px;
   padding: 6px;
   cursor: pointer;
   color: var(--text-gray);

@@ -5,6 +5,13 @@ import { usePageTitle } from '../hooks/usePageTitle';
 import { SOCIAL_LINKS } from '../config';
 import './ContactPage.css';
 
+const FAQ_ITEMS: { question: string; answer: string }[] = [
+  { question: 'How do I scan my face?', answer: 'Go to the Scan tab, choose Face scan, then upload a clear photo of your face in good lighting. Our AI will analyze your skin and give you a score and tips.' },
+  { question: "What's my skin score?", answer: 'Your skin score (0–100) is shown on the Today tab and in your Digital Twin. It\'s based on your latest scan and reflects overall skin health.' },
+  { question: 'How do I build a routine?', answer: 'Open Routine Builder from the Today tab or the Me menu. Add steps (cleanser, serum, moisturizer, etc.) and use Auto-Order to sort them from thinnest to thickest.' },
+  { question: 'Is my data private?', answer: 'Yes. We use encryption and follow privacy best practices. You can delete your data anytime from account settings.' },
+];
+
 const ContactPage: React.FC = () => {
   usePageTitle('Contact');
   const navigate = useNavigate();
@@ -26,6 +33,7 @@ const ContactPage: React.FC = () => {
   }, [searchParams, subjectPreFilled]);
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [faqOpenIndex, setFaqOpenIndex] = useState<number | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -66,6 +74,9 @@ const ContactPage: React.FC = () => {
             </div>
             <h3>Email Us</h3>
             <p>support@aiskincareai.com</p>
+            <a href="mailto:support@aiskincareai.com" className="info-card-action">
+              Send Email
+            </a>
           </div>
 
           <div className="info-card">
@@ -74,6 +85,9 @@ const ContactPage: React.FC = () => {
             </div>
             <h3>Live Chat</h3>
             <p>Available 9AM - 6PM EST</p>
+            <button type="button" className="info-card-action" onClick={() => document.querySelector('.contact-form-container')?.scrollIntoView({ behavior: 'smooth' })} aria-label="Scroll to contact form">
+              Start Chat
+            </button>
           </div>
 
           <div className="info-card">
@@ -204,23 +218,31 @@ const ContactPage: React.FC = () => {
 
       <div className="faq-section">
         <h2>Frequently Asked Questions</h2>
-        <div className="faq-grid">
-          <div className="faq-item">
-            <h3>How does the AI analysis work?</h3>
-            <p>Our AI analyzes your skin image using advanced computer vision to identify skin types, conditions, and provide personalized recommendations.</p>
-          </div>
-          <div className="faq-item">
-            <h3>Is my data secure?</h3>
-            <p>Yes, we use industry-standard encryption and comply with GDPR regulations to protect your personal information.</p>
-          </div>
-          <div className="faq-item">
-            <h3>Can I delete my data?</h3>
-            <p>Absolutely. You can request data deletion at any time through your account settings or our privacy page.</p>
-          </div>
-          <div className="faq-item">
-            <h3>Do you offer refunds?</h3>
-            <p>We offer a 30-day satisfaction guarantee for premium features. Contact us if you're not completely satisfied.</p>
-          </div>
+        <div className="faq-accordion" role="region" aria-label="FAQ">
+          {FAQ_ITEMS.map((item, index) => (
+            <div key={index} className={`faq-accordion-item ${faqOpenIndex === index ? 'open' : ''}`}>
+              <button
+                type="button"
+                className="faq-accordion-trigger"
+                onClick={() => setFaqOpenIndex(faqOpenIndex === index ? null : index)}
+                aria-expanded={faqOpenIndex === index}
+                aria-controls={`faq-answer-${index}`}
+                id={`faq-question-${index}`}
+              >
+                <span>{item.question}</span>
+                <span className="faq-accordion-icon" aria-hidden>{faqOpenIndex === index ? '−' : '+'}</span>
+              </button>
+              <div
+                id={`faq-answer-${index}`}
+                role="region"
+                aria-labelledby={`faq-question-${index}`}
+                className="faq-accordion-content"
+                hidden={faqOpenIndex !== index}
+              >
+                <p>{item.answer}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 

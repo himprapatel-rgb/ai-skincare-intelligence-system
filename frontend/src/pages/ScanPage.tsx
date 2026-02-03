@@ -1,7 +1,7 @@
 // src/pages/ScanPage.tsx - Enhanced Face Scan Analysis Page
 import React, { useState, useCallback, useRef, useEffect } from "react";
 import { FaceLandmarker, FilesetResolver } from "@mediapipe/tasks-vision";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { usePageTitle } from "../hooks/usePageTitle";
 import { initScan, uploadScanImage, getScanStatus, getScanResult } from "../services/scanApi";
 import { cameraService } from "../services/cameraService";
@@ -9,6 +9,7 @@ import type { ScanResultResponse } from "../services/scanApi";
 import { validateAndCropFace } from "../utils/faceValidation";
 import { IconCamera, IconScan, IconUpload, IconSearch, IconCheckCircle, IconFileText, IconCheck, IconX, IconPackage } from '../components/Icons';
 import { ErrorCard } from '../components/ErrorCard';
+import ProductScannerPage from './ProductScannerPage';
 import './ScanPage.css';
 
 type UploadMode = 'camera' | 'file';
@@ -18,8 +19,10 @@ type ScanType = 'face' | 'product';
 const ENABLE_LIVE_QUALITY_CHECKS = false;
 
 export default function ScanPage() {
-  usePageTitle('Skin Scan', 'Upload a selfie for AI skin analysis. Get personalized insights and recommendations.');
+  usePageTitle('Scan', 'Scan your face or a product. AI skin analysis and product insights.');
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const modeParam = searchParams.get('mode');
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const overlayCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -30,7 +33,13 @@ export default function ScanPage() {
   const autoCaptureRef = useRef(false);
   const trackingActiveRef = useRef(false);
   
-  const [scanType, setScanType] = useState<ScanType>('face');
+  const [scanType, setScanType] = useState<ScanType>(() =>
+    modeParam === 'product' ? 'product' : 'face'
+  );
+  useEffect(() => {
+    if (modeParam === 'product' && scanType !== 'product') setScanType('product');
+    if (modeParam === 'face' && scanType !== 'face') setScanType('face');
+  }, [modeParam]);
   const [uploadMode, setUploadMode] = useState<UploadMode>('file');
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -664,7 +673,7 @@ export default function ScanPage() {
               role="tab"
               aria-selected={scanType === 'face'}
               className={`scan-type-tab ${scanType === 'face' ? 'active' : ''}`}
-              onClick={() => setScanType('face')}
+              onClick={() => { setScanType('face'); setSearchParams((prev) => { const next = new URLSearchParams(prev); next.delete('mode'); return next; }); }}
             >
               <span className="scan-type-emoji" aria-hidden>😊</span> Face
             </button>
@@ -673,7 +682,7 @@ export default function ScanPage() {
               role="tab"
               aria-selected={scanType === 'product'}
               className={`scan-type-tab ${scanType === 'product' ? 'active' : ''}`}
-              onClick={() => setScanType('product')}
+              onClick={() => { setScanType('product'); setSearchParams({ mode: 'product' }); }}
             >
               <span className="scan-type-emoji" aria-hidden>📦</span> Product
             </button>
@@ -681,14 +690,7 @@ export default function ScanPage() {
 
           {scanType === 'product' ? (
             <div className="scan-product-panel">
-              <div className="scan-product-card">
-                <IconPackage size={48} strokeWidth={2} className="scan-product-icon" />
-                <h2 className="scan-product-title">Scan a product</h2>
-                <p className="scan-product-desc">Use your camera to scan a product barcode and get ingredient insights.</p>
-                <button type="button" className="btn btn-primary" onClick={() => navigate('/scanner')}>
-                  Open Product Scanner
-                </button>
-              </div>
+              <ProductScannerPage embedded />
             </div>
           ) : (
             <>

@@ -148,7 +148,7 @@ const displayName = nameParts.length > 1
           <nav className="app-nav app-nav-desktop" aria-label="Main navigation">
             <div className="app-nav-links">
               <Link className={`app-nav-link${location.pathname === '/' ? ' active' : ''}`} to="/" aria-current={location.pathname === '/' ? 'page' : undefined}>Home</Link>
-              <Link className={`app-nav-link${location.pathname.startsWith('/scan') ? ' active' : ''}`} to="/scan" title="Start a free skin analysis" aria-current={location.pathname.startsWith('/scan') ? 'page' : undefined} onMouseEnter={() => void import('../pages/ScanPage')}>Skin Analysis</Link>
+              <Link className={`app-nav-link${location.pathname.startsWith('/scan') ? ' active' : ''}`} to="/scan" title="Scan face or product" aria-current={location.pathname.startsWith('/scan') ? 'page' : undefined} onMouseEnter={() => void import('../pages/ScanPage')}>Scan</Link>
               <Link className={`app-nav-link${location.pathname.startsWith('/dashboard') ? ' active' : ''}`} to="/dashboard" title="View your dashboard and insights" aria-current={location.pathname.startsWith('/dashboard') ? 'page' : undefined} onMouseEnter={() => void import('../pages/DashboardPage')}>Dashboard</Link>
               <Link className={`app-nav-link${location.pathname.startsWith('/digital-twin') ? ' active' : ''}`} to="/digital-twin" aria-current={location.pathname.startsWith('/digital-twin') ? 'page' : undefined}>Digital Twin</Link>
               <Link className={`app-nav-link${location.pathname.startsWith('/about') ? ' active' : ''}`} to="/about" aria-current={location.pathname.startsWith('/about') ? 'page' : undefined}>About</Link>
@@ -264,7 +264,7 @@ const displayName = nameParts.length > 1
           <div className="app-nav-mobile-scroll">
             <div className="app-nav-mobile-links">
               <Link className={`app-nav-mobile-link${location.pathname === '/' ? ' active' : ''}`} to="/">Home</Link>
-              <Link className={`app-nav-mobile-link${location.pathname.startsWith('/scan') ? ' active' : ''}`} to="/scan">Skin Analysis</Link>
+              <Link className={`app-nav-mobile-link${location.pathname.startsWith('/scan') ? ' active' : ''}`} to="/scan">Scan</Link>
               <Link className={`app-nav-mobile-link${location.pathname.startsWith('/dashboard') ? ' active' : ''}`} to="/dashboard">Dashboard</Link>
               <Link className={`app-nav-mobile-link${location.pathname.startsWith('/digital-twin') ? ' active' : ''}`} to="/digital-twin">Digital Twin</Link>
               <Link className={`app-nav-mobile-link${location.pathname.startsWith('/about') ? ' active' : ''}`} to="/about">About</Link>
@@ -289,7 +289,7 @@ const displayName = nameParts.length > 1
                   <Link className={`app-nav-mobile-link sub${location.pathname === '/myshelf' ? ' active' : ''}`} to="/myshelf"><IconPackage size={16} /> My Shelf</Link>
                   <Link className={`app-nav-mobile-link sub${location.pathname === '/favorites' ? ' active' : ''}`} to="/favorites"><IconHeart size={16} /> Favorites</Link>
                   <Link className={`app-nav-mobile-link sub${location.pathname.startsWith('/routine-builder') ? ' active' : ''}`} to="/routine-builder">Routine Builder</Link>
-                  <Link className={`app-nav-mobile-link sub${location.pathname === '/scanner' ? ' active' : ''}`} to="/scanner">Product Scanner</Link>
+                  <Link className={`app-nav-mobile-link sub${location.pathname.startsWith('/scan') && location.search.includes('mode=product') ? ' active' : ''}`} to="/scan?mode=product">Product Scanner</Link>
                   <Link className={`app-nav-mobile-link sub${location.pathname === '/recommendations' ? ' active' : ''}`} to="/recommendations">Recommendations</Link>
                   <Link className={`app-nav-mobile-link sub${location.pathname === '/history' ? ' active' : ''}`} to="/history"><IconHistory size={16} /> History</Link>
                 </div>
@@ -441,7 +441,7 @@ const displayName = nameParts.length > 1
             <div className="app-footer-links">
               <div className="app-footer-column">
                 <h4>Product</h4>
-                <Link to="/scan">Skin Analysis</Link>
+                <Link to="/scan">Scan</Link>
                 <Link to="/recommendations">Recommendations</Link>
                 <Link to="/digital-twin">Digital Twin</Link>
                 <Link to="/dashboard">Dashboard</Link>
@@ -457,7 +457,7 @@ const displayName = nameParts.length > 1
                 <Link to="/routine-builder">Routine Builder</Link>
                 <Link to="/favorites">Favorites</Link>
                 <Link to="/myshelf">My Shelf</Link>
-                <Link to="/scanner">Product Scanner</Link>
+                <Link to="/scan?mode=product">Product Scanner</Link>
                 <Link to="/ingredients">Ingredient Dictionary</Link>
                 <Link to="/skin-type-guide">Skin Type Guide</Link>
               </div>

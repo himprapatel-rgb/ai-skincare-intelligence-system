@@ -958,6 +958,41 @@
 }
 
 /* Safety Analysis (from scan snapshot when product from shelf) */
+.match-for-you-section {
+  margin-bottom: var(--spacing-lg);
+  padding: 20px;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(124, 58, 237, 0.06) 100%);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-radius: 16px;
+}
+.match-for-you-title {
+  margin: 0 0 12px 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.match-for-you-bar-wrap {
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.08);
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+.match-for-you-bar {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--primary);
+  transition: width 0.4s ease;
+}
+.match-for-you-bullets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  font-size: 0.9rem;
+}
+.match-bullet.ok { color: var(--success, #16a34a); }
+.match-bullet.warn { color: var(--warning, #d97706); }
+
 .safety-ratings-section {
   margin-bottom: var(--spacing-lg);
 }

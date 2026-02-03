@@ -630,6 +630,26 @@ const ProductDetailsPage: React.FC = () => {
         <div className="tab-content">
           {activeTab === 'overview' && (
             <div className="overview-tab">
+              {/* Match for you – prominent when we have suitability (from scan/shelf) */}
+              {product.suitabilityScore != null && (
+                <section className="match-for-you-section" aria-label="Match for your skin">
+                  <h3 className="match-for-you-title">🎯 {Math.round(product.suitabilityScore)}% match for you</h3>
+                  <div className="match-for-you-bar-wrap">
+                    <div className="match-for-you-bar" style={{ width: `${Math.min(100, product.suitabilityScore)}%` }} />
+                  </div>
+                  <div className="match-for-you-bullets">
+                    {product.safetyReport?.is_sensitive_skin_safe && (
+                      <span className="match-bullet ok">✅ Good for sensitive skin</span>
+                    )}
+                    {product.keyIngredients && product.keyIngredients.length > 0 && (
+                      <span className="match-bullet ok">✅ Addresses: {product.keyIngredients.slice(0, 3).join(', ')}</span>
+                    )}
+                    {product.safetyReport?.recommendations && product.safetyReport.recommendations.length > 0 && (
+                      <span className="match-bullet warn">⚠️ {product.safetyReport.recommendations[0]}</span>
+                    )}
+                  </div>
+                </section>
+              )}
               {/* Safety Ratings & Concerns (from scan snapshot when product from shelf) */}
               {(product.safetyRating != null || product.suitabilityScore != null) && (
                 <section className="safety-ratings-section">

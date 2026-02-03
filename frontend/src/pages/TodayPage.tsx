@@ -1,7 +1,6 @@
 /**
  * TODAY tab – Daily hub (Jobs-To-Be-Done: CHECK + ACT).
- * Answers "How's my skin?" and "What do I do now?" in one screen.
- * Includes: streak, skin score, inline routine tracker (checkboxes), For you.
+ * Redesign: time greeting, AI Prediction, score, mini progress, routine, streak, For you.
  */
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -9,6 +8,7 @@ import { useAuth } from '../context/AuthContext';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { getScanHistory } from '../services/scanApi';
 import { useShelf } from '../context/ShelfContext';
+import { API_BASE_URL } from '../config';
 import {
   IconSettings,
   IconSun,
@@ -27,6 +27,14 @@ import {
   type RoutineType,
 } from '../utils/routineStorage';
 import './TodayPage.css';
+
+/** Time-of-day greeting: "Good morning" / "Good afternoon" / "Good evening" */
+function getTimeGreeting(): string {
+  const h = new Date().getHours();
+  if (h < 12) return 'Good morning';
+  if (h < 17) return 'Good afternoon';
+  return 'Good evening';
+}
 
 interface TodayData {
   skinScore: number;
@@ -67,6 +75,8 @@ const TodayPage: React.FC = () => {
       return false;
     }
   });
+  const [twinSnapshotCount, setTwinSnapshotCount] = useState<number | null>(null);
+  const [twinFirstScore, setTwinFirstScore] = useState<number | null>(null);
 
   const dismissTwinIntro = () => {
     try {
@@ -120,6 +130,29 @@ const TodayPage: React.FC = () => {
     setStreak(getStreak());
   }, []);
 
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    let cancelled = false;
+    const token = localStorage.getItem('auth_token');
+    fetch(`${API_BASE_URL}/digital-twin/query?limit=200`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+    })
+      .then((res) => (res.ok ? res.json() : Promise.reject(new Error('Failed'))))
+      .then((data: { snapshots?: Array<{ meta?: { overall_score?: number } }> }) => {
+        if (cancelled) return;
+        const list = data.snapshots || [];
+        setTwinSnapshotCount(list.length);
+        const first = list[list.length - 1];
+        if (first?.meta?.overall_score != null) {
+          setTwinFirstScore(Math.round(Number(first.meta.overall_score)));
+        }
+      })
+      .catch(() => {
+        if (!cancelled) setTwinSnapshotCount(0);
+      });
+    return () => { cancelled = true; };
+  }, [isAuthenticated]);
+
   const handleRoutineStepToggle = (index: number) => {
     const next = toggleStepForToday(index, routineType);
     if (routineType === 'morning') {
@@ -134,9 +167,19 @@ const TodayPage: React.FC = () => {
   };
 
   const firstName = user?.full_name?.split(' ')[0] || user?.email?.split('@')[0] || 'there';
+  const timeGreeting = getTimeGreeting();
   const routineDone = completedSteps.size;
   const routineTotal = routineSteps.length;
   const isStreakMilestone = streak >= 3;
+  const currentScore = data?.skinScore ?? 0;
+  const trend = data?.skinTrend ?? 'stable';
+  const predictedDelta = trend === 'improving' ? 13 : trend === 'stable' ? 5 : 0;
+  const predictedScore = Math.min(99, Math.max(1, currentScore + predictedDelta));
+  const predictionTip = trend === 'improving'
+    ? 'Keep your routine consistent. Your skin is on the right track.'
+    : trend === 'stable'
+      ? 'Small steps add up. Try adding one targeted product.'
+      : 'Focus on basics: cleanse, moisturize, SPF. You\'ve got this.';
 
   if (!isAuthenticated) {
     return (
@@ -166,7 +209,7 @@ const TodayPage: React.FC = () => {
   return (
     <div className="today-page app-page">
       <header className="today-header">
-        <h1 className="today-greeting">Hi {firstName}</h1>
+        <h1 className="today-greeting">{timeGreeting}, {firstName}</h1>
         <div className="today-header-actions">
           <NotificationBell />
           <Link to="/profile?tab=settings" className="today-settings-btn" aria-label="Settings">
@@ -176,29 +219,21 @@ const TodayPage: React.FC = () => {
       </header>
 
       <div className="today-content">
-        {streak > 0 && (
-          <section className={`today-card today-card-streak ${isStreakMilestone ? 'today-streak-milestone' : ''}`}>
-            <div className="today-streak-header">
-              <span className="today-streak-emoji" aria-hidden>🔥</span>
-              <span className="today-streak-title">
-                {streak}-Day Streak!
-              </span>
-            </div>
-            {isStreakMilestone && (
-              <p className="today-streak-celebration">
-                {streak >= 7 ? 'Amazing! Week streak! 🎉' : 'Streak milestone! Keep it up!'}
-              </p>
-            )}
-            <div className="today-streak-week" aria-hidden>
-              {WEEKDAY_LABELS.map((label, i) => (
-                <span key={i} className="today-streak-day">{label}</span>
-              ))}
-            </div>
-            <p className="today-streak-hint">Complete your routine today to keep it going</p>
+        {/* AI Prediction card – surface "See Your Skin's Future" */}
+        {!loading && data != null && currentScore > 0 && (
+          <section className="today-card today-card-prediction">
+            <h2 className="today-prediction-title">🔮 Your skin&apos;s future</h2>
+            <p className="today-prediction-statement">
+              In 30 days: <strong>{predictedScore}</strong> {predictedDelta > 0 && <span className="today-prediction-delta">(+{predictedDelta} pts)</span>}
+            </p>
+            <p className="today-prediction-tip">&ldquo;{predictionTip}&rdquo;</p>
+            <Link to="/digital-twin" className="today-prediction-link">
+              See full prediction <IconArrowRight size={18} strokeWidth={2} />
+            </Link>
           </section>
         )}
 
-        <section className="today-card today-card-skin">
+        <section className="today-card today-card-skin today-card-skin-glow">
           <h2 className="today-card-title">Your skin today</h2>
           {loading || data === null ? (
             <div className="today-skin-skeleton">
@@ -254,6 +289,33 @@ const TodayPage: React.FC = () => {
             </>
           )}
         </section>
+
+        {/* Mini Before/After – Your progress */}
+        {(twinSnapshotCount != null && twinSnapshotCount > 0) && data != null && (
+          <section className="today-card today-card-progress">
+            <h2 className="today-card-title">📸 Your progress</h2>
+            <div className="today-progress-mini">
+              <div className="today-progress-thumb">
+                <span className="today-progress-label">Day 1</span>
+                <span className="today-progress-score">{twinFirstScore ?? '—'}</span>
+              </div>
+              <span className="today-progress-arrow">→</span>
+              <div className="today-progress-thumb">
+                <span className="today-progress-label">Today</span>
+                <span className="today-progress-score">{data.skinScore}</span>
+              </div>
+            </div>
+            <p className="today-progress-meta">
+              {twinSnapshotCount} snapshot{twinSnapshotCount !== 1 ? 's' : ''}
+              {twinFirstScore != null && (
+                <> · {data.skinScore - twinFirstScore >= 0 ? '+' : ''}{data.skinScore - twinFirstScore} points</>
+              )}
+            </p>
+            <Link to="/digital-twin" className="today-card-link">
+              View before/after & timeline <IconArrowRight size={18} strokeWidth={2} />
+            </Link>
+          </section>
+        )}
 
         <section className="today-card today-card-routine">
           <div className="today-routine-tabs">
@@ -311,6 +373,28 @@ const TodayPage: React.FC = () => {
           </Link>
         </section>
 
+        {streak > 0 && (
+          <section className={`today-card today-card-streak ${isStreakMilestone ? 'today-streak-milestone' : ''}`}>
+            <div className="today-streak-header">
+              <span className="today-streak-emoji" aria-hidden>🔥</span>
+              <span className="today-streak-title">
+                {streak}-Day Streak!
+              </span>
+            </div>
+            {isStreakMilestone && (
+              <p className="today-streak-celebration">
+                {streak >= 7 ? 'Amazing! Week streak! 🎉' : 'Streak milestone! Keep it up!'}
+              </p>
+            )}
+            <div className="today-streak-week" aria-hidden>
+              {WEEKDAY_LABELS.map((label, i) => (
+                <span key={i} className="today-streak-day">{label}</span>
+              ))}
+            </div>
+            <p className="today-streak-hint">Complete your routine today to keep it going</p>
+          </section>
+        )}
+
         <section className="today-card today-card-foryou">
           <div className="today-card-head">
             <span className="today-foryou-icon"><IconStar size={20} strokeWidth={2} /></span>
@@ -339,7 +423,7 @@ const TodayPage: React.FC = () => {
           <section className="today-card today-card-cta">
             <IconPackage size={32} strokeWidth={2} className="today-cta-icon" />
             <p>Add products to your shelf to get better recommendations.</p>
-            <button type="button" className="btn btn-secondary" onClick={() => navigate('/scanner')}>
+            <button type="button" className="btn btn-secondary" onClick={() => navigate('/scan?mode=product')}>
               Scan a product
             </button>
           </section>

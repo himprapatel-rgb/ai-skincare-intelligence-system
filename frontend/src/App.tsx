@@ -1,6 +1,6 @@
 // src/App.tsx - Premium GUI v3 - Complete Frontend
 import React, { Suspense } from "react";
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { ToastProvider } from "./context/ToastContext";
 import { ThemeProvider } from "./context/ThemeContext";
@@ -90,7 +90,7 @@ function AppRoutes() {
           <Route path="/routines" element={<RoutineBuilderPage />} />
           <Route path="/favorites" element={<FavoritesPage />} />
           <Route path="/myshelf" element={<MyShelfPage />} />
-          <Route path="/scanner" element={<ProductScannerPage />} />
+          <Route path="/scanner" element={<Navigate to="/scan?mode=product" replace />} />
           <Route path="/onboarding" element={<OnboardingPage />} />
           <Route path="/profile" element={<ProfileSettingsPage />} />
           <Route path="/consent" element={<ConsentPage />} />

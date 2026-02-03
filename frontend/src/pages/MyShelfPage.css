@@ -606,6 +606,19 @@
   color: var(--text-muted);
 }
 
+.product-card-meta-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+.product-card-match {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
 .product-card-actions-mobile {
   display: none;
   position: relative;

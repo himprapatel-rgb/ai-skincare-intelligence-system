@@ -181,7 +181,9 @@ export const ShelfProvider: React.FC<{ children: ReactNode }> = ({ children }) =
           product_category: product.product_category,
           product_image: product.product_image,
           status: product.status || 'active',
-          ingredients_json: product.ingredients_json  // Include ingredient snapshot
+          ingredients_json: product.ingredients_json,
+          expiry_date: product.expiry_date || null,
+          purchase_date: product.purchase_date || null
         })
       });
 

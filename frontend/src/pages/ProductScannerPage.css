@@ -7,6 +7,11 @@
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
+.product-scanner-page.product-scanner-embedded {
+  min-height: auto;
+  padding: 12px 16px 24px;
+}
+
 .icon-inline {
   display: inline-block;
   vertical-align: middle;
@@ -824,6 +829,128 @@
   border-color: rgba(239, 68, 68, 0.3);
   background: rgba(239, 68, 68, 0.06);
 }
+
+.product-found-header h2 { display: flex; align-items: center; gap: 8px; }
+.product-found-badge { font-size: 1.1rem; }
+
+.skin-match-bar-wrap {
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.08);
+  overflow: hidden;
+  margin: 10px 0 14px 0;
+}
+.skin-match-bar {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--primary);
+  transition: width 0.4s ease;
+}
+.skin-match-sub {
+  margin: 0 0 6px 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.skin-match-watch { margin-top: 4px; }
+
+.how-to-use-card {
+  margin-top: 16px;
+  padding: 16px;
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+}
+.how-to-use-title {
+  margin: 0 0 10px 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.how-to-use-list {
+  margin: 0;
+  padding-left: 1.2em;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.how-to-use-list li { margin-bottom: 4px; }
+
+.product-actions-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.product-action-btn { justify-content: center; }
+.product-action-routine { grid-column: span 1; }
+.product-action-scan { grid-column: span 2; }
+
+.ingredient-conflict-card {
+  margin-top: 16px;
+  padding: 16px;
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  border-radius: 12px;
+}
+.ingredient-conflict-title {
+  margin: 0 0 8px 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.ingredient-conflict-text { margin: 0 0 6px 0; font-size: 0.9rem; color: var(--text-secondary); }
+.ingredient-conflict-advice { margin: 0; font-size: 0.85rem; font-weight: 600; color: #b45309; }
+
+.track-product-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+.track-product-modal {
+  background: var(--bg-white);
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 360px;
+  width: 100%;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+}
+.track-product-modal h3 { margin: 0 0 8px 0; font-size: 1.15rem; color: var(--text-primary); }
+.track-product-desc { margin: 0 0 20px 0; font-size: 0.9rem; color: var(--text-secondary); }
+.track-product-field {
+  margin-bottom: 16px;
+}
+.track-product-field label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.track-product-field input,
+.track-product-field select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1rem;
+}
+.track-product-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+.track-product-actions .btn-ghost { margin-top: 4px; }
 
 .skin-match-title {
   font-size: 0.875rem;

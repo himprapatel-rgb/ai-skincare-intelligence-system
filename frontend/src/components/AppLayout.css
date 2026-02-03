@@ -452,6 +452,10 @@
 }
 
 /* Mobile Toggle Button */
+.app-nav-mobile-bell {
+  display: none;
+}
+
 .app-nav-mobile-toggle {
   display: none;
   align-items: center;
@@ -718,14 +722,31 @@
   .app-nav-desktop {
     display: none;
   }
-  
+
+  .app-nav-mobile-bell {
+    display: flex;
+    align-items: center;
+  }
+
   .app-nav-mobile-toggle {
     display: flex;
   }
-  
+
   .app-nav-mobile {
     display: block;
   }
+}
+
+/* Pro restructure: hide hamburger in app-shell (3-tab navigation only) */
+.app-shell-mode .app-nav-mobile-toggle {
+  display: none !important;
+}
+
+.app-shell-mode .app-nav-mobile,
+.app-shell-mode .app-nav-mobile.open {
+  display: none !important;
+  pointer-events: none;
+  visibility: hidden;
 }
 
 @media (max-width: 480px) {

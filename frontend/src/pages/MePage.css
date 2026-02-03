@@ -1,0 +1,149 @@
+/* ME tab – profile hub */
+
+.me-page {
+  padding-bottom: 96px;
+  background: var(--bg-secondary);
+}
+
+.me-header {
+  padding: 16px max(16px, env(safe-area-inset-left)) 12px;
+  padding-top: max(12px, env(safe-area-inset-top));
+}
+
+.me-title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.me-content {
+  padding: 0 16px 24px;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.me-profile-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  background: var(--bg-white);
+  border-radius: 16px;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--border-color);
+}
+
+.me-profile-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary) 0%, #7c3aed 100%);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.me-profile-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.me-profile-name {
+  margin: 0 0 4px 0;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.me-profile-meta {
+  margin: 0 0 8px 0;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.me-profile-edit {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.me-profile-edit:hover {
+  text-decoration: underline;
+}
+
+.me-section {
+  margin-bottom: 24px;
+}
+
+.me-section-title {
+  margin: 0 0 10px 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.me-list {
+  background: var(--bg-white);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--border-color);
+}
+
+.me-list-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: 0.95rem;
+  border-bottom: 1px solid var(--border-color);
+  transition: background 0.15s;
+}
+
+.me-list-item:last-child {
+  border-bottom: none;
+}
+
+.me-list-item:hover {
+  background: var(--bg-secondary);
+}
+
+.me-list-icon {
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.me-list-label {
+  flex: 1;
+}
+
+.me-list-value {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.me-list-arrow {
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.me-card-guest {
+  text-align: center;
+  padding: 32px 24px;
+}
+
+.me-card-guest p {
+  margin: 0 0 20px 0;
+  color: var(--text-secondary);
+}

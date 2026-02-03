@@ -1,107 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { IconBell, IconCheck, IconX, IconSettings, IconClock, IconTrendingUp, IconAlertCircle, IconInfo, IconChevronRight } from '../components/Icons';
-import { API_BASE_URL } from '../config';
+import { useNotifications } from '../context/NotificationContext';
+import type { NotificationRecord } from '../services/notificationService';
 import './NotificationCenterPage.css';
 
-interface Notification {
-  id: string;
-  type: 'reminder' | 'progress' | 'alert' | 'info';
-  title: string;
-  message: string;
-  timestamp: string;
-  read: boolean;
-  actionUrl?: string;
-}
+type FilterType = 'all' | 'unread' | 'reminder' | 'progress' | 'alert';
 
 /**
  * Notification Center Page (FR40 from SRS)
- * Central hub for all user notifications
+ * Central hub for all user notifications; uses NotificationContext for data and actions.
  */
 const NotificationCenterPage: React.FC = () => {
-  const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [filter, setFilter] = useState<'all' | 'unread' | 'reminder' | 'progress' | 'alert'>('all');
+  const {
+    notifications,
+    unreadCount,
+    fetchNotifications,
+    markAsRead,
+    markAllAsRead,
+    deleteNotification,
+  } = useNotifications();
+  const [filter, setFilter] = useState<FilterType>('all');
   const [showSettings, setShowSettings] = useState(false);
 
   useEffect(() => {
     fetchNotifications();
-  }, []);
+  }, [fetchNotifications]);
 
-  const fetchNotifications = async () => {
-    try {
-      const token = localStorage.getItem('auth_token');
-      if (!token) return;
-      
-      const response = await fetch(`${API_BASE_URL}/notifications`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      
-      if (response.ok) {
-        const data = await response.json();
-        setNotifications(data.notifications.map((n: Record<string, unknown>) => ({
-          id: String(n.id ?? ''),
-          type: String(n.type ?? 'info'),
-          title: String(n.title ?? ''),
-          message: String(n.message ?? ''),
-          timestamp: String(n.created_at ?? ''),
-          read: Boolean(n.read),
-          actionUrl: n.action_url as string | undefined,
-        })));
-      }
-    } catch (err) {
-      console.error('Failed to fetch notifications:', err);
-      // Keep empty state if API fails
-    }
-  };
-
-  const markAsRead = async (id: string) => {
-    try {
-      const token = localStorage.getItem('auth_token');
-      await fetch(`${API_BASE_URL}/notifications/${id}/read`, {
-        method: 'PATCH',
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      setNotifications(notifications.map(n => 
-        n.id === id ? { ...n, read: true } : n
-      ));
-    } catch (err) {
-      console.error('Failed to mark as read:', err);
-      // Still update UI
-      setNotifications(notifications.map(n => 
-        n.id === id ? { ...n, read: true } : n
-      ));
-    }
-  };
-
-  const markAllAsRead = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      await fetch('/api/v1/notifications/read-all', {
-        method: 'PATCH',
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      setNotifications(notifications.map(n => ({ ...n, read: true })));
-    } catch (err) {
-      console.error('Failed to mark all as read:', err);
-      setNotifications(notifications.map(n => ({ ...n, read: true })));
-    }
-  };
-
-  const deleteNotification = async (id: string) => {
-    try {
-      const token = localStorage.getItem('auth_token');
-      await fetch(`${API_BASE_URL}/notifications/${id}`, {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      setNotifications(notifications.filter(n => n.id !== id));
-    } catch (err) {
-      console.error('Failed to delete notification:', err);
-      setNotifications(notifications.filter(n => n.id !== id));
-    }
-  };
-
-  const getNotificationIcon = (type: Notification['type']) => {
+  const getNotificationIcon = (type: string) => {
     switch (type) {
       case 'reminder':
         return <IconClock size={20} strokeWidth={2} />;
@@ -116,7 +42,7 @@ const NotificationCenterPage: React.FC = () => {
     }
   };
 
-  const getNotificationColor = (type: Notification['type']) => {
+  const getNotificationColor = (type: string) => {
     switch (type) {
       case 'reminder':
         return 'var(--primary)';
@@ -131,13 +57,11 @@ const NotificationCenterPage: React.FC = () => {
     }
   };
 
-  const filteredNotifications = notifications.filter(n => {
+  const filteredNotifications = notifications.filter((n: NotificationRecord) => {
     if (filter === 'all') return true;
     if (filter === 'unread') return !n.read;
     return n.type === filter;
   });
-
-  const unreadCount = notifications.filter(n => !n.read).length;
 
   return (
     <div className="notification-center-page app-page">
@@ -256,17 +180,17 @@ const NotificationCenterPage: React.FC = () => {
                   <div className="notification-header">
                     <h3>{notification.title}</h3>
                     <span className="notification-time">
-                      {new Date(notification.timestamp).toLocaleDateString('en', { 
-                        month: 'short', 
+                      {new Date(notification.created_at).toLocaleDateString('en', {
+                        month: 'short',
                         day: 'numeric',
                         hour: 'numeric',
-                        minute: '2-digit'
+                        minute: '2-digit',
                       })}
                     </span>
                   </div>
                   <p className="notification-message">{notification.message}</p>
-                  {notification.actionUrl && (
-                    <Link to={notification.actionUrl} className="notification-action">
+                  {notification.action_url && (
+                    <Link to={notification.action_url} className="notification-action">
                       View details <IconChevronRight size={16} strokeWidth={2} className="icon-inline-right" />
                     </Link>
                   )}

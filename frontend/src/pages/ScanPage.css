@@ -8,6 +8,79 @@
   font-family: var(--font-family);
 }
 
+/* Unified Scan: Face vs Product toggle (Pro restructure) */
+.scan-type-toggle {
+  display: flex;
+  gap: 0;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  background: var(--bg-secondary);
+  padding: 4px;
+  border: 1px solid var(--border-color);
+}
+
+.scan-type-tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: color 0.2s, background 0.2s;
+}
+
+.scan-type-tab:hover {
+  color: var(--text-primary);
+}
+
+.scan-type-tab.active {
+  color: var(--primary);
+  background: var(--bg-white);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.scan-type-emoji {
+  font-size: 1.1rem;
+}
+
+.scan-product-panel {
+  padding: 24px 0;
+}
+
+.scan-product-card {
+  text-align: center;
+  padding: 32px 24px;
+  background: var(--bg-white);
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.scan-product-icon {
+  color: var(--primary);
+  margin-bottom: 16px;
+}
+
+.scan-product-title {
+  margin: 0 0 8px 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.scan-product-desc {
+  margin: 0 0 20px 0;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
 .inline-icon {
   display: inline-block;
   vertical-align: middle;

@@ -5,6 +5,7 @@ import { AuthProvider } from "./context/AuthContext";
 import { ToastProvider } from "./context/ToastContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import { ShelfProvider } from "./context/ShelfContext";
+import { NotificationProvider } from "./context/NotificationContext";
 import AppLayout from "./components/AppLayout";
 import DevBanner from "./components/DevBanner";
 import LoadingScreen from "./components/LoadingScreen";
@@ -14,6 +15,8 @@ import NetworkStatus from "./components/NetworkStatus";
 
 // Page Imports - Lazy loaded for faster initial load
 const HomePage = React.lazy(() => import("./pages/HomePage"));
+const TodayPage = React.lazy(() => import("./pages/TodayPage"));
+const MePage = React.lazy(() => import("./pages/MePage"));
 const AuthPage = React.lazy(() =>
   import("./pages/AuthPage").then((module) => ({ default: module.AuthPage }))
 );
@@ -66,7 +69,8 @@ function AppRoutes() {
     <ErrorBoundary onRetry={() => navigate("/", { replace: true })}>
       <Suspense fallback={<LoadingScreen message="Loading page..." fullscreen={false} />}>
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<TodayPage />} />
+          <Route path="/home" element={<HomePage />} />
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/password-reset" element={<PasswordResetPage />} />
           <Route path="/password-reset/confirm" element={<PasswordResetConfirmPage />} />
@@ -94,6 +98,7 @@ function AppRoutes() {
           <Route path="/progress" element={<ProgressTrackingPage />} />
           <Route path="/export" element={<DataExportPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/me" element={<MePage />} />
           <Route path="/notifications" element={<NotificationCenterPage />} />
           <Route path="/admin" element={<AdminDashboardPage />} />
           <Route path="/admin/users" element={<AdminUsersPage />} />
@@ -127,9 +132,11 @@ export default function App() {
           <DevBanner />
           <NetworkStatus />
           <BrowserRouter>
-            <AppLayout>
-              <AppRoutes />
-            </AppLayout>
+            <NotificationProvider>
+              <AppLayout>
+                <AppRoutes />
+              </AppLayout>
+            </NotificationProvider>
           </BrowserRouter>
           <ToastContainer />
           </ToastProvider>

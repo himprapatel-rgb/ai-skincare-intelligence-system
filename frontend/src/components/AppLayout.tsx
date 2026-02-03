@@ -1,6 +1,7 @@
 import React, { useMemo, useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { IconInstagram, IconBrandX, IconLinkedin, IconTiktok, IconMenu, IconX, IconUser, IconChevronDown, IconChevronRight, IconLogOut, IconSettings, IconScan, IconPackage, IconHeart, IconHistory, IconBookOpen, IconFileText, IconDownload } from './Icons';
+import NotificationBell from './notifications/NotificationBell';
 import { SOCIAL_LINKS } from '../config';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
@@ -78,6 +79,7 @@ const displayName = nameParts.length > 1
       'myshelf': 'My Shelf',
       'scanner': 'Product Scanner',
       'notifications': 'Notifications',
+      'me': 'Me',
       'profile': 'Profile',
       'dashboard': 'Dashboard',
       'history': 'History',
@@ -112,7 +114,7 @@ const displayName = nameParts.length > 1
   const isAppRoute = useMemo(() => {
     const p = location.pathname;
     if (p === '/') return true;
-    const appPaths = ['/dashboard', '/scan', '/history', '/recommendations', '/discover', '/myshelf', '/scanner', '/profile', '/routine-builder', '/routines', '/favorites', '/digital-twin', '/onboarding', '/auth', '/comparison', '/progress', '/export', '/notifications', '/skin-goals', '/consent'];
+    const appPaths = ['/dashboard', '/scan', '/history', '/recommendations', '/discover', '/myshelf', '/scanner', '/profile', '/me', '/routine-builder', '/routines', '/favorites', '/digital-twin', '/onboarding', '/auth', '/comparison', '/progress', '/export', '/notifications', '/skin-goals', '/consent'];
     if (appPaths.some(path => p === path || p.startsWith(path + '/'))) return true;
     if (p.startsWith('/analysis') || p.startsWith('/product/')) return true;
     return false;
@@ -224,6 +226,11 @@ const displayName = nameParts.length > 1
             </div>
           </nav>
           
+          {isAuthenticated && (
+            <div className="app-nav-mobile-bell">
+              <NotificationBell />
+            </div>
+          )}
           {/* Mobile Menu Button */}
           <button 
             className="app-nav-mobile-toggle"

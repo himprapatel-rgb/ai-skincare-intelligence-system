@@ -1,43 +1,39 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { IconHome, IconScan, IconPackage, IconUser, IconBarChart } from './Icons';
+import { IconBarChart, IconScan, IconUser } from './Icons';
 import './BottomNav.css';
 
-const leftItems = [{ to: '/', icon: IconHome, label: 'Home' }];
+/* Pro restructure: 3 tabs (Jobs-To-Be-Done) – TODAY | SCAN | ME */
+const leftItem = { to: '/', icon: IconBarChart, label: 'Today' };
 const centerItem = { to: '/scan', icon: IconScan, label: 'Scan' };
-const rightItems = [
-  { to: '/dashboard', icon: IconBarChart, label: 'Dashboard' },
-  { to: '/myshelf', icon: IconPackage, label: 'Shelf' },
-  { to: '/profile', icon: IconUser, label: 'Profile' },
-];
+const rightItem = { to: '/me', icon: IconUser, label: 'Me' };
 
 export const BottomNav: React.FC = () => {
   const location = useLocation();
 
   const isActive = (to: string) =>
-    to === '/' ? location.pathname === '/' : location.pathname.startsWith(to);
+    to === '/' ? location.pathname === '/' || location.pathname === '/today' : (to === '/me' ? location.pathname === '/me' || location.pathname.startsWith('/profile') : location.pathname.startsWith(to));
   const scanActive = isActive(centerItem.to);
   const CenterIcon = centerItem.icon;
+  const LeftIcon = leftItem.icon;
+  const RightIcon = rightItem.icon;
 
   return (
     <nav className="bottom-nav" aria-label="Bottom navigation">
-      {leftItems.map(({ to, icon: Icon, label }) => (
-        <Link
-          key={to}
-          to={to}
-          className={`bottom-nav-item${isActive(to) ? ' active' : ''}`}
-          aria-current={isActive(to) ? 'page' : undefined}
-        >
-          <Icon size={22} strokeWidth={2} />
-          <span>{label}</span>
-        </Link>
-      ))}
+      <Link
+        to={leftItem.to}
+        className={`bottom-nav-item${isActive(leftItem.to) ? ' active' : ''}`}
+        aria-current={isActive(leftItem.to) ? 'page' : undefined}
+      >
+        <LeftIcon size={22} strokeWidth={2} />
+        <span>{leftItem.label}</span>
+      </Link>
 
       <Link
         to={centerItem.to}
         className={`bottom-nav-item bottom-nav-item-center${scanActive ? ' active' : ''}`}
         aria-current={scanActive ? 'page' : undefined}
-        title="Start free skin analysis"
+        title="Scan face or product"
       >
         <span className="bottom-nav-center-pill">
           <CenterIcon size={28} strokeWidth={2.25} />
@@ -45,17 +41,14 @@ export const BottomNav: React.FC = () => {
         <span className="bottom-nav-center-label">{centerItem.label}</span>
       </Link>
 
-      {rightItems.map(({ to, icon: Icon, label }) => (
-        <Link
-          key={to}
-          to={to}
-          className={`bottom-nav-item${isActive(to) ? ' active' : ''}`}
-          aria-current={isActive(to) ? 'page' : undefined}
-        >
-          <Icon size={22} strokeWidth={2} />
-          <span>{label}</span>
-        </Link>
-      ))}
+      <Link
+        to={rightItem.to}
+        className={`bottom-nav-item${isActive(rightItem.to) ? ' active' : ''}`}
+        aria-current={isActive(rightItem.to) ? 'page' : undefined}
+      >
+        <RightIcon size={22} strokeWidth={2} />
+        <span>{rightItem.label}</span>
+      </Link>
     </nav>
   );
 };

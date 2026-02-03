@@ -7,12 +7,14 @@ import { initScan, uploadScanImage, getScanStatus, getScanResult } from "../serv
 import { cameraService } from "../services/cameraService";
 import type { ScanResultResponse } from "../services/scanApi";
 import { validateAndCropFace } from "../utils/faceValidation";
-import { IconCamera, IconScan, IconUpload, IconSearch, IconCheckCircle, IconFileText, IconCheck, IconX } from '../components/Icons';
+import { IconCamera, IconScan, IconUpload, IconSearch, IconCheckCircle, IconFileText, IconCheck, IconX, IconPackage } from '../components/Icons';
 import { ErrorCard } from '../components/ErrorCard';
 import './ScanPage.css';
 
 type UploadMode = 'camera' | 'file';
 type ScanStep = 'upload' | 'scanning' | 'complete';
+/** Pro restructure: unified scan tab – Face vs Product */
+type ScanType = 'face' | 'product';
 const ENABLE_LIVE_QUALITY_CHECKS = false;
 
 export default function ScanPage() {
@@ -28,6 +30,7 @@ export default function ScanPage() {
   const autoCaptureRef = useRef(false);
   const trackingActiveRef = useRef(false);
   
+  const [scanType, setScanType] = useState<ScanType>('face');
   const [uploadMode, setUploadMode] = useState<UploadMode>('file');
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -654,6 +657,41 @@ export default function ScanPage() {
     <div className="scan-page app-page">
       <main className="scan-container app-page-content">
         <div className="scan-content">
+          {/* Unified Scan: Face vs Product toggle (Pro restructure) */}
+          <div className="scan-type-toggle" role="tablist" aria-label="Scan type">
+            <button
+              type="button"
+              role="tab"
+              aria-selected={scanType === 'face'}
+              className={`scan-type-tab ${scanType === 'face' ? 'active' : ''}`}
+              onClick={() => setScanType('face')}
+            >
+              <span className="scan-type-emoji" aria-hidden>😊</span> Face
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={scanType === 'product'}
+              className={`scan-type-tab ${scanType === 'product' ? 'active' : ''}`}
+              onClick={() => setScanType('product')}
+            >
+              <span className="scan-type-emoji" aria-hidden>📦</span> Product
+            </button>
+          </div>
+
+          {scanType === 'product' ? (
+            <div className="scan-product-panel">
+              <div className="scan-product-card">
+                <IconPackage size={48} strokeWidth={2} className="scan-product-icon" />
+                <h2 className="scan-product-title">Scan a product</h2>
+                <p className="scan-product-desc">Use your camera to scan a product barcode and get ingredient insights.</p>
+                <button type="button" className="btn btn-primary" onClick={() => navigate('/scanner')}>
+                  Open Product Scanner
+                </button>
+              </div>
+            </div>
+          ) : (
+            <>
           <div className="scan-header">
             <h1 className="scan-title">
               AI Face Scan Analysis<br />
@@ -963,6 +1001,8 @@ export default function ScanPage() {
                 <p>Your skin analysis is ready. Redirecting to results...</p>
               </div>
             </div>
+          )}
+            </>
           )}
         </div>
       </main>

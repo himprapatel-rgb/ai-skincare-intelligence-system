@@ -191,16 +191,6 @@ const ProfileSettingsPage: React.FC = () => {
     { value: '1year', label: '1 Year' }
   ];
 
-  const tabs = [
-    { id: 'personal', label: 'Personal' },
-    { id: 'skin', label: 'Skin Profile' },
-    { id: 'goals', label: 'Goals' },
-    { id: 'lifestyle', label: 'Lifestyle' },
-    { id: 'notifications', label: 'Notifications' },
-    { id: 'privacy', label: 'Privacy' },
-    { id: 'stats', label: 'Statistics' }
-  ] as const;
-
   const fetchUserProfile = useCallback(async () => {
     try {
       const res = await api.get<{

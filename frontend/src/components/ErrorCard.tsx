@@ -2,7 +2,7 @@
  * Reusable error card for mobile app: one primary recovery action.
  * Use for page-level or section-level errors (Scan failure, load error, etc.).
  */
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { IconAlertTriangle } from './Icons';
 import './ErrorCard.css';
 

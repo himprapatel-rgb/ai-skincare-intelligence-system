@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { IconMail, IconArrowLeft } from '../components/Icons';
+import { IconMail } from '../components/Icons';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { API_BASE_URL } from '../config';
 import './CommonStyles.css';

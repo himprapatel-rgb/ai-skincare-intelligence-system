@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { 
   IconTarget, IconSparkles, IconDroplet, IconStar, 
   IconPackage, IconLeaf, IconSun, IconSearch, IconCheck, IconPlus,
-  IconArrowUp, IconArrowDown, IconArrowLeft
+  IconArrowUp, IconArrowDown
 } from '../components/Icons';
 import { useToast } from '../context/ToastContext';
 import { API_BASE_URL } from '../config';

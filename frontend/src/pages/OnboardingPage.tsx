@@ -100,7 +100,7 @@ const OnboardingPage: React.FC = () => {
 
   const confirmBack = () => {
     setShowBackConfirm(false);
-    setStep((s) => s - 1);
+    setStep((s: number) => s - 1);
   };
 
   const handleSubmit = async () => {

@@ -4,7 +4,7 @@ import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'rec
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { useShelf } from '../context/ShelfContext';
-import { IconBarChart, IconCamera, IconPackage, IconSparkles, IconTrendingUp, IconScan, IconBell, IconLock, IconHelpCircle, IconChevronRight } from '../components/Icons';
+import { IconBarChart, IconCamera, IconPackage, IconSparkles, IconTrendingUp, IconScan, IconBell, IconLock, IconHelpCircle, IconChevronRight, IconTarget, IconUser, IconFileText, IconMail } from '../components/Icons';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { getScanHistory } from '../services/scanApi';
 import { api } from '../services/api';
@@ -470,108 +470,171 @@ const ProfileSettingsPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Hero Banner */}
-      <div className="profile-hero-banner">
-        <h1>Profile Settings</h1>
-        <p className="profile-subtitle">Manage your personal details, skin profile, and privacy preferences.</p>
+      {/* App-style profile header card */}
+      <div className="profile-header-card">
+        <div className="profile-avatar-container">
+          <div className="profile-avatar-wrap">
+            {profile.profilePhoto ? (
+              <img src={profile.profilePhoto} alt="" className="profile-avatar" width={100} height={100} />
+            ) : (
+              <div className="profile-avatar-placeholder">{(profile.name || 'U').charAt(0).toUpperCase()}</div>
+            )}
+          </div>
+          <button
+            type="button"
+            className="avatar-edit-button"
+            onClick={() => fileInputRef.current?.click()}
+            aria-label="Change profile photo"
+          >
+            <IconCamera size={18} strokeWidth={2} />
+          </button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handlePhotoUpload}
+            className="visually-hidden"
+          />
+        </div>
+        <h1 className="profile-header-name">{profile.name || 'Your Name'}</h1>
+        <p className="profile-header-email">{profile.email || 'email@example.com'}</p>
+        <div className="profile-stats-row">
+          <button type="button" className="stat-item stat-item-link" onClick={() => navigate('/dashboard')}>
+            <span className="stat-value">{stats.skinHealthScore}%</span>
+            <span className="stat-label">Skin Score</span>
+          </button>
+          <div className="stat-item">
+            <span className="stat-value">{stats.totalScans}</span>
+            <span className="stat-label">Scans</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-value">{shelfProductCount}</span>
+            <span className="stat-label">Products</span>
+          </div>
+        </div>
       </div>
 
       <div className="profile-container">
         <div className="profile-container-inner">
           {isDirty && (
-            <div className="profile-header">
+            <div className="profile-unsaved-bar">
               <span className="unsaved-pill">Unsaved changes</span>
             </div>
           )}
 
           <form ref={settingsFormRef} onSubmit={handleSubmit} className="settings-form" id="profile-settings-form">
-            <div className="profile-layout">
-              <aside className="profile-sidebar">
-                <div className="profile-card">
-                <div className="photo-preview">
-                  {profile.profilePhoto ? (
-                    <img src={profile.profilePhoto} alt="Profile photo" loading="lazy" width={120} height={120} />
-                  ) : (
-                    <div className="photo-placeholder">No Photo</div>
-                  )}
+            <div className="profile-layout profile-layout-app">
+              <aside className="profile-sidebar profile-sidebar-app">
+                {/* MY SKIN */}
+                <div className="settings-section">
+                  <h2 className="section-title">My Skin</h2>
+                  <div className="settings-group">
+                    <button type="button" className={`settings-item${activeTab === 'goals' ? ' active' : ''}`} onClick={() => setActiveTab('goals')}>
+                      <span className="settings-icon purple"><IconTarget size={20} strokeWidth={2} /></span>
+                      <span className="settings-label">Skin Goals</span>
+                      <IconChevronRight size={20} strokeWidth={2} className="settings-arrow" />
+                    </button>
+                    <button type="button" className={`settings-item${activeTab === 'skin' ? ' active' : ''}`} onClick={() => setActiveTab('skin')}>
+                      <span className="settings-icon purple"><IconSparkles size={20} strokeWidth={2} /></span>
+                      <span className="settings-label">Skin Type</span>
+                      <span className="settings-value">{profile.skinType}</span>
+                      <IconChevronRight size={20} strokeWidth={2} className="settings-arrow" />
+                    </button>
+                    <button type="button" className={`settings-item${activeTab === 'skin' ? ' active' : ''}`} onClick={() => setActiveTab('skin')}>
+                      <span className="settings-icon blue"><IconPackage size={20} strokeWidth={2} /></span>
+                      <span className="settings-label">Concerns</span>
+                      <span className="settings-value">{profile.skinConcerns?.length || 0} selected</span>
+                      <IconChevronRight size={20} strokeWidth={2} className="settings-arrow" />
+                    </button>
+                    <Link to="/routine-builder" className="settings-item">
+                      <span className="settings-icon green"><IconPackage size={20} strokeWidth={2} /></span>
+                      <span className="settings-label">Current Routine</span>
+                      <IconChevronRight size={20} strokeWidth={2} className="settings-arrow" />
+                    </Link>
+                  </div>
                 </div>
-                <div className="profile-identity">
-                  <div className="profile-name">{profile.name || 'Your Name'}</div>
-                  <div className="profile-email">{profile.email || 'email@example.com'}</div>
-                </div>
-                <button
-                  type="button"
-                  className="btn-upload"
-                  onClick={() => fileInputRef.current?.click()}
-                  aria-label="Upload profile photo"
-                >
-                  <IconCamera size={18} strokeWidth={2} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
-                  Update Photo
-                </button>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  onChange={handlePhotoUpload}
-                  className="visually-hidden"
-                />
-                <p className="help-text">Use a square photo for best results.</p>
-              </div>
 
-              <div className="profile-quick-stats" role="group" aria-label="Quick stats">
-                <button
-                  type="button"
-                  className="quick-stat quick-stat-link"
-                  onClick={() => navigate('/dashboard')}
-                  aria-label="View skin score details on dashboard"
-                >
-                  <span className="quick-stat-value">{stats.skinHealthScore}%</span>
-                  <span className="quick-stat-label">Skin Score</span>
-                  <span className="quick-stat-action">View details →</span>
-                </button>
-                <div className="quick-stat">
-                  <span className="quick-stat-value">{stats.totalScans}</span>
-                  <span className="quick-stat-label">Total Scans</span>
+                {/* ACCOUNT */}
+                <div className="settings-section">
+                  <h2 className="section-title">Account</h2>
+                  <div className="settings-group">
+                    <button type="button" className={`settings-item${activeTab === 'personal' ? ' active' : ''}`} onClick={() => setActiveTab('personal')}>
+                      <span className="settings-icon blue"><IconUser size={20} strokeWidth={2} /></span>
+                      <span className="settings-label">Personal Info</span>
+                      <IconChevronRight size={20} strokeWidth={2} className="settings-arrow" />
+                    </button>
+                    <button type="button" className="settings-item" onClick={() => handleProtectedAction('Password change is available in Security settings.')}>
+                      <span className="settings-icon purple"><IconLock size={20} strokeWidth={2} /></span>
+                      <span className="settings-label">Password</span>
+                      <IconChevronRight size={20} strokeWidth={2} className="settings-arrow" />
+                    </button>
+                    <button type="button" className={`settings-item${activeTab === 'stats' ? ' active' : ''}`} onClick={() => setActiveTab('stats')}>
+                      <span className="settings-icon blue"><IconBarChart size={20} strokeWidth={2} /></span>
+                      <span className="settings-label">Statistics</span>
+                      <IconChevronRight size={20} strokeWidth={2} className="settings-arrow" />
+                    </button>
+                  </div>
                 </div>
-              </div>
 
-              <nav className="profile-nav" role="tablist" aria-label="Profile sections">
-                {tabs.map((tab) => (
-                  <button
-                    key={tab.id}
-                    type="button"
-                    role="tab"
-                    id={`tab-${tab.id}`}
-                    aria-selected={activeTab === tab.id}
-                    aria-controls={`panel-${tab.id}`}
-                    className={activeTab === tab.id ? 'active' : ''}
-                    onClick={() => setActiveTab(tab.id)}
-                  >
-                    {tab.label}
+                {/* PREFERENCES */}
+                <div className="settings-section">
+                  <h2 className="section-title">Preferences</h2>
+                  <div className="settings-group">
+                    <button type="button" className={`settings-item${activeTab === 'notifications' ? ' active' : ''}`} onClick={() => setActiveTab('notifications')}>
+                      <span className="settings-icon purple"><IconBell size={20} strokeWidth={2} /></span>
+                      <span className="settings-label">Notifications</span>
+                      <IconChevronRight size={20} strokeWidth={2} className="settings-arrow" />
+                    </button>
+                    <button type="button" className={`settings-item${activeTab === 'privacy' ? ' active' : ''}`} onClick={() => setActiveTab('privacy')}>
+                      <span className="settings-icon green"><IconLock size={20} strokeWidth={2} /></span>
+                      <span className="settings-label">Privacy</span>
+                      <IconChevronRight size={20} strokeWidth={2} className="settings-arrow" />
+                    </button>
+                    <button type="button" className={`settings-item${activeTab === 'lifestyle' ? ' active' : ''}`} onClick={() => setActiveTab('lifestyle')}>
+                      <span className="settings-icon blue"><IconSparkles size={20} strokeWidth={2} /></span>
+                      <span className="settings-label">Lifestyle</span>
+                      <IconChevronRight size={20} strokeWidth={2} className="settings-arrow" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* SUPPORT */}
+                <div className="settings-section">
+                  <h2 className="section-title">Support</h2>
+                  <div className="settings-group">
+                    <Link to="/contact" className="settings-item">
+                      <span className="settings-icon blue"><IconHelpCircle size={20} strokeWidth={2} /></span>
+                      <span className="settings-label">Help &amp; Support</span>
+                      <IconChevronRight size={20} strokeWidth={2} className="settings-arrow" />
+                    </Link>
+                    <Link to="/contact" className="settings-item">
+                      <span className="settings-icon green"><IconMail size={20} strokeWidth={2} /></span>
+                      <span className="settings-label">Contact Us</span>
+                      <IconChevronRight size={20} strokeWidth={2} className="settings-arrow" />
+                    </Link>
+                    <Link to="/terms" className="settings-item">
+                      <span className="settings-icon purple"><IconFileText size={20} strokeWidth={2} /></span>
+                      <span className="settings-label">Terms &amp; Privacy</span>
+                      <IconChevronRight size={20} strokeWidth={2} className="settings-arrow" />
+                    </Link>
+                  </div>
+                </div>
+
+                {/* Sign Out, Delete Account + Version */}
+                <div className="profile-footer-actions">
+                  <button type="button" className="sign-out-button" onClick={() => { logout(); navigate('/'); }}>
+                    Sign Out
                   </button>
-                ))}
-              </nav>
-
-              {/* Settings quick links - Notifications, Privacy, Help */}
-              <div className="profile-settings-links">
-                <h3 className="profile-settings-links-title">Settings</h3>
-                <button type="button" className="profile-settings-link" onClick={() => setActiveTab('notifications')}>
-                  <IconBell size={20} strokeWidth={2} />
-                  <span>Notifications</span>
-                  <IconChevronRight size={18} strokeWidth={2} />
-                </button>
-                <button type="button" className="profile-settings-link" onClick={() => setActiveTab('privacy')}>
-                  <IconLock size={20} strokeWidth={2} />
-                  <span>Privacy</span>
-                  <IconChevronRight size={18} strokeWidth={2} />
-                </button>
-                <Link to="/contact" className="profile-settings-link">
-                  <IconHelpCircle size={20} strokeWidth={2} />
-                  <span>Help &amp; Support</span>
-                  <IconChevronRight size={18} strokeWidth={2} />
-                </Link>
-              </div>
-            </aside>
+                  <button
+                    type="button"
+                    className="delete-account-button"
+                    onClick={() => window.confirm('Delete your account? This cannot be undone.') && handleProtectedAction('Account deletion is handled via support.')}
+                  >
+                    Delete Account
+                  </button>
+                  <p className="profile-version">Version 1.0.0</p>
+                </div>
+              </aside>
 
             <section className="profile-content">
           {/* PERSONAL INFORMATION TAB */}
@@ -1099,27 +1162,6 @@ const ProfileSettingsPage: React.FC = () => {
             </div>
           )}
 
-          {/* Account actions - Sign Out & Delete */}
-          <div className="profile-account-actions">
-            <button
-              type="button"
-              className="btn-account btn-signout"
-              onClick={() => { logout(); navigate('/'); }}
-            >
-              Sign Out
-            </button>
-            <button
-              type="button"
-              className="btn-account btn-danger-text"
-              onClick={() => {
-                if (window.confirm('Are you sure you want to delete your account? This cannot be undone.')) {
-                  handleProtectedAction('Account deletion is handled via support. Contact us to proceed.');
-                }
-              }}
-            >
-              Delete Account
-            </button>
-          </div>
         </form>
         </div>
       </div>

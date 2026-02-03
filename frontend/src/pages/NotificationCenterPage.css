@@ -67,13 +67,55 @@
 }
 
 .settings-card-title {
-  margin: 0 0 16px 0;
+  margin: 0 0 8px 0;
   font-size: 1rem;
   font-weight: 600;
 }
 
+.settings-card-desc {
+  margin: 0 0 16px 0;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
 .settings-card-body {
   padding: 0;
+}
+
+.setting-item-with-time {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.setting-toggle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+.setting-label {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.setting-time {
+  font-size: 1rem;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-white);
+  color: var(--text-primary);
+  min-width: 120px;
+}
+
+.setting-time:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .notification-center-page .icon-inline-right {

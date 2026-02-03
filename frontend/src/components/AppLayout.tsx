@@ -11,7 +11,7 @@ import { OfflineBanner } from './OfflineBanner';
 import { AddToHomeScreenPrompt } from './AddToHomeScreenPrompt';
 import { ApiStatusIndicator } from './ApiStatusIndicator';
 import { BottomNav } from './BottomNav';
-import { useIsMobile } from '../hooks/useIsMobile';
+import { useViewport } from '../hooks/useViewport';
 import './AppLayout.css';
 
 type AppLayoutProps = {
@@ -111,9 +111,9 @@ const displayName = nameParts.length > 1
   }, [location.pathname]);
   const showBreadcrumbs = location.pathname !== '/';
 
-  const isMobile = useIsMobile();
+  const viewport = useViewport();
 
-  /* App shell (minimal footer, 3-tab nav) only on mobile; desktop is never touched */
+  /* App shell (minimal footer, 3-tab nav) only on MOBILE; desktop + tablet keep full layout */
   const pathIsAppRoute = useMemo(() => {
     const p = location.pathname;
     if (p === '/') return true;
@@ -123,10 +123,13 @@ const displayName = nameParts.length > 1
     return false;
   }, [location.pathname]);
 
-  const isAppRoute = isMobile && pathIsAppRoute;
+  const isAppRoute = viewport === 'mobile' && pathIsAppRoute;
 
   return (
-    <div className={`app-layout${isAppRoute ? ' app-shell-mode' : ''}`}>
+    <div
+      className={`app-layout${isAppRoute ? ' app-shell-mode' : ''}`}
+      data-viewport={viewport}
+    >
       <a className="skip-link" href="#main-content">Skip to main content</a>
       <OfflineBanner />
       <AddToHomeScreenPrompt />

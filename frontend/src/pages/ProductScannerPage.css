@@ -746,6 +746,67 @@
   font-family: monospace;
 }
 
+/* Your Skin Match card – personalized match % after scan */
+.skin-match-card {
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
+  border: 1px solid var(--border);
+  background: var(--bg-light);
+}
+
+.skin-match-card.good {
+  border-color: rgba(34, 197, 94, 0.5);
+  background: rgba(34, 197, 94, 0.08);
+}
+
+.skin-match-card.fair {
+  border-color: rgba(245, 158, 11, 0.5);
+  background: rgba(245, 158, 11, 0.08);
+}
+
+.skin-match-card.low {
+  border-color: rgba(239, 68, 68, 0.3);
+  background: rgba(239, 68, 68, 0.06);
+}
+
+.skin-match-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-gray);
+  margin: 0 0 8px 0;
+}
+
+.skin-match-value {
+  font-size: 2.25rem;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+
+.skin-match-card.good .skin-match-value { color: #16a34a; }
+.skin-match-card.fair .skin-match-value { color: #d97706; }
+.skin-match-card.low .skin-match-value { color: #dc2626; }
+
+.skin-match-bullets {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+.skin-match-bullets li {
+  padding: 4px 0;
+  padding-left: 0;
+}
+
+.skin-match-bullets li.skin-match-warn {
+  color: var(--text-gray);
+}
+
 .safety-ratings {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));

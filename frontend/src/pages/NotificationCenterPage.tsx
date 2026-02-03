@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { IconBell, IconCheck, IconX, IconSettings, IconClock, IconTrendingUp, IconAlertCircle, IconInfo, IconChevronRight } from '../components/Icons';
 import { useNotifications } from '../context/NotificationContext';
 import type { NotificationRecord } from '../services/notificationService';
+import { getNotificationPrefs, setNotificationPrefs, type NotificationPrefs } from '../utils/notificationPreferences';
 import './NotificationCenterPage.css';
 
 type FilterType = 'all' | 'unread' | 'reminder' | 'progress' | 'alert';
@@ -10,6 +11,7 @@ type FilterType = 'all' | 'unread' | 'reminder' | 'progress' | 'alert';
 /**
  * Notification Center Page (FR40 from SRS)
  * Central hub for all user notifications; uses NotificationContext for data and actions.
+ * Settings: morning/evening routine reminders (with times), weekly report, product expiry.
  */
 const NotificationCenterPage: React.FC = () => {
   const {
@@ -22,10 +24,17 @@ const NotificationCenterPage: React.FC = () => {
   } = useNotifications();
   const [filter, setFilter] = useState<FilterType>('all');
   const [showSettings, setShowSettings] = useState(false);
+  const [prefs, setPrefs] = useState<NotificationPrefs>(getNotificationPrefs);
 
   useEffect(() => {
     fetchNotifications();
   }, [fetchNotifications]);
+
+  const updatePref = (key: keyof NotificationPrefs, value: boolean | string) => {
+    const next = { ...prefs, [key]: value };
+    setPrefs(next);
+    setNotificationPrefs(next);
+  };
 
   const getNotificationIcon = (type: string) => {
     switch (type) {
@@ -93,29 +102,62 @@ const NotificationCenterPage: React.FC = () => {
         {showSettings && (
           <div className="app-card settings-card">
             <h2 className="settings-card-title">Notification preferences</h2>
+            <p className="settings-card-desc">Choose when you want reminders. Times are used when we send push notifications.</p>
             <div className="settings-card-body">
+              <div className="setting-item setting-item-with-time">
+                <label className="setting-toggle">
+                  <input
+                    type="checkbox"
+                    checked={prefs.morningRoutine}
+                    onChange={(e) => updatePref('morningRoutine', e.target.checked)}
+                  />
+                  <span className="setting-label">Morning routine reminder</span>
+                </label>
+                <input
+                  type="time"
+                  className="setting-time"
+                  value={prefs.morningTime}
+                  onChange={(e) => updatePref('morningTime', e.target.value)}
+                  disabled={!prefs.morningRoutine}
+                  aria-label="Morning reminder time"
+                />
+              </div>
+              <div className="setting-item setting-item-with-time">
+                <label className="setting-toggle">
+                  <input
+                    type="checkbox"
+                    checked={prefs.eveningRoutine}
+                    onChange={(e) => updatePref('eveningRoutine', e.target.checked)}
+                  />
+                  <span className="setting-label">Evening routine reminder</span>
+                </label>
+                <input
+                  type="time"
+                  className="setting-time"
+                  value={prefs.eveningTime}
+                  onChange={(e) => updatePref('eveningTime', e.target.value)}
+                  disabled={!prefs.eveningRoutine}
+                  aria-label="Evening reminder time"
+                />
+              </div>
               <div className="setting-item">
-                <label>
-                  <input type="checkbox" defaultChecked />
-                  Routine reminders
+                <label className="setting-toggle">
+                  <input
+                    type="checkbox"
+                    checked={prefs.weeklyReport}
+                    onChange={(e) => updatePref('weeklyReport', e.target.checked)}
+                  />
+                  <span className="setting-label">Weekly skin report</span>
                 </label>
               </div>
               <div className="setting-item">
-                <label>
-                  <input type="checkbox" defaultChecked />
-                  Progress updates
-                </label>
-              </div>
-              <div className="setting-item">
-                <label>
-                  <input type="checkbox" defaultChecked />
-                  Product recommendations
-                </label>
-              </div>
-              <div className="setting-item">
-                <label>
-                  <input type="checkbox" defaultChecked />
-                  Skin change alerts
+                <label className="setting-toggle">
+                  <input
+                    type="checkbox"
+                    checked={prefs.productExpiry}
+                    onChange={(e) => updatePref('productExpiry', e.target.checked)}
+                  />
+                  <span className="setting-label">Product expiry alerts</span>
                 </label>
               </div>
             </div>

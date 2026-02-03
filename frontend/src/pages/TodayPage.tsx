@@ -1,6 +1,7 @@
 /**
  * TODAY tab – Daily hub (Jobs-To-Be-Done: CHECK + ACT).
  * Answers "How's my skin?" and "What do I do now?" in one screen.
+ * Includes: streak, skin score, inline routine tracker (checkboxes), For you.
  */
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -14,8 +15,15 @@ import {
   IconStar,
   IconPackage,
   IconArrowRight,
+  IconCheck,
 } from '../components/Icons';
 import NotificationBell from '../components/notifications/NotificationBell';
+import { getStreak, checkInToday, hasCheckedInToday } from '../utils/streakStorage';
+import {
+  getRoutineSteps,
+  getCompletedStepsForToday,
+  toggleStepForToday,
+} from '../utils/routineStorage';
 import './TodayPage.css';
 
 interface TodayData {
@@ -26,6 +34,8 @@ interface TodayData {
   routineTotal: number;
 }
 
+const WEEKDAY_LABELS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+
 const TodayPage: React.FC = () => {
   usePageTitle('Today', 'Your skin today – score, routine, and recommendations.');
   const { user, isAuthenticated } = useAuth();
@@ -33,6 +43,9 @@ const TodayPage: React.FC = () => {
   const navigate = useNavigate();
   const [data, setData] = useState<TodayData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [streak, setStreak] = useState(0);
+  const routineSteps = getRoutineSteps();
+  const [completedSteps, setCompletedSteps] = useState<Set<number>>(getCompletedStepsForToday);
 
   useEffect(() => {
     if (!isAuthenticated || !user) {
@@ -73,7 +86,22 @@ const TodayPage: React.FC = () => {
     return () => { cancelled = true; };
   }, [isAuthenticated, user]);
 
+  useEffect(() => {
+    setStreak(getStreak());
+  }, []);
+
+  const handleRoutineStepToggle = (index: number) => {
+    const next = toggleStepForToday(index);
+    setCompletedSteps(next);
+    if (next.size === routineSteps.length && !hasCheckedInToday()) {
+      checkInToday();
+      setStreak(getStreak());
+    }
+  };
+
   const firstName = user?.full_name?.split(' ')[0] || user?.email?.split('@')[0] || 'there';
+  const routineDone = completedSteps.size;
+  const routineTotal = routineSteps.length;
 
   if (!isAuthenticated) {
     return (
@@ -113,6 +141,23 @@ const TodayPage: React.FC = () => {
       </header>
 
       <div className="today-content">
+        {streak > 0 && (
+          <section className="today-card today-card-streak">
+            <div className="today-streak-header">
+              <span className="today-streak-emoji" aria-hidden>🔥</span>
+              <span className="today-streak-title">
+                {streak}-Day Streak!
+              </span>
+            </div>
+            <div className="today-streak-week" aria-hidden>
+              {WEEKDAY_LABELS.map((label, i) => (
+                <span key={i} className="today-streak-day">{label}</span>
+              ))}
+            </div>
+            <p className="today-streak-hint">Complete your routine today to keep it going</p>
+          </section>
+        )}
+
         <section className="today-card today-card-skin">
           <h2 className="today-card-title">Your skin today</h2>
           {loading || data === null ? (
@@ -146,18 +191,34 @@ const TodayPage: React.FC = () => {
             <span className="today-routine-icon"><IconSun size={20} strokeWidth={2} /></span>
             <h2 className="today-card-title">Morning routine</h2>
             <span className="today-routine-count">
-              {data?.routineProgress ?? 0}/{data?.routineTotal ?? 5}
+              {routineDone}/{routineTotal} done
             </span>
           </div>
           <div className="today-routine-bar">
             <div
               className="today-routine-bar-fill"
-              style={{ width: `${((data?.routineProgress ?? 0) / (data?.routineTotal || 5)) * 100}%` }}
+              style={{ width: `${(routineTotal ? (routineDone / routineTotal) * 100 : 0)}%` }}
             />
           </div>
-          <p className="today-routine-next">Next: Add products and build your routine</p>
+          <ul className="today-routine-steps">
+            {routineSteps.map((label, index) => (
+              <li key={index}>
+                <button
+                  type="button"
+                  className={`today-routine-step ${completedSteps.has(index) ? 'done' : ''}`}
+                  onClick={() => handleRoutineStepToggle(index)}
+                  aria-pressed={completedSteps.has(index)}
+                >
+                  <span className="today-routine-step-check">
+                    {completedSteps.has(index) ? <IconCheck size={18} strokeWidth={2.5} /> : null}
+                  </span>
+                  <span className="today-routine-step-label">{label}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
           <Link to="/routine-builder" className="today-card-link">
-            Continue routine <IconArrowRight size={18} strokeWidth={2} />
+            Edit routine <IconArrowRight size={18} strokeWidth={2} />
           </Link>
         </section>
 

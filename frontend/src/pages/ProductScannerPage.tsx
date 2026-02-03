@@ -1004,6 +1004,52 @@ const ProductScannerPage: React.FC = () => {
                   </div>
                 </div>
 
+                {/* Your Skin Match – personalized match % and bullets */}
+                {(() => {
+                  const matchPct = Math.round(scannedProduct.suitabilityScore ?? 0);
+                  const isGood = matchPct >= 70;
+                  const isFair = matchPct >= 50 && matchPct < 70;
+                  const skinMatchBullets: { type: 'ok' | 'warn'; text: string }[] = [];
+                  if (scannedProduct.safetyReport?.is_sensitive_skin_safe) {
+                    skinMatchBullets.push({ type: 'ok', text: 'Good for sensitive skin' });
+                  }
+                  if (scannedProduct.keyIngredients && scannedProduct.keyIngredients.length > 0) {
+                    const concerns = scannedProduct.keyIngredients.slice(0, 2).map(ki => ki.name).join(', ');
+                    skinMatchBullets.push({ type: 'ok', text: `Addresses: ${concerns}` });
+                  } else {
+                    skinMatchBullets.push({ type: 'ok', text: 'Suitable for daily care' });
+                  }
+                  const fragranceOrWarning = scannedProduct.warnings?.find(w =>
+                    /fragrance|parfum|perfume|scent/i.test(w)
+                  ) || scannedProduct.safetyReport?.flagged_ingredients?.find(f =>
+                    /fragrance|parfum|perfume/i.test(f.name)
+                  );
+                  if (fragranceOrWarning) {
+                    const warnText = typeof fragranceOrWarning === 'string'
+                      ? fragranceOrWarning
+                      : `Contains ${(fragranceOrWarning as FlaggedIngredient).name}`;
+                    skinMatchBullets.push({ type: 'warn', text: warnText });
+                  } else if (scannedProduct.safetyReport && scannedProduct.safetyReport.total_flagged > 0) {
+                    skinMatchBullets.push({
+                      type: 'warn',
+                      text: `${scannedProduct.safetyReport.total_flagged} ingredient(s) to review below`
+                    });
+                  }
+                  return (
+                    <div className={`skin-match-card ${isGood ? 'good' : isFair ? 'fair' : 'low'}`}>
+                      <h3 className="skin-match-title">Your skin match</h3>
+                      <div className="skin-match-value">{matchPct}%</div>
+                      <ul className="skin-match-bullets">
+                        {skinMatchBullets.map((b, i) => (
+                          <li key={i} className={b.type === 'warn' ? 'skin-match-warn' : ''}>
+                            {b.type === 'warn' ? '⚠️' : '✅'} {b.text}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  );
+                })()}
+
                 {/* Safety Ratings */}
                 <div className="safety-ratings">
                   <div

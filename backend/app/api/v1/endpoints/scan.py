@@ -498,9 +498,12 @@ def get_scan_history(
         return {"scans": []}
     user_id = current_user.id
     base_url = str(request.base_url).rstrip("/")
-    scans = db.query(ScanSession).filter(
-        ScanSession.user_id == user_id
-    ).all()
+    scans = (
+        db.query(ScanSession)
+        .filter(ScanSession.user_id == user_id)
+        .order_by(ScanSession.created_at.desc())
+        .all()
+    )
     
     items = []
     for scan in scans:

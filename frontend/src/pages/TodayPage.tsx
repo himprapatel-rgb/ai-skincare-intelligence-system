@@ -9,18 +9,8 @@ import { usePageTitle } from '../hooks/usePageTitle';
 import { getScanHistory } from '../services/scanApi';
 import { useShelf } from '../context/ShelfContext';
 import { API_BASE_URL } from '../config';
-import {
-  IconSettings,
-  IconSun,
-  IconMoon,
-  IconStar,
-  IconPackage,
-  IconArrowRight,
-  IconCheck,
-  IconCamera,
-  IconBarChart,
-  IconShoppingCart,
-} from '../components/Icons';
+import { IconSettings } from '../components/Icons';
+import { Illustrations } from '../components/Illustrations';
 import NotificationBell from '../components/notifications/NotificationBell';
 import { getStreak, checkInToday, hasCheckedInToday } from '../utils/streakStorage';
 import {
@@ -158,17 +148,22 @@ const TodayPage: React.FC = () => {
       try {
         const historyData = await getScanHistory();
         const scans = (historyData as { scans?: Array<Record<string, unknown>> }).scans || [];
-        const completed = scans.filter((s) => String(s.status || '') !== 'failed');
+        const statusStr = (s: Record<string, unknown>) => String(s.status ?? '').toLowerCase();
+        const completed = scans.filter((s) => statusStr(s) === 'completed');
         const scores = completed
           .map((s) => {
             const summary = (s.summary || {}) as Record<string, unknown>;
-            const n = typeof summary.overall_score === 'number' ? Math.round(summary.overall_score) : null;
-            return n ?? null;
+            const raw = summary.overall_score;
+            const n = typeof raw === 'number' && !Number.isNaN(raw) ? Math.round(Number(raw)) : null;
+            return n;
           })
-          .filter((n): n is number => typeof n === 'number' && !Number.isNaN(n));
+          .filter((n): n is number => typeof n === 'number');
         const avgScore = scores.length > 0 ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : 0;
         const trend: TodayData['skinTrend'] = avgScore >= 70 ? 'improving' : avgScore >= 40 ? 'stable' : 'declining';
+        const lastCompleted = completed[0];
+        const lastDate = lastCompleted?.created_at != null ? String(lastCompleted.created_at) : null;
         if (!cancelled) {
+          setLastScanDate(lastDate);
           setData({
             skinScore: avgScore,
             skinTrend: trend,
@@ -297,14 +292,17 @@ const TodayPage: React.FC = () => {
             </p>
             <p className="today-prediction-tip">&ldquo;{predictionTip}&rdquo;</p>
             <Link to="/digital-twin" className="today-prediction-link">
-              See full prediction <IconArrowRight size={18} strokeWidth={2} />
+              See full prediction <Illustrations.ArrowRight className="today-ill today-ill-arrow" />
             </Link>
           </section>
         )}
 
         {/* 🧬 YOUR SKIN TODAY – compact score + actions */}
         <section className="today-card today-card-skin today-card-skin-glow today-card-skin-compact">
-          <h2 className="today-card-title today-card-title-caps">🧬 Your skin today</h2>
+          <div className="today-card-title-row">
+            <Illustrations.SkinToday className="today-ill today-ill-section" />
+            <h2 className="today-card-title today-card-title-caps">Your skin today</h2>
+          </div>
           {loading || data === null ? (
             <div className="today-skin-skeleton">
               <div className="today-skin-score-box">—</div>
@@ -350,11 +348,11 @@ const TodayPage: React.FC = () => {
               </p>
               <div className="today-skin-actions">
                 <Link to="/scan" className="btn btn-primary today-skin-btn">
-                  <IconCamera size={18} strokeWidth={2} />
+                  <Illustrations.ScanCamera className="today-ill today-ill-btn" />
                   New Scan
                 </Link>
                 <Link to="/history" className="btn btn-secondary today-skin-btn">
-                  <IconBarChart size={18} strokeWidth={2} />
+                  <Illustrations.HistoryChart className="today-ill today-ill-btn" />
                   History
                 </Link>
               </div>
@@ -372,7 +370,7 @@ const TodayPage: React.FC = () => {
                 </div>
               )}
               <Link to="/digital-twin" className="today-card-link today-card-link-twin">
-                View full analysis & timeline <IconArrowRight size={18} strokeWidth={2} />
+                View full analysis & timeline <Illustrations.ArrowRight className="today-ill today-ill-arrow" />
               </Link>
             </>
           )}
@@ -397,7 +395,10 @@ const TodayPage: React.FC = () => {
 
         {/* 🧪 AI INGREDIENT MATCH */}
         <section className="today-card today-card-ingredients">
-          <h2 className="today-card-title today-card-title-caps">🧪 AI ingredient match</h2>
+          <div className="today-card-title-row">
+            <Illustrations.Ingredients className="today-ill today-ill-section" />
+            <h2 className="today-card-title today-card-title-caps">AI ingredient match</h2>
+          </div>
           <p className="today-ingredients-intro">Based on your concerns, we recommend products with:</p>
           <ul className="today-ingredients-list">
             {AI_INGREDIENT_MATCH.map((item) => (
@@ -411,7 +412,7 @@ const TodayPage: React.FC = () => {
             ))}
           </ul>
           <Link to="/recommendations" className="btn btn-primary today-ingredients-cta">
-            <IconShoppingCart size={18} strokeWidth={2} />
+            <Illustrations.Cart className="today-ill today-ill-btn" />
             Find matching products
           </Link>
         </section>
@@ -438,7 +439,7 @@ const TodayPage: React.FC = () => {
               )}
             </p>
             <Link to="/digital-twin" className="today-card-link">
-              View before/after & timeline <IconArrowRight size={18} strokeWidth={2} />
+              View before/after & timeline <Illustrations.ArrowRight className="today-ill today-ill-arrow" />
             </Link>
           </section>
         )}
@@ -451,7 +452,7 @@ const TodayPage: React.FC = () => {
               onClick={() => setRoutineType('morning')}
               aria-pressed={routineType === 'morning'}
             >
-              <IconSun size={18} strokeWidth={2} />
+              <Illustrations.RoutineSun className="today-ill today-ill-tab" />
               Morning
             </button>
             <button
@@ -460,12 +461,14 @@ const TodayPage: React.FC = () => {
               onClick={() => setRoutineType('evening')}
               aria-pressed={routineType === 'evening'}
             >
-              <IconMoon size={18} strokeWidth={2} />
+              <Illustrations.RoutineMoon className="today-ill today-ill-tab" />
               Evening
             </button>
           </div>
           <div className="today-card-head">
-            <span className="today-routine-icon">{routineType === 'morning' ? <IconSun size={20} strokeWidth={2} /> : <IconMoon size={20} strokeWidth={2} />}</span>
+            <span className="today-routine-icon">
+              {routineType === 'morning' ? <Illustrations.RoutineSun className="today-ill today-ill-head" /> : <Illustrations.RoutineMoon className="today-ill today-ill-head" />}
+            </span>
             <h2 className="today-card-title">{routineType === 'morning' ? 'Morning' : 'Evening'} routine</h2>
             <span className="today-routine-count">
               {routineDone}/{routineTotal} done
@@ -487,7 +490,7 @@ const TodayPage: React.FC = () => {
                   aria-pressed={completedSteps.has(index)}
                 >
                   <span className="today-routine-step-check">
-                    {completedSteps.has(index) ? <IconCheck size={18} strokeWidth={2.5} /> : null}
+                    {completedSteps.has(index) ? <Illustrations.Check className="today-ill today-ill-check" /> : null}
                   </span>
                   <span className="today-routine-step-label">{label}</span>
                 </button>
@@ -495,7 +498,7 @@ const TodayPage: React.FC = () => {
             ))}
           </ul>
           <Link to="/routine-builder" className="today-card-link">
-            Edit routine <IconArrowRight size={18} strokeWidth={2} />
+            Edit routine <Illustrations.ArrowRight className="today-ill today-ill-arrow" />
           </Link>
         </section>
 
@@ -524,8 +527,8 @@ const TodayPage: React.FC = () => {
         {/* 🏆 RECOMMENDED FOR YOU – at least 3 products */}
         <section className="today-card today-card-toppick">
           <div className="today-card-head">
-            <span className="today-foryou-icon"><IconStar size={20} strokeWidth={2} /></span>
-            <h2 className="today-card-title today-card-title-caps">🏆 Recommended for you</h2>
+            <span className="today-foryou-icon"><Illustrations.Recommended className="today-ill today-ill-section" /></span>
+            <h2 className="today-card-title today-card-title-caps">Recommended for you</h2>
             <Link to="/recommendations" className="today-see-all">See all →</Link>
           </div>
           <div className="today-products-grid">
@@ -554,7 +557,7 @@ const TodayPage: React.FC = () => {
                     rel="noopener noreferrer"
                     className="btn btn-primary today-product-card-buy"
                   >
-                    <IconShoppingCart size={16} strokeWidth={2} />
+                    <Illustrations.Cart className="today-ill today-ill-btn" />
                     Buy on Amazon
                   </a>
                 </div>
@@ -565,7 +568,7 @@ const TodayPage: React.FC = () => {
 
         {shelfCount === 0 && (
           <section className="today-card today-card-cta">
-            <IconPackage size={32} strokeWidth={2} className="today-cta-icon" />
+            <Illustrations.Package className="today-cta-ill" />
             <p>Add products to your shelf to get better recommendations.</p>
             <button type="button" className="btn btn-secondary" onClick={() => navigate('/scan?mode=product')}>
               Scan a product

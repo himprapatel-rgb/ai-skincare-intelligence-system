@@ -405,6 +405,7 @@ const ProfileSettingsPage: React.FC = () => {
       toast.error('Image must be under 5MB.');
       return;
     }
+    setPhotoUploading(true);
     try {
       const formData = new FormData();
       formData.append('file', file);
@@ -419,6 +420,8 @@ const ProfileSettingsPage: React.FC = () => {
     } catch (err) {
       const msg = (err as { response?: { data?: { detail?: string } } })?.response?.data?.detail || 'Upload failed.';
       toast.error(msg);
+    } finally {
+      setPhotoUploading(false);
     }
   };
 

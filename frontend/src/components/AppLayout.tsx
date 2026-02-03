@@ -11,6 +11,7 @@ import { OfflineBanner } from './OfflineBanner';
 import { AddToHomeScreenPrompt } from './AddToHomeScreenPrompt';
 import { ApiStatusIndicator } from './ApiStatusIndicator';
 import { BottomNav } from './BottomNav';
+import { useIsMobile } from '../hooks/useIsMobile';
 import './AppLayout.css';
 
 type AppLayoutProps = {
@@ -110,8 +111,10 @@ const displayName = nameParts.length > 1
   }, [location.pathname]);
   const showBreadcrumbs = location.pathname !== '/';
 
-  /* Bumble-style super app: app routes (including home) use minimal footer and app shell */
-  const isAppRoute = useMemo(() => {
+  const isMobile = useIsMobile();
+
+  /* App shell (minimal footer, 3-tab nav) only on mobile; desktop is never touched */
+  const pathIsAppRoute = useMemo(() => {
     const p = location.pathname;
     if (p === '/') return true;
     const appPaths = ['/dashboard', '/scan', '/history', '/recommendations', '/discover', '/myshelf', '/scanner', '/profile', '/me', '/routine-builder', '/routines', '/favorites', '/digital-twin', '/onboarding', '/auth', '/comparison', '/progress', '/export', '/notifications', '/skin-goals', '/consent'];
@@ -119,6 +122,8 @@ const displayName = nameParts.length > 1
     if (p.startsWith('/analysis') || p.startsWith('/product/')) return true;
     return false;
   }, [location.pathname]);
+
+  const isAppRoute = isMobile && pathIsAppRoute;
 
   return (
     <div className={`app-layout${isAppRoute ? ' app-shell-mode' : ''}`}>

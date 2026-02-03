@@ -875,28 +875,30 @@
   background: linear-gradient(180deg, var(--bg-secondary) 0%, #ffffff 100%);
 }
 
-/* Bumble-style app shell: on app routes hide full website footer, show only minimal bar */
-.app-shell-mode .app-footer-newsletter,
-.app-shell-mode .app-footer-main {
-  display: none;
-}
+/* Bumble-style app shell: only on MOBILE viewport hide full footer; desktop always keeps full footer */
+@media (max-width: 768px) {
+  .app-shell-mode .app-footer-newsletter,
+  .app-shell-mode .app-footer-main {
+    display: none;
+  }
 
-.app-shell-mode .app-footer-bottom {
-  padding: 12px 16px;
-  padding-bottom: max(12px, env(safe-area-inset-bottom));
-}
+  .app-shell-mode .app-footer-bottom {
+    padding: 12px 16px;
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+  }
 
-.app-shell-mode .app-footer-bottom-container {
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px;
-  text-align: center;
-}
+  .app-shell-mode .app-footer-bottom-container {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    text-align: center;
+  }
 
-.app-shell-mode .app-footer-disclaimer {
-  order: 1;
-  width: 100%;
-  justify-content: center;
+  .app-shell-mode .app-footer-disclaimer {
+    order: 1;
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 /* Newsletter Section */

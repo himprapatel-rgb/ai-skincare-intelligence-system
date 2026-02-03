@@ -1,29 +1,38 @@
 // src/pages/OnboardingPage.tsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { IconSparkles, IconScan, IconZap, IconShield, IconBarChart, IconCheck } from '../components/Icons';
+import { IconSparkles, IconScan, IconCheck } from '../components/Icons';
 import { ConfirmModal } from '../components/ConfirmModal';
 import { API_BASE_URL } from '../config';
 import './OnboardingPage.css';
 
 const ONBOARDING_PROGRESS_KEY = 'onboarding_progress';
 
+/** Section 8: Skin type options (Pellicura report) */
+const SKIN_TYPES = ['Dry', 'Oily', 'Combo', 'Normal', 'Sensitive'];
+
+/** Section 8: Main concerns (select all that apply) */
+const CONCERNS_OPTIONS = ['Acne', 'Dark spots', 'Wrinkles', 'Redness', 'Dryness', 'Pores', 'Dark circles', 'Texture'];
+
+/** Section 8: Routine complexity */
+const ROUTINE_LEVELS = [
+  { id: 'beginner', label: 'Beginner (0-2 products)', desc: '0-2 products' },
+  { id: 'basic', label: 'Basic (3-5 products)', desc: '3-5 products' },
+  { id: 'advanced', label: 'Advanced (6+ products)', desc: '6+ products' },
+] as const;
+
 interface OnboardingData {
-  name: string;
-  age: number;
   skinType: string;
   concerns: string[];
-  goals: string[];
+  routineLevel: string;
   cameraConsent: boolean;
 }
 
 const defaultFormData: OnboardingData = {
-  name: '',
-  age: 0,
   skinType: '',
   concerns: [],
-  goals: [],
-  cameraConsent: false
+  routineLevel: '',
+  cameraConsent: false,
 };
 
 const OnboardingPage: React.FC = () => {
@@ -42,7 +51,14 @@ const OnboardingPage: React.FC = () => {
       const raw = localStorage.getItem(ONBOARDING_PROGRESS_KEY);
       const data = raw ? JSON.parse(raw) : null;
       if (data?.formData && typeof data.formData === 'object') {
-        return { ...defaultFormData, ...data.formData };
+        const fd = data.formData;
+        return {
+          ...defaultFormData,
+          skinType: fd.skinType || '',
+          concerns: Array.isArray(fd.concerns) ? fd.concerns : [],
+          routineLevel: fd.routineLevel || '',
+          cameraConsent: Boolean(fd.cameraConsent),
+        };
       }
     } catch {
       /* ignore */
@@ -52,6 +68,7 @@ const OnboardingPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [showBackConfirm, setShowBackConfirm] = useState(false);
+  const [showCompletion, setShowCompletion] = useState(false);
 
   useEffect(() => {
     try {
@@ -61,25 +78,12 @@ const OnboardingPage: React.FC = () => {
     }
   }, [step, formData]);
 
-  const skinTypes = ['Dry', 'Oily', 'Combination', 'Normal', 'Sensitive'];
-  const concernsOptions = ['Acne', 'Rosacea', 'Wrinkles', 'Dark Spots', 'Sensitivity', 'Dryness', 'Oiliness', 'Pores'];
-  const goalsOptions = ['Clear skin', 'Anti-aging', 'Hydration', 'Brightening', 'Even tone', 'Reduce redness'];
-
   const handleConcernToggle = (concern: string) => {
     setFormData(prev => ({
       ...prev,
       concerns: prev.concerns.includes(concern)
         ? prev.concerns.filter(c => c !== concern)
-        : [...prev.concerns, concern]
-    }));
-  };
-
-  const handleGoalToggle = (goal: string) => {
-    setFormData(prev => ({
-      ...prev,
-      goals: prev.goals.includes(goal)
-        ? prev.goals.filter(g => g !== goal)
-        : [...prev.goals, goal]
+        : [...prev.concerns, concern],
     }));
   };
 
@@ -87,7 +91,7 @@ const OnboardingPage: React.FC = () => {
     if (step < 5) setStep(step + 1);
   };
 
-  const hasFormData = formData.name || formData.age || formData.skinType || formData.concerns.length > 0 || formData.goals.length > 0;
+  const hasFormData = formData.skinType || formData.concerns.length > 0 || formData.routineLevel;
 
   const handleBack = () => {
     if (step <= 1) return;
@@ -103,67 +107,85 @@ const OnboardingPage: React.FC = () => {
     setStep((s: number) => s - 1);
   };
 
-  const handleSubmit = async () => {
+  const submitBaselineAndGoToScan = async () => {
     setLoading(true);
     setError('');
-
     try {
-      if (formData.goals.length === 0 || formData.concerns.length === 0 || !formData.skinType) {
-        throw new Error('Please complete all required fields.');
-      }
-
       const token = localStorage.getItem('auth_token');
       const payload = {
-        goals: formData.goals.map((goal) => goal.toLowerCase().replace(/\s+/g, '_')),
-        concerns: formData.concerns.map((concern) => concern.toLowerCase().replace(/\s+/g, '_')),
-        skin_type: formData.skinType.toLowerCase(),
-        routine_frequency: 'twice_daily',
+        goals: formData.concerns.slice(0, 3).map((c) => c.toLowerCase().replace(/\s+/g, '_')),
+        concerns: formData.concerns.map((c) => c.toLowerCase().replace(/\s+/g, '_')),
+        skin_type: (formData.skinType || 'normal').toLowerCase(),
+        routine_frequency: formData.routineLevel === 'advanced' ? 'twice_daily' : formData.routineLevel === 'basic' ? 'daily' : 'few_times_weekly',
         climate: 'temperate',
       };
-
       const response = await fetch(`${API_BASE_URL}/profile/baseline`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
-        body: JSON.stringify(payload)
+        headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+        body: JSON.stringify(payload),
       });
-
       if (!response.ok) throw new Error('Onboarding failed');
-
       try {
         localStorage.setItem('onboarding_goals', JSON.stringify({
-          goals: formData.goals,
+          goals: formData.concerns,
           concerns: formData.concerns,
           skinType: formData.skinType,
+          routineLevel: formData.routineLevel,
         }));
       } catch {
         /* ignore */
       }
       navigate('/scan');
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Failed to complete onboarding');
+      setError(err instanceof Error ? err.message : 'Failed to save');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleSkip = () => {
-    try {
-      localStorage.removeItem(ONBOARDING_PROGRESS_KEY);
-    } catch {
-      /* ignore */
-    }
-    navigate('/scan');
+  const handleSkipToScan = () => {
+    submitBaselineAndGoToScan();
   };
 
-  const stepTitles: Record<number, string> = {
-    1: 'Welcome',
-    2: 'Profile setup',
-    3: 'Skin concerns',
-    4: 'Skincare goals',
-    5: 'Camera permission',
+  const handleSkipForNow = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      const token = localStorage.getItem('auth_token');
+      const payload = {
+        goals: formData.concerns.map((c) => c.toLowerCase().replace(/\s+/g, '_')),
+        concerns: formData.concerns.map((c) => c.toLowerCase().replace(/\s+/g, '_')),
+        skin_type: (formData.skinType || 'normal').toLowerCase(),
+        routine_frequency: 'twice_daily',
+        climate: 'temperate',
+      };
+      const response = await fetch(`${API_BASE_URL}/profile/baseline`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+        body: JSON.stringify(payload),
+      });
+      if (!response.ok) throw new Error('Failed to save');
+      try {
+        localStorage.setItem('onboarding_goals', JSON.stringify({
+          goals: formData.concerns,
+          concerns: formData.concerns,
+          skinType: formData.skinType,
+          routineLevel: formData.routineLevel,
+        }));
+        localStorage.removeItem(ONBOARDING_PROGRESS_KEY);
+      } catch {
+        /* ignore */
+      }
+      setShowCompletion(true);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to save');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoToDashboard = () => {
+    navigate('/');
   };
 
   const renderStep = () => {
@@ -171,32 +193,14 @@ const OnboardingPage: React.FC = () => {
       case 1:
         return (
           <div className="step-content">
-            <p className="onboarding-step-title" role="status">Step 1: {stepTitles[1]}</p>
             <div className="welcome-icon">
               <IconSparkles size={48} strokeWidth={1.5} />
             </div>
-            <h1>Welcome to AuraSkin AI</h1>
-            <p>Analyze your skin in seconds with AI-powered technology</p>
-            <ul className="features-list">
-              <li>
-                <IconZap size={22} strokeWidth={2} />
-                Fast analysis in under 3 seconds
-              </li>
-              <li>
-                <IconShield size={22} strokeWidth={2} />
-                Privacy-first - your data is secure
-              </li>
-              <li>
-                <IconBarChart size={22} strokeWidth={2} />
-                Detailed insights and recommendations
-              </li>
-            </ul>
+            <h1 className="onboarding-hero-title">Welcome to Pellicura</h1>
+            <p className="onboarding-hero-subtitle">Your AI-powered skincare coach</p>
             <div className="button-group">
-              <button onClick={handleNext} className="btn-primary">
-                Get Started
-              </button>
-              <button type="button" onClick={handleSkip} className="btn-link onboarding-skip">
-                Skip for now
+              <button type="button" onClick={handleNext} className="btn-primary">
+                Get Started →
               </button>
             </div>
           </div>
@@ -205,69 +209,38 @@ const OnboardingPage: React.FC = () => {
       case 2:
         return (
           <div className="step-content">
-            <p className="onboarding-step-title" role="status">Step 2: {stepTitles[2]}</p>
-            <h2>Profile Setup</h2>
-            <p className="step-description">Tell us a bit about yourself</p>
-            <div className="form-group">
-              <label htmlFor="name">Full Name *</label>
-              <input
-                type="text"
-                id="name"
-                value={formData.name}
-                onChange={(e) => setFormData({...formData, name: e.target.value})}
-                placeholder="Enter your name"
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="age">Age *</label>
-              <input
-                type="number"
-                id="age"
-                value={formData.age || ''}
-                onChange={(e) => setFormData({...formData, age: parseInt(e.target.value)})}
-                placeholder="Enter your age"
-                min="13"
-                max="120"
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label>Skin Type *</label>
-              <div className="skin-type-grid">
-                {skinTypes.map(type => (
-                  <button
-                    key={type}
-                    type="button"
-                    className={`skin-type-btn ${formData.skinType === type ? 'selected' : ''}`}
-                    onClick={() => setFormData({...formData, skinType: type})}
-                  >
-                    {type}
-                  </button>
-                ))}
-              </div>
+            <p className="onboarding-step-title" role="status">Step 2: Skin type (1/4)</p>
+            <h2>What&apos;s your skin type?</h2>
+            <div className="skin-type-grid">
+              {SKIN_TYPES.map((type) => (
+                <button
+                  key={type}
+                  type="button"
+                  className={`skin-type-btn ${formData.skinType === type ? 'selected' : ''}`}
+                  onClick={() => setFormData({ ...formData, skinType: type })}
+                >
+                  {type}
+                </button>
+              ))}
             </div>
             <div className="button-group">
-              <button onClick={handleBack} className="btn-secondary">Back</button>
-              <button 
-                onClick={handleNext} 
-                className="btn-primary"
-                disabled={!formData.name || !formData.age || !formData.skinType}
-              >
-                Next
-              </button>
+              <button type="button" onClick={handleBack} className="btn-secondary">Back</button>
+              <button type="button" onClick={handleNext} className="btn-primary">Continue</button>
             </div>
+            <button type="button" onClick={handleSkipToScan} className="btn-link onboarding-skip" disabled={loading}>
+              Not sure? Skip &amp; scan →
+            </button>
           </div>
         );
 
       case 3:
         return (
           <div className="step-content">
-            <p className="onboarding-step-title" role="status">Step 3: {stepTitles[3]}</p>
-            <h2>Skin Concerns</h2>
-            <p className="step-description">Select all that apply (optional)</p>
+            <p className="onboarding-step-title" role="status">Step 3: Concerns (2/4)</p>
+            <h2>What are your main concerns?</h2>
+            <p className="step-description">Select all that apply</p>
             <div className="options-grid">
-              {concernsOptions.map(concern => (
+              {CONCERNS_OPTIONS.map((concern) => (
                 <label key={concern} className="checkbox-card">
                   <input
                     type="checkbox"
@@ -279,8 +252,8 @@ const OnboardingPage: React.FC = () => {
               ))}
             </div>
             <div className="button-group">
-              <button onClick={handleBack} className="btn-secondary">Back</button>
-              <button onClick={handleNext} className="btn-primary">Next</button>
+              <button type="button" onClick={handleBack} className="btn-secondary">Back</button>
+              <button type="button" onClick={handleNext} className="btn-primary">Continue →</button>
             </div>
           </div>
         );
@@ -288,23 +261,30 @@ const OnboardingPage: React.FC = () => {
       case 4:
         return (
           <div className="step-content">
-            <h2>Skincare Goals</h2>
-            <p className="step-description">What do you want to achieve?</p>
-            <div className="options-grid">
-              {goalsOptions.map(goal => (
-                <label key={goal} className="checkbox-card">
-                  <input
-                    type="checkbox"
-                    checked={formData.goals.includes(goal)}
-                    onChange={() => handleGoalToggle(goal)}
-                  />
-                  <span className="checkbox-label">{goal}</span>
-                </label>
+            <p className="onboarding-step-title" role="status">Step 4: Routine (3/4)</p>
+            <h2>How complex is your routine?</h2>
+            <div className="routine-level-list">
+              {ROUTINE_LEVELS.map((level) => (
+                <button
+                  key={level.id}
+                  type="button"
+                  className={`routine-level-btn ${formData.routineLevel === level.id ? 'selected' : ''}`}
+                  onClick={() => setFormData({ ...formData, routineLevel: level.id })}
+                >
+                  <span className="routine-level-label">{level.label}</span>
+                </button>
               ))}
             </div>
             <div className="button-group">
-              <button onClick={handleBack} className="btn-secondary">Back</button>
-              <button onClick={handleNext} className="btn-primary">Next</button>
+              <button type="button" onClick={handleBack} className="btn-secondary">Back</button>
+              <button
+                type="button"
+                onClick={handleNext}
+                className="btn-primary"
+                disabled={!formData.routineLevel}
+              >
+                Continue →
+              </button>
             </div>
           </div>
         );
@@ -312,46 +292,31 @@ const OnboardingPage: React.FC = () => {
       case 5:
         return (
           <div className="step-content">
-            <p className="onboarding-step-title" role="status">Step 5: {stepTitles[5]}</p>
-            <h2>Camera Permission</h2>
-            <p className="step-description">Allow camera access for skin analysis</p>
-            <div className="camera-info">
-              <div className="camera-icon">
-                <IconScan size={40} strokeWidth={1.5} />
-              </div>
-              <p>We need access to your camera to capture your skin for analysis</p>
-              <ul className="permission-list">
-                <li>
-                  <IconCheck size={18} strokeWidth={2.5} />
-                  Photos are processed securely
-                </li>
-                <li>
-                  <IconCheck size={18} strokeWidth={2.5} />
-                  Never shared without permission
-                </li>
-                <li>
-                  <IconCheck size={18} strokeWidth={2.5} />
-                  You can revoke access anytime
-                </li>
-              </ul>
+            <p className="onboarding-step-title" role="status">Step 5: First scan (4/4)</p>
+            <div className="first-scan-icon">
+              <IconScan size={56} strokeWidth={1.5} />
             </div>
-            <label className="consent-checkbox">
-              <input
-                type="checkbox"
-                checked={formData.cameraConsent}
-                onChange={(e) => setFormData({...formData, cameraConsent: e.target.checked})}
-              />
-              <span>I consent to camera access for skin analysis</span>
-            </label>
+            <h2>Let&apos;s scan your face!</h2>
+            <p className="step-description">
+              This helps us personalize everything just for you
+            </p>
             {error && <div className="error-message">{error}</div>}
             <div className="button-group">
-              <button onClick={handleBack} className="btn-secondary">Back</button>
-              <button 
-                onClick={handleSubmit} 
+              <button
+                type="button"
+                onClick={submitBaselineAndGoToScan}
                 className="btn-primary"
-                disabled={loading || !formData.cameraConsent}
+                disabled={loading}
               >
-                {loading ? 'Setting up...' : 'Start Scanning'}
+                {loading ? 'Setting up...' : 'Start Face Scan'}
+              </button>
+              <button
+                type="button"
+                onClick={handleSkipForNow}
+                className="btn-link onboarding-skip"
+                disabled={loading}
+              >
+                Skip for now
               </button>
             </div>
           </div>
@@ -361,6 +326,30 @@ const OnboardingPage: React.FC = () => {
         return null;
     }
   };
+
+  if (showCompletion) {
+    return (
+      <div className="onboarding-page app-page">
+        <div className="app-page-content onboarding-container onboarding-completion">
+          <div className="completion-icon" aria-hidden>🎉</div>
+          <h1 className="completion-title">You&apos;re all set!</h1>
+          <div className="completion-score">
+            <span className="completion-score-label">Your Skin Score</span>
+            <span className="completion-score-value">—</span>
+            <p className="completion-score-hint">Complete a scan to see your score</p>
+          </div>
+          <ul className="completion-checklist">
+            <li><IconCheck size={20} strokeWidth={2.5} /> Product recommendations</li>
+            <li><IconCheck size={20} strokeWidth={2.5} /> Routine suggestions</li>
+            <li><IconCheck size={20} strokeWidth={2.5} /> Ingredient warnings</li>
+          </ul>
+          <button type="button" onClick={handleGoToDashboard} className="btn-primary">
+            Go to My Dashboard →
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="onboarding-page app-page">

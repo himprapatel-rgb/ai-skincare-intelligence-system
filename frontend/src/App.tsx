@@ -7,6 +7,7 @@ import { ThemeProvider } from "./context/ThemeContext";
 import { ShelfProvider } from "./context/ShelfContext";
 import { NotificationProvider } from "./context/NotificationContext";
 import AppLayout from "./components/AppLayout";
+import { HomeRoute } from "./components/HomeRoute";
 import DevBanner from "./components/DevBanner";
 import LoadingScreen from "./components/LoadingScreen";
 import { ToastContainer } from "./components/Toast";
@@ -15,7 +16,6 @@ import NetworkStatus from "./components/NetworkStatus";
 
 // Page Imports - Lazy loaded for faster initial load
 const HomePage = React.lazy(() => import("./pages/HomePage"));
-const TodayPage = React.lazy(() => import("./pages/TodayPage"));
 const MePage = React.lazy(() => import("./pages/MePage"));
 const AuthPage = React.lazy(() =>
   import("./pages/AuthPage").then((module) => ({ default: module.AuthPage }))
@@ -69,7 +69,7 @@ function AppRoutes() {
     <ErrorBoundary onRetry={() => navigate("/", { replace: true })}>
       <Suspense fallback={<LoadingScreen message="Loading page..." fullscreen={false} />}>
         <Routes>
-          <Route path="/" element={<TodayPage />} />
+          <Route path="/" element={<HomeRoute />} />
           <Route path="/home" element={<HomePage />} />
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/password-reset" element={<PasswordResetPage />} />

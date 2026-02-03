@@ -22,11 +22,13 @@ We maintain **three separate code paths** at all times:
 
 ## Implementation
 
-- **Single source of truth:** `useViewport()` in `frontend/src/hooks/useViewport.ts`. Returns `'desktop' | 'tablet' | 'mobile'`.
-- **Breakpoints:** Mobile ≤768px, Tablet 769–1024px, Desktop ≥1025px.
+- **Breakpoints (single source of truth):** `frontend/src/constants/viewport.ts` — `MOBILE_MAX = 768`, `TABLET_MAX = 1024`, `DESKTOP_MIN = 1025`. CSS must use the same values (768px, 1024px, 1025px).
+- **Hook:** `useViewport()` in `frontend/src/hooks/useViewport.ts`. Returns `'desktop' | 'tablet' | 'mobile'`. Uses constants.
 - **Layout:** `AppLayout` sets `data-viewport={viewport}` on the root. Use `[data-viewport="desktop"]`, `[data-viewport="tablet"]`, `[data-viewport="mobile"]` in CSS.
 - **Home route:** `HomeRoute` at `/`: mobile → TodayPage; tablet & desktop → HomePage.
 - **App shell:** Applied only when `viewport === 'mobile'` and path is an app route.
+
+**Production plan and optimization:** See **docs/PLAN-THREE-VIEWPORTS-PRODUCTION.md** (file structure, checklist, optimization).
 
 ---
 
@@ -40,3 +42,5 @@ We maintain **three separate code paths** at all times:
 ---
 
 *This protocol is the agreed standard for viewport handling in this project.*
+
+**Related:** `docs/PLAN-THREE-VIEWPORTS-PRODUCTION.md` — production clarity, optimization, implementation order.

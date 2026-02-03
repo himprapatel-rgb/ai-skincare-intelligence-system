@@ -5,6 +5,7 @@ import { LoginForm } from '../components/LoginForm';
 import { RegisterForm } from '../components/RegisterForm';
 import { IconCamera, IconSparkles, IconBarChart } from '../components/Icons';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { useToast } from '../context/ToastContext';
 import { API_BASE_URL } from '../config';
 import './AuthPage.css';
 
@@ -15,8 +16,16 @@ export const AuthPage: React.FC = () => {
   const [mode, setMode] = useState<'login' | 'register'>('login');
   const navigate = useNavigate();
   const location = useLocation();
+  const toast = useToast();
   const authCardRef = useRef<HTMLDivElement>(null);
   const API_URL = API_BASE_URL;
+
+  useEffect(() => {
+    if (sessionStorage.getItem('session_expired_redirect')) {
+      sessionStorage.removeItem('session_expired_redirect');
+      toast.error('Your session expired. Please sign in again.');
+    }
+  }, [toast]);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);

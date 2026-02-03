@@ -1,14 +1,62 @@
 /* ============================================================
-   APP MOBILE GLOBAL — Make every page feel like a native app
-   Applied when viewport is mobile; reinforces safe areas, touch, and chrome.
-   Design tokens: use --space-4 (16px), --radius-lg (12px), --breakpoint-mobile (768px).
+   APP MOBILE GLOBAL — Fit all mobiles & blend in (native-like)
+   - Viewport containment: no horizontal scroll, fit notches/home indicator.
+   - Safe areas, 44px touch targets, consistent spacing.
+   Breakpoint: 768px (--breakpoint-mobile).
    ============================================================ */
 
 @media (max-width: 768px) {
-  /* Mobile spacing token for content (single breakpoint) */
+  /* ---- Fit: contain layout so nothing escapes the screen ---- */
+  .app-layout {
+    width: 100%;
+    max-width: 100vw;
+    min-width: 0;
+    overflow-x: hidden;
+  }
+
+  .app-layout .app-main,
+  .app-layout main {
+    width: 100%;
+    min-width: 0;
+    overflow-x: hidden;
+  }
+
+  .app-page {
+    width: 100%;
+    max-width: 100vw;
+    min-width: 0;
+    overflow-x: hidden;
+    box-sizing: border-box;
+  }
+
+  /* Long words and URLs break instead of overflowing */
+  .app-page,
+  .app-page-content,
+  .app-card,
+  .app-header-card {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+  }
+
+  /* Media never wider than container */
+  .app-page img,
+  .app-page video,
+  .app-page-content img,
+  .app-page-content video,
+  .app-card img,
+  .app-card video {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+
+  /* Mobile spacing: content respects safe areas */
   .app-page-content {
     padding-left: max(var(--space-4, 16px), env(safe-area-inset-left));
     padding-right: max(var(--space-4, 16px), env(safe-area-inset-right));
+    width: 100%;
+    box-sizing: border-box;
   }
 
   /* Cards: consistent radius (design token) */
@@ -18,7 +66,7 @@
     border-radius: var(--radius-lg, 14px);
   }
 
-  /* Prevent overscroll bounce on iOS (optional; keeps app-like feel) */
+  /* Prevent overscroll bounce on iOS (app-like feel) */
   html {
     overscroll-behavior-y: none;
     -webkit-overflow-scrolling: touch;
@@ -35,7 +83,7 @@
     min-height: 100%;
   }
 
-  /* Clearance for bottom nav + Bumble-style raised center Scan button (~96px) */
+  /* Clearance for bottom nav + raised center Scan (~96px) */
   .app-layout main,
   .app-layout .app-main {
     padding-bottom: max(96px, calc(96px + env(safe-area-inset-bottom)));
@@ -47,7 +95,7 @@
     padding-bottom: max(108px, calc(96px + env(safe-area-inset-bottom)));
   }
 
-  /* Touch targets: minimum 44px */
+  /* ---- Blend: touch targets & inputs (native feel) ---- */
   button:not(.btn-icon-small):not(.btn-action),
   .app-page .btn,
   .app-page a.btn,
@@ -63,16 +111,16 @@
   input[type="search"],
   input[type="password"],
   input[type="number"],
+  input[type="time"],
   select,
   textarea {
-    font-size: 16px !important;
+    font-size: 16px !important; /* Prevents iOS zoom on focus */
   }
 
   * {
     -webkit-tap-highlight-color: rgba(79, 70, 229, 0.12);
   }
 
-  /* Focus visible: keyboard/screen reader users */
   button:focus-visible,
   a:focus-visible,
   input:focus-visible,

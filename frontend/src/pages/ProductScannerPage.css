@@ -68,19 +68,23 @@
   margin-top: 4px;
 }
 
-/* Mode Selector */
+/* Mode Selector - full labels on small screens (no truncation) */
 .mode-selector {
   display: flex;
   gap: 12px;
   justify-content: center;
   margin-bottom: 32px;
+  flex-wrap: wrap;
 }
 
 .mode-btn {
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  padding: 14px 28px;
+  padding: 14px 20px;
+  min-height: 48px;
+  min-width: 0;
   background: var(--bg-white);
   border: 2px solid var(--border);
   border-radius: 12px;
@@ -89,6 +93,7 @@
   color: var(--text-gray);
   cursor: pointer;
   transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
 .mode-btn:hover {
@@ -103,8 +108,58 @@
 }
 
 .mode-btn svg {
+  flex-shrink: 0;
   width: 20px;
   height: 20px;
+}
+
+/* Very small screens (e.g. iPhone 5): stack buttons so labels are fully visible, reduce cramping */
+@media (max-width: 380px) {
+  .mode-selector {
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .mode-btn {
+    width: 100%;
+    padding: 14px 16px;
+    white-space: normal;
+    text-align: center;
+  }
+
+  .product-scanner-page .scanner-container {
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+  }
+
+  .scanner-card {
+    padding: 16px 14px;
+  }
+
+  .scanner-header {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .scanner-header h2 {
+    font-size: 1.1rem;
+  }
+
+  .btn-toggle-camera-centered {
+    min-width: 100%;
+    width: 100%;
+  }
+
+  .error-card {
+    margin-top: 16px;
+    padding: 20px 16px;
+  }
+
+  .error-card p {
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
 }
 
 /* Barcode Scanner Container */

@@ -16,6 +16,7 @@ import {
 import { usePageTitle } from '../hooks/usePageTitle';
 import { useAuth } from '../context/AuthContext';
 import { useShelf } from '../context/ShelfContext';
+import { useToast } from '../context/ToastContext';
 import {
   getCameraPermissionStatus,
   getCameraCapabilities,
@@ -134,6 +135,7 @@ const ProductScannerPage: React.FC = () => {
   const navigate = useNavigate();
   const { token } = useAuth();
   const { addToShelf: addToShelfContext, isOnShelf } = useShelf();
+  const toast = useToast();
   
   // Scanner state
   const [scanMode, setScanMode] = useState<ScanMode>('barcode');
@@ -419,6 +421,13 @@ const ProductScannerPage: React.FC = () => {
         body: JSON.stringify({ barcode }),
       });
       
+      if (response.status === 401) {
+        sessionStorage.setItem('session_expired_redirect', '1');
+        setError('Your session expired. Please sign in again.');
+        toast.error('Your session expired. Please sign in again.');
+        return;
+      }
+
       if (response.ok) {
         const data = await response.json();
         
@@ -446,8 +455,10 @@ const ProductScannerPage: React.FC = () => {
           setScannedProduct(product);
           addToScanHistory(product);
         } else {
-          // Task 66: Offer alternatives when product not found
+          // Task 66: Offer alternatives when product not found; show toast so user always sees feedback
+          const msg = `Product not found for barcode ${barcode}. Try a photo of the product or check the barcode.`;
           setError(`Product not found for barcode: ${barcode}.\n\nTry:\n• Take a photo of the product instead\n• Enter the barcode manually\n• Check if the barcode is complete and undamaged`);
+          toast.error(msg);
         }
       } else {
         const errorData = await response.json().catch(() => ({}));
@@ -931,7 +942,7 @@ const ProductScannerPage: React.FC = () => {
 
         {/* Error State */}
         {error && !processing && (
-          <div className="error-card">
+          <div className="error-card" ref={errorCardRef} role="alert">
             <IconAlertTriangle size={48} strokeWidth={2} />
             <h3>Scan Failed</h3>
             <p>{error}</p>

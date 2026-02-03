@@ -76,6 +76,7 @@ class ApiClient {
           try {
             localStorage.removeItem('auth_token');
             if (typeof window !== 'undefined' && !window.location.pathname.startsWith('/auth')) {
+              sessionStorage.setItem('session_expired_redirect', '1');
               window.location.href = '/auth';
             }
           } catch {

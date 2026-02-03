@@ -1,18 +1,16 @@
 /**
  * Single source of truth for viewport: Desktop | Tablet | Mobile.
- * Ensures three separate code paths for layout and routing.
- *
- * Breakpoints (align with existing CSS):
- * - Mobile:  ≤ 768px
- * - Tablet:  769px – 1024px
- * - Desktop: ≥ 1025px
+ * Breakpoints from constants/viewport.ts; three separate code paths for layout and routing.
  */
 import { useState, useEffect } from 'react';
+import {
+  type Viewport,
+  MOBILE_MAX,
+  TABLET_MAX,
+  VIEWPORT_MEDIA,
+} from '../constants/viewport';
 
-export type Viewport = 'desktop' | 'tablet' | 'mobile';
-
-const MOBILE_MAX = 768;
-const TABLET_MAX = 1024;
+export type { Viewport } from '../constants/viewport';
 
 function getViewport(): Viewport {
   if (typeof window === 'undefined') return 'desktop';
@@ -26,9 +24,9 @@ export function useViewport(): Viewport {
   const [viewport, setViewport] = useState<Viewport>(getViewport);
 
   useEffect(() => {
-    const mobileMq = window.matchMedia(`(max-width: ${MOBILE_MAX}px)`);
-    const tabletMq = window.matchMedia(`(min-width: ${MOBILE_MAX + 1}px) and (max-width: ${TABLET_MAX}px)`);
-    const desktopMq = window.matchMedia(`(min-width: ${TABLET_MAX + 1}px)`);
+    const mobileMq = window.matchMedia(VIEWPORT_MEDIA.mobile);
+    const tabletMq = window.matchMedia(VIEWPORT_MEDIA.tablet);
+    const desktopMq = window.matchMedia(VIEWPORT_MEDIA.desktop);
 
     const update = () => setViewport(getViewport());
     mobileMq.addEventListener('change', update);

@@ -209,18 +209,32 @@ button, a, input, select, textarea, [role="button"] {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Mobile app mode: app-like feel (Task 10000) */
+/* Mobile app mode: fit all screens, no horizontal scroll (Task 10000) */
 @media (max-width: 768px) {
   html, body {
     -webkit-overflow-scrolling: touch;
-    /* Don't use overscroll-behavior: none – it can block scroll on some mobile browsers */
   }
-  /* Dynamic viewport for correct mobile height (browser chrome) */
   html {
     min-height: 100dvh;
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+    /* Fallback for older Safari (e.g. iOS 14) */
+    min-height: -webkit-fill-available;
   }
   body {
     min-height: 100dvh;
+    min-height: -webkit-fill-available;
+    width: 100%;
+    max-width: 100vw;
+    min-width: 0;
+    overflow-x: hidden;
+  }
+  #root {
+    width: 100%;
+    max-width: 100vw;
+    min-width: 0;
+    overflow-x: hidden;
   }
 }
 

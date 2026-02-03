@@ -5,6 +5,7 @@
 
 /* Import Unified Design System */
 @import './styles/design-system.css';
+@import './styles/app-style.css';
 @import './components/Skeleton.css';
 
 /* CSS Variables */

@@ -237,12 +237,13 @@ const DashboardPage: React.FC = () => {
   }
 
   return (
-    <div className="dashboard-page">
-      <div className="dashboard-header">
+    <div className="dashboard-page app-page">
+      <div className="app-header-card dashboard-hero">
         <h1>Welcome back, {user?.full_name || 'User'}!</h1>
-        <p className="subtitle">Here's your skincare overview</p>
+        <p className="app-header-subtitle">Here&apos;s your skincare overview</p>
       </div>
 
+      <div className="app-page-content">
       <div className="dashboard-stats">
         <button type="button" className="stat-card primary" onClick={() => navigate('/history')}>
           <div className="stat-icon">
@@ -311,51 +312,47 @@ const DashboardPage: React.FC = () => {
 
       <div className="dashboard-content">
         {onboardingProgress != null && onboardingProgress.step < 5 && (
-          <div className="dashboard-section continue-onboarding">
-            <h2>Continue where you left off</h2>
+          <div className="app-section dashboard-section continue-onboarding">
+            <h2 className="app-section-title">Continue</h2>
             <p>You started onboarding. Pick up from step {onboardingProgress.step}.</p>
             <button type="button" className="btn-primary" onClick={() => navigate('/onboarding')}>
               Continue onboarding
             </button>
           </div>
         )}
-        <div className="dashboard-section">
-          <h2>Quick Actions</h2>
-          <div className="quick-actions">
-            <button className="action-card" onClick={() => navigate('/scan')}>
-              <div className="action-icon">
-                <IconScan size={24} strokeWidth={2} />
-              </div>
-              <h3>New Scan</h3>
-              <p>Analyze your skin</p>
+        <div className="app-section dashboard-section">
+          <h2 className="app-section-title">Quick Actions</h2>
+          <div className="app-list-group">
+            <button type="button" className="app-list-item" onClick={() => navigate('/scan')}>
+              <span className="app-list-icon blue"><IconScan size={20} strokeWidth={2} /></span>
+              <span className="app-list-label">New Scan</span>
+              <span className="app-list-value">Analyze your skin</span>
+              <IconArrowRight size={20} strokeWidth={2} className="app-list-arrow" />
             </button>
-            <button className="action-card" onClick={() => navigate('/myshelf')}>
-              <div className="action-icon">
-                <IconShoppingCart size={24} strokeWidth={2} />
-              </div>
-              <h3>My Shelf</h3>
-              <p>Manage products</p>
+            <button type="button" className="app-list-item" onClick={() => navigate('/myshelf')}>
+              <span className="app-list-icon purple"><IconPackage size={20} strokeWidth={2} /></span>
+              <span className="app-list-label">My Shelf</span>
+              <span className="app-list-value">{data.productsInShelf} products</span>
+              <IconArrowRight size={20} strokeWidth={2} className="app-list-arrow" />
             </button>
-            <button className="action-card" onClick={() => navigate('/routine-builder')}>
-              <div className="action-icon">
-                <IconCalendar size={24} strokeWidth={2} />
-              </div>
-              <h3>Routines</h3>
-              <p>Build routine</p>
+            <button type="button" className="app-list-item" onClick={() => navigate('/routine-builder')}>
+              <span className="app-list-icon green"><IconCalendar size={20} strokeWidth={2} /></span>
+              <span className="app-list-label">Routines</span>
+              <span className="app-list-value">Build routine</span>
+              <IconArrowRight size={20} strokeWidth={2} className="app-list-arrow" />
             </button>
-            <button className="action-card" onClick={() => navigate('/recommendations')}>
-              <div className="action-icon">
-                <IconStar size={24} strokeWidth={2} />
-              </div>
-              <h3>Discover</h3>
-              <p>Get recommendations</p>
+            <button type="button" className="app-list-item" onClick={() => navigate('/recommendations')}>
+              <span className="app-list-icon orange"><IconStar size={20} strokeWidth={2} /></span>
+              <span className="app-list-label">Discover</span>
+              <span className="app-list-value">Recommendations</span>
+              <IconArrowRight size={20} strokeWidth={2} className="app-list-arrow" />
             </button>
           </div>
         </div>
 
         {recentlyViewed.length > 0 ? (
-          <div className="dashboard-section recently-viewed">
-            <h2>Recently viewed products</h2>
+          <div className="app-section dashboard-section recently-viewed">
+            <h2 className="app-section-title">Recently Viewed</h2>
             <div className="recently-viewed-list">
               {recentlyViewed.slice(0, 6).map((p) => (
                 <button key={p.id} type="button" className="recently-viewed-item" onClick={() => navigate(`/product/${p.id}`)}>
@@ -367,8 +364,8 @@ const DashboardPage: React.FC = () => {
           </div>
         ) : null}
         {onboardingGoals?.goals?.length ? (
-          <div className="dashboard-section dashboard-goals">
-            <h2><IconTarget size={22} strokeWidth={2} style={{ verticalAlign: 'middle', marginRight: '8px' }} />Your goals</h2>
+          <div className="app-section dashboard-section dashboard-goals">
+            <h2 className="app-section-title">Your Goals</h2>
             <p className="dashboard-goals-skin">Skin type: {onboardingGoals.skinType}</p>
             <div className="dashboard-goals-tags">
               {onboardingGoals.goals.map((g, i) => (
@@ -381,53 +378,52 @@ const DashboardPage: React.FC = () => {
           </div>
         ) : null}
 
-        <div className="dashboard-section next-steps">
-          <h2>Next steps</h2>
-          <p className="next-steps-desc">Recommended actions based on your progress.</p>
-          <div className="next-steps-list">
+        <div className="app-section dashboard-section next-steps">
+          <h2 className="app-section-title">Next Steps</h2>
+          <div className="app-list-group">
             {nextSteps.map((step, i) => (
-              <button key={i} type="button" className="next-step-item" onClick={() => navigate(step.href)}>
-                <span className="next-step-icon">{step.icon}</span>
-                <span>{step.label}</span>
-                <IconArrowRight size={18} strokeWidth={2} />
+              <button key={i} type="button" className="app-list-item" onClick={() => navigate(step.href)}>
+                <span className="app-list-icon blue">{step.icon}</span>
+                <span className="app-list-label">{step.label}</span>
+                <IconArrowRight size={20} strokeWidth={2} className="app-list-arrow" />
               </button>
             ))}
           </div>
         </div>
 
-        <div className="dashboard-section">
-          <h2>Recent Activity</h2>
-          <div className="activity-list">
+        <div className="app-section dashboard-section">
+          <h2 className="app-section-title">Recent Activity</h2>
+          <div className="activity-list app-list-group">
             {data.recentActivity.length === 0 ? (
               data.recentScans === 0 ? (
-                <div className="dashboard-first-scan empty-state">
+                <div className="app-empty-state dashboard-first-scan">
+                  <div className="app-empty-state-icon"><IconCamera size={28} strokeWidth={2} /></div>
+                  <h3>No activity yet</h3>
                   <p>Take your first scan to see your skin insights and track progress here.</p>
                   <button type="button" className="btn-primary" onClick={() => navigate('/scan')}>
                     Start your first scan
                   </button>
                 </div>
               ) : (
-                <p className="empty-state">No recent activity</p>
+                <p className="app-empty-state">No recent activity</p>
               )
             ) : (
               data.recentActivity.map(activity => (
-                <div key={activity.id} className="activity-item">
-                  <div className="activity-icon">
+                <div key={activity.id} className="activity-item app-list-item" style={{ cursor: 'default' }}>
+                  <span className="app-list-icon blue">
                     {activity.type === 'scan' ? <IconCamera size={20} strokeWidth={2} /> :
-                     activity.type === 'product' ? <IconPackage size={20} strokeWidth={2} /> : 
+                     activity.type === 'product' ? <IconPackage size={20} strokeWidth={2} /> :
                      <IconSparkles size={20} strokeWidth={2} />}
-                  </div>
-                  <div className="activity-details">
-                    <h4>{activity.title}</h4>
-                    <p>{new Date(activity.date).toLocaleDateString('en', { month: 'short', day: 'numeric', year: 'numeric' })}</p>
-                  </div>
+                  </span>
+                  <span className="app-list-label">{activity.title}</span>
+                  <span className="app-list-value">{new Date(activity.date).toLocaleDateString('en', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
                 </div>
               ))
             )}
           </div>
         </div>
 
-        <div className="dashboard-section reminder">
+        <div className="app-section dashboard-section reminder">
           <div className="reminder-icon">
             <IconBell size={48} strokeWidth={2} />
           </div>
@@ -462,6 +458,7 @@ const DashboardPage: React.FC = () => {
             <button className="btn-primary" onClick={() => navigate('/scan')}>Scan Now</button>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

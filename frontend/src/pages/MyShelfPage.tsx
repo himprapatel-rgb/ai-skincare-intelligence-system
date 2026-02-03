@@ -186,17 +186,19 @@ const MyShelfPage: React.FC = () => {
     );
 
   return (
-    <div className="myshelf-page">
-      <div className="myshelf-header">
+    <div className="myshelf-page app-page">
+      <div className="app-header-card myshelf-hero">
         <h1>
-          <IconPackage size={32} strokeWidth={2} className="title-icon" aria-hidden />
+          <IconPackage size={28} strokeWidth={2} style={{ verticalAlign: 'middle', marginRight: '8px' }} aria-hidden />
           My Shelf {totalCount > 0 && <span className="count-badge">({totalCount})</span>}
         </h1>
-        <p className="subtitle">Manage your skincare collection</p>
+        <p className="app-header-subtitle">Manage your skincare collection</p>
       </div>
 
-      <div className="myshelf-onboarding">
-        <h2>Build Your Shelf in Minutes</h2>
+      <div className="app-page-content">
+      <div className="myshelf-onboarding app-card" style={{ padding: '20px', marginBottom: '24px' }}>
+        <h2 className="app-section-title">Build Your Shelf</h2>
+        <h3 style={{ fontSize: '1.1rem', fontWeight: 600, margin: '0 0 12px 0', color: 'var(--text-primary)' }}>Add products in minutes</h3>
         <div className="myshelf-onboarding-grid">
           <div>
             <h3>Add Products Fast</h3>
@@ -213,6 +215,9 @@ const MyShelfPage: React.FC = () => {
         </div>
       </div>
 
+      <div className="app-section" style={{ marginTop: 0 }}>
+        <h2 className="app-section-title">My Products</h2>
+      </div>
       <div className="myshelf-controls">
         <div className="search-bar">
           <input
@@ -290,8 +295,9 @@ const MyShelfPage: React.FC = () => {
       </div>
 
       {filteredProducts.length === 0 ? (
-        <div className="empty-state">
-          <h3>No products on your shelf yet</h3>
+        <div className="app-empty-state">
+          <div className="app-empty-state-icon"><IconPackage size={32} strokeWidth={2} /></div>
+          <h3>Your shelf is empty</h3>
           <p>Add products from recommendations or scan a product to build your collection.</p>
           <button className="btn-primary" onClick={() => navigate('/scanner')}>
             Add Your First Product
@@ -420,6 +426,7 @@ const MyShelfPage: React.FC = () => {
         onConfirm={doRemoveProduct}
         onCancel={() => setConfirmRemoveId(null)}
       />
+      </div>
     </div>
   );
 };

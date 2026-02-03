@@ -1,0 +1,205 @@
+/* ============================================================
+   APP-STYLE GLOBAL (Apple/Instagram/Spotify inspired)
+   Reusable across Dashboard, My Shelf, Home, etc.
+   ============================================================ */
+
+/* Standard app page container */
+.app-page {
+  min-height: 100vh;
+  background: var(--bg-secondary, #f8fafc);
+  padding-bottom: max(80px, env(safe-area-inset-bottom));
+  font-family: var(--font-family);
+}
+
+.app-page-content {
+  max-width: var(--max-width-xl, 1200px);
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+  padding-left: max(var(--spacing-lg), env(safe-area-inset-left));
+  padding-right: max(var(--spacing-lg), env(safe-area-inset-right));
+}
+
+/* Gradient header card (for any page) */
+.app-header-card {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  border-radius: 0 0 24px 24px;
+  padding: 24px 16px 32px;
+  text-align: center;
+  color: white;
+}
+
+.app-header-card h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 4px 0;
+  color: white;
+}
+
+.app-header-card .app-header-subtitle {
+  font-size: 0.875rem;
+  opacity: 0.95;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+/* Section block (title + content) */
+.app-section {
+  margin-top: 28px;
+}
+
+.app-section-title {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 0 4px 8px;
+  margin: 0 0 8px 0;
+}
+
+/* List group (white card with rows) */
+.app-list-group {
+  background: var(--bg-white);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--border-color);
+}
+
+.app-list-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 14px 16px;
+  border: none;
+  border-bottom: 1px solid var(--gray-100);
+  background: transparent;
+  font-family: inherit;
+  font-size: 1rem;
+  color: var(--text-primary);
+  cursor: pointer;
+  text-align: left;
+  text-decoration: none;
+  transition: background 0.15s;
+  box-sizing: border-box;
+}
+
+.app-list-item:last-child {
+  border-bottom: none;
+}
+
+.app-list-item:hover {
+  background: var(--gray-50);
+}
+
+.app-list-item:active {
+  background: var(--gray-100);
+}
+
+.app-list-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.app-list-icon.purple {
+  background: #ede9fe;
+  color: #7c3aed;
+}
+
+.app-list-icon.blue {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.app-list-icon.green {
+  background: #d1fae5;
+  color: #059669;
+}
+
+.app-list-icon.orange {
+  background: #ffedd5;
+  color: #ea580c;
+}
+
+.app-list-label {
+  flex: 1;
+  font-weight: 500;
+}
+
+.app-list-value {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin-right: 8px;
+}
+
+.app-list-arrow {
+  color: var(--gray-400);
+  flex-shrink: 0;
+}
+
+/* Empty state (centered, with CTA) */
+.app-empty-state {
+  text-align: center;
+  padding: 48px 24px;
+}
+
+.app-empty-state-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  background: var(--gray-100);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-empty-state h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 8px 0;
+}
+
+.app-empty-state p {
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+  margin: 0 0 20px 0;
+  max-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Card (consistent elevation) */
+.app-card {
+  background: var(--bg-white);
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .app-header-card {
+    border-radius: 0 0 20px 20px;
+    padding: 20px 16px 24px;
+  }
+  .app-header-card h1 {
+    font-size: 1.25rem;
+  }
+  .app-page-content {
+    padding: 0 16px;
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+  .app-section {
+    margin-top: 24px;
+  }
+}

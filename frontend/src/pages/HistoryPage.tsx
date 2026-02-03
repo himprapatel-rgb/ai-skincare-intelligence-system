@@ -115,8 +115,8 @@ const HistoryPage: React.FC = () => {
   }, [searchFiltered, sortBy]);
 
   return (
-    <div className="history-page">
-      <div className="history-container">
+    <div className="history-page app-page">
+      <div className="history-container app-page-content">
         <div className="history-header">
           <h1>Scan History</h1>
           <p>Track your skin progress over time</p>

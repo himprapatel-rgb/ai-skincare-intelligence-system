@@ -28,7 +28,7 @@ const HomePage: React.FC = () => {
     )}`;
 
   return (
-    <div className="homepage">
+    <div className="homepage app-page">
       {/* Hero Section - Updated with safer claims */}
       <section className="hero">
         <div className="hero-content">
@@ -90,6 +90,7 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
+      <div className="app-page-content">
       {/* Trust Badges - Privacy first, then Encrypted, Research, Delete */}
       <section className="trust-badges-section">
         <div className="trust-badges-grid">
@@ -371,6 +372,7 @@ const HomePage: React.FC = () => {
           </p>
         </div>
       </section>
+      </div>
     </div>
   );
 };

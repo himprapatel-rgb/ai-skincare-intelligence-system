@@ -65,7 +65,7 @@ export const AuthPage: React.FC = () => {
     }
   };
   return (
-    <div className="auth-page">
+    <div className="auth-page app-page">
       {/* Mobile-only compact brand (shows when auth-left hidden) */}
       <div className="auth-mobile-brand" aria-hidden="true">
         <h1>SkinCareAI</h1>
@@ -111,7 +111,7 @@ export const AuthPage: React.FC = () => {
       {/* Right Panel - Auth Form */}
       <div className="auth-right">
         <div className="auth-container">
-          <div ref={authCardRef} className="auth-card" role="form" aria-label={mode === 'login' ? 'Sign in form' : 'Create account form'}>
+          <div ref={authCardRef} className="auth-card app-card" role="form" aria-label={mode === 'login' ? 'Sign in form' : 'Create account form'}>
             <div className="auth-header">
               <h2>{mode === 'login' ? 'Welcome Back' : 'Create Account'}</h2>
               <p>{mode === 'login' ? 'Sign in to continue your skincare journey' : 'Start your personalized skincare experience'}</p>

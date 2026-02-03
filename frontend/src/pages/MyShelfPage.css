@@ -2,50 +2,32 @@
 
 .myshelf-page {
   min-height: 100vh;
-  background: var(--bg-light);
-  padding: var(--spacing-2xl) var(--spacing-lg);
+  background: var(--bg-secondary);
+  padding: 0;
   font-family: var(--font-family);
 }
 
-.myshelf-container {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.myshelf-header {
-  text-align: center;
-  margin-bottom: var(--spacing-2xl);
-}
-
-.myshelf-header h1 {
+.myshelf-hero h1 {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: var(--spacing-sm);
   flex-wrap: wrap;
-  font-size: var(--font-size-2xl);
+  font-size: 1.5rem;
   font-weight: 700;
-  color: var(--text-dark);
-  margin-bottom: var(--spacing-sm);
-  line-height: var(--line-height-tight);
-  letter-spacing: -0.5px;
+  color: white;
+  margin: 0 0 4px 0;
 }
 
-.myshelf-header h1 .title-icon {
-  flex-shrink: 0;
-  color: var(--primary);
-}
-
-.myshelf-header h1 .count-badge {
-  font-size: var(--font-size-lg);
+.myshelf-hero .count-badge {
+  font-size: 1rem;
   font-weight: 600;
-  color: var(--text-gray);
+  color: rgba(255, 255, 255, 0.95);
 }
 
-.myshelf-header .subtitle {
-  color: var(--text-gray);
-  font-size: var(--font-size-lg);
-  line-height: var(--line-height-relaxed);
+.myshelf-container {
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .myshelf-onboarding {

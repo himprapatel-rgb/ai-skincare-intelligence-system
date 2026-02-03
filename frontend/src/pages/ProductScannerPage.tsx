@@ -646,8 +646,8 @@ const ProductScannerPage: React.FC = () => {
   };
 
   return (
-    <div className="product-scanner-page">
-      <div className="scanner-container">
+    <div className="product-scanner-page app-page">
+      <div className="scanner-container app-page-content">
         <div className="page-header">
           <h1>
             <IconScan size={32} strokeWidth={2} className="icon-inline-lg" />

@@ -647,8 +647,8 @@ export default function ScanPage() {
   };
 
   return (
-    <div className="scan-page">
-      <main className="scan-container">
+    <div className="scan-page app-page">
+      <main className="scan-container app-page-content">
         <div className="scan-content">
           <div className="scan-header">
             <h1 className="scan-title">
@@ -939,7 +939,7 @@ export default function ScanPage() {
 
           {/* Results Preview */}
           {scanStep === 'complete' && result && (
-            <div className="scan-results-preview">
+            <div className="scan-results-preview app-card">
               <div className="results-success">
                 <div className="success-icon">
                   <IconCheckCircle size={48} strokeWidth={2} />

@@ -272,8 +272,8 @@ const Recommendations: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="recommendations-page">
-        <div className="recommendations-container">
+      <div className="recommendations-page app-page">
+        <div className="recommendations-container app-page-content">
           <div className="recommendations-state recommendations-skeleton">
             <div className="skeleton skeleton-heading" style={{ width: 200, height: 28, marginBottom: 24 }} />
             <SkeletonCardGrid count={6} hasImage={true} />
@@ -309,8 +309,8 @@ const Recommendations: React.FC = () => {
   }
 
   return (
-    <div className="recommendations-page">
-      <div className="recommendations-container">
+    <div className="recommendations-page app-page">
+      <div className="recommendations-container app-page-content">
         <div className="recommendations-header">
           <div>
             <h1>

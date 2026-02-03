@@ -226,7 +226,7 @@ const RoutineBuilderPage: React.FC = () => {
   };
 
   return (
-    <div className="routine-builder-page">
+    <div className="routine-builder-page app-page">
       <div className="routine-header">
         <h1>Routine Builder</h1>
         <p>Create your personalized skincare routine</p>

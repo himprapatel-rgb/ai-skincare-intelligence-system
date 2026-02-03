@@ -10,14 +10,14 @@ import {
   IconPackage, 
   IconSparkles,
   IconScan,
-  IconShoppingCart,
   IconCalendar,
   IconStar,
   IconTrendingDown,
   IconArrowRight,
-  IconTarget,
-  IconBell
+  IconBell,
+  IconRefresh
 } from '../components/Icons';
+import { EmptyState } from '../components/EmptyState';
 import { SkeletonStat, SkeletonHeading, SkeletonText, SkeletonCard } from '../components/Skeleton';
 import './DashboardPage.css';
 
@@ -195,12 +195,18 @@ const DashboardPage: React.FC = () => {
   if (!user) {
     return (
       <div className="dashboard-page app-page">
-        <div className="dashboard-empty empty-state">
-          <h2>Your Dashboard</h2>
-          <p>Sign in to view your skin analysis history and track your progress.</p>
-          <button className="btn-primary" onClick={() => navigate('/auth')}>
-            Sign In
-          </button>
+        <header className="app-header-card dashboard-hero">
+          <h1>Your Dashboard</h1>
+          <p className="app-header-subtitle">Track your skin and routines in one place</p>
+        </header>
+        <div className="app-page-content">
+          <EmptyState
+            icon={<IconCamera size={48} strokeWidth={2} />}
+            title="Sign in to see your dashboard"
+            description="View your skin score, scan history, shelf, and personalized next steps."
+            actionLabel="Sign In"
+            onAction={() => navigate('/auth')}
+          />
         </div>
       </div>
     );
@@ -238,12 +244,40 @@ const DashboardPage: React.FC = () => {
 
   return (
     <div className="dashboard-page app-page">
-      <div className="app-header-card dashboard-hero">
-        <h1>Welcome back, {user?.full_name || 'User'}!</h1>
-        <p className="app-header-subtitle">Here&apos;s your skincare overview</p>
-      </div>
+      <header className="app-header-card dashboard-hero dashboard-hero-with-refresh">
+        <div className="dashboard-hero-text">
+          <h1>Welcome back, {user?.full_name || 'User'}!</h1>
+          <p className="app-header-subtitle">Here&apos;s your skincare overview</p>
+        </div>
+        <button
+          type="button"
+          className="dashboard-refresh-btn"
+          onClick={() => fetchDashboardData()}
+          disabled={loading}
+          aria-label="Refresh dashboard"
+          title="Refresh"
+        >
+          <IconRefresh size={20} strokeWidth={2} className={loading ? 'spin' : ''} />
+        </button>
+      </header>
 
       <div className="app-page-content">
+      {data.recentScans === 0 && (
+        <div className="dashboard-first-scan-cta app-card">
+          <div className="dashboard-first-scan-cta-inner">
+            <div className="dashboard-first-scan-cta-icon">
+              <IconScan size={32} strokeWidth={2} />
+            </div>
+            <div className="dashboard-first-scan-cta-text">
+              <h2>Start your skincare journey</h2>
+              <p>Take your first scan to get a personalized skin score and recommendations.</p>
+            </div>
+            <button type="button" className="btn-primary" onClick={() => navigate('/scan')}>
+              Take your first scan
+            </button>
+          </div>
+        </div>
+      )}
       <div className="dashboard-stats">
         <button type="button" className="stat-card primary" onClick={() => navigate('/history')}>
           <div className="stat-icon">
@@ -391,8 +425,15 @@ const DashboardPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="app-section dashboard-section">
-          <h2 className="app-section-title">Recent Activity</h2>
+        <div className="app-section dashboard-section dashboard-activity-section">
+          <div className="dashboard-section-heading">
+            <h2 className="app-section-title">Recent Activity</h2>
+            {data.recentScans > 0 && (
+              <button type="button" className="dashboard-view-all" onClick={() => navigate('/history')}>
+                View all
+              </button>
+            )}
+          </div>
           <div className="activity-list app-list-group">
             {data.recentActivity.length === 0 ? (
               data.recentScans === 0 ? (
@@ -409,7 +450,12 @@ const DashboardPage: React.FC = () => {
               )
             ) : (
               data.recentActivity.map(activity => (
-                <div key={activity.id} className="activity-item app-list-item" style={{ cursor: 'default' }}>
+                <button
+                  key={activity.id}
+                  type="button"
+                  className="activity-item app-list-item activity-item-clickable"
+                  onClick={() => activity.type === 'scan' && navigate(`/analysis/${activity.id}`)}
+                >
                   <span className="app-list-icon blue">
                     {activity.type === 'scan' ? <IconCamera size={20} strokeWidth={2} /> :
                      activity.type === 'product' ? <IconPackage size={20} strokeWidth={2} /> :
@@ -417,7 +463,8 @@ const DashboardPage: React.FC = () => {
                   </span>
                   <span className="app-list-label">{activity.title}</span>
                   <span className="app-list-value">{new Date(activity.date).toLocaleDateString('en', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
-                </div>
+                  {activity.type === 'scan' && <IconArrowRight size={18} strokeWidth={2} className="app-list-arrow" />}
+                </button>
               ))
             )}
           </div>

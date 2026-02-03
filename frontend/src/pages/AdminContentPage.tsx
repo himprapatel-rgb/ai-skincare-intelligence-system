@@ -200,7 +200,7 @@ const AdminContentPage: React.FC = () => {
   };
 
   return (
-    <div className="admin-content-page page-container">
+    <div className="admin-content-page app-page page-container">
       <div className="admin-content-header">
         <Link to="/admin" className="back-link">← Dashboard</Link>
         <h1>Content Management</h1>

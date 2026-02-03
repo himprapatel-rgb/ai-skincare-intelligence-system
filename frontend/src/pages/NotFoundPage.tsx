@@ -11,9 +11,12 @@ const NotFoundPage: React.FC = () => {
   usePageTitle('Page Not Found');
   return (
   <div className="not-found-page app-page">
+    <header className="app-header-card not-found-header">
+      <h1>Page not found</h1>
+      <p className="app-header-subtitle">We can&apos;t find what you&apos;re looking for.</p>
+    </header>
     <div className="app-page-content not-found-content">
-      <h1 className="not-found-title">404</h1>
-      <p className="not-found-message">Page not found</p>
+      <p className="not-found-title" aria-hidden="true">404</p>
       <p className="not-found-sub">The page you’re looking for doesn’t exist or has been moved.</p>
       <p className="not-found-hint">Try going home, starting a scan, browsing recommendations, or contact us if you need help.</p>
       <div className="not-found-actions">

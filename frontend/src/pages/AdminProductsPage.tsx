@@ -190,7 +190,7 @@ const AdminProductsPage: React.FC = () => {
   };
 
   return (
-    <div className="admin-products-page page-container">
+    <div className="admin-products-page app-page page-container">
       <div className="page-header">
         <h1>Admin Products</h1>
         <p>Manage catalog products and metadata.</p>

@@ -322,10 +322,18 @@ const DigitalTwinTimelinePage: React.FC = () => {
   if (hasError) {
     return (
       <div className="dt-page app-page">
+        <header className="app-header-card">
+          <h1>Digital Twin</h1>
+          <p className="app-header-subtitle">Something went wrong</p>
+        </header>
         <div className="app-page-content dt-container">
           <section className="dt-card">
-            <h2>Digital Twin Timeline</h2>
-            <p>We couldn't load your digital twin timeline. Please try again.</p>
+            <p>We couldn&apos;t load your digital twin timeline. Please try again.</p>
+            <div className="dt-card-body">
+              <button type="button" className="btn-primary" onClick={() => window.location.reload()}>
+                Try again
+              </button>
+            </div>
           </section>
         </div>
       </div>
@@ -335,9 +343,12 @@ const DigitalTwinTimelinePage: React.FC = () => {
   if (snapshots.length === 0) {
     return (
       <div className="dt-page app-page">
+        <header className="app-header-card">
+          <h1>Digital Twin</h1>
+          <p className="app-header-subtitle">Your skin over time</p>
+        </header>
         <div className="app-page-content dt-container">
           <section className="dt-card">
-            <h2>Digital Twin Timeline</h2>
             <p>Complete a scan to generate your first digital twin snapshot.</p>
             <div className="dt-card-body">
               <button type="button" className="btn-primary" onClick={() => navigate('/scan')}>

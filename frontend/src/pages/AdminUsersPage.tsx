@@ -93,7 +93,7 @@ const AdminUsersPage: React.FC = () => {
   };
 
   return (
-    <div className="admin-users-page page-container">
+    <div className="admin-users-page app-page page-container">
       <div className="page-header">
         <h1>Admin Users</h1>
         <p>Manage access and account status.</p>

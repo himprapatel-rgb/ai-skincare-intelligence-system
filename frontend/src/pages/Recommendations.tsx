@@ -310,24 +310,23 @@ const Recommendations: React.FC = () => {
 
   return (
     <div className="recommendations-page app-page">
-      <div className="recommendations-container app-page-content">
-        <div className="recommendations-header">
-          <div>
-            <h1>
-              Product <span className="gradient-text">Recommendations</span>
-            </h1>
-            <p>
-              {error && products.length > 0
-                ? 'Sample picks — sign in for personalized recommendations.'
-                : 'Personalized picks based on your latest skin analysis.'}
-            </p>
-          </div>
-          <Link to="/dashboard" className="btn-secondary back-button">
-            <IconArrowLeft size={18} strokeWidth={2} />
-            Back to Dashboard
-          </Link>
+      <header className="app-header-card recommendations-header">
+        <div className="recommendations-header-text">
+          <h1>
+            Product <span className="gradient-text">Recommendations</span>
+          </h1>
+          <p className="app-header-subtitle">
+            {error && products.length > 0
+              ? 'Sample picks — sign in for personalized recommendations.'
+              : 'Personalized picks based on your latest skin analysis.'}
+          </p>
         </div>
-
+        <Link to="/dashboard" className="btn-secondary back-button recommendations-back">
+          <IconArrowLeft size={18} strokeWidth={2} />
+          Back to Dashboard
+        </Link>
+      </header>
+      <div className="recommendations-container app-page-content">
         <div className={`recommendations-filters ${hasFilters ? 'has-active-filters' : ''}`}>
           <div className="filters-header">
             <h2>Filters</h2>

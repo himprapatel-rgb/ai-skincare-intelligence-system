@@ -111,7 +111,7 @@ const AdminNewsPage: React.FC = () => {
   };
 
   return (
-    <div className="admin-news-page page-container">
+    <div className="admin-news-page app-page page-container">
       <div className="page-header admin-content-header">
         <div>
           <Link to="/admin" className="back-link">← Admin</Link>

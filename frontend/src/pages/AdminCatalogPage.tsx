@@ -110,7 +110,7 @@ const AdminCatalogPage: React.FC = () => {
 
   if (!token) {
     return (
-      <div className="admin-catalog-page page-container">
+      <div className="admin-catalog-page app-page page-container">
         <h1>Catalog Admin</h1>
         <p className="admin-catalog-msg">Please log in to view catalog admin.</p>
         <Link to="/auth" className="btn-primary">Log in</Link>
@@ -120,7 +120,7 @@ const AdminCatalogPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="admin-catalog-page page-container">
+      <div className="admin-catalog-page app-page page-container">
         <h1>Catalog Admin</h1>
         <p>Loading catalog data...</p>
       </div>
@@ -128,7 +128,7 @@ const AdminCatalogPage: React.FC = () => {
   }
 
   return (
-    <div className="admin-catalog-page page-container">
+    <div className="admin-catalog-page app-page page-container">
       <div className="admin-catalog-header">
         <h1>Catalog Admin</h1>
         <Link to="/admin" className="btn-secondary">← Dashboard</Link>

@@ -11,13 +11,18 @@
   margin: 0 auto;
 }
 
-.recommendations-header {
+.recommendations-header.app-header-card {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: var(--spacing-2xl);
+  margin-bottom: var(--spacing-xl);
   gap: var(--spacing-lg);
   flex-wrap: wrap;
+}
+
+.recommendations-header-text {
+  flex: 1;
+  min-width: 0;
 }
 
 .recommendations-header h1 {

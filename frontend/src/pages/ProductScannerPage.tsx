@@ -647,15 +647,14 @@ const ProductScannerPage: React.FC = () => {
 
   return (
     <div className="product-scanner-page app-page">
+      <header className="app-header-card scanner-page-header">
+        <h1>
+          <IconScan size={28} strokeWidth={2} className="icon-inline-lg" aria-hidden />
+          Product Scanner
+        </h1>
+        <p className="app-header-subtitle">Scan barcodes or take photos to identify beauty products</p>
+      </header>
       <div className="scanner-container app-page-content">
-        <div className="page-header">
-          <h1>
-            <IconScan size={32} strokeWidth={2} className="icon-inline-lg" />
-            Product Scanner
-          </h1>
-          <p>Scan barcodes or take photos to identify beauty products</p>
-        </div>
-
         {/* Mode Selector */}
         {!scannedProduct && !processing && (
           <div className="mode-selector">

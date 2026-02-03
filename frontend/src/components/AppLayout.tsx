@@ -106,8 +106,17 @@ const displayName = nameParts.length > 1
   }, [location.pathname]);
   const showBreadcrumbs = location.pathname !== '/';
 
+  /* Bumble-style app shell: "app" routes show minimal footer and feel like in-app; marketing routes show full footer */
+  const isAppRoute = useMemo(() => {
+    const p = location.pathname;
+    const appPaths = ['/dashboard', '/scan', '/history', '/recommendations', '/discover', '/myshelf', '/scanner', '/profile', '/routine-builder', '/routines', '/favorites', '/digital-twin', '/onboarding', '/auth', '/comparison', '/progress', '/export', '/notifications', '/skin-goals', '/consent'];
+    if (appPaths.some(path => p === path || p.startsWith(path + '/'))) return true;
+    if (p.startsWith('/analysis') || p.startsWith('/product/')) return true;
+    return false;
+  }, [location.pathname]);
+
   return (
-    <div className="app-layout">
+    <div className={`app-layout${isAppRoute ? ' app-shell-mode' : ''}`}>
       <a className="skip-link" href="#main-content">Skip to main content</a>
       <OfflineBanner />
       <AddToHomeScreenPrompt />
@@ -330,7 +339,7 @@ const displayName = nameParts.length > 1
         </nav>
       </header>
 
-      {showBreadcrumbs && (
+      {showBreadcrumbs && !isAppRoute && (
         <div className="app-breadcrumbs" aria-label="Breadcrumb">
           <div className="app-breadcrumbs-container">
             {breadcrumbs.map((crumb, index) => (
@@ -354,7 +363,7 @@ const displayName = nameParts.length > 1
       </main>
 
       <BottomNav />
-      <BackToTop />
+      {location.pathname !== '/profile' && <BackToTop />}
 
       <footer className="app-footer" role="contentinfo">
         {/* Newsletter Section */}

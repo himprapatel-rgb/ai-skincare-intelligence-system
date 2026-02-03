@@ -495,6 +495,7 @@ const ProfileSettingsPage: React.FC = () => {
             onChange={handlePhotoUpload}
             className="visually-hidden"
           />
+          <span className="profile-avatar-hint">Change photo</span>
         </div>
         <h1 className="profile-header-name">{profile.name || 'Your Name'}</h1>
         <p className="profile-header-email">{profile.email || 'email@example.com'}</p>

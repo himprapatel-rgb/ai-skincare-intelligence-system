@@ -272,7 +272,7 @@ const DashboardPage: React.FC = () => {
               <h2>Start your skincare journey</h2>
               <p>Take your first scan to get a personalized skin score and recommendations.</p>
             </div>
-            <button type="button" className="btn-primary" onClick={() => navigate('/scan')}>
+            <button type="button" className="btn btn-primary" onClick={() => navigate('/scan')}>
               Take your first scan
             </button>
           </div>
@@ -349,7 +349,7 @@ const DashboardPage: React.FC = () => {
           <div className="app-section dashboard-section continue-onboarding">
             <h2 className="app-section-title">Continue</h2>
             <p>You started onboarding. Pick up from step {onboardingProgress.step}.</p>
-            <button type="button" className="btn-primary" onClick={() => navigate('/onboarding')}>
+            <button type="button" className="btn btn-secondary" onClick={() => navigate('/onboarding')}>
               Continue onboarding
             </button>
           </div>
@@ -441,8 +441,8 @@ const DashboardPage: React.FC = () => {
                   <div className="app-empty-state-icon"><IconCamera size={28} strokeWidth={2} /></div>
                   <h3>No activity yet</h3>
                   <p>Take your first scan to see your skin insights and track progress here.</p>
-                  <button type="button" className="btn-primary" onClick={() => navigate('/scan')}>
-                    Start your first scan
+                  <button type="button" className="btn btn-ghost dashboard-empty-link" onClick={() => navigate('/scan')}>
+                    Take a scan
                   </button>
                 </div>
               ) : (
@@ -502,7 +502,7 @@ const DashboardPage: React.FC = () => {
                 </select>
               </label>
             </div>
-            <button className="btn-primary" onClick={() => navigate('/scan')}>Scan Now</button>
+            <button type="button" className="btn btn-secondary" onClick={() => navigate('/scan')}>Scan Now</button>
           </div>
         </div>
       </div>

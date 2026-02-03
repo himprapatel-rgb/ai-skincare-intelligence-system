@@ -125,6 +125,21 @@
   line-height: 1.5;
 }
 
+/* Secondary action in empty state: link style (single primary CTA is in first-scan card) */
+.dashboard-empty-link {
+  min-height: 44px;
+  padding: 8px 16px;
+  background: transparent;
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.dashboard-empty-link:hover {
+  background: transparent;
+  color: var(--primary-hover);
+}
+
 /* Section heading with optional "View all" */
 .dashboard-section-heading {
   display: flex;

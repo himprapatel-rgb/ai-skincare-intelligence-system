@@ -685,6 +685,24 @@ input[type="radio"] {
   box-shadow: 0 6px 16px -8px rgba(37, 99, 235, 0.5);
 }
 
+/* Primary variants: hero (marketing), small */
+.btn-primary--hero {
+  min-height: 56px;
+  padding: 18px 40px;
+  font-size: 1.1rem;
+  border-radius: var(--radius-xl);
+  box-shadow: 0 20px 40px -15px rgba(37, 99, 235, 0.5);
+}
+.btn-primary--hero:hover:not(:disabled) {
+  box-shadow: 0 25px 50px -15px rgba(37, 99, 235, 0.6);
+}
+.btn-primary--small {
+  min-height: 40px;
+  padding: 10px 20px;
+  font-size: 0.9375rem;
+  border-radius: var(--radius-md);
+}
+
 /* Secondary Button - Enhanced */
 .btn-secondary {
   background: #ffffff;

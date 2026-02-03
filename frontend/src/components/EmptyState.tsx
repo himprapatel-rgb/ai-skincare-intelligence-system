@@ -31,7 +31,7 @@ export function EmptyState({
       {guidance && <div className="empty-state-guidance">{guidance}</div>}
       {children}
       {actionLabel && onAction && (
-        <button type="button" className="empty-state-action" onClick={onAction}>
+        <button type="button" className="btn btn-primary empty-state-action" onClick={onAction}>
           {actionLabel}
         </button>
       )}

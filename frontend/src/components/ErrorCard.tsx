@@ -22,7 +22,7 @@ export interface ErrorCardProps {
 }
 
 export function ErrorCard({
-  title = 'Something went wrong',
+  title = "We couldn't load this",
   message,
   actionLabel,
   onAction,
@@ -39,11 +39,11 @@ export function ErrorCard({
       <h2 className="error-card-title">{title}</h2>
       <p className="error-card-message">{message}</p>
       <div className="error-card-actions">
-        <button type="button" className="btn-primary" onClick={onAction}>
+        <button type="button" className="btn btn-primary" onClick={onAction}>
           {actionLabel}
         </button>
         {secondaryLabel && onSecondary && (
-          <button type="button" className="btn-secondary" onClick={onSecondary}>
+          <button type="button" className="btn btn-secondary" onClick={onSecondary}>
             {secondaryLabel}
           </button>
         )}

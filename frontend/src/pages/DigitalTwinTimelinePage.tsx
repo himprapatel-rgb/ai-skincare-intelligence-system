@@ -324,13 +324,13 @@ const DigitalTwinTimelinePage: React.FC = () => {
       <div className="dt-page app-page">
         <header className="app-header-card">
           <h1>Digital Twin</h1>
-          <p className="app-header-subtitle">Something went wrong</p>
+          <p className="app-header-subtitle">We couldn&apos;t load your timeline</p>
         </header>
         <div className="app-page-content dt-container">
           <section className="dt-card">
-            <p>We couldn&apos;t load your digital twin timeline. Please try again.</p>
+            <p>Tap below to try again or go back to your dashboard.</p>
             <div className="dt-card-body">
-              <button type="button" className="btn-primary" onClick={() => window.location.reload()}>
+              <button type="button" className="btn btn-primary" onClick={() => window.location.reload()}>
                 Try again
               </button>
             </div>

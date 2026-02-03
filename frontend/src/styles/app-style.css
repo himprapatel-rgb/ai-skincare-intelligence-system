@@ -57,10 +57,10 @@
   margin: 0 0 8px 0;
 }
 
-/* List group (white card with rows) */
+/* List group (white card with rows) - design system token */
 .app-list-group {
   background: var(--bg-white);
-  border-radius: 12px;
+  border-radius: var(--radius-lg, 12px);
   overflow: hidden;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
   border: 1px solid var(--border-color);
@@ -177,10 +177,10 @@
   margin-right: auto;
 }
 
-/* Card (consistent elevation) */
+/* Card (consistent elevation) - design system token */
 .app-card {
   background: var(--bg-white);
-  border-radius: 12px;
+  border-radius: var(--radius-lg, 12px);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
   border: 1px solid var(--border-color);
   overflow: hidden;

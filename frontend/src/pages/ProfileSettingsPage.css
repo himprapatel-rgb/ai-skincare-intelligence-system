@@ -404,6 +404,9 @@
 .settings-section {
   margin-top: 24px;
 }
+.settings-section:first-child {
+  margin-top: 0;
+}
 
 .section-title {
   font-size: 0.8125rem;
@@ -412,12 +415,12 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
   padding: 0 4px 8px;
-  margin: 0 0 4px 0;
+  margin: 0 0 8px 0;
 }
 
 .settings-group {
   background: var(--bg-white);
-  border-radius: 12px;
+  border-radius: var(--radius-lg, 12px);
   overflow: hidden;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
   border: 1px solid var(--border-color);

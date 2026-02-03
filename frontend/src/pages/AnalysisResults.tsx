@@ -288,15 +288,15 @@ const AnalysisResults: React.FC = () => {
       <div className="analysis-results app-page">
         <header className="app-header-card">
           <h1>Skin Analysis</h1>
-          <p className="app-header-subtitle">Something went wrong</p>
+          <p className="app-header-subtitle">We couldn&apos;t load this analysis</p>
         </header>
         <div className="app-page-content">
           <div className="analysis-error">
             <div className="analysis-error-icon">
               <IconAlertTriangle size={48} strokeWidth={2} />
             </div>
-            <h2>Error Loading Results</h2>
-            <p>{error || 'Analysis not found'}</p>
+            <h2>Analysis unavailable</h2>
+            <p>{error || 'This analysis may have been removed or the link is invalid.'}</p>
             <button onClick={() => navigate('/')} className="btn btn-primary">
               Return to Dashboard
             </button>

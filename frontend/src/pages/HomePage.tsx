@@ -47,13 +47,13 @@ const HomePage: React.FC = () => {
               Get instant AI insights on your skin health and personalized routine recommendations.
             </p>
             <div className="hero-cta">
-              <button className="btn-primary btn-primary-hero" onClick={() => navigate('/scan')}>
+              <button type="button" className="btn btn-primary btn-primary--hero" onClick={() => navigate('/scan')}>
                 <span className="btn-icon">
                   <IconScan size={20} strokeWidth={2} />
                 </span>
                 Start Free Skin Scan
               </button>
-              <button className="btn-secondary btn-ghost-hero" onClick={() => navigate('/analysis/demo')}>
+              <button type="button" className="btn btn-ghost hero-cta-secondary" onClick={() => navigate('/analysis/demo')}>
                 See Sample Report
               </button>
             </div>

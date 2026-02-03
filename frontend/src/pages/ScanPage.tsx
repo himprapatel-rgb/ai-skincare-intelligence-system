@@ -42,7 +42,7 @@ export default function ScanPage() {
   const [validationMessage, setValidationMessage] = useState<string | null>(null);
   const [faceLocked, setFaceLocked] = useState(false);
   const [autoCaptureEnabled] = useState(true);
-  const [cameraStatus, setCameraStatus] = useState("Initializing camera...");
+  const [cameraStatus, setCameraStatus] = useState("Position your face in the frame");
   const [cameraCountdown, setCameraCountdown] = useState<number | null>(null);
   const [capturePreviewUrl, setCapturePreviewUrl] = useState<string | null>(null);
   const [trackingRestartTick, setTrackingRestartTick] = useState(0);
@@ -665,20 +665,20 @@ export default function ScanPage() {
             {/* Step titles and descriptions (Task 214) */}
             {scanStep === 'upload' && (
               <div className="scan-step-desc" role="status">
-                <h2 className="scan-step-title">Step 1: Upload your photo</h2>
-                <p className="scan-step-text">Take a selfie or upload an image. We&apos;ll analyze skin tone, texture, and concerns.</p>
+                <h2 className="scan-step-title">Step 1: Add your photo</h2>
+                <p className="scan-step-text">Upload a clear selfie or use the camera. Face the light for best results.</p>
               </div>
             )}
             {scanStep === 'scanning' && (
               <div className="scan-step-desc" role="status">
-                <h2 className="scan-step-title">Step 2: Analysis</h2>
-                <p className="scan-step-text">Our AI is analyzing your image. This usually takes 30–60 seconds.</p>
+                <h2 className="scan-step-title">Step 2: Analyzing</h2>
+                <p className="scan-step-text">Hold on — we&apos;re analyzing your skin. This usually takes 30–60 seconds.</p>
               </div>
             )}
             {scanStep === 'complete' && (
               <div className="scan-step-desc" role="status">
-                <h2 className="scan-step-title">Step 3: View results</h2>
-                <p className="scan-step-text">Your personalized report is ready. You&apos;ll be redirected to the full results.</p>
+                <h2 className="scan-step-title">Step 3: Results</h2>
+                <p className="scan-step-text">Your report is ready. Opening your results now.</p>
               </div>
             )}
           </div>
@@ -740,7 +740,7 @@ export default function ScanPage() {
                         <div className="camera-icon">
                           <IconCamera size={48} strokeWidth={2} />
                         </div>
-                        <p>Initializing camera...</p>
+                        <p>Allow camera access, then position your face in the frame.</p>
                       </div>
                     )}
                     {cameraActive && (

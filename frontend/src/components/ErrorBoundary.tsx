@@ -69,8 +69,8 @@ class ErrorBoundary extends Component<Props, State> {
         <div className="error-boundary-fallback">
           <div className="error-content">
             <div className="error-icon">⚠️</div>
-            <h2>Something went wrong</h2>
-            <p>We encountered an unexpected error. This has been logged and we'll look into it.</p>
+            <h2>We hit a snag</h2>
+            <p>Refresh the page or go home to try again. We've logged the issue.</p>
             
             {/* Task 353-354: Error recovery suggestions */}
             <div className="error-suggestions">

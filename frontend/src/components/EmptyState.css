@@ -58,28 +58,6 @@
 }
 
 .empty-state-action {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 48px;
-  padding: var(--spacing-sm) var(--spacing-lg);
-  border-radius: var(--border-radius-md);
-  font-weight: var(--font-weight-semibold);
-  font-size: var(--font-size-base);
-  cursor: pointer;
-  background: var(--primary);
-  color: var(--white);
-  border: none;
-  transition: background 0.2s, transform 0.1s;
-}
-
-.empty-state-action:hover {
-  background: var(--primary-hover);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-}
-
-.empty-state-action:focus-visible {
-  outline: var(--focus-ring);
-  outline-offset: var(--focus-ring-offset);
+  /* Uses .btn .btn-primary from index.css; only overrides for empty-state context */
+  margin-top: var(--spacing-sm);
 }

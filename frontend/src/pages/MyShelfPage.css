@@ -367,11 +367,11 @@
   margin: 0 auto;
 }
 
-/* ----- FAB (mobile only) ----- */
+/* ----- FAB (mobile only): above bottom nav + raised center Scan ----- */
 .myshelf-fab {
   display: none;
   position: fixed;
-  bottom: max(88px, calc(80px + env(safe-area-inset-bottom)));
+  bottom: max(96px, calc(96px + env(safe-area-inset-bottom)));
   right: 20px;
   width: 56px;
   height: 56px;

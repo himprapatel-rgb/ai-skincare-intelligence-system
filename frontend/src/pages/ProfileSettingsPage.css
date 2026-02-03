@@ -112,10 +112,10 @@
   to { transform: rotate(360deg); }
 }
 
-/* Floating Save when dirty */
+/* Floating Save when dirty - above bottom nav + raised center button */
 .profile-floating-save {
   position: fixed;
-  bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+  bottom: calc(96px + env(safe-area-inset-bottom, 0px));
   left: 50%;
   transform: translateX(-50%);
   z-index: 50;

@@ -102,3 +102,40 @@
 - **Touch targets** ≥44px; **inputs** 16px on mobile.
 
 Use this audit when adding or changing pages so structure stays consistent.
+
+---
+
+## Super-app (Bumble-style) audit — bottom nav & clearance
+
+**Scope:** All pages use `AppLayout` → same header, main, **BottomNav** (mobile), and footer. The bottom nav has a **raised center Scan button** that extends ~18px above the bar (~96px from viewport bottom with safe area).
+
+### Global changes applied
+
+| Item | Change |
+|------|--------|
+| **BottomNav** | Center item = Scan (raised 56px pill); left = Home; right = Dashboard, Shelf, Profile. |
+| **App shell** | Home (`/`) included in `isAppRoute` → minimal footer on home too. |
+| **Main padding (mobile)** | `app-main` / `app-page` padding-bottom set to **96px** + safe area so content clears the raised button. |
+| **BackToTop** | `bottom: 96px` (+ safe area on mobile) so FAB sits above center Scan. |
+| **DevBanner** | Mobile `bottom: 96px`. |
+| **ProfileSettingsPage** | `.profile-floating-save` `bottom: 96px` + safe area. |
+| **MyShelfPage** | `.myshelf-fab` `bottom: 96px` + safe area. |
+| **HomePage** | Floating CTA (`.home-cta-float`) only on home, above bottom nav; extra padding-bottom on mobile. |
+
+### Pages checked for fixed/sticky bottom elements
+
+| Page / component | Fixed bottom element | Status |
+|------------------|----------------------|--------|
+| All (main) | Bottom nav (fixed) | Uses 96px clearance globally. |
+| HomePage | `.home-cta-float` | Fixed above nav; only on home. `.mobile-sticky-cta` hidden in polish CSS. |
+| ProfileSettingsPage | `.profile-floating-save` | Updated to 96px + safe area. |
+| MyShelfPage | `.myshelf-fab` | Updated to 96px + safe area. |
+| BackToTop | FAB | 96px + safe area on mobile. |
+| DevBanner | Banner | 96px on mobile. |
+| ScanPage / ProductScannerPage | In-page overlays (bottom: 0/24px) | Full-screen or in-content; nav hidden or acceptable. |
+| DigitalTwinTimelinePage | Some `bottom: 0` | In-content sections; no global conflict. |
+| Toast, AddToHomeScreenPrompt, RouteLoadingBar | Fixed | Z-index and position don’t conflict with nav. |
+
+### Adding new fixed bottom UI
+
+For any new **position: fixed; bottom: X** on mobile, use at least **96px** (or `calc(96px + env(safe-area-inset-bottom))`) so it sits above the raised center Scan button.

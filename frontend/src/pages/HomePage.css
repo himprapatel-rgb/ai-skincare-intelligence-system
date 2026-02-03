@@ -84,6 +84,60 @@
   transform: translateY(-2px);
 }
 
+/* Mobile: floating primary CTA above bottom nav (Bumble-style super app) */
+.home-cta-float {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .homepage.app-page {
+    padding-bottom: max(160px, calc(140px + env(safe-area-inset-bottom)));
+  }
+  .home-cta-float {
+    display: block;
+    position: fixed;
+    left: max(16px, env(safe-area-inset-left));
+    right: max(16px, env(safe-area-inset-right));
+    bottom: calc(80px + env(safe-area-inset-bottom));
+    z-index: calc(var(--z-index-sticky, 100) - 1);
+    pointer-events: none;
+  }
+  .home-cta-float-btn {
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    min-height: 52px;
+    padding: 14px 20px;
+    background: linear-gradient(135deg, var(--primary) 0%, #7c3aed 100%);
+    color: #fff;
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    border-radius: 14px;
+    box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .home-cta-float-btn:hover,
+  .home-cta-float-btn:focus-visible {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(37, 99, 235, 0.45);
+  }
+  .home-cta-float-btn:active {
+    transform: translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .home-cta-float-btn,
+    .home-cta-float-btn:hover,
+    .home-cta-float-btn:focus-visible {
+      transition: none;
+      transform: none;
+    }
+  }
+}
+
 .trust-badges {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));

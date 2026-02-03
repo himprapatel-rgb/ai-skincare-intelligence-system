@@ -108,9 +108,10 @@ const displayName = nameParts.length > 1
   }, [location.pathname]);
   const showBreadcrumbs = location.pathname !== '/';
 
-  /* Bumble-style app shell: "app" routes show minimal footer and feel like in-app; marketing routes show full footer */
+  /* Bumble-style super app: app routes (including home) use minimal footer and app shell */
   const isAppRoute = useMemo(() => {
     const p = location.pathname;
+    if (p === '/') return true;
     const appPaths = ['/dashboard', '/scan', '/history', '/recommendations', '/discover', '/myshelf', '/scanner', '/profile', '/routine-builder', '/routines', '/favorites', '/digital-twin', '/onboarding', '/auth', '/comparison', '/progress', '/export', '/notifications', '/skin-goals', '/consent'];
     if (appPaths.some(path => p === path || p.startsWith(path + '/'))) return true;
     if (p.startsWith('/analysis') || p.startsWith('/product/')) return true;

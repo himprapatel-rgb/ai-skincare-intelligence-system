@@ -58,12 +58,14 @@
   background: rgba(255, 255, 255, 0.98);
 }
 
-/* App shell mode: compact header on mobile (Bumble-style) */
+/* Super-app / Bumble-style: minimal header and refined chrome on mobile */
 @media (max-width: 768px) {
   .app-shell-mode .app-header-container {
     min-height: 52px;
     padding-top: max(10px, env(safe-area-inset-top));
     padding-bottom: 10px;
+    padding-left: max(14px, env(safe-area-inset-left));
+    padding-right: 14px;
   }
   .app-shell-mode .app-logo-mark {
     width: 34px;
@@ -72,6 +74,9 @@
   }
   .app-shell-mode .app-logo-text {
     font-size: 1.1rem;
+  }
+  .app-shell-mode .app-header {
+    border-bottom-color: rgba(0, 0, 0, 0.05);
   }
 }
 
@@ -767,8 +772,8 @@
   }
 
   .app-main.app-main-with-bottom-nav {
-    padding-bottom: calc(88px + env(safe-area-inset-bottom));
-    min-height: calc(100dvh - 52px - 72px);
+    padding-bottom: calc(96px + env(safe-area-inset-bottom));
+    min-height: calc(100dvh - 52px - 80px);
   }
 
   .app-shell-mode .app-main {

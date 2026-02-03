@@ -31,6 +31,11 @@ const HomePage: React.FC = () => {
     <div className="homepage app-page">
       {/* Hero Section - Updated with safer claims */}
       <section className="hero">
+        <div className="hero-decoration" aria-hidden="true">
+          <span className="hero-blob hero-blob--1" />
+          <span className="hero-blob hero-blob--2" />
+          <span className="hero-blob hero-blob--3" />
+        </div>
         <div className="hero-content">
           <div className="hero-text">
             <div className="hero-badge">

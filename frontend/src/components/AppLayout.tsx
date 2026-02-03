@@ -488,7 +488,7 @@ const displayName = nameParts.length > 1
               <span className="app-footer-version" aria-hidden="true"> v1.0</span>
               {' · '}
               <Link to="/about#whats-new" className="app-footer-whats-new">What&apos;s new</Link>
-              <ApiStatusIndicator />
+              <ApiStatusIndicator hideWhenConnected />
             </p>
             <p className="app-footer-disclaimer">
               <span className="app-footer-disclaimer-icon">ℹ️</span>

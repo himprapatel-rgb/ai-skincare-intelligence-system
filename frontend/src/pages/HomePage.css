@@ -444,11 +444,54 @@
 
 /* HERO SECTION */
 .hero {
+  position: relative;
   background: linear-gradient(180deg, var(--bg-light) 0%, var(--bg-white) 100%);
   padding: 100px 24px 80px;
+  overflow: hidden;
+}
+
+.hero-decoration {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.5;
+}
+
+.hero-blob--1 {
+  width: 400px;
+  height: 400px;
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.15) 0%, rgba(124, 58, 237, 0.08) 100%);
+  top: -120px;
+  right: -80px;
+}
+
+.hero-blob--2 {
+  width: 280px;
+  height: 280px;
+  background: linear-gradient(135deg, rgba(96, 165, 250, 0.12) 0%, rgba(167, 139, 250, 0.06) 100%);
+  bottom: -60px;
+  left: -60px;
+}
+
+.hero-blob--3 {
+  width: 180px;
+  height: 180px;
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(37, 99, 235, 0.06) 100%);
+  top: 50%;
+  left: 35%;
+  transform: translate(-50%, -50%);
 }
 
 .hero-content {
+  position: relative;
+  z-index: 1;
   max-width: 1280px;
   margin: 0 auto;
   display: grid;
@@ -2566,11 +2609,11 @@
 .homepage .steps-container .step-illustration {
   width: 100%;
   max-width: 240px;
-  padding: 0;
-  border-radius: 0;
-  border: none;
-  background: transparent;
-  box-shadow: none;
+  padding: 20px;
+  border-radius: 16px;
+  border: 1px solid rgba(31, 111, 235, 0.18);
+  background: linear-gradient(180deg, rgba(31, 111, 235, 0.08) 0%, rgba(31, 111, 235, 0.02) 100%);
+  box-shadow: 0 2px 12px rgba(31, 111, 235, 0.06);
 }
 
 /* =============================================

@@ -670,16 +670,16 @@
   min-height: 48px;
 }
 
-/* Recommended for you – 3 product cards, horizontal scroll */
+/* Recommended for you – exactly 3 per row on mobile, horizontal scroll */
 .today-products-grid {
   display: flex;
+  flex-wrap: nowrap;
   gap: 12px;
   overflow-x: auto;
   overflow-y: hidden;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
   padding-bottom: 8px;
-  margin: 0 -4px;
 }
 
 .today-products-grid::-webkit-scrollbar {
@@ -696,17 +696,20 @@
   border-radius: 3px;
 }
 
+/* Exactly 3 cards visible; width = (100% - 2*gap) / 3 so size adjusts automatically */
 .today-product-card {
-  flex: 0 0 min(160px, 48vw);
-  width: min(160px, 48vw);
+  flex: 0 0 calc((100% - 24px) / 3);
+  width: calc((100% - 24px) / 3);
+  min-width: 0;
+  max-width: calc((100% - 24px) / 3);
   display: flex;
   flex-direction: column;
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid var(--border-color);
   background: var(--bg-secondary);
-  min-width: 0;
   scroll-snap-align: start;
+  box-sizing: border-box;
 }
 
 .today-product-card-image {

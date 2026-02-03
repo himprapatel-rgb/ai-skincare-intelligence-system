@@ -17,7 +17,12 @@ function getHealthUrl(): string {
   return base + '/health';
 }
 
-export function ApiStatusIndicator() {
+type ApiStatusIndicatorProps = {
+  /** When true, hide the indicator when API is up (e.g. in footer for end users) */
+  hideWhenConnected?: boolean;
+};
+
+export function ApiStatusIndicator({ hideWhenConnected = false }: ApiStatusIndicatorProps) {
   const [status, setStatus] = useState<'checking' | 'up' | 'down'>('checking');
 
   useEffect(() => {
@@ -38,6 +43,7 @@ export function ApiStatusIndicator() {
   }, []);
 
   if (status === 'checking') return null;
+  if (hideWhenConnected && status === 'up') return null;
   return (
     <span className="api-status" aria-live="polite" aria-label={status === 'up' ? 'API connected' : 'API offline'}>
       <span className={`api-status-dot api-status-dot--${status}`} aria-hidden="true" />

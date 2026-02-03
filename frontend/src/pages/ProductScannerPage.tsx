@@ -287,6 +287,14 @@ const ProductScannerPage: React.FC = () => {
   const scannerRef = useRef<Html5Qrcode | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const scannerContainerRef = useRef<HTMLDivElement>(null);
+  const errorCardRef = useRef<HTMLDivElement>(null);
+
+  // Scroll error card into view when error is set (e.g. product not found)
+  useEffect(() => {
+    if (error && errorCardRef.current) {
+      errorCardRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }, [error]);
 
   // Cleanup scanner on unmount
   useEffect(() => {

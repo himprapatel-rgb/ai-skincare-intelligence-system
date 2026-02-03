@@ -23,7 +23,7 @@ from app.models.scan import ScanSession, ScanStatus
 
 backend_dir = pathlib.Path(__file__).parent.parent.parent.parent.parent.parent
 sys.path.insert(0, str(backend_dir))
-from app.core.security import get_current_user_optional
+from app.core.security import get_current_user, get_current_user_optional
 from app.models.user import User
 from app.services.openai_vision_service import (
     OpenAIVisionError,
@@ -524,3 +524,30 @@ def get_scan_history(
         )
 
     return {"scans": items}
+
+
+@router.delete(
+    "/{scan_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    summary="Delete a scan",
+)
+def delete_scan(
+    scan_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Delete one of your scans (removes from history and digital twin)."""
+    try:
+        uuid_obj = UUID(scan_id)
+    except ValueError:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid scan ID format")
+    scan_session = db.query(ScanSession).filter(
+        ScanSession.id == uuid_obj,
+        ScanSession.user_id == current_user.id,
+    ).first()
+    if not scan_session:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Scan not found")
+    db.delete(scan_session)
+    db.commit()
+    logger.info("User %s deleted scan %s", current_user.id, scan_id)
+    return None

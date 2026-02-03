@@ -251,7 +251,7 @@ const HistoryPage: React.FC = () => {
                     )}
                   </div>
                   <div className="history-actions">
-                    <button className="view-btn">View Details</button>
+                    <button type="button" className="view-btn" onClick={() => navigate(`/analysis/${item.id}`)}>View Details</button>
                     <span className="recommendations-count">{item.recommendations} recommendations</span>
                   </div>
                 </div>

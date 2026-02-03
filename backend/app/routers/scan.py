@@ -19,7 +19,7 @@ from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
 from sqlalchemy.orm import Session
 
 from app.config import settings
-from app.core.security import get_current_user_optional
+from app.core.security import get_current_user, get_current_user_optional
 from app.database import get_db
 from app.models import ScanSession, SkinAnalysis, User
 from app.schemas.scan_schemas import (
@@ -459,3 +459,22 @@ def get_scan_history(
     ]
     
     return ScanHistoryResponse(scans=items)
+
+
+@router.delete(
+    "/{scan_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    summary="Delete a scan",
+    description="Delete one of your scans. Requires authentication.",
+)
+def delete_scan(
+    scan_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Delete a scan session for the current user (removes from history and digital twin)."""
+    scan = _get_user_scan_or_404(db=db, scan_id=scan_id, user=current_user)
+    db.delete(scan)
+    db.commit()
+    logger.info("User %s deleted scan %s", current_user.id, scan_id)
+    return None

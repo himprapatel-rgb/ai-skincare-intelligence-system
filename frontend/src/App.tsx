@@ -3,6 +3,7 @@ import React, { Suspense } from "react";
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { ToastProvider } from "./context/ToastContext";
+import { ThemeProvider } from "./context/ThemeContext";
 import { ShelfProvider } from "./context/ShelfContext";
 import AppLayout from "./components/AppLayout";
 import DevBanner from "./components/DevBanner";
@@ -120,8 +121,9 @@ function AppRoutes() {
 export default function App() {
   return (
     <AuthProvider>
-      <ShelfProvider>
-        <ToastProvider>
+      <ThemeProvider>
+        <ShelfProvider>
+          <ToastProvider>
           <DevBanner />
           <NetworkStatus />
           <BrowserRouter>
@@ -130,8 +132,9 @@ export default function App() {
             </AppLayout>
           </BrowserRouter>
           <ToastContainer />
-        </ToastProvider>
-      </ShelfProvider>
+          </ToastProvider>
+        </ShelfProvider>
+      </ThemeProvider>
     </AuthProvider>
   );
 }

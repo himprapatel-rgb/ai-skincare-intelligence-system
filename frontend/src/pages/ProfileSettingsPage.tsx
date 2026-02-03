@@ -3,8 +3,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
+import { useTheme } from '../context/ThemeContext';
 import { useShelf } from '../context/ShelfContext';
-import { IconBarChart, IconCamera, IconPackage, IconSparkles, IconTrendingUp, IconScan, IconBell, IconLock, IconHelpCircle, IconChevronRight, IconTarget, IconUser, IconFileText, IconMail } from '../components/Icons';
+import { IconBarChart, IconCamera, IconPackage, IconSparkles, IconTrendingUp, IconScan, IconBell, IconLock, IconHelpCircle, IconChevronRight, IconTarget, IconUser, IconFileText, IconMail, IconSun, IconMoon } from '../components/Icons';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { getScanHistory } from '../services/scanApi';
 import { api } from '../services/api';
@@ -73,6 +74,7 @@ const ProfileSettingsPage: React.FC = () => {
   const { totalCount: shelfProductCount } = useShelf();
   const navigate = useNavigate();
   const toast = useToast();
+  const { theme, setTheme } = useTheme();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const initialProfileRef = useRef<UserProfile | null>(null);
   const settingsFormRef = useRef<HTMLFormElement>(null);
@@ -428,6 +430,19 @@ const ProfileSettingsPage: React.FC = () => {
     toast.info(message);
   };
 
+  const handleDeleteAccount = async () => {
+    if (!window.confirm('Delete your account? All your data will be removed. This cannot be undone.')) return;
+    try {
+      await api.delete('/profile');
+      toast.success('Account deleted. You have been signed out.');
+      logout();
+      navigate('/', { replace: true });
+    } catch (err: unknown) {
+      const msg = (err as { response?: { data?: { detail?: string } } })?.response?.data?.detail || 'Failed to delete account. Contact support if this persists.';
+      toast.error(msg);
+    }
+  };
+
   return (
     <div className="profile-settings-page">
       {/* Sticky header on scroll - compact avatar + name */}
@@ -564,11 +579,12 @@ const ProfileSettingsPage: React.FC = () => {
                       <span className="settings-label">Personal Info</span>
                       <IconChevronRight size={20} strokeWidth={2} className="settings-arrow" />
                     </button>
-                    <button type="button" className="settings-item" onClick={() => handleProtectedAction('Password change is available in Security settings.')}>
+                    <Link to="/password-reset" className="settings-item">
                       <span className="settings-icon purple"><IconLock size={20} strokeWidth={2} /></span>
                       <span className="settings-label">Password</span>
+                      <span className="settings-value">Change password</span>
                       <IconChevronRight size={20} strokeWidth={2} className="settings-arrow" />
-                    </button>
+                    </Link>
                     <button type="button" className={`settings-item${activeTab === 'stats' ? ' active' : ''}`} onClick={() => setActiveTab('stats')}>
                       <span className="settings-icon blue"><IconBarChart size={20} strokeWidth={2} /></span>
                       <span className="settings-label">Statistics</span>
@@ -629,7 +645,7 @@ const ProfileSettingsPage: React.FC = () => {
                   <button
                     type="button"
                     className="delete-account-button"
-                    onClick={() => window.confirm('Delete your account? This cannot be undone.') && handleProtectedAction('Account deletion is handled via support.')}
+                    onClick={handleDeleteAccount}
                   >
                     Delete Account
                   </button>
@@ -1004,6 +1020,39 @@ const ProfileSettingsPage: React.FC = () => {
 
               <div className="section-divider"></div>
 
+              <h3>Appearance</h3>
+              <div className="theme-toggle-group" role="group" aria-label="Theme">
+                <button
+                  type="button"
+                  className={`theme-option${theme === 'light' ? ' active' : ''}`}
+                  onClick={() => setTheme('light')}
+                  aria-pressed={theme === 'light'}
+                >
+                  <IconSun size={18} strokeWidth={2} />
+                  <span>Light</span>
+                </button>
+                <button
+                  type="button"
+                  className={`theme-option${theme === 'dark' ? ' active' : ''}`}
+                  onClick={() => setTheme('dark')}
+                  aria-pressed={theme === 'dark'}
+                >
+                  <IconMoon size={18} strokeWidth={2} />
+                  <span>Dark</span>
+                </button>
+                <button
+                  type="button"
+                  className={`theme-option${theme === 'system' ? ' active' : ''}`}
+                  onClick={() => setTheme('system')}
+                  aria-pressed={theme === 'system'}
+                >
+                  <span>System</span>
+                </button>
+              </div>
+              <p className="help-text">Use system setting to follow your device light/dark mode.</p>
+
+              <div className="section-divider"></div>
+
               <h3>Account Security</h3>
               <div className="action-buttons">
                 <button
@@ -1036,12 +1085,7 @@ const ProfileSettingsPage: React.FC = () => {
                 <button
                   type="button"
                   className="btn-danger"
-                  onClick={() => {
-                    const confirmed = window.confirm('Are you sure you want to delete your account?');
-                    if (confirmed) {
-                      navigate('/privacy#delete');
-                    }
-                  }}
+                  onClick={handleDeleteAccount}
                 >
                   Delete Account
                 </button>

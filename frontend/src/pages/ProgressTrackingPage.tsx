@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Line } from 'recharts';
+import html2canvas from 'html2canvas';
 import { IconTrendingUp, IconCheckCircle, IconCircle, IconDownload } from '../components/Icons';
 import { getProgressSummary } from '../services/scanApi';
 import './CommonStyles.css';
@@ -23,6 +24,7 @@ const ProgressTrackingPage: React.FC = () => {
   const [progressData, setProgressData] = useState<ProgressData[]>([]);
   const [timeRange, setTimeRange] = useState<'week' | 'month' | '3months'>('month');
   const [isLoading, setIsLoading] = useState(true);
+  const chartSectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchProgress = async () => {
@@ -91,7 +93,7 @@ const ProgressTrackingPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="chart-section" role="img" aria-label={`Progress chart: overall score and acne over time. ${progressData.length} data points. Current score ${progressData[0]?.overallScore ?? 0}. Improvement ${getImprovement() >= 0 ? '+' : ''}${getImprovement()}.`}>
+        <div className="chart-section" ref={chartSectionRef} role="img" aria-label={`Progress chart: overall score and acne over time. ${progressData.length} data points. Current score ${progressData[0]?.overallScore ?? 0}. Improvement ${getImprovement() >= 0 ? '+' : ''}${getImprovement()}.`}>
           <div className="chart-header">
             <h2>Progress Chart</h2>
             <div className="chart-controls">
@@ -100,7 +102,23 @@ const ProgressTrackingPage: React.FC = () => {
                 <option value="month">Last Month</option>
                 <option value="3months">Last 3 Months</option>
               </select>
-              <button onClick={() => alert('Export chart feature coming soon!')} className="btn-export-chart">
+              <button
+                onClick={async () => {
+                  const el = chartSectionRef.current;
+                  if (!el) return;
+                  try {
+                    const canvas = await html2canvas(el, { useCORS: true, scale: 2, backgroundColor: '#ffffff' });
+                    const link = document.createElement('a');
+                    link.download = `progress-chart-${timeRange}.png`;
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                  } catch (err) {
+                    console.error('Export failed:', err);
+                    alert('Export failed. Please try again.');
+                  }
+                }}
+                className="btn-export-chart"
+              >
                 <IconDownload size={16} strokeWidth={2} />
                 Export
               </button>

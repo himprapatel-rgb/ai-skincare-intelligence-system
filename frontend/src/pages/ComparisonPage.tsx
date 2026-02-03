@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import html2canvas from 'html2canvas';
 import { IconDownload, IconShare2, IconTrendingUp, IconTrendingDown } from '../components/Icons';
 import { getScanHistory } from '../services/scanApi';
 import { usePageTitle } from '../hooks/usePageTitle';
@@ -34,6 +35,7 @@ const ComparisonPage: React.FC = () => {
   // Loading state reserved for future API integration.
 
   const [allAnalysesForChart, setAllAnalysesForChart] = useState<Analysis[]>([]);
+  const comparisonCardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchAnalyses = async () => {
@@ -126,20 +128,39 @@ const ComparisonPage: React.FC = () => {
       hydration: a.concerns.hydration
     }));
 
-  const handleExportComparison = () => {
-    // TODO: Implement export functionality
-    alert('Export comparison feature coming soon!');
+  const handleExportComparison = async () => {
+    const el = comparisonCardRef.current;
+    if (!el) return;
+    try {
+      const canvas = await html2canvas(el, { useCORS: true, scale: 2, backgroundColor: '#ffffff' });
+      const link = document.createElement('a');
+      link.download = `skin-comparison-${analysis1?.date || '1'}-vs-${analysis2?.date || '2'}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    } catch (err) {
+      console.error('Export failed:', err);
+      alert('Export failed. Please try again.');
+    }
   };
 
-  const handleShareComparison = () => {
-    // TODO: Implement share functionality
-    if (navigator.share) {
-      navigator.share({
-        title: 'Skin Analysis Comparison',
-        text: `Comparing analyses from ${analysis2?.date} to ${analysis1?.date}`,
-      });
-    } else {
-      alert('Share feature coming soon!');
+  const handleShareComparison = async () => {
+    const title = 'Skin Analysis Comparison';
+    const text = analysis1 && analysis2
+      ? `Comparing analyses from ${analysis2.date} to ${analysis1.date}. Overall: ${analysis1.overallScore} vs ${analysis2.overallScore}`
+      : 'My skin analysis comparison';
+    const url = window.location.href;
+    try {
+      if (navigator.share) {
+        await navigator.share({ title, text, url });
+      } else {
+        await navigator.clipboard.writeText(`${title}\n${text}\n${url}`);
+        alert('Link copied to clipboard.');
+      }
+    } catch (err) {
+      if ((err as Error).name !== 'AbortError') {
+        await navigator.clipboard.writeText(url).catch(() => {});
+        alert('Link copied to clipboard.');
+      }
     }
   };
 
@@ -193,7 +214,7 @@ const ComparisonPage: React.FC = () => {
       {analysis1 && analysis2 && (
         <>
           {/* Side-by-Side Image Comparison */}
-          <div className="card comparison-card">
+          <div className="card comparison-card" ref={comparisonCardRef}>
             <div className="card-header">
               <h3>Visual Comparison</h3>
               <div className="comparison-actions-header">

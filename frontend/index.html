@@ -12,8 +12,16 @@
     <meta name="format-detection" content="telephone=no" />
     <meta name="description" content="AI-powered skin analysis, personalized recommendations, and skincare routine builder. Get started with a free scan." />
     <link rel="preconnect" href="https://pellicura.com" crossorigin />
-    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#ffffff" id="theme-color-meta" />
+    <script>
+      (function() {
+        var t = localStorage.getItem('app-theme');
+        var resolved = t === 'dark' ? 'dark' : (t === 'light' ? 'light' : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+        document.documentElement.setAttribute('data-theme', resolved);
+        var meta = document.getElementById('theme-color-meta');
+        if (meta) meta.content = resolved === 'dark' ? '#0f172a' : '#ffffff';
+      })();
+    </script>
     <meta name="mobile-web-app-capable" content="yes" />
     <title>SkinCareAI – AI Skin Analysis | pellicura.com</title>
     <!-- Open Graph -->

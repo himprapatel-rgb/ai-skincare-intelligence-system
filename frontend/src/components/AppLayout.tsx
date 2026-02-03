@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { IconInstagram, IconBrandX, IconLinkedin, IconTiktok, IconMenu, IconX, IconUser, IconChevronDown, IconChevronRight, IconLogOut, IconSettings, IconScan, IconPackage, IconHeart, IconHistory, IconBookOpen, IconFileText, IconDownload } from './Icons';
 import { SOCIAL_LINKS } from '../config';
 import { useAuth } from '../context/AuthContext';
+import { useToast } from '../context/ToastContext';
 import { BackToTop } from './BackToTop';
 import { RouteLoadingBar } from './RouteLoadingBar';
 import { OfflineBanner } from './OfflineBanner';
@@ -19,6 +20,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, isAuthenticated, logout } = useAuth();
+  const toast = useToast();
   // Show first name only, or first name + last initial for better display
 const fullName = user?.full_name || '';
 const nameParts = fullName.split(' ').filter(Boolean);
@@ -373,7 +375,18 @@ const displayName = nameParts.length > 1
               <h3>Get Personalized Skin Tips</h3>
               <p>Join 50,000+ others getting weekly skincare insights powered by AI.</p>
             </div>
-            <form className="app-footer-newsletter-form" onSubmit={(e) => e.preventDefault()} aria-label="Newsletter signup">
+            <form
+              className="app-footer-newsletter-form"
+              onSubmit={(e) => {
+                e.preventDefault();
+                const form = e.currentTarget;
+                const email = (form.querySelector('input[type="email"]') as HTMLInputElement)?.value?.trim();
+                if (email) {
+                  toast.info('Newsletter signup coming soon. We’ll save your interest!');
+                }
+              }}
+              aria-label="Newsletter signup"
+            >
               <input type="email" placeholder="Enter your email" aria-label="Email for newsletter" />
               <button type="submit" aria-label="Subscribe to newsletter">Subscribe</button>
             </form>

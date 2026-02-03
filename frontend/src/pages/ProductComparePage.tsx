@@ -3,6 +3,7 @@ import { useSearchParams, Link } from 'react-router-dom';
 import { IconStar } from '../components/Icons';
 import { BackButton } from '../components/BackButton';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { getProduct as getCatalogProduct } from '../services/catalogService';
 import './ProductComparePage.css';
 
 interface CompareProduct {
@@ -60,7 +61,21 @@ const MOCK_PRODUCTS: Record<string, CompareProduct> = {
   },
 };
 
-function getProduct(id: string): CompareProduct | null {
+function catalogToCompare(p: { id: string; name: string; brand: string; category: string; price_usd?: number; ingredients?: string[]; targets_concerns?: string[]; image_url?: string }): CompareProduct {
+  return {
+    id: p.id,
+    name: p.name,
+    brand: p.brand,
+    category: p.category,
+    price: p.price_usd != null ? `$${p.price_usd.toFixed(2)}` : '—',
+    rating: 4,
+    ingredients: p.ingredients ?? [],
+    concerns: p.targets_concerns ?? [],
+    imageUrl: p.image_url,
+  };
+}
+
+function getProduct(id: string): CompareProduct {
   return MOCK_PRODUCTS[id] ?? { id, name: `Product ${id}`, brand: '—', category: '—', price: '—', rating: 0, ingredients: [], concerns: [] };
 }
 
@@ -69,11 +84,28 @@ const ProductComparePage: React.FC = () => {
   const idsParam = searchParams.get('ids') || '';
   const ids = useMemo(() => idsParam.split(',').map((s) => s.trim()).filter(Boolean).slice(0, 4), [idsParam]);
   const [products, setProducts] = useState<CompareProduct[]>([]);
+  const [loading, setLoading] = useState(true);
 
   usePageTitle('Compare Products', 'Side-by-side product comparison.');
 
   useEffect(() => {
-    setProducts(ids.map((id) => getProduct(id)).filter((p): p is CompareProduct => p !== null));
+    let cancelled = false;
+    const load = async () => {
+      setLoading(true);
+      const results: CompareProduct[] = [];
+      for (const id of ids) {
+        try {
+          const catalogProduct = await getCatalogProduct(id);
+          if (!cancelled) results.push(catalogToCompare(catalogProduct));
+        } catch {
+          if (!cancelled) results.push(getProduct(id));
+        }
+      }
+      if (!cancelled) setProducts(results);
+      setLoading(false);
+    };
+    load();
+    return () => { cancelled = true; };
   }, [ids]);
 
   if (ids.length < 2) {
@@ -83,6 +115,18 @@ const ProductComparePage: React.FC = () => {
           <h1>Compare Products</h1>
           <p className="compare-empty-desc">Add at least 2 products to compare. Use &quot;Add to compare&quot; on product pages or recommendations.</p>
           <Link to="/recommendations" className="btn-primary">Browse recommendations</Link>
+          <BackButton />
+        </div>
+      </div>
+    );
+  }
+
+  if (loading) {
+    return (
+      <div className="product-compare-page">
+        <div className="product-compare-container">
+          <h1>Compare products</h1>
+          <p>Loading products…</p>
           <BackButton />
         </div>
       </div>

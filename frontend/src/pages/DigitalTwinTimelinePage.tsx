@@ -10,6 +10,7 @@ import SimulationPanel from '../components/digital-twin/SimulationPanel';
 import { SkeletonDigitalTwin } from '../components/Skeleton';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { API_BASE_URL } from '../config';
+import { api } from '../services/api';
 import '../components/digital-twin/styles/digital-twin.css';
 
 interface ApiStateVector {
@@ -155,6 +156,8 @@ const DigitalTwinTimelinePage: React.FC = () => {
     }
     return `${apiOrigin}/${url}`;
   };
+  const [refreshKey, setRefreshKey] = useState(0);
+
   useEffect(() => {
     const fetchSnapshots = async () => {
       try {
@@ -241,8 +244,22 @@ const DigitalTwinTimelinePage: React.FC = () => {
     };
 
     fetchSnapshots();
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- initial load only
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- initial load and refreshKey
+  }, [refreshKey]);
+
+  const handleDeleteSnapshot = async (snapshotId: string) => {
+    if (!window.confirm('Are you sure you want to delete this snapshot? It will be removed from your history.')) return;
+    try {
+      await api.delete(`/scan/${snapshotId}`);
+      setSelectedSnapshot(null);
+      setComparisonBefore(null);
+      setComparisonAfter(null);
+      setRefreshKey((k) => k + 1);
+    } catch (err) {
+      console.error('Failed to delete snapshot:', err);
+      alert('Failed to delete snapshot. Please try again.');
+    }
+  };
 
   useEffect(() => {
     localStorage.setItem('digital_twin_range', dateRange);
@@ -366,13 +383,7 @@ const DigitalTwinTimelinePage: React.FC = () => {
           <SnapshotDetails 
             snapshot={selectedData} 
             formatDate={formatFullDate}
-            onDelete={snapshots.length > 1 ? () => {
-              // TODO: Add API call to delete snapshot
-              if (window.confirm('Are you sure you want to delete this snapshot?')) {
-                // Would call API here: await api.delete(`/digital-twin/snapshot/${id}`)
-                alert('Delete functionality will be available in a future update.');
-              }
-            } : undefined}
+            onDelete={snapshots.length > 1 ? () => handleDeleteSnapshot(selectedData.id) : undefined}
           />
         )}
         {snapshots.length >= 2 && (

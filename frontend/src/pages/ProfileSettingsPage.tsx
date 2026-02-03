@@ -4,7 +4,7 @@ import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'rec
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { useShelf } from '../context/ShelfContext';
-import { IconBarChart, IconCamera, IconPackage, IconSparkles, IconTrendingUp, IconScan } from '../components/Icons';
+import { IconBarChart, IconCamera, IconPackage, IconSparkles, IconTrendingUp, IconScan, IconBell, IconLock, IconHelpCircle, IconChevronRight } from '../components/Icons';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { getScanHistory } from '../services/scanApi';
 import { api } from '../services/api';
@@ -69,18 +69,24 @@ interface UserProfile {
 
 const ProfileSettingsPage: React.FC = () => {
   usePageTitle('Profile Settings');
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const { totalCount: shelfProductCount } = useShelf();
   const navigate = useNavigate();
   const toast = useToast();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const initialProfileRef = useRef<UserProfile | null>(null);
+  const settingsFormRef = useRef<HTMLFormElement>(null);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
   const [fieldErrors, setFieldErrors] = useState<{ name?: string; email?: string }>({});
   const [isDirty, setIsDirty] = useState(false);
   const [activeTab, setActiveTab] = useState<'personal' | 'skin' | 'goals' | 'lifestyle' | 'notifications' | 'privacy' | 'stats'>('personal');
+  const [headerScrolled, setHeaderScrolled] = useState(false);
+  const [showChangeEmailModal, setShowChangeEmailModal] = useState(false);
+  const [pullDistance, setPullDistance] = useState(0);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const pullStartY = useRef(0);
   
   const [profile, setProfile] = useState<UserProfile>({
     name: '',
@@ -300,6 +306,35 @@ const ProfileSettingsPage: React.FC = () => {
     setIsDirty(current !== initial);
   }, [profile]);
 
+  /* Sticky header: show compact bar when scrolled past hero */
+  useEffect(() => {
+    const onScroll = () => setHeaderScrolled(window.scrollY > 120);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const handlePullStart = (e: React.TouchEvent) => {
+    pullStartY.current = e.touches[0].clientY;
+  };
+  const handlePullMove = (e: React.TouchEvent) => {
+    if (window.scrollY > 0) return;
+    const y = e.touches[0].clientY;
+    const diff = y - pullStartY.current;
+    if (diff > 0) setPullDistance(Math.min(diff * 0.5, 80));
+  };
+  const handlePullEnd = () => {
+    if (pullDistance >= 60 && !isRefreshing) {
+      setIsRefreshing(true);
+      fetchUserProfile().finally(() => {
+        setIsRefreshing(false);
+        setPullDistance(0);
+        toast.success('Profile refreshed');
+      });
+    } else {
+      setPullDistance(0);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const nextErrors: { name?: string; email?: string } = {};
@@ -395,6 +430,46 @@ const ProfileSettingsPage: React.FC = () => {
 
   return (
     <div className="profile-settings-page">
+      {/* Sticky header on scroll - compact avatar + name */}
+      <header
+        className={`profile-sticky-header${headerScrolled ? ' visible' : ''}`}
+        aria-hidden={!headerScrolled}
+      >
+        <div className="profile-sticky-header-inner">
+          <div className="profile-sticky-avatar">
+            {profile.profilePhoto ? (
+              <img src={profile.profilePhoto} alt="" width={36} height={36} />
+            ) : (
+              <span>{(profile.name || 'U').charAt(0).toUpperCase()}</span>
+            )}
+          </div>
+          <span className="profile-sticky-name">{profile.name || 'Profile'}</span>
+        </div>
+      </header>
+
+      {/* Pull-to-refresh indicator (mobile) */}
+      <div
+        className="profile-pull-refresh"
+        onTouchStart={handlePullStart}
+        onTouchMove={handlePullMove}
+        onTouchEnd={handlePullEnd}
+        onTouchCancel={handlePullEnd}
+      >
+        <div
+          className="profile-pull-indicator"
+          style={{ opacity: pullDistance / 60 }}
+          aria-hidden={pullDistance === 0 && !isRefreshing}
+        >
+          <div className="profile-pull-indicator-inner" style={{ transform: `translateY(${Math.min(pullDistance, 60)}px)` }}>
+            {isRefreshing ? (
+              <span className="profile-pull-spinner" aria-label="Refreshing" />
+            ) : (
+              <span className="profile-pull-text">Pull to refresh</span>
+            )}
+          </div>
+        </div>
+      </div>
+
       {/* Hero Banner */}
       <div className="profile-hero-banner">
         <h1>Profile Settings</h1>
@@ -409,7 +484,7 @@ const ProfileSettingsPage: React.FC = () => {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="settings-form">
+          <form ref={settingsFormRef} onSubmit={handleSubmit} className="settings-form" id="profile-settings-form">
             <div className="profile-layout">
               <aside className="profile-sidebar">
                 <div className="profile-card">
@@ -440,14 +515,20 @@ const ProfileSettingsPage: React.FC = () => {
                   onChange={handlePhotoUpload}
                   className="visually-hidden"
                 />
-                <p className="help-text">Recommended: 200x200px square image.</p>
+                <p className="help-text">Use a square photo for best results.</p>
               </div>
 
-              <div className="profile-quick-stats">
-                <div className="quick-stat">
+              <div className="profile-quick-stats" role="group" aria-label="Quick stats">
+                <button
+                  type="button"
+                  className="quick-stat quick-stat-link"
+                  onClick={() => navigate('/dashboard')}
+                  aria-label="View skin score details on dashboard"
+                >
                   <span className="quick-stat-value">{stats.skinHealthScore}%</span>
                   <span className="quick-stat-label">Skin Score</span>
-                </div>
+                  <span className="quick-stat-action">View details →</span>
+                </button>
                 <div className="quick-stat">
                   <span className="quick-stat-value">{stats.totalScans}</span>
                   <span className="quick-stat-label">Total Scans</span>
@@ -470,6 +551,26 @@ const ProfileSettingsPage: React.FC = () => {
                   </button>
                 ))}
               </nav>
+
+              {/* Settings quick links - Notifications, Privacy, Help */}
+              <div className="profile-settings-links">
+                <h3 className="profile-settings-links-title">Settings</h3>
+                <button type="button" className="profile-settings-link" onClick={() => setActiveTab('notifications')}>
+                  <IconBell size={20} strokeWidth={2} />
+                  <span>Notifications</span>
+                  <IconChevronRight size={18} strokeWidth={2} />
+                </button>
+                <button type="button" className="profile-settings-link" onClick={() => setActiveTab('privacy')}>
+                  <IconLock size={20} strokeWidth={2} />
+                  <span>Privacy</span>
+                  <IconChevronRight size={18} strokeWidth={2} />
+                </button>
+                <Link to="/contact" className="profile-settings-link">
+                  <IconHelpCircle size={20} strokeWidth={2} />
+                  <span>Help &amp; Support</span>
+                  <IconChevronRight size={18} strokeWidth={2} />
+                </Link>
+              </div>
             </aside>
 
             <section className="profile-content">
@@ -514,10 +615,10 @@ const ProfileSettingsPage: React.FC = () => {
                     <p className="help-text">Email changes require verification.</p>
                     <button
                       type="button"
-                      className="btn-secondary btn-inline"
-                      onClick={() => handleProtectedAction('Email change requests are handled via support.')}
+                      className="btn-link change-email-btn"
+                      onClick={() => setShowChangeEmailModal(true)}
                     >
-                      Request Email Change
+                      Change Email
                     </button>
                   </div>
                 </div>
@@ -983,9 +1084,75 @@ const ProfileSettingsPage: React.FC = () => {
             </button>
             </div>
           </div>
+
+          {/* Floating Save - only when form is dirty (mobile-friendly) */}
+          {isDirty && (
+            <div className="profile-floating-save">
+              <button
+                type="button"
+                className="profile-floating-save-btn"
+                onClick={() => settingsFormRef.current?.requestSubmit()}
+                disabled={loading}
+              >
+                {loading ? 'Saving...' : 'Save Changes'}
+              </button>
+            </div>
+          )}
+
+          {/* Account actions - Sign Out & Delete */}
+          <div className="profile-account-actions">
+            <button
+              type="button"
+              className="btn-account btn-signout"
+              onClick={() => { logout(); navigate('/'); }}
+            >
+              Sign Out
+            </button>
+            <button
+              type="button"
+              className="btn-account btn-danger-text"
+              onClick={() => {
+                if (window.confirm('Are you sure you want to delete your account? This cannot be undone.')) {
+                  handleProtectedAction('Account deletion is handled via support. Contact us to proceed.');
+                }
+              }}
+            >
+              Delete Account
+            </button>
+          </div>
         </form>
         </div>
       </div>
+
+      {/* Change Email modal */}
+      {showChangeEmailModal && (
+        <div
+          className="profile-modal-backdrop"
+          onClick={() => setShowChangeEmailModal(false)}
+          onKeyDown={(e) => e.key === 'Escape' && setShowChangeEmailModal(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="change-email-title"
+        >
+          <div className="profile-modal" onClick={(e) => e.stopPropagation()}>
+            <h2 id="change-email-title">Change Email</h2>
+            <p className="profile-modal-text">
+              To change your email we need to verify your identity. We&apos;ll send a verification link to your new address.
+            </p>
+            <p className="profile-modal-text">
+              Contact support to request an email change and we&apos;ll guide you through verification.
+            </p>
+            <div className="profile-modal-actions">
+              <a href="mailto:support@pellicura.com?subject=Email%20change%20request" className="btn-primary">
+                Email support
+              </a>
+              <button type="button" className="btn-secondary" onClick={() => setShowChangeEmailModal(false)}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

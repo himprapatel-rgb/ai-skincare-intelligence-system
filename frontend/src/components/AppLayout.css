@@ -449,6 +449,14 @@
   outline-offset: var(--focus-ring-offset);
 }
 
+/* Mobile menu backdrop - blocks background content (Phase 1 fix) */
+.app-nav-mobile-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+}
+
 /* Mobile Navigation */
 .app-nav-mobile {
   display: none;
@@ -456,6 +464,7 @@
   top: 100%;
   left: 0;
   right: 0;
+  z-index: 999;
   background: var(--bg-white);
   border-bottom: 1px solid var(--border);
   box-shadow: var(--shadow-lg);

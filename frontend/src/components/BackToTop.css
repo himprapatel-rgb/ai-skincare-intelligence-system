@@ -1,9 +1,10 @@
+/* FAB: above bottom nav, below modals - never covers nav or content */
 .back-to-top {
   position: fixed;
-  bottom: 24px;
-  right: 24px;
+  bottom: 80px; /* Above bottom nav (~56px + padding) */
+  right: 16px;
   left: auto;
-  z-index: 100;
+  z-index: 50; /* Below modals/menus (sticky ~100, dropdown 1000, modal 2000) */
   width: 48px;
   height: 48px;
   border-radius: 50%;
@@ -26,9 +27,10 @@
   outline-offset: 2px;
 }
 
-/* On mobile: sit above bottom nav to avoid overlap */
+/* Mobile: above bottom nav + safe area */
 @media (max-width: 768px) {
   .back-to-top {
-    bottom: calc(56px + 16px + env(safe-area-inset-bottom, 0px));
+    bottom: calc(56px + 24px + env(safe-area-inset-bottom, 0px));
+    right: max(16px, env(safe-area-inset-right));
   }
 }

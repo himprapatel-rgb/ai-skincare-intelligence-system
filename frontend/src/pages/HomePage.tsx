@@ -359,27 +359,18 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-      {/* CTA Section */}
+      {/* CTA Section - single link to avoid duplicate primary CTA (Phase 1 fix) */}
       <section className="cta-section">
         <div className="cta-content">
           <h2>Ready to Understand Your Skin?</h2>
           <p>Get instant AI-powered insights from a single photo</p>
-          <button className="btn-primary large" onClick={() => navigate('/scan')}>
-            Start Free Skin Scan
-          </button>
+          <Link to="/scan" className="cta-section-link">Go to free skin scan</Link>
           <p className="cta-reassurance">
             <IconShield size={16} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '6px' }} />
             Your photo is processed securely and never shared
           </p>
         </div>
       </section>
-
-        {/* Mobile Sticky CTA */}
-        <div className="mobile-sticky-cta">
-          <button className="btn-primary" onClick={() => navigate('/scan')}>
-            Start Free Skin Scan
-          </button>
-        </div>
     </div>
   );
 };

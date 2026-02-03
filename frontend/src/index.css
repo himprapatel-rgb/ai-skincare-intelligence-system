@@ -61,6 +61,8 @@
   /* Legacy aliases (page-level styles) */
   --primary-dark: var(--primary-hover);
   --secondary: var(--warning);
+  --error: var(--danger);
+  --background: var(--bg-primary);
   --bg-light: var(--bg-secondary);
   --bg-white: var(--white);
   --text-dark: var(--text-primary);
@@ -68,6 +70,22 @@
   --text-light: var(--text-muted);
   --border: var(--border-color);
   --shadow: var(--shadow-sm);
+  /* Phase 3: Typography scale aliases (px) */
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-base: 16px;
+  --text-lg: 18px;
+  --text-xl: 20px;
+  --text-2xl: 24px;
+  --text-3xl: 30px;
+  /* Phase 3: Spacing scale (px) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
   
   /* Border */
   --border-color: var(--gray-200);
@@ -1275,6 +1293,14 @@ body::after,
    PREMIUM POLISH - 2026 Global Enhancements
    =============================================== */
 
+/* Phase 3: Card utility - consistent shadows & borders */
+.card {
+  background: var(--bg-white);
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border-color);
+}
+
 /* Smooth scroll */
 html {
   scroll-behavior: smooth;
@@ -1285,6 +1311,21 @@ html {
   outline: 2px solid var(--primary);
   outline-offset: 2px;
   border-radius: 4px;
+}
+
+/* Phase 2: Touch target accessibility - min 44px on mobile for primary actions */
+@media (max-width: 768px) {
+  .btn-primary,
+  .btn-secondary,
+  .app-nav-mobile-link,
+  .clickable {
+    min-height: 44px;
+    min-width: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .app-nav-mobile-link { display: flex; }
 }
 
 /* Smooth transitions for interactive elements */

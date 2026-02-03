@@ -24,6 +24,7 @@
   }
 }
 
+/* Phase 2: min 48px touch target per tab; active = colored icon + text only (no circle overlay) */
 .bottom-nav-item {
   display: flex;
   flex-direction: column;
@@ -31,8 +32,8 @@
   justify-content: center;
   gap: 2px;
   flex: 1;
-  min-height: 56px;
-  min-width: 44px;
+  min-height: 48px;
+  min-width: 48px;
   padding: var(--spacing-xs) var(--spacing-sm);
   color: var(--text-muted);
   text-decoration: none;
@@ -49,6 +50,16 @@
 .bottom-nav-item.active {
   color: var(--primary);
   background: transparent;
+  font-weight: 600;
+}
+
+.bottom-nav-item.active svg {
+  color: var(--primary);
+  opacity: 1;
+}
+
+.bottom-nav-item:not(.active) svg {
+  opacity: 0.75;
 }
 
 .bottom-nav-item svg {

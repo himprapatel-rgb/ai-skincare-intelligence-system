@@ -223,6 +223,15 @@ const displayName = nameParts.length > 1
           </button>
         </div>
         
+        {/* Mobile menu backdrop - blocks background, click to close (Phase 1 fix) */}
+        {mobileMenuOpen && (
+          <div
+            className="app-nav-mobile-backdrop"
+            onClick={() => setMobileMenuOpen(false)}
+            onKeyDown={(e) => e.key === 'Escape' && setMobileMenuOpen(false)}
+            aria-hidden="true"
+          />
+        )}
         {/* Mobile Navigation */}
         <nav className={`app-nav-mobile${mobileMenuOpen ? ' open' : ''}`} aria-label="Mobile navigation">
           <div className="app-nav-mobile-scroll">

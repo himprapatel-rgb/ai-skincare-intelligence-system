@@ -727,6 +727,21 @@
   text-align: center;
 }
 
+/* Single link CTA - no duplicate primary button (Phase 1 fix) */
+.cta-section-link {
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 600;
+  font-size: 1.05rem;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  display: inline-block;
+  margin: 8px 0;
+}
+.cta-section-link:hover {
+  color: #fff;
+  text-decoration-thickness: 2px;
+}
+
 .cta-container {
   max-width: 720px;
   margin: 0 auto;
@@ -1752,14 +1767,9 @@
   overflow: hidden;
 }
 
+/* Decorative overlay hidden - was overlapping content (Phase 1 fix) */
 .hero::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(1200px 420px at 50% -10%, rgba(255, 255, 255, 0.75), transparent 60%),
-    radial-gradient(420px 240px at 78% 70%, rgba(169, 199, 255, 0.22), transparent 70%);
-  pointer-events: none;
+  display: none;
 }
 
 .hero-content {
@@ -1806,16 +1816,9 @@
   background: linear-gradient(135deg, #ffffff 0%, #f3f7ff 100%);
 }
 
+/* Decorative circle hidden globally - was overlapping nav/text (Phase 1 fix) */
 .cta-section::after {
-  content: '';
-  position: absolute;
-  width: 220px;
-  height: 220px;
-  border-radius: 50%;
-  right: -80px;
-  top: -60px;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.35), transparent 70%);
-  pointer-events: none;
+  display: none;
 }
 
 .btn-primary,

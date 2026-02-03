@@ -496,7 +496,7 @@
   z-index: 9998;
 }
 
-/* Mobile Navigation - solid opaque panel below header, no transparency */
+/* Mobile Navigation - full-width panel below header (fix: ensure visible panel, not thin sliver) */
 .app-nav-mobile {
   display: none;
   position: fixed;
@@ -504,6 +504,9 @@
   left: 0;
   right: 0;
   bottom: 0;
+  width: 100%;
+  max-width: 100vw;
+  min-width: 280px;
   z-index: 9999;
   background: #ffffff;
   -webkit-tap-highlight-color: transparent;

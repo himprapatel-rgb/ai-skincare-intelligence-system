@@ -42,6 +42,11 @@ class User(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
+    # Last known IP & geolocation (updated on each authenticated request)
+    last_ip_address = Column(String(45), nullable=True)
+    last_geolocation = Column(JSON, nullable=True)  # e.g. {"country","region","city","lat","lon"}
+    last_seen_at = Column(DateTime(timezone=True), nullable=True)
+
     # Relationships
     scan_sessions = relationship("ScanSession", back_populates="user", cascade="all, delete-orphan")
     skin_snapshots = relationship("SkinStateSnapshot", back_populates="user", cascade="all, delete-orphan")
@@ -50,6 +55,22 @@ class User(Base):
 
     def __repr__(self):
         return f"<User {self.email}>"
+
+
+class UserAccessLog(Base):
+    """Log of each authenticated request with IP and geolocation."""
+    __tablename__ = "user_access_logs"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    ip_address = Column(String(45), nullable=False)
+    geolocation = Column(JSON, nullable=True)  # country, region, city, lat, lon, etc.
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    user = relationship("User", backref="access_logs", foreign_keys=[user_id])
+
+    def __repr__(self):
+        return f"<UserAccessLog user_id={self.user_id} ip={self.ip_address}>"
 
 
 class UserConsent(Base):

@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
-import { IconScan, IconHome, IconCheck, IconAlertTriangle, IconArrowLeft, IconCopy, IconShare2, IconBrandX, IconHeart, IconDownload, getSkinConcernIcon } from '../components/Icons';
+import { IconScan, IconHome, IconCheck, IconAlertTriangle, IconArrowLeft, IconCopy, IconShare2, IconBrandX, IconHeart, IconDownload, IconShoppingCart, getSkinConcernIcon } from '../components/Icons';
 import { BreadcrumbJsonLd } from '../components/BreadcrumbJsonLd';
 import { SkeletonAnalysis } from '../components/Skeleton';
 import { getScanHistory, getScanResult } from '../services/scanApi';
@@ -549,6 +549,44 @@ const AnalysisResults: React.FC = () => {
               <p className="analysis-empty">No severity metrics available for this scan.</p>
             )}
           </div>
+        </div>
+
+        {/* AI Ingredient Recommendations – design system */}
+        <div className="result-card analysis-ingredient-rec">
+          <h2>🧪 AI Ingredient Recommendations</h2>
+          <p className="analysis-ingredient-intro">
+            Based on your analysis, these ingredients will help most:
+          </p>
+          <div className="analysis-ingredient-cards">
+            <div className="analysis-ingredient-card">
+              <h3 className="analysis-ingredient-name">💧 Hyaluronic Acid</h3>
+              <p className="analysis-ingredient-why">
+                Why: Deeply hydrates skin, plumps and reduces fine lines caused by dehydration.
+              </p>
+              <p className="analysis-ingredient-targets">Targets: Dehydration ✓</p>
+              <Link to="/ingredients" className="analysis-ingredient-learn">ℹ️ Learn More</Link>
+            </div>
+            <div className="analysis-ingredient-card">
+              <h3 className="analysis-ingredient-name">🍊 Vitamin C (Ascorbic Acid)</h3>
+              <p className="analysis-ingredient-why">
+                Why: Brightens under-eye area, reduces pigmentation, boosts collagen production.
+              </p>
+              <p className="analysis-ingredient-targets">Targets: Dark Circles ✓ · Dullness ✓</p>
+              <Link to="/ingredients" className="analysis-ingredient-learn">ℹ️ Learn More</Link>
+            </div>
+            <div className="analysis-ingredient-card">
+              <h3 className="analysis-ingredient-name">☕ Caffeine</h3>
+              <p className="analysis-ingredient-why">
+                Why: Constricts blood vessels, reduces puffiness and dark circles.
+              </p>
+              <p className="analysis-ingredient-targets">Targets: Dark Circles ✓ · Puffiness ✓</p>
+              <Link to="/ingredients" className="analysis-ingredient-learn">ℹ️ Learn More</Link>
+            </div>
+          </div>
+          <button type="button" onClick={() => navigate('/recommendations')} className="btn btn-primary analysis-ingredient-cta">
+            <IconShoppingCart size={18} strokeWidth={2} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+            Find products with these ingredients
+          </button>
         </div>
 
         <div className="result-card metric-explanations">

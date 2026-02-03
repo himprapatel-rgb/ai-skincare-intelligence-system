@@ -1,6 +1,6 @@
 /**
- * TODAY tab – Daily hub (Jobs-To-Be-Done: CHECK + ACT).
- * Redesign: time greeting, AI Prediction, score, mini progress, routine, streak, For you.
+ * TODAY tab – Home Dashboard (Mobile Design System).
+ * Sections: Your Skin Today, Your Top Concerns, AI Ingredient Match, Top Pick For You.
  */
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -17,6 +17,9 @@ import {
   IconPackage,
   IconArrowRight,
   IconCheck,
+  IconCamera,
+  IconBarChart,
+  IconShoppingCart,
 } from '../components/Icons';
 import NotificationBell from '../components/notifications/NotificationBell';
 import { getStreak, checkInToday, hasCheckedInToday } from '../utils/streakStorage';
@@ -46,11 +49,66 @@ interface TodayData {
 
 const WEEKDAY_LABELS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
-/** Placeholder "For You" picks when no API data; show image + why to improve engagement */
-const FOR_YOU_FALLBACK = [
-  { id: 'rec-1', name: 'Barrier Repair Moisturizer', match: 92, why: 'Hydration, barrier support' },
-  { id: 'rec-2', name: 'Vitamin C Serum', match: 88, why: 'Brightening, dark spots' },
-  { id: 'rec-3', name: 'Lightweight SPF 50', match: 85, why: 'Protection, oil-free' },
+function formatLastScan(isoDate: string | null): string {
+  if (!isoDate) return 'No scans yet';
+  const d = new Date(isoDate);
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const scanDay = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  const diffDays = Math.floor((today.getTime() - scanDay.getTime()) / (24 * 60 * 60 * 1000));
+  if (diffDays === 0) return 'Today';
+  if (diffDays === 1) return 'Yesterday';
+  if (diffDays < 7) return `${diffDays} days ago`;
+  return d.toLocaleDateString();
+}
+
+/** Top concerns for dashboard (from analysis or fallback) – level: HIGH/MED/LOW */
+const TOP_CONCERNS_FALLBACK: { name: string; level: 'HIGH' | 'MED' | 'LOW' }[] = [
+  { name: 'Dark Circles', level: 'HIGH' },
+  { name: 'Dehydration', level: 'MED' },
+  { name: 'Uneven Texture', level: 'LOW' },
+  { name: 'Fine Lines', level: 'LOW' },
+];
+
+/** AI ingredient recommendations (ingredient-focused design) */
+const AI_INGREDIENT_MATCH: { ingredient: string; emoji: string; forConcern: string }[] = [
+  { ingredient: 'Hyaluronic Acid', emoji: '💧', forConcern: 'Dehydration' },
+  { ingredient: 'Vitamin C', emoji: '🍊', forConcern: 'Dark Circles' },
+  { ingredient: 'Caffeine', emoji: '☕', forConcern: 'Dark Circles' },
+];
+
+/** At least 3 recommended products for home page (Amazon affiliate placeholders) */
+const RECOMMENDED_PRODUCTS = [
+  {
+    id: 'rec-1',
+    name: 'Caffeine Solution 5% + EGCG',
+    brand: 'The Ordinary',
+    matchPct: 98,
+    rating: 4.4,
+    price: '€6.80',
+    imageUrl: null as string | null,
+    buyUrl: 'https://www.amazon.co.uk/dp/B07PQ43WR2',
+  },
+  {
+    id: 'rec-2',
+    name: 'Hyaluronic Acid 2% + B5',
+    brand: 'The Ordinary',
+    matchPct: 95,
+    rating: 4.5,
+    price: '€7.90',
+    imageUrl: null as string | null,
+    buyUrl: 'https://www.amazon.co.uk/dp/B01M0AE5OV',
+  },
+  {
+    id: 'rec-3',
+    name: 'Eye Repair Cream',
+    brand: 'CeraVe',
+    matchPct: 92,
+    rating: 4.6,
+    price: '€14.50',
+    imageUrl: null as string | null,
+    buyUrl: 'https://www.amazon.co.uk/dp/B07D5NPCYD',
+  },
 ];
 
 const TodayPage: React.FC = () => {
@@ -77,6 +135,8 @@ const TodayPage: React.FC = () => {
   });
   const [twinSnapshotCount, setTwinSnapshotCount] = useState<number | null>(null);
   const [twinFirstScore, setTwinFirstScore] = useState<number | null>(null);
+  const [lastScanDate, setLastScanDate] = useState<string | null>(null);
+  const [gaugeScore, setGaugeScore] = useState(0);
 
   const dismissTwinIntro = () => {
     try {
@@ -129,6 +189,14 @@ const TodayPage: React.FC = () => {
   useEffect(() => {
     setStreak(getStreak());
   }, []);
+
+  useEffect(() => {
+    if (data?.skinScore == null) return;
+    const timer = requestAnimationFrame(() => {
+      setGaugeScore(data!.skinScore);
+    });
+    return () => cancelAnimationFrame(timer);
+  }, [data?.skinScore]);
 
   useEffect(() => {
     if (!isAuthenticated) return;
@@ -211,6 +279,7 @@ const TodayPage: React.FC = () => {
       <header className="today-header">
         <h1 className="today-greeting">{timeGreeting}, {firstName}</h1>
         <div className="today-header-actions">
+          <span className="today-region-pill" title="Amazon prices for your region">🇮🇪</span>
           <NotificationBell />
           <Link to="/profile?tab=settings" className="today-settings-btn" aria-label="Settings">
             <IconSettings size={22} strokeWidth={2} />
@@ -233,8 +302,9 @@ const TodayPage: React.FC = () => {
           </section>
         )}
 
-        <section className="today-card today-card-skin today-card-skin-glow">
-          <h2 className="today-card-title">Your skin today</h2>
+        {/* 🧬 YOUR SKIN TODAY – compact score + actions */}
+        <section className="today-card today-card-skin today-card-skin-glow today-card-skin-compact">
+          <h2 className="today-card-title today-card-title-caps">🧬 Your skin today</h2>
           {loading || data === null ? (
             <div className="today-skin-skeleton">
               <div className="today-skin-score-box">—</div>
@@ -242,36 +312,55 @@ const TodayPage: React.FC = () => {
             </div>
           ) : (
             <>
-              <div className="today-skin-score-box">
-                <div className="today-skin-ring-wrap" aria-hidden>
-                  <svg className="today-skin-ring" viewBox="0 0 100 100">
-                    <circle className="today-skin-ring-bg" cx="50" cy="50" r="42" fill="none" strokeWidth="8" />
+              <div className="today-skin-compact-row">
+                <div className="today-skin-gauge-wrap" aria-hidden>
+                  <svg className="today-skin-gauge" viewBox="0 0 100 100" role="img" aria-label={`Skin score ${data.skinScore} out of 100`}>
+                    <defs>
+                      <linearGradient id="today-gauge-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="var(--primary)" />
+                        <stop offset="100%" stopColor="#7c3aed" />
+                      </linearGradient>
+                    </defs>
+                    <circle className="today-skin-gauge-bg" cx="50" cy="50" r="42" fill="none" strokeWidth="8" />
                     <circle
-                      className="today-skin-ring-fill"
+                      className="today-skin-gauge-fill"
                       cx="50"
                       cy="50"
                       r="42"
                       fill="none"
                       strokeWidth="8"
                       strokeLinecap="round"
-                      strokeDasharray={`${(data.skinScore / 100) * 264} 264`}
+                      strokeDasharray={264}
+                      strokeDashoffset={264 - (264 * gaugeScore) / 100}
                     />
                   </svg>
-                  <span className="today-skin-score today-skin-score-inner">{data.skinScore}</span>
+                  <span className="today-skin-gauge-value">{data.skinScore}</span>
+                  <span className="today-skin-gauge-label">Score</span>
                 </div>
-                <span className="today-skin-trend">
-                  {data.skinTrend === 'improving' && <>↑ Improving</>}
-                  {data.skinTrend === 'stable' && <>→ Stable</>}
-                  {data.skinTrend === 'declining' && <>↓ Needs attention</>}
-                </span>
-                <span className="today-skin-label">Score</span>
+                <div className="today-skin-trend-block">
+                  <span className="today-skin-trend today-skin-trend-inline">
+                    {data.skinTrend === 'improving' && <>→ Improving</>}
+                    {data.skinTrend === 'stable' && <>→ Stable</>}
+                    {data.skinTrend === 'declining' && <>→ Needs attention</>}
+                  </span>
+                </div>
               </div>
               <p className="today-skin-meta">
-                {data.scanCount} scan{data.scanCount !== 1 ? 's' : ''} • Based on your latest analysis
+                {data.scanCount} scan{data.scanCount !== 1 ? 's' : ''} · Last: {formatLastScan(lastScanDate)}
               </p>
+              <div className="today-skin-actions">
+                <Link to="/scan" className="btn btn-primary today-skin-btn">
+                  <IconCamera size={18} strokeWidth={2} />
+                  New Scan
+                </Link>
+                <Link to="/history" className="btn btn-secondary today-skin-btn">
+                  <IconBarChart size={18} strokeWidth={2} />
+                  History
+                </Link>
+              </div>
               {showTwinIntro && (
                 <div className="today-twin-intro" role="region" aria-label="New feature">
-                  <p className="today-twin-intro-text">Track your skin over time with your Digital Twin — timeline, before/after, and What-If simulation.</p>
+                  <p className="today-twin-intro-text">Track your skin over time with your Digital Twin.</p>
                   <div className="today-twin-intro-actions">
                     <Link to="/digital-twin" className="btn btn-primary btn-sm" onClick={dismissTwinIntro}>
                       Explore Digital Twin
@@ -283,11 +372,48 @@ const TodayPage: React.FC = () => {
                 </div>
               )}
               <Link to="/digital-twin" className="today-card-link today-card-link-twin">
-                <span className="today-twin-badge">Timeline</span>
-                View full analysis & Digital Twin <IconArrowRight size={18} strokeWidth={2} />
+                View full analysis & timeline <IconArrowRight size={18} strokeWidth={2} />
               </Link>
             </>
           )}
+        </section>
+
+        {/* 🎯 YOUR TOP CONCERNS – 2x2 grid */}
+        <section className="today-card today-card-concerns">
+          <h2 className="today-card-title today-card-title-caps">🎯 Your top concerns</h2>
+          <div className="today-concerns-grid">
+            {TOP_CONCERNS_FALLBACK.map((c) => (
+              <div key={c.name} className={`today-concern-cell today-concern-${c.level.toLowerCase()}`}>
+                <span className="today-concern-badge">
+                  {c.level === 'HIGH' && '🔴 HIGH'}
+                  {c.level === 'MED' && '🟠 MED'}
+                  {c.level === 'LOW' && '🟡 LOW'}
+                </span>
+                <span className="today-concern-name">{c.name}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* 🧪 AI INGREDIENT MATCH */}
+        <section className="today-card today-card-ingredients">
+          <h2 className="today-card-title today-card-title-caps">🧪 AI ingredient match</h2>
+          <p className="today-ingredients-intro">Based on your concerns, we recommend products with:</p>
+          <ul className="today-ingredients-list">
+            {AI_INGREDIENT_MATCH.map((item) => (
+              <li key={item.ingredient} className="today-ingredient-item">
+                <span className="today-ingredient-emoji" aria-hidden>{item.emoji}</span>
+                <div className="today-ingredient-text">
+                  <strong>{item.ingredient}</strong>
+                  <span className="today-ingredient-for">For: {item.forConcern}</span>
+                </div>
+              </li>
+            ))}
+          </ul>
+          <Link to="/recommendations" className="btn btn-primary today-ingredients-cta">
+            <IconShoppingCart size={18} strokeWidth={2} />
+            Find matching products
+          </Link>
         </section>
 
         {/* Mini Before/After – Your progress */}
@@ -395,28 +521,46 @@ const TodayPage: React.FC = () => {
           </section>
         )}
 
-        <section className="today-card today-card-foryou">
+        {/* 🏆 RECOMMENDED FOR YOU – at least 3 products */}
+        <section className="today-card today-card-toppick">
           <div className="today-card-head">
             <span className="today-foryou-icon"><IconStar size={20} strokeWidth={2} /></span>
-            <h2 className="today-card-title">For you</h2>
+            <h2 className="today-card-title today-card-title-caps">🏆 Recommended for you</h2>
             <Link to="/recommendations" className="today-see-all">See all →</Link>
           </div>
-          <div className="today-foryou-tiles">
-            {FOR_YOU_FALLBACK.map((item) => (
-              <button
-                key={item.id}
-                type="button"
-                className="today-foryou-tile"
-                onClick={() => navigate('/recommendations')}
-              >
-                <div className="today-foryou-thumb" aria-hidden />
-                <span className="today-foryou-pct">{item.match}%</span>
-                <span className="today-foryou-name">{item.name}</span>
-                <span className="today-foryou-why">Addresses: {item.why}</span>
-              </button>
+          <div className="today-products-grid">
+            {RECOMMENDED_PRODUCTS.map((product) => (
+              <div key={product.id} className="today-product-card">
+                <div className="today-product-card-image">
+                  {product.imageUrl ? (
+                    <img src={product.imageUrl} alt="" />
+                  ) : (
+                    <span className="today-product-card-placeholder" aria-hidden>Product</span>
+                  )}
+                </div>
+                <div className="today-product-card-info">
+                  <p className="today-product-card-brand">{product.brand}</p>
+                  <h3 className="today-product-card-name">{product.name}</h3>
+                  <div className="today-product-card-match">
+                    <span className="today-product-card-match-pct">{product.matchPct}% match</span>
+                    <div className="today-product-card-bar" role="presentation">
+                      <div className="today-product-card-bar-fill" style={{ width: `${product.matchPct}%` }} />
+                    </div>
+                  </div>
+                  <p className="today-product-card-meta">⭐ {product.rating} · {product.price}</p>
+                  <a
+                    href={product.buyUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-primary today-product-card-buy"
+                  >
+                    <IconShoppingCart size={16} strokeWidth={2} />
+                    Buy on Amazon
+                  </a>
+                </div>
+              </div>
             ))}
           </div>
-          <p className="today-foryou-hint">Personalized picks based on your skin profile</p>
         </section>
 
         {shelfCount === 0 && (

@@ -11,6 +11,7 @@ from sqlalchemy import text
 from sqlalchemy.exc import IntegrityError, ProgrammingError
 
 from middleware.request_tracing import RequestTracingMiddleware
+from middleware.ip_geo_logging import IPGeoLoggingMiddleware
 from app.api.v1 import api_router
 from app.api.v1.products import router as external_products_router
 from app.api.v1.progress import router as progress_router
@@ -65,7 +66,7 @@ from app.models.shelf import ShelfProduct
 # Import ALL models to ensure tables are created at startup
 from app.models.twin_models import *  # Digital Twin models
 from app.models.content import Blog, NewsItem, Video
-from app.models.user import PolicyVersion, User, UserConsent, UserProfile
+from app.models.user import PolicyVersion, User, UserAccessLog, UserConsent, UserProfile
 from app.routers import (  # GDPR & User Management
     admin,
     catalog,
@@ -104,6 +105,8 @@ app.add_middleware(GZipMiddleware, minimum_size=1000)
 
 # Task 425: Request tracing with correlation IDs
 app.add_middleware(RequestTracingMiddleware)
+# Record IP and geolocation on each authenticated request; update User and UserAccessLog
+app.add_middleware(IPGeoLoggingMiddleware)
 
 
 @app.middleware("http")
@@ -174,6 +177,13 @@ def ensure_test_user() -> None:
                             "ALTER TABLE scan_sessions ADD COLUMN IF NOT EXISTS image_filename VARCHAR(255)"
                         )
                     )
+                except ProgrammingError:
+                    pass
+                # IP & geolocation tracking
+                try:
+                    conn.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS last_ip_address VARCHAR(45)"))
+                    conn.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS last_geolocation JSONB"))
+                    conn.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS last_seen_at TIMESTAMP WITH TIME ZONE"))
                 except ProgrammingError:
                     pass
     except ProgrammingError:

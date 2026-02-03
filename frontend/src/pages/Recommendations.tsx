@@ -327,6 +327,19 @@ const Recommendations: React.FC = () => {
         </Link>
       </header>
       <div className="recommendations-container app-page-content">
+        <div className="recommendations-geo-banner" role="region" aria-label="Product region and ingredients">
+          <p className="recommendations-geo-ingredients">
+            <span className="recommendations-geo-label">🧪 Finding products with:</span>
+            <span className="recommendations-geo-chips">
+              <span className="recommendations-geo-chip">💧 Hyaluronic</span>
+              <span className="recommendations-geo-chip">🍊 Vit C</span>
+              <span className="recommendations-geo-chip">☕ Caffeine</span>
+            </span>
+          </p>
+          <p className="recommendations-geo-region">
+            📍 Showing: Ireland prices from Amazon.co.uk
+          </p>
+        </div>
         <div className={`recommendations-filters ${hasFilters ? 'has-active-filters' : ''}`}>
           <div className="filters-header">
             <h2>Filters</h2>
@@ -408,8 +421,14 @@ const Recommendations: React.FC = () => {
               )}
             </div>
           ) : (
-            displayProducts.map((product) => (
-              <div key={product.id} className="product-card">
+            displayProducts.map((product, index) => (
+              <div
+                key={product.id}
+                className={`product-card ${index === 0 ? 'product-card-best-match' : ''}`}
+              >
+                {index === 0 && (
+                  <span className="product-card-best-badge">🏆 Best match</span>
+                )}
                 <div className="product-media">
                   <img
                     src={product.imageUrl || placeholderImage}
@@ -503,9 +522,13 @@ const Recommendations: React.FC = () => {
                           Buy Now
                         </a>
                       ) : (
-                        <Link to={`/product/${encodeURIComponent(product.id)}`} className="btn-add btn-view-details">
-                          View details
-                        </Link>
+                        <Link
+                        to={`/product/${encodeURIComponent(product.id)}`}
+                        state={{ product: { id: product.id, name: product.name, brand: product.brand, category: product.category, ingredients: product.ingredients || [], concerns: product.concerns || [], imageUrl: product.imageUrl, rating: product.rating, price: product.price } }}
+                        className="btn-add btn-view-details"
+                      >
+                        View details
+                      </Link>
                       )}
                     </div>
                   </div>

@@ -694,3 +694,69 @@
     padding: 8px 6px;
   }
 }
+
+/* AI Ingredient Recommendations – design system */
+.analysis-ingredient-rec h2 {
+  margin-bottom: 12px;
+}
+
+.analysis-ingredient-intro {
+  margin: 0 0 20px;
+  font-size: 0.95rem;
+  color: var(--text-gray);
+  line-height: 1.5;
+}
+
+.analysis-ingredient-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.analysis-ingredient-card {
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--bg-light);
+}
+
+.analysis-ingredient-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin: 0 0 10px;
+}
+
+.analysis-ingredient-why {
+  font-size: 0.9rem;
+  color: var(--text-gray);
+  line-height: 1.5;
+  margin: 0 0 8px;
+}
+
+.analysis-ingredient-targets {
+  font-size: 0.85rem;
+  color: var(--primary);
+  font-weight: 500;
+  margin: 0 0 10px;
+}
+
+.analysis-ingredient-learn {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.analysis-ingredient-learn:hover {
+  text-decoration: underline;
+}
+
+.analysis-ingredient-cta {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+}

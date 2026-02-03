@@ -38,6 +38,13 @@
     word-wrap: break-word;
     word-break: break-word;
   }
+  /* Keep checkbox labels on one line (e.g. "Remember me") */
+  .app-page .checkbox-label,
+  .app-page .remember-me-label {
+    word-break: normal;
+    overflow-wrap: normal;
+    white-space: nowrap;
+  }
 
   /* Media never wider than container */
   .app-page img,

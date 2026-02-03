@@ -25,6 +25,8 @@ from app.schemas.user import (
     UserResponse,
 )
 from app.core.rate_limit import check_login_rate_limit, record_login_attempt
+from app.core.geo import fetch_geolocation, get_client_ip
+from app.models.user import UserAccessLog
 from app.services.auth_service import auth_service
 from app.services.email_service import send_verification_email
 
@@ -147,6 +149,29 @@ def login(request: Request, user_data: UserLogin, db: Session = Depends(get_db))
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Email not verified. Please verify your email to login. Check your inbox for the verification link or contact support.",
             )
+
+    # Record IP and geolocation at login (non-blocking: never fail login if this errors)
+    import logging as _logging
+    _log = _logging.getLogger(__name__)
+    try:
+        ip = get_client_ip(request)
+        geo = fetch_geolocation(ip)
+        if hasattr(user, "last_ip_address"):
+            user.last_ip_address = ip
+        if hasattr(user, "last_geolocation"):
+            user.last_geolocation = geo
+        if hasattr(user, "last_seen_at"):
+            user.last_seen_at = datetime.now(timezone.utc)
+        db.add(user)
+        db.add(UserAccessLog(user_id=user.id, ip_address=ip, geolocation=geo))
+        db.commit()
+        db.refresh(user)
+    except Exception as e:
+        _log.warning("Login IP/geo logging failed (login continues): %s", e)
+        try:
+            db.rollback()
+        except Exception:
+            pass
 
     token = create_access_token(
         data={"sub": user.email},

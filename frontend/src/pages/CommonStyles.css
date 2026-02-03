@@ -6,7 +6,10 @@
   max-width: var(--max-width-xl);
   margin: 0 auto;
   padding: var(--spacing-2xl) var(--spacing-lg);
+  padding-top: max(var(--spacing-lg), env(safe-area-inset-top, 0));
   width: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
 }
 
 .page-container.full-width {
@@ -269,11 +272,23 @@
 
 .card {
   background: var(--bg-white);
-  border-radius: var(--border-radius-lg);
-  padding: var(--spacing-lg);
+  border-radius: var(--card-radius, var(--border-radius-lg));
+  padding: var(--card-padding, var(--spacing-lg));
   border: 1px solid var(--border);
-  box-shadow: var(--shadow-sm);
-  margin-bottom: var(--spacing-lg);
+  box-shadow: var(--card-shadow, var(--shadow-sm));
+  margin-bottom: var(--card-margin-bottom, var(--spacing-lg));
+}
+.card-header {
+  margin-bottom: 12px;
+}
+.card-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+.card-content {
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 .stat-card {

@@ -185,12 +185,40 @@
   /* Select/dropdown menus should stack above cards */
   --z-index-select: 1050;
 
-  /* Responsive font sizing (Mobile Redesign FIX 6) */
+  /* Responsive font sizing (Mobile Redesign FIX 6 + Audit) */
   --font-xs: clamp(10px, 2.5vw, 12px);
   --font-sm: clamp(12px, 3vw, 14px);
   --font-md: clamp(14px, 3.5vw, 16px);
   --font-lg: clamp(16px, 4vw, 20px);
   --font-xl: clamp(20px, 5vw, 28px);
+  /* Card spacing (audit standardization) */
+  --card-padding: 16px;
+  --card-radius: 16px;
+  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --card-margin-bottom: 16px;
+  /* Section spacing (audit) */
+  --section-gap: 24px;
+  --section-header-margin: 12px;
+}
+
+@media (min-width: 375px) {
+  :root {
+    --font-sm: clamp(13px, 3vw, 14px);
+    --font-md: clamp(15px, 3.5vw, 16px);
+  }
+}
+
+@media (min-width: 414px) {
+  :root {
+    --font-sm: 14px;
+    --font-md: 16px;
+  }
+}
+
+@media (max-width: 320px) {
+  :root {
+    --font-scale: 0.9;
+  }
 }
 
 /* Reset & Base Styles */
@@ -217,14 +245,24 @@ button, a, input, select, textarea, [role="button"] {
 }
 
 /* ========== Mobile Redesign – Technical Fixes (Section 10) ========== */
-/* FIX 1: Word breaking – prevent mid-word break on cards */
+/* FIX 1: Word breaking – prevent mid-word break on cards and labels (audit) */
 .product-card,
 .routine-item,
-.info-card {
+.info-card,
+.text-content,
+.label,
+.stat-label,
+.product-name,
+.product-card-title {
   word-break: normal;
   overflow-wrap: break-word;
   hyphens: none;
   white-space: normal;
+}
+.stat-label,
+.dt-hero-score-label,
+.dt-hero-mood-label {
+  white-space: nowrap;
 }
 
 /* FIX 2: Single-line truncation with ellipsis */
@@ -241,6 +279,22 @@ button, a, input, select, textarea, [role="button"] {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+/* Audit: truncation utility aliases */
+.truncate,
+.truncate-single {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+.truncate-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* FIX 4: Minimum touch target – primary/secondary buttons and utility */
@@ -280,8 +334,38 @@ a.btn-sm { padding: 8px 14px; min-height: 44px; }
   padding-bottom: max(12px, env(safe-area-inset-bottom));
 }
 .app-header-card,
-.app-main .app-page > header {
+.app-main .app-page > header,
+.page-header {
   padding-top: max(16px, env(safe-area-inset-top));
+}
+
+/* Audit: section spacing */
+.section {
+  margin-bottom: var(--section-gap, 24px);
+}
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--section-header-margin, 12px);
+}
+.section-title {
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary);
+}
+
+/* Audit: concerns/info text truncation */
+.concerns-text,
+.info-text {
+  font-size: 14px;
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 /* Mobile app mode: fit all screens, no horizontal scroll (Task 10000) */
@@ -607,9 +691,10 @@ input[type="radio"] {
 
 .checkbox-group label,
 .checkbox-label {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: var(--spacing-sm);
+  white-space: nowrap;
 }
 
 .checkbox-group input[type="checkbox"],

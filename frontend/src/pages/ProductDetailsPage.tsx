@@ -204,6 +204,27 @@ const ProductDetailsPage: React.FC = () => {
       setLoading(true);
       setFromCatalog(false);
 
+      // From Recommendations "View details" when product is fallback (no catalog entry)
+      const stateProduct = (location.state as { product?: { id: string; name: string; brand: string; category: string; ingredients?: string[]; concerns?: string[]; imageUrl?: string | null; rating?: number | null; price?: number | null } } | null)?.product;
+      if (stateProduct && stateProduct.id === id) {
+        const productData: ProductDetails = {
+          id: stateProduct.id,
+          name: stateProduct.name,
+          brand: stateProduct.brand,
+          category: stateProduct.category,
+          ingredients: stateProduct.ingredients || [],
+          imageUrl: stateProduct.imageUrl ?? undefined,
+          rating: stateProduct.rating ?? undefined,
+          price: stateProduct.price != null ? String(stateProduct.price) : undefined,
+          concerns: stateProduct.concerns,
+        };
+        setProduct(productData);
+        setInShelf(false);
+        addToRecentlyViewed({ id: productData.id, name: productData.name, brand: productData.brand, imageUrl: productData.imageUrl });
+        setLoading(false);
+        return;
+      }
+
       // Prefer shelf product from navigation state (from My Shelf click) - has full scan data
       const shelfProduct =
         shelfProductFromState && (shelfProductFromState.id === id || shelfProductFromState.external_product_id === id)
@@ -339,7 +360,7 @@ const ProductDetailsPage: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }, [id, shelfProducts, shelfProductFromState, isOnShelf]);
+  }, [id, location.state, shelfProducts, shelfProductFromState, isOnShelf]);
 
   const fetchReviews = useCallback(async () => {
     if (!id) return;

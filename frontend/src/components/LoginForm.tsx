@@ -22,7 +22,8 @@ function toFriendlyAuthError(detail: string, status?: number): string {
     return 'Cannot reach the server. Check your internet connection and try again. If the problem persists, the service may be temporarily unavailable.';
   if (status === 401 || (s.includes('invalid') && (s.includes('credential') || s.includes('password'))))
     return 'Email or password is incorrect. Please check and try again.';
-  if (s.includes('verify') || s.includes('verification')) return detail || 'Please verify your email to sign in.';
+  if (status === 403 || s.includes('verify') || s.includes('verification'))
+    return detail || 'Please verify your email to sign in. Check your inbox for the verification link or use "Request verification email" below.';
   if (s.includes('disabled') || s.includes('locked')) return 'This account is temporarily disabled. Please contact support.';
   if (status === 429) return 'Too many attempts. Please wait a few minutes and try again.';
   return '';
@@ -94,7 +95,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegis
           message
         });
         setError(message);
-        if (typeof raw === 'string' && raw.toLowerCase().includes('verify')) {
+        if (err.response?.status === 403 || (typeof raw === 'string' && raw.toLowerCase().includes('verify'))) {
           setShowVerifyLink(true);
         }
       } else if (err instanceof Error) {
@@ -170,7 +171,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegis
           <span id="password-toggle-desc" className="sr-only">Toggle password visibility</span>
         </div>
         <div className="form-group form-group-inline form-group-between">
-          <label className="checkbox-label">
+          <label className="checkbox-label remember-me-label">
             <input
               type="checkbox"
               checked={rememberMe}

@@ -500,7 +500,10 @@
   color: var(--text-muted);
   margin-right: 8px;
   flex-shrink: 0;
+  min-width: 0;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .settings-arrow {

@@ -278,6 +278,22 @@
   font-weight: 500;
   color: var(--text-secondary, #64748b);
   cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  word-break: normal;
+  overflow-wrap: normal;
+  min-width: fit-content;
+}
+.form-group-inline .checkbox-label span {
+  white-space: nowrap;
+}
+/* Prevent "Remember me" breaking vertically on narrow viewports (mobile audit) */
+.remember-me-label {
+  white-space: nowrap !important;
+}
+.form-group-between .checkbox-label {
+  flex-shrink: 0;
+  min-width: fit-content;
 }
 
 .form-group-inline .checkbox-label input[type="checkbox"] {

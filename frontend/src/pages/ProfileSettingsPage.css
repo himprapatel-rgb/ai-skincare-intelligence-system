@@ -250,8 +250,8 @@
 
 .profile-header-card {
   background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-  border-radius: 0 0 24px 24px;
-  padding: 24px 16px 32px;
+  border-radius: 0 0 20px 20px;
+  padding: 16px 12px 20px;
   text-align: center;
   color: white;
   display: flex;
@@ -259,11 +259,12 @@
   align-items: center;
 }
 
+/* Avatar : camera button = 5 : 1 */
 .profile-avatar-container {
   position: relative;
-  width: 100px;
-  height: 100px;
-  margin: 0 auto 16px;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 8px;
   flex-shrink: 0;
 }
 
@@ -272,7 +273,7 @@
   height: 100%;
   border-radius: 50%;
   overflow: hidden;
-  border: 4px solid rgba(255, 255, 255, 0.95);
+  border: 3px solid rgba(255, 255, 255, 0.95);
   background: rgba(255, 255, 255, 0.2);
 }
 
@@ -288,24 +289,25 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.5rem;
+  font-size: 1.75rem;
   font-weight: 700;
   color: white;
 }
 
+/* Camera = avatar/5 (5:1) */
 .avatar-edit-button {
   position: absolute;
   bottom: 0;
   right: 0;
-  width: 32px;
-  height: 32px;
+  width: 16px;
+  height: 16px;
   background: white;
   border: none;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   color: var(--primary);
   cursor: pointer;
   transition: transform 0.2s;
@@ -315,18 +317,23 @@
   transform: scale(1.05);
 }
 
+.avatar-edit-button svg {
+  width: 8px;
+  height: 8px;
+}
+
 .profile-avatar-hint {
   display: block;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: rgba(255, 255, 255, 0.9);
-  margin-top: 8px;
+  margin-top: 4px;
   white-space: nowrap;
 }
 
 .profile-header-name {
-  font-size: 1.5rem;
+  font-size: 1.15rem;
   font-weight: 700;
-  margin: 0 0 4px 0;
+  margin: 0 0 2px 0;
   color: white;
   word-break: break-word;
   overflow-wrap: break-word;
@@ -338,9 +345,9 @@
 }
 
 .profile-header-email {
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   opacity: 0.95;
-  margin: 0 0 20px 0;
+  margin: 0 0 12px 0;
   color: rgba(255, 255, 255, 0.95);
   word-break: break-word;
   overflow-wrap: break-word;
@@ -354,7 +361,7 @@
 .profile-stats-row {
   display: flex;
   justify-content: center;
-  gap: 24px;
+  gap: 16px;
 }
 
 .stat-item {
@@ -363,17 +370,17 @@
 
 .stat-value {
   display: block;
-  font-size: 1.25rem;
+  font-size: 1.05rem;
   font-weight: 700;
   color: white;
 }
 
 .stat-label {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   opacity: 0.9;
   color: rgba(255, 255, 255, 0.9);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.4px;
 }
 
 .stat-item-link {
@@ -402,25 +409,25 @@
 }
 
 .settings-section {
-  margin-top: 24px;
+  margin-top: 16px;
 }
 .settings-section:first-child {
   margin-top: 0;
 }
 
 .section-title {
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   font-weight: 600;
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  padding: 0 4px 8px;
-  margin: 0 0 8px 0;
+  padding: 0 4px 6px;
+  margin: 0 0 6px 0;
 }
 
 .settings-group {
   background: var(--bg-white);
-  border-radius: var(--radius-lg, 12px);
+  border-radius: var(--radius-lg, 10px);
   overflow: hidden;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
   border: 1px solid var(--border-color);
@@ -430,12 +437,12 @@
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 14px 16px;
+  padding: 10px 12px;
   border: none;
   border-bottom: 1px solid var(--gray-100);
   background: transparent;
   font-family: inherit;
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: var(--text-primary);
   cursor: pointer;
   text-align: left;
@@ -461,13 +468,13 @@
 }
 
 .settings-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 12px;
+  margin-right: 10px;
   flex-shrink: 0;
 }
 
@@ -613,7 +620,7 @@
 }
 
 .profile-container-inner {
-  padding: var(--spacing-xl, 32px) var(--spacing-xl, 40px) var(--spacing-xl, 40px);
+  padding: 12px 16px 20px;
 }
 
 .profile-header {
@@ -1446,34 +1453,60 @@
   }
 
   .profile-header-card {
-    padding: 20px 16px 28px;
-    border-radius: 0 0 20px 20px;
+    padding: 14px 12px 18px;
+    border-radius: 0 0 16px 16px;
   }
 
   .profile-avatar-container {
-    width: 88px;
-    height: 88px;
-    margin-bottom: 12px;
+    width: 70px;
+    height: 70px;
+    margin-bottom: 6px;
   }
 
   .profile-avatar-wrap {
-    border-width: 3px;
+    border-width: 2.5px;
+  }
+
+  /* 5:1 – camera = 70/5 ≈ 14px */
+  .avatar-edit-button {
+    width: 14px;
+    height: 14px;
+    bottom: 0;
+    right: 0;
+  }
+
+  .avatar-edit-button svg {
+    width: 7px;
+    height: 7px;
+  }
+
+  .profile-avatar-placeholder {
+    font-size: 1.75rem;
+  }
+
+  .profile-avatar-hint {
+    display: none;
   }
 
   .profile-header-name {
-    font-size: 1.25rem;
+    font-size: 1.05rem;
   }
 
   .profile-header-email {
-    font-size: 0.8125rem;
+    font-size: 0.75rem;
+    margin-bottom: 10px;
   }
 
   .profile-stats-row {
-    gap: 20px;
+    gap: 12px;
   }
 
   .stat-value {
-    font-size: 1.1rem;
+    font-size: 0.95rem;
+  }
+
+  .stat-label {
+    font-size: 0.6rem;
   }
 
   .profile-hero-banner {
@@ -1525,7 +1558,7 @@
   }
 
   .settings-section {
-    margin-top: 20px;
+    margin-top: 14px;
   }
 
   .section-title {

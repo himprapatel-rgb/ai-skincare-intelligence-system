@@ -135,6 +135,23 @@ class Settings(BaseSettings):
         description="Shared secret token required by internal summary endpoint",
     )
 
+    # Amazon Product Advertising API (affiliate product recommendations)
+    AMAZON_ACCESS_KEY: str | None = Field(
+        default=None, description="Amazon PA-API access key (Associates)"
+    )
+    AMAZON_SECRET_KEY: str | None = Field(
+        default=None, description="Amazon PA-API secret key"
+    )
+    AMAZON_PARTNER_TAG: str | None = Field(
+        default=None, description="Amazon Associates partner/tracking tag for affiliate links"
+    )
+    AMAZON_COUNTRY: str = Field(
+        default="US", description="Amazon marketplace country code (US, UK, DE, etc.)"
+    )
+    AMAZON_SEARCH_INDEX: str = Field(
+        default="Beauty", description="PA-API SearchIndex for product category (e.g. Beauty)"
+    )
+
     # Admin access control
     ADMIN_EMAIL_ALLOWLIST: str = Field(
         default="",

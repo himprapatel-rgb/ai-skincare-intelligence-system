@@ -11,6 +11,7 @@ from app.schemas.product_schemas import (
     RecommendationItem,
     RecommendationsResponse,
 )
+from app.services.amazon_affiliate_service import search_products as amazon_search_products
 
 router = APIRouter()
 
@@ -43,13 +44,42 @@ def _build_recommendation_item(product: Product) -> RecommendationItem:
     )
 
 
+def _keywords_from_profile(skin_type: Optional[str], concerns: List[str]) -> str:
+    """Build Amazon search keywords from profile (e.g. 'dry skin moisturizer acne')."""
+    parts = []
+    if skin_type:
+        parts.append(f"{skin_type} skin")
+    if concerns:
+        parts.extend(concerns[:3])  # cap to avoid long query
+    if not parts:
+        return "skincare"
+    return " ".join(parts) + " skincare"
+
+
+# Map browser/ISO country codes to Amazon marketplace code (e.g. GB -> UK)
+_COUNTRY_ALIASES = {"GB": "UK"}
+
+
+def _amazon_matches_location(request_country: Optional[str]) -> bool:
+    """True if we should show Amazon affiliate results for this request (location-based)."""
+    from app.config import settings
+    configured = (settings.AMAZON_COUNTRY or "US").strip().upper()
+    if not request_country:
+        return True  # no location hint: use default (show Amazon for configured marketplace)
+    req = request_country.strip().upper()
+    req = _COUNTRY_ALIASES.get(req, req)
+    configured = _COUNTRY_ALIASES.get(configured, configured)
+    return req == configured
+
+
 @router.get("", response_model=RecommendationsResponse)
 async def get_recommendations(
     limit: int = Query(12, ge=1, le=50),
+    country: Optional[str] = Query(None, description="User country code (e.g. US, UK) for location-based affiliate links"),
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ) -> RecommendationsResponse:
-    """Return personalized product recommendations for the current user."""
+    """Return personalized product recommendations (DB + optional Amazon affiliate results). Amazon results only when country matches AMAZON_COUNTRY."""
     profile = (
         db.query(UserProfile)
         .filter(UserProfile.user_id == current_user.id)
@@ -77,15 +107,40 @@ async def get_recommendations(
         query = query.filter(Product.targets.overlap(concerns))
 
     products = query.order_by(Product.average_rating.desc().nullslast()).limit(limit).all()
+    recommendations: List[RecommendationItem] = [_build_recommendation_item(p) for p in products]
 
-    if not products and (skin_type or concerns):
-        products = (
-            db.query(Product)
-            .order_by(Product.created_at.desc())
-            .limit(limit)
-            .all()
-        )
+    # If we have fewer than limit, supplement with Amazon affiliate results (when configured and location matches)
+    if len(recommendations) < limit and _amazon_matches_location(country):
+        try:
+            keywords = _keywords_from_profile(skin_type, concerns)
+            amazon_count = min(limit - len(recommendations), 10)
+            amazon_items = amazon_search_products(
+                keywords=keywords,
+                item_count=amazon_count,
+            )
+            existing_ids = {str(r.id) for r in recommendations}
+            for raw in amazon_items:
+                if len(recommendations) >= limit:
+                    break
+                aid = raw.get("id")
+                if not aid or str(aid) in existing_ids:
+                    continue
+                existing_ids.add(str(aid))
+                recommendations.append(
+                    RecommendationItem(
+                        id=raw["id"],
+                        name=raw["name"],
+                        brand=raw["brand"],
+                        category=raw["category"],
+                        price=raw.get("price"),
+                        rating=raw.get("rating"),
+                        ingredients=raw.get("ingredients") or [],
+                        concerns=raw.get("concerns") or [],
+                        image_url=raw.get("image_url"),
+                        purchase_url=raw.get("purchase_url"),
+                    )
+                )
+        except Exception:
+            pass  # keep DB-only results if Amazon fails
 
-    return RecommendationsResponse(
-        recommendations=[_build_recommendation_item(product) for product in products]
-    )
+    return RecommendationsResponse(recommendations=recommendations)

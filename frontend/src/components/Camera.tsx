@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { cameraService } from '../services/cameraService';
+import { hapticCapture } from '../utils/haptic';
 
 /**
  * Camera Component Props
@@ -57,6 +58,7 @@ export const Camera: React.FC<CameraProps> = ({ onCapture, onError, isProcessing
   const handleCapture = async (): Promise<void> => {
     if (!isCameraReady || isProcessing || isCapturing) return;
 
+    hapticCapture();
     setIsCapturing(true);
 
     try {

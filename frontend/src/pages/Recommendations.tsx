@@ -4,6 +4,7 @@ import { usePageTitle } from '../hooks/usePageTitle';
 import { IconStar, IconAlertTriangle, IconHeart, IconArrowLeft, IconPackage } from '../components/Icons';
 import { SkeletonCardGrid } from '../components/Skeleton';
 import { useToast } from '../context/ToastContext';
+import { hapticMedium } from '../utils/haptic';
 import { API_BASE_URL } from '../config';
 import './Recommendations.css';
 
@@ -121,8 +122,14 @@ const Recommendations: React.FC = () => {
       setLoading(true);
       setError(null);
       const token = localStorage.getItem('auth_token');
+      // Location-based: pass user country so backend shows affiliate links only for matching marketplace
+      const country = typeof navigator !== 'undefined' && navigator.language
+        ? (navigator.language.split('-')[1] || navigator.language.slice(0, 2) || '').toUpperCase() || undefined
+        : undefined;
+      const url = new URL(`${API_BASE_URL}/recommendations`);
+      if (country) url.searchParams.set('country', country);
 
-      const response = await fetch(`${API_BASE_URL}/recommendations`, {
+      const response = await fetch(url.toString(), {
         headers: {
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
@@ -199,6 +206,7 @@ const Recommendations: React.FC = () => {
       const next = Array.isArray(list) ? [...list, entry] : [entry];
       localStorage.setItem(SHELF_STORAGE_KEY, JSON.stringify(next));
       setShelfIds((prev) => new Set([...prev, product.id]));
+      hapticMedium();
       toast.success('Added to My Shelf');
     } catch {
       toast.error('Could not add to shelf');

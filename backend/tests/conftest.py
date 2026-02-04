@@ -1,6 +1,18 @@
 # Test configuration and fixtures for Sprint 2 Phase 3
 import os
 
+# Use a single file-based SQLite so app.database and app.product_database
+# share the same DB (catalog tests need catalog_products table).
+_backend_dir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+_shared_db_path = os.path.join(_backend_dir, "test_shared.db").replace("\\", "/")
+_SHARED_SQLITE = f"sqlite:///{_shared_db_path}"
+if not os.environ.get("DATABASE_URL"):
+    os.environ["DATABASE_URL"] = os.getenv("TEST_DATABASE_URL", _SHARED_SQLITE)
+if not os.environ.get("TEST_DATABASE_URL"):
+    os.environ["TEST_DATABASE_URL"] = os.environ.get("DATABASE_URL", _SHARED_SQLITE)
+if not os.environ.get("PRODUCT_DATABASE_URL"):
+    os.environ["PRODUCT_DATABASE_URL"] = _SHARED_SQLITE
+
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
@@ -14,9 +26,8 @@ from app.database import get_db as app_db_get_db
 from app.dependencies import get_db
 from app.main import app
 
-# Use TEST_DATABASE_URL for test runs; default to SQLite to avoid
-# accidental use of production DATABASE_URL.
-SQLALCHEMY_DATABASE_URL = os.getenv("TEST_DATABASE_URL", "sqlite:///:memory:")
+# Use same URL as app so main + product tables live in one DB for catalog tests.
+SQLALCHEMY_DATABASE_URL = os.getenv("TEST_DATABASE_URL", _SHARED_SQLITE)
 if not SQLALCHEMY_DATABASE_URL.startswith("sqlite"):
     allow_test_db = os.getenv("ALLOW_TEST_DB", "").lower() in {"1", "true", "yes"}
     if not allow_test_db:
@@ -40,11 +51,15 @@ def _compile_array_sqlite(_type, _compiler, **_kwargs):
 def _compile_uuid_sqlite(_type, _compiler, **_kwargs):
     return "CHAR(36)"
 
-# Ensure product catalog tables exist for catalog API tests
+# Ensure main + product tables exist so tests using raw TestClient(app) (e.g. catalog, products_api) see them.
+# Must run after @compiles so SQLite can render JSONB/ARRAY/UUID.
 @pytest.fixture(scope="session", autouse=True)
-def _ensure_product_tables():
-    """Create product catalog tables once per test session"""
+def _ensure_all_tables():
+    """Create main and product catalog tables once per test session (on app's engine)."""
+    import app.models  # noqa: F401 - register all Base models
+    from app.database import engine as app_engine
     from app.product_database import create_product_tables
+    Base.metadata.create_all(bind=app_engine)
     create_product_tables()
     yield
 
@@ -77,6 +92,8 @@ def test_db():
     finally:
         db.close()
         Base.metadata.drop_all(bind=engine)
+        # Recreate main tables so other tests (e.g. test_products_api) using raw TestClient(app) still see them
+        Base.metadata.create_all(bind=engine)
 
 
 @pytest.fixture

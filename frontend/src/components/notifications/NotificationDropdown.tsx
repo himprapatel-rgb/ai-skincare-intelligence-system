@@ -40,8 +40,10 @@ const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
     if (n.action_url) navigate(n.action_url);
   };
 
+  const isEmpty = recent.length === 0;
+
   return (
-    <div className="notification-dropdown" ref={panelRef}>
+    <div className={`notification-dropdown ${isEmpty ? 'notification-dropdown--empty' : ''}`} ref={panelRef}>
       <div className="notification-dropdown-header">
         <h3 className="notification-dropdown-title">Notifications</h3>
         {notifications.some((n) => !n.read) && (
@@ -55,7 +57,7 @@ const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
         )}
       </div>
       <div className="notification-dropdown-list">
-        {recent.length === 0 ? (
+        {isEmpty ? (
           <div className="notification-dropdown-empty">
             <p>No notifications yet</p>
           </div>
@@ -78,7 +80,7 @@ const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
           navigate('/notifications');
         }}
       >
-        View All Notifications
+        View all
       </button>
     </div>
   );

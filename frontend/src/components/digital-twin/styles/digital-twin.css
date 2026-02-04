@@ -1,14 +1,14 @@
 .dt-page {
   min-height: 100vh;
   background: var(--bg-light);
-  padding: 32px 20px 60px;
+  padding: 12px 12px 60px;
 }
 
 .dt-container {
   max-width: 1200px;
   margin: 0 auto;
   display: grid;
-  gap: 24px;
+  gap: 12px;
 }
 
 .dt-hero {
@@ -39,10 +39,10 @@
 .dt-hero-stats {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
   background: var(--bg-white);
-  border-radius: 16px;
-  padding: 16px 20px;
+  border-radius: 12px;
+  padding: 10px 14px;
   border: 1px solid var(--border);
   min-width: 0;
 }
@@ -154,8 +154,8 @@
 .dt-card {
   background: var(--bg-white);
   border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 24px;
+  border-radius: 12px;
+  padding: 12px 14px;
 }
 
 .dt-card-header {
@@ -163,27 +163,27 @@
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  gap: 16px;
-  margin-bottom: 16px;
+  gap: 10px;
+  margin-bottom: 10px;
 }
 
 .dt-card-header h2 {
   margin: 0;
-  font-size: 1.3rem;
+  font-size: 1.15rem;
   color: var(--text-dark);
 }
 
 .dt-card-title {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 0.85rem;
+  gap: 8px;
+  font-size: 0.8rem;
   color: var(--text-gray);
 }
 
 .dt-card-body {
   display: grid;
-  gap: 16px;
+  gap: 10px;
 }
 
 /* Guest/error state: feature preview + CTAs to reduce empty viewport */
@@ -267,11 +267,18 @@
   color: var(--text-gray);
 }
 
+/* 3 per row, 2 rows = 6 visible */
 .dt-snapshot-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 180px));
-  gap: 16px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
   justify-content: start;
+}
+
+@media (min-width: 600px) {
+  .dt-snapshot-grid {
+    gap: 10px;
+  }
 }
 
 .dt-snapshot-card {
@@ -283,7 +290,8 @@
   cursor: pointer;
   transition: 0.2s ease;
   padding: 0;
-  max-width: 180px;
+  width: 100%;
+  min-width: 0;
 }
 
 .dt-snapshot-card.is-selected {
@@ -326,12 +334,21 @@
 .dt-snapshot-toggle {
   display: flex;
   justify-content: center;
+  margin-top: 10px;
+}
+
+.dt-snapshot-toggle .btn-secondary {
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 999px;
+  min-height: 40px;
 }
 
 .dt-details-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
 }
 
 .dt-details-image {

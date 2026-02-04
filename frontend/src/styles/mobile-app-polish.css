@@ -575,3 +575,949 @@
     scroll-behavior: smooth;
   }
 }
+
+/* =============================================
+   I. Mobile app improvements – denser, native feel
+============================================= */
+@media (max-width: 768px) {
+  /* I1: Header – compact */
+  .app-header-container {
+    min-height: 50px;
+    padding-top: max(8px, env(safe-area-inset-top));
+    padding-bottom: 8px;
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: 12px;
+  }
+  .app-shell-mode .app-header-container {
+    min-height: 50px;
+    padding-top: max(8px, env(safe-area-inset-top));
+    padding-bottom: 8px;
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: 12px;
+  }
+  .app-shell-mode .app-logo-mark {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+  }
+  .app-shell-mode .app-logo-text {
+    font-size: 1rem;
+  }
+
+  /* I2: Page content – slightly tighter horizontal padding, more content */
+  .app-page-content,
+  .me-content,
+  .today-content {
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+  }
+  .me-page .me-header {
+    padding-left: max(12px, env(safe-area-inset-left));
+  }
+
+  /* I3: Cards & sections – compact */
+  .app-card,
+  .app-list-group,
+  .me-profile-card,
+  .me-twin-card,
+  .me-list {
+    border-radius: 12px;
+    padding: 12px 14px;
+  }
+  .today-card {
+    padding: 14px 12px;
+    margin-bottom: 12px;
+    border-radius: 14px;
+  }
+  .me-section {
+    margin-bottom: 16px;
+  }
+  .me-twin-card-wrap {
+    margin-bottom: 16px;
+  }
+
+  /* I4: List rows – compact but 44px min touch */
+  .app-list-item,
+  .me-list-item {
+    padding: 10px 12px;
+    min-height: 44px;
+    font-size: 0.9rem;
+  }
+  .app-list-icon {
+    width: 32px;
+    height: 32px;
+    margin-right: 10px;
+    border-radius: 8px;
+  }
+
+  /* I5: Section titles – smaller on mobile */
+  .app-section-title,
+  .me-section-title {
+    font-size: 0.7rem;
+    padding: 0 2px 6px;
+    margin: 0 0 6px 2px;
+  }
+  .page-header h1 {
+    font-size: 1.35rem;
+  }
+  .me-title {
+    font-size: 1.25rem;
+  }
+
+  /* I6: Bottom nav – slightly smaller center pill, clear labels */
+  .bottom-nav {
+    padding-top: 6px;
+    padding-bottom: max(10px, env(safe-area-inset-bottom));
+    padding-left: max(6px, env(safe-area-inset-left));
+    padding-right: max(6px, env(safe-area-inset-right));
+  }
+  .bottom-nav-item {
+    min-height: 48px;
+    font-size: 0.65rem;
+    gap: 2px;
+  }
+  .bottom-nav-center-pill {
+    width: 50px;
+    height: 50px;
+    box-shadow: 0 3px 12px rgba(37, 99, 235, 0.35);
+  }
+  .bottom-nav-item-center {
+    margin-top: -16px;
+  }
+  .bottom-nav-center-label {
+    font-size: 0.6rem;
+  }
+
+  /* I7: Main content clearance – match bottom nav height */
+  .app-layout main,
+  .app-layout .app-main {
+    padding-bottom: max(88px, calc(88px + env(safe-area-inset-bottom)));
+  }
+  .app-page,
+  .today-page,
+  .me-page {
+    padding-bottom: max(100px, calc(88px + env(safe-area-inset-bottom)));
+  }
+
+  /* I8: Buttons – compact primary */
+  .btn-primary,
+  .view-btn,
+  .add-product-btn {
+    min-height: 44px;
+    padding: 12px 20px;
+    font-size: 0.9rem;
+  }
+  .btn-secondary {
+    min-height: 44px;
+    padding: 10px 18px;
+    font-size: 0.9rem;
+  }
+
+  /* I9: Empty states – less padding */
+  .empty-state {
+    padding: 24px 16px;
+  }
+  .empty-state h3 {
+    font-size: 1rem;
+  }
+
+  /* I10: Today recommended – grid gap on small screens */
+  .today-products-grid {
+    gap: 12px;
+    padding-right: max(12px, env(safe-area-inset-right));
+  }
+
+  /* I11: Me profile card – compact */
+  .me-profile-card {
+    padding: 14px 12px;
+    margin-bottom: 16px;
+    border-radius: 12px;
+  }
+  .me-profile-stats {
+    margin: 10px 0 8px 0;
+    gap: 12px;
+  }
+  .me-stat-value {
+    font-size: 1rem;
+  }
+  .me-twin-card {
+    padding: 14px 12px;
+    border-radius: 12px;
+  }
+}
+
+/* =============================================
+   100 TASKS: Mobile GUI Improvements (all tasks)
+   Target: viewport <= 768px
+============================================= */
+
+@media (max-width: 768px) {
+  /* --- Tasks 1-10: Layout & Safe Area --- */
+  /* T1: Safe area on all pages */
+  .app-main .page-container,
+  .page-container,
+  .today-content,
+  .me-content,
+  .scan-page,
+  .profile-settings-page,
+  .dt-page,
+  .auth-page .auth-right,
+  .myshelf-page,
+  .history-page,
+  .favorites-page,
+  .notification-center-page,
+  .product-details-page,
+  .routine-builder-page,
+  .onboarding-page,
+  .consent-page,
+  .progress-tracking-page,
+  .ingredient-page .page-container,
+  .skin-type-page .page-container,
+  .video-page .page-container,
+  .blog-page .page-container,
+  .about-page,
+  .contact-page,
+  .privacy-page,
+  .terms-page,
+  .not-found-page {
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+  }
+
+  /* T2: Bottom nav clearance */
+  .app-layout main,
+  .app-layout .app-main,
+  .app-page,
+  .today-page,
+  .me-page,
+  .scan-page,
+  .myshelf-page,
+  .history-page,
+  .favorites-page,
+  .dt-page {
+    padding-bottom: max(100px, calc(88px + env(safe-area-inset-bottom)));
+  }
+
+  /* T3: Top bar safe area (header already has padding-top with safe-area in I1) */
+  .app-header {
+    padding-top: env(safe-area-inset-top);
+  }
+  .app-header-container {
+    padding-top: max(10px, env(safe-area-inset-top));
+  }
+
+  /* T4: Horizontal scroll padding for recommended etc. */
+  .today-products-grid,
+  .today-card-toppick .today-products-grid,
+  [class*="horizontal-scroll"],
+  .products-grid[style*="overflow-x: auto"],
+  .products-grid[style*="overflow-x:auto"] {
+    padding-right: max(12px, env(safe-area-inset-right));
+  }
+
+  /* T5: Max content width on tablets (768-1024) - in separate media below */
+  /* T6: Sticky section headers */
+  .today-card-toppick .today-section-header,
+  .today-section-header.sticky-header,
+  .today-card-toppick .today-card-head {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: var(--bg-white);
+    padding-bottom: 8px;
+  }
+
+  /* T7: Full-bleed hero - inner content safe area */
+  .hero-section,
+  .hero,
+  .cta-section {
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+  }
+
+  /* T8: Consistent page margins - 12px horizontal */
+  .app-page-content,
+  .today-content,
+  .me-content {
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+  }
+
+  /* T9: Keyboard open - min height so content isn't squashed */
+  .auth-page,
+  .auth-page .auth-right,
+  .password-reset-page {
+    min-height: 50vh;
+  }
+  input:focus,
+  textarea:focus {
+    scroll-margin-bottom: 120px;
+  }
+
+  /* T10: Orientation - min height for landscape */
+  .app-layout {
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+  .app-main {
+    min-height: calc(100dvh - 56px);
+  }
+}
+
+/* T5: Tablet max content width */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .app-main .page-container,
+  .today-content,
+  .me-content,
+  .page-container {
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  /* --- Tasks 11-20: Header & Navigation --- */
+  /* T11: Header min height */
+  .app-header-container {
+    min-height: 52px;
+  }
+
+  /* T12: Back button 44x44 - BackButton.css has min-height 44px; ensure tap area */
+  .back-button {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 10px 16px;
+  }
+
+  /* T13: Logo scaling on small screens */
+  .app-shell-mode .app-logo-text {
+    font-size: clamp(0.9rem, 4vw, 1.1rem);
+  }
+  .app-shell-mode .app-logo-mark {
+    width: 32px;
+    height: 32px;
+  }
+  @media (max-width: 360px) {
+    .app-logo-text { font-size: 0.95rem; }
+    .app-logo-mark { width: 28px; height: 28px; }
+  }
+
+  /* T14: Notification bell 44x44 */
+  .app-nav-mobile-bell,
+  .app-nav-icon-btn,
+  .notification-bell {
+    min-width: 44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* T15: Bottom nav item 44px - already in BottomNav / I6 */
+  .bottom-nav-item {
+    min-height: 48px;
+    min-width: 44px;
+  }
+
+  /* T16: Scan pill prominence - 50x50 in I6 */
+  .bottom-nav-center-pill {
+    width: 50px;
+    height: 50px;
+  }
+
+  /* T17: Active nav state - already .bottom-nav-item.active */
+  .bottom-nav-item.active {
+    color: var(--primary);
+    font-weight: 600;
+  }
+
+  /* T18: Nav labels no truncation */
+  .bottom-nav-item,
+  .bottom-nav-center-label {
+    white-space: nowrap;
+    overflow: visible;
+    text-overflow: unset;
+  }
+
+  /* T19: Header shadow on scroll - already .app-header.scrolled */
+  .app-header.scrolled {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+}
+
+/* T20: Skip to main - in AppLayout.css .skip-link:focus */
+
+@media (max-width: 768px) {
+  /* --- Tasks 21-30: Typography --- */
+  /* T21: Minimum body 16px */
+  body,
+  .app-layout {
+    font-size: 16px;
+  }
+
+  /* T22: Page title scale */
+  .page-header h1,
+  .today-greeting {
+    font-size: clamp(1.25rem, 4vw + 1rem, 1.5rem);
+  }
+
+  /* T23: Section heading hierarchy */
+  .app-section-title,
+  .me-section-title,
+  .today-section-header h2 {
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  .today-card h3,
+  .card-header h3 {
+    font-size: 0.95rem;
+  }
+
+  /* T24: Line height body */
+  body,
+  .app-layout,
+  p,
+  .product-details-page .description {
+    line-height: 1.5;
+  }
+
+  /* T25: Line height headings */
+  h1, h2, h3, .page-header h1,
+  .today-greeting {
+    line-height: 1.25;
+  }
+
+  /* T26: Contrast - use CSS variables that meet AA; ensure labels */
+  .text-muted,
+  .text-secondary,
+  label {
+    color: var(--text-secondary, #475569);
+  }
+
+  /* T27: Legal text at least 14px */
+  .app-footer-disclaimer,
+  .consent-page .legal-text,
+  .privacy-page p,
+  .terms-page p,
+  .footer small {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* T28: Product name wrap */
+  .today-product-card .today-product-name,
+  .product-card .product-name,
+  .today-product-card-info .today-product-name {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-word;
+  }
+
+  /* T29: Tabular figures for stats */
+  .me-stat-value,
+  .today-product-card-bar-fill,
+  .dt-hero-stats span,
+  [class*="stat-value"],
+  .notification-item-time {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* T30: Font loading - add in index.html or global; font-display: swap on @font-face */
+
+@media (max-width: 768px) {
+  /* --- Tasks 31-40: Touch & Buttons --- */
+  /* T31: Minimum 44x44 interactive - standalone controls and list/nav links */
+  button,
+  .app-nav-link,
+  .app-nav-icon-btn,
+  .back-button,
+  .bottom-nav-item,
+  .me-list-item,
+  .app-list-item,
+  .today-see-all,
+  .today-card-link,
+  .btn-link,
+  [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+  /* Inline/text links: increase tap area with padding where possible */
+  .today-see-all,
+  .today-card-link {
+    padding: 8px 12px;
+  }
+
+  /* T32 T33 T34: Primary/secondary button height & padding */
+  .btn-primary {
+    min-height: 44px;
+    padding: 12px 24px;
+  }
+  .btn-secondary {
+    min-height: 44px;
+    padding: 10px 20px;
+  }
+
+  /* T35: Icon-only 44px */
+  .app-nav-icon-btn,
+  .today-settings-btn,
+  .toast-dismiss {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 10px;
+  }
+
+  /* T36: List row min height - already in I4 */
+  .app-list-item,
+  .me-list-item,
+  .notification-item-btn {
+    min-height: 44px;
+  }
+
+  /* T37: Card tap - whole card or clear CTA */
+  .today-product-card,
+  .product-card,
+  .me-twin-card {
+    cursor: pointer;
+  }
+  .today-product-card-buy,
+  .view-btn {
+    min-height: 44px;
+    padding: 10px 16px;
+  }
+
+  /* T38: Tap alternative - ensure delete/actions are buttons not swipe-only (UX) */
+
+  /* T39: Disabled state - already in E3 */
+  button:disabled,
+  .btn-primary:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  /* T40: Loading on submit - spinner in E4 */
+  button[disabled] .loading-spinner,
+  .btn-primary[disabled] {
+    opacity: 0.7;
+  }
+}
+
+@media (max-width: 768px) {
+  /* --- Tasks 41-50: Cards & Lists --- */
+  /* T41: Card radius consistent */
+  .card,
+  .today-card,
+  .today-product-card,
+  .me-profile-card,
+  .me-twin-card,
+  .app-card,
+  .product-card {
+    border-radius: 12px;
+  }
+
+  /* T42: Card padding */
+  .today-card,
+  .today-product-card,
+  .me-profile-card,
+  .app-card {
+    padding: 12px 16px;
+  }
+
+  /* T43: Card shadow */
+  .today-card,
+  .today-product-card,
+  .me-profile-card,
+  .product-card {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    border: 1px solid var(--border-color);
+  }
+
+  /* T44: Product card image ratio 1:1 */
+  .today-product-card-image,
+  .product-card img,
+  .today-product-card .today-product-card-image {
+    aspect-ratio: 1;
+    object-fit: cover;
+  }
+
+  /* T45: List item divider */
+  .me-list-item + .me-list-item,
+  .app-list-item + .app-list-item {
+    border-top: 1px solid var(--border-color);
+  }
+
+  /* T46: List group radius */
+  .me-list,
+  .app-list-group {
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  /* T47: Horizontal scroll snap */
+  .today-products-grid {
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+  .today-product-card {
+    scroll-snap-align: start;
+    scroll-snap-stop: normal;
+  }
+
+  /* T48: Empty state - EmptyState component; ensure padding */
+  .empty-state {
+    padding: 24px 16px;
+  }
+  .empty-state h3 {
+    font-size: 1rem;
+  }
+
+  /* T49: Skeleton min-height - H2 block */
+  .skeleton-history-list,
+  .skeleton-container {
+    min-height: 120px;
+  }
+}
+
+/* T50: Pull-to-refresh - add data attribute / component (see utils) */
+
+@media (max-width: 768px) {
+  /* --- Tasks 51-60: Forms & Inputs --- */
+  /* T51 T52: Input height and font size */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="search"],
+  input[type="number"],
+  input[type="tel"],
+  textarea,
+  select {
+    min-height: 48px;
+    font-size: 16px;
+    padding: 12px 16px;
+  }
+  textarea {
+    min-height: 80px;
+  }
+
+  /* T53: Label above input - form structure */
+  .auth-form label,
+  .form-group label {
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  /* T54: Error below field */
+  .form-error,
+  .input-error {
+    margin-top: 6px;
+    font-size: 0.875rem;
+    color: var(--danger, #dc2626);
+  }
+
+  /* T55: Focus visible */
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible,
+  button:focus-visible,
+  a:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+
+  /* T56 T59: input types - use in JSX; select full-width */
+  select {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* T57 T58: Password toggle and checkbox/radio 44px / 24px */
+  .password-toggle {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  input[type="checkbox"],
+  input[type="radio"] {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+  }
+  label:has(input[type="checkbox"]),
+  label:has(input[type="radio"]) {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+  }
+}
+
+/* T57: Password toggle - add in LoginForm.tsx */
+/* T60: Autocomplete - use autocomplete="email" etc in JSX */
+
+@media (max-width: 768px) {
+  /* --- Tasks 61-70: Modals & Overlays --- */
+  /* T61: Modal max height */
+  .confirm-modal,
+  .consent-modal {
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  /* T62: Modal safe area - already in G1 */
+  .confirm-modal,
+  .consent-modal {
+    padding-bottom: max(24px, env(safe-area-inset-bottom));
+  }
+
+  /* T63: Backdrop tap - handle in JS (onClick overlay) */
+
+  /* T64: Modal header sticky */
+  .confirm-modal-title,
+  .consent-modal h2 {
+    position: sticky;
+    top: 0;
+    background: var(--bg-white);
+    z-index: 1;
+    padding-bottom: 8px;
+  }
+
+  /* T65: Bottom sheet - G1 already does bottom sheet style */
+  .confirm-modal-overlay,
+  .consent-modal-overlay {
+    align-items: flex-end;
+  }
+
+  /* T66: Confirm destructive - Copy in ConfirmModal; ensure Cancel + Confirm */
+  .confirm-modal-cancel {
+    min-height: 44px;
+    padding: 10px 20px;
+  }
+  .confirm-modal-confirm {
+    min-height: 44px;
+    padding: 10px 20px;
+  }
+
+  /* T67: Loading overlay - use LoadingScreen component */
+  .loading-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(255,255,255,0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+
+  /* T68: Toast above nav - in G3 */
+  .toast-container {
+    bottom: calc(80px + env(safe-area-inset-bottom));
+  }
+
+  /* T70: Modal animation */
+  .confirm-modal,
+  .consent-modal {
+    animation: modalSlideUp 0.25s ease-out;
+  }
+}
+@keyframes modalSlideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* T69: One modal at a time / focus trap - implement in React state */
+
+@media (max-width: 768px) {
+  /* --- Tasks 71-76: Today & Home --- */
+  .today-greeting {
+    font-size: clamp(1.25rem, 4vw + 1rem, 1.5rem);
+    overflow-wrap: break-word;
+  }
+  .today-products-grid {
+    gap: 12px;
+    padding-right: max(12px, env(safe-area-inset-right));
+  }
+  .today-product-card-bar,
+  .today-product-card-bar-fill {
+    border-radius: 4px;
+    height: 6px;
+  }
+  .today-section-header a,
+  .today-see-all {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 12px;
+  }
+  .today-card + .today-card {
+    margin-top: 12px;
+  }
+  .today-quick-actions,
+  .today-header-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .today-quick-actions .btn-primary,
+  .today-quick-actions .btn-secondary {
+    flex: 1;
+    min-width: 120px;
+  }
+}
+
+@media (max-width: 768px) {
+  /* --- Tasks 77-82: Scan & Camera --- */
+  .scan-page {
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+    padding-bottom: max(100px, env(safe-area-inset-bottom));
+  }
+  .camera-container,
+  .scan-camera-wrap {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+  .scan-capture-btn,
+  .camera-capture-btn,
+  [class*="capture-btn"] {
+    min-width: 64px;
+    min-height: 64px;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+  }
+  .scan-instructions,
+  .camera-instructions {
+    font-size: 0.9rem;
+    padding: 8px 12px;
+  }
+  .scan-permission-message,
+  .camera-permission-denied {
+    padding: 16px;
+    font-size: 0.95rem;
+  }
+  .scan-loading,
+  .analysis-loading {
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .scan-page .page-transition-wrap,
+  .analysis-results {
+    animation: pageFadeIn 0.2s ease-out;
+  }
+}
+
+@media (max-width: 768px) {
+  /* --- Tasks 83-88: Me & Profile --- */
+  .me-profile-card .profile-avatar,
+  .profile-settings-page .profile-avatar {
+    width: 72px;
+    height: 72px;
+  }
+  @media (max-width: 360px) {
+    .me-profile-card .profile-avatar,
+    .profile-settings-page .profile-avatar { width: 64px; height: 64px; }
+  }
+  .me-profile-stats,
+  .profile-stats {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .me-list-item,
+  .profile-settings-page .me-list-item {
+    min-height: 44px;
+    padding: 12px 14px;
+  }
+  .me-section + .me-section {
+    margin-top: 18px;
+  }
+  .profile-avatar-wrap .profile-avatar-btn,
+  .change-photo-btn {
+    min-width: 44px;
+    min-height: 44px;
+    border-radius: 50%;
+  }
+  .me-list-item[href*="logout"],
+  .logout-link,
+  .app-nav-dropdown-logout {
+    margin-top: 8px;
+  }
+}
+
+@media (max-width: 768px) {
+  /* --- Tasks 89-94: Digital Twin & Timeline --- */
+  .dt-snapshot-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .dt-snapshot-card {
+    min-height: 80px;
+    cursor: pointer;
+  }
+  .dt-snapshot-toggle .btn-secondary {
+    min-height: 40px;
+    padding: 8px 16px;
+  }
+  .dt-hero-stats,
+  .dt-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .dt-card .progress-chart,
+  .dt-card canvas {
+    max-height: 180px;
+  }
+  .dt-simulation-panel,
+  .simulation-panel {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  /* --- Tasks 95-100: Notifications & Feedback --- */
+  .notification-dropdown {
+    width: min(280px, calc(100vw - 32px));
+    max-height: min(320px, 60vh);
+  }
+  .notification-item-btn {
+    min-height: 48px;
+    padding: 10px 12px;
+  }
+  .notification-item-btn.unread {
+    background: rgba(124, 58, 237, 0.06);
+  }
+  .notification-dropdown-empty {
+    padding: 16px 12px;
+    font-size: 0.9rem;
+  }
+  .toast {
+    padding: 14px 16px;
+    font-size: 0.9rem;
+    border-radius: 12px;
+  }
+  .toast--success { border-left: 4px solid #16a34a; }
+  .toast--error { border-left: 4px solid #dc2626; }
+  .form-error,
+  .input-error {
+    display: block;
+    margin-top: 6px;
+  }
+}

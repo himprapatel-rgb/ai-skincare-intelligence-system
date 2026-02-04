@@ -25,48 +25,58 @@
   border: 1.5px solid var(--bg-white, #fff);
 }
 
-/* Dropdown panel */
+/* Dropdown panel – compact, app-style popover */
 .notification-dropdown {
   position: absolute;
-  top: calc(100% + 8px);
+  top: calc(100% + 6px);
   right: 0;
-  width: min(360px, calc(100vw - 24px));
-  max-height: 70vh;
+  width: min(280px, calc(100vw - 32px));
+  min-width: 0;
+  max-height: min(320px, 60vh);
   display: flex;
   flex-direction: column;
   background: var(--bg-white);
-  border-radius: 12px;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
   border: 1px solid var(--border-color);
   z-index: calc(var(--z-index-sticky) + 10);
   overflow: hidden;
+}
+
+/* Empty state: minimal height, no stretch */
+.notification-dropdown--empty {
+  max-height: none;
+}
+
+.notification-dropdown--empty .notification-dropdown-list {
+  flex: 0 0 auto;
 }
 
 .notification-dropdown-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: 12px 16px;
+  gap: 8px;
+  padding: 8px 12px;
   border-bottom: 1px solid var(--border-color);
   flex-shrink: 0;
 }
 
 .notification-dropdown-title {
   margin: 0;
-  font-size: 1rem;
+  font-size: 0.85rem;
   font-weight: 600;
   color: var(--text-primary);
 }
 
 .notification-dropdown-mark-all {
-  padding: 4px 8px;
-  font-size: 0.8rem;
+  padding: 2px 6px;
+  font-size: 0.72rem;
   font-weight: 500;
   color: var(--primary);
   background: transparent;
   border: none;
-  border-radius: 6px;
+  border-radius: 4px;
   cursor: pointer;
   white-space: nowrap;
 }
@@ -78,38 +88,55 @@
 .notification-dropdown-list {
   overflow-y: auto;
   overscroll-behavior: contain;
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: 220px;
+}
+
+.notification-dropdown--empty .notification-dropdown-list {
+  max-height: none;
 }
 
 .notification-dropdown-empty {
-  padding: 24px 16px;
+  padding: 10px 12px;
   text-align: center;
   color: var(--text-muted);
-  font-size: 0.9rem;
+  font-size: 0.8rem;
+}
+
+.notification-dropdown-empty p {
+  margin: 0;
 }
 
 .notification-dropdown-view-all {
-  padding: 12px 16px;
-  font-size: 0.9rem;
-  font-weight: 500;
+  padding: 8px 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
   color: var(--primary);
   background: rgba(124, 58, 237, 0.06);
   border: none;
   border-top: 1px solid var(--border-color);
   cursor: pointer;
   flex-shrink: 0;
+  white-space: nowrap;
+  text-align: center;
 }
 
 .notification-dropdown-view-all:hover {
   background: rgba(124, 58, 237, 0.1);
 }
 
-/* Item (compact row in dropdown) */
+.notification-dropdown-view-all:active {
+  background: rgba(124, 58, 237, 0.14);
+}
+
+/* Item – compact row, app-style */
 .notification-item-btn {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
+  gap: 8px;
   width: 100%;
-  padding: 12px 16px;
+  padding: 8px 12px;
   text-align: left;
   background: transparent;
   border: none;
@@ -137,24 +164,24 @@
 
 .notification-item-dot {
   flex-shrink: 0;
-  width: 10px;
-  height: 10px;
-  margin-top: 6px;
+  width: 8px;
+  height: 8px;
+  margin-top: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .notification-item-dot-inner {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background: var(--primary);
 }
 
 .notification-item-icon {
   flex-shrink: 0;
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   line-height: 1.2;
 }
 
@@ -163,18 +190,18 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 1px;
 }
 
 .notification-item-title {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: var(--text-primary);
   display: block;
 }
 
 .notification-item-message {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: var(--text-secondary);
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -183,9 +210,9 @@
 }
 
 .notification-item-time {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: var(--text-muted);
-  margin-top: 2px;
+  margin-top: 1px;
 }
 
 .notification-item-btn.compact .notification-item-message {
@@ -194,18 +221,16 @@
 
 .notification-item-chevron {
   flex-shrink: 0;
-  font-size: 1.2rem;
+  font-size: 1rem;
   color: var(--text-muted);
   margin-top: 2px;
 }
 
-/* Mobile: dropdown full-width below header */
 @media (max-width: 768px) {
   .notification-dropdown {
     left: 50%;
     right: auto;
     transform: translateX(-50%);
-    width: calc(100vw - 24px);
-    max-width: 360px;
+    width: min(260px, calc(100vw - 32px));
   }
 }

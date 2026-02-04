@@ -59,7 +59,7 @@ const TimelineSnapshots: React.FC<TimelineSnapshotsProps> = ({
         {snapshots.length > 6 && (
           <div className="dt-snapshot-toggle">
             <button type="button" className="btn-secondary" onClick={() => setIsExpanded((value) => !value)}>
-              {isExpanded ? 'Show Less' : `View ${hiddenCount} More`}
+              {isExpanded ? 'Show Less' : `Want to see more (${hiddenCount})`}
             </button>
           </div>
         )}

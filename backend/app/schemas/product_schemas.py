@@ -4,7 +4,7 @@ Pydantic models for product-related API requests/responses.
 Created: December 13, 2025
 """
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 from uuid import UUID
 
 from pydantic import BaseModel, Field, validator
@@ -74,8 +74,8 @@ class ProductRecommendation(BaseModel):
 
 
 class RecommendationItem(BaseModel):
-    """Simplified product payload for recommendations UI."""
-    id: UUID
+    """Simplified product payload for recommendations UI. id is UUID for DB products or str (ASIN) for affiliate."""
+    id: Union[UUID, str]
     name: str
     brand: str
     category: str

@@ -8,6 +8,10 @@ from fastapi.testclient import TestClient
 from unittest.mock import patch, MagicMock
 
 from app.main import app
+from app.product_database import create_product_tables
+
+# Ensure catalog tables exist (conftest sets shared SQLite; this module uses TestClient(app) directly)
+create_product_tables()
 
 # Skip PostgreSQL-only tests (to_tsvector, @>, etc.) when using SQLite
 def _is_sqlite():

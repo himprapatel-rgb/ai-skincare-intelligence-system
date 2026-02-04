@@ -1,46 +1,68 @@
 /**
- * Pull-to-refresh for mobile list pages (History, Shelf, Favorites).
- * Call from a scrollable container; when user pulls down from top, triggers onRefresh.
+ * Task 50: Pull-to-refresh for list pages (Today, Shelf, History).
+ * Calls onRefresh when user pulls down past threshold. Optional visual indicator.
  */
 import { useCallback, useRef, useState } from 'react';
 
 const PULL_THRESHOLD = 80;
 const RESISTANCE = 0.4;
 
-export function usePullToRefresh(onRefresh: () => Promise<void> | void) {
+export function usePullToRefresh(onRefresh: () => void | Promise<void>, options?: { enabled?: boolean }) {
+  const enabled = options?.enabled !== false;
+  const [pulling, setPulling] = useState(false);
   const [pullDistance, setPullDistance] = useState(0);
-  const [isRefreshing, setIsRefreshing] = useState(false);
   const startY = useRef(0);
-  const scrollTop = useRef(0);
+  const containerRef = useRef<HTMLElement | null>(null);
 
-  const handleTouchStart = useCallback((e: React.TouchEvent) => {
-    startY.current = e.touches[0].clientY;
-    const el = e.currentTarget;
-    scrollTop.current = el.scrollTop;
-  }, []);
+  const handleTouchStart = useCallback(
+    (e: React.TouchEvent) => {
+      if (!enabled || !onRefresh) return;
+      const scrollEl = containerRef.current || document.documentElement;
+      if (scrollEl.scrollTop <= 0) {
+        startY.current = e.touches[0].clientY;
+        setPulling(true);
+      }
+    },
+    [enabled, onRefresh]
+  );
 
-  const handleTouchMove = useCallback((e: React.TouchEvent) => {
-    if (isRefreshing) return;
-    const el = e.currentTarget;
-    if (el.scrollTop > 0) return;
-    const currentY = e.touches[0].clientY;
-    const delta = (currentY - startY.current) * RESISTANCE;
-    if (delta > 0) {
-      setPullDistance(Math.min(delta, PULL_THRESHOLD * 1.2));
-    }
-  }, [isRefreshing]);
-
-  const handleTouchEnd = useCallback(() => {
-    if (pullDistance >= PULL_THRESHOLD && !isRefreshing) {
-      setIsRefreshing(true);
-      Promise.resolve(onRefresh()).finally(() => {
-        setIsRefreshing(false);
+  const handleTouchMove = useCallback(
+    (e: React.TouchEvent) => {
+      if (!pulling || !enabled) return;
+      const scrollEl = containerRef.current || document.documentElement;
+      if (scrollEl.scrollTop > 0) {
+        setPulling(false);
         setPullDistance(0);
-      });
+        return;
+      }
+      const y = e.touches[0].clientY;
+      const diff = y - startY.current;
+      if (diff > 0) {
+        const distance = Math.min(diff * RESISTANCE, 120);
+        setPullDistance(distance);
+      }
+    },
+    [pulling, enabled]
+  );
+
+  const handleTouchEnd = useCallback(async () => {
+    if (!pulling || !enabled) return;
+    setPulling(false);
+    if (pullDistance >= PULL_THRESHOLD && onRefresh) {
+      setPullDistance(0);
+      await Promise.resolve(onRefresh());
     } else {
       setPullDistance(0);
     }
-  }, [pullDistance, isRefreshing, onRefresh]);
+  }, [pulling, pullDistance, enabled, onRefresh]);
 
-  return { pullDistance, isRefreshing, handleTouchStart, handleTouchMove, handleTouchEnd };
+  return {
+    pullProps: {
+      onTouchStart: handleTouchStart,
+      onTouchMove: handleTouchMove,
+      onTouchEnd: handleTouchEnd,
+    },
+    pullDistance,
+    setContainerRef: containerRef,
+  };
 }

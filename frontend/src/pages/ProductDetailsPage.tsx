@@ -9,6 +9,7 @@ import { SkeletonProductDetails } from '../components/Skeleton';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { useShelf } from '../context/ShelfContext';
 import { useToast } from '../context/ToastContext';
+import { hapticMedium } from '../utils/haptic';
 import './ProductDetailsPage.css';
 
 import { API_BASE_URL } from '../config';
@@ -427,6 +428,7 @@ const ProductDetailsPage: React.FC = () => {
         status: 'active',
       });
       if (success) {
+        hapticMedium();
         setInShelf(true);
       }
     } catch (error) {

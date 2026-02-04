@@ -8,7 +8,6 @@ from unittest.mock import patch, MagicMock
 
 from app.main import app
 
-
 client = TestClient(app)
 
 
@@ -62,9 +61,8 @@ class TestBarcodeScanning:
         )
         assert response.status_code in [401, 422]  # Unprocessable or unauthorized
     
-    def test_barcode_scan_validates_format(self):
-        """Task 457: Barcode scan endpoint responds"""
-        # Test with short barcode - may return 200 (OBF lookup) or reject
+    def test_barcode_scan_validates_format(self, client):
+        """Task 457: Barcode scan endpoint responds (uses conftest client so main DB has products table)"""
         response = client.post(
             "/api/v1/products/scan-barcode",
             json={"barcode": "123"}
@@ -134,13 +132,12 @@ class TestAPIValidation:
         )
         assert response.status_code in [400, 422]
     
-    def test_missing_content_type_handled(self):
-        """Task 467: Missing content type should be handled"""
+    def test_missing_content_type_handled(self, client):
+        """Task 467: Missing content type should be handled (uses conftest client so main DB has products table)"""
         response = client.post(
             "/api/v1/products/scan-barcode",
             content='{"barcode": "123"}'
         )
-        # Should either process or return appropriate error
         assert response.status_code in [200, 400, 401, 415, 422]
 
 

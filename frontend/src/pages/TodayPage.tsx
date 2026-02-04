@@ -2,10 +2,11 @@
  * TODAY tab – Home Dashboard (Mobile Design System).
  * Sections: Your Skin Today, Your Top Concerns, AI Ingredient Match, Top Pick For You.
  */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { usePullToRefresh } from '../hooks/usePullToRefresh';
 import { getScanHistory } from '../services/scanApi';
 import { useShelf } from '../context/ShelfContext';
 import { API_BASE_URL } from '../config';
@@ -127,6 +128,13 @@ const TodayPage: React.FC = () => {
   const [twinFirstScore, setTwinFirstScore] = useState<number | null>(null);
   const [lastScanDate, setLastScanDate] = useState<string | null>(null);
   const [gaugeScore, setGaugeScore] = useState(0);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
+
+  const refreshToday = useCallback(() => {
+    setLoading(true);
+    setRefreshTrigger((t) => t + 1);
+  }, []);
+  const { pullProps } = usePullToRefresh(refreshToday, { enabled: !!isAuthenticated });
 
   const dismissTwinIntro = () => {
     try {
@@ -270,7 +278,7 @@ const TodayPage: React.FC = () => {
   }
 
   return (
-    <div className="today-page app-page">
+    <div className="today-page app-page" {...pullProps}>
       <header className="today-header">
         <h1 className="today-greeting">{timeGreeting}, {firstName}</h1>
         <div className="today-header-actions">
@@ -524,21 +532,29 @@ const TodayPage: React.FC = () => {
           </section>
         )}
 
-        {/* 🏆 RECOMMENDED FOR YOU – at least 3 products */}
-        <section className="today-card today-card-toppick">
+        {/* Recommended for you – product cards */}
+        <section className="today-card today-card-toppick" aria-labelledby="today-recommended-head">
           <div className="today-card-head">
-            <span className="today-foryou-icon"><Illustrations.Recommended className="today-ill today-ill-section" /></span>
-            <h2 className="today-card-title today-card-title-caps">Recommended for you</h2>
-            <Link to="/recommendations" className="today-see-all">See all →</Link>
+            <span className="today-foryou-icon" aria-hidden="true">
+              <Illustrations.Recommended className="today-ill today-ill-section" />
+            </span>
+            <h2 id="today-recommended-head" className="today-card-title today-card-title-caps">
+              Recommended for you
+            </h2>
+            <Link to="/recommendations" className="today-see-all">
+              See all →
+            </Link>
           </div>
-          <div className="today-products-grid">
+          <div className="today-products-grid" role="list">
             {RECOMMENDED_PRODUCTS.map((product) => (
-              <div key={product.id} className="today-product-card">
+              <article key={product.id} className="today-product-card" role="listitem">
                 <div className="today-product-card-image">
                   {product.imageUrl ? (
                     <img src={product.imageUrl} alt="" />
                   ) : (
-                    <span className="today-product-card-placeholder" aria-hidden>Product</span>
+                    <span className="today-product-card-placeholder" aria-hidden="true">
+                      {product.brand}
+                    </span>
                   )}
                 </div>
                 <div className="today-product-card-info">
@@ -546,22 +562,25 @@ const TodayPage: React.FC = () => {
                   <h3 className="today-product-card-name">{product.name}</h3>
                   <div className="today-product-card-match">
                     <span className="today-product-card-match-pct">{product.matchPct}% match</span>
-                    <div className="today-product-card-bar" role="presentation">
+                    <div className="today-product-card-bar" role="presentation" aria-hidden="true">
                       <div className="today-product-card-bar-fill" style={{ width: `${product.matchPct}%` }} />
                     </div>
                   </div>
-                  <p className="today-product-card-meta">⭐ {product.rating} · {product.price}</p>
+                  <p className="today-product-card-meta">
+                    ⭐ {product.rating} · <span className="today-product-card-price">{product.price}</span>
+                  </p>
                   <a
                     href={product.buyUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn btn-primary today-product-card-buy"
+                    title={`View ${product.name} on retailer`}
                   >
-                    <Illustrations.Cart className="today-ill today-ill-btn" />
-                    Buy on Amazon
+                    <Illustrations.Cart className="today-ill today-ill-btn" aria-hidden="true" />
+                    <span className="today-product-card-buy-text">View</span>
                   </a>
                 </div>
-              </div>
+              </article>
             ))}
           </div>
         </section>

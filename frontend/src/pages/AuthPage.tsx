@@ -12,13 +12,14 @@ import './AuthPage.css';
 const FOCUSABLE = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
 export const AuthPage: React.FC = () => {
-  usePageTitle('Sign In');
   const [mode, setMode] = useState<'login' | 'register'>('login');
   const navigate = useNavigate();
   const location = useLocation();
   const toast = useToast();
   const authCardRef = useRef<HTMLDivElement>(null);
   const API_URL = API_BASE_URL;
+
+  usePageTitle(mode === 'register' ? 'Register' : 'Sign In');
 
   useEffect(() => {
     if (sessionStorage.getItem('session_expired_redirect')) {

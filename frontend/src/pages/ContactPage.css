@@ -6,6 +6,39 @@
 
 .contact-page .app-header-card { margin-bottom: 0; }
 
+.response-time-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 8px 14px;
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  border-radius: 999px;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+.response-time-icon {
+  font-size: 1.1rem;
+}
+
+.location-section {
+  grid-column: 1 / -1;
+  margin-bottom: 8px;
+}
+
+.location-heading {
+  font-size: 1.25rem;
+  margin: 0 0 12px 0;
+  color: var(--text-primary);
+}
+
+.location-section iframe {
+  width: 100%;
+  border-radius: 12px;
+}
+
 .contact-page .app-page-content.contact-container {
   padding-top: 20px;
   display: grid;

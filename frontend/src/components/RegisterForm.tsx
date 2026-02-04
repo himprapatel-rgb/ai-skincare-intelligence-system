@@ -93,9 +93,22 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onSwitchT
     }
   };
 
+  const passwordStrength = ((): 'weak' | 'medium' | 'strong' => {
+    const p = formData.password;
+    if (!p) return 'weak';
+    let score = 0;
+    if (p.length >= 8) score++;
+    if (p.length >= 12) score++;
+    if (/[A-Z]/.test(p) && /[a-z]/.test(p)) score++;
+    if (/[0-9]/.test(p)) score++;
+    if (/[!@#$%^&*(),.?":{}|<>]/.test(p)) score++;
+    if (score <= 2) return 'weak';
+    if (score <= 4) return 'medium';
+    return 'strong';
+  })();
+
   return (
     <div className="register-form">
-      <h2>Create Account</h2>
       {error && <ErrorMessage message={error} onDismiss={() => setError('')} />}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
@@ -124,7 +137,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onSwitchT
             placeholder="Enter your email"
           />
         </div>
-        <div className="form-group">
+        <div className="form-group password-field">
           <label htmlFor="password">Password</label>
           <input
             type="password"
@@ -135,7 +148,21 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onSwitchT
             required
             disabled={loading}
             placeholder="Enter your password"
+            aria-describedby="strength-text"
           />
+          {formData.password && (
+            <div className="strength-meter" role="presentation" aria-hidden="true">
+              <div
+                className={`strength-bar strength-${passwordStrength}`}
+                id="strength-bar"
+              />
+            </div>
+          )}
+          {formData.password && (
+            <span id="strength-text" className="strength-text">
+              {passwordStrength === 'weak' ? 'Weak' : passwordStrength === 'medium' ? 'Medium' : 'Strong'}
+            </span>
+          )}
           <div className="password-requirements">
             <span>Password must include:</span>
             <ul>

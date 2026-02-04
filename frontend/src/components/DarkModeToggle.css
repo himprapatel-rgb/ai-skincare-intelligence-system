@@ -1,0 +1,41 @@
+.dark-mode-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg, 12px);
+  background: var(--bg-white);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.dark-mode-toggle:hover {
+  background: var(--primary-light, rgba(37, 99, 235, 0.1));
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.dark-mode-toggle:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.dark-mode-icon {
+  flex-shrink: 0;
+}
+
+[data-theme="dark"] .dark-mode-toggle {
+  background: var(--surface-card);
+  border-color: var(--border-color);
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .dark-mode-toggle:hover {
+  background: var(--surface-elevated);
+  color: var(--primary);
+  border-color: var(--primary);
+}

@@ -1,0 +1,111 @@
+/**
+ * Dark mode – [data-theme="dark"] overrides.
+ * ThemeProvider sets data-theme on document.documentElement.
+ * Uses same variable names as index.css so existing components respond.
+ */
+
+[data-theme="dark"] {
+  /* Background & surface */
+  --bg-primary: #0F172A;
+  --bg-secondary: #1E293B;
+  --bg-tertiary: #334155;
+  --bg-light: #1E293B;
+  --bg-white: #1E293B;
+  --surface-card: #1E293B;
+  --surface-elevated: #334155;
+
+  /* Text */
+  --text-primary: #F1F5F9;
+  --text-secondary: #CBD5E1;
+  --text-muted: #94A3B8;
+  --text-dark: #F1F5F9;
+  --text-gray: #CBD5E1;
+  --text-light: #94A3B8;
+  --placeholder-color: #94A3B8;
+
+  /* Borders */
+  --border-color: #334155;
+  --border-light: #334155;
+  --border-medium: #475569;
+
+  /* Primary accent (slightly lighter in dark) */
+  --primary: #818CF8;
+  --primary-hover: #6366F1;
+  --primary-light: rgba(129, 140, 248, 0.2);
+  --primary-dark: #6366F1;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+  --shadow-primary: 0 10px 40px rgba(129, 140, 248, 0.2);
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.2), 0 4px 8px rgba(0, 0, 0, 0.2);
+  --shadow-card-hover: 0 4px 8px rgba(0, 0, 0, 0.3), 0 12px 24px rgba(129, 140, 248, 0.1);
+}
+
+[data-theme="dark"] body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .app-header {
+  background: rgba(15, 23, 42, 0.95);
+  border-bottom-color: var(--border-color);
+}
+
+[data-theme="dark"] .app-header.scrolled {
+  background: rgba(15, 23, 42, 0.98);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .app-layout {
+  background: var(--bg-secondary);
+}
+
+[data-theme="dark"] .app-card,
+[data-theme="dark"] .app-section,
+[data-theme="dark"] .card,
+[data-theme="dark"] .product-card,
+[data-theme="dark"] .info-card,
+[data-theme="dark"] .stat-card {
+  background-color: var(--surface-card);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] input,
+[data-theme="dark"] textarea,
+[data-theme="dark"] select {
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-medium);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] input::placeholder,
+[data-theme="dark"] textarea::placeholder {
+  color: var(--text-muted);
+}
+
+[data-theme="dark"] .btn-secondary,
+[data-theme="dark"] .btn-ghost {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  border-color: var(--border-medium);
+}
+
+[data-theme="dark"] .btn-secondary:hover:not(:disabled),
+[data-theme="dark"] .btn-ghost:hover:not(:disabled) {
+  background-color: var(--surface-elevated);
+  border-color: var(--primary);
+}
+
+[data-theme="dark"] .app-footer,
+[data-theme="dark"] .footer {
+  background-color: var(--bg-secondary);
+  border-top-color: var(--border-color);
+}
+
+[data-theme="dark"] .skip-link {
+  background: var(--surface-card);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}

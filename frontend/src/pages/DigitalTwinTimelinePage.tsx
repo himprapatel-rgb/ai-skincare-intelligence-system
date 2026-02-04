@@ -357,15 +357,31 @@ const DigitalTwinTimelinePage: React.FC = () => {
     return (
       <div className="dt-page app-page">
         <header className="app-header-card">
-          <h1>Digital Twin</h1>
-          <p className="app-header-subtitle">Your skin over time</p>
+          <h1>Your Digital Skin Twin</h1>
+          <p className="app-header-subtitle">See how your skin changes over time with AI-powered tracking</p>
         </header>
         <div className="app-page-content dt-container">
-          <section className="dt-card">
-            <p>Complete a scan to generate your first digital twin snapshot.</p>
-            <div className="dt-card-body">
+          <section className="dt-card digital-twin-preview">
+            <div className="digital-twin-preview-features">
+              <div className="dt-preview-feature">
+                <span className="dt-preview-feature-icon" aria-hidden>📈</span>
+                <span>Track improvements</span>
+              </div>
+              <div className="dt-preview-feature">
+                <span className="dt-preview-feature-icon" aria-hidden>🎯</span>
+                <span>Set skin goals</span>
+              </div>
+              <div className="dt-preview-feature">
+                <span className="dt-preview-feature-icon" aria-hidden>📅</span>
+                <span>Weekly check-ins</span>
+              </div>
+            </div>
+            <p className="dt-preview-desc">
+              Your Digital Twin tracks skin scores, concerns, and progress across scans. See trends, compare before/after, and run &quot;what-if&quot; simulations.
+            </p>
+            <div className="dt-card-body dt-guest-actions">
               <button type="button" className="btn btn-primary" onClick={() => navigate('/scan')}>
-                Start a Scan
+                Create Your Digital Twin
               </button>
             </div>
           </section>

@@ -65,8 +65,25 @@ const ContactPage: React.FC = () => {
       <header className="app-header-card">
         <h1>Get in touch</h1>
         <p className="app-header-subtitle">Questions? Send a message and we'll reply soon.</p>
+        <div className="response-time-badge" role="status">
+          <span className="response-time-icon" aria-hidden>⚡</span>
+          <span>Average response time: <strong>24 hours</strong></span>
+        </div>
       </header>
       <div className="app-page-content contact-container">
+        <div className="location-section">
+          <h2 className="location-heading">Find us</h2>
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d50470.0699936!2d-122.4194!3d37.7749!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8085809c6c8f4459%3A0xb10ed6d9b5050fa5!2sSan%20Francisco%2C%20CA!5e0!3m2!1sen!2sus!4v1635000000000"
+            width="100%"
+            height="300"
+            style={{ border: 0, borderRadius: 12 }}
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            title="Office location map"
+          />
+        </div>
         <div className="contact-info">
           <div className="info-card">
             <div className="info-icon">

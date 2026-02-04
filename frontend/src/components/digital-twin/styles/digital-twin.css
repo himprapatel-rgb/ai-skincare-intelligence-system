@@ -237,6 +237,41 @@
   min-width: 140px;
 }
 
+/* Empty state: Digital Twin preview with features */
+.digital-twin-preview {
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.digital-twin-preview-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.dt-preview-feature {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-weight: 500;
+  color: var(--text-dark);
+}
+
+.dt-preview-feature-icon {
+  font-size: 1.25rem;
+}
+
+.dt-preview-desc {
+  color: var(--text-gray);
+  line-height: 1.6;
+  margin: 0 0 24px 0;
+}
+
 .dt-select {
   display: flex;
   align-items: center;

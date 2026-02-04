@@ -55,6 +55,38 @@
   overflow: hidden;
 }
 
+/* Responsive 16:9 video embed */
+.video-embed {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  margin-bottom: 12px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.video-embed iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+}
+
+.tutorial-info {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.tutorial-info .video-duration,
+.tutorial-info .video-difficulty {
+  position: static;
+  font-size: 0.75rem;
+}
+
 .video-thumb {
   aspect-ratio: 16 / 9;
   background: linear-gradient(135deg, rgba(31, 111, 235, 0.12) 0%, rgba(31, 111, 235, 0.06) 100%);

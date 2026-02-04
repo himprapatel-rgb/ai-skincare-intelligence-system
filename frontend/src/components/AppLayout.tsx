@@ -11,6 +11,7 @@ import { OfflineBanner } from './OfflineBanner';
 import { AddToHomeScreenPrompt } from './AddToHomeScreenPrompt';
 import { ApiStatusIndicator } from './ApiStatusIndicator';
 import { BottomNav } from './BottomNav';
+import { DarkModeToggle } from './DarkModeToggle';
 import { useViewport } from '../hooks/useViewport';
 import './AppLayout.css';
 
@@ -166,6 +167,7 @@ const displayName = nameParts.length > 1
             </div>
             
             <div className="app-nav-actions">
+              <DarkModeToggle />
               {isAuthenticated ? (
                 <>
                   {/* User Dropdown */}
@@ -270,6 +272,10 @@ const displayName = nameParts.length > 1
         {/* Mobile Navigation */}
         <nav className={`app-nav-mobile${mobileMenuOpen ? ' open' : ''}`} aria-label="Mobile navigation">
           <div className="app-nav-mobile-scroll">
+            <div className="app-nav-mobile-theme-wrap">
+              <DarkModeToggle />
+              <span className="app-nav-mobile-theme-label">Theme</span>
+            </div>
             <div className="app-nav-mobile-links">
               <Link className={`app-nav-mobile-link${location.pathname === '/' ? ' active' : ''}`} to="/">Home</Link>
               <Link className={`app-nav-mobile-link${location.pathname.startsWith('/scan') ? ' active' : ''}`} to="/scan">Scan</Link>

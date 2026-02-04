@@ -279,17 +279,25 @@ const DashboardPage: React.FC = () => {
 
       <div className="app-page-content">
       {data.recentScans === 0 && (
-        <div className="dashboard-first-scan-cta app-card">
-          <div className="dashboard-first-scan-cta-inner">
-            <div className="dashboard-first-scan-cta-icon">
-              <IconScan size={32} strokeWidth={2} />
+        <div className="dashboard-empty-wrapper">
+          <div className="preview-dashboard blurred" aria-hidden="true">
+            <div className="dashboard-stats preview-stats">
+              <div className="stat-card primary"><div className="stat-icon"><IconTrendingUp size={32} strokeWidth={2} /></div><div className="stat-content"><h3>—</h3><p>Skin Health Score</p></div></div>
+              <div className="stat-card"><div className="stat-icon"><IconCamera size={32} strokeWidth={2} /></div><div className="stat-content"><h3>0</h3><p>Total Scans</p></div></div>
+              <div className="stat-card"><div className="stat-icon"><IconPackage size={32} strokeWidth={2} /></div><div className="stat-content"><h3>0</h3><p>My Products</p></div></div>
+              <div className="stat-card"><div className="stat-icon"><IconSparkles size={32} strokeWidth={2} /></div><div className="stat-content"><h3>0</h3><p>Active Routines</p></div></div>
             </div>
-            <div className="dashboard-first-scan-cta-text">
-              <h2>Start your skincare journey</h2>
-              <p>Take your first scan to get a personalized skin score and recommendations.</p>
+            <div className="preview-list">
+              <div className="app-list-item"><span className="app-list-icon blue"><IconScan size={20} strokeWidth={2} /></span><span className="app-list-label">New Scan</span></div>
+              <div className="app-list-item"><span className="app-list-icon purple"><IconPackage size={20} strokeWidth={2} /></span><span className="app-list-label">My Shelf</span></div>
+              <div className="app-list-item"><span className="app-list-icon green"><IconCalendar size={20} strokeWidth={2} /></span><span className="app-list-label">Routines</span></div>
             </div>
+          </div>
+          <div className="overlay-cta">
+            <h2>Your Skin Dashboard</h2>
+            <p>Track your skin health over time with personalized insights</p>
             <button type="button" className="btn btn-primary" onClick={() => navigate('/scan')}>
-              Take your first scan
+              Start Your First Scan →
             </button>
           </div>
         </div>

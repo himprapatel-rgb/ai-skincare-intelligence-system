@@ -1,6 +1,14 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { usePageTitle } from '../hooks/usePageTitle';
 import './BlogPage.css';
+
+/** Placeholder slugs until individual blog post pages exist. Replace with real routes when ready. */
+const BLOG_POSTS = [
+  { slug: 'building-morning-routine', title: 'Building a Simple Morning Routine', excerpt: 'Learn how to create a calm, effective AM routine with antioxidants, hydration, and SPF in under five minutes.', readTime: '5 min read' },
+  { slug: 'ingredient-interactions', title: 'Understanding Ingredient Interactions', excerpt: 'A quick guide to layering actives safely and avoiding common irritation combinations like acids + retinoids.', readTime: '7 min read' },
+  { slug: 'tracking-progress-scans', title: 'Tracking Progress with Weekly Scans', excerpt: 'See why consistent tracking improves results and how to capture better scan images at home.', readTime: '6 min read' },
+];
 
 const BlogPage: React.FC = () => {
   usePageTitle('Blog');
@@ -12,30 +20,15 @@ const BlogPage: React.FC = () => {
       </header>
       <div className="app-page-content blog-container">
         <div className="blog-grid">
-          <article className="blog-card">
-            <h3>Building a Simple Morning Routine</h3>
-            <p className="blog-excerpt">
-              Learn how to create a calm, effective AM routine with antioxidants,
-              hydration, and SPF in under five minutes.
-            </p>
-            <span className="blog-meta" aria-label="5 minute read">5 min read</span>
-          </article>
-          <article className="blog-card">
-            <h3>Understanding Ingredient Interactions</h3>
-            <p className="blog-excerpt">
-              A quick guide to layering actives safely and avoiding common irritation
-              combinations like acids + retinoids.
-            </p>
-            <span className="blog-meta" aria-label="7 minute read">7 min read</span>
-          </article>
-          <article className="blog-card">
-            <h3>Tracking Progress with Weekly Scans</h3>
-            <p className="blog-excerpt">
-              See why consistent tracking improves results and how to capture
-              better scan images at home.
-            </p>
-            <span className="blog-meta" aria-label="6 minute read">6 min read</span>
-          </article>
+          {BLOG_POSTS.map((post) => (
+            <Link key={post.slug} to={`/blog#${post.slug}`} className="blog-card" id={post.slug}>
+              <article>
+                <h3>{post.title}</h3>
+                <p className="blog-excerpt">{post.excerpt}</p>
+                <span className="blog-meta" aria-label={`${post.readTime} read`}>{post.readTime}</span>
+              </article>
+            </Link>
+          ))}
         </div>
       </div>
     </div>

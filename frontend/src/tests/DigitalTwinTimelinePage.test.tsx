@@ -30,7 +30,8 @@ describe("DigitalTwinTimelinePage", () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText("Complete a scan to generate your first digital twin snapshot.")).toBeInTheDocument();
+      expect(screen.getByText("Your Digital Skin Twin")).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /Create Your Digital Twin/i })).toBeInTheDocument();
     });
   });
 

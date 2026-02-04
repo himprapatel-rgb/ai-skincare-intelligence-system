@@ -2,6 +2,34 @@ import React from 'react';
 import { usePageTitle } from '../hooks/usePageTitle';
 import './VideoTutorialsPage.css';
 
+/** Replace each videoId with your YouTube tutorial video ID. */
+const TUTORIAL_VIDEOS = [
+  {
+    id: 'scan',
+    videoId: import.meta.env.VITE_VIDEO_SCAN ?? 'M7lc1UVf-VE',
+    title: 'How to Take the Perfect Skin Scan Photo',
+    description: 'Lighting, angles, and best practices for accurate results.',
+    duration: '5:32',
+    difficulty: 'Beginner',
+  },
+  {
+    id: 'digital-twin',
+    videoId: import.meta.env.VITE_VIDEO_DIGITAL_TWIN ?? 'M7lc1UVf-VE',
+    title: 'Reading Your Digital Twin',
+    description: 'Understand progress charts, metrics, and before/after tools.',
+    duration: '2:45',
+    difficulty: 'Intermediate',
+  },
+  {
+    id: 'routine',
+    videoId: import.meta.env.VITE_VIDEO_ROUTINE ?? 'M7lc1UVf-VE',
+    title: 'Building a Routine',
+    description: 'Layering products safely and saving your personalized routine.',
+    duration: '4:20',
+    difficulty: 'Beginner',
+  },
+];
+
 const VideoTutorialsPage: React.FC = () => {
   usePageTitle('Video Tutorials', 'Short walkthroughs for every feature.');
   return (
@@ -12,36 +40,25 @@ const VideoTutorialsPage: React.FC = () => {
       </header>
       <div className="app-page-content video-container">
         <div className="video-grid">
-          <div className="video-card">
-            <div className="video-thumb-wrap">
-              <div className="video-thumb">
-                <span className="video-duration" aria-label="Duration 3 minutes 12 seconds">3:12</span>
-                <span className="video-difficulty" aria-label="Difficulty: Beginner">Beginner</span>
+          {TUTORIAL_VIDEOS.map((t) => (
+            <div key={t.id} className="video-card tutorial-card">
+              <div className="video-embed">
+                <iframe
+                  src={`https://www.youtube.com/embed/${t.videoId}`}
+                  title={t.title}
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
               </div>
-            </div>
-            <h3>How to Capture a Great Scan</h3>
-            <p>Lighting, angles, and best practices for accurate results.</p>
-          </div>
-          <div className="video-card">
-            <div className="video-thumb-wrap">
-              <div className="video-thumb">
-                <span className="video-duration" aria-label="Duration 2 minutes 45 seconds">2:45</span>
-                <span className="video-difficulty" aria-label="Difficulty: Intermediate">Intermediate</span>
+              <div className="tutorial-info">
+                <span className="video-duration" aria-label={`Duration ${t.duration}`}>{t.duration}</span>
+                <span className="video-difficulty" aria-label={`Difficulty: ${t.difficulty}`}>{t.difficulty}</span>
               </div>
+              <h3>{t.title}</h3>
+              <p>{t.description}</p>
             </div>
-            <h3>Reading Your Digital Twin</h3>
-            <p>Understand progress charts, metrics, and before/after tools.</p>
-          </div>
-          <div className="video-card">
-            <div className="video-thumb-wrap">
-              <div className="video-thumb">
-                <span className="video-duration" aria-label="Duration 4 minutes 20 seconds">4:20</span>
-                <span className="video-difficulty" aria-label="Difficulty: Beginner">Beginner</span>
-              </div>
-            </div>
-            <h3>Building a Routine</h3>
-            <p>Layering products safely and saving your personalized routine.</p>
-          </div>
+          ))}
         </div>
       </div>
     </div>

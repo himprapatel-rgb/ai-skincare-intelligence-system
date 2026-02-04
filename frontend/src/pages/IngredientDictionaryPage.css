@@ -49,6 +49,72 @@
   border: 1px solid var(--border);
 }
 
+.ingredient-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: var(--spacing-lg);
+}
+
+.ingredient-filters .filter-btn {
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg-white);
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.ingredient-filters .filter-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.ingredient-filters .filter-btn.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+
+.alphabet-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: var(--spacing-lg);
+  justify-content: center;
+}
+
+.alphabet-nav .alphabet-letter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--primary);
+  text-decoration: none;
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  transition: background 0.2s, color 0.2s;
+}
+
+.alphabet-nav .alphabet-letter:hover {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
+.alphabet-nav .alphabet-letter.disabled {
+  color: var(--text-tertiary, #9ca3af);
+  pointer-events: none;
+  opacity: 0.6;
+}
+
 .ingredient-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));

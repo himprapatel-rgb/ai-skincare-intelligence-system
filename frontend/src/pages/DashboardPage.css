@@ -26,6 +26,67 @@
   line-height: var(--line-height-relaxed);
 }
 
+/* Empty state: blurred dashboard preview + overlay CTA (logged in, 0 scans) */
+.dashboard-empty-wrapper {
+  position: relative;
+  min-height: 320px;
+  margin-bottom: 24px;
+  border-radius: var(--radius-lg, 12px);
+  overflow: hidden;
+  background: var(--bg-light);
+}
+
+.preview-dashboard.blurred {
+  filter: blur(8px);
+  pointer-events: none;
+  opacity: 0.85;
+  padding: 16px 0;
+}
+
+.preview-dashboard .preview-stats {
+  margin-bottom: 24px;
+}
+
+.preview-dashboard .preview-list {
+  max-width: 400px;
+  border-radius: var(--radius-lg, 12px);
+  background: var(--bg-white);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.overlay-cta {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 1;
+  padding: 24px 32px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: var(--radius-lg, 12px);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  max-width: 360px;
+}
+
+.overlay-cta h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 8px 0;
+}
+
+.overlay-cta p {
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+  margin: 0 0 20px 0;
+  line-height: 1.5;
+}
+
+.overlay-cta .btn {
+  min-width: 200px;
+}
+
 /* Guest state: preview + dual CTAs to reduce empty viewport */
 .dashboard-page--guest .dashboard-guest-content {
   max-width: 520px;

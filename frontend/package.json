@@ -4,6 +4,7 @@
   "description": "AI-powered skincare analysis frontend with React",
   "private": true,
   "scripts": {
+    "build": "vite build",
     "dev": "vite",
     "dev:mobile": "node scripts/open-mobile-browser.js --with-dev",
     "open:mobile": "node scripts/open-mobile-browser.js",

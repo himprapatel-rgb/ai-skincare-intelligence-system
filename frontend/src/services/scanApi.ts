@@ -98,12 +98,15 @@ async function fetchJson<T>(path: string, init?: RequestInit): Promise<T> {
 /**
  * POST /api/v1/scan/init
  * Backend returns: { session_id: string }
+ * Optionally sends device_context (screen, locale, device) from web APIs for scan quality / analytics.
  */
-export async function initScan(): Promise<ScanInitResponse> {
+export async function initScan(deviceContext?: Record<string, unknown>): Promise<ScanInitResponse> {
   return fetchJson<ScanInitResponse>("/api/v1/scan/init", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({}),
+    body: JSON.stringify(
+      deviceContext ? { device_context: deviceContext } : {}
+    ),
   });
 }
 
@@ -169,10 +172,10 @@ export async function getProgressSummary(range: "week" | "month" | "3months"): P
 }
 
 /**
- * Convenience helper: init -> upload
+ * Convenience helper: init (with device context) -> upload
  */
-export async function initAndUpload(file: File): Promise<ScanInitResponse> {
-  const init = await initScan();
+export async function initAndUpload(file: File, deviceContext?: Record<string, unknown>): Promise<ScanInitResponse> {
+  const init = await initScan(deviceContext);
   const sessionId = init.session_id ?? init.scan_id;
   if (!sessionId) {
     throw new Error("Scan initialization did not return a session id");

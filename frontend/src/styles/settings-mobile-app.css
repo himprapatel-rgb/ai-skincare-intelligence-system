@@ -1,0 +1,405 @@
+/**
+ * Settings & under-settings mobile GUI (300-task list).
+ * Applied when viewport <= 768px. Makes profile, notifications, export, device context,
+ * consent, contact, etc. feel like a mobile app.
+ */
+
+/* =============================================
+   Tasks 1-20: Settings entry & shell
+============================================= */
+
+@media (max-width: 768px) {
+  .profile-settings-page,
+  .notification-center-page,
+  .data-export-page,
+  .device-ctx-page,
+  .consent-page,
+  .contact-page,
+  .privacy-page,
+  .terms-page,
+  .about-page {
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+    padding-bottom: max(96px, env(safe-area-inset-bottom));
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  .profile-settings-page .profile-container,
+  .notification-center-page .app-page-content,
+  .data-export-page .app-page-content,
+  .device-ctx-content {
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* =============================================
+   Tasks 21-45: Profile main layout (tabs, sections, rows)
+============================================= */
+
+@media (max-width: 768px) {
+  .profile-settings-page .settings-section {
+    margin-top: 24px;
+  }
+
+  .profile-settings-page .settings-section:first-child {
+    margin-top: 0;
+  }
+
+  .profile-settings-page .section-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+
+  .profile-settings-page .settings-item,
+  .profile-settings-page a.settings-item {
+    min-height: 44px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .profile-settings-page .settings-group .settings-item:last-child,
+  .profile-settings-page .settings-group a.settings-item:last-child {
+    border-bottom: none;
+  }
+
+  .profile-settings-page .settings-item .settings-value {
+    margin-left: auto;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+  }
+
+  .profile-settings-page .profile-floating-save {
+    min-height: 48px;
+    padding: 14px 24px;
+    border-radius: 12px;
+  }
+
+  .profile-settings-page .profile-unsaved-bar {
+    padding: 10px 16px;
+    min-height: 44px;
+  }
+}
+
+/* =============================================
+   Tasks 46-65 + 251-275: Personal tab & form controls
+============================================= */
+
+@media (max-width: 768px) {
+  .profile-settings-page .form-group label,
+  .profile-settings-page .section-card label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+  }
+
+  .profile-settings-page input[type="text"],
+  .profile-settings-page input[type="email"],
+  .profile-settings-page input[type="tel"],
+  .profile-settings-page input[type="date"],
+  .profile-settings-page select,
+  .profile-settings-page textarea {
+    min-height: 48px;
+    padding: 12px 16px;
+    font-size: 16px;
+    width: 100%;
+    border-radius: 10px;
+  }
+
+  .profile-settings-page textarea {
+    min-height: 80px;
+  }
+
+  .profile-settings-page input:focus,
+  .profile-settings-page select:focus,
+  .profile-settings-page textarea:focus {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+
+  .profile-settings-page .field-error {
+    margin-top: 6px;
+    font-size: 0.875rem;
+    color: var(--danger);
+  }
+
+  .profile-settings-page input[type="checkbox"],
+  .profile-settings-page input[type="radio"] {
+    min-width: 24px;
+    min-height: 24px;
+  }
+
+  .profile-settings-page .toggle-row,
+  .profile-settings-page .switch-label {
+    min-height: 44px;
+    padding: 12px 0;
+  }
+
+  .profile-settings-page .section-card {
+    padding: 16px;
+    border-radius: 12px;
+    margin-bottom: 16px;
+  }
+
+  .profile-settings-page .form-row {
+    gap: 16px;
+  }
+
+  /* T66-85: Skin tab – checkbox grid as chips, touch targets */
+  .profile-settings-page .checkbox-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .profile-settings-page .checkbox-card {
+    min-height: 44px;
+    padding: 10px 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-secondary);
+    cursor: pointer;
+  }
+  .profile-settings-page .checkbox-card:has(input:checked) {
+    border-color: var(--primary);
+    background: var(--primary-light, rgba(37, 99, 235, 0.1));
+  }
+  .profile-settings-page .checkbox-card input {
+    flex-shrink: 0;
+  }
+
+  /* T86-100: Goals tab – same chip pattern, timeline select */
+  .profile-settings-page #targetTimeline,
+  .profile-settings-page #skinType,
+  .profile-settings-page #skinTone,
+  .profile-settings-page #skinUndertone,
+  .profile-settings-page #budgetRange {
+    min-height: 48px;
+  }
+
+  /* T166-180: Stats tab – 2x2 grid, card min height */
+  .profile-settings-page .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .profile-settings-page .stat-card {
+    min-height: 100px;
+    padding: 16px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .profile-settings-page .stat-value {
+    font-variant-numeric: tabular-nums;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  .profile-settings-page .stat-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+  .profile-settings-page .progress-chart-placeholder,
+  .profile-settings-page .comparison-placeholder {
+    padding: 24px 16px;
+    text-align: center;
+  }
+  .profile-settings-page .stats-quick-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 16px;
+  }
+  .profile-settings-page .stats-quick-links .btn-secondary {
+    min-height: 48px;
+    flex: 1;
+    min-width: 140px;
+  }
+
+  /* T190: Theme toggle – touch targets */
+  .profile-settings-page .theme-toggle-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .profile-settings-page .theme-option {
+    min-height: 44px;
+    padding: 10px 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+  }
+  .profile-settings-page .theme-option.active {
+    border-color: var(--primary);
+    background: var(--primary-light, rgba(37, 99, 235, 0.1));
+  }
+
+  /* Privacy tab – action buttons full width on mobile */
+  .profile-settings-page .action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .profile-settings-page .action-buttons .btn-secondary,
+  .profile-settings-page .action-buttons .btn-danger {
+    min-height: 48px;
+    width: 100%;
+  }
+}
+
+/* =============================================
+   Tasks 121-145: Notifications (settings + center)
+============================================= */
+
+@media (max-width: 768px) {
+  .notification-center-page .app-header-card {
+    padding: 16px;
+    padding-top: max(16px, env(safe-area-inset-top));
+  }
+
+  .notification-center-page .notification-item {
+    min-height: 48px;
+    padding: 12px 14px;
+  }
+
+  .notification-center-page .notification-filters {
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .notification-center-page .filter-btn {
+    min-height: 44px;
+    padding: 10px 14px;
+  }
+
+  .notification-center-page .setting-item {
+    min-height: 44px;
+  }
+
+  .notification-center-page .app-empty-state {
+    padding: 32px 16px;
+    text-align: center;
+  }
+}
+
+/* =============================================
+   Tasks 181-200: Data export page
+============================================= */
+
+@media (max-width: 768px) {
+  .data-export-page .app-header-card {
+    padding-top: max(16px, env(safe-area-inset-top));
+  }
+
+  .data-export-page input[type="radio"],
+  .data-export-page input[type="checkbox"] {
+    min-width: 24px;
+    min-height: 24px;
+  }
+
+  .data-export-page .btn-primary,
+  .data-export-page .export-btn {
+    min-height: 48px;
+    width: 100%;
+  }
+}
+
+/* =============================================
+   Tasks 216-235: Consent modal
+============================================= */
+
+@media (max-width: 768px) {
+  .consent-modal-overlay {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .consent-modal .consent-actions .btn {
+    min-height: 48px;
+  }
+}
+
+/* =============================================
+   Tasks 236-250: Contact & help
+============================================= */
+
+@media (max-width: 768px) {
+  .contact-page input,
+  .contact-page textarea {
+    min-height: 48px;
+    font-size: 16px;
+  }
+
+  .contact-page .submit-btn {
+    min-height: 48px;
+    width: 100%;
+  }
+}
+
+/* =============================================
+   Tasks 276-290: Navigation & sub-pages (back, header)
+============================================= */
+
+@media (max-width: 768px) {
+  .device-ctx-back,
+  .profile-back-link {
+    min-width: 44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .device-ctx-header,
+  .notification-center-page .app-header-card h1,
+  .data-export-page .app-header-card h1 {
+    font-size: 1.25rem;
+  }
+}
+
+/* =============================================
+   Tasks 291-300: Polish & dark mode
+============================================= */
+
+@media (max-width: 768px) {
+  .profile-settings-page .settings-group,
+  .notification-center-page .notification-list {
+    border-radius: 12px;
+    overflow: hidden;
+  }
+}
+
+[data-theme="dark"] .profile-settings-page .settings-group,
+[data-theme="dark"] .profile-settings-page .section-card,
+.theme-dark .profile-settings-page .settings-group,
+.theme-dark .profile-settings-page .section-card {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .profile-settings-page .settings-item,
+.theme-dark .profile-settings-page .settings-item {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.profile-settings-page .settings-item:focus-visible,
+.profile-settings-page .settings-item:focus-within,
+.notification-center-page .notification-item-btn:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}

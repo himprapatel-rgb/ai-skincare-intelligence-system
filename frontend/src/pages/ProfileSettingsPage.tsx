@@ -1,16 +1,17 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { useTheme } from '../context/ThemeContext';
 import { useShelf } from '../context/ShelfContext';
-import { IconBarChart, IconCamera, IconPackage, IconSparkles, IconTrendingUp, IconScan, IconBell, IconLock, IconHelpCircle, IconChevronRight, IconTarget, IconUser, IconFileText, IconMail, IconSun, IconMoon } from '../components/Icons';
+import { IconBarChart, IconCamera, IconPackage, IconSparkles, IconTrendingUp, IconScan, IconBell, IconLock, IconHelpCircle, IconChevronRight, IconTarget, IconUser, IconFileText, IconMail, IconSun, IconMoon, IconArrowLeft, IconDownload } from '../components/Icons';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { getScanHistory } from '../services/scanApi';
 import { api } from '../services/api';
 import { getUploadFullUrl } from '../config';
 import { LoadingSpinner } from '../components/LoadingSpinner';
+import { hapticMedium, hapticLight } from '../utils/haptic';
 import './ProfileSettingsPage.css';
 
 interface UserProfile {
@@ -78,14 +79,26 @@ const ProfileSettingsPage: React.FC = () => {
   const { theme, setTheme } = useTheme();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const initialProfileRef = useRef<UserProfile | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
   const settingsFormRef = useRef<HTMLFormElement>(null);
+  const successMessageRef = useRef<HTMLDivElement>(null);
+  const nameInputRef = useRef<HTMLInputElement>(null);
+  const phoneInputRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
   const [photoUploading, setPhotoUploading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
   const [fieldErrors, setFieldErrors] = useState<{ name?: string; email?: string; phone?: string }>({});
   const [isDirty, setIsDirty] = useState(false);
-  const [activeTab, setActiveTab] = useState<'personal' | 'skin' | 'goals' | 'lifestyle' | 'notifications' | 'privacy' | 'stats'>('personal');
+  const tabParam = searchParams.get('tab');
+  const validTabs = ['personal', 'skin', 'goals', 'lifestyle', 'notifications', 'privacy', 'stats'] as const;
+  const tabFromUrl = tabParam === 'settings' ? 'notifications' : tabParam;
+  const initialTab = (tabFromUrl && validTabs.includes(tabFromUrl as typeof validTabs[number]) ? tabFromUrl : 'personal') as typeof validTabs[number];
+  const [activeTab, setActiveTabState] = useState<typeof validTabs[number]>(initialTab);
+  const setActiveTab = useCallback((tab: typeof validTabs[number]) => {
+    setActiveTabState(tab);
+    setSearchParams({ tab }, { replace: true });
+  }, [setSearchParams]);
   const [headerScrolled, setHeaderScrolled] = useState(false);
   const [showChangeEmailModal, setShowChangeEmailModal] = useState(false);
   const [pullDistance, setPullDistance] = useState(0);
@@ -307,6 +320,15 @@ const ProfileSettingsPage: React.FC = () => {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  /* Unsaved changes: warn when leaving (Task 33) */
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (isDirty) e.preventDefault();
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [isDirty]);
+
   const handlePullStart = (e: React.TouchEvent) => {
     pullStartY.current = e.touches[0].clientY;
   };
@@ -345,6 +367,16 @@ const ProfileSettingsPage: React.FC = () => {
     setFieldErrors(nextErrors);
     if (Object.keys(nextErrors).length > 0) {
       setError('Please fix the highlighted fields.');
+      /* Scroll to first invalid field (Task 36) */
+      requestAnimationFrame(() => {
+        const el = nextErrors.name
+          ? nameInputRef.current
+          : nextErrors.email
+            ? document.getElementById('email')
+            : phoneInputRef.current;
+        (el as HTMLElement | null)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        (el as HTMLInputElement | null)?.focus?.();
+      });
       return;
     }
 
@@ -364,9 +396,12 @@ const ProfileSettingsPage: React.FC = () => {
       });
       setSuccess(true);
       toast.success('Profile updated successfully.');
+      hapticMedium();
       initialProfileRef.current = profile;
       setIsDirty(false);
       setTimeout(() => setSuccess(false), 3000);
+      /* Focus success message for accessibility (Task 20) */
+      requestAnimationFrame(() => successMessageRef.current?.focus());
     } catch (err: unknown) {
       const status = (err as { response?: { status?: number; data?: { detail?: string } } })?.response?.status;
       const detail = (err as { response?: { data?: { detail?: string } } })?.response?.data?.detail;
@@ -443,13 +478,21 @@ const ProfileSettingsPage: React.FC = () => {
   };
 
   return (
-    <div className="profile-settings-page">
+    <div className="profile-settings-page settings-page-app">
+      {/* Mobile: back to Me at top (Task 3) */}
+      <div className="profile-top-bar mobile-only">
+        <Link to="/me" className="profile-back-link" aria-label="Back to profile">
+          <IconArrowLeft size={24} strokeWidth={2} />
+          <span>Profile</span>
+        </Link>
+      </div>
       {/* Sticky header on scroll - compact avatar + name */}
       <header
         className={`profile-sticky-header${headerScrolled ? ' visible' : ''}`}
         aria-hidden={!headerScrolled}
       >
         <div className="profile-sticky-header-inner">
+          <Link to="/me" className="profile-sticky-back" aria-label="Back to profile"> <IconArrowLeft size={24} strokeWidth={2} /> </Link>
           <div className="profile-sticky-avatar">
             {profile.profilePhoto ? (
               <img src={profile.profilePhoto} alt="" width={36} height={36} />
@@ -620,6 +663,12 @@ const ProfileSettingsPage: React.FC = () => {
                 <div className="settings-section">
                   <h2 className="section-title">Support</h2>
                   <div className="settings-group">
+                    <Link to="/export" className="settings-item">
+                      <span className="settings-icon green"><IconDownload size={20} strokeWidth={2} /></span>
+                      <span className="settings-label">Export my data</span>
+                      <span className="settings-value">GDPR</span>
+                      <IconChevronRight size={20} strokeWidth={2} className="settings-arrow" />
+                    </Link>
                     <Link to="/contact" className="settings-item">
                       <span className="settings-icon blue"><IconHelpCircle size={20} strokeWidth={2} /></span>
                       <span className="settings-label">Help &amp; Support</span>
@@ -717,6 +766,7 @@ const ProfileSettingsPage: React.FC = () => {
                 <div className="form-group">
                   <label htmlFor="phone">Phone Number (Optional)</label>
                   <input
+                    ref={phoneInputRef}
                     type="tel"
                     id="phone"
                     value={profile.phone}
@@ -950,7 +1000,17 @@ const ProfileSettingsPage: React.FC = () => {
               
               <div className="form-group">
                 <label className="switch-label">
-                  <input type="checkbox" checked={profile.notificationPreferences.email} onChange={(e) => setProfile({ ...profile, notificationPreferences: { ...profile.notificationPreferences, email: e.target.checked } })} />
+                  <input
+                    type="checkbox"
+                    role="switch"
+                    aria-checked={profile.notificationPreferences.email}
+                    aria-label="Email notifications"
+                    checked={profile.notificationPreferences.email}
+                    onChange={(e) => {
+                      hapticLight();
+                      setProfile({ ...profile, notificationPreferences: { ...profile.notificationPreferences, email: e.target.checked } });
+                    }}
+                  />
                   <span>Email Notifications</span>
                 </label>
                 <p className="help-text">Receive updates and recommendations via email</p>
@@ -1017,7 +1077,17 @@ const ProfileSettingsPage: React.FC = () => {
               
               <div className="form-group">
                 <label className="switch-label">
-                  <input type="checkbox" checked={profile.privacy.profileVisible} onChange={(e) => setProfile({ ...profile, privacy: { ...profile.privacy, profileVisible: e.target.checked } })} />
+                  <input
+                    type="checkbox"
+                    role="switch"
+                    aria-checked={profile.privacy.profileVisible}
+                    aria-label="Public profile visible to others"
+                    checked={profile.privacy.profileVisible}
+                    onChange={(e) => {
+                      hapticLight();
+                      setProfile({ ...profile, privacy: { ...profile.privacy, profileVisible: e.target.checked } });
+                    }}
+                  />
                   <span>Public Profile</span>
                 </label>
                 <p className="help-text">Make your profile visible to other users</p>
@@ -1046,7 +1116,7 @@ const ProfileSettingsPage: React.FC = () => {
                 <button
                   type="button"
                   className={`theme-option${theme === 'light' ? ' active' : ''}`}
-                  onClick={() => setTheme('light')}
+                  onClick={() => { setTheme('light'); hapticMedium(); }}
                   aria-pressed={theme === 'light'}
                 >
                   <IconSun size={18} strokeWidth={2} />
@@ -1055,7 +1125,7 @@ const ProfileSettingsPage: React.FC = () => {
                 <button
                   type="button"
                   className={`theme-option${theme === 'dark' ? ' active' : ''}`}
-                  onClick={() => setTheme('dark')}
+                  onClick={() => { setTheme('dark'); hapticMedium(); }}
                   aria-pressed={theme === 'dark'}
                 >
                   <IconMoon size={18} strokeWidth={2} />
@@ -1064,7 +1134,7 @@ const ProfileSettingsPage: React.FC = () => {
                 <button
                   type="button"
                   className={`theme-option${theme === 'system' ? ' active' : ''}`}
-                  onClick={() => setTheme('system')}
+                  onClick={() => { setTheme('system'); hapticMedium(); }}
                   aria-pressed={theme === 'system'}
                 >
                   <span>System</span>
@@ -1182,6 +1252,11 @@ const ProfileSettingsPage: React.FC = () => {
                     </div>
                   )}
                 </div>
+              </div>
+
+              <div className="stats-quick-links">
+                <Link to="/history" className="btn-secondary">View scan history</Link>
+                <Link to="/digital-twin" className="btn-secondary">View Digital Twin</Link>
               </div>
 
               <div className="comparison-section">

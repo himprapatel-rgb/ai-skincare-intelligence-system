@@ -9,6 +9,30 @@
   position: relative;
 }
 
+.notif-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.notif-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  color: rgba(255, 255, 255, 0.95);
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+.notif-back:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+.notif-header-text {
+  flex: 1;
+  min-width: 0;
+}
+
 .notif-header-icon {
   vertical-align: middle;
   margin-right: 8px;

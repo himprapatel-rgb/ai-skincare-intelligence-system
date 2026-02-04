@@ -6,6 +6,30 @@
 
 .data-export-page .app-header-card { margin-bottom: 0; }
 
+.data-export-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.data-export-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  color: var(--text-primary);
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+.data-export-back:hover {
+  background: var(--bg-secondary);
+  color: var(--primary);
+}
+.data-export-header-text {
+  flex: 1;
+  min-width: 0;
+}
+
 .data-export-page .app-page-content {
   padding-top: 20px;
 }

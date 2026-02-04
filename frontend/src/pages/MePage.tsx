@@ -21,6 +21,7 @@ import {
   IconHelpCircle,
   IconChevronRight,
   IconSparkles,
+  IconInfo,
 } from '../components/Icons';
 import './MePage.css';
 
@@ -156,6 +157,9 @@ const MePage: React.FC = () => {
         </section>
         <section className="me-section">
           <h3 className="me-section-title">Learn & Settings</h3>
+          <p className="me-section-note">
+            Device & context data is sent with each scan to improve results. You can view or export it below.
+          </p>
           <div className="me-list">
             <Link to="/ingredients" className="me-list-item">
               <IconFileText size={20} strokeWidth={2} className="me-list-icon" />
@@ -175,6 +179,11 @@ const MePage: React.FC = () => {
             <Link to="/notifications" className="me-list-item">
               <IconBell size={20} strokeWidth={2} className="me-list-icon" />
               <span className="me-list-label">Notifications</span>
+              <IconChevronRight size={20} strokeWidth={2} className="me-list-arrow" />
+            </Link>
+            <Link to="/device-context" className="me-list-item">
+              <IconInfo size={20} strokeWidth={2} className="me-list-icon" />
+              <span className="me-list-label">Device & context</span>
               <IconChevronRight size={20} strokeWidth={2} className="me-list-arrow" />
             </Link>
             <Link to="/profile?tab=settings" className="me-list-item">

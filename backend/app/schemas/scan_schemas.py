@@ -43,14 +43,19 @@ class SeverityEnum(str, Enum):
 # Request Schemas
 class ScanInitRequest(BaseModel):
     """Request to initialize a new scan session"""
-    device_type: str = Field(..., description="Device type: web, ios, android")
+    device_type: str = Field(default="web", description="Device type: web, ios, android")
     camera_info: Optional[Dict[str, Any]] = Field(None, description="Camera metadata")
+    device_context: Optional[Dict[str, Any]] = Field(
+        None,
+        description="Web/device context: screen, locale, device hints, optional location/motion (from web APIs)"
+    )
 
     class Config:
         json_schema_extra = {
             "example": {
                 "device_type": "web",
-                "camera_info": {"resolution": "1920x1080", "browser": "Chrome"}
+                "camera_info": {"resolution": "1920x1080", "browser": "Chrome"},
+                "device_context": {"screen": {"width": 390, "height": 844}, "locale": {"timezone": "Europe/Dublin"}}
             }
         }
 

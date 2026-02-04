@@ -60,6 +60,7 @@ const BlogPage = React.lazy(() => import("./pages/BlogPage"));
 const IngredientDictionaryPage = React.lazy(() => import("./pages/IngredientDictionaryPage"));
 const SkinTypeGuidePage = React.lazy(() => import("./pages/SkinTypeGuidePage"));
 const VideoTutorialsPage = React.lazy(() => import("./pages/VideoTutorialsPage"));
+const DeviceContextPage = React.lazy(() => import("./pages/DeviceContextPage"));
 const NotFoundPage = React.lazy(() => import("./pages/NotFoundPage"));
 
 function AppRoutes() {
@@ -115,6 +116,7 @@ function AppRoutes() {
           <Route path="/ingredients" element={<IngredientDictionaryPage />} />
           <Route path="/skin-type-guide" element={<SkinTypeGuidePage />} />
           <Route path="/tutorials" element={<VideoTutorialsPage />} />
+          <Route path="/device-context" element={<DeviceContextPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>

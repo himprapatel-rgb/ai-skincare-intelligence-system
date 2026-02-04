@@ -140,12 +140,17 @@ const DataExportPage: React.FC = () => {
 
   return (
     <div className="data-export-page app-page">
-      <header className="app-header-card">
-        <h1>
-          <IconDownload size={24} strokeWidth={2} className="export-header-icon" aria-hidden />
-          Export Your Data
-        </h1>
-        <p className="app-header-subtitle">Download your data · JSON or PDF · GDPR compliant</p>
+      <header className="app-header-card data-export-header">
+        <Link to="/profile" className="data-export-back" aria-label="Back to profile">
+          <IconArrowLeft size={24} strokeWidth={2} />
+        </Link>
+        <div className="data-export-header-text">
+          <h1>
+            <IconDownload size={24} strokeWidth={2} className="export-header-icon" aria-hidden />
+            Export Your Data
+          </h1>
+          <p className="app-header-subtitle">Download your data · JSON or PDF · GDPR compliant</p>
+        </div>
       </header>
       <div className="app-page-content">
       {exportComplete ? (

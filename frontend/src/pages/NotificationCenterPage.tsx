@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { IconBell, IconCheck, IconX, IconSettings, IconClock, IconTrendingUp, IconAlertCircle, IconInfo, IconChevronRight } from '../components/Icons';
+import { IconBell, IconCheck, IconX, IconSettings, IconClock, IconTrendingUp, IconAlertCircle, IconInfo, IconChevronRight, IconArrowLeft } from '../components/Icons';
 import { useNotifications } from '../context/NotificationContext';
 import type { NotificationRecord } from '../services/notificationService';
 import { getNotificationPrefs, setNotificationPrefs, type NotificationPrefs } from '../utils/notificationPreferences';
@@ -74,7 +74,11 @@ const NotificationCenterPage: React.FC = () => {
 
   return (
     <div className="notification-center-page app-page">
-      <header className="app-header-card">
+      <header className="app-header-card notif-header">
+        <Link to="/me" className="notif-back" aria-label="Back to profile">
+          <IconArrowLeft size={24} strokeWidth={2} />
+        </Link>
+        <div className="notif-header-text">
         <h1>
           <IconBell size={24} strokeWidth={2} className="notif-header-icon" aria-hidden />
           Notifications
@@ -96,6 +100,7 @@ const NotificationCenterPage: React.FC = () => {
           >
             <IconSettings size={20} strokeWidth={2} />
           </button>
+        </div>
         </div>
       </header>
       <div className="app-page-content">

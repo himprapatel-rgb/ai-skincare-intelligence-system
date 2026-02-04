@@ -7,7 +7,7 @@ import sys
 from typing import Optional
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, File, HTTPException, Request, UploadFile, status
+from fastapi import APIRouter, Body, Depends, File, HTTPException, Request, UploadFile, status
 from fastapi.responses import FileResponse, Response
 from sqlalchemy.orm import Session
 
@@ -89,13 +89,16 @@ def _slugify(value: str) -> str:
     description="Initialize a new face scan session for the authenticated user or guest."
 )
 def init_scan_session(
+    body: Optional[dict] = Body(None),
     db: Session = Depends(get_db),
     current_user: Optional[User] = Depends(get_current_user_optional)
 ):
-    """Initialize a new scan session."""
+    """Initialize a new scan session. Optional body may include device_context (screen, locale, etc.)."""
+    device_context = body.get("device_context") if isinstance(body, dict) else None
     scan_session = ScanSession(
         user_id=current_user.id if current_user else None,
         status=ScanStatus.PENDING,
+        scan_metadata={"device_context": device_context} if device_context is not None else None,
     )
     db.add(scan_session)
     db.commit()

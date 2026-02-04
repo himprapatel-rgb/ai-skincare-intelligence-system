@@ -34,6 +34,7 @@ export const BottomNav: React.FC = () => {
         className={`bottom-nav-item bottom-nav-item-center${scanActive ? ' active' : ''}`}
         aria-current={scanActive ? 'page' : undefined}
         title="Scan face or product"
+        aria-label="Scan face or product"
       >
         <span className="bottom-nav-center-pill">
           <CenterIcon size={28} strokeWidth={2.25} />

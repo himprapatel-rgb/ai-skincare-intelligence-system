@@ -1,4 +1,5 @@
 # Frontend Dockerfile - avoids Nixpacks npm cache EBUSY error
+# Build context must be frontend/ (Railway: set "Root Directory" to frontend, or use context that contains this Dockerfile)
 FROM node:20-slim AS builder
 
 WORKDIR /app
@@ -13,7 +14,9 @@ ARG VITE_API_URL=https://ai-skincare-intelligence-system-production.up.railway.a
 ARG VITE_GOOGLE_CLIENT_ID
 ENV VITE_API_URL=${VITE_API_URL}
 ENV VITE_GOOGLE_CLIENT_ID=${VITE_GOOGLE_CLIENT_ID}
-RUN npm run build
+# Set BUILD_REV in Railway build args (e.g. 2) to force re-run if cache was stale
+ARG BUILD_REV=0
+RUN echo "Build rev: $BUILD_REV" && npm run build
 
 # Production: serve static files
 FROM node:20-slim

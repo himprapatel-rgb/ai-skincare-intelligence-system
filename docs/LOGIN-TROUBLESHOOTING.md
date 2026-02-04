@@ -138,3 +138,21 @@ python scripts/diagnose_login.py
 ```
 
 This prints backend health, main DB status, and the result of a test login with `himanshu@test.com` / `Test1234!`.
+
+---
+
+## 8. Google sign-in (“Continue with Google”) not working
+
+| Symptom | Cause | Fix |
+|--------|--------|-----|
+| **“Google OAuth is not configured”** | Backend missing Google credentials | In **Railway** → backend service → **Variables**: add `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` from [Google Cloud Console](https://console.cloud.google.com/) (APIs & Services → Credentials → OAuth 2.0 Client). Set `FRONTEND_URL=https://pellicura.com` (no trailing slash). Redeploy. |
+| **“redirect_uri_mismatch”** | Callback URL not in Google Console | In **Google Cloud Console** → Credentials → your OAuth client → **Authorized redirect URIs**: add exactly `https://pellicura.com/auth/google/callback` (and optionally `https://www.pellicura.com/auth/google/callback`). No trailing slash. |
+| **“invalid_grant” or “Sign-in Failed”** | Authorization code already used or expired | The `code` in the callback URL is **one-time use**. Do not refresh the callback page. Go back to Sign In and click “Continue with Google” again to get a new code. |
+| **Stuck on “Signing in with Google…”** | Backend slow or unreachable | Backend may be cold-starting (e.g. Railway). Wait 30–60 seconds or try again; second attempt is often faster. Check backend health: `GET /api/health`. |
+
+**Quick check:** Open in browser (no auth):
+
+- `https://ai-skincare-intelligence-system-production.up.railway.app/api/v1/auth/google/status`
+
+If you see `{"configured":false}`, set `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` on the backend and redeploy.  
+If `{"configured":true}` but login still fails, the issue is likely redirect URI in Google Console or an expired/used authorization code.

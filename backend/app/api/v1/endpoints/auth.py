@@ -470,6 +470,23 @@ class GoogleRedirectUriResponse(BaseModel):
     redirect_uri: str
 
 
+class GoogleOAuthStatusResponse(BaseModel):
+    """Whether Google OAuth is configured (no secrets). For debugging login."""
+    configured: bool
+
+
+@router.get(
+    "/google/status",
+    response_model=GoogleOAuthStatusResponse,
+    summary="Google OAuth configured",
+    description="Returns whether Google OAuth is configured (client ID and secret set). No auth required.",
+)
+def google_oauth_status():
+    """Let support/frontend check if Google login can work."""
+    configured = bool(settings.GOOGLE_CLIENT_ID and settings.GOOGLE_CLIENT_SECRET)
+    return GoogleOAuthStatusResponse(configured=configured)
+
+
 @router.get(
     "/google/redirect-uri",
     response_model=GoogleRedirectUriResponse,

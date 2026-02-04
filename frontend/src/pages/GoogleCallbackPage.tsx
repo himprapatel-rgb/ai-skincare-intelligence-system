@@ -112,6 +112,10 @@ const GoogleCallbackPage: React.FC = () => {
               detailMsg =
                 'Failed to complete Google sign-in. If this keeps happening, add your sign-in callback URL to Authorized redirect URIs in Google Cloud Console, and ensure the backend has Google OAuth configured.';
             }
+            if (detailMsg.toLowerCase().includes('google oauth is not configured')) {
+              detailMsg =
+                'Google sign-in is not set up on the server. Add GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET to the backend (e.g. Railway) environment variables, and add this site’s callback URL to Authorized redirect URIs in Google Cloud Console.';
+            }
             setError(detailMsg);
           }
         }

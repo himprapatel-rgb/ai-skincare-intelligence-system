@@ -18,6 +18,7 @@
 - **Protocol:** Created `docs/CHAT-SESSION-PROTOCOL.md` — rule: save chat session daily without fail; AI’s job to update this record every day.
 - **Record:** Added January 2025 section (placeholder); grouped Feb work under February 2025; added backend files to “Files touched”.
 - **Files:** CHAT-SESSION-PROTOCOL.md (new), CHAT-SESSION-RECORD.md (this file).
+- **Website audit:** Saved `docs/WEBSITE-AUDIT-REPORT.md`. Fixes: Register page title (AuthPage); blog cards clickable (Link to /blog#slug); audit doc notes social env vars.
 
 ### 2025-02-03 (and prior sessions in Feb)
 

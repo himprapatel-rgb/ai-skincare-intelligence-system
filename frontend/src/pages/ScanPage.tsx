@@ -39,6 +39,7 @@ export default function ScanPage() {
   useEffect(() => {
     if (modeParam === 'product' && scanType !== 'product') setScanType('product');
     if (modeParam === 'face' && scanType !== 'face') setScanType('face');
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- sync URL to state only
   }, [modeParam]);
   const [uploadMode, setUploadMode] = useState<UploadMode>('file');
   const [file, setFile] = useState<File | null>(null);

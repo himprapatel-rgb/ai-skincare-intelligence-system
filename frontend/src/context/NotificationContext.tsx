@@ -23,6 +23,7 @@ interface NotificationContextValue {
 
 const NotificationContext = createContext<NotificationContextValue | null>(null);
 
+/* eslint-disable react-refresh/only-export-components -- context hooks */
 export function useNotifications(): NotificationContextValue {
   const ctx = useContext(NotificationContext);
   if (!ctx) {

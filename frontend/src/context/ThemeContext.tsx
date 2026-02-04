@@ -17,7 +17,9 @@ function loadStoredTheme(): ThemePreference {
   try {
     const v = localStorage.getItem(STORAGE_KEY);
     if (v === 'light' || v === 'dark' || v === 'system') return v;
-  } catch (_) {}
+  } catch {
+    /* ignore storage read */
+  }
   return 'system';
 }
 
@@ -39,7 +41,9 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     setThemeState(t);
     try {
       localStorage.setItem(STORAGE_KEY, t);
-    } catch (_) {}
+    } catch {
+      /* ignore storage write */
+    }
   }, []);
 
   useEffect(() => {
@@ -73,6 +77,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   );
 }
 
+/* eslint-disable react-refresh/only-export-components -- context hook */
 export function useTheme(): ThemeContextValue {
   const ctx = useContext(ThemeContext);
   if (!ctx) throw new Error('useTheme must be used within ThemeProvider');

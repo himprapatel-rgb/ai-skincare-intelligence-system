@@ -17,6 +17,7 @@
     "e2e:agent": "AGENT_MOCK_API=true playwright test agent-gui",
     "e2e:human": "HUMAN_AGENT=true playwright test human-agent",
     "e2e:mobile-app": "playwright test task-10000-mobile-app",
+    "e2e:settings-flows": "playwright test settings-device-flows",
     "generate-icons": "node scripts/generate-pwa-icons.js"
   },
   "dependencies": {

@@ -217,17 +217,17 @@ const ProductScannerPage: React.FC<ProductScannerPageProps> = ({ embedded = fals
   const [trackOpenedDate, setTrackOpenedDate] = useState(() => new Date().toISOString().slice(0, 10));
   const [trackPAOMonths, setTrackPAOMonths] = useState(6);
   
-  // Enhanced camera state (Tasks 1-50)
-  const [_cameraPermission, setCameraPermission] = useState<CameraPermissionStatus>('unknown');
-  const [_cameraCapabilities, setCameraCapabilities] = useState<CameraCapabilities | null>(null);
+  // Enhanced camera state (Tasks 1-50) – permission/capabilities for future use
+  const [, setCameraPermission] = useState<CameraPermissionStatus>('unknown');
+  const [, setCameraCapabilities] = useState<CameraCapabilities | null>(null);
   const [currentFacingMode, setCurrentFacingMode] = useState<'user' | 'environment'>('environment');
   const [torchEnabled, setTorchEnabled] = useState(false);
   const [hasTorch, setHasTorch] = useState(false);
   const [showManualEntry, setShowManualEntry] = useState(false);
   const [manualBarcode, setManualBarcode] = useState('');
   const [soundEnabled, setSoundEnabled] = useState(true);
-  const [vibrationEnabled, _setVibrationEnabled] = useState(true);
-  const [continuousMode, _setContinuousMode] = useState(false);
+  const [vibrationEnabled] = useState(true);
+  const [continuousMode] = useState(false);
   const [sessionScanCount, setSessionScanCount] = useState(0);
   const [lastScannedBarcode, setLastScannedBarcode] = useState<string | null>(null);
   

@@ -98,6 +98,7 @@ const DashboardPage: React.FC = () => {
     if (data) {
       setData(prev => prev ? { ...prev, productsInShelf: shelfProductCount } : prev);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- only react to shelf count
   }, [shelfProductCount]);
 
   const fetchDashboardData = async () => {

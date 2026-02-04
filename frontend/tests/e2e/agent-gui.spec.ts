@@ -18,7 +18,7 @@ const VIEWPORTS = [
   { name: "desktop", width: 1280, height: 800 },
 ];
 
-const PUBLIC_ROUTES = ["/", "/auth", "/about", "/contact", "/privacy", "/terms"];
+const PUBLIC_ROUTES = ["/", "/auth", "/about", "/contact", "/privacy", "/terms", "/device-context"];
 const PROTECTED_ROUTES = [
   "/scan",
   "/dashboard",
@@ -31,6 +31,7 @@ const PROTECTED_ROUTES = [
   "/favorites",
   "/skin-goals",
   "/export",
+  "/notifications",
   "/admin",
   "/admin/content",
 ];
@@ -52,7 +53,7 @@ for (const vp of VIEWPORTS) {
 
 // Protected pages - mock auth via cookie
 test.describe("Protected pages with mock auth", () => {
-  test.beforeEach(async ({ page, context }) => {
+  test.beforeEach(async ({ context }) => {
     const base = process.env.PLAYWRIGHT_BASE_URL || "http://localhost:5173";
     const host = new URL(base.endsWith("/") ? base : base + "/").hostname;
     await context.addCookies([

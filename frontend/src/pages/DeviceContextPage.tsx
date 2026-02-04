@@ -26,7 +26,8 @@ function Section({
   data: Record<string, unknown>;
   optional?: boolean;
 }) {
-  const entries = Object.entries(data).filter(([, val]) => val !== undefined && val !== null);
+  const safeData = data ?? {};
+  const entries = Object.entries(safeData).filter(([, val]) => val !== undefined && val !== null);
   if (entries.length === 0 && optional) return null;
   return (
     <section className="device-ctx-section">

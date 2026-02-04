@@ -92,6 +92,7 @@ const AdminContentPage: React.FC = () => {
     } catch {
       setSummary(null);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- headers() is stable per render
   }, []);
 
   const fetchBlogs = useCallback(async () => {
@@ -101,6 +102,7 @@ const AdminContentPage: React.FC = () => {
     } catch {
       setBlogs([]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- headers() is stable per render
   }, []);
 
   const fetchVideos = useCallback(async () => {
@@ -110,6 +112,7 @@ const AdminContentPage: React.FC = () => {
     } catch {
       setVideos([]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- headers() is stable per render
   }, []);
 
   const fetchNews = useCallback(async () => {
@@ -119,6 +122,7 @@ const AdminContentPage: React.FC = () => {
     } catch {
       setNews([]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- headers() is stable per render
   }, []);
 
   useEffect(() => {

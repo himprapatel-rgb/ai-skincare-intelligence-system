@@ -10,7 +10,7 @@ const NotificationBell: React.FC = () => {
 
   useEffect(() => {
     if (ctx?.fetchNotifications) ctx.fetchNotifications();
-  }, [ctx?.fetchNotifications]);
+  }, [ctx]);
 
   if (!ctx) return null;
 

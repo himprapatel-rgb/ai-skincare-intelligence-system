@@ -328,6 +328,7 @@ export const ShelfProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   );
 };
 
+/* eslint-disable react-refresh/only-export-components -- context hook */
 export const useShelf = (): ShelfContextType => {
   const context = useContext(ShelfContext);
   if (context === undefined) {

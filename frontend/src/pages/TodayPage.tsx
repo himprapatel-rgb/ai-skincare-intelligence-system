@@ -128,7 +128,7 @@ const TodayPage: React.FC = () => {
   const [twinFirstScore, setTwinFirstScore] = useState<number | null>(null);
   const [lastScanDate, setLastScanDate] = useState<string | null>(null);
   const [gaugeScore, setGaugeScore] = useState(0);
-  const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const [, setRefreshTrigger] = useState(0);
 
   const refreshToday = useCallback(() => {
     setLoading(true);
@@ -199,6 +199,7 @@ const TodayPage: React.FC = () => {
       setGaugeScore(data!.skinScore);
     });
     return () => cancelAnimationFrame(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- only react to skinScore
   }, [data?.skinScore]);
 
   useEffect(() => {

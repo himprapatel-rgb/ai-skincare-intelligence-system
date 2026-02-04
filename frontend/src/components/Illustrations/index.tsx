@@ -33,6 +33,7 @@ function withIllustration(
   return Component;
 }
 
+/* eslint-disable react-refresh/only-export-components -- Illustrations is a component map */
 export const Illustrations = {
   ArrowRight: withIllustration(ArrowRightSvg, 'Illustrations.ArrowRight'),
   Cart: withIllustration(CartSvg, 'Illustrations.Cart'),

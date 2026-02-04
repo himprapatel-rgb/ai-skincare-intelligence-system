@@ -49,7 +49,7 @@ test.describe("Human Agent – Login", () => {
 });
 
 test.describe("Human Agent – Skin Scan Upload", () => {
-  test.beforeEach(async ({ page, context }) => {
+  test.beforeEach(async ({ page }) => {
     const email = process.env.E2E_EMAIL;
     const password = process.env.E2E_PASSWORD;
     if (!email || !password) test.skip(true, "Credentials required");

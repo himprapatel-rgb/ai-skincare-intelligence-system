@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "dev:mobile": "node scripts/open-mobile-browser.js --with-dev",
+    "open:mobile": "node scripts/open-mobile-browser.js",
     "start": "node server.js",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "typecheck": "tsc --noEmit",

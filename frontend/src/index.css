@@ -554,8 +554,24 @@ button {
   font-family: inherit;
   cursor: pointer;
   border: none;
-  outline: none;
   min-height: 44px; /* Mobile touch target minimum */
+}
+/* Keyboard focus: visible ring; mouse focus: no outline (avoid outline:none without replacement) */
+button:focus { outline: none; }
+button:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
+  box-shadow: var(--focus-shadow);
+}
+a:focus { outline: none; }
+a:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
+}
+[tabindex]:not([tabindex="-1"]):focus { outline: none; }
+[tabindex]:not([tabindex="-1"]):focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
 }
 
 /* Inputs - min 44px touch target for single-line (WCAG 2.5.5) */
@@ -573,12 +589,17 @@ textarea {
 }
 
 input:focus,
-input:focus-visible,
 textarea:focus,
-textarea:focus-visible,
-select:focus,
-select:focus-visible {
+select:focus {
   outline: none;
+  border-color: var(--primary);
+  box-shadow: var(--focus-shadow);
+}
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
   border-color: var(--primary);
   box-shadow: var(--focus-shadow);
 }
@@ -675,6 +696,13 @@ select:focus-visible {
   outline: none;
   border-color: var(--primary);
   box-shadow: var(--focus-shadow);
+}
+.search-bar input:focus-visible,
+.search-input:focus-visible,
+.favorites-search-input:focus-visible,
+.history-search-input:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
 }
 
 /* Checkbox/radio alignment (Task 409) */

@@ -303,7 +303,7 @@ const MyShelfPage: React.FC = () => {
           />
         </div>
         <div className="myshelf-pills-wrap">
-          <div className="myshelf-pills" role="tablist">
+          <div className="myshelf-pills" role="tablist" aria-label="Shelf filter">
             <button type="button" role="tab" aria-selected={filter === 'all'} className={filter === 'all' ? 'active' : ''} onClick={() => setFilter('all')}>All</button>
             <button type="button" role="tab" aria-selected={filter === 'using'} className={filter === 'using' ? 'active' : ''} onClick={() => setFilter('using')}>Using</button>
             <button type="button" role="tab" aria-selected={filter === 'wishlist'} className={filter === 'wishlist' ? 'active' : ''} onClick={() => setFilter('wishlist')}>Wishlist</button>

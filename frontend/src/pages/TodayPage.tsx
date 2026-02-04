@@ -280,16 +280,16 @@ const TodayPage: React.FC = () => {
 
   return (
     <div className="today-page app-page" {...pullProps}>
-      <header className="today-header">
+      <section className="today-header" aria-label="Today greeting and actions">
         <h1 className="today-greeting">{timeGreeting}, {firstName}</h1>
         <div className="today-header-actions">
           <span className="today-region-pill" title="Amazon prices for your region">🇮🇪</span>
           <NotificationBell />
           <Link to="/profile?tab=settings" className="today-settings-btn" aria-label="Settings">
-            <IconSettings size={22} strokeWidth={2} />
+            <IconSettings size={22} strokeWidth={2} aria-hidden />
           </Link>
         </div>
-      </header>
+      </section>
 
       <div className="today-content">
         {/* AI Prediction card – surface "See Your Skin's Future" */}
@@ -551,7 +551,7 @@ const TodayPage: React.FC = () => {
               <article key={product.id} className="today-product-card" role="listitem">
                 <div className="today-product-card-image">
                   {product.imageUrl ? (
-                    <img src={product.imageUrl} alt="" />
+                    <img src={product.imageUrl} alt={`${product.name} by ${product.brand}`} loading="lazy" />
                   ) : (
                     <span className="today-product-card-placeholder" aria-hidden="true">
                       {product.brand}

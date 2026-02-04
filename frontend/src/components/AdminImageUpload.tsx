@@ -87,7 +87,7 @@ export const AdminImageUpload: React.FC<AdminImageUploadProps> = ({
       </div>
       {value && (
         <div className="admin-image-preview">
-          <img src={value} alt="" onError={() => setError('Image failed to load')} />
+          <img src={value} alt="Upload preview" onError={() => setError('Image failed to load')} />
         </div>
       )}
       {error && <p className="admin-image-error">{error}</p>}

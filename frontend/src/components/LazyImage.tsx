@@ -77,7 +77,7 @@ export const LazyImage: React.FC<LazyImageProps> = ({
         width: width || '100%',
         height: height || 'auto',
         overflow: 'hidden',
-        backgroundColor: '#f1f5f9',
+        backgroundColor: 'var(--gray-100, #f1f5f9)',
       }}
     >
       {/* Blur placeholder */}
@@ -122,6 +122,8 @@ export const LazyImage: React.FC<LazyImageProps> = ({
       {/* Error state */}
       {hasError && (
         <div
+          role="img"
+          aria-label="Image unavailable"
           style={{
             position: 'absolute',
             top: 0,
@@ -131,8 +133,8 @@ export const LazyImage: React.FC<LazyImageProps> = ({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: '#f1f5f9',
-            color: '#94a3b8',
+            backgroundColor: 'var(--gray-100, #f1f5f9)',
+            color: 'var(--gray-400, #94a3b8)',
             fontSize: '14px',
           }}
         >

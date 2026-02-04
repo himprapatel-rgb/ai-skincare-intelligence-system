@@ -36,6 +36,8 @@ const displayName = nameParts.length > 1
   const [learnExpanded, setLearnExpanded] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [newsletterSubmitting, setNewsletterSubmitting] = useState(false);
+  const [newsletterMessage, setNewsletterMessage] = useState<'success' | 'error' | null>(null);
   const userDropdownRef = useRef<HTMLDivElement>(null);
   
   // Handle scroll for header shadow
@@ -92,6 +94,12 @@ const displayName = nameParts.length > 1
       'auth': 'Login',
       'onboarding': 'Onboarding',
       'export': 'Data Export',
+      'progress': 'Progress',
+      'skin-goals': 'Skin Goals',
+      'consent': 'Consent',
+      'comparison': 'Comparison',
+      'device-context': 'Device & Privacy',
+      'admin': 'Admin',
       'blog': 'Blog',
       'ingredients': 'Ingredient Dictionary',
       'skin-type-guide': 'Skin Type Guide',
@@ -397,14 +405,21 @@ const displayName = nameParts.length > 1
                 e.preventDefault();
                 const form = e.currentTarget;
                 const email = (form.querySelector('input[type="email"]') as HTMLInputElement)?.value?.trim();
-                if (email) {
+                if (!email) return;
+                setNewsletterMessage(null);
+                setNewsletterSubmitting(true);
+                setTimeout(() => {
                   toast.info('Newsletter signup coming soon. We’ll save your interest!');
-                }
+                  setNewsletterSubmitting(false);
+                }, 400);
               }}
               aria-label="Newsletter signup"
             >
-              <input type="email" placeholder="Enter your email" aria-label="Email for newsletter" />
-              <button type="submit" aria-label="Subscribe to newsletter">Subscribe</button>
+              <input type="email" placeholder="Enter your email" aria-label="Email for newsletter" disabled={newsletterSubmitting} />
+              <button type="submit" aria-label="Subscribe to newsletter" disabled={newsletterSubmitting}>
+                {newsletterSubmitting ? 'Subscribing…' : 'Subscribe'}
+              </button>
+              {newsletterMessage === 'success' && <p className="app-footer-newsletter-feedback" role="status">Thanks! We'll be in touch.</p>}
             </form>
           </div>
         </div>

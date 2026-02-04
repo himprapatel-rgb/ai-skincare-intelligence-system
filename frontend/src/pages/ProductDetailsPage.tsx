@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams, useNavigate, useLocation, Link } from 'react-router-dom';
 import { api } from '../services/api';
 import { IconStar, IconAlertTriangle, IconShare2 } from '../components/Icons';
@@ -190,8 +190,48 @@ const ProductDetailsPage: React.FC = () => {
   const [submittingReview, setSubmittingReview] = useState(false);
   const [reviewError, setReviewError] = useState('');
   const [imageZoomed, setImageZoomed] = useState(false);
+  const zoomTriggerRef = useRef<HTMLButtonElement>(null);
+  const zoomOverlayRef = useRef<HTMLDivElement>(null);
   const [compareIds, setCompareIds] = useState<string[]>(() => getCompareIds());
   const [fromCatalog, setFromCatalog] = useState(false);
+
+  const closeZoom = useCallback(() => {
+    setImageZoomed(false);
+    zoomTriggerRef.current?.focus();
+  }, []);
+
+  useEffect(() => {
+    if (!imageZoomed) return;
+    const overlay = zoomOverlayRef.current;
+    if (!overlay) return;
+    const FOCUSABLE = 'button, [href], [tabindex]:not([tabindex="-1"])';
+    const focusables = overlay.querySelectorAll<HTMLElement>(FOCUSABLE);
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    (first as HTMLElement)?.focus();
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        closeZoom();
+        return;
+      }
+      if (e.key !== 'Tab') return;
+      const current = document.activeElement as HTMLElement;
+      if (e.shiftKey) {
+        if (current === first) {
+          e.preventDefault();
+          last?.focus();
+        }
+      } else {
+        if (current === last) {
+          e.preventDefault();
+          first?.focus();
+        }
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [imageZoomed, closeZoom]);
 
   const handleAddToCompare = () => {
     if (!product?.id) return;
@@ -493,12 +533,12 @@ const ProductDetailsPage: React.FC = () => {
         <div className="product-image-section">
           {product.imageUrl ? (
             <>
-              <button type="button" className="product-image-zoom-trigger" onClick={() => setImageZoomed(true)} aria-label="Zoom product image">
+              <button ref={zoomTriggerRef} type="button" className="product-image-zoom-trigger" onClick={() => setImageZoomed(true)} aria-label="Zoom product image">
                 <img src={product.imageUrl} alt={product.name} loading="lazy" width={320} height={320} />
               </button>
               {imageZoomed && (
-                <div className="product-image-zoom-overlay" role="dialog" aria-modal="true" aria-label="Enlarged product image" onClick={() => setImageZoomed(false)}>
-                  <button type="button" className="product-image-zoom-close" onClick={() => setImageZoomed(false)} aria-label="Close zoom">×</button>
+                <div ref={zoomOverlayRef} className="product-image-zoom-overlay" role="dialog" aria-modal="true" aria-label="Enlarged product image" onClick={(e) => e.target === e.currentTarget && closeZoom()}>
+                  <button type="button" className="product-image-zoom-close" onClick={closeZoom} aria-label="Close zoom">×</button>
                   <img src={product.imageUrl} alt={product.name} onClick={(e) => e.stopPropagation()} />
                 </div>
               )}

@@ -362,6 +362,10 @@
   background: var(--ds-white);
   box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
 }
+.ds-input:focus-visible {
+  outline: 2px solid var(--ds-primary);
+  outline-offset: 2px;
+}
 
 .ds-input::placeholder {
   color: var(--ds-gray-400);

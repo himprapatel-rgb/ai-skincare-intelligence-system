@@ -6,6 +6,7 @@ import './styles/premium-polish.css'
 import './styles/mobile-app-polish.css'
 import './styles/task-1000-design-mobile.css'
 import './styles/settings-mobile-app.css'
+import './styles/mobile-product-ux.css'
 
 // Task 10000: Remove splash when app mounts (app-like loading)
 const splash = document.getElementById('app-splash')

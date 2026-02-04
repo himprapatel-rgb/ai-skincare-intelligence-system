@@ -495,7 +495,7 @@ const ProfileSettingsPage: React.FC = () => {
           <Link to="/me" className="profile-sticky-back" aria-label="Back to profile"> <IconArrowLeft size={24} strokeWidth={2} /> </Link>
           <div className="profile-sticky-avatar">
             {profile.profilePhoto ? (
-              <img src={profile.profilePhoto} alt="" width={36} height={36} />
+              <img src={profile.profilePhoto} alt="Profile photo" width={36} height={36} />
             ) : (
               <span>{(profile.name || 'U').charAt(0).toUpperCase()}</span>
             )}
@@ -532,7 +532,7 @@ const ProfileSettingsPage: React.FC = () => {
         <div className="profile-avatar-container">
           <div className="profile-avatar-wrap">
             {profile.profilePhoto ? (
-              <img src={profile.profilePhoto} alt="" className="profile-avatar" width={100} height={100} />
+              <img src={profile.profilePhoto} alt="Profile photo" className="profile-avatar" width={100} height={100} />
             ) : (
               <div className="profile-avatar-placeholder">{(profile.name || 'U').charAt(0).toUpperCase()}</div>
             )}

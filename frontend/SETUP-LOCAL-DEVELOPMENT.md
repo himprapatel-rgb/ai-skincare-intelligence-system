@@ -22,8 +22,32 @@ cp .env.example .env
 # 4. Start development server
 npm run dev
 
-# 5. Open browser to http://localhost:5173
+# 5. Open browser to http://localhost:3000
 ```
+
+### Mobile feel (simulator)
+
+To run the app in a **mobile-sized window** with a mobile user agent (phone-like layout and behavior):
+
+**Option A – One command (starts dev server and opens mobile view):**
+```bash
+npm run dev:mobile
+```
+Starts the dev server and opens Chrome/Edge in a 390×844 window with a mobile user agent once the server is ready.
+
+**Option B – Dev server already running:**
+```bash
+npm run dev          # in one terminal
+npm run open:mobile  # in another
+```
+
+**Option C – Chrome DevTools device mode:**
+1. Open http://localhost:3000 in Chrome.
+2. Press **F12** → click the **device toolbar** icon (or **Ctrl+Shift+M**).
+3. Choose a device (e.g. "iPhone 14" or "Pixel 7") for viewport and optional touch simulation.
+
+**Option D – Real phone on same Wi‑Fi:**  
+With `npm run dev`, Vite uses `host: true`, so you can open `http://<your-pc-ip>:3000` on your phone for a real mobile experience.
 
 ---
 

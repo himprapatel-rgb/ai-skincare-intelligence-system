@@ -225,7 +225,7 @@ const AdminContentPage: React.FC = () => {
         ))}
       </div>
 
-      {loading && <p className="admin-loading">Loading...</p>}
+      {loading && <p className="admin-loading" role="status" aria-live="polite">Loading…</p>}
 
       {!loading && activeTab === 'overview' && (
         <div className="admin-overview">

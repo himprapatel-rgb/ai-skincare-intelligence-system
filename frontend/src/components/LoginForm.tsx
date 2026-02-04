@@ -185,7 +185,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegis
             Forgot password?
           </Link>
         </div>
-        <button type="submit" disabled={loading} className="btn-primary">
+        <button type="submit" disabled={loading} className="btn-primary" title={loading ? 'Signing in…' : undefined}>
           {loading ? <LoadingSpinner size="small" /> : 'Sign In'}
         </button>
       </form>

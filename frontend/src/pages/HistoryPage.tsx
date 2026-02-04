@@ -4,6 +4,7 @@ import { IconCamera, IconStar, IconZap, IconBarChart, IconScan, IconSearch, Icon
 import { getScanHistory } from '../services/scanApi';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { SkeletonHistoryList } from '../components/Skeleton';
+import { EmptyState } from '../components/EmptyState';
 import './HistoryPage.css';
 
 interface ScanHistory {
@@ -129,19 +130,19 @@ const HistoryPage: React.FC = () => {
               onClick={() => fetchHistory()}
               disabled={loading}
               aria-label="Refresh list"
-              title="Refresh"
+              title={loading ? 'Refreshing…' : 'Refresh list'}
             >
               <IconRefresh size={20} strokeWidth={2} className={loading ? 'spin' : ''} />
             </button>
           </div>
         </header>
 
-        <div className="history-filters">
-          <button className={`filter-btn ${filter === 'all' ? 'active' : ''}`} onClick={() => setFilter('all')}>All Time</button>
-          <button className={`filter-btn ${filter === '7days' ? 'active' : ''}`} onClick={() => setFilter('7days')}>Last 7 Days</button>
-          <button className={`filter-btn ${filter === '30days' ? 'active' : ''}`} onClick={() => setFilter('30days')}>Last 30 Days</button>
-          <button className={`filter-btn ${filter === '90days' ? 'active' : ''}`} onClick={() => setFilter('90days')}>Last 90 Days</button>
-          <button className={`filter-btn ${showFailed ? 'active' : ''}`} onClick={() => setShowFailed((prev) => !prev)}>
+        <div className="history-filters" role="group" aria-label="Filter scans by time range">
+          <button type="button" className={`filter-btn ${filter === 'all' ? 'active' : ''}`} onClick={() => setFilter('all')} aria-pressed={filter === 'all'}>All Time</button>
+          <button type="button" className={`filter-btn ${filter === '7days' ? 'active' : ''}`} onClick={() => setFilter('7days')} aria-pressed={filter === '7days'}>Last 7 Days</button>
+          <button type="button" className={`filter-btn ${filter === '30days' ? 'active' : ''}`} onClick={() => setFilter('30days')} aria-pressed={filter === '30days'}>Last 30 Days</button>
+          <button type="button" className={`filter-btn ${filter === '90days' ? 'active' : ''}`} onClick={() => setFilter('90days')} aria-pressed={filter === '90days'}>Last 90 Days</button>
+          <button type="button" className={`filter-btn ${showFailed ? 'active' : ''}`} onClick={() => setShowFailed((prev) => !prev)} aria-pressed={showFailed}>
             {showFailed ? 'Hide Failed' : 'Show Failed'}
           </button>
         </div>
@@ -173,18 +174,19 @@ const HistoryPage: React.FC = () => {
         {loading ? (
           <SkeletonHistoryList />
         ) : filteredHistory.length === 0 ? (
-          <div className="empty-state">
-            <div className="empty-state-icon">
-              <IconBarChart size={64} strokeWidth={2} />
-            </div>
-            <h3>No scans yet</h3>
-            <p>Start your skincare journey by scanning your skin and tracking improvements.</p>
-            <div className="empty-state-guidance">
-              <p><strong>Recommended frequency:</strong> 1 scan per week for consistent trends.</p>
-              <p>Regular scans help you see how routines, stress, and seasons affect results.</p>
-            </div>
-            <button className="view-btn" onClick={() => navigate('/scan')}>Take Your First Scan</button>
-          </div>
+          <EmptyState
+            icon={<IconBarChart size={64} strokeWidth={2} />}
+            title="No scans yet"
+            description="Start your skincare journey by scanning your skin and tracking improvements."
+            guidance={
+              <>
+                <p><strong>Recommended frequency:</strong> 1 scan per week for consistent trends.</p>
+                <p>Regular scans help you see how routines, stress, and seasons affect results.</p>
+              </>
+            }
+            actionLabel="Take Your First Scan"
+            onAction={() => navigate('/scan')}
+          />
         ) : (
           <>
             <div className="history-stats">
@@ -213,15 +215,12 @@ const HistoryPage: React.FC = () => {
 
             <div className="history-list">
               {sortedHistory.length === 0 ? (
-                <div className="empty-state">
-                  <h3>{searchFiltered.length === 0 && searchTerm ? 'No scans match your search' : 'No completed scans in this range'}</h3>
-                  <p>{searchTerm ? 'Try a different search term.' : `${failedCount} failed scan${failedCount === 1 ? '' : 's'} hidden. Toggle to view failed scans.`}</p>
-                  {searchTerm ? (
-                    <button className="view-btn" onClick={() => setSearchTerm('')}>Clear search</button>
-                  ) : (
-                    <button className="view-btn" onClick={() => setShowFailed(true)}>Show Failed Scans</button>
-                  )}
-                </div>
+                <EmptyState
+                  title={searchFiltered.length === 0 && searchTerm ? 'No scans match your search' : 'No completed scans in this range'}
+                  description={searchTerm ? 'Try a different search term.' : `${failedCount} failed scan${failedCount === 1 ? '' : 's'} hidden. Toggle to view failed scans.`}
+                  actionLabel={searchTerm ? 'Clear search' : 'Show Failed Scans'}
+                  onAction={searchTerm ? () => setSearchTerm('') : () => setShowFailed(true)}
+                />
               ) : sortedHistory.map(item => (
                 <div
                   key={item.id}

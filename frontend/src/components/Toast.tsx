@@ -17,7 +17,7 @@ export function ToastContainer() {
           key={t.id}
           className={`toast toast--${t.type}`}
           role="alert"
-          aria-live="polite"
+          aria-live={t.type === 'error' ? 'assertive' : 'polite'}
         >
           <span className="toast-icon" aria-hidden="true">
             {t.type === 'success' && <IconCheck size={18} strokeWidth={2.5} />}

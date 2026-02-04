@@ -14,51 +14,52 @@ from app.models.user import User
 from app.services.auth_service import auth_service
 
 
+TEST_ACCOUNTS = [
+    ("himanshu@test.com", "Test1234!", "Himanshu Patel"),
+    ("himprapatel@gmail.com", "Test1234!", "Himanshu Patel"),
+]
+
+
 def verify_test_user():
-    """Verify and update the test user account."""
+    """Verify and update test user accounts."""
     db = SessionLocal()
     try:
-        email = "himanshu@test.com"
-        user = db.query(User).filter(User.email == email).first()
-        
-        if not user:
-            print(f"❌ User {email} not found. Creating...")
-            hashed_password = auth_service.hash_password("Test1234!")
-            user = User(
-                email=email,
-                hashed_password=hashed_password,
-                full_name="Himanshu Patel",
-                is_active=True,
-                is_verified=True,
-            )
-            db.add(user)
-            db.commit()
-            db.refresh(user)
-            print(f"✅ Created and verified test user: {email}")
-        else:
-            needs_update = False
-            if not user.is_verified:
-                user.is_verified = True
-                needs_update = True
-                print(f"✅ Verified user: {email}")
-            if not user.is_active:
-                user.is_active = True
-                needs_update = True
-                print(f"✅ Activated user: {email}")
-            # Update password if it doesn't match
-            if not auth_service.verify_password(user.hashed_password, "Test1234!"):
-                user.hashed_password = auth_service.hash_password("Test1234!")
-                needs_update = True
-                print(f"✅ Reset password for user: {email}")
-            if needs_update:
+        for email, password, full_name in TEST_ACCOUNTS:
+            user = db.query(User).filter(User.email == email).first()
+            if not user:
+                print(f"Creating test user: {email}")
+                hashed_password = auth_service.hash_password(password)
+                user = User(
+                    email=email,
+                    hashed_password=hashed_password,
+                    full_name=full_name,
+                    is_active=True,
+                    is_verified=True,
+                )
                 db.add(user)
                 db.commit()
                 db.refresh(user)
-                print(f"✅ Updated test user: {email}")
+                print(f"  Created and verified: {email}")
             else:
-                print(f"✅ Test user {email} is already verified and active")
+                needs_update = False
+                if not user.is_verified:
+                    user.is_verified = True
+                    needs_update = True
+                if not user.is_active:
+                    user.is_active = True
+                    needs_update = True
+                if not auth_service.verify_password(user.hashed_password, password):
+                    user.hashed_password = auth_service.hash_password(password)
+                    needs_update = True
+                if needs_update:
+                    db.add(user)
+                    db.commit()
+                    db.refresh(user)
+                    print(f"  Updated: {email}")
+                else:
+                    print(f"  OK: {email}")
     except Exception as e:
-        print(f"❌ Error: {e}")
+        print(f"Error: {e}")
         db.rollback()
         sys.exit(1)
     finally:

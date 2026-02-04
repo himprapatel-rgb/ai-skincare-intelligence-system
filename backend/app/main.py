@@ -152,9 +152,12 @@ def ensure_test_user() -> None:
                     )
                 except ProgrammingError:
                     pass
-                conn.execute(
-                    text("ALTER TABLE user_profiles ALTER COLUMN skin_type TYPE TEXT")
-                )
+                try:
+                    conn.execute(
+                        text("ALTER TABLE user_profiles ALTER COLUMN skin_type TYPE TEXT")
+                    )
+                except ProgrammingError:
+                    pass
                 # Allow NULL user_id for guest scans
                 try:
                     conn.execute(
@@ -192,39 +195,41 @@ def ensure_test_user() -> None:
 
     db = SessionLocal()
     try:
-        email = "himanshu@test.com"
-        user = db.query(User).filter(User.email == email).first()
-        if not user:
-            hashed_password = auth_service.hash_password("Test1234!")
-            user = User(
-                email=email,
-                hashed_password=hashed_password,
-                full_name="Himanshu Patel",
-                is_active=True,
-                is_verified=True,
-            )
-            db.add(user)
-            db.commit()
-            db.refresh(user)
-            logger.info("✅ Seeded test user: Himanshu (%s)", email)
-        else:
-            # Ensure existing test user is verified and password is correct
-            needs_update = False
-            if not user.is_verified:
-                user.is_verified = True
-                needs_update = True
-            if not user.is_active:
-                user.is_active = True
-                needs_update = True
-            # Update password if it doesn't match
-            if not auth_service.verify_password(user.hashed_password, "Test1234!"):
-                user.hashed_password = auth_service.hash_password("Test1234!")
-                needs_update = True
-            if needs_update:
+        test_users = [
+            ("himanshu@test.com", "Test1234!", "Himanshu Patel"),
+            ("himprapatel@gmail.com", "Test1234!", "Himanshu Patel"),
+        ]
+        for email, password, full_name in test_users:
+            user = db.query(User).filter(User.email == email).first()
+            if not user:
+                hashed_password = auth_service.hash_password(password)
+                user = User(
+                    email=email,
+                    hashed_password=hashed_password,
+                    full_name=full_name,
+                    is_active=True,
+                    is_verified=True,
+                )
                 db.add(user)
                 db.commit()
                 db.refresh(user)
-                logger.info("✅ Updated test user: Himanshu (%s) - verified and password reset", email)
+                logger.info("✅ Seeded test user: %s (%s)", full_name, email)
+            else:
+                needs_update = False
+                if not user.is_verified:
+                    user.is_verified = True
+                    needs_update = True
+                if not user.is_active:
+                    user.is_active = True
+                    needs_update = True
+                if not auth_service.verify_password(user.hashed_password, password):
+                    user.hashed_password = auth_service.hash_password(password)
+                    needs_update = True
+                if needs_update:
+                    db.add(user)
+                    db.commit()
+                    db.refresh(user)
+                    logger.info("✅ Updated test user: %s - verified and password set", email)
 
         terms = None
         privacy = None

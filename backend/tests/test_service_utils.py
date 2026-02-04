@@ -5,7 +5,7 @@ from fastapi import HTTPException
 from fastapi.security import HTTPAuthorizationCredentials
 
 from app.schemas.user import UserCreate
-from app.services.auth_service import AuthService, get_current_user
+from app.services.auth_service import AuthService, get_current_user_test_token
 from app.services.email_service import (
     _build_verification_link,
     _ensure_smtp_configured,
@@ -43,18 +43,18 @@ def test_auth_service_get_current_user_with_token(test_db):
         credentials=f"test_token_{created.email}",
     )
 
-    current_user = get_current_user(credentials=credentials, db=test_db)
+    current_user = get_current_user_test_token(credentials=credentials, db=test_db)
     assert current_user.id == created.id
 
     with pytest.raises(HTTPException):
-        get_current_user(credentials=None, db=test_db)
+        get_current_user_test_token(credentials=None, db=test_db)
 
     invalid_credentials = HTTPAuthorizationCredentials(
         scheme="Bearer",
         credentials="bad_token_value",
     )
     with pytest.raises(HTTPException):
-        get_current_user(credentials=invalid_credentials, db=test_db)
+        get_current_user_test_token(credentials=invalid_credentials, db=test_db)
 
 
 def test_build_verification_link(monkeypatch):

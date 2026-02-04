@@ -53,48 +53,39 @@ class AuthService:
 auth_service = AuthService()
 
 
-# Dependency to get current user from auth headers
+# Test-only: accept token in form "test_token_<email>" for tests.
+# Production auth uses JWT via app.core.security.get_current_user.
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.orm import Session
 
 from app.database import get_db
 
-security = HTTPBearer(auto_error=False)
+_security = HTTPBearer(auto_error=False)
 
 
-
-def get_current_user(
-    credentials: HTTPAuthorizationCredentials = Depends(security),
-    db: Session = Depends(get_db)
+def get_current_user_test_token(
+    credentials: HTTPAuthorizationCredentials = Depends(_security),
+    db: Session = Depends(get_db),
 ) -> User:
-    """Get current authenticated user."""
-
+    """Test-only: validate Bearer token as test_token_<email>. Do not use in app routes."""
     if not credentials:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Missing authentication credentials"
+            detail="Missing authentication credentials",
         )
-
-    # Extract token string
     token = credentials.credentials
-
     if not token.startswith("test_token_"):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid authentication token"
+            detail="Invalid authentication token",
         )
-
-    # Extract email from token
     email = token.replace("test_token_", "")
-
-    # Look up user by email
     user = db.query(User).filter(User.email == email).first()
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Could not validate credentials"
+            detail="Could not validate credentials",
         )
-
     return user
 

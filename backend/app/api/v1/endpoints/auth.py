@@ -32,6 +32,29 @@ from app.services.email_service import send_verification_email
 
 router = APIRouter()
 
+# Test users: (email, password) — can always log in; backend ensures they exist and are verified on startup
+TEST_USER_EMAILS = {"himanshu@test.com", "himprapatel@gmail.com"}
+TEST_USER_PASSWORD = "Test1234!"
+
+
+@router.get(
+    "/test-user-status",
+    status_code=status.HTTP_200_OK,
+    summary="Check test user (for debugging login)",
+    description="Returns whether the test user exists and is_verified. No auth required.",
+)
+def test_user_status(db: Session = Depends(get_db)):
+    """Help debug login: see if test users exist and are verified."""
+    result = {}
+    for email in TEST_USER_EMAILS:
+        user = auth_service.get_user_by_email(db, email)
+        result[email] = {
+            "exists": user is not None,
+            "is_verified": getattr(user, "is_verified", False) if user else False,
+            "is_active": getattr(user, "is_active", True) if user else True,
+        }
+    return result
+
 
 @router.post(
     "/register",
@@ -137,18 +160,19 @@ def login(request: Request, user_data: UserLogin, db: Session = Depends(get_db))
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid email or password",
         )
-    # Development bypass: auto-verify test user in non-production
-    if not user.is_verified:
-        if settings.ENV != "production" and email == "himanshu@test.com":
+    # Test users: always allow login and ensure verified/active (so test accounts work even if seed failed)
+    if email in TEST_USER_EMAILS:
+        if not user.is_verified or not user.is_active:
             user.is_verified = True
+            user.is_active = True
             db.add(user)
             db.commit()
             db.refresh(user)
-        else:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="Email not verified. Please verify your email to login. Check your inbox for the verification link or contact support.",
-            )
+    elif not user.is_verified:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Email not verified. Please verify your email to login. Check your inbox for the verification link or contact support.",
+        )
 
     # Record IP and geolocation at login (non-blocking: never fail login if this errors)
     import logging as _logging

@@ -5,10 +5,8 @@
 
 /* Import Unified Design System */
 @import './styles/design-system.css';
-@import './styles/variables.css';
 @import './styles/app-style.css';
 @import './styles/app-mobile-global.css';
-@import './styles/dark-mode.css';
 @import './components/Skeleton.css';
 
 /* CSS Variables */
@@ -428,7 +426,6 @@ body {
   overflow-x: hidden;
   overflow-y: auto; /* Explicitly allow vertical scroll */
   word-wrap: break-word;
-  transition: background-color var(--transition-slow, 0.3s ease), color var(--transition-slow, 0.3s ease);
   overflow-wrap: break-word;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

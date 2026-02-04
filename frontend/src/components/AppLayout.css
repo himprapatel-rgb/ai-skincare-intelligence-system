@@ -539,20 +539,6 @@
   -webkit-overflow-scrolling: touch;
 }
 
-.app-nav-mobile-theme-wrap {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: var(--spacing-sm) 0 var(--spacing-md);
-  margin-bottom: var(--spacing-xs);
-  border-bottom: 1px solid var(--border-color);
-}
-
-.app-nav-mobile-theme-label {
-  font-size: var(--font-size-sm, 0.875rem);
-  color: var(--text-secondary);
-}
-
 .app-nav-mobile-links {
   display: flex;
   flex-direction: column;

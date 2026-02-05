@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80" fill="none">
+  <!-- Shelf -->
+  <path d="M14 44h52" stroke="#2563eb" stroke-width="2" stroke-linecap="round"/>
+  <path d="M18 44v20M62 44v20" stroke="#2563eb" stroke-width="2" stroke-linecap="round"/>
+  <path d="M18 64h44" stroke="#2563eb" stroke-width="2" stroke-linecap="round"/>
+  <!-- Empty space hint: soft bottle outline -->
+  <path d="M32 28v16l6 4 6-4V28" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="#eff6ff" opacity="0.5"/>
+  <circle cx="38" cy="24" r="2" fill="#7c3aed" opacity="0.6"/>
+  <!-- Sparkle / "add first" cue -->
+  <path d="M56 22l2-2 2 2-2 2-2-2z" stroke="#2563eb" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <path d="M58 20v4M56 22h4" stroke="#2563eb" stroke-width="1" stroke-linecap="round"/>
+</svg>

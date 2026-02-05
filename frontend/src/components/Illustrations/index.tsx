@@ -21,6 +21,7 @@ import RoutineMoonSvg from '../../assets/illustrations/routine-moon.svg?react';
 import RoutineSunSvg from '../../assets/illustrations/routine-sun.svg?react';
 import ScanCameraSvg from '../../assets/illustrations/scan-camera.svg?react';
 import SkinTodaySvg from '../../assets/illustrations/skin-today.svg?react';
+import EmptyShelfSvg from '../../assets/illustrations/empty-shelf.svg?react';
 
 export type IllustrationProps = React.SVGProps<SVGSVGElement>;
 
@@ -47,6 +48,7 @@ export const Illustrations = {
   RoutineSun: withIllustration(RoutineSunSvg, 'Illustrations.RoutineSun'),
   ScanCamera: withIllustration(ScanCameraSvg, 'Illustrations.ScanCamera'),
   SkinToday: withIllustration(SkinTodaySvg, 'Illustrations.SkinToday'),
+  EmptyShelf: withIllustration(EmptyShelfSvg, 'Illustrations.EmptyShelf'),
 };
 
 export default Illustrations;

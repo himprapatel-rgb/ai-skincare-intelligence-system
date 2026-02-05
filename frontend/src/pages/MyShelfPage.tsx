@@ -2,6 +2,7 @@ import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { IconStar, IconPackage, IconMoreVertical, IconChevronDown, IconTrash2, IconSearch, IconX, IconPlus, IconRefresh } from '../components/Icons';
+import { Illustrations } from '../components/Illustrations';
 import { ConfirmModal } from '../components/ConfirmModal';
 import { SkeletonCardGrid } from '../components/Skeleton';
 import { useShelf } from '../context/ShelfContext';
@@ -355,7 +356,7 @@ const MyShelfPage: React.FC = () => {
 
       {filteredProducts.length === 0 ? (
         <div className="myshelf-empty">
-          <div className="myshelf-empty-icon" aria-hidden><IconPackage size={40} strokeWidth={1.5} /></div>
+          <div className="myshelf-empty-icon" aria-hidden><Illustrations.EmptyShelf width={80} height={80} /></div>
           <h2 className="myshelf-empty-title">Your shelf is empty</h2>
           <p className="myshelf-empty-desc">Add products from recommendations or scan a barcode to start your collection.</p>
           <button type="button" className="myshelf-add-btn myshelf-empty-cta" onClick={() => navigate('/scanner')}>

@@ -34,4 +34,20 @@
   .r-grid--auto {
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   }
+
+  /* ----- App layout: tablet -----
+   * Page content centered, readable width (max 1024px).
+   */
+  .app-page {
+    max-width: var(--max-width-lg, 1024px);
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .app-page-content {
+    padding-left: var(--spacing-md, 16px);
+    padding-right: var(--spacing-md, 16px);
+  }
 }

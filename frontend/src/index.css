@@ -9,6 +9,7 @@
 @import './styles/responsive-mobile.css';
 @import './styles/responsive-tablet.css';
 @import './styles/responsive-desktop.css';
+@import './styles/responsive-page-tweaks.css';
 @import './styles/app-style.css';
 @import './styles/app-mobile-global.css';
 @import './styles/best-apps-mobile.css';

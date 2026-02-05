@@ -1,0 +1,88 @@
+/**
+ * Page-level viewport tweaks – tablet & desktop
+ * Fine-tune max-widths and padding for Today, Product Details, Home.
+ * Mobile (≤768px) unchanged; bottom nav and mobile padding stay in page CSS.
+ */
+
+/* ========== TABLET (769px – 1024px) ========== */
+@media (min-width: 769px) and (max-width: 1024px) {
+  /* Today: no bottom nav, so less bottom padding; content slightly wider */
+  .today-page {
+    padding-bottom: var(--spacing-xl, 32px);
+  }
+
+  .today-content {
+    max-width: 600px;
+    padding-left: var(--spacing-lg, 24px);
+    padding-right: var(--spacing-lg, 24px);
+    padding-bottom: var(--spacing-xl, 32px);
+  }
+
+  .today-header {
+    padding-left: max(var(--spacing-lg, 24px), env(safe-area-inset-left));
+    padding-right: max(var(--spacing-lg, 24px), env(safe-area-inset-right));
+  }
+
+  /* Product Details: comfortable padding; header grid already responsive at 960px */
+  .product-details-page {
+    padding: var(--spacing-2xl, 48px) var(--spacing-xl, 32px);
+  }
+
+  .product-details-tabs {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Home: hero and sections already have max-width in HomePage.css; ensure spacing */
+  .homepage .hero-content {
+    padding-left: var(--spacing-lg, 24px);
+    padding-right: var(--spacing-lg, 24px);
+  }
+
+  .homepage .app-page-content {
+    padding-left: var(--spacing-lg, 24px);
+    padding-right: var(--spacing-lg, 24px);
+  }
+}
+
+/* ========== DESKTOP (1025px+) ========== */
+@media (min-width: 1025px) {
+  /* Today: readable content width; no bottom nav */
+  .today-page {
+    padding-bottom: var(--spacing-2xl, 48px);
+  }
+
+  .today-content {
+    max-width: 640px;
+    padding-left: var(--spacing-xl, 32px);
+    padding-right: var(--spacing-xl, 32px);
+    padding-bottom: var(--spacing-2xl, 48px);
+  }
+
+  .today-header {
+    padding-left: max(var(--spacing-xl, 32px), env(safe-area-inset-left));
+    padding-right: max(var(--spacing-xl, 32px), env(safe-area-inset-right));
+  }
+
+  /* Product Details: centered block, comfortable padding */
+  .product-details-page {
+    padding: var(--spacing-3xl, 64px) var(--spacing-xl, 32px);
+  }
+
+  .product-header,
+  .product-details-tabs {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Home: hero and sections use existing max-width; ensure horizontal padding */
+  .homepage .hero-content {
+    padding-left: var(--spacing-xl, 32px);
+    padding-right: var(--spacing-xl, 32px);
+  }
+
+  .homepage .app-page-content {
+    padding-left: var(--spacing-xl, 32px);
+    padding-right: var(--spacing-xl, 32px);
+  }
+}

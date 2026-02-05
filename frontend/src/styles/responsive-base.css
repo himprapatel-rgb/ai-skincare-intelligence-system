@@ -1,10 +1,12 @@
 /**
  * Responsive BASE – shared variables and utilities (no viewport-specific rules).
- * Viewport-specific code lives in:
- *   responsive-mobile.css  (max-width: 768px)
- *   responsive-tablet.css  (769px–1024px)
- *   responsive-desktop.css (min-width: 1025px)
- * Breakpoints match constants/viewport.ts.
+ *
+ * Viewport-specific code:
+ *   responsive-mobile.css   max-width: 768px   (mobile: bottom nav, full-bleed)
+ *   responsive-tablet.css   769px–1024px       (tablet: top nav, .app-page max 1024px)
+ *   responsive-desktop.css  min-width: 1025px  (desktop: .app-page max 1280px)
+ *
+ * Breakpoints match --r-mobile-max, --r-tablet-min/max, --r-desktop-min.
  */
 
 /* ========== BREAKPOINT VARIABLES ========== */

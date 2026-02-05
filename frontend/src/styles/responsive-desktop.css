@@ -39,4 +39,20 @@
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: var(--spacing-lg, 24px);
   }
+
+  /* ----- App layout: desktop -----
+   * Page content centered, max 1280px for readable line length.
+   */
+  .app-page {
+    max-width: var(--max-width-xl, 1280px);
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .app-page-content {
+    padding-left: var(--spacing-lg, 24px);
+    padding-right: var(--spacing-lg, 24px);
+  }
 }

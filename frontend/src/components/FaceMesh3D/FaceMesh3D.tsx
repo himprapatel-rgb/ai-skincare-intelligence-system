@@ -24,10 +24,10 @@ interface FaceMesh3DProps {
   className?: string;
 }
 
-/** Landmark index → 3D position. Y flipped so face is right-side up (forehead up, chin down). */
+/** Landmark index → 3D position. */
 function landmarkTo3D(p: FaceLandmarkPoint, scale: number, scaleZ: number): [number, number, number] {
   const x = (p.x - 0.5) * -1 * scale;
-  const y = (0.5 - p.y) * scale;  // flip Y: image top (forehead) → 3D +Y (top of screen)
+  const y = (p.y - 0.5) * scale;
   const z = (p.z ?? 0) * -scaleZ;
   return [x, y, z];
 }
@@ -57,6 +57,7 @@ const FaceMesh3D = forwardRef<FaceMesh3DHandle, FaceMesh3DProps>(function FaceMe
     const camera = new THREE.PerspectiveCamera(40, width / height, 0.01, 10);
     camera.position.set(0, 0, 2.2);
     camera.lookAt(0, 0, 0);
+    camera.up.set(0, -1, 0); /* flip view: eyes up, mouth down */
     cameraRef.current = camera;
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });

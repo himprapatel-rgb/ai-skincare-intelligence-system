@@ -57,6 +57,39 @@ const displayName = nameParts.length > 1
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  // Focus trap and Escape in user dropdown (issue #79)
+  useEffect(() => {
+    if (!userDropdownOpen || !userDropdownRef.current) return;
+    const root = userDropdownRef.current;
+    const FOCUSABLE = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+    const focusables = Array.from(root.querySelectorAll<HTMLElement>(FOCUSABLE));
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setUserDropdownOpen(false);
+        (document.activeElement as HTMLElement)?.blur();
+        return;
+      }
+      if (e.key !== 'Tab') return;
+      const current = document.activeElement as HTMLElement;
+      if (!root.contains(current)) return;
+      if (e.shiftKey) {
+        if (current === first) {
+          e.preventDefault();
+          last?.focus();
+        }
+      } else {
+        if (current === last) {
+          e.preventDefault();
+          first?.focus();
+        }
+      }
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [userDropdownOpen]);
   
   // Close mobile menu on route change
   useEffect(() => {
@@ -239,6 +272,11 @@ const displayName = nameParts.length > 1
                   <span>Free Scan</span>
                 </Link>
               )}
+              {isAuthenticated && !location.pathname.startsWith('/dashboard') && (
+                <Link className="app-nav-cta" to="/dashboard" title="View your dashboard" onMouseEnter={() => void import('../pages/DashboardPage')}>
+                  <span>Dashboard</span>
+                </Link>
+              )}
             </div>
           </nav>
           
@@ -272,7 +310,7 @@ const displayName = nameParts.length > 1
           <div className="app-nav-mobile-scroll">
             <div className="app-nav-mobile-links">
               <Link className={`app-nav-mobile-link${location.pathname === '/' ? ' active' : ''}`} to="/">Home</Link>
-              <Link className={`app-nav-mobile-link${location.pathname.startsWith('/scan') ? ' active' : ''}`} to="/scan">Scan</Link>
+              <Link className={`app-nav-mobile-link${location.pathname.startsWith('/scan') && !location.search.includes('mode=product') ? ' active' : ''}`} to="/scan">Scan</Link>
               <Link className={`app-nav-mobile-link${location.pathname.startsWith('/dashboard') ? ' active' : ''}`} to="/dashboard">Dashboard</Link>
               <Link className={`app-nav-mobile-link${location.pathname.startsWith('/digital-twin') ? ' active' : ''}`} to="/digital-twin">Digital Twin</Link>
               <Link className={`app-nav-mobile-link${location.pathname.startsWith('/about') ? ' active' : ''}`} to="/about">About</Link>
@@ -359,6 +397,11 @@ const displayName = nameParts.length > 1
               <Link className="app-nav-mobile-cta" to="/scan" title="Start a free skin analysis">
                 <IconScan size={20} strokeWidth={2} />
                 <span>Start Free Skin Scan</span>
+              </Link>
+            )}
+            {isAuthenticated && !location.pathname.startsWith('/dashboard') && (
+              <Link className="app-nav-mobile-cta" to="/dashboard" title="View your dashboard">
+                <span>Dashboard</span>
               </Link>
             )}
           </div>

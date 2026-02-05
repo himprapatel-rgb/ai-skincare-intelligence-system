@@ -20,6 +20,14 @@
   border: 0;
 }
 
+.results-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  padding: 0 var(--space-4, 16px);
+}
+
 .results-container {
   max-width: 1200px;
   margin: 0 auto;

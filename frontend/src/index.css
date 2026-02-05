@@ -5,6 +5,10 @@
 
 /* Import Unified Design System */
 @import './styles/design-system.css';
+@import './styles/responsive-base.css';
+@import './styles/responsive-mobile.css';
+@import './styles/responsive-tablet.css';
+@import './styles/responsive-desktop.css';
 @import './styles/app-style.css';
 @import './styles/app-mobile-global.css';
 @import './components/Skeleton.css';
@@ -162,7 +166,7 @@
   --max-width-lg: 1024px;
   --max-width-xl: 1280px;
 
-  /* Responsive breakpoints (use in max-width media queries) */
+  /* Responsive breakpoints (match constants/viewport.ts and styles/responsive.css) */
   --breakpoint-mobile: 768px;
   --breakpoint-tablet: 1024px;
   --breakpoint-desktop: 1280px;

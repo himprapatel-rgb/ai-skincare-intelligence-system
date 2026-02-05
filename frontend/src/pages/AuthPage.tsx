@@ -63,6 +63,13 @@ export const AuthPage: React.FC = () => {
   }, [mode]);
 
   const handleAuthSuccess = async () => {
+    const returnUrl = sessionStorage.getItem('auth_return_url');
+    if (returnUrl) {
+      sessionStorage.removeItem('auth_return_url');
+      sessionStorage.removeItem('session_expired_redirect');
+      navigate(returnUrl);
+      return;
+    }
     try {
       await axios.get(`${API_URL}/profile`);
       navigate('/dashboard');

@@ -8,7 +8,7 @@ import { IconSun, IconMoon } from './Icons';
 import './DarkModeToggle.css';
 
 export const DarkModeToggle: React.FC = () => {
-  const { theme, setTheme, resolvedTheme } = useTheme();
+  const { setTheme, resolvedTheme } = useTheme();
 
   const handleClick = () => {
     if (resolvedTheme === 'light') {

@@ -1,8 +1,10 @@
 # Sprint Summaries
 
+**Part of traditional agile iteration.** See [AGILE-ITERATION-GUIDE.md](../AGILE-ITERATION-GUIDE.md) for the full cycle (product backlog → sprint planning → sprint backlog → review → retrospective).
+
 ## Purpose
 
-This folder contains **canonical sprint summaries** - the single source of truth for what each sprint delivered.
+This folder contains **canonical sprint summaries** – the single source of truth for what each sprint delivered.
 
 ## Two-Tier Sprint Documentation Strategy
 
@@ -17,6 +19,10 @@ This folder contains **canonical sprint summaries** - the single source of truth
 - Phase docs, CI/CD proofs, intermediate reports
 - Referenced by link from sprint summaries
 - NEVER used as canonical truth
+
+### New sprint
+- Use **[SPRINT-TEMPLATE.md](./SPRINT-TEMPLATE.md)** to create the sprint summary and goal.
+- Sprint backlog lives in [12-tasks/ACTIVE-TASKS.md](../12-tasks/ACTIVE-TASKS.md).
 
 ## Sprint Index
 

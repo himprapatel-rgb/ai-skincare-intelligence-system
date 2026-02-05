@@ -32,6 +32,7 @@ const ContactPage: React.FC = () => {
     }
   }, [searchParams, subjectPreFilled]);
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [faqOpenIndex, setFaqOpenIndex] = useState<number | null>(null);
 
@@ -53,11 +54,13 @@ const ContactPage: React.FC = () => {
       return;
     }
     setErrors({});
-    setSubmitted(true);
+    setSubmitting(true);
     setTimeout(() => {
-      setSubmitted(false);
+      setSubmitted(true);
+      setSubmitting(false);
       setFormData({ name: '', email: '', subject: '', message: '' });
-    }, 3000);
+    }, 600);
+    setTimeout(() => setSubmitted(false), 3600);
   };
 
   return (
@@ -225,8 +228,8 @@ const ContactPage: React.FC = () => {
                 {errors.message && <span id="message-error" className="form-error">{errors.message}</span>}
               </div>
 
-              <button type="submit" className="submit-button">
-                Send Message
+              <button type="submit" className="submit-button" disabled={submitting} aria-busy={submitting}>
+                {submitting ? 'Sending…' : 'Send Message'}
               </button>
             </form>
           )}

@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 
 export interface Analysis {
   id: string;
@@ -35,7 +36,7 @@ export interface AnalysisState {
   deleteAnalysis: (id: string, token: string) => Promise<void>;
 }
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/v1';
+/* Same API as all viewports (desktop/mobile/tablet) – single backend, single database */
 const getErrorMessage = (error: unknown, fallback: string) => {
   if (axios.isAxiosError(error)) {
     const data = error.response?.data as { detail?: string } | undefined;

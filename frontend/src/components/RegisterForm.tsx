@@ -186,8 +186,15 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onSwitchT
             placeholder="Confirm your password"
           />
         </div>
-        <button type="submit" disabled={loading} className="btn-primary">
-          {loading ? <LoadingSpinner size="small" /> : 'Create Account'}
+        <button type="submit" disabled={loading} className="btn-primary" aria-busy={loading}>
+          {loading ? (
+            <>
+              <LoadingSpinner size="small" />
+              <span>Creating account…</span>
+            </>
+          ) : (
+            'Create Account'
+          )}
         </button>
       </form>
       

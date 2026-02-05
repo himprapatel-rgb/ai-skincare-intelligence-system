@@ -7,6 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { useShelf } from '../context/ShelfContext';
+import { API_BASE_URL } from '../config';
 import { getScanHistory } from '../services/scanApi';
 import { getStreak } from '../utils/streakStorage';
 import {
@@ -54,7 +55,7 @@ const MePage: React.FC = () => {
   useEffect(() => {
     if (!isAuthenticated) return;
     const token = localStorage.getItem('auth_token');
-    fetch(`${import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1'}/digital-twin/query?limit=200`, {
+    fetch(`${API_BASE_URL}/digital-twin/query?limit=200`, {
       headers: token ? { Authorization: `Bearer ${token}` } : {},
     })
       .then((res) => (res.ok ? res.json() : Promise.reject(new Error('Failed'))))

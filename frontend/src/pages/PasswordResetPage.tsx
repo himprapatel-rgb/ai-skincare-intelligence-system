@@ -80,6 +80,9 @@ const PasswordResetPage: React.FC = () => {
           <p className="password-reset-note">
             Enter your email and we'll send you a reset link.
           </p>
+          <p className="password-reset-hint" role="note">
+            If an account exists for this email, you&apos;ll receive a link to reset your password. Check your spam folder if you don&apos;t see it within a few minutes.
+          </p>
           <form onSubmit={handleSubmit} className="password-reset-form">
             {error && (
               <div className="alert alert-error password-reset-alert">

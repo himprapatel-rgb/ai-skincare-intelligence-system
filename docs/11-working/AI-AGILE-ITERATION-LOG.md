@@ -1,8 +1,7 @@
 # AI Agile Iteration Log
 
 Purpose: Track what changed, why, how it was tested, and what’s next.  
-This is a living log to enforce the agile workflow from `docs/99-archive/legacy/Archive/Status-Reports/AI_AGILE_WORKFLOW.md`.
-Use that workflow doc for checklists and templates to avoid duplication here.
+This log is part of our [traditional agile iteration cycle](../AGILE-ITERATION-GUIDE.md). Use [07-sprints/SPRINT-TEMPLATE.md](../07-sprints/SPRINT-TEMPLATE.md) and [09-reports/RETROSPECTIVE-TEMPLATE.md](../09-reports/RETROSPECTIVE-TEMPLATE.md) for sprint summary and retro.
 
 ---
 

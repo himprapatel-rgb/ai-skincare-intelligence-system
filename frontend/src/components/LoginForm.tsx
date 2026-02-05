@@ -185,8 +185,15 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegis
             Forgot password?
           </Link>
         </div>
-        <button type="submit" disabled={loading} className="btn-primary" title={loading ? 'Signing in…' : undefined}>
-          {loading ? <LoadingSpinner size="small" /> : 'Sign In'}
+        <button type="submit" disabled={loading} className="btn-primary" title={loading ? 'Signing in…' : undefined} aria-busy={loading}>
+          {loading ? (
+            <>
+              <LoadingSpinner size="small" />
+              <span>Signing in…</span>
+            </>
+          ) : (
+            'Sign In'
+          )}
         </button>
       </form>
       

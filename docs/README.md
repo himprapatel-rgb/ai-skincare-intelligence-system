@@ -2,6 +2,20 @@
 
 > **Master Documentation Index** - Single source of truth for all project documentation
 
+## 📋 Agile iteration (sprints)
+
+We use **traditional agile iterations** (sprints). All iteration artifacts and how to run them are in one place:
+
+| Document | Purpose |
+|----------|---------|
+| **[AGILE-ITERATION-GUIDE.md](./AGILE-ITERATION-GUIDE.md)** | **Start here** – product backlog, sprint backlog, planning, review, retrospective, release; where each doc lives |
+| [12-tasks/ACTIVE-TASKS.md](./12-tasks/ACTIVE-TASKS.md) | Current sprint backlog (in progress, next, blocked) |
+| [03-product/Product-Backlog-V5.md](./03-product/Product-Backlog-V5.md) | Product backlog (user stories, epics) |
+| [07-sprints/README.md](./07-sprints/README.md) | Sprint index and past sprint summaries |
+| [07-sprints/SPRINT-TEMPLATE.md](./07-sprints/SPRINT-TEMPLATE.md) | Template for new sprint |
+| [11-working/AI-AGILE-ITERATION-LOG.md](./11-working/AI-AGILE-ITERATION-LOG.md) | Iteration log (what changed per iteration) |
+| [09-reports/RETROSPECTIVE-TEMPLATE.md](./09-reports/RETROSPECTIVE-TEMPLATE.md) | Sprint retrospective template |
+
 ## 🎯 Project Status
 
 | Milestone | Status | Date |
@@ -35,10 +49,12 @@
 - **[Traceability Matrix](./01-requirements/Traceability-Matrix.md)** - Original traceability
 - **[Architecture Decisions](./02-architecture/Architecture-Decisions.md)** - ADRs and design decisions
 
-### Product & Agile
-- **[Product Backlog](./03-product/Product-Backlog-V5.md)**
-- **[Product Tracker](./03-product/Product-Tracker.md)**
-- **[Sprint Index](./07-sprints/README.md)**
+### Product & Agile (traditional iteration)
+- **[AGILE-ITERATION-GUIDE.md](./AGILE-ITERATION-GUIDE.md)** – how we run sprints; where backlogs, sprint backlog, review, retro live
+- **[Product Backlog](./03-product/Product-Backlog-V5.md)** – main product backlog
+- **[Product Tracker](./03-product/Product-Tracker.md)** – status tracker
+- **[Sprint Index](./07-sprints/README.md)** – sprint summaries; **[SPRINT-TEMPLATE](./07-sprints/SPRINT-TEMPLATE.md)** – new sprint
+- **[12-tasks/](./12-tasks/)** – ACTIVE-TASKS = sprint backlog; BACKLOG, IMPROVEMENT-BACKLOG = product backlog
 
 ### Operations (Living Docs)
 - **[Implementation Status (Jan 26, 2026)](./06-operations/Implementation-Status-2026-01-26.md)** - Latest comprehensive status
@@ -84,7 +100,10 @@
 | Understand system requirements | [SRS V5.3](./01-requirements/SRS-V5.3-External-Pretrained-ML.md) |
 | See all 31 frontend pages | [Pages Status](./06-operations/Pages-Created-Status.md) |
 | Review sprint history | [Sprint Index](./07-sprints/README.md) |
-| See current priorities | [Product Backlog](./03-product/Product-Backlog-V5.md) |
+| Run or understand agile iterations | [AGILE-ITERATION-GUIDE.md](./AGILE-ITERATION-GUIDE.md) |
+| See current sprint work | [12-tasks/ACTIVE-TASKS.md](./12-tasks/ACTIVE-TASKS.md) |
+| See current priorities / product backlog | [Product Backlog](./03-product/Product-Backlog-V5.md) |
+| Audit mobile app vs best apps (100 issues) | [08-audits/MOBILE-APP-100-ISSUES-AUDIT-2026.md](./08-audits/MOBILE-APP-100-ISSUES-AUDIT-2026.md) |
 | See agents (E2E, Improvement, Human, API Smoke) | [agents/README.md](./agents/README.md) |
 | See active tasks | [12-tasks/ACTIVE-TASKS.md](./12-tasks/ACTIVE-TASKS.md) |
 | Follow dev workflow | [13-workflow/DEVELOPMENT-WORKFLOW.md](./13-workflow/DEVELOPMENT-WORKFLOW.md) |

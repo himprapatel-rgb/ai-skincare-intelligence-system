@@ -1,8 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './ConsentModal.css';
-
-const FOCUSABLE = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
 interface ConsentModalProps {
   visible: boolean;
@@ -37,8 +35,6 @@ const ConsentModal: React.FC<ConsentModalProps> = ({ visible, onAccept, onDeclin
   const [analyticsAccepted, setAnalyticsAccepted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [policyVersion, setPolicyVersion] = useState<PolicyVersion | null>(null);
-  const modalRef = useRef<HTMLDivElement>(null);
-  const previousActiveRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     const fetchPolicyVersion = async () => {

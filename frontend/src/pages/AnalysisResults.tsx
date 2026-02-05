@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
 import { IconScan, IconHome, IconCheck, IconAlertTriangle, IconArrowLeft, IconCopy, IconShare2, IconBrandX, IconHeart, IconDownload, IconShoppingCart, getSkinConcernIcon } from '../components/Icons';
+import { BackButton } from '../components/BackButton';
 import { BreadcrumbJsonLd } from '../components/BreadcrumbJsonLd';
 import { SkeletonAnalysis } from '../components/Skeleton';
 import { getScanHistory, getScanResult } from '../services/scanApi';
@@ -315,6 +316,9 @@ const AnalysisResults: React.FC = () => {
           { name: 'Skin Analysis Results', path: `/analysis/${analysisId}` },
         ]}
       />
+      <div className="results-actions-row">
+        <BackButton />
+      </div>
       <div className="results-container">
         <header className="results-header app-header-card">
           <div>

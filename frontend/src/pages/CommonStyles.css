@@ -208,7 +208,7 @@
   min-height: 44px;
   background: none;
   border: none;
-  border-bottom: 3px solid transparent;
+  border-bottom: 4px solid transparent;
   cursor: pointer;
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-medium);
@@ -222,6 +222,7 @@
 }
 
 .filter-tabs button.active {
+  border-bottom-width: 4px;
   border-bottom-color: var(--primary);
   color: var(--primary);
 }

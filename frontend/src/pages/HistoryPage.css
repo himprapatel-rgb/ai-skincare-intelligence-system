@@ -162,6 +162,32 @@
   box-shadow: 0 0 0 3px rgba(31, 111, 235, 0.1);
 }
 
+.history-search-clear {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: color 0.2s, background 0.2s;
+}
+
+.history-search-clear:hover {
+  color: var(--text-primary);
+  background: var(--gray-100, #f1f5f9);
+}
+
+.history-search-clear:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
 .history-sort {
   display: flex;
   align-items: center;

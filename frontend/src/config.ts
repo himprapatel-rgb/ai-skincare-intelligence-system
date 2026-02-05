@@ -1,5 +1,6 @@
 /**
  * Shared app config. Single source of truth for API base URL.
+ * All viewports (desktop / tablet / mobile) use this same API and database.
  * Set VITE_API_URL in .env for local/staging/production.
  */
 export const API_BASE_URL =

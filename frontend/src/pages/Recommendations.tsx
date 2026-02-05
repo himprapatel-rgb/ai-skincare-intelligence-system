@@ -273,7 +273,7 @@ const Recommendations: React.FC = () => {
           '<circle cx="25" cy="45" r="10" fill="white" opacity="0.2"/>' +
         '</g>' +
         '<text x="50%" y="220" text-anchor="middle" fill="#94a3b8" font-size="13" font-family="system-ui, sans-serif" font-weight="500">' +
-          'Product Image' +
+          'No image' +
         '</text>' +
       '</svg>'
     );

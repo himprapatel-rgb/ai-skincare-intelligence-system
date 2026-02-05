@@ -1,0 +1,21 @@
+/**
+ * MOBILE ONLY – max-width: 768px
+ * All rules in this file apply only to mobile viewport.
+ * Do not add tablet or desktop rules here.
+ */
+
+@media (max-width: 768px) {
+  /* Container: mobile padding (base already has 16px; optional override) */
+  .r-container {
+    padding-left: var(--spacing-md, 16px);
+    padding-right: var(--spacing-md, 16px);
+  }
+
+  /* Visibility */
+  .r-show-mobile { display: revert !important; }
+  .r-hide-mobile { display: none !important; }
+
+  /* Layout utilities */
+  .r-stack-mobile { flex-direction: column; }
+  .r-full-width-mobile { width: 100% !important; max-width: 100% !important; }
+}

@@ -4,6 +4,7 @@ import { api } from '../services/api';
 import { IconStar, IconAlertTriangle, IconShare2 } from '../components/Icons';
 import { BreadcrumbJsonLd } from '../components/BreadcrumbJsonLd';
 import { BackButton } from '../components/BackButton';
+import { ConfirmModal } from '../components/ConfirmModal';
 import LoadingScreen from '../components/LoadingScreen';
 import { SkeletonProductDetails } from '../components/Skeleton';
 import { usePageTitle } from '../hooks/usePageTitle';
@@ -194,6 +195,7 @@ const ProductDetailsPage: React.FC = () => {
   const zoomOverlayRef = useRef<HTMLDivElement>(null);
   const [compareIds, setCompareIds] = useState<string[]>(() => getCompareIds());
   const [fromCatalog, setFromCatalog] = useState(false);
+  const [confirmRemoveFromShelf, setConfirmRemoveFromShelf] = useState(false);
 
   const closeZoom = useCallback(() => {
     setImageZoomed(false);
@@ -478,19 +480,21 @@ const ProductDetailsPage: React.FC = () => {
     }
   };
 
-  const handleRemoveFromShelf = async () => {
+  const requestRemoveFromShelf = () => {
+    setConfirmRemoveFromShelf(true);
+  };
+
+  const doRemoveFromShelf = async () => {
     if (!product) return;
+    setConfirmRemoveFromShelf(false);
     setShelfActionLoading(true);
     try {
-      // Find the shelf product ID
-      const shelfProduct = shelfProducts.find(p => 
+      const shelfProduct = shelfProducts.find(p =>
         p.id === product.id || p.product_id === product.id
       );
       if (shelfProduct) {
         const success = await removeFromShelf(shelfProduct.id);
-        if (success) {
-          setInShelf(false);
-        }
+        if (success) setInShelf(false);
       }
     } catch (error) {
       console.error('Failed to remove from shelf:', error);
@@ -544,7 +548,7 @@ const ProductDetailsPage: React.FC = () => {
               )}
             </>
           ) : (
-            <div className="placeholder-image">
+            <div className="placeholder-image" aria-hidden="true">
               <svg width="80" height="100" viewBox="0 0 80 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                   <linearGradient id="productGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -556,7 +560,7 @@ const ProductDetailsPage: React.FC = () => {
                 <rect x="18" y="8" width="44" height="16" rx="4" fill="white" opacity="0.3"/>
                 <circle cx="40" cy="55" r="14" fill="white" opacity="0.2"/>
               </svg>
-              <span>Product Image</span>
+              <span>No image</span>
             </div>
           )}
         </div>
@@ -597,6 +601,18 @@ const ProductDetailsPage: React.FC = () => {
           {product.price && <p className="price">{product.price}</p>}
           
           {product.description && <p className="description">{product.description}</p>}
+          {product.ingredients && product.ingredients.length > 0 && (
+            <div className="overview-ingredients-teaser">
+              <strong>Ingredients:</strong>{' '}
+              <span>{product.ingredients.slice(0, 5).join(', ')}{product.ingredients.length > 5 ? '…' : ''}</span>
+              <button type="button" className="link-button" onClick={() => setActiveTab('ingredients')}>
+                View full list ({product.ingredients.length})
+              </button>
+            </div>
+          )}
+          {product.description && (!product.ingredients || product.ingredients.length === 0) && (
+            <p className="ingredients-tab-hint">For a structured ingredient list, see the <button type="button" className="link-button" onClick={() => setActiveTab('ingredients')}>Ingredients</button> tab.</p>
+          )}
           
           {/* Only show tags if we have real data */}
           {((product.suitable && product.suitable.length > 0) || (product.concerns && product.concerns.length > 0)) && (
@@ -620,7 +636,7 @@ const ProductDetailsPage: React.FC = () => {
             {inShelf ? (
               <button 
                 className="btn-secondary" 
-                onClick={handleRemoveFromShelf}
+                onClick={requestRemoveFromShelf}
                 disabled={shelfActionLoading}
               >
                 {shelfActionLoading ? 'Removing...' : 'Remove from Shelf'}
@@ -990,6 +1006,9 @@ const ProductDetailsPage: React.FC = () => {
               ) : (
                 <div className="no-ingredients-message">
                   <p>Ingredient list not available for this product.</p>
+                  {product.description && /ingredient/i.test(product.description) && (
+                    <p className="ingredient-description-hint">The product description (Overview tab) may contain ingredient information.</p>
+                  )}
                   <p>Tips to get ingredient data:</p>
                   <ul>
                     <li>Scan the product again with the ingredients list visible in the photo</li>
@@ -1190,6 +1209,17 @@ const ProductDetailsPage: React.FC = () => {
         </div>
       </div>
       </div>
+
+      <ConfirmModal
+        open={confirmRemoveFromShelf}
+        title="Remove from shelf"
+        message="Remove this product from your shelf? You can add it again later."
+        confirmLabel="Remove"
+        cancelLabel="Keep"
+        variant="danger"
+        onConfirm={doRemoveFromShelf}
+        onCancel={() => setConfirmRemoveFromShelf(false)}
+      />
     </div>
   );
 };

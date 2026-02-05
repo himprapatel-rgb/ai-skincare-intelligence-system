@@ -109,8 +109,70 @@
   a.app-list-item,
   .app-nav-mobile-link,
   .filter-tabs-scroll button,
-  .myshelf-pills button {
+  .myshelf-pills button,
+  .app-nav-user-trigger,
+  .app-nav-mobile-expand,
+  .myshelf-sort-select,
+  .myshelf-onboarding-toggle,
+  .btn-ghost,
+  .btn-outline,
+  .hero-cta-secondary,
+  .scan-btn-secondary,
+  .dashboard-empty-link {
     min-height: 44px;
+  }
+
+  .myshelf-search-clear,
+  .favorites-search-clear,
+  .history-search-clear {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* P2 #15: Filter/sort chips and selects – adequate tap area */
+  .filter-select,
+  .filters-reset,
+  .empty-reset-filters {
+    min-height: 44px;
+  }
+
+  /* P2 #18: Change/Edit links in forms – 44px tap height */
+  .profile-settings-page .settings-item {
+    min-height: 44px;
+  }
+
+  .app-page .btn-link,
+  .change-email-btn,
+  .me-profile-edit {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 12px;
+    margin: -2px -12px;
+    box-sizing: border-box;
+  }
+
+  /* Subheadline/subtitle contrast: WCAG AA (issue #62, #81) */
+  .app-page .subtitle,
+  .app-page .page-subtitle,
+  .app-layout .page-header .page-subtitle,
+  .app-layout .page-header p,
+  .app-layout .subtitle,
+  .page-header .subtitle,
+  .dashboard-header .subtitle,
+  .consent-header .subtitle,
+  .email-verification-card .subtitle {
+    color: var(--gray-600, #475569);
+  }
+
+  /* Checkbox/radio: 24px min for touch (issue #22) */
+  input[type="checkbox"],
+  input[type="radio"] {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+    accent-color: var(--primary, #2563eb);
   }
 
   input[type="text"],
@@ -119,9 +181,12 @@
   input[type="password"],
   input[type="number"],
   input[type="time"],
+  input[type="tel"],
+  input[type="url"],
+  input:not([type]),
   select,
   textarea {
-    font-size: 16px !important; /* Prevents iOS zoom on focus */
+    font-size: 16px !important; /* Prevents iOS zoom on focus (issue #23) */
   }
 
   * {

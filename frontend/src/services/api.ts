@@ -56,7 +56,7 @@ class ApiClient {
           await delay(wait);
           return this.client.request(config);
         }
-        const status = error.response?.status || 500;
+        const status = error.response?.status ?? (error.code === 'ERR_NETWORK' ? 0 : 500);
         const rawDetail = error.response?.data?.detail;
         let detail: string;
         if (typeof rawDetail === 'string' && rawDetail.trim()) {
@@ -71,12 +71,16 @@ class ApiClient {
         }
         if (status === 429) {
           detail = 'Too many requests. Please try again in a few minutes.';
+        } else if (status === 0 || error.code === 'ERR_NETWORK') {
+          detail = 'Connection problem. Check your connection and try again. You can retry your request after reconnecting.';
         } else if (status === 401) {
           detail = 'Session expired. Please sign in again.';
           try {
             localStorage.removeItem('auth_token');
             if (typeof window !== 'undefined' && !window.location.pathname.startsWith('/auth')) {
               sessionStorage.setItem('session_expired_redirect', '1');
+              const returnUrl = window.location.pathname + window.location.search;
+              sessionStorage.setItem('auth_return_url', returnUrl);
               window.location.href = '/auth';
             }
           } catch {

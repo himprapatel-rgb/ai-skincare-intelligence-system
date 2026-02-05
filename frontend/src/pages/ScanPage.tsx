@@ -977,11 +977,15 @@ export default function ScanPage() {
 
           {/* Scanning Progress */}
           {scanStep === 'scanning' && (
-            <div className="scan-progress-section">
+            <div className="scan-progress-section" role="status" aria-live="polite" aria-label={`Scan progress: ${progress}%. ${statusMessage}`}>
               <div className="progress-container">
-                <div className="progress-spinner"></div>
-                <h2 className="progress-title">Analyzing Your Skin</h2>
+                <div className="progress-spinner" aria-hidden="true"></div>
+                <p className="progress-phase" aria-hidden="true">
+                  {progress < 50 ? 'Step 1: Uploading your photo' : 'Step 2: Analyzing your skin'}
+                </p>
+                <h2 className="progress-title">{progress < 50 ? 'Uploading…' : 'Analyzing your skin…'}</h2>
                 <p className="progress-message">{statusMessage}</p>
+                <p className="progress-hint" aria-hidden="true">This usually takes 30–60 seconds.</p>
                 <div className="progress-bar">
                   <div
                     className="progress-fill"

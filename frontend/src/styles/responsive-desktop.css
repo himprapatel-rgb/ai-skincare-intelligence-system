@@ -1,0 +1,42 @@
+/**
+ * DESKTOP ONLY – min-width: 1025px
+ * All rules in this file apply only to desktop viewport.
+ * Do not add mobile or tablet rules here.
+ */
+
+@media (min-width: 1025px) {
+  /* Container */
+  .r-container {
+    padding-left: var(--spacing-xl, 32px);
+    padding-right: var(--spacing-xl, 32px);
+  }
+
+  /* Visibility */
+  .r-show-desktop { display: revert !important; }
+  .r-hide-desktop { display: none !important; }
+
+  /* Max content width utility */
+  .r-max-content {
+    max-width: min(100%, 1280px);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Grids: 2 / 3 / 4 columns + larger gap */
+  .r-grid--2 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-lg, 24px);
+  }
+  .r-grid--3 {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-lg, 24px);
+  }
+  .r-grid--4 {
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--spacing-lg, 24px);
+  }
+  .r-grid--auto {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--spacing-lg, 24px);
+  }
+}

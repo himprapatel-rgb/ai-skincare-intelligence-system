@@ -4,6 +4,20 @@
 
 ---
 
+## Agile iteration (sprints)
+
+| If you want to... | Read this |
+|-------------------|-----------|
+| **Understand how we run sprints** | [AGILE-ITERATION-GUIDE.md](../AGILE-ITERATION-GUIDE.md) – product backlog, sprint backlog, planning, review, retrospective |
+| **See current sprint work** | [12-tasks/ACTIVE-TASKS.md](../12-tasks/ACTIVE-TASKS.md) |
+| **See product backlog** | [03-product/Product-Backlog-V5.md](../03-product/Product-Backlog-V5.md), [12-tasks/BACKLOG.md](../12-tasks/BACKLOG.md) |
+| **Start a new sprint** | [07-sprints/SPRINT-TEMPLATE.md](../07-sprints/SPRINT-TEMPLATE.md) |
+| **Log iteration changes** | [11-working/AI-AGILE-ITERATION-LOG.md](../11-working/AI-AGILE-ITERATION-LOG.md) |
+| **Run a retrospective** | [09-reports/RETROSPECTIVE-TEMPLATE.md](../09-reports/RETROSPECTIVE-TEMPLATE.md) |
+| **See past sprints** | [07-sprints/README.md](../07-sprints/README.md) |
+
+---
+
 ## Quick Start
 
 | If you want to... | Read this |
@@ -17,7 +31,8 @@
 | **Understand database** | [DATABASE_SCHEMA.md](../DATABASE_SCHEMA.md) |
 | **Check system design** | [ARCHITECTURE.md](../ARCHITECTURE.md) |
 | **See agents** | [agents/README.md](../agents/README.md) – E2E, Improvement, Human, API Smoke |
-| **See active tasks** | [12-tasks/ACTIVE-TASKS.md](../12-tasks/ACTIVE-TASKS.md) |
+| **See current sprint backlog (active tasks)** | [12-tasks/ACTIVE-TASKS.md](../12-tasks/ACTIVE-TASKS.md) |
+| **See agile iteration guide** | [AGILE-ITERATION-GUIDE.md](../AGILE-ITERATION-GUIDE.md) |
 | **Development workflow** | [13-workflow/DEVELOPMENT-WORKFLOW.md](../13-workflow/DEVELOPMENT-WORKFLOW.md) |
 
 ---
@@ -192,7 +207,7 @@ Available at: `/api/docs` on the backend server
    - Backend: [BACKEND_GUIDE.md](../BACKEND_GUIDE.md)
    - Frontend: [FRONTEND_GUIDE.md](../FRONTEND_GUIDE.md)
 2. Understand [DATABASE_SCHEMA.md](../DATABASE_SCHEMA.md)
-3. Review current sprint in [07-sprints/](../07-sprints/)
+3. Review [AGILE-ITERATION-GUIDE.md](../AGILE-ITERATION-GUIDE.md) and current sprint in [12-tasks/ACTIVE-TASKS.md](../12-tasks/ACTIVE-TASKS.md) and [07-sprints/](../07-sprints/)
 
 ### For Deployment
 

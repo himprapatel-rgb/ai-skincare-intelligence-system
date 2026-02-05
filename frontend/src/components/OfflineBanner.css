@@ -1,3 +1,4 @@
+/* Global offline indicator (issue #33) – above header so always visible when offline */
 .offline-banner {
   display: flex;
   align-items: center;
@@ -9,6 +10,12 @@
   font-size: 0.9375rem;
   font-weight: 500;
   border-bottom: 1px solid #fcd34d;
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10050;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .offline-banner-icon {

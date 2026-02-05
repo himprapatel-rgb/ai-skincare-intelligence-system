@@ -126,14 +126,14 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* As featured / Social proof (Task 213) */}
+      {/* As featured / Social proof (Task 213, issue #63: badge-style for credibility) */}
       <section className="as-featured-section" aria-label="As featured in">
         <p className="as-featured-label">As featured in</p>
-        <div className="as-featured-logos">
-          <span className="as-featured-name">Allure</span>
-          <span className="as-featured-name">Derm Review</span>
-          <span className="as-featured-name">TechCrunch</span>
-          <span className="as-featured-name">Skincare.com</span>
+        <div className="as-featured-logos" role="list">
+          <span className="as-featured-badge" role="listitem">Allure</span>
+          <span className="as-featured-badge" role="listitem">Derm Review</span>
+          <span className="as-featured-badge" role="listitem">TechCrunch</span>
+          <span className="as-featured-badge" role="listitem">Skincare.com</span>
         </div>
       </section>
 

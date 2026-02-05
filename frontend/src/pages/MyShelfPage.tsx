@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { usePageTitle } from '../hooks/usePageTitle';
-import { IconStar, IconPackage, IconMoreVertical, IconChevronDown, IconTrash2, IconSearch, IconPlus, IconRefresh } from '../components/Icons';
+import { IconStar, IconPackage, IconMoreVertical, IconChevronDown, IconTrash2, IconSearch, IconX, IconPlus, IconRefresh } from '../components/Icons';
 import { ConfirmModal } from '../components/ConfirmModal';
 import { SkeletonCardGrid } from '../components/Skeleton';
 import { useShelf } from '../context/ShelfContext';
@@ -202,7 +202,7 @@ const MyShelfPage: React.FC = () => {
           '<circle cx="25" cy="45" r="10" fill="white" opacity="0.2"/>' +
         '</g>' +
         '<text x="50%" y="220" text-anchor="middle" fill="#94a3b8" font-size="13" font-family="system-ui, sans-serif" font-weight="500">' +
-          'Product Image' +
+          'No image' +
         '</text>' +
       '</svg>'
     );
@@ -301,6 +301,16 @@ const MyShelfPage: React.FC = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
             aria-label="Search shelf"
           />
+          {searchTerm.length > 0 && (
+            <button
+              type="button"
+              className="myshelf-search-clear"
+              onClick={() => setSearchTerm('')}
+              aria-label="Clear search"
+            >
+              <IconX size={18} strokeWidth={2} />
+            </button>
+          )}
         </div>
         <div className="myshelf-pills-wrap">
           <div className="myshelf-pills" role="tablist" aria-label="Shelf filter">

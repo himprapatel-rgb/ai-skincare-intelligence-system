@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { IconHeart, IconX, IconPackage, IconStar, IconSearch, IconRefresh } from '../components/Icons';
 import { ConfirmModal } from '../components/ConfirmModal';
+import { SkeletonCardGrid, SkeletonHeading, SkeletonText } from '../components/Skeleton';
 import { api } from '../services/api';
 import { usePageTitle } from '../hooks/usePageTitle';
 import './CommonStyles.css';
@@ -100,10 +101,15 @@ const FavoritesPage: React.FC = () => {
   if (isLoading) {
     return (
       <div className="favorites-page app-page">
+        <header className="app-header-card favorites-header-row" style={{ marginBottom: 16 }}>
+          <SkeletonHeading style={{ width: 200, height: 28 }} />
+          <SkeletonText style={{ width: 160, marginTop: 8 }} />
+        </header>
         <div className="app-page-content">
-          <div className="app-empty-state">
-            <p>Loading your favorites…</p>
+          <div className="app-card favorites-toolbar" style={{ marginBottom: 24 }}>
+            <SkeletonText style={{ width: '100%', height: 48 }} />
           </div>
+          <SkeletonCardGrid count={6} hasImage />
         </div>
       </div>
     );
@@ -143,6 +149,11 @@ const FavoritesPage: React.FC = () => {
               aria-label="Search favorites by name or brand"
               className="favorites-search-input"
             />
+            {searchTerm.length > 0 && (
+              <button type="button" className="favorites-search-clear" onClick={() => setSearchTerm('')} aria-label="Clear search">
+                <IconX size={18} strokeWidth={2} />
+              </button>
+            )}
           </div>
           <div className="favorites-sort">
             <label>Sort by: </label>

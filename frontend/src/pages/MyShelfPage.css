@@ -307,6 +307,33 @@
   outline: none;
 }
 
+.myshelf-search-clear {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  margin-left: 4px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: color 0.2s, background 0.2s;
+}
+
+.myshelf-search-clear:hover {
+  color: var(--text-primary);
+  background: var(--gray-100);
+}
+
+.myshelf-search-clear:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
 .myshelf-pills-wrap {
   display: flex;
   align-items: center;

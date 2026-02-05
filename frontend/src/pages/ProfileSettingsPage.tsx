@@ -101,6 +101,9 @@ const ProfileSettingsPage: React.FC = () => {
   }, [setSearchParams]);
   const [headerScrolled, setHeaderScrolled] = useState(false);
   const [showChangeEmailModal, setShowChangeEmailModal] = useState(false);
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [deleteConfirmText, setDeleteConfirmText] = useState('');
+  const deleteConfirmInputRef = useRef<HTMLInputElement>(null);
   const [pullDistance, setPullDistance] = useState(0);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const pullStartY = useRef(0);
@@ -464,10 +467,60 @@ const ProfileSettingsPage: React.FC = () => {
     toast.info(message);
   };
 
-  const handleDeleteAccount = async () => {
-    if (!window.confirm('Delete your account? All your data will be removed. This cannot be undone.')) return;
+  const openDeleteConfirm = () => {
+    setDeleteConfirmText('');
+    setDeleteConfirmOpen(true);
+  };
+
+  const closeDeleteConfirm = () => {
+    setDeleteConfirmOpen(false);
+    setDeleteConfirmText('');
+  };
+
+  const deleteModalRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!deleteConfirmOpen) return;
+    const t = setTimeout(() => deleteConfirmInputRef.current?.focus(), 50);
+    const FOCUSABLE = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        closeDeleteConfirm();
+        return;
+      }
+      if (e.key !== 'Tab') return;
+      const el = deleteModalRef.current;
+      if (!el) return;
+      const focusables = el.querySelectorAll<HTMLElement>(FOCUSABLE);
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      const current = document.activeElement as HTMLElement;
+      if (e.shiftKey) {
+        if (current === first) {
+          e.preventDefault();
+          last?.focus();
+        }
+      } else {
+        if (current === last) {
+          e.preventDefault();
+          first?.focus();
+        }
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => {
+      clearTimeout(t);
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, [deleteConfirmOpen]);
+
+  const doDeleteAccount = async () => {
+    if (deleteConfirmText !== 'DELETE') return;
     try {
       await api.delete('/profile');
+      setDeleteConfirmOpen(false);
+      setDeleteConfirmText('');
       toast.success('Account deleted. You have been signed out.');
       logout();
       navigate('/', { replace: true });
@@ -701,7 +754,7 @@ const ProfileSettingsPage: React.FC = () => {
                   <button
                     type="button"
                     className="delete-account-button"
-                    onClick={handleDeleteAccount}
+                    onClick={openDeleteConfirm}
                   >
                     Delete Account
                   </button>
@@ -1176,7 +1229,7 @@ const ProfileSettingsPage: React.FC = () => {
                 <button
                   type="button"
                   className="btn-danger"
-                  onClick={handleDeleteAccount}
+                  onClick={openDeleteConfirm}
                 >
                   Delete Account
                 </button>
@@ -1332,6 +1385,38 @@ const ProfileSettingsPage: React.FC = () => {
               </a>
               <button type="button" className="btn-secondary" onClick={() => setShowChangeEmailModal(false)}>
                 Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete account confirmation: type DELETE to confirm (issue #44) */}
+      {deleteConfirmOpen && (
+        <div className="profile-delete-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="delete-account-title" onClick={(e) => e.target === e.currentTarget && closeDeleteConfirm()}>
+          <div ref={deleteModalRef} className="profile-delete-modal">
+            <h2 id="delete-account-title">Delete account</h2>
+            <p>This will permanently remove your account and all data. This cannot be undone.</p>
+            <p className="profile-delete-modal-instruction">Type <strong>DELETE</strong> below to confirm.</p>
+            <input
+              ref={deleteConfirmInputRef}
+              type="text"
+              value={deleteConfirmText}
+              onChange={(e) => setDeleteConfirmText(e.target.value)}
+              placeholder="Type DELETE"
+              className="profile-delete-modal-input"
+              aria-label="Type DELETE to confirm"
+              autoComplete="off"
+            />
+            <div className="profile-delete-modal-actions">
+              <button type="button" className="btn-secondary" onClick={closeDeleteConfirm}>Cancel</button>
+              <button
+                type="button"
+                className="delete-account-button"
+                disabled={deleteConfirmText !== 'DELETE'}
+                onClick={doDeleteAccount}
+              >
+                Delete my account
               </button>
             </div>
           </div>

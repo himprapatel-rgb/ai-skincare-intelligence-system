@@ -1,14 +1,15 @@
 /* eslint-disable no-console -- dev-only utility */
 // Development Auto-Login Utility
 // Automatically logs in as test user "Himanshu" for development
+// Uses same API as production (config.ts) so all viewports share one backend.
+
+import { API_BASE_URL } from '../config';
 
 const DEV_TEST_USER = {
   email: 'himanshu@test.com',
   password: 'Test1234!',
   name: 'Himanshu Patel'
 };
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 
 /**
  * Auto-login as test user during development
@@ -20,8 +21,8 @@ export async function devAutoLogin(): Promise<boolean> {
     return false;
   }
 
-  // Check if already logged in
-  const existingToken = localStorage.getItem('access_token');
+  // Check if already logged in (same key as AuthContext / api.ts)
+  const existingToken = localStorage.getItem('auth_token');
   if (existingToken) {
     console.log('✅ Already logged in');
     return true;
@@ -30,17 +31,10 @@ export async function devAutoLogin(): Promise<boolean> {
   try {
     console.log('🔄 Auto-logging in as test user:', DEV_TEST_USER.email);
     
-    // Create form data for OAuth2 password flow
-    const formData = new URLSearchParams();
-    formData.append('username', DEV_TEST_USER.email);
-    formData.append('password', DEV_TEST_USER.password);
-
-    const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+    const response = await fetch(`${API_BASE_URL}/auth/login`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: formData.toString(),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: DEV_TEST_USER.email, password: DEV_TEST_USER.password }),
     });
 
     if (!response.ok) {
@@ -49,19 +43,16 @@ export async function devAutoLogin(): Promise<boolean> {
     }
 
     const data = await response.json();
-    
-    // Store auth token
-    localStorage.setItem('access_token', data.access_token);
-    localStorage.setItem('token_type', data.token_type || 'bearer');
-    
-    // Store user info
-    const userInfo = {
-      id: data.user?.id,
-      email: DEV_TEST_USER.email,
-      name: DEV_TEST_USER.name,
-      isVerified: true,
-    };
-    localStorage.setItem('user', JSON.stringify(userInfo));
+    const newToken = data.token;
+    const userData = data.user;
+
+    if (!newToken) {
+      console.warn('⚠️ Auto-login: no token in response');
+      return false;
+    }
+
+    localStorage.setItem('auth_token', newToken);
+    if (userData) localStorage.setItem('user', JSON.stringify(userData));
 
     console.log('✅ Auto-login successful! Logged in as:', DEV_TEST_USER.name);
     return true;

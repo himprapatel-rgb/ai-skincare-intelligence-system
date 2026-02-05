@@ -1,0 +1,37 @@
+/**
+ * TABLET ONLY – min-width: 769px and max-width: 1024px
+ * All rules in this file apply only to tablet viewport.
+ * Do not add mobile or desktop rules here.
+ */
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  /* Container */
+  .r-container {
+    padding-left: var(--spacing-lg, 24px);
+    padding-right: var(--spacing-lg, 24px);
+  }
+
+  /* Visibility */
+  .r-show-tablet { display: revert !important; }
+  .r-hide-tablet { display: none !important; }
+
+  /* Touch: slightly larger on tablet */
+  .r-touch-tablet {
+    min-height: 48px;
+    min-width: 48px;
+  }
+
+  /* Grids: 2 columns for tablet */
+  .r-grid--2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .r-grid--3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .r-grid--4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .r-grid--auto {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  }
+}

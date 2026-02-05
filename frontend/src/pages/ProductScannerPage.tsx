@@ -102,7 +102,7 @@ const placeholderImage =
         '<circle cx="50" cy="90" r="25" fill="white" opacity="0.2"/>' +
         '<rect x="30" y="150" width="40" height="8" rx="4" fill="#e5e7eb"/>' +
       '</g>' +
-      '<text x="200" y="340" text-anchor="middle" font-family="Inter, sans-serif" font-size="14" fill="#9ca3af">Product Image</text>' +
+      '<text x="200" y="340" text-anchor="middle" font-family="Inter, sans-serif" font-size="14" fill="#9ca3af">No image</text>' +
     '</svg>'
   );
 

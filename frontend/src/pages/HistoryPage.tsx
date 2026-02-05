@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { IconCamera, IconStar, IconZap, IconBarChart, IconScan, IconSearch, IconRefresh } from '../components/Icons';
+import { IconCamera, IconStar, IconZap, IconBarChart, IconScan, IconSearch, IconRefresh, IconX } from '../components/Icons';
 import { getScanHistory } from '../services/scanApi';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { SkeletonHistoryList } from '../components/Skeleton';
@@ -158,6 +158,11 @@ const HistoryPage: React.FC = () => {
                 aria-label="Search scans by date or concerns"
                 className="history-search-input"
               />
+              {searchTerm.length > 0 && (
+                <button type="button" className="history-search-clear" onClick={() => setSearchTerm('')} aria-label="Clear search">
+                  <IconX size={18} strokeWidth={2} />
+                </button>
+              )}
             </div>
             <div className="history-sort">
               <label htmlFor="history-sort">Sort by:</label>

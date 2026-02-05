@@ -1,6 +1,7 @@
 // src/api/scanApi.ts
 
 import type { ScanInitResponse } from "../types/scan";
+import { API_BASE_URL } from "../config";
 
 export type ScanStatusResponse = {
   status: "pending" | "processing" | "completed" | "failed" | string;
@@ -39,10 +40,8 @@ export type ProgressSummaryResponse = {
  * - Replace your scanApi.ts ENTIRELY with this file.
  */
 
-// Vite env var (string). If empty => same-origin requests.
-const API_BASE: string = typeof import.meta !== "undefined" && import.meta.env
-  ? String(import.meta.env.VITE_API_URL ?? "")
-  : "";
+/* Same API as rest of app (desktop/mobile/tablet) – single backend, single database */
+const API_BASE: string = API_BASE_URL;
 
 // Avoid regex to prevent “unknown regexp flag” issues caused by accidental edits.
 function trimTrailingSlash(input: string): string {

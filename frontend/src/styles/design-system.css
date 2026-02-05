@@ -787,9 +787,40 @@
 .ds-animate-shake { animation: ds-shake 0.5s ease-in-out; }
 
 /* ============================================================
-   15. RESPONSIVE
+   15. RESPONSIVE – code separated by viewport
+   MOBILE: max-width 768px | TABLET: 769–1024px | DESKTOP: ≥1025px
    ============================================================ */
 
+/* ---------- TABLET ---------- */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .ds-page {
+    padding: var(--ds-space-10) var(--ds-space-6);
+  }
+  
+  .ds-container {
+    padding-left: var(--ds-space-6);
+    padding-right: var(--ds-space-6);
+  }
+  
+  .ds-card {
+    padding: var(--ds-space-6);
+    border-radius: var(--ds-radius-xl);
+  }
+  
+  .ds-page-header__title {
+    font-size: var(--ds-text-4xl);
+  }
+  
+  .ds-chip-grid {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  }
+  
+  .ds-btn--md {
+    min-height: 48px;
+  }
+}
+
+/* Mobile */
 @media (max-width: 768px) {
   .ds-page {
     padding: var(--ds-space-8) var(--ds-space-4);
@@ -819,6 +850,7 @@
   }
 }
 
+/* ---------- MOBILE (small ≤480px) ---------- */
 @media (max-width: 480px) {
   .ds-page-header__title {
     font-size: var(--ds-text-2xl);

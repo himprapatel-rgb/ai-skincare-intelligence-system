@@ -9,6 +9,7 @@ import './styles/settings-mobile-app.css'
 import './styles/mobile-product-ux.css'
 import './styles/mobile-animations.css'      // ✨ Professional animations
 import './styles/mobile-gradients.css'       // ✨ Modern gradients
+import './styles/app-mobile-enhanced.css'    // ✨ Enhanced mobile app-wide styles
 
 // Register service worker for PWA support
 import { registerServiceWorker } from './utils/registerServiceWorker'

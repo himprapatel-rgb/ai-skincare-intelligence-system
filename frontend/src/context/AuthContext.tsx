@@ -50,22 +50,32 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   useEffect(() => {
     const initAuth = async () => {
-      // Try auto-login in development (if no token exists)
-      await devAutoLogin();
+      console.log('[AuthContext] Initializing auth...');
+      
+      // Skip auto-login in dev for now (can cause issues)
+      // await devAutoLogin();
       
       const storedToken = localStorage.getItem('auth_token') || localStorage.getItem('access_token');
+      console.log('[AuthContext] Stored token exists:', !!storedToken);
+      
       if (storedToken) {
         try {
+          console.log('[AuthContext] Validating token...');
           axios.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`;
           const response = await axios.get(`${API_BASE_URL}/auth/me`);
+          console.log('[AuthContext] Token valid, user:', response.data.email);
           setUser(response.data);
           setToken(storedToken);
-        } catch {
+        } catch (error) {
+          console.log('[AuthContext] Token invalid, clearing...');
           localStorage.removeItem('auth_token');
           localStorage.removeItem('access_token');
           delete axios.defaults.headers.common['Authorization'];
+          setToken(null);
+          setUser(null);
         }
       }
+      console.log('[AuthContext] Init complete');
       setIsLoading(false);
     };
     initAuth();

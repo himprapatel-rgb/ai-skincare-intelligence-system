@@ -9,6 +9,9 @@ import type { ScanResultResponse } from "../services/scanApi";
 import { validateAndCropFace } from "../utils/faceValidation";
 import { IconCamera, IconScan, IconUpload, IconSearch, IconCheckCircle, IconFileText, IconCheck, IconX } from '../components/Icons';
 import { ErrorCard } from '../components/ErrorCard';
+import { FaceMesh3D, type FaceMesh3DHandle } from '../components/FaceMesh3D';
+import { useIsMobileOrTablet } from '../hooks/useIsMobileOrTablet';
+import { useContainerSize } from '../hooks/useContainerSize';
 import ProductScannerPage from './ProductScannerPage';
 import './ScanPage.css';
 
@@ -59,6 +62,12 @@ export default function ScanPage() {
   const [cameraCountdown, setCameraCountdown] = useState<number | null>(null);
   const [capturePreviewUrl, setCapturePreviewUrl] = useState<string | null>(null);
   const [trackingRestartTick, setTrackingRestartTick] = useState(0);
+  const [show3D, setShow3D] = useState(false);
+  const isMobileOrTablet = useIsMobileOrTablet();
+  const cameraContainerRef = useRef<HTMLDivElement>(null);
+  const faceMesh3DRef = useRef<FaceMesh3DHandle>(null);
+  const show3DRef = useRef(false);
+  const containerSize = useContainerSize(cameraContainerRef, uploadMode === 'camera');
   const lastStatusRef = useRef("");
   const lastCountdownRef = useRef<number | null>(null);
   const capturePreviewRef = useRef<string | null>(null);
@@ -70,7 +79,9 @@ export default function ScanPage() {
     goodStreak: 0,
     badStreak: 0,
   });
-  // const [faceDetected, setFaceDetected] = useState(false); // Reserved for future face detection feature
+  useEffect(() => {
+    show3DRef.current = show3D;
+  }, [show3D]);
 
   const setCapturePreview = useCallback((url: string | null) => {
     if (capturePreviewRef.current) {
@@ -389,6 +400,9 @@ export default function ScanPage() {
       if (results.faceLandmarks && results.faceLandmarks.length === 1) {
         statusText = "Align your face in the oval";
         const lm = results.faceLandmarks[0];
+        if (show3DRef.current && faceMesh3DRef.current) {
+          faceMesh3DRef.current.updateLandmarks(lm);
+        }
         const xs = lm.map((p) => p.x);
         const ys = lm.map((p) => p.y);
         const minX = Math.min(...xs) * overlayCanvas.width;
@@ -769,10 +783,10 @@ export default function ScanPage() {
               {/* Camera View */}
               {uploadMode === 'camera' && (
                 <div className="scan-camera-section">
-                  <div className="camera-container">
+                  <div className="camera-container" ref={cameraContainerRef}>
                     <video
                       ref={videoRef}
-                      className={`camera-video ${capturePreviewUrl ? 'is-hidden' : ''}`}
+                      className={`camera-video ${capturePreviewUrl ? 'is-hidden' : ''} ${show3D ? 'scan-video-hidden-for-3d' : ''}`}
                       autoPlay
                       playsInline
                       muted
@@ -791,7 +805,18 @@ export default function ScanPage() {
                         height={300}
                       />
                     )}
-                    <canvas ref={overlayCanvasRef} className="camera-overlay" />
+                    <canvas
+                      ref={overlayCanvasRef}
+                      className={`camera-overlay ${show3D ? 'scan-video-hidden-for-3d' : ''}`}
+                    />
+                    {isMobileOrTablet && containerSize.width > 0 && containerSize.height > 0 && (
+                      <FaceMesh3D
+                        ref={faceMesh3DRef}
+                        width={containerSize.width}
+                        height={containerSize.height}
+                        className={`scan-3d-view ${show3D ? '' : 'scan-3d-view-hidden'}`}
+                      />
+                    )}
                     {!cameraActive && (
                       <div className="camera-placeholder">
                         <div className="camera-icon">
@@ -800,7 +825,7 @@ export default function ScanPage() {
                         <p>Allow camera access, then position your face in the frame.</p>
                       </div>
                     )}
-                    {cameraActive && (
+                    {cameraActive && !show3D && (
                       <div className="face-guide-overlay">
                         <div
                           className="sr-only"
@@ -835,6 +860,18 @@ export default function ScanPage() {
                       </div>
                     )}
                   </div>
+                  {isMobileOrTablet && cameraActive && (
+                    <div className="scan-3d-toggle-wrap">
+                      <button
+                        type="button"
+                        className={`scan-3d-toggle ${show3D ? 'active' : ''}`}
+                        onClick={() => setShow3D((v) => !v)}
+                        aria-pressed={show3D}
+                      >
+                        {show3D ? 'Camera' : '3D view'}
+                      </button>
+                    </div>
+                  )}
                   {cameraActive && (
                     <button
                       onClick={captureFromCamera}
@@ -932,6 +969,10 @@ export default function ScanPage() {
                     <li>
                       <IconCheck size={16} strokeWidth={2} className="inline-icon-sm" />
                       Ensure your face is in focus
+                    </li>
+                    <li>
+                      <IconCheck size={16} strokeWidth={2} className="inline-icon-sm" />
+                      Clean skin or minimal makeup for most accurate reading
                     </li>
                   </ul>
                 </div>

@@ -412,6 +412,56 @@
   z-index: 2;
 }
 
+/* 3D face mesh (mobile/tablet only): hide video/overlay when 3D view is on */
+.scan-video-hidden-for-3d {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.scan-3d-view {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.scan-3d-view-hidden {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.scan-3d-toggle-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.scan-3d-toggle {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  min-height: 44px;
+  min-width: 44px;
+}
+
+.scan-3d-toggle:hover,
+.scan-3d-toggle:focus-visible {
+  background: var(--surface-hover);
+  color: var(--text);
+}
+
+.scan-3d-toggle.active {
+  background: var(--primary);
+  color: var(--primary-contrast);
+  border-color: var(--primary);
+}
+
 .camera-placeholder {
   position: absolute;
   top: 50%;

@@ -66,11 +66,11 @@
     box-sizing: border-box;
   }
 
-  /* Cards: consistent radius (design token) */
+  /* Cards: consistent radius – P2 #51 single token */
   .app-card,
   .app-list-group,
   .app-header-card {
-    border-radius: var(--radius-lg, 14px);
+    border-radius: var(--card-radius, var(--radius-lg, 12px));
   }
 
   /* Prevent overscroll bounce on iOS (app-like feel) */
@@ -152,6 +152,22 @@
     box-sizing: border-box;
   }
 
+  /* P2 #16: Star ratings and Would repurchase – 44px tap target */
+  .star-button,
+  .repurchase-btn {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .product-card-rating .star-button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
   /* Subheadline/subtitle contrast: WCAG AA (issue #62, #81) */
   .app-page .subtitle,
   .app-page .page-subtitle,
@@ -187,6 +203,17 @@
   select,
   textarea {
     font-size: 16px !important; /* Prevents iOS zoom on focus (issue #23) */
+  }
+
+  /* P2 #19: Tap feedback on buttons (scale + opacity); skipped when prefers-reduced-motion */
+  @media (prefers-reduced-motion: no-preference) {
+    .app-page button:active:not(:disabled),
+    .app-page .btn:active:not(:disabled),
+    .app-nav-mobile-link:active,
+    .bottom-nav-item:active {
+      opacity: 0.9;
+      transform: scale(0.98);
+    }
   }
 
   * {

@@ -397,15 +397,26 @@
 }
 
 /* Step Card */
+/* Issue #17: Drag handle more discoverable and tappable */
 .step-drag-handle {
   display: flex;
   align-items: center;
   justify-content: center;
   min-width: 44px;
   min-height: 44px;
-  color: var(--text-gray);
+  padding: 8px;
+  color: var(--text-muted);
+  background: var(--gray-100, #f1f5f9);
+  border: 1px dashed var(--border-color);
+  border-radius: 8px;
   cursor: grab;
   flex-shrink: 0;
+}
+
+.step-drag-handle:hover {
+  color: var(--primary);
+  border-color: var(--primary);
+  background: var(--primary-light, #dbeafe);
 }
 
 .step-drag-handle:active {

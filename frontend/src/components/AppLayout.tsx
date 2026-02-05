@@ -2,6 +2,7 @@ import React, { useMemo, useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { IconInstagram, IconBrandX, IconLinkedin, IconTiktok, IconMenu, IconX, IconUser, IconChevronDown, IconChevronRight, IconLogOut, IconSettings, IconScan, IconPackage, IconHeart, IconHistory, IconBookOpen, IconFileText, IconDownload } from './Icons';
 import NotificationBell from './notifications/NotificationBell';
+import { useNotificationsOptional } from '../context/NotificationContext';
 import { SOCIAL_LINKS } from '../config';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
@@ -23,6 +24,8 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   const navigate = useNavigate();
   const { user, isAuthenticated, logout } = useAuth();
   const toast = useToast();
+  const notificationCtx = useNotificationsOptional();
+  const notificationUnread = (isAuthenticated && notificationCtx?.unreadCount) ? notificationCtx.unreadCount : 0;
   // Show first name only, or first name + last initial for better display
 const fullName = user?.full_name || '';
 const nameParts = fullName.split(' ').filter(Boolean);
@@ -285,14 +288,15 @@ const displayName = nameParts.length > 1
               <NotificationBell />
             </div>
           )}
-          {/* Mobile Menu Button */}
+          {/* Mobile Menu Button (issue #5: badge when unread notifications) */}
           <button 
-            className="app-nav-mobile-toggle"
+            className={`app-nav-mobile-toggle${notificationUnread > 0 ? ' has-badge' : ''}`}
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+            aria-label={mobileMenuOpen ? 'Close menu' : notificationUnread > 0 ? `Open menu (${notificationUnread} notifications)` : 'Open menu'}
             aria-expanded={mobileMenuOpen}
           >
             {mobileMenuOpen ? <IconX size={24} strokeWidth={2} /> : <IconMenu size={24} strokeWidth={2} />}
+            {notificationUnread > 0 && <span className="app-nav-mobile-toggle-badge" aria-hidden>{notificationUnread > 9 ? '9+' : notificationUnread}</span>}
           </button>
         </div>
         
@@ -359,6 +363,14 @@ const displayName = nameParts.length > 1
                   <Link className={`app-nav-mobile-link sub${location.pathname === '/skin-type-guide' ? ' active' : ''}`} to="/skin-type-guide">Skin Type Guide</Link>
                   <Link className={`app-nav-mobile-link sub${location.pathname === '/tutorials' ? ' active' : ''}`} to="/tutorials">Video Tutorials</Link>
                 </div>
+              </div>
+
+              {/* Issue #10: About/Contact/Privacy in app-shell so footer links reachable */}
+              <div className="app-nav-mobile-legal">
+                <Link className="app-nav-mobile-link sub" to="/about">About</Link>
+                <Link className="app-nav-mobile-link sub" to="/contact">Contact</Link>
+                <Link className="app-nav-mobile-link sub" to="/privacy">Privacy</Link>
+                <Link className="app-nav-mobile-link sub" to="/terms">Terms</Link>
               </div>
             </div>
 

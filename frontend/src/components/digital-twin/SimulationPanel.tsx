@@ -110,7 +110,7 @@ const SimulationPanel: React.FC = () => {
             type="text"
             value={ingredients}
             onChange={(e) => setIngredients(e.target.value)}
-            placeholder="e.g., retinol, niacinamide, hyaluronic acid"
+            placeholder="e.g. retinol, niacinamide"
             disabled={loading}
           />
         </div>

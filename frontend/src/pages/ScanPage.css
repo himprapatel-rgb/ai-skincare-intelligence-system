@@ -289,6 +289,23 @@
 }
 
 /* Mode Toggle */
+.scan-escape-row {
+  margin-bottom: 12px;
+}
+
+.scan-home-link {
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+.scan-home-link:hover {
+  color: var(--primary);
+}
+
 .scan-mode-toggle {
   display: flex;
   gap: 12px;
@@ -321,6 +338,12 @@
   color: var(--primary);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   font-weight: 600;
+}
+
+/* Issue #20: Clear pressed/active state for camera/upload buttons */
+.mode-btn:active {
+  opacity: 0.9;
+  transform: scale(0.98);
 }
 
 /* Camera Section */

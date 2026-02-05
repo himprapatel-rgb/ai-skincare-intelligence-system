@@ -36,12 +36,14 @@
   align-items: center;
 }
 
+/* Issue #6: Skip to main – visible when focused, high z-index so announced */
 .skip-link:focus,
 .skip-link:focus-visible {
   transform: translateY(0);
   outline: var(--focus-ring);
   outline-offset: var(--focus-ring-offset);
   box-shadow: var(--focus-shadow);
+  z-index: 10060;
 }
 
 /* =============================================
@@ -479,6 +481,7 @@
 
 .app-nav-mobile-toggle {
   display: none;
+  position: relative;
   align-items: center;
   justify-content: center;
   width: 44px;
@@ -499,6 +502,37 @@
 .app-nav-mobile-toggle:focus-visible {
   outline: var(--focus-ring);
   outline-offset: var(--focus-ring-offset);
+}
+
+.app-nav-mobile-toggle-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+  background: var(--danger, #ef4444);
+  color: #fff;
+  border-radius: 999px;
+}
+
+.app-nav-mobile-legal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px 16px 12px;
+  margin-top: 4px;
+  border-top: 1px solid var(--border-color);
+}
+
+.app-nav-mobile-legal .app-nav-mobile-link {
+  min-height: 44px;
+  padding: 8px 12px;
+  font-size: var(--font-size-sm);
 }
 
 /* Mobile menu backdrop - solid overlay so page content never bleeds through */

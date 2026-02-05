@@ -806,6 +806,13 @@
   transition: all 0.2s;
 }
 
+@media (max-width: 768px) {
+  .repurchase-btn {
+    padding: 10px 14px;
+    font-size: 0.875rem;
+  }
+}
+
 .repurchase-btn.yes {
   background: #dcfce7;
   border-color: #22c55e;

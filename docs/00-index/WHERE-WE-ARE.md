@@ -1,6 +1,6 @@
 # Where We Are – Project Status
 
-**Last Updated:** January 2026
+**Last Updated:** February 2026
 
 ---
 
@@ -11,12 +11,13 @@
 | **Scanner & Barcode (500 tasks)** | ✅ 100% complete | Camera, photo, AI recognition, My Shelf, product details |
 | **Product Database (500 tasks)** | ✅ 100% complete | Two-DB architecture, catalog API, scanner integration |
 | **GUI (4,200 tasks)** | ✅ Complete | Design tokens, mobile, a11y across 42 pages. See [COMPLETED](../12-tasks/COMPLETED.md) |
-| **Production (Railway)** | ✅ Live | `main` → Railway auto-deploy. pellicura.com |
+| **Mobile 100-Issue Audit** | 🟡 In progress | P0 done; many P1/P2 fixed and pushed. See [MOBILE-APP-100-ISSUES-AUDIT-2026.md](../08-audits/MOBILE-APP-100-ISSUES-AUDIT-2026.md) |
+| **Frontend** | ✅ Cloudflare Pages | [pellicura.pages.dev](https://pellicura.pages.dev) (prod), staging available |
+| **Backend** | ✅ Live | Railway / Fly.io per [README](../../README.md) and DEPLOYMENT_URLS.md |
 | **Database** | ✅ Railway PostgreSQL | Main DB + product catalog (two-DB) |
-| **Google Sign-In** | ✅ Working | Live on pellicura.com |
-| **Deployment docs** | ✅ Railway-only | Fly.io removed from [Deployment-Guide.md](../05-deployment/Deployment-Guide.md) |
+| **Google Sign-In** | ✅ Working | Live |
 | **Agents** | ✅ Running | See [docs/agents/](../agents/README.md) |
-| **UI/UX Audits 2026** | ✅ Logged | [Comprehensive](../08-audits/UI-UX-Design-Audit-2026.md) + [Detailed Feb](../08-audits/UI-UX-Design-Audit-Detailed-2026.md) → Backlog |
+| **UI/UX Audits 2026** | ✅ Logged | [Comprehensive](../08-audits/UI-UX-Design-Audit-2026.md) + [Mobile 100 Issues](../08-audits/MOBILE-APP-100-ISSUES-AUDIT-2026.md) → fixes pushed to `main` |
 
 ---
 
@@ -57,19 +58,22 @@
 
 ---
 
-## 4. Just done
+## 4. Just done (Feb 2026)
 
-- **Railway two databases:** `PRODUCT_DATABASE_URL` set on backend (ai-skincare-intelligence-system) → Postgres-rvCO. Main DB (**Postgres**) + product catalog DB (**Postgres-rvCO**) both wired; backend redeployed. Extra Postgres (Postgres-UWpR, Postgres-iS8Z) can be deleted in Railway dashboard if unused.
-- **Product DB empty:** If the product DB had no tables, run once: `cd backend && python scripts/create_catalog_tables.py` with `PRODUCT_DATABASE_URL` set to Postgres-rvCO URL. See [Railway-Two-Databases-Setup.md](../05-deployment/Railway-Two-Databases-Setup.md) “If the product database is empty”.
-- **Frontend:** Single API base in `frontend/src/config.ts`; all pages use it. Relative fetch URLs fixed (notifications, auth, goals); auth token key unified to `auth_token`.
-- **Scanner UX:** "Checking catalog..." during barcode/photo lookup; "From catalog" badge when result is from product catalog.
+- **Mobile 100-Issue Audit – batch pushed to `main`:**
+  - **P0:** Inputs 16px on mobile (tel, url, untyped) to prevent iOS zoom.
+  - **P1:** Header CTA for logged-in users (Dashboard); Product Scanner nav active state; remove-from-shelf confirmation (Product Details); Back on Analysis results; form submit disabled + “Sending…”/“Creating account…”; subheadline contrast WCAG; dropdown/chevron 44px touch targets; “No image” placeholder; overview ingredient teaser; scan progress labels; AS FEATURED styling; offline banner z-index; delete-account modal focus trap.
+  - **P2:** Ghost/search-clear 44px; Favorites skeleton loading; network error copy (check connection, retry); filter/Change–Edit 44px; newsletter/contact form mobile padding and full-width; filter-tabs 4px active indicator.
+- **Repo:** Latest push `main` → [GitHub](https://github.com/himprapatel-rgb/ai-skincare-intelligence-system). Frontend build passes (Vite).
 
 ## 5. What’s next (pick any)
 
 | Priority | Action | Why |
 |----------|--------|-----|
-| **1** | **Verify both DBs** | Confirm health shows both DBs ok after redeploy. Run: `python backend/scripts/verify_two_databases.py --url https://ai-skincare-intelligence-system-production.up.railway.app` |
-| **2** | **Seed product catalog** | Populate the product DB with real data so barcode/photo lookups return catalog results. Run OBF importer (see below). |
+| **1** | **Continue mobile audit** | More P2/P3 from [MOBILE-APP-100-ISSUES-AUDIT-2026.md](../08-audits/MOBILE-APP-100-ISSUES-AUDIT-2026.md): star ratings tap target, tap feedback, card radius token, one H1 per page, etc. |
+| **2** | **Verify deploy** | After push: confirm [pellicura.pages.dev](https://pellicura.pages.dev) (or your frontend URL) shows the new mobile fixes; run E2E if needed. |
+| **3** | **Verify both DBs** | Confirm health shows both DBs ok. Run: `python backend/scripts/verify_two_databases.py --url <backend_url>` |
+| **4** | **Seed product catalog** | Populate the product DB so barcode/photo lookups return catalog results. Run OBF importer (see §6). |
 
 ## 6. Still To Do (optional)
 
@@ -99,6 +103,8 @@
 | Google SSO setup | `docs/05-deployment/Google-SSO-Setup.md` |
 | Google login troubleshooting | `docs/11-working/GOOGLE-LOGIN-TROUBLESHOOTING.md` |
 | **Admin page login** | [docs/06-operations/Admin-Setup.md](../06-operations/Admin-Setup.md) |
+| **Mobile audit (100 issues)** | [docs/08-audits/MOBILE-APP-100-ISSUES-AUDIT-2026.md](../08-audits/MOBILE-APP-100-ISSUES-AUDIT-2026.md) |
+| **Improvements / backlog** | [docs/IMPROVE-APP.md](../IMPROVE-APP.md), [12-tasks/IMPROVEMENT-BACKLOG.md](../12-tasks/IMPROVEMENT-BACKLOG.md) |
 
 ---
 
@@ -116,4 +122,4 @@
 
 ---
 
-**In short:** Scanner and product database work are complete (1,000 tasks). Production only on Railway (frontend, backend, two databases). Cloudflare for DNS (pellicura.com). No staging, no Fly.io.
+**In short:** Scanner and product database are complete. Frontend on Cloudflare Pages (pellicura.pages.dev), backend/database on Railway (or per README). Mobile 100-issue audit in progress: P0 done, many P1/P2 fixes pushed to `main`. Next: more audit items, verify deploy, or seed catalog.

@@ -2,7 +2,8 @@
 
 **Date:** February 2026  
 **Scope:** Pellicura / SkinCareAI mobile experience (viewport ≤768px, PWA)  
-**Reference:** Compared to best-practice criteria from Nielsen’s 10 heuristics, NN/g Mobile Usability, Apple HIG, Android Quality Guidelines, Baymard/UserX mobile UX checklists, and top health/lifestyle apps.
+**Reference:** Compared to best-practice criteria from Nielsen’s 10 heuristics, NN/g Mobile Usability, Apple HIG, Android Quality Guidelines, Baymard/UserX mobile UX checklists, and top health/lifestyle apps.  
+**Best-apps design reference:** [BEST-APPS-MOBILE-DESIGN-REFERENCE.md](./BEST-APPS-MOBILE-DESIGN-REFERENCE.md) — patterns from Headspace, Glossier, Spotify, Instagram, Apple Health.
 
 ---
 

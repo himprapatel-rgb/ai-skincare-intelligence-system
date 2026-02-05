@@ -472,9 +472,11 @@ const ProductDetailsPage: React.FC = () => {
       if (success) {
         hapticMedium();
         setInShelf(true);
+        toast.success('Added to My Shelf');
       }
     } catch (error) {
       console.error('Failed to add to shelf:', error);
+      toast.error('Could not add to shelf. Try again.');
     } finally {
       setShelfActionLoading(false);
     }

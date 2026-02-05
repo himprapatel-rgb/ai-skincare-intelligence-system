@@ -1,7 +1,7 @@
 // src/pages/ScanPage.tsx - Enhanced Face Scan Analysis Page
 import React, { useState, useCallback, useRef, useEffect } from "react";
 import { FaceLandmarker, FilesetResolver } from "@mediapipe/tasks-vision";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { usePageTitle } from "../hooks/usePageTitle";
 import { initScan, uploadScanImage, getScanStatus, getScanResult } from "../services/scanApi";
 import { cameraService } from "../services/cameraService";
@@ -539,12 +539,24 @@ export default function ScanPage() {
     }
   }, [cameraActive, startFaceTracking, stopFaceTracking, trackingRestartTick, uploadMode]);
 
+  const MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024; // 10MB
+  const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+
   const handleFileChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const selectedFile = e.target.files?.[0];
-      if (selectedFile) {
-        handleValidatedFile(selectedFile);
+      if (!selectedFile) return;
+      if (!ACCEPTED_IMAGE_TYPES.includes(selectedFile.type)) {
+        setError('Please choose a JPEG, PNG, or WebP image.');
+        e.target.value = '';
+        return;
       }
+      if (selectedFile.size > MAX_FILE_SIZE_BYTES) {
+        setError('Image is too large. Please use a file under 10MB.');
+        e.target.value = '';
+        return;
+      }
+      handleValidatedFile(selectedFile);
     },
     [handleValidatedFile]
   );
@@ -667,6 +679,10 @@ export default function ScanPage() {
     <div className="scan-page app-page">
       <main className="scan-container app-page-content">
         <div className="scan-content">
+          {/* Issue #12: Home/escape from deep screens */}
+          <div className="scan-escape-row">
+            <Link to="/" className="scan-home-link">← Home</Link>
+          </div>
           {/* Unified Scan: Face vs Product toggle (Pro restructure) */}
           <div className="scan-type-toggle" role="tablist" aria-label="Scan type">
             <button

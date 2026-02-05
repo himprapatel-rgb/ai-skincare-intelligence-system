@@ -72,12 +72,27 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegis
     e.preventDefault();
     setError('');
     setShowVerifyLink(false);
-    setLoading(true);
 
+    const trimmedEmail = email.trim();
+    if (!trimmedEmail) {
+      setError('Please enter your email.');
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(trimmedEmail)) {
+      setError('Please enter a valid email address.');
+      return;
+    }
+    if (!password) {
+      setError('Please enter your password.');
+      return;
+    }
+
+    setLoading(true);
     try {
-      await login(email, password);
+      await login(trimmedEmail, password);
       if (rememberMe) {
-        try { localStorage.setItem(REMEMBER_EMAIL_KEY, email); } catch { /* ignore */ }
+        try { localStorage.setItem(REMEMBER_EMAIL_KEY, trimmedEmail); } catch { /* ignore */ }
       } else {
         try { localStorage.removeItem(REMEMBER_EMAIL_KEY); } catch { /* ignore */ }
       }

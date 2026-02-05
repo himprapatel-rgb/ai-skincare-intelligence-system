@@ -632,12 +632,24 @@ const ProductScannerPage: React.FC<ProductScannerPageProps> = ({ embedded = fals
     });
   };
 
-  // Handle file input change
+  const MAX_IMAGE_SIZE_BYTES = 10 * 1024 * 1024; // 10MB
+  const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+
+  // Handle file input change (reject oversized or wrong type – audit #48)
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      handlePhotoCapture(file);
+    if (!file) return;
+    if (!ACCEPTED_IMAGE_TYPES.includes(file.type)) {
+      setError('Please choose a JPEG, PNG, or WebP image.');
+      e.target.value = '';
+      return;
     }
+    if (file.size > MAX_IMAGE_SIZE_BYTES) {
+      setError('Image is too large. Please use a file under 10MB.');
+      e.target.value = '';
+      return;
+    }
+    handlePhotoCapture(file);
   };
 
   // Add to shelf using global context (optional expiry from "Track this product" modal)

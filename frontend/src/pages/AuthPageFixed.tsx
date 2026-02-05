@@ -72,40 +72,49 @@ export const AuthPageFixed: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    setLoading(true);
-
+    
     const trimmedEmail = email.trim();
     
     // Validation
     if (!trimmedEmail) {
       setError('Please enter your email');
-      setLoading(false);
       return;
     }
 
     if (!password) {
       setError('Please enter your password');
-      setLoading(false);
       return;
     }
 
     if (mode === 'register' && !fullName.trim()) {
       setError('Please enter your full name');
-      setLoading(false);
       return;
     }
 
+    // Show loading immediately
+    setLoading(true);
+    
+    // Show progress message after 3 seconds (Railway wake-up)
+    const slowLoadingTimeout = setTimeout(() => {
+      toast.info('⏳ Waking up server... This may take 10-20 seconds on first login.');
+    }, 3000);
+
     try {
-      console.log('Starting login...', { email: trimmedEmail, mode });
+      console.log('🔄 Starting login...', { email: trimmedEmail, mode });
+      const startTime = Date.now();
 
       if (mode === 'login') {
-        // Direct axios call for login
+        // Direct axios call with extended timeout for Railway
         const response = await axios.post(`${API_BASE_URL}/auth/login`, {
           email: trimmedEmail,
           password: password,
+        }, {
+          timeout: 45000, // 45 second timeout for Railway cold start
         });
 
-        console.log('Login response:', response.status);
+        const duration = ((Date.now() - startTime) / 1000).toFixed(1);
+        console.log(`✅ Login response: ${response.status} (${duration}s)`);
+        clearTimeout(slowLoadingTimeout);
 
         if (response.data && response.data.token) {
           // Store token and update AuthContext
@@ -123,9 +132,9 @@ export const AuthPageFixed: React.FC = () => {
             localStorage.setItem(REMEMBER_EMAIL_KEY, trimmedEmail);
           }
 
-          toast.success('✅ Login successful!');
+          toast.success(`✅ Logged in! (${duration}s)`);
           
-          // Small delay to let context update, then navigate
+          // Navigate with slight delay
           setTimeout(() => {
             const returnUrl = sessionStorage.getItem('auth_return_url');
             if (returnUrl) {
@@ -134,8 +143,9 @@ export const AuthPageFixed: React.FC = () => {
             } else {
               navigate('/dashboard', { replace: true });
             }
-          }, 800);
+          }, 500);
         } else {
+          clearTimeout(slowLoadingTimeout);
           setError('Login failed - no token received');
         }
       } else {

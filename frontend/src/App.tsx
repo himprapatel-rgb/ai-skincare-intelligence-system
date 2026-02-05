@@ -32,7 +32,7 @@ const AnalysisResults = React.lazy(() => import("./pages/AnalysisResults"));
 const HistoryPage = React.lazy(() => import("./pages/HistoryPage"));
 const ComparisonPage = React.lazy(() => import("./pages/ComparisonPage"));
 const SampleReportPage = React.lazy(() => import("./pages/SampleReportPage"));
-const DigitalTwinTimelinePage = React.lazy(() => import("./pages/DigitalTwinTimelinePage"));
+const DigitalTwinTimelinePage = React.lazy(() => import("./pages/DigitalTwinFixed"));
 const Recommendations = React.lazy(() => import("./pages/Recommendations"));
 const ProductDetailsPage = React.lazy(() => import("./pages/ProductDetailsPage"));
 const ProductComparePage = React.lazy(() => import("./pages/ProductComparePage"));

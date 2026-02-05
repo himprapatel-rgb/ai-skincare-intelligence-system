@@ -6,6 +6,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { GoogleSignInButton } from '../components/GoogleSignInButton';
@@ -37,6 +38,7 @@ export const AuthPageFixed: React.FC = () => {
   const [passwordFocused, setPasswordFocused] = useState(false);
   const [nameFocused, setNameFocused] = useState(false);
 
+  const { loginWithToken } = useAuth();
   const toast = useToast();
   const navigate = useNavigate();
   const location = useLocation();
@@ -87,9 +89,15 @@ export const AuthPageFixed: React.FC = () => {
         console.log('Login response:', response.status);
 
         if (response.data && response.data.token) {
-          // Store token
-          localStorage.setItem('auth_token', response.data.token);
-          axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
+          // Store token and update AuthContext
+          const token = response.data.token;
+          const userData = response.data.user;
+          
+          localStorage.setItem('auth_token', token);
+          axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+          
+          // Update AuthContext with token and user data
+          loginWithToken(token, userData);
 
           // Remember email if checked
           if (rememberMe) {
@@ -116,8 +124,14 @@ export const AuthPageFixed: React.FC = () => {
         console.log('Register response:', response.status);
 
         if (response.data && response.data.token) {
-          localStorage.setItem('auth_token', response.data.token);
-          axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
+          const token = response.data.token;
+          const userData = response.data.user;
+          
+          localStorage.setItem('auth_token', token);
+          axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+          
+          // Update AuthContext
+          loginWithToken(token, userData);
           
           toast.success('✅ Account created!');
           

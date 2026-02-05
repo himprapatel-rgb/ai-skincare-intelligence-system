@@ -14,13 +14,6 @@ export default defineConfig(({ mode }) => ({
     outDir: 'dist',
     sourcemap: mode !== 'production',
     chunkSizeWarningLimit: 600,
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: mode === 'production',
-        drop_debugger: true,
-      },
-    },
     rollupOptions: {
       output: {
         manualChunks(id) {

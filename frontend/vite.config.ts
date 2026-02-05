@@ -14,16 +14,33 @@ export default defineConfig(({ mode }) => ({
     outDir: 'dist',
     sourcemap: mode !== 'production',
     chunkSizeWarningLimit: 600,
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: mode === 'production',
+        drop_debugger: true,
+      },
+    },
     rollupOptions: {
       output: {
         manualChunks(id) {
           if (!id.includes('node_modules')) return;
-          if (id.includes('@mediapipe')) return 'mediapipe';
-          if (id.includes('@tensorflow')) return 'tensorflow';
-          if (id.includes('recharts')) return 'recharts';
+          // Split large vendor chunks for better caching
+          if (id.includes('node_modules')) {
+            if (id.includes('@mediapipe')) return 'mediapipe';
+            if (id.includes('@tensorflow')) return 'tensorflow';
+            if (id.includes('recharts')) return 'charts';
+            if (id.includes('react-router')) return 'router';
+            if (id.includes('axios')) return 'http';
+            // Default vendor chunk for smaller libs
+            return 'vendor';
+          }
         },
       },
     },
+  },
+  optimizeDeps: {
+    include: ['react', 'react-dom', 'react-router-dom', 'axios'],
   },
   test: {
     globals: true,

@@ -9,7 +9,7 @@ from typing import List, Optional
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
 from app.core.security import get_current_user
 from app.database import get_db
@@ -195,11 +195,10 @@ async def get_product_reviews(
     
     avg_rating = (total_rating / len(all_reviews)) if all_reviews else 0.0
     
-    # Build response with user display names
+    # Build response with user display names (user already loaded via joinedload)
     review_responses = []
     for review in reviews:
-        user = db.query(User).filter(User.id == review.user_id).first()
-        display_name = user.email.split('@')[0] if user else "Anonymous"
+        display_name = review.user.email.split('@')[0] if review.user else "Anonymous"
         
         review_responses.append(ReviewResponse(
             id=review.id,

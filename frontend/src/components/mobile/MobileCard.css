@@ -1,0 +1,163 @@
+/**
+ * Mobile Card Styles
+ * Professional card design with modern shadows and animations
+ */
+
+.mobile-card {
+  position: relative;
+  display: block;
+  width: 100%;
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Variants */
+
+/* Elevated card (Material Design-style) */
+.mobile-card--elevated {
+  box-shadow: 
+    0 1px 3px rgba(0, 0, 0, 0.08),
+    0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.mobile-card--elevated.mobile-card--hoverable:hover {
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.1),
+    0 8px 24px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.mobile-card--elevated.mobile-card--pressed {
+  box-shadow: 
+    0 1px 2px rgba(0, 0, 0, 0.06),
+    0 2px 6px rgba(0, 0, 0, 0.04);
+  transform: scale(0.98);
+}
+
+/* Outlined card */
+.mobile-card--outlined {
+  border: 2px solid rgba(0, 0, 0, 0.08);
+  box-shadow: none;
+}
+
+.mobile-card--outlined.mobile-card--hoverable:hover {
+  border-color: rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+}
+
+.mobile-card--outlined.mobile-card--pressed {
+  border-color: rgba(102, 126, 234, 0.5);
+  transform: scale(0.98);
+}
+
+/* Filled card */
+.mobile-card--filled {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+  box-shadow: none;
+}
+
+.mobile-card--filled.mobile-card--hoverable:hover {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+}
+
+.mobile-card--filled.mobile-card--pressed {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  transform: scale(0.98);
+}
+
+/* Padding */
+.mobile-card--padding-none {
+  padding: 0;
+}
+
+.mobile-card--padding-small {
+  padding: 12px;
+}
+
+.mobile-card--padding-medium {
+  padding: 16px;
+}
+
+.mobile-card--padding-large {
+  padding: 24px;
+}
+
+/* Pressable */
+.mobile-card--pressable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.mobile-card--pressable:focus-visible {
+  outline: 3px solid rgba(102, 126, 234, 0.5);
+  outline-offset: 2px;
+}
+
+/* Button reset */
+.mobile-card[type="button"] {
+  border: none;
+  font: inherit;
+  text-align: left;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Shine effect on press */
+.mobile-card--pressable::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+  opacity: 0;
+  transform: scale(0);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.mobile-card--pressed::before {
+  opacity: 1;
+  transform: scale(2);
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  .mobile-card {
+    background: #1a1a1a;
+  }
+  
+  .mobile-card--elevated {
+    box-shadow: 
+      0 1px 3px rgba(0, 0, 0, 0.3),
+      0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  .mobile-card--outlined {
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .mobile-card--filled {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .mobile-card {
+    transition: none;
+  }
+  
+  .mobile-card--pressed {
+    transform: none;
+  }
+  
+  .mobile-card--pressable::before {
+    display: none;
+  }
+}

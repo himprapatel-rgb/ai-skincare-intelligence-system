@@ -2,6 +2,7 @@ import React, { useMemo, useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { IconStar } from '../components/Icons';
 import { BackButton } from '../components/BackButton';
+import { LoadingSpinner } from '../components/LoadingSpinner';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { getProduct as getCatalogProduct } from '../services/catalogService';
 import './ProductComparePage.css';
@@ -127,7 +128,7 @@ const ProductComparePage: React.FC = () => {
     return (
       <div className="product-compare-page app-page">
         <div className="app-page-content product-compare-container">
-          <p className="compare-loading">Loading products…</p>
+          <LoadingSpinner message="Loading products for comparison..." />
           <BackButton />
         </div>
       </div>

@@ -571,4 +571,5 @@ const displayName = nameParts.length > 1
   );
 };
 
-export default AppLayout;
+// Memoize to prevent unnecessary re-renders on parent updates
+export default React.memo(AppLayout);

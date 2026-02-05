@@ -96,7 +96,9 @@ class ProductReview(Base):
     product = relationship("Product", backref="reviews")
     user = relationship("User", backref="product_reviews")
     
-    # Composite index for user+product uniqueness (one review per user per product)
+    # Composite indexes for better query performance
     __table_args__ = (
         Index('ix_product_reviews_product_user', 'product_id', 'user_id', unique=True),
+        Index('ix_product_reviews_created_at', 'created_at'),
+        Index('ix_product_reviews_product_created', 'product_id', 'created_at'),
     )

@@ -11,6 +11,7 @@ from sqlalchemy import (
     Enum,
     Float,
     ForeignKey,
+    Index,
     Integer,
     String,
     Text,
@@ -72,6 +73,13 @@ class ShelfProduct(Base):
     
     # Relationships
     user = relationship("User", backref="shelf_products")
+    
+    # Additional indexes for performance
+    __table_args__ = (
+        Index('ix_shelf_products_user_status', 'user_id', 'status'),
+        Index('ix_shelf_products_status', 'status'),
+        Index('ix_shelf_products_created_at', 'created_at'),
+    )
     
     def __repr__(self):
         return f"<ShelfProduct user_id={self.user_id} product={self.product_name}>"

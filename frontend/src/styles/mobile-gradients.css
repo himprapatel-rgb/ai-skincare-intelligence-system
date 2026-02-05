@@ -1,0 +1,267 @@
+/**
+ * Modern Gradient System for Mobile
+ * Professional color gradients for backgrounds, buttons, and cards
+ */
+
+:root {
+  /* === Primary Gradients === */
+  --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-primary-soft: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  
+  /* === Secondary Gradients === */
+  --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  --gradient-secondary-soft: linear-gradient(135deg, rgba(240, 147, 251, 0.1) 0%, rgba(245, 87, 108, 0.1) 100%);
+  
+  /* === Success/Health Gradients === */
+  --gradient-success: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  --gradient-success-soft: linear-gradient(135deg, rgba(17, 153, 142, 0.1) 0%, rgba(56, 239, 125, 0.1) 100%);
+  
+  /* === Warning Gradients === */
+  --gradient-warning: linear-gradient(135deg, #f2994a 0%, #f2c94c 100%);
+  --gradient-warning-soft: linear-gradient(135deg, rgba(242, 153, 74, 0.1) 0%, rgba(242, 201, 76, 0.1) 100%);
+  
+  /* === Danger Gradients === */
+  --gradient-danger: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+  --gradient-danger-soft: linear-gradient(135deg, rgba(255, 107, 107, 0.1) 0%, rgba(238, 90, 111, 0.1) 100%);
+  
+  /* === Premium Gradients === */
+  --gradient-gold: linear-gradient(135deg, #f7971e 0%, #ffd200 100%);
+  --gradient-rose: linear-gradient(135deg, #f953c6 0%, #b91d73 100%);
+  --gradient-sunset: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+  --gradient-ocean: linear-gradient(135deg, #2e3192 0%, #1bffff 100%);
+  --gradient-purple: linear-gradient(135deg, #6a3093 0%, #a044ff 100%);
+  --gradient-peach: linear-gradient(135deg, #ff9a56 0%, #ff6a88 100%);
+  
+  /* === Background Gradients === */
+  --gradient-bg-light: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+  --gradient-bg-dark: linear-gradient(180deg, #1a1a1a 0%, #0d0d0d 100%);
+  --gradient-bg-subtle: linear-gradient(180deg, rgba(102, 126, 234, 0.02) 0%, rgba(118, 75, 162, 0.02) 100%);
+  
+  /* === Glass Morphism === */
+  --glass-primary: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+  --glass-white: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
+  --glass-dark: linear-gradient(135deg, rgba(26, 26, 26, 0.9), rgba(13, 13, 13, 0.7));
+  
+  /* === Animated Gradients === */
+  --gradient-animated: linear-gradient(
+    -45deg, 
+    #667eea 0%, 
+    #764ba2 25%, 
+    #f093fb 50%, 
+    #764ba2 75%, 
+    #667eea 100%
+  );
+}
+
+/* === Gradient Utility Classes === */
+
+/* Primary */
+.bg-gradient-primary {
+  background: var(--gradient-primary);
+}
+
+.bg-gradient-primary-soft {
+  background: var(--gradient-primary-soft);
+}
+
+/* Secondary */
+.bg-gradient-secondary {
+  background: var(--gradient-secondary);
+}
+
+.bg-gradient-secondary-soft {
+  background: var(--gradient-secondary-soft);
+}
+
+/* Success */
+.bg-gradient-success {
+  background: var(--gradient-success);
+}
+
+.bg-gradient-success-soft {
+  background: var(--gradient-success-soft);
+}
+
+/* Warning */
+.bg-gradient-warning {
+  background: var(--gradient-warning);
+}
+
+.bg-gradient-warning-soft {
+  background: var(--gradient-warning-soft);
+}
+
+/* Danger */
+.bg-gradient-danger {
+  background: var(--gradient-danger);
+}
+
+.bg-gradient-danger-soft {
+  background: var(--gradient-danger-soft);
+}
+
+/* Premium gradients */
+.bg-gradient-gold { background: var(--gradient-gold); }
+.bg-gradient-rose { background: var(--gradient-rose); }
+.bg-gradient-sunset { background: var(--gradient-sunset); }
+.bg-gradient-ocean { background: var(--gradient-ocean); }
+.bg-gradient-purple { background: var(--gradient-purple); }
+.bg-gradient-peach { background: var(--gradient-peach); }
+
+/* Background gradients */
+.bg-gradient-light { background: var(--gradient-bg-light); }
+.bg-gradient-dark { background: var(--gradient-bg-dark); }
+.bg-gradient-subtle { background: var(--gradient-bg-subtle); }
+
+/* Glass morphism */
+.glass-primary {
+  background: var(--glass-primary);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.glass-white {
+  background: var(--glass-white);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.glass-dark {
+  background: var(--glass-dark);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* === Gradient Text === */
+.text-gradient {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-secondary {
+  background: var(--gradient-secondary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-gold {
+  background: var(--gradient-gold);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* === Animated Gradient === */
+.bg-gradient-animated {
+  background: var(--gradient-animated);
+  background-size: 300% 300%;
+  animation: gradientShift 8s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* === Gradient Borders === */
+.border-gradient-primary {
+  border: 2px solid transparent;
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  background-image: linear-gradient(white, white), var(--gradient-primary);
+}
+
+.border-gradient-secondary {
+  border: 2px solid transparent;
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  background-image: linear-gradient(white, white), var(--gradient-secondary);
+}
+
+/* === Gradient Overlays === */
+.overlay-gradient-top {
+  position: relative;
+}
+
+.overlay-gradient-top::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100px;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.6) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.overlay-gradient-bottom {
+  position: relative;
+}
+
+.overlay-gradient-bottom::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100px;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.6) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* === Shadow with Gradient === */
+.shadow-gradient-primary {
+  box-shadow: 
+    0 4px 16px rgba(102, 126, 234, 0.2),
+    0 8px 32px rgba(102, 126, 234, 0.1);
+}
+
+.shadow-gradient-secondary {
+  box-shadow: 
+    0 4px 16px rgba(240, 147, 251, 0.2),
+    0 8px 32px rgba(240, 147, 251, 0.1);
+}
+
+.shadow-gradient-success {
+  box-shadow: 
+    0 4px 16px rgba(17, 153, 142, 0.2),
+    0 8px 32px rgba(17, 153, 142, 0.1);
+}
+
+/* === Dark Mode Gradients === */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --gradient-bg-light: linear-gradient(180deg, #1a1a1a 0%, #0d0d0d 100%);
+    --glass-white: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  }
+  
+  .border-gradient-primary {
+    background-image: linear-gradient(#1a1a1a, #1a1a1a), var(--gradient-primary);
+  }
+  
+  .border-gradient-secondary {
+    background-image: linear-gradient(#1a1a1a, #1a1a1a), var(--gradient-secondary);
+  }
+}
+
+/* === Responsive Gradients === */
+@media (max-width: 768px) {
+  /* Lighter gradients on mobile for battery savings */
+  .bg-gradient-animated {
+    animation-duration: 12s; /* Slower on mobile */
+  }
+}
+
+/* === Reduced Motion === */
+@media (prefers-reduced-motion: reduce) {
+  .bg-gradient-animated {
+    animation: none;
+    background-position: 0% 50%;
+  }
+}

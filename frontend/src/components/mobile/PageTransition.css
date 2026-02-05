@@ -1,0 +1,135 @@
+/**
+ * Page Transition Styles
+ * Smooth, native-like page transitions
+ */
+
+.page-transition {
+  --transition-duration: 300ms;
+  width: 100%;
+  height: 100%;
+}
+
+/* Slide transition (iOS-style) */
+.page-transition--slide.page-transition--exiting {
+  animation: slideOutLeft var(--transition-duration) cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+.page-transition--slide.page-transition--entering {
+  animation: slideInRight var(--transition-duration) cubic-bezier(0, 0, 0.2, 1) forwards;
+}
+
+@keyframes slideOutLeft {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-30%);
+    opacity: 0;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Fade transition */
+.page-transition--fade.page-transition--exiting {
+  animation: fadeOut var(--transition-duration) ease-out forwards;
+}
+
+.page-transition--fade.page-transition--entering {
+  animation: fadeIn var(--transition-duration) ease-in forwards;
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Scale transition (Material Design-style) */
+.page-transition--scale.page-transition--exiting {
+  animation: scaleOut var(--transition-duration) cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+.page-transition--scale.page-transition--entering {
+  animation: scaleIn var(--transition-duration) cubic-bezier(0, 0, 0.2, 1) forwards;
+}
+
+@keyframes scaleOut {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(1.05);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Slide up transition (Android-style) */
+.page-transition--slideUp.page-transition--exiting {
+  animation: slideDown var(--transition-duration) cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+.page-transition--slideUp.page-transition--entering {
+  animation: slideUp var(--transition-duration) cubic-bezier(0, 0, 0.2, 1) forwards;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Entered state */
+.page-transition--entered {
+  transform: none;
+  opacity: 1;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .page-transition {
+    animation: none !important;
+  }
+}

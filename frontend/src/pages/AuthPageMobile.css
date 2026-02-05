@@ -1,0 +1,509 @@
+/**
+ * Modern Mobile-First Auth Page
+ * Professional design inspired by Instagram, Spotify, Airbnb
+ */
+
+.auth-page-mobile {
+  min-height: 100vh;
+  min-height: 100dvh; /* Dynamic viewport height */
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow-x: hidden;
+  background: #f8f9fa;
+}
+
+/* === Animated Background === */
+.auth-mobile-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 45vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  z-index: 0;
+}
+
+.auth-mobile-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+  opacity: 0.3;
+}
+
+.auth-mobile-bg::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 100px;
+  background: linear-gradient(180deg, transparent 0%, #f8f9fa 100%);
+}
+
+/* === Hero Section === */
+.auth-mobile-hero {
+  position: relative;
+  z-index: 1;
+  padding: 60px 24px 40px;
+  text-align: center;
+  color: white;
+}
+
+.auth-mobile-logo {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 20px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  color: #667eea;
+}
+
+.auth-mobile-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0 0 8px;
+  letter-spacing: -0.5px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.auth-mobile-subtitle {
+  font-size: 16px;
+  opacity: 0.95;
+  margin: 0;
+  font-weight: 400;
+}
+
+/* === Auth Card === */
+.auth-mobile-card {
+  position: relative;
+  z-index: 2;
+  margin: 0 16px 24px;
+  padding: 32px 24px;
+  background: white;
+  border-radius: 24px;
+  box-shadow: 
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    0 8px 32px rgba(0, 0, 0, 0.04);
+}
+
+/* === Tab Switcher === */
+.auth-mobile-tabs {
+  position: relative;
+  display: flex;
+  background: rgba(102, 126, 234, 0.08);
+  border-radius: 16px;
+  padding: 4px;
+  margin-bottom: 32px;
+}
+
+.auth-mobile-tab {
+  flex: 1;
+  position: relative;
+  z-index: 2;
+  padding: 12px;
+  background: transparent;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.auth-mobile-tab.active {
+  color: #667eea;
+}
+
+.auth-mobile-tab-indicator {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: calc(50% - 4px);
+  height: calc(100% - 8px);
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+}
+
+/* === Form === */
+.auth-mobile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* === Error Message === */
+.auth-mobile-error {
+  padding: 14px 16px;
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+  border: 1px solid #fecaca;
+  border-left: 4px solid #ef4444;
+  border-radius: 12px;
+  color: #dc2626;
+  font-size: 14px;
+  line-height: 1.5;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.auth-mobile-error::before {
+  content: '⚠️';
+  font-size: 18px;
+}
+
+/* === Password Strength === */
+.password-strength {
+  margin-top: -12px;
+}
+
+.password-strength-bar {
+  height: 4px;
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.password-strength-fill {
+  height: 100%;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 2px;
+}
+
+.password-strength-fill--weak {
+  width: 33%;
+  background: linear-gradient(90deg, #ef4444 0%, #dc2626 100%);
+}
+
+.password-strength-fill--medium {
+  width: 66%;
+  background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%);
+}
+
+.password-strength-fill--strong {
+  width: 100%;
+  background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+}
+
+.password-strength-text {
+  display: block;
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 6px;
+  text-transform: capitalize;
+}
+
+/* === Options (Remember me & Forgot password) === */
+.auth-mobile-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: -8px;
+}
+
+.auth-mobile-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #64748b;
+  cursor: pointer;
+  user-select: none;
+}
+
+.auth-mobile-checkbox input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: #667eea;
+  cursor: pointer;
+}
+
+.auth-mobile-link {
+  font-size: 14px;
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.auth-mobile-link:hover {
+  text-decoration: underline;
+}
+
+/* === Divider === */
+.auth-mobile-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 24px 0;
+  color: #94a3b8;
+  font-size: 14px;
+}
+
+.auth-mobile-divider::before,
+.auth-mobile-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.1) 50%, transparent 100%);
+}
+
+/* === Mode Switcher === */
+.auth-mobile-switch {
+  text-align: center;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  font-size: 15px;
+  color: #64748b;
+}
+
+.auth-mobile-switch-btn {
+  background: none;
+  border: none;
+  color: #667eea;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-left: 4px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: all 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.auth-mobile-switch-btn:active {
+  background: rgba(102, 126, 234, 0.1);
+  transform: scale(0.96);
+}
+
+/* === Features Carousel === */
+.auth-mobile-features {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0 16px 24px;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.feature-item-icon {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  color: white;
+}
+
+.feature-item-text h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 4px;
+}
+
+.feature-item-text p {
+  font-size: 13px;
+  color: #64748b;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* === Footer === */
+.auth-mobile-footer {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 24px;
+  color: #94a3b8;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.auth-mobile-footer a {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.auth-mobile-footer a:hover {
+  text-decoration: underline;
+}
+
+/* === Safe Area Support === */
+@supports (padding: env(safe-area-inset-top)) {
+  .auth-mobile-hero {
+    padding-top: calc(60px + env(safe-area-inset-top));
+  }
+  
+  .auth-mobile-footer {
+    padding-bottom: calc(24px + env(safe-area-inset-bottom));
+  }
+}
+
+/* === Dark Mode === */
+@media (prefers-color-scheme: dark) {
+  .auth-page-mobile {
+    background: #0d0d0d;
+  }
+  
+  .auth-mobile-bg {
+    background: linear-gradient(135deg, #4c1d95 0%, #581c87 100%);
+  }
+  
+  .auth-mobile-card {
+    background: #1a1a1a;
+    box-shadow: 
+      0 4px 16px rgba(0, 0, 0, 0.4),
+      0 8px 32px rgba(0, 0, 0, 0.2);
+  }
+  
+  .auth-mobile-tabs {
+    background: rgba(255, 255, 255, 0.05);
+  }
+  
+  .auth-mobile-tab {
+    color: rgba(255, 255, 255, 0.6);
+  }
+  
+  .auth-mobile-tab.active {
+    color: #a5b4fc;
+  }
+  
+  .auth-mobile-tab-indicator {
+    background: #262626;
+  }
+  
+  .feature-item {
+    background: #1a1a1a;
+  }
+  
+  .feature-item-text h3 {
+    color: #ffffff;
+  }
+  
+  .feature-item-text p {
+    color: rgba(255, 255, 255, 0.6);
+  }
+}
+
+/* === Tablet/Desktop Override === */
+@media (min-width: 769px) {
+  .auth-page-mobile {
+    justify-content: center;
+    padding: 40px;
+  }
+  
+  .auth-mobile-bg {
+    height: 100vh;
+    border-radius: 32px;
+    margin: 40px;
+    right: 50%;
+  }
+  
+  .auth-mobile-hero {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  
+  .auth-mobile-card {
+    max-width: 460px;
+    margin: 0 auto 24px;
+    padding: 40px 32px;
+  }
+  
+  .auth-mobile-features {
+    max-width: 460px;
+    margin: 0 auto 24px;
+  }
+}
+
+/* === Small Mobile (iPhone SE) === */
+@media (max-width: 380px) {
+  .auth-mobile-hero {
+    padding: 40px 20px 30px;
+  }
+  
+  .auth-mobile-title {
+    font-size: 28px;
+  }
+  
+  .auth-mobile-subtitle {
+    font-size: 14px;
+  }
+  
+  .auth-mobile-card {
+    margin: 0 12px 24px;
+    padding: 24px 20px;
+  }
+  
+  .auth-mobile-features {
+    margin: 0 12px 24px;
+  }
+}
+
+/* === Landscape Mode === */
+@media (max-height: 600px) and (orientation: landscape) {
+  .auth-mobile-hero {
+    padding: 24px 24px 20px;
+  }
+  
+  .auth-mobile-logo {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 12px;
+  }
+  
+  .auth-mobile-title {
+    font-size: 24px;
+    margin-bottom: 4px;
+  }
+  
+  .auth-mobile-subtitle {
+    font-size: 14px;
+  }
+  
+  .auth-mobile-features {
+    display: none;
+  }
+}
+
+/* === Reduced Motion === */
+@media (prefers-reduced-motion: reduce) {
+  .auth-mobile-logo,
+  .auth-mobile-title,
+  .auth-mobile-subtitle,
+  .auth-mobile-card,
+  .auth-mobile-features {
+    animation: none !important;
+  }
+  
+  .auth-mobile-tab-indicator {
+    transition: none;
+  }
+}

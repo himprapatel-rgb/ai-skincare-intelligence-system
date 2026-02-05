@@ -1,0 +1,250 @@
+/**
+ * Mobile Input Styles
+ * Modern floating label design with smooth animations
+ */
+
+.mobile-input {
+  position: relative;
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.mobile-input__field {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.mobile-input__input {
+  width: 100%;
+  min-height: 56px;
+  padding: 24px 16px 8px;
+  
+  /* iOS zoom prevention */
+  font-size: 16px;
+  font-family: inherit;
+  line-height: 1.5;
+  
+  /* Appearance */
+  background: rgba(0, 0, 0, 0.02);
+  border: 2px solid transparent;
+  border-radius: 16px;
+  outline: none;
+  color: var(--text-primary, #1a1a1a);
+  
+  /* Transitions */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Prevent auto-zoom on iOS */
+  -webkit-text-size-adjust: 100%;
+}
+
+.mobile-input__input:focus {
+  background: rgba(102, 126, 234, 0.04);
+  border-color: #667eea;
+}
+
+.mobile-input--error .mobile-input__input {
+  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.04);
+}
+
+.mobile-input--disabled .mobile-input__input {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Floating label */
+.mobile-input__label {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-muted, #666);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: transparent;
+  padding: 0 4px;
+}
+
+/* Float label when focused or has value */
+.mobile-input--focused .mobile-input__label,
+.mobile-input--has-value .mobile-input__label {
+  top: 12px;
+  transform: translateY(0);
+  font-size: 12px;
+  font-weight: 600;
+  color: #667eea;
+}
+
+.mobile-input--error.mobile-input--focused .mobile-input__label,
+.mobile-input--error.mobile-input--has-value .mobile-input__label {
+  color: #ef4444;
+}
+
+/* Required asterisk */
+.mobile-input__required {
+  color: #ef4444;
+  margin-left: 2px;
+}
+
+/* Icon */
+.mobile-input__icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted, #666);
+  pointer-events: none;
+  z-index: 1;
+  transition: color 0.3s;
+}
+
+.mobile-input__icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.mobile-input--focused .mobile-input__icon {
+  color: #667eea;
+}
+
+.mobile-input--has-icon .mobile-input__input {
+  padding-left: 48px;
+}
+
+.mobile-input--has-icon .mobile-input__label {
+  left: 48px;
+}
+
+/* Animated border (bottom accent) */
+.mobile-input__border {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 2px;
+}
+
+.mobile-input--focused .mobile-input__border {
+  width: 100%;
+}
+
+/* Error message */
+.mobile-input__error-message {
+  margin-top: 6px;
+  padding-left: 16px;
+  font-size: 13px;
+  color: #ef4444;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Character counter */
+.mobile-input__counter {
+  position: absolute;
+  right: 16px;
+  bottom: -22px;
+  font-size: 12px;
+  color: var(--text-muted, #666);
+  font-weight: 500;
+}
+
+.mobile-input--error .mobile-input__counter {
+  color: #ef4444;
+}
+
+/* Textarea variant */
+.mobile-input--textarea .mobile-input__input {
+  min-height: 120px;
+  padding-top: 24px;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.mobile-input__textarea {
+  line-height: 1.6;
+}
+
+/* Placeholder (only show when focused) */
+.mobile-input__input::placeholder {
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.mobile-input--focused .mobile-input__input::placeholder {
+  opacity: 0.5;
+}
+
+/* iOS specific fixes */
+@supports (-webkit-touch-callout: none) {
+  .mobile-input__input {
+    /* Prevent iOS zoom */
+    font-size: 16px !important;
+  }
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  .mobile-input__input {
+    background: rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+  }
+  
+  .mobile-input__input:focus {
+    background: rgba(102, 126, 234, 0.1);
+  }
+  
+  .mobile-input__label {
+    color: rgba(255, 255, 255, 0.6);
+  }
+  
+  .mobile-input--focused .mobile-input__label,
+  .mobile-input--has-value .mobile-input__label {
+    color: #a5b4fc;
+  }
+  
+  .mobile-input__icon {
+    color: rgba(255, 255, 255, 0.6);
+  }
+  
+  .mobile-input--focused .mobile-input__icon {
+    color: #a5b4fc;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .mobile-input__input,
+  .mobile-input__label,
+  .mobile-input__border,
+  .mobile-input__icon {
+    transition: none;
+  }
+  
+  .mobile-input__error-message {
+    animation: none;
+  }
+}

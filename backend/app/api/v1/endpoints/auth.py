@@ -3,11 +3,12 @@ Authentication API endpoints.
 
 Handles user registration, login, email verification, and password reset.
 """
+import re
 import uuid
 from datetime import datetime, timedelta, timezone
 
 from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Request, status
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, field_validator
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
@@ -328,7 +329,45 @@ class PasswordResetRequest(BaseModel):
 class PasswordResetConfirm(BaseModel):
     """Schema for password reset confirmation."""
     token: str
-    new_password: str
+    new_password: str = Field(
+        ...,
+        min_length=8,
+        max_length=128,
+        description="New password (min 8 chars, 1 uppercase, 1 lowercase, 1 digit, 1 special)",
+    )
+    
+    @field_validator("new_password")
+    @classmethod
+    def validate_password(cls, v: str) -> str:
+        """Validate password strength with comprehensive checks."""
+        if len(v) < 8:
+            raise ValueError("Password must be at least 8 characters long")
+        if len(v) > 128:
+            raise ValueError("Password must not exceed 128 characters")
+        
+        if not re.search(r"[A-Z]", v):
+            raise ValueError("Password must contain at least one uppercase letter")
+        if not re.search(r"[a-z]", v):
+            raise ValueError("Password must contain at least one lowercase letter")
+        if not re.search(r"[0-9]", v):
+            raise ValueError("Password must contain at least one digit")
+        if not re.search(r'[!@#$%^&*(),.?":{}|<>_\-+=\[\]\\;/~`]', v):
+            raise ValueError("Password must contain at least one special character")
+        
+        weak_passwords = {
+            "password123", "12345678", "qwerty123", "password1!",
+            "welcome123", "admin123", "letmein1!", "password!",
+            "changeme1!", "test1234!", "password1", "abc12345!"
+        }
+        if v.lower() in weak_passwords:
+            raise ValueError("Password is too common. Please choose a stronger password")
+        
+        if re.search(r"(abc|bcd|cde|def|efg|fgh|ghi|hij|ijk|jkl|klm|lmn|mno|nop|opq|pqr|qrs|rst|stu|tuv|uvw|vwx|wxy|xyz)", v.lower()):
+            raise ValueError("Password should not contain sequential letters")
+        if re.search(r"(012|123|234|345|456|567|678|789)", v):
+            raise ValueError("Password should not contain sequential numbers")
+        
+        return v
 
 
 class PasswordResetResponse(BaseModel):

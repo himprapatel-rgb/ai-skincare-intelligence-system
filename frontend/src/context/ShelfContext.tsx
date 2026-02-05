@@ -2,7 +2,7 @@
  * Shelf Context - Global state for user's product shelf
  * Syncs shelf count and products across all components
  */
-import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useMemo, ReactNode } from 'react';
 import { useAuth } from './AuthContext';
 
 import { API_BASE_URL } from '../config';
@@ -98,11 +98,11 @@ export const ShelfProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Computed counts
-  const totalCount = products.length;
-  const usingCount = products.filter(p => p.status === 'active').length;
-  const wishlistCount = products.filter(p => p.status === 'wishlist').length;
-  const discontinuedCount = products.filter(p => p.status === 'discontinued').length;
+  // Computed counts (memoized for performance)
+  const totalCount = useMemo(() => products.length, [products]);
+  const usingCount = useMemo(() => products.filter(p => p.status === 'active').length, [products]);
+  const wishlistCount = useMemo(() => products.filter(p => p.status === 'wishlist').length, [products]);
+  const discontinuedCount = useMemo(() => products.filter(p => p.status === 'discontinued').length, [products]);
 
   // Fetch shelf from API
   const refreshShelf = useCallback(async () => {

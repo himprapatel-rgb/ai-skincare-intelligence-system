@@ -65,6 +65,7 @@ const SkinTypeGuidePage = React.lazy(() => import("./pages/SkinTypeGuidePage"));
 const VideoTutorialsPage = React.lazy(() => import("./pages/VideoTutorialsPage"));
 const DeviceContextPage = React.lazy(() => import("./pages/DeviceContextPage"));
 const NotFoundPage = React.lazy(() => import("./pages/NotFoundPage"));
+const AuthDebug = React.lazy(() => import("./pages/AuthDebug").then(m => ({ default: m.AuthDebug })));
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -120,6 +121,7 @@ function AppRoutes() {
           <Route path="/skin-type-guide" element={<SkinTypeGuidePage />} />
           <Route path="/tutorials" element={<VideoTutorialsPage />} />
           <Route path="/device-context" element={<DeviceContextPage />} />
+          <Route path="/auth-debug" element={<AuthDebug />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>

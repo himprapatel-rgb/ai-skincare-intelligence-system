@@ -91,30 +91,14 @@ export const AuthPageFixed: React.FC = () => {
       return;
     }
 
-    // Show loading immediately
     setLoading(true);
-    
-    // Show progress message after 3 seconds (Railway wake-up)
-    const slowLoadingTimeout = setTimeout(() => {
-      toast.info('⏳ Waking up server... This may take 10-20 seconds on first login.');
-    }, 3000);
 
     try {
-      console.log('🔄 Starting login...', { email: trimmedEmail, mode });
-      const startTime = Date.now();
-
       if (mode === 'login') {
-        // Direct axios call with extended timeout for Railway
         const response = await axios.post(`${API_BASE_URL}/auth/login`, {
           email: trimmedEmail,
           password: password,
-        }, {
-          timeout: 45000, // 45 second timeout for Railway cold start
         });
-
-        const duration = ((Date.now() - startTime) / 1000).toFixed(1);
-        console.log(`✅ Login response: ${response.status} (${duration}s)`);
-        clearTimeout(slowLoadingTimeout);
 
         if (response.data && response.data.token) {
           // Store token and update AuthContext
@@ -132,7 +116,7 @@ export const AuthPageFixed: React.FC = () => {
             localStorage.setItem(REMEMBER_EMAIL_KEY, trimmedEmail);
           }
 
-          toast.success(`✅ Logged in! (${duration}s)`);
+          toast.success('✅ Login successful!');
           
           // Navigate with slight delay
           setTimeout(() => {

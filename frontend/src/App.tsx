@@ -17,11 +17,9 @@ import NetworkStatus from "./components/NetworkStatus";
 // Page Imports - Lazy loaded for faster initial load
 const HomePage = React.lazy(() => import("./pages/HomePage"));
 const MePage = React.lazy(() => import("./pages/MePage"));
-// Fixed auth page with direct API calls (guaranteed working)
+// Use original working auth page
 const AuthPage = React.lazy(() =>
-  import("./pages/AuthPageFixed").then((module) => ({ 
-    default: module.AuthPageFixed 
-  }))
+  import("./pages/AuthPage").then((module) => ({ default: module.AuthPage }))
 );
 const PasswordResetPage = React.lazy(() => import("./pages/PasswordResetPage"));
 const PasswordResetConfirmPage = React.lazy(() => import("./pages/PasswordResetConfirmPage"));

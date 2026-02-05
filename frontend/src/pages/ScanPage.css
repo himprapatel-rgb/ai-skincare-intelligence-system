@@ -418,6 +418,7 @@
   pointer-events: none;
 }
 
+/* Force flip so 3D face is right-side up (eyes up, mouth down) on device */
 .scan-3d-view {
   position: absolute;
   inset: 0;
@@ -425,6 +426,7 @@
   height: 100%;
   z-index: 1;
   pointer-events: none;
+  transform: scaleY(-1);
 }
 
 .scan-3d-view-hidden {

@@ -10,6 +10,12 @@ import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { GoogleSignInButton } from '../components/GoogleSignInButton';
+
+// Check if already logged in
+const checkExistingAuth = () => {
+  const token = localStorage.getItem('auth_token');
+  return !!token;
+};
 import { 
   IconMail, 
   IconLock, 
@@ -38,12 +44,25 @@ export const AuthPageFixed: React.FC = () => {
   const [passwordFocused, setPasswordFocused] = useState(false);
   const [nameFocused, setNameFocused] = useState(false);
 
-  const { loginWithToken } = useAuth();
+  const { loginWithToken, isAuthenticated, isLoading: authLoading } = useAuth();
   const toast = useToast();
   const navigate = useNavigate();
   const location = useLocation();
 
   usePageTitle(mode === 'register' ? 'Create Account' : 'Sign In');
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (!authLoading && isAuthenticated) {
+      const returnUrl = sessionStorage.getItem('auth_return_url');
+      if (returnUrl) {
+        sessionStorage.removeItem('auth_return_url');
+        navigate(returnUrl, { replace: true });
+      } else {
+        navigate('/dashboard', { replace: true });
+      }
+    }
+  }, [isAuthenticated, authLoading, navigate]);
 
   // Clear error when inputs change
   useEffect(() => {
@@ -106,10 +125,16 @@ export const AuthPageFixed: React.FC = () => {
 
           toast.success('✅ Login successful!');
           
-          // Navigate to dashboard
+          // Small delay to let context update, then navigate
           setTimeout(() => {
-            navigate('/dashboard');
-          }, 500);
+            const returnUrl = sessionStorage.getItem('auth_return_url');
+            if (returnUrl) {
+              sessionStorage.removeItem('auth_return_url');
+              navigate(returnUrl, { replace: true });
+            } else {
+              navigate('/dashboard', { replace: true });
+            }
+          }, 800);
         } else {
           setError('Login failed - no token received');
         }

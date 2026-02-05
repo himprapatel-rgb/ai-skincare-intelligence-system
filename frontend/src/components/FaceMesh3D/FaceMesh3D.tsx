@@ -105,14 +105,13 @@ const FaceMesh3D = forwardRef<FaceMesh3DHandle, FaceMesh3DProps>(function FaceMe
         const pos = (pointsRef.current.geometry.getAttribute('position') as THREE.BufferAttribute)
           .array as Float32Array;
         // MediaPipe: x,y normalized [0,1] (origin top-left, y down). Z = depth (negative = toward camera).
-        // Scale so full face fills view; flip Y so forehead is up (image y=0 = top = 3D +Y).
         const scale = 2.2;
         const scaleZ = 2;
         for (let i = 0; i < 468; i++) {
           const p = landmarks[i];
           const x = (p.x - 0.5) * -1 * scale; // center + mirror for front-cam
-          const y = (0.5 - p.y) * scale;      // flip Y so face right-side up
-          const z = (p.z ?? 0) * -scaleZ;      // nose forward (positive Z toward camera)
+          const y = (p.y - 0.5) * scale;       // Y: image top (forehead) = bottom of 3D view, matches camera view
+          const z = (p.z ?? 0) * -scaleZ;     // nose forward (positive Z toward camera)
           pos[i * 3] = x;
           pos[i * 3 + 1] = y;
           pos[i * 3 + 2] = z;

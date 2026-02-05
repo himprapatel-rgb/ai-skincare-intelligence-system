@@ -43,6 +43,8 @@ const FaceMesh3D = forwardRef<FaceMesh3DHandle, FaceMesh3DProps>(function FaceMe
     const camera = new THREE.PerspectiveCamera(40, width / height, 0.01, 10);
     camera.position.set(0, 0, 2.2);
     camera.lookAt(0, 0, 0);
+    // Flip view so face appears right-side up (mirrors front-camera orientation)
+    camera.up.set(0, -1, 0);
     cameraRef.current = camera;
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });

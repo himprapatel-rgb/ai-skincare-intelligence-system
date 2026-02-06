@@ -153,7 +153,9 @@ const TodayPage: React.FC = () => {
       return;
     }
     let cancelled = false;
-    (async () => {
+    
+    // Defer data fetch until after first paint (performance: reduce mobile lag)
+    const loadData = async () => {
       try {
         const historyData = await getScanHistory();
         const scans = (historyData as { scans?: Array<Record<string, unknown>> }).scans || [];
@@ -186,8 +188,16 @@ const TodayPage: React.FC = () => {
       } finally {
         if (!cancelled) setLoading(false);
       }
-    })();
-    return () => { cancelled = true; };
+    };
+    
+    // Use requestIdleCallback to defer until after first paint
+    if ('requestIdleCallback' in window) {
+      const id = window.requestIdleCallback(() => loadData());
+      return () => { cancelled = true; window.cancelIdleCallback(id); };
+    } else {
+      const id = window.setTimeout(() => loadData(), 0);
+      return () => { cancelled = true; window.clearTimeout(id); };
+    }
   }, [isAuthenticated, user]);
 
   useEffect(() => {

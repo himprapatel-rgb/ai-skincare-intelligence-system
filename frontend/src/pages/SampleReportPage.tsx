@@ -1,8 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { usePageTitle } from '../hooks/usePageTitle';
 import './SampleReportPage.css';
 
 const SampleReportPage: React.FC = () => {
+  usePageTitle('Sample Report', 'Preview of the insights you get after a skin scan.');
   return (
     <div className="sample-report-page app-page">
       <header className="app-header-card sample-report-hero">

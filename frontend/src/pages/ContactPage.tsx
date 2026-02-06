@@ -93,8 +93,8 @@ const ContactPage: React.FC = () => {
               <IconMail size={32} strokeWidth={2} />
             </div>
             <h3>Email Us</h3>
-            <p>support@aiskincareai.com</p>
-            <a href="mailto:support@aiskincareai.com" className="info-card-action">
+            <p>support@pellicura.com</p>
+            <a href="mailto:support@pellicura.com" className="info-card-action">
               Send Email
             </a>
           </div>
@@ -114,8 +114,8 @@ const ContactPage: React.FC = () => {
             <div className="info-icon">
               <IconMapPin size={32} strokeWidth={2} />
             </div>
-            <h3>Location</h3>
-            <p>San Francisco, CA</p>
+            <h3>Support</h3>
+            <p>Available worldwide via email and chat</p>
           </div>
 
           <div className="info-card">

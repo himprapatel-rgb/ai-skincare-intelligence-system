@@ -210,6 +210,7 @@ const ProfileSettingsPage: React.FC = () => {
   ];
 
   const fetchUserProfile = useCallback(async () => {
+    if (!user) return;  // Wait for user to load from AuthContext before fetching profile
     try {
       const res = await api.get<{
         first_name?: string | null;
@@ -219,13 +220,13 @@ const ProfileSettingsPage: React.FC = () => {
         [k: string]: unknown;
       }>('/profile');
       const p = res.data;
-      const fullName = [p.first_name, p.last_name].filter(Boolean).join(' ') || user?.full_name || 'User';
+      const fullName = [p.first_name, p.last_name].filter(Boolean).join(' ') || user?.full_name || '';
       let photoUrl = p.profile_photo_url || '';
       if (photoUrl && !photoUrl.startsWith('http')) {
         photoUrl = getUploadFullUrl(photoUrl);
       }
       const updates = {
-        name: fullName,
+        name: fullName || user?.full_name || '',
         email: user?.email || '',
         profilePhoto: photoUrl,
         phone: p.phone_number || ''
@@ -239,10 +240,11 @@ const ProfileSettingsPage: React.FC = () => {
     } catch (err: unknown) {
       const status = (err as { response?: { status?: number } })?.response?.status;
       if (status === 404) {
+        // Profile not created yet; use user data from AuthContext
         setProfile((prev) => ({
           ...prev,
-          name: user?.full_name || prev.name || 'User',
-          email: user?.email || prev.email || 'user@example.com'
+          name: user?.full_name || '',
+          email: user?.email || ''
         }));
       }
     }

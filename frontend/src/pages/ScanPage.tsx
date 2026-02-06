@@ -22,10 +22,19 @@ type ScanType = 'face' | 'product';
 const ENABLE_LIVE_QUALITY_CHECKS = false;
 
 export default function ScanPage() {
-  usePageTitle('Scan', 'Scan your face or a product. AI skin analysis and product insights.');
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const modeParam = searchParams.get('mode');
+  const [scanType, setScanType] = useState<ScanType>(() =>
+    modeParam === 'product' ? 'product' : 'face'
+  );
+  
+  // Update page title when scan type changes
+  usePageTitle(
+    scanType === 'product' ? 'Product Scanner' : 'Scan',
+    scanType === 'product' ? 'Scan barcodes or take photos to identify beauty products.' : 'Scan your face or a product. AI skin analysis and product insights.'
+  );
+  
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const overlayCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -36,9 +45,6 @@ export default function ScanPage() {
   const autoCaptureRef = useRef(false);
   const trackingActiveRef = useRef(false);
   
-  const [scanType, setScanType] = useState<ScanType>(() =>
-    modeParam === 'product' ? 'product' : 'face'
-  );
   useEffect(() => {
     if (modeParam === 'product' && scanType !== 'product') setScanType('product');
     if (modeParam === 'face' && scanType !== 'face') setScanType('face');
@@ -722,9 +728,15 @@ export default function ScanPage() {
 
           {scanType === 'product' ? (
             <div className="scan-product-panel">
-              <Suspense fallback={<div className="scan-step-text">Loading scanner...</div>}>
-                <ProductScannerPage embedded />
-              </Suspense>
+              <ErrorCard
+                title="Product Scanner"
+                message="Loading product scanner..."
+                onRetry={() => window.location.reload()}
+              >
+                <Suspense fallback={<div className="scan-step-text">Loading scanner...</div>}>
+                  <ProductScannerPage embedded />
+                </Suspense>
+              </ErrorCard>
             </div>
           ) : (
             <>

@@ -33,7 +33,7 @@ const PrivacyPage: React.FC = () => {
         <section className="privacy-section" id="intro">
           <h2>1. Introduction</h2>
           <p>
-            At AI Skincare Intelligence System, we take your privacy seriously. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our service. Please read this privacy policy carefully. If you do not agree with the terms of this privacy policy, please do not access the application.
+            At Pellicura (SkinCareAI), we take your privacy seriously. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our service. Please read this privacy policy carefully. If you do not agree with the terms of this privacy policy, please do not access the application.
           </p>
         </section>
 
@@ -148,7 +148,7 @@ const PrivacyPage: React.FC = () => {
           <h2>12. Contact Us</h2>
           <p>If you have any questions about this Privacy Policy, please contact us:</p>
           <ul>
-            <li>Email: privacy@aiskincareai.com</li>
+            <li>Email: privacy@pellicura.com</li>
             <li>Address: San Francisco, CA</li>
           </ul>
           <button className="contact-button" onClick={() => navigate('/contact')}>

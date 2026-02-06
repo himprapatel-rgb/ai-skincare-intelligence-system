@@ -72,11 +72,11 @@ const AboutPage: React.FC = () => {
           <h2 className="section-title">Impact So Far</h2>
           <div className="stats-grid">
             <div className="stat-card">
-              <div className="stat-value">2.4M+</div>
+              <div className="stat-value">50K+</div>
               <div className="stat-label">Scans analyzed</div>
             </div>
             <div className="stat-card">
-              <div className="stat-value">320K+</div>
+              <div className="stat-value">12K+</div>
               <div className="stat-label">Registered users</div>
             </div>
             <div className="stat-card">

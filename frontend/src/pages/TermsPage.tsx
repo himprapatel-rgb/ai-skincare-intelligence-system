@@ -36,14 +36,14 @@ const TermsPage: React.FC = () => {
         <section className="terms-section" id="acceptance">
           <h2>1. Acceptance of Terms</h2>
           <p>
-            By accessing and using the AI Skincare Intelligence System, you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to these Terms of Service, you may not access or use this service.
+            By accessing and using Pellicura (SkinCareAI), you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to these Terms of Service, you may not access or use this service.
           </p>
         </section>
 
         <section className="terms-section" id="description">
           <h2>2. Description of Service</h2>
           <p>
-            AI Skincare Intelligence System provides an AI-powered skin analysis platform that uses machine learning to analyze uploaded images and provide personalized skincare recommendations. The service includes:
+            Pellicura provides an AI-powered skin analysis platform that uses machine learning to analyze uploaded images and provide personalized skincare recommendations. The service includes:
           </p>
           <ul>
             <li>AI-based skin condition analysis</li>
@@ -90,7 +90,7 @@ const TermsPage: React.FC = () => {
         <section className="terms-section">
           <h2>6. Intellectual Property</h2>
           <p>
-            The service and its original content, features, and functionality are owned by AI Skincare Intelligence System and are protected by international copyright, trademark, patent, trade secret, and other intellectual property laws.
+            The service and its original content, features, and functionality are owned by Pellicura and are protected by international copyright, trademark, patent, trade secret, and other intellectual property laws.
           </p>
         </section>
 
@@ -139,7 +139,7 @@ const TermsPage: React.FC = () => {
           <h2>12. Contact Us</h2>
           <p>If you have any questions about these Terms, please contact us:</p>
           <ul>
-            <li>Email: legal@aiskincareai.com</li>
+            <li>Email: legal@pellicura.com</li>
             <li>Address: San Francisco, CA</li>
           </ul>
           <button className="contact-button" onClick={() => navigate('/contact')}>

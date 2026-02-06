@@ -11,9 +11,11 @@ import { useToast } from '../context/ToastContext';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { GoogleSignInButton } from '../components/GoogleSignInButton';
 
+import { STORAGE_KEYS } from '../constants/storage';
+
 // Check if already logged in
 const checkExistingAuth = () => {
-  const token = localStorage.getItem('auth_token');
+  const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
   return !!token;
 };
 import { 
@@ -29,7 +31,7 @@ import {
 import { API_BASE_URL } from '../config';
 import './AuthPageMobileV2.css';
 
-const REMEMBER_EMAIL_KEY = 'login_remember_email';
+const REMEMBER_EMAIL_KEY = STORAGE_KEYS.REMEMBER_EMAIL;
 
 export const AuthPageFixed: React.FC = () => {
   const [mode, setMode] = useState<'login' | 'register'>('login');
@@ -54,9 +56,9 @@ export const AuthPageFixed: React.FC = () => {
   // Redirect if already authenticated
   useEffect(() => {
     if (!authLoading && isAuthenticated) {
-      const returnUrl = sessionStorage.getItem('auth_return_url');
+      const returnUrl = sessionStorage.getItem(STORAGE_KEYS.AUTH_RETURN_URL);
       if (returnUrl) {
-        sessionStorage.removeItem('auth_return_url');
+        sessionStorage.removeItem(STORAGE_KEYS.AUTH_RETURN_URL);
         navigate(returnUrl, { replace: true });
       } else {
         navigate('/dashboard', { replace: true });
@@ -105,7 +107,7 @@ export const AuthPageFixed: React.FC = () => {
           const token = response.data.token;
           const userData = response.data.user;
           
-          localStorage.setItem('auth_token', token);
+          localStorage.setItem(STORAGE_KEYS.AUTH_TOKEN, token);
           axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
           
           // Update AuthContext with token and user data
@@ -120,9 +122,9 @@ export const AuthPageFixed: React.FC = () => {
           
           // Navigate with slight delay
           setTimeout(() => {
-            const returnUrl = sessionStorage.getItem('auth_return_url');
+            const returnUrl = sessionStorage.getItem(STORAGE_KEYS.AUTH_RETURN_URL);
             if (returnUrl) {
-              sessionStorage.removeItem('auth_return_url');
+              sessionStorage.removeItem(STORAGE_KEYS.AUTH_RETURN_URL);
               navigate(returnUrl, { replace: true });
             } else {
               navigate('/dashboard', { replace: true });
@@ -146,7 +148,7 @@ export const AuthPageFixed: React.FC = () => {
           const token = response.data.token;
           const userData = response.data.user;
           
-          localStorage.setItem('auth_token', token);
+          localStorage.setItem(STORAGE_KEYS.AUTH_TOKEN, token);
           axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
           
           // Update AuthContext

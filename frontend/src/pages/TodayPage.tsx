@@ -10,6 +10,7 @@ import { usePullToRefresh } from '../hooks/usePullToRefresh';
 import { getScanHistory } from '../services/scanApi';
 import { useShelf } from '../context/ShelfContext';
 import { API_BASE_URL } from '../config';
+import { STORAGE_KEYS } from '../constants/storage';
 import { IconSettings } from '../components/Icons';
 import { Illustrations } from '../components/Illustrations';
 import NotificationBell from '../components/notifications/NotificationBell';
@@ -205,7 +206,7 @@ const TodayPage: React.FC = () => {
   useEffect(() => {
     if (!isAuthenticated) return;
     let cancelled = false;
-    const token = localStorage.getItem('auth_token');
+    const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
     fetch(`${API_BASE_URL}/digital-twin/query?limit=200`, {
       headers: token ? { Authorization: `Bearer ${token}` } : {},
     })

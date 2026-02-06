@@ -1,7 +1,8 @@
 /* eslint-disable react-refresh/only-export-components */
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
 import axios from 'axios';
-import { API_BASE_URL } from '../config';
+import { api } from '../services/api';
+import { STORAGE_KEYS } from '../constants/storage';
 import { devAutoLogin } from '../utils/devAutoLogin';
 
 // Types
@@ -43,35 +44,40 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // Provider component
+const AUTH_ME_TIMEOUT_MS = 4000;
+
+function setAuthToken(token: string | null): void {
+  if (token) {
+    localStorage.setItem(STORAGE_KEYS.AUTH_TOKEN, token);
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  } else {
+    localStorage.removeItem(STORAGE_KEYS.AUTH_TOKEN);
+    localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
+    localStorage.removeItem(STORAGE_KEYS.USER);
+    delete axios.defaults.headers.common['Authorization'];
+  }
+}
+
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(localStorage.getItem('auth_token'));
+  const [token, setToken] = useState<string | null>(() => localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN));
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const AUTH_ME_TIMEOUT_MS = 4000; // Don't block whole app if backend is slow (e.g. cold start)
-
     const initAuth = async () => {
-      // Try auto-login in development (if no token exists)
       await devAutoLogin();
-
-      const storedToken = localStorage.getItem('auth_token') || localStorage.getItem('access_token');
+      const storedToken = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN) || localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
       if (storedToken) {
-        axios.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`;
-        const mePromise = axios.get(`${API_BASE_URL}/auth/me`).then((response) => {
+        setAuthToken(storedToken);
+        const mePromise = api.get<User>('/auth/me').then((response) => {
           setUser(response.data);
           setToken(storedToken);
         }).catch(() => {
-          localStorage.removeItem('auth_token');
-          localStorage.removeItem('access_token');
-          delete axios.defaults.headers.common['Authorization'];
+          setAuthToken(null);
           setToken(null);
           setUser(null);
         });
-        const timeoutPromise = new Promise<void>((resolve) => {
-          setTimeout(resolve, AUTH_ME_TIMEOUT_MS);
-        });
-        // Show app after /auth/me completes or after timeout so slow backend doesn't freeze UI
+        const timeoutPromise = new Promise<void>((resolve) => setTimeout(resolve, AUTH_ME_TIMEOUT_MS));
         await Promise.race([mePromise, timeoutPromise]);
       }
       setIsLoading(false);
@@ -79,52 +85,41 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     initAuth();
   }, []);
 
-  const login = async (email: string, password: string): Promise<void> => {
+  const login = useCallback(async (email: string, password: string): Promise<void> => {
     try {
-      const response = await axios.post(`${API_BASE_URL}/auth/login`, { email, password });
-      const { token: newToken, user: userData } = response.data;
-      localStorage.setItem('auth_token', newToken);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
-      setToken(newToken);
-      setUser(userData);
-    } catch (error) {
-      console.error('AuthContext login error:', error);
-      throw error; // Re-throw to let LoginForm handle it
+      const { data } = await api.post<{ token: string; user: User }>('/auth/login', { email, password });
+      setAuthToken(data.token);
+      setToken(data.token);
+      setUser(data.user);
+    } catch (err: unknown) {
+      const msg = err && typeof err === 'object' && 'detail' in err && typeof (err as { detail: unknown }).detail === 'string'
+        ? (err as { detail: string }).detail
+        : err instanceof Error ? err.message : 'Login failed. Please try again.';
+      throw new Error(msg);
     }
-  };
+  }, []);
 
-  const loginWithToken = (newToken: string, userData: User): void => {
-    localStorage.setItem('auth_token', newToken);
-    axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
+  const loginWithToken = useCallback((newToken: string, userData: User): void => {
+    setAuthToken(newToken);
     setToken(newToken);
     setUser(userData);
-  };
+  }, []);
 
-  const register = async (name: string, email: string, password: string): Promise<AuthResponse> => {
-    const response = await axios.post(`${API_BASE_URL}/auth/register`, {
-      full_name: name,
-      email,
-      password,
-    });
-    const data: AuthResponse = response.data;
-    if (!data.verification_required) {
-      const { token: newToken, user: userData } = data;
-      localStorage.setItem('auth_token', newToken);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
-      setToken(newToken);
-      setUser(userData);
+  const register = useCallback(async (name: string, email: string, password: string): Promise<AuthResponse> => {
+    const { data } = await api.post<AuthResponse>('/auth/register', { full_name: name, email, password });
+    if (!data.verification_required && data.token && data.user) {
+      setAuthToken(data.token);
+      setToken(data.token);
+      setUser(data.user);
     }
     return data;
-  };
+  }, []);
 
-  const logout = () => {
-    localStorage.removeItem('auth_token');
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('user');
-    delete axios.defaults.headers.common['Authorization'];
+  const logout = useCallback(() => {
+    setAuthToken(null);
     setToken(null);
     setUser(null);
-  };
+  }, []);
 
   const updateUser = (userData: Partial<User>) => {
     if (user) {

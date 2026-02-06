@@ -8,6 +8,7 @@ import { useAuth } from '../context/AuthContext';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { useShelf } from '../context/ShelfContext';
 import { API_BASE_URL } from '../config';
+import { STORAGE_KEYS } from '../constants/storage';
 import { getScanHistory } from '../services/scanApi';
 import { getStreak } from '../utils/streakStorage';
 import {
@@ -54,7 +55,7 @@ const MePage: React.FC = () => {
 
   useEffect(() => {
     if (!isAuthenticated) return;
-    const token = localStorage.getItem('auth_token');
+    const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
     fetch(`${API_BASE_URL}/digital-twin/query?limit=200`, {
       headers: token ? { Authorization: `Bearer ${token}` } : {},
     })

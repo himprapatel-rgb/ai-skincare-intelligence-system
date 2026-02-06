@@ -270,3 +270,14 @@ frontend/playwright-report/
 # Temporary files
 *.tmp
 *.temp
+
+# Capacitor / Android (frontend)
+frontend/android/local.properties
+frontend/android/.gradle/
+frontend/android/app/build/
+frontend/android/build/
+frontend/android/capacitor.build.json
+*.apk
+*.aab
+*.ap_
+*.dex

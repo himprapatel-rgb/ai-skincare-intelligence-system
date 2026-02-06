@@ -23,6 +23,7 @@
 | If you want to... | Read this |
 |-------------------|-----------|
 | **Understand the project** | [README.md](../../README.md) |
+| **See the solid app plan** | [APP-PLAN.md](../03-product/APP-PLAN.md) – vision, platforms, flows, roadmap |
 | **Set up development environment** | [Getting Started](../../README.md#getting-started) |
 | **Deploy the application** | [DEPLOYMENT_GUIDE.md](../DEPLOYMENT_GUIDE.md) |
 | **Configure environment** | [ENVIRONMENT_VARIABLES.md](../ENVIRONMENT_VARIABLES.md) |
@@ -52,6 +53,7 @@ docs/
 │   └── Database-Design-Extensible.md
 │
 ├── 03-product/             # Product management
+│   ├── APP-PLAN.md         # Solid app plan (vision, platforms, flows, roadmap)
 │   ├── Product-Backlog-V5.md
 │   └── Product-Tracker.md
 │
@@ -62,13 +64,15 @@ docs/
 │   ├── Current-State.md
 │   ├── Features-Left-to-Implement.md
 │   ├── Implementation-Status-2026-01-26.md
-│   └── Pages-Created-Status.md
+│   ├── Pages-Created-Status.md
+│   └── RATE-LIMITING-AND-HEALTHCHECKS.md  # Rate limits + Railway health checks
 │
 ├── 07-sprints/             # Sprint documentation
 │   ├── sprint-7/
 │   └── sprint-hp-1/
 │
 ├── 08-audits/              # Code audits
+│   ├── FULL-STACK-SECURITY-DEVOPS-AUDIT-2026.md  # Full-stack + security + DevOps audit
 │   └── Implementation-Audit.md
 │
 ├── 09-reports/             # Status reports

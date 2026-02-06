@@ -4,6 +4,7 @@ import { jsPDF } from 'jspdf';
 import { IconDownload, IconCheckCircle, IconFileText, IconArrowLeft } from '../components/Icons';
 import { useToast } from '../context/ToastContext';
 import { API_BASE_URL } from '../config';
+import { STORAGE_KEYS } from '../constants/storage';
 import './CommonStyles.css';
 import './DataExportPage.css';
 
@@ -25,7 +26,7 @@ const DataExportPage: React.FC = () => {
     setExportComplete(false);
     
     try {
-      const token = localStorage.getItem('auth_token');
+      const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
       const response = await fetch(`${API_BASE_URL}/profile/export`, {
         headers: {
           ...(token ? { Authorization: `Bearer ${token}` } : {}),

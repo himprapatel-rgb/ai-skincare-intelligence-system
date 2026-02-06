@@ -1,4 +1,5 @@
 import logging
+import os
 from pathlib import Path
 
 from fastapi import FastAPI
@@ -100,6 +101,10 @@ app.add_middleware(
 )
 app.add_middleware(GZipMiddleware, minimum_size=500)
 
+# Rate limit scan endpoints to prevent abuse (per-IP when unauthenticated)
+from middleware.rate_limiter import RateLimiterMiddleware
+app.add_middleware(RateLimiterMiddleware, max_requests=10, window_seconds=60)
+
 # TrustedHostMiddleware removed: Starlette rejects bare * and *.domain patterns.
 # CORS + explicit origins provide adequate protection for Railway deployment.
 
@@ -115,7 +120,7 @@ async def add_security_headers(request, call_next):
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["X-Frame-Options"] = "DENY"
     response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
-    response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()"
+    response.headers["Permissions-Policy"] = "camera=(self), microphone=(), geolocation=()"
     response.headers["Cross-Origin-Opener-Policy"] = "same-origin"
     # API responses must be readable by cross-origin frontends (pellicura.com → Railway backend).
     # "same-site" would block responses when frontend and backend are on different domains.
@@ -195,6 +200,10 @@ def ensure_test_user() -> None:
 
     db = SessionLocal()
     try:
+        # Do not seed test users in production unless explicitly enabled (security audit)
+        if settings.ENV == "production" and (os.getenv("SEED_TEST_USERS", "").lower() not in ("1", "true", "yes")):
+            db.close()
+            return
         test_users = [
             ("himanshu@test.com", "Test1234!", "Himanshu Patel"),
             ("himprapatel@gmail.com", "Test1234!", "Himanshu Patel"),

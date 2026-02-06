@@ -45,7 +45,9 @@ TEST_USER_PASSWORD = "Test1234!"
     description="Returns whether the test user exists and is_verified. No auth required.",
 )
 def test_user_status(db: Session = Depends(get_db)):
-    """Help debug login: see if test users exist and are verified."""
+    """Help debug login: see if test users exist and are verified. Disabled in production."""
+    if settings.ENV == "production":
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not found")
     result = {}
     for email in TEST_USER_EMAILS:
         user = auth_service.get_user_by_email(db, email)
@@ -73,7 +75,7 @@ def register(
     import logging
     logger = logging.getLogger(__name__)
     request_id = uuid.uuid4().hex[:8]
-    logger.info(f"[{request_id}] REGISTER called for {user_data.email}")
+    logger.info("[%s] REGISTER called", request_id)
     
     existing_user = auth_service.get_user_by_email(db, user_data.email)
     if existing_user:
@@ -88,7 +90,7 @@ def register(
 
     try:
         user = auth_service.create_user(db, user_data)
-        logger.info(f"[{request_id}] User created: {user.email}")
+        logger.info("[%s] User created", request_id)
     except IntegrityError:
         db.rollback()
         logger.warning(f"[{request_id}] IntegrityError during registration for {user_data.email}")
@@ -105,7 +107,7 @@ def register(
     db.commit()
     db.refresh(user)
     
-    logger.info(f"[{request_id}] Token generated for {user.email}: {verification_token[:8]}...")
+    logger.info("[%s] Verification token generated", request_id)
 
     token = create_access_token(
         data={"sub": user.email},
@@ -234,7 +236,7 @@ def request_email_verification(
     import logging
     logger = logging.getLogger(__name__)
     request_id = uuid.uuid4().hex[:8]
-    logger.info(f"[{request_id}] verify-email/request called for {payload.email}")
+    logger.info("[%s] verify-email/request called", request_id)
     
     user = auth_service.get_user_by_email(db, payload.email)
     if not user:
@@ -250,7 +252,7 @@ def request_email_verification(
     if hasattr(user, 'email_verification_sent_at') and user.email_verification_sent_at:
         time_since_last = datetime.now(timezone.utc) - user.email_verification_sent_at.replace(tzinfo=timezone.utc)
         if time_since_last.total_seconds() < 60:
-            logger.warning(f"[{request_id}] Rate limited: email sent {time_since_last.total_seconds():.0f}s ago for {payload.email}")
+            logger.warning("[%s] Rate limited: verification email sent recently", request_id)
             return EmailVerificationResponse(
                 message="Verification email was recently sent. Please check your inbox or wait a moment before requesting again.",
                 verified=False,
@@ -272,7 +274,7 @@ def request_email_verification(
     )
     try:
         if settings.SMTP_HOST and settings.SMTP_FROM_EMAIL:
-            logger.info(f"[{request_id}] Adding background task to send email to {payload.email}")
+            logger.info("[%s] Adding background task to send verification email", request_id)
             background_tasks.add_task(send_verification_email, user.email, verification_token)
         elif settings.ENV == "production":
             raise RuntimeError("SMTP settings missing.")

@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { API_BASE_URL } from '../config';
+import { STORAGE_KEYS } from '../constants/storage';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { IconPlus, IconEdit2, IconTrash2, IconVideo } from '../components/Icons';
 import './AdminVideosPage.css';
@@ -38,7 +39,7 @@ const AdminVideosPage: React.FC = () => {
   const fetchVideos = useCallback(async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('auth_token');
+      const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
       const res = await fetch(`${API_BASE_URL}/admin/videos`, {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
@@ -77,7 +78,7 @@ const AdminVideosPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const token = localStorage.getItem('auth_token');
+    const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
     const url = editing
       ? `${API_BASE_URL}/admin/videos/${editing.id}`
       : `${API_BASE_URL}/admin/videos`;
@@ -100,7 +101,7 @@ const AdminVideosPage: React.FC = () => {
 
   const handleDelete = async (id: number) => {
     if (!confirm('Delete this video?')) return;
-    const token = localStorage.getItem('auth_token');
+    const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
     try {
       const res = await fetch(`${API_BASE_URL}/admin/videos/${id}`, {
         method: 'DELETE',

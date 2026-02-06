@@ -8,6 +8,7 @@ import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API_BASE_URL } from '../config';
+import { STORAGE_KEYS } from '../constants/storage';
 
 export const AuthDebug: React.FC = () => {
   const auth = useAuth();
@@ -16,7 +17,7 @@ export const AuthDebug: React.FC = () => {
   const [testResult, setTestResult] = useState<string>('');
 
   useEffect(() => {
-    const token = localStorage.getItem('auth_token');
+    const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
     const log = [
       `=== AUTH STATE ===`,
       `isAuthenticated: ${auth.isAuthenticated}`,
@@ -25,7 +26,7 @@ export const AuthDebug: React.FC = () => {
       `token exists: ${!!auth.token}`,
       ``,
       `=== LOCALSTORAGE ===`,
-      `auth_token: ${token ? token.substring(0, 30) + '...' : 'null'}`,
+      `token (${STORAGE_KEYS.AUTH_TOKEN}): ${token ? token.substring(0, 30) + '...' : 'null'}`,
       ``,
       `=== AXIOS DEFAULTS ===`,
       `Authorization header: ${axios.defaults.headers.common['Authorization'] || 'null'}`,
@@ -34,7 +35,7 @@ export const AuthDebug: React.FC = () => {
   }, [auth]);
 
   const testToken = async () => {
-    const token = localStorage.getItem('auth_token');
+    const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
     if (!token) {
       setTestResult('❌ No token in localStorage');
       return;

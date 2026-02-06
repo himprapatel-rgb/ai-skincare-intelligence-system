@@ -327,27 +327,8 @@
   }
 }
 
-/* === DARK MODE === */
-@media (max-width: 768px) and (prefers-color-scheme: dark) {
-  .app-page {
-    background: #0a0a0a;
-  }
-  
-  .app-card,
-  .dashboard-card,
-  .stat-card {
-    background: #1a1a1a;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
-  }
-  
-  .empty-state {
-    background: #1a1a1a;
-  }
-  
-  h1, h2, h3 {
-    color: #ffffff !important;
-  }
-}
+/* Dark mode on mobile is handled by ThemeContext + dark-mode.css ([data-theme="dark"]).
+   No separate prefers-color-scheme override here so mobile uses the same light/dark as the app. */
 
 /* === REDUCE MOTION === */
 @media (prefers-reduced-motion: reduce) {

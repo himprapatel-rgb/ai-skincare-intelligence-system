@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { API_BASE_URL } from '../config';
+import { STORAGE_KEYS } from '../constants/storage';
 import './AdminDashboardPage.css';
 
 type AdminSummary = {
@@ -22,7 +23,7 @@ const AdminDashboardPage: React.FC = () => {
       try {
         setIsLoading(true);
         setHasError(false);
-        const token = localStorage.getItem('auth_token');
+        const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
         const response = await fetch(`${API_BASE_URL}/admin/summary`, {
           headers: {
             ...(token ? { Authorization: `Bearer ${token}` } : {}),

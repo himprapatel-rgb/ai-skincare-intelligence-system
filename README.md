@@ -255,7 +255,6 @@ npm run dev
 | [ENVIRONMENT_VARIABLES.md](./docs/ENVIRONMENT_VARIABLES.md) | All configuration options |
 | [DEPLOYMENT_GUIDE.md](./docs/DEPLOYMENT_GUIDE.md) | Deployment instructions |
 | [COLOR_SCHEME.md](./frontend/src/styles/COLOR_SCHEME.md) | UI color palette (locked) |
-
 ---
 
 ## Deployment

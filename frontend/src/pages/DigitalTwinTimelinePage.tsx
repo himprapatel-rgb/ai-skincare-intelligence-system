@@ -10,6 +10,7 @@ import SimulationPanel from '../components/digital-twin/SimulationPanel';
 import { SkeletonDigitalTwin } from '../components/Skeleton';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { API_BASE_URL } from '../config';
+import { STORAGE_KEYS } from '../constants/storage';
 import { api } from '../services/api';
 import '../components/digital-twin/styles/digital-twin.css';
 
@@ -166,7 +167,7 @@ const DigitalTwinTimelinePage: React.FC = () => {
         setIsLoading(true);
         setHasError(false);
         const API_BASE = apiBase;
-        const token = localStorage.getItem('auth_token');
+        const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
         const response = await fetch(`${API_BASE}/digital-twin/query?limit=200`, {

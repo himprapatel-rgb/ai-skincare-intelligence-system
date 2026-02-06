@@ -24,9 +24,10 @@ import {
   IconCheckCircle 
 } from '../components/Icons';
 import { API_BASE_URL } from '../config';
+import { STORAGE_KEYS } from '../constants/storage';
 import './AuthPageMobile.css';
 
-const REMEMBER_EMAIL_KEY = 'login_remember_email';
+const REMEMBER_EMAIL_KEY = STORAGE_KEYS.REMEMBER_EMAIL;
 
 export const AuthPageMobile: React.FC = () => {
   const [mode, setMode] = useState<'login' | 'register'>('login');
@@ -144,9 +145,9 @@ export const AuthPageMobile: React.FC = () => {
   };
 
   const handleAuthSuccess = async () => {
-    const returnUrl = sessionStorage.getItem('auth_return_url');
+    const returnUrl = sessionStorage.getItem(STORAGE_KEYS.AUTH_RETURN_URL);
     if (returnUrl) {
-      sessionStorage.removeItem('auth_return_url');
+      sessionStorage.removeItem(STORAGE_KEYS.AUTH_RETURN_URL);
       navigate(returnUrl);
       return;
     }

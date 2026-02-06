@@ -2,6 +2,7 @@
 
 import type { ScanInitResponse } from "../types/scan";
 import { API_BASE_URL } from "../config";
+import { STORAGE_KEYS } from "../constants/storage";
 
 export type ScanStatusResponse = {
   status: "pending" | "processing" | "completed" | "failed" | string;
@@ -60,7 +61,7 @@ function buildUrl(path: string): string {
 
 async function fetchJson<T>(path: string, init?: RequestInit): Promise<T> {
   const headers = new Headers(init?.headers || {});
-  const token = typeof window !== "undefined" ? localStorage.getItem("auth_token") : null;
+  const token = typeof window !== "undefined" ? localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN) : null;
   if (token && !headers.has("Authorization")) {
     headers.set("Authorization", `Bearer ${token}`);
   }

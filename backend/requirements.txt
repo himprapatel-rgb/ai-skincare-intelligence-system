@@ -47,6 +47,9 @@ google-cloud-vision>=3.4.0
 # Amazon Product Advertising API (affiliate recommendations)
 python-amazon-paapi>=5.2.0
 
+# Redis (optional: set REDIS_URL for shared rate limiting across workers/instances)
+redis>=5.0.0
+
 # Additional utilities
 huggingface-hub>=0.19.0
 tokenizers>=0.15.0

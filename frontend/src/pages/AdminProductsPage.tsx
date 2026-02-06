@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { API_BASE_URL } from '../config';
+import { STORAGE_KEYS } from '../constants/storage';
 import './AdminProductsPage.css';
 
 type AdminProduct = {
@@ -36,7 +37,7 @@ const AdminProductsPage: React.FC = () => {
 
   const fetchProducts = useCallback(async (signal?: AbortSignal) => {
     try {
-      const token = localStorage.getItem('auth_token');
+      const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
       const params = new URLSearchParams();
       if (search.trim()) params.set('search', search.trim());
       const response = await fetch(`${API_BASE_URL}/admin/products?${params.toString()}`, {
@@ -97,7 +98,7 @@ const AdminProductsPage: React.FC = () => {
   };
 
   const bulkDelete = async () => {
-    const token = localStorage.getItem('auth_token');
+    const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
     const ids = Array.from(selectedIds);
     const deleted = new Set<string>();
     for (const id of ids) {
@@ -126,7 +127,7 @@ const AdminProductsPage: React.FC = () => {
 
   const submitProduct = async () => {
     try {
-      const token = localStorage.getItem('auth_token');
+      const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
       const payload = {
         brand: form.brand,
         name: form.name,
@@ -173,7 +174,7 @@ const AdminProductsPage: React.FC = () => {
 
   const deleteProduct = async (productId: string) => {
     try {
-      const token = localStorage.getItem('auth_token');
+      const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
       const response = await fetch(`${API_BASE_URL}/admin/products/${productId}`, {
         method: 'DELETE',
         headers: {

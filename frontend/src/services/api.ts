@@ -1,6 +1,7 @@
 import axios, { AxiosInstance, AxiosError } from 'axios';
 import { ApiError } from '../types/scan';
 import { API_BASE_URL } from '../config';
+import { STORAGE_KEYS } from '../constants/storage';
 
 const MAX_RETRIES = 3;
 const INITIAL_DELAY_MS = 1000;
@@ -33,7 +34,7 @@ class ApiClient {
   private setupInterceptors() {
     this.client.interceptors.request.use(
       (config) => {
-        const token = localStorage.getItem('auth_token');
+        const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
         if (token) {
           config.headers.Authorization = `Bearer ${token}`;
         }
@@ -74,17 +75,22 @@ class ApiClient {
         } else if (status === 0 || error.code === 'ERR_NETWORK') {
           detail = 'Connection problem. Check your connection and try again. You can retry your request after reconnecting.';
         } else if (status === 401) {
-          detail = 'Session expired. Please sign in again.';
-          try {
-            localStorage.removeItem('auth_token');
-            if (typeof window !== 'undefined' && !window.location.pathname.startsWith('/auth')) {
-              sessionStorage.setItem('session_expired_redirect', '1');
-              const returnUrl = window.location.pathname + window.location.search;
-              sessionStorage.setItem('auth_return_url', returnUrl);
-              window.location.href = '/auth';
+          const isAuthRequest = config.url && (/\/auth\/login\/?$/.test(config.url) || /\/auth\/register\/?$/.test(config.url));
+          if (isAuthRequest) {
+            /* Keep server message for wrong credentials (e.g. "Invalid email or password") */
+          } else {
+            detail = 'Session expired. Please sign in again.';
+            try {
+              localStorage.removeItem(STORAGE_KEYS.AUTH_TOKEN);
+              if (typeof window !== 'undefined' && !window.location.pathname.startsWith('/auth')) {
+                sessionStorage.setItem(STORAGE_KEYS.SESSION_EXPIRED_REDIRECT, '1');
+                const returnUrl = window.location.pathname + window.location.search;
+                sessionStorage.setItem(STORAGE_KEYS.AUTH_RETURN_URL, returnUrl);
+                window.location.href = '/auth';
+              }
+            } catch {
+              /* ignore */
             }
-          } catch {
-            /* ignore */
           }
         } else if (status === 403) {
           detail = detail || "You don't have permission to do that.";

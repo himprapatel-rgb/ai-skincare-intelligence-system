@@ -6,13 +6,17 @@
 export const API_BASE_URL =
   import.meta.env.VITE_API_URL || 'https://ai-skincare-intelligence-system-production.up.railway.app/api/v1';
 
-/** Base URL for uploads (same origin as API, /uploads path). */
+/** Base URL for uploads (same origin as API, /uploads path). Only allows relative paths. */
 export function getUploadFullUrl(relativePath: string): string {
+  const trimmed = (relativePath || '').trim();
+  if (!trimmed || trimmed.startsWith('http:') || trimmed.startsWith('https:') || trimmed.startsWith('//') || trimmed.startsWith('data:') || /^\s*javascript:/i.test(trimmed)) {
+    return trimmed || '';
+  }
   try {
     const origin = new URL(API_BASE_URL).origin;
-    return relativePath.startsWith('/') ? `${origin}${relativePath}` : `${origin}/${relativePath}`;
+    return trimmed.startsWith('/') ? `${origin}${trimmed}` : `${origin}/${trimmed}`;
   } catch {
-    return relativePath;
+    return trimmed;
   }
 }
 

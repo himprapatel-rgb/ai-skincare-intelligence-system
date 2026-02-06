@@ -6,6 +6,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '../context/ToastContext';
+import { STORAGE_KEYS } from '../constants/storage';
 import { triggerHaptic } from '../utils/mobileOptimizations';
 import { 
   IconMail, 
@@ -61,7 +62,7 @@ export const AuthPageDemo: React.FC = () => {
         toast.success(`✅ Demo Login Successful! (Email: ${email})`);
         
         // Store demo token
-        localStorage.setItem('auth_token', 'demo-token-12345');
+        localStorage.setItem(STORAGE_KEYS.AUTH_TOKEN, 'demo-token-12345');
         localStorage.setItem('demo_user', JSON.stringify({
           email,
           full_name: fullName || 'Demo User',

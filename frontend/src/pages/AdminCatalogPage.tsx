@@ -8,6 +8,7 @@ import {
 import './AdminCatalogPage.css';
 
 import { API_BASE_URL } from '../config';
+import { STORAGE_KEYS } from '../constants/storage';
 const API_BASE = API_BASE_URL;
 
 type Health = {
@@ -45,7 +46,7 @@ const AdminCatalogPage: React.FC = () => {
   const [exporting, setExporting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const token = localStorage.getItem('auth_token');
+  const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
 
   useEffect(() => {
     if (!token) {

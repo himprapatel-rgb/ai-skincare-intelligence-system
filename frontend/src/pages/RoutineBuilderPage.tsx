@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { IconSun, IconMoon, IconBell, IconArrowUp, IconArrowDown, IconX, IconCheck, IconInfo, IconGripVertical } from '../components/Icons';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { API_BASE_URL } from '../config';
+import { STORAGE_KEYS } from '../constants/storage';
 import './RoutineBuilderPage.css';
 
 interface RoutineStep {
@@ -141,7 +142,7 @@ const RoutineBuilderPage: React.FC = () => {
     const fetchRoutines = async () => {
       try {
         setIsLoading(true);
-        const token = localStorage.getItem('auth_token');
+        const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
         const response = await fetch(`${API_BASE_URL}/routines`, {
           headers: {
             ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -238,7 +239,7 @@ const RoutineBuilderPage: React.FC = () => {
 
   const handleSaveRoutine = async () => {
     try {
-      const token = localStorage.getItem('auth_token');
+      const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
       const steps = currentRoutine;
       const description = steps
         .map((step, index) => `${index + 1}. ${step.category}${step.productName ? ` - ${step.productName}` : ''}`)

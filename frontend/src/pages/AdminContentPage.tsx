@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { API_BASE_URL, getUploadFullUrl } from '../config';
+import { STORAGE_KEYS } from '../constants/storage';
 import { usePageTitle } from '../hooks/usePageTitle';
 import {
   IconPlus,
@@ -82,7 +83,7 @@ const AdminContentPage: React.FC = () => {
   const [videoForm, setVideoForm] = useState({ title: '', description: '', video_url: '', thumbnail_url: '', duration_sec: '', difficulty: 'Beginner', published: true });
   const [newsForm, setNewsForm] = useState({ title: '', body: '', link_url: '', is_featured: false, published: true });
 
-  const token = () => localStorage.getItem('auth_token');
+  const token = () => localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
   const headers = () => ({ ...(token() ? { Authorization: `Bearer ${token()}` } : {}) });
 
   const fetchSummary = useCallback(async () => {

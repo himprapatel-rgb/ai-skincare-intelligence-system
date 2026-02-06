@@ -6,6 +6,7 @@ import { SkeletonCardGrid } from '../components/Skeleton';
 import { useToast } from '../context/ToastContext';
 import { hapticMedium } from '../utils/haptic';
 import { API_BASE_URL } from '../config';
+import { STORAGE_KEYS } from '../constants/storage';
 import './Recommendations.css';
 
 const SHELF_STORAGE_KEY = 'shelf_products';
@@ -121,7 +122,7 @@ const Recommendations: React.FC = () => {
     try {
       setLoading(true);
       setError(null);
-      const token = localStorage.getItem('auth_token');
+      const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
       // Location-based: pass user country so backend shows affiliate links only for matching marketplace
       const country = typeof navigator !== 'undefined' && navigator.language
         ? (navigator.language.split('-')[1] || navigator.language.slice(0, 2) || '').toUpperCase() || undefined

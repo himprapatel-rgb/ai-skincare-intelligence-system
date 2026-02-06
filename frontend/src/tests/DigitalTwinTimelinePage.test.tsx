@@ -1,6 +1,7 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { STORAGE_KEYS } from "../constants/storage";
 import DigitalTwinTimelinePage from "../pages/DigitalTwinTimelinePage";
 
 describe("DigitalTwinTimelinePage", () => {
@@ -9,7 +10,7 @@ describe("DigitalTwinTimelinePage", () => {
   beforeEach(() => {
     fetchMock.mockReset();
     globalThis.fetch = fetchMock as unknown as typeof fetch;
-    localStorage.setItem("auth_token", "token");
+    localStorage.setItem(STORAGE_KEYS.AUTH_TOKEN, "token");
   });
 
   afterEach(() => {

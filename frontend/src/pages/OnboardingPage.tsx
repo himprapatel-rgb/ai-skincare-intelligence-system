@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { IconSparkles, IconScan, IconCheck } from '../components/Icons';
 import { ConfirmModal } from '../components/ConfirmModal';
 import { API_BASE_URL } from '../config';
+import { STORAGE_KEYS } from '../constants/storage';
 import './OnboardingPage.css';
 
 const ONBOARDING_PROGRESS_KEY = 'onboarding_progress';
@@ -111,7 +112,7 @@ const OnboardingPage: React.FC = () => {
     setLoading(true);
     setError('');
     try {
-      const token = localStorage.getItem('auth_token');
+      const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
       const payload = {
         goals: formData.concerns.slice(0, 3).map((c) => c.toLowerCase().replace(/\s+/g, '_')),
         concerns: formData.concerns.map((c) => c.toLowerCase().replace(/\s+/g, '_')),
@@ -151,7 +152,7 @@ const OnboardingPage: React.FC = () => {
     setLoading(true);
     setError('');
     try {
-      const token = localStorage.getItem('auth_token');
+      const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
       const payload = {
         goals: formData.concerns.map((c) => c.toLowerCase().replace(/\s+/g, '_')),
         concerns: formData.concerns.map((c) => c.toLowerCase().replace(/\s+/g, '_')),

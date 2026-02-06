@@ -1,8 +1,8 @@
 /**
- * Error Boundary Component (Task 375)
- * Catches JavaScript errors anywhere in child component tree
+ * Error Boundary – catches React errors and shows a friendly recovery UI.
  */
 import { Component, ErrorInfo, ReactNode } from 'react';
+import './ErrorBoundary.css';
 
 interface Props {
   children: ReactNode;
@@ -104,7 +104,6 @@ class ErrorBoundary extends Component<Props, State> {
               </details>
             )}
 
-            {/* Task 355: Contact support */}
             <p className="error-support">
               If the problem persists, please{' '}
               <a 
@@ -114,103 +113,6 @@ class ErrorBoundary extends Component<Props, State> {
               </a>
             </p>
           </div>
-
-          <style>{`
-            .error-boundary-fallback {
-              min-height: 100vh;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              padding: 24px;
-              background: #f8fafc;
-            }
-            .error-content {
-              max-width: 500px;
-              text-align: center;
-              background: white;
-              padding: 40px;
-              border-radius: 16px;
-              box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            }
-            .error-icon {
-              font-size: 48px;
-              margin-bottom: 16px;
-            }
-            .error-content h2 {
-              color: #1e293b;
-              margin-bottom: 12px;
-            }
-            .error-content p {
-              color: #64748b;
-              margin-bottom: 24px;
-            }
-            .error-suggestions {
-              text-align: left;
-              background: #f1f5f9;
-              padding: 16px;
-              border-radius: 8px;
-              margin-bottom: 24px;
-            }
-            .error-suggestions h4 {
-              margin: 0 0 12px;
-              color: #475569;
-            }
-            .error-suggestions ol {
-              margin: 0;
-              padding-left: 20px;
-              color: #64748b;
-            }
-            .error-suggestions li {
-              margin-bottom: 8px;
-            }
-            .error-actions {
-              display: flex;
-              gap: 12px;
-              justify-content: center;
-              margin-bottom: 24px;
-            }
-            .error-actions button {
-              padding: 12px 24px;
-              border-radius: 8px;
-              font-weight: 600;
-              cursor: pointer;
-              border: none;
-            }
-            .error-actions .btn-primary {
-              background: #3b82f6;
-              color: white;
-            }
-            .error-actions .btn-secondary {
-              background: #e2e8f0;
-              color: #475569;
-            }
-            .error-details {
-              text-align: left;
-              margin-top: 24px;
-              padding: 16px;
-              background: #fef2f2;
-              border-radius: 8px;
-              font-size: 12px;
-            }
-            .error-details summary {
-              cursor: pointer;
-              color: #991b1b;
-              font-weight: 600;
-            }
-            .error-details pre {
-              margin-top: 12px;
-              white-space: pre-wrap;
-              word-break: break-all;
-              color: #7f1d1d;
-            }
-            .error-support {
-              font-size: 14px;
-              color: #94a3b8;
-            }
-            .error-support a {
-              color: #3b82f6;
-            }
-          `}</style>
         </div>
       );
     }

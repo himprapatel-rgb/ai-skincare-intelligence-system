@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { API_BASE_URL, getUploadFullUrl } from '../config';
+import { STORAGE_KEYS } from '../constants/storage';
 import { IconUpload } from './Icons';
 
 interface AdminImageUploadProps {
@@ -29,7 +30,7 @@ export const AdminImageUpload: React.FC<AdminImageUploadProps> = ({
     setError(null);
     setUploading(true);
     try {
-      const token = localStorage.getItem('auth_token');
+      const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
       const formData = new FormData();
       formData.append('file', file);
       const res = await fetch(`${API_BASE_URL}/admin/upload-image`, {

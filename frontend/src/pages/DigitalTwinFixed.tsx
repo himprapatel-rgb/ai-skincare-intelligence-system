@@ -8,9 +8,9 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { BackButton } from '../components/BackButton';
 import { usePageTitle } from '../hooks/usePageTitle';
-import { API_BASE_URL } from '../config';
 import { api } from '../services/api';
-import { IconSparkles, IconCalendar, IconTrendingUp } from '../components/Icons';
+import { IconSparkles, IconCalendar } from '../components/Icons';
+import DigitalTwinTimelinePage from './DigitalTwinTimelinePage';
 import '../components/digital-twin/styles/digital-twin.css';
 
 const DigitalTwinFixed: React.FC = () => {
@@ -36,7 +36,7 @@ const DigitalTwinFixed: React.FC = () => {
     setHasError(false);
 
     try {
-      const response = await api.get(`${API_BASE_URL}/digital-twin/query?days=30`);
+      const response = await api.get('/digital-twin/query?limit=50');
       
       if (response.data && response.data.snapshots && response.data.snapshots.length > 0) {
         setHasData(true);
@@ -214,21 +214,8 @@ const DigitalTwinFixed: React.FC = () => {
     );
   }
 
-  // If we have data, show the full page (to be implemented)
-  return (
-    <div className="app-page digital-twin-page">
-      <header className="app-header-card">
-        <BackButton />
-        <h1>Digital Twin</h1>
-        <p className="app-header-subtitle">Your skin's evolution</p>
-      </header>
-      <div className="app-page-content">
-        <p style={{ padding: '40px', textAlign: 'center', color: '#64748b' }}>
-          Digital Twin data loaded successfully! (Full UI coming soon)
-        </p>
-      </div>
-    </div>
-  );
+  // When we have data, show the full timeline UI
+  return <DigitalTwinTimelinePage />;
 };
 
 export default DigitalTwinFixed;

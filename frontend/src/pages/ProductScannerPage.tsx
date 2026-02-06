@@ -31,6 +31,7 @@ import {
   CameraPermissionStatus,
   CameraCapabilities
 } from '../utils/cameraUtils';
+import { STORAGE_KEYS } from '../constants/storage';
 import './ProductScannerPage.css';
 
 import { API_BASE_URL } from '../config';
@@ -498,7 +499,7 @@ const ProductScannerPage: React.FC<ProductScannerPageProps> = ({ embedded = fals
       });
       
       if (response.status === 401) {
-        sessionStorage.setItem('session_expired_redirect', '1');
+        sessionStorage.setItem(STORAGE_KEYS.SESSION_EXPIRED_REDIRECT, '1');
         setError('Your session expired. Please sign in again.');
         toast.error('Your session expired. Please sign in again.');
         return;

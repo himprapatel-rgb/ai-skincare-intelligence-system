@@ -8,6 +8,7 @@ Created: December 6, 2025
 """
 
 import hashlib
+import io
 import json
 import logging
 import os
@@ -16,6 +17,7 @@ from datetime import datetime
 from typing import List, Optional
 
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
+from PIL import Image
 from sqlalchemy.orm import Session
 
 from app.config import settings
@@ -42,7 +44,14 @@ logger = logging.getLogger(__name__)
 
 ALLOWED_IMAGE_TYPES = {"image/jpeg", "image/png", "image/webp"}
 MAX_IMAGE_SIZE = 5 * 1024 * 1024  # 5 MB
+MAX_IMAGE_DIMENSION = 4096  # max width or height (prevents decompression bombs)
 SCAN_MEDIA_ROOT = "media/face_scans"  # adjust if you have a different media root
+
+# Magic bytes for strict validation (content-type can be spoofed)
+_MAGIC_JPEG = b"\xff\xd8\xff"
+_MAGIC_PNG = b"\x89PNG\r\n\x1a\n"
+_MAGIC_WEBP_RIFF = b"RIFF"
+_MAGIC_WEBP_WEBP = b"WEBP"  # at offset 8
 
 
 # ---------- Helper functions ----------
@@ -86,6 +95,54 @@ def _get_user_scan_or_404(db: Session, scan_id: str, user: Optional[User]) -> Sc
     return scan
 
 
+def _validate_magic_bytes(contents: bytes, content_type: str) -> None:
+    """Raise HTTPException if magic bytes do not match claimed content type."""
+    if content_type == "image/jpeg":
+        if not contents.startswith(_MAGIC_JPEG):
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Invalid image: not a valid JPEG file.",
+            )
+    elif content_type == "image/png":
+        if not contents.startswith(_MAGIC_PNG):
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Invalid image: not a valid PNG file.",
+            )
+    elif content_type == "image/webp":
+        if len(contents) < 12 or not contents.startswith(_MAGIC_WEBP_RIFF) or contents[8:12] != _MAGIC_WEBP_WEBP:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Invalid image: not a valid WEBP file.",
+            )
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Unsupported image type. Allowed: JPEG, PNG, WEBP.",
+        )
+
+
+def _validate_image_dimensions(contents: bytes, content_type: str) -> None:
+    """Validate image can be opened and dimensions are within limits. Prevents decompression bombs."""
+    try:
+        with Image.open(io.BytesIO(contents)) as img:
+            w, h = img.size  # read size before verify(); verify() invalidates the image
+            if w > MAX_IMAGE_DIMENSION or h > MAX_IMAGE_DIMENSION:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail=f"Image dimensions too large. Maximum side is {MAX_IMAGE_DIMENSION}px.",
+                )
+            img.verify()  # detect truncated/corrupt images
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.warning("Image validation failed: %s", e)
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid or corrupted image file.",
+        )
+
+
 async def _validate_and_save_image(
     scan: ScanSession,
     image: UploadFile,
@@ -105,6 +162,16 @@ async def _validate_and_save_image(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Image too large. Maximum size is {MAX_IMAGE_SIZE // (1024 * 1024)} MB.",
         )
+    if len(contents) < 12:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid image: file too small.",
+        )
+
+    # Strict validation: magic bytes must match claimed type (prevents spoofing)
+    _validate_magic_bytes(contents, image.content_type)
+    # Validate dimensions and that image is not corrupt (prevents decompression bombs)
+    _validate_image_dimensions(contents, image.content_type)
     
     # Build safe file path (use "guest" folder for unauthenticated users)
     ext = {"image/jpeg": "jpg", "image/png": "png", "image/webp": "webp"}.get(image.content_type, "jpg")

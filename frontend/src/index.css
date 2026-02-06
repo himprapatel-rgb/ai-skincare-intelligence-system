@@ -13,6 +13,7 @@
 @import './styles/app-style.css';
 @import './styles/app-mobile-global.css';
 @import './styles/best-apps-mobile.css';
+@import './styles/mobile-redesign.css';
 @import './components/Skeleton.css';
 
 /* CSS Variables */

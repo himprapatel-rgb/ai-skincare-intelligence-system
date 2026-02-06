@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { API_BASE_URL } from '../config';
+import { STORAGE_KEYS } from '../constants/storage';
 import './AdminUsersPage.css';
 
 type AdminUser = {
@@ -26,7 +27,7 @@ const AdminUsersPage: React.FC = () => {
   const fetchUsers = useCallback(async (signal?: AbortSignal) => {
     try {
       setIsLoading(true);
-      const token = localStorage.getItem('auth_token');
+      const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
       const params = new URLSearchParams();
       if (search.trim()) params.set('search', search.trim());
       const response = await fetch(`${API_BASE_URL}/admin/users?${params.toString()}`, {
@@ -73,7 +74,7 @@ const AdminUsersPage: React.FC = () => {
 
   const updateUser = async (userId: number, updates: Partial<AdminUser>) => {
     try {
-      const token = localStorage.getItem('auth_token');
+      const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
       const response = await fetch(`${API_BASE_URL}/admin/users/${userId}`, {
         method: 'PATCH',
         headers: {

@@ -7,6 +7,7 @@ import {
 } from '../components/Icons';
 import { useToast } from '../context/ToastContext';
 import { API_BASE_URL } from '../config';
+import { STORAGE_KEYS } from '../constants/storage';
 import './CommonStyles.css';
 import './SkinGoalsPage.css';
 
@@ -77,7 +78,7 @@ const SkinGoalsPage: React.FC = () => {
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      const token = localStorage.getItem('auth_token');
+      const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
       const selectedGoals = goals.filter(g => g.selected).sort((a, b) => a.priority - b.priority);
       
       // Create/update goals via API

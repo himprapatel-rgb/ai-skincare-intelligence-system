@@ -5,6 +5,7 @@
 
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { API_BASE_URL } from '../config';
+import { STORAGE_KEYS } from '../constants/storage';
 
 // Cache configuration
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
@@ -35,7 +36,7 @@ class OptimizedApiClient {
     // Request interceptor - add auth token
     this.client.interceptors.request.use(
       (config) => {
-        const token = localStorage.getItem('auth_token');
+        const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
         if (token) {
           config.headers.Authorization = `Bearer ${token}`;
         }
@@ -72,9 +73,9 @@ class OptimizedApiClient {
       async (error) => {
         // Handle session expiration
         if (error.response?.status === 401) {
-          localStorage.removeItem('auth_token');
+          localStorage.removeItem(STORAGE_KEYS.AUTH_TOKEN);
           if (!window.location.pathname.startsWith('/auth')) {
-            sessionStorage.setItem('auth_return_url', window.location.pathname);
+            sessionStorage.setItem(STORAGE_KEYS.AUTH_RETURN_URL, window.location.pathname);
             window.location.href = '/auth';
           }
         }
@@ -85,7 +86,7 @@ class OptimizedApiClient {
   }
 
   private getCacheKey(config: AxiosRequestConfig): string {
-    const token = localStorage.getItem('auth_token') || '';
+    const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN) || '';
     return `${config.method}:${config.url}:${JSON.stringify(config.params)}:${token}`;
   }
 

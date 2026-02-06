@@ -4,6 +4,7 @@
 // Uses same API as production (config.ts) so all viewports share one backend.
 
 import { API_BASE_URL } from '../config';
+import { STORAGE_KEYS } from '../constants/storage';
 
 const DEV_TEST_USER = {
   email: 'himanshu@test.com',
@@ -22,7 +23,7 @@ export async function devAutoLogin(): Promise<boolean> {
   }
 
   // Check if already logged in (same key as AuthContext / api.ts)
-  const existingToken = localStorage.getItem('auth_token');
+  const existingToken = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
   if (existingToken) {
     console.log('✅ Already logged in');
     return true;
@@ -51,8 +52,8 @@ export async function devAutoLogin(): Promise<boolean> {
       return false;
     }
 
-    localStorage.setItem('auth_token', newToken);
-    if (userData) localStorage.setItem('user', JSON.stringify(userData));
+    localStorage.setItem(STORAGE_KEYS.AUTH_TOKEN, newToken);
+    if (userData) localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(userData));
 
     console.log('✅ Auto-login successful! Logged in as:', DEV_TEST_USER.name);
     return true;

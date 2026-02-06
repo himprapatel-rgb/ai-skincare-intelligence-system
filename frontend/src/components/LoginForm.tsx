@@ -7,13 +7,14 @@ import { LoadingSpinner } from './LoadingSpinner';
 import { GoogleSignInButton } from './GoogleSignInButton';
 import { IconEye, IconEyeOff } from './Icons';
 import { API_BASE_URL } from '../config';
+import { STORAGE_KEYS } from '../constants/storage';
 
 interface LoginFormProps {
   onSuccess: () => void;
   onSwitchToRegister: () => void;
 }
 
-const REMEMBER_EMAIL_KEY = 'login_remember_email';
+const REMEMBER_EMAIL_KEY = STORAGE_KEYS.REMEMBER_EMAIL;
 
 /** Map API error strings to user-friendly auth messages (Task 222) */
 function toFriendlyAuthError(detail: string, status?: number): string {
@@ -114,7 +115,9 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegis
           setShowVerifyLink(true);
         }
       } else if (err instanceof Error) {
-        setError(toFriendlyAuthError(err.message) || err.message);
+        const message = toFriendlyAuthError(err.message) || err.message;
+        setError(message);
+        if (err.message.toLowerCase().includes('verify')) setShowVerifyLink(true);
       } else {
         setError('Login failed. Please try again.');
       }

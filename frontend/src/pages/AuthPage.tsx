@@ -7,6 +7,7 @@ import { IconCamera, IconSparkles, IconBarChart } from '../components/Icons';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { useToast } from '../context/ToastContext';
 import { API_BASE_URL } from '../config';
+import { STORAGE_KEYS } from '../constants/storage';
 import './AuthPage.css';
 
 const FOCUSABLE = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
@@ -28,8 +29,8 @@ export const AuthPage: React.FC = () => {
   }, [API_URL]);
 
   useEffect(() => {
-    if (sessionStorage.getItem('session_expired_redirect')) {
-      sessionStorage.removeItem('session_expired_redirect');
+    if (sessionStorage.getItem(STORAGE_KEYS.SESSION_EXPIRED_REDIRECT)) {
+      sessionStorage.removeItem(STORAGE_KEYS.SESSION_EXPIRED_REDIRECT);
       toast.error('Your session expired. Please sign in again.');
     }
   }, [toast]);
@@ -69,10 +70,10 @@ export const AuthPage: React.FC = () => {
   }, [mode]);
 
   const handleAuthSuccess = () => {
-    const returnUrl = sessionStorage.getItem('auth_return_url');
+    const returnUrl = sessionStorage.getItem(STORAGE_KEYS.AUTH_RETURN_URL);
     if (returnUrl) {
-      sessionStorage.removeItem('auth_return_url');
-      sessionStorage.removeItem('session_expired_redirect');
+      sessionStorage.removeItem(STORAGE_KEYS.AUTH_RETURN_URL);
+      sessionStorage.removeItem(STORAGE_KEYS.SESSION_EXPIRED_REDIRECT);
       navigate(returnUrl);
       return;
     }

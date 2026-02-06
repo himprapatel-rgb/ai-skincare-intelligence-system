@@ -152,6 +152,12 @@ class Settings(BaseSettings):
         default="Beauty", description="PA-API SearchIndex for product category (e.g. Beauty)"
     )
 
+    # Rate limiting (multi-worker / multi-instance): when set, scan rate limit uses Redis
+    REDIS_URL: str | None = Field(
+        default=None,
+        description="Redis URL for shared rate limiting (e.g. redis://default:pass@host:6379). If unset, in-memory per-process limit is used.",
+    )
+
     # Admin access control
     ADMIN_EMAIL_ALLOWLIST: str = Field(
         default="",

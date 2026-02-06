@@ -1,16 +1,10 @@
 import { expect, test } from "@playwright/test";
 
-// Configure longer timeouts for stability
+// Configure longer timeouts for stability. Viewport is set per project in playwright.config (desktop / tablet / mobile).
 test.setTimeout(60000);
 
 const email = process.env.E2E_EMAIL ?? "";
 const password = process.env.E2E_PASSWORD ?? "";
-
-const viewports = [
-  { name: "mobile", width: 375, height: 812 },
-  { name: "tablet", width: 768, height: 1024 },
-  { name: "desktop", width: 1280, height: 800 },
-];
 
 const publicRoutes = [
   "/",
@@ -27,10 +21,14 @@ const protectedRoutes = [
   "/scan",
   "/history",
   "/comparison",
+  "/digital-twin",
+  "/recommendations",
   "/routine-builder",
+  "/favorites",
+  "/myshelf",
+  "/profile",
   "/progress",
   "/export",
-  "/profile",
 ];
 
 async function login(page: import("@playwright/test").Page) {
@@ -98,33 +96,27 @@ async function expectNoHorizontalOverflow(
   }
 }
 
-test.describe("responsive GUI smoke", () => {
-  for (const viewport of viewports) {
-    test.describe(`${viewport.name} viewport`, () => {
-      test.use({ viewport: { width: viewport.width, height: viewport.height } });
+test.describe("responsive GUI smoke (desktop / tablet / mobile)", () => {
+  test("public routes load and have no horizontal overflow", async ({ page }) => {
+    for (const route of publicRoutes) {
+      await page.goto(route);
+      await page.waitForLoadState("domcontentloaded");
+      await expect(page.locator("body")).not.toContainText("Not Found");
+      await expectNoHorizontalOverflow(page, route);
+    }
+  });
 
-      test("public routes are responsive", async ({ page }) => {
-        for (const route of publicRoutes) {
-          await page.goto(route);
-          await page.waitForLoadState("domcontentloaded");
-          await expect(page.locator("body")).not.toContainText("Not Found");
-          await expectNoHorizontalOverflow(page, route);
-        }
-      });
+  test("protected routes load and have no horizontal overflow after login", async ({ page }) => {
+    if (!email || !password) {
+      test.skip(true, "E2E_EMAIL and E2E_PASSWORD must be set");
+    }
+    await login(page);
 
-      test("protected routes are responsive after login", async ({ page }) => {
-        if (!email || !password) {
-          test.skip(true, "E2E_EMAIL and E2E_PASSWORD must be set");
-        }
-        await login(page);
-
-        for (const route of protectedRoutes) {
-          await page.goto(route);
-          await page.waitForLoadState("domcontentloaded");
-          await expect(page.locator("body")).not.toContainText("Not Found");
-          await expectNoHorizontalOverflow(page, route);
-        }
-      });
-    });
-  }
+    for (const route of protectedRoutes) {
+      await page.goto(route);
+      await page.waitForLoadState("domcontentloaded");
+      await expect(page.locator("body")).not.toContainText("Not Found");
+      await expectNoHorizontalOverflow(page, route);
+    }
+  });
 });

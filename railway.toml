@@ -4,7 +4,8 @@ dockerfilePath = "backend/Dockerfile"
 watchPaths = ["/backend/**"]
 
 [deploy]
-startCommand = "python3 /app/backend/scripts/run_migrations.py && uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"
+# Set UVICORN_WORKERS in Railway Variables if you want to override (default 16 for 32 vCPU)
+startCommand = "python3 /app/backend/scripts/run_migrations.py && uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000} --workers ${UVICORN_WORKERS:-16}"
 # healthcheck disabled - can cause premature deploy failure during slow startup
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 10

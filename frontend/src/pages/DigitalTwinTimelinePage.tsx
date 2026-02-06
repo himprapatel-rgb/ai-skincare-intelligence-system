@@ -158,6 +158,8 @@ const DigitalTwinTimelinePage: React.FC = () => {
   };
   const [refreshKey, setRefreshKey] = useState(0);
 
+  const FETCH_TIMEOUT_MS = 15000;
+
   useEffect(() => {
     const fetchSnapshots = async () => {
       try {
@@ -165,16 +167,35 @@ const DigitalTwinTimelinePage: React.FC = () => {
         setHasError(false);
         const API_BASE = apiBase;
         const token = localStorage.getItem('auth_token');
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
         const response = await fetch(`${API_BASE}/digital-twin/query?limit=200`, {
+          signal: controller.signal,
           headers: {
             ...(token ? { Authorization: `Bearer ${token}` } : {}),
           },
         });
+        clearTimeout(timeoutId);
+        if (response.status === 401) {
+          setHasError(true);
+          setSnapshots([]);
+          setInsights(null);
+          setIsLoading(false);
+          return;
+        }
         if (!response.ok) {
           throw new Error('Failed to load digital twin timeline');
         }
-        const data = await response.json();
-        const apiSnapshots: ApiSnapshot[] = data.snapshots || [];
+        let data: { snapshots?: ApiSnapshot[]; timeline?: { summary_insights?: ApiInsights }; insights?: ApiInsights };
+        try {
+          data = await response.json();
+        } catch {
+          throw new Error('Invalid response from server');
+        }
+        if (!data || typeof data !== 'object') {
+          data = { snapshots: [] };
+        }
+        const apiSnapshots: ApiSnapshot[] = Array.isArray(data.snapshots) ? data.snapshots : [];
         const mergedInsights: ApiInsights = {
           ...(data.timeline?.summary_insights || {}),
           ...(data.insights || {}),

@@ -32,6 +32,8 @@ We use **traditional agile iterations** (sprints). All iteration artifacts and h
 2. [System Requirements](./01-requirements/SRS-V5.3-External-Pretrained-ML.md)
 3. [Product Backlog](./03-product/Product-Backlog-V5.md)
 
+**Learning the codebase (mobile / web / tablet, login, loading):** [CODEBASE-LEARNING-GUIDE.md](./11-working/CODEBASE-LEARNING-GUIDE.md)
+
 ## 📦 Deployment & Migration
 
 | Document | Description |

@@ -133,14 +133,47 @@ def register(
     return response
 
 
+def _login_record_ip_geo(user_id: int, ip: str) -> None:
+    """Background task: fetch geo for IP and update user + UserAccessLog. Never raises."""
+    import logging
+    from app.database import SessionLocal
+    _log = logging.getLogger(__name__)
+    try:
+        geo = fetch_geolocation(ip)
+        db = SessionLocal()
+        try:
+            user = db.query(User).filter(User.id == user_id).first()
+            if not user:
+                return
+            now = datetime.now(timezone.utc)
+            if hasattr(user, "last_ip_address"):
+                user.last_ip_address = ip
+            if hasattr(user, "last_geolocation"):
+                user.last_geolocation = geo
+            if hasattr(user, "last_seen_at"):
+                user.last_seen_at = now
+            db.add(user)
+            db.add(UserAccessLog(user_id=user_id, ip_address=ip, geolocation=geo))
+            db.commit()
+        finally:
+            db.close()
+    except Exception as e:
+        _log.warning("Login IP/geo logging failed (background): %s", e)
+
+
 @router.post(
     "/login",
     status_code=status.HTTP_200_OK,
     summary="User login",
     description="Authenticate user and return access token",
 )
-def login(request: Request, user_data: UserLogin, db: Session = Depends(get_db)):
-    """Authenticate user and return access token. Rate limited per IP."""
+def login(
+    request: Request,
+    user_data: UserLogin,
+    background_tasks: BackgroundTasks,
+    db: Session = Depends(get_db),
+):
+    """Authenticate user and return access token. Rate limited per IP. IP/geo logged in background so login returns fast."""
     check_login_rate_limit(request)
 
     email = user_data.email
@@ -175,28 +208,9 @@ def login(request: Request, user_data: UserLogin, db: Session = Depends(get_db))
             detail="Email not verified. Please verify your email to login. Check your inbox for the verification link or contact support.",
         )
 
-    # Record IP and geolocation at login (non-blocking: never fail login if this errors)
-    import logging as _logging
-    _log = _logging.getLogger(__name__)
-    try:
-        ip = get_client_ip(request)
-        geo = fetch_geolocation(ip)
-        if hasattr(user, "last_ip_address"):
-            user.last_ip_address = ip
-        if hasattr(user, "last_geolocation"):
-            user.last_geolocation = geo
-        if hasattr(user, "last_seen_at"):
-            user.last_seen_at = datetime.now(timezone.utc)
-        db.add(user)
-        db.add(UserAccessLog(user_id=user.id, ip_address=ip, geolocation=geo))
-        db.commit()
-        db.refresh(user)
-    except Exception as e:
-        _log.warning("Login IP/geo logging failed (login continues): %s", e)
-        try:
-            db.rollback()
-        except Exception:
-            pass
+    # Return token immediately; record IP/geo in background (was blocking login by up to ~2s for geo API)
+    ip = get_client_ip(request)
+    background_tasks.add_task(_login_record_ip_geo, user.id, ip)
 
     token = create_access_token(
         data={"sub": user.email},

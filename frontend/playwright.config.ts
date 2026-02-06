@@ -1,4 +1,4 @@
-import { defineConfig } from "@playwright/test";
+import { defineConfig, devices } from "@playwright/test";
 import { config as loadEnv } from "dotenv";
 
 // Load E2E credentials from .env.e2e (copy from .env.e2e.example)
@@ -9,6 +9,13 @@ const baseURL =
 
 const useLocal = baseURL.includes("localhost");
 
+// Match frontend constants/viewport.ts: mobile ≤768, tablet 769–1024, desktop ≥1025
+const viewports = {
+  mobile: { width: 375, height: 812 },
+  tablet: { width: 800, height: 1024 },
+  desktop: { width: 1280, height: 800 },
+} as const;
+
 export default defineConfig({
   testDir: "./tests/e2e",
   timeout: 90_000,
@@ -16,10 +23,13 @@ export default defineConfig({
   use: {
     baseURL,
     headless: true,
-    viewport: { width: 1280, height: 800 },
-    // Playwright uses its own Chromium (npx playwright install). NOT Google Chrome – no profile/permission issues.
+    viewport: viewports.desktop,
   },
-  // Task 10000: auto-start dev server when testing locally
+  projects: [
+    { name: "desktop", use: { ...devices["Desktop Chrome"], viewport: viewports.desktop } },
+    { name: "tablet", use: { ...devices["Desktop Chrome"], viewport: viewports.tablet } },
+    { name: "mobile", use: { ...devices["Pixel 5"], viewport: viewports.mobile } },
+  ],
   webServer: useLocal
     ? {
         command: "npm run dev",

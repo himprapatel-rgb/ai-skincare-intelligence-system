@@ -98,7 +98,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-app.add_middleware(GZipMiddleware, minimum_size=1000)
+app.add_middleware(GZipMiddleware, minimum_size=500)
 
 # TrustedHostMiddleware removed: Starlette rejects bare * and *.domain patterns.
 # CORS + explicit origins provide adequate protection for Railway deployment.

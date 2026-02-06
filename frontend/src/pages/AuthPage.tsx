@@ -21,6 +21,12 @@ export const AuthPage: React.FC = () => {
 
   usePageTitle(mode === 'register' ? 'Register' : 'Sign In');
 
+  // Wake backend on auth page load so cold start happens while user types (login then feels fast)
+  useEffect(() => {
+    const base = API_URL.replace(/\/api\/v1\/?$/, '');
+    fetch(`${base}/api/health`, { method: 'GET', keepalive: true }).catch(() => {});
+  }, [API_URL]);
+
   useEffect(() => {
     if (sessionStorage.getItem('session_expired_redirect')) {
       sessionStorage.removeItem('session_expired_redirect');
@@ -62,7 +68,7 @@ export const AuthPage: React.FC = () => {
     return () => el.removeEventListener('keydown', onKeyDown);
   }, [mode]);
 
-  const handleAuthSuccess = async () => {
+  const handleAuthSuccess = () => {
     const returnUrl = sessionStorage.getItem('auth_return_url');
     if (returnUrl) {
       sessionStorage.removeItem('auth_return_url');
@@ -70,16 +76,13 @@ export const AuthPage: React.FC = () => {
       navigate(returnUrl);
       return;
     }
-    try {
-      await axios.get(`${API_URL}/profile`);
-      navigate('/dashboard');
-    } catch (err: unknown) {
+    // Navigate immediately so user sees "logged in" fast; check profile after and redirect to onboarding if needed
+    navigate('/dashboard');
+    axios.get(`${API_URL}/profile`).catch((err: unknown) => {
       if (axios.isAxiosError(err) && err.response?.status === 404) {
         navigate('/onboarding');
-      } else {
-        navigate('/dashboard');
       }
-    }
+    });
   };
   return (
     <div className="auth-page app-page">

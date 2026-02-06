@@ -17,11 +17,12 @@ if settings.DATABASE_URL.startswith("sqlite"):
         connect_args={"check_same_thread": False},
     )
 else:
+    # Pool sized for many workers (e.g. UVICORN_WORKERS=16); each request may hold a connection
     engine = create_engine(
         settings.DATABASE_URL,
         pool_pre_ping=True,
-        pool_size=10,
-        max_overflow=20,
+        pool_size=20,
+        max_overflow=30,
     )
 
 # Create session factory

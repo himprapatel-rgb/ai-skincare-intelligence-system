@@ -18,16 +18,14 @@ export default defineConfig(({ mode }) => ({
       output: {
         manualChunks(id) {
           if (!id.includes('node_modules')) return;
-          // Split large vendor chunks for better caching
-          if (id.includes('node_modules')) {
-            if (id.includes('@mediapipe')) return 'mediapipe';
-            if (id.includes('@tensorflow')) return 'tensorflow';
-            if (id.includes('recharts')) return 'charts';
-            if (id.includes('react-router')) return 'router';
-            if (id.includes('axios')) return 'http';
-            // Default vendor chunk for smaller libs
-            return 'vendor';
-          }
+          if (id.includes('@mediapipe')) return 'mediapipe';
+          if (id.includes('@tensorflow')) return 'tensorflow';
+          if (id.includes('recharts')) return 'recharts';
+          if (id.includes('three')) return 'three';
+          if (id.includes('jspdf') || id.includes('html2canvas')) return 'export-pdf';
+          if (id.includes('react-router')) return 'router';
+          if (id.includes('axios')) return 'http';
+          return 'vendor';
         },
       },
     },

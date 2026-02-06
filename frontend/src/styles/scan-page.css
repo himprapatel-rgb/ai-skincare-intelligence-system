@@ -1,0 +1,256 @@
+.scan-camera-section {
+  position: relative;
+  width: 100%;
+  height: auto; /* Adjust as needed */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.camera-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 75%; /* Aspect ratio 4:3, adjust as needed */
+  background-color: var(--color-bg-secondary);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.camera-video,
+.camera-overlay,
+.scan-3d-view {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.scan-video-hidden-for-3d {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.scan-3d-view {
+  z-index: 2; /* Ensure 3D view is above video/overlay */
+  background-color: var(--color-bg-secondary); /* Match camera container background */
+}
+
+.scan-3d-view-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.scan-3d-toggle-wrap {
+  margin-top: var(--space-md);
+  margin-bottom: var(--space-lg);
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.scan-3d-toggle {
+  background-color: var(--color-bg-tertiary);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.scan-3d-toggle:hover {
+  background-color: var(--color-bg-secondary);
+  border-color: var(--color-primary);
+}
+
+.scan-3d-toggle.active {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  border-color: var(--color-primary);
+}
+
+.scan-3d-toggle.active:hover {
+  background-color: var(--color-primary-dark);
+}
+
+/* Other existing styles for ScanPage can remain below */
+.scan-page-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+.scan-page-title {
+  text-align: center;
+  font-size: var(--font-size-h3);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-lg);
+}
+
+.scan-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xl);
+  padding: var(--space-xl);
+  background-color: var(--color-bg-card);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+}
+
+.scan-upload-options {
+  display: flex;
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+}
+
+.scan-upload-btn {
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-bg-tertiary);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.scan-upload-btn.active {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  border-color: var(--color-primary);
+}
+
+.scan-upload-btn:hover:not(.active) {
+  background-color: var(--color-bg-secondary);
+  color: var(--color-text-primary);
+}
+
+.scan-image-preview {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-lg);
+  margin-top: var(--space-lg);
+}
+
+.scan-btn-primary {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  padding: var(--space-md) var(--space-lg);
+  border-radius: var(--radius-full);
+  border: none;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.scan-btn-primary:hover:not(:disabled) {
+  background-color: var(--color-primary-dark);
+}
+
+.scan-btn-primary:disabled {
+  background-color: var(--color-bg-disabled);
+  cursor: not-allowed;
+}
+
+.tips-for-best-results {
+  background-color: var(--color-bg-secondary);
+  padding: var(--space-lg);
+  border-radius: var(--radius-xl);
+  margin-top: var(--space-xl);
+}
+
+.tips-for-best-results h4 {
+  font-size: var(--font-size-md);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-md);
+}
+
+.tips-for-best-results ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tips-for-best-results li {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-xs);
+  display: flex;
+  align-items: flex-start;
+}
+
+.tips-for-best-results li::before {
+  content: "•";
+  color: var(--color-primary);
+  margin-right: var(--space-xs);
+}
+
+/* Face guide overlay */
+.face-guide-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 1; /* Above video, below 3D mesh */
+}
+
+.face-oval {
+  width: 70%;
+  padding-bottom: 90%; /* Adjust for oval shape */
+  border: 2px dashed var(--color-primary);
+  border-radius: 50%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.face-oval::before {
+  content: "Align your face here";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+  text-align: center;
+}
+
+.capture-btn {
+  margin-top: var(--space-lg);
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+  .camera-container {
+    padding-bottom: 56.25%; /* 16:9 aspect ratio for larger screens */
+  }
+  .face-oval {
+    width: 50%;
+    padding-bottom: 60%;
+  }
+}
+
+@media (min-width: 1024px) {
+  .scan-camera-section {
+    max-width: 700px; /* Limit width on desktop */
+  }
+}

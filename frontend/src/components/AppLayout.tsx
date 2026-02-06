@@ -7,6 +7,7 @@ import { SOCIAL_LINKS } from '../config';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { BackToTop } from './BackToTop';
+import LoadingScreen from './LoadingScreen';
 import { RouteLoadingBar } from './RouteLoadingBar';
 import { OfflineBanner } from './OfflineBanner';
 import { AddToHomeScreenPrompt } from './AddToHomeScreenPrompt';
@@ -22,7 +23,11 @@ type AppLayoutProps = {
 const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, isAuthenticated, logout, isLoading: authLoading } = useAuth();
+
+  if (authLoading) {
+    return <LoadingScreen message="Loading" fullscreen />;
+  }
   const toast = useToast();
   const notificationCtx = useNotificationsOptional();
   const notificationUnread = (isAuthenticated && notificationCtx?.unreadCount) ? notificationCtx.unreadCount : 0;
@@ -191,13 +196,13 @@ const displayName = nameParts.length > 1
           {/* Desktop Navigation */}
           <nav className="app-nav app-nav-desktop" aria-label="Main navigation">
             <div className="app-nav-links">
-              <Link className={`app-nav-link${location.pathname === '/' ? ' active' : ''}`} to="/" aria-current={location.pathname === '/' ? 'page' : undefined}>Home</Link>
+              <Link className={`app-nav-link${location.pathname === '/' ? ' active' : ''}`} to="/" aria-current={location.pathname === '/' ? 'page' : undefined} onMouseEnter={() => { void import('../pages/HomePage'); }}>Home</Link>
               <Link className={`app-nav-link${location.pathname.startsWith('/scan') ? ' active' : ''}`} to="/scan" title="Scan face or product" aria-current={location.pathname.startsWith('/scan') ? 'page' : undefined} onMouseEnter={() => void import('../pages/ScanPage')}>Scan</Link>
               <Link className={`app-nav-link${location.pathname.startsWith('/dashboard') ? ' active' : ''}`} to="/dashboard" title="View your dashboard and insights" aria-current={location.pathname.startsWith('/dashboard') ? 'page' : undefined} onMouseEnter={() => void import('../pages/DashboardPage')}>Dashboard</Link>
-              <Link className={`app-nav-link${location.pathname.startsWith('/digital-twin') ? ' active' : ''}`} to="/digital-twin" aria-current={location.pathname.startsWith('/digital-twin') ? 'page' : undefined}>Digital Twin</Link>
-              <Link className={`app-nav-link${location.pathname.startsWith('/about') ? ' active' : ''}`} to="/about" aria-current={location.pathname.startsWith('/about') ? 'page' : undefined}>About</Link>
+              <Link className={`app-nav-link${location.pathname.startsWith('/digital-twin') ? ' active' : ''}`} to="/digital-twin" aria-current={location.pathname.startsWith('/digital-twin') ? 'page' : undefined} onMouseEnter={() => { void import('../pages/DigitalTwinTimelinePage'); }}>Digital Twin</Link>
+              <Link className={`app-nav-link${location.pathname.startsWith('/about') ? ' active' : ''}`} to="/about" aria-current={location.pathname.startsWith('/about') ? 'page' : undefined} onMouseEnter={() => { void import('../pages/AboutPage'); }}>About</Link>
               {isAuthenticated && user?.is_admin && (
-                <Link className={`app-nav-link${location.pathname.startsWith('/admin') ? ' active' : ''}`} to="/admin" aria-current={location.pathname.startsWith('/admin') ? 'page' : undefined}>Admin</Link>
+                <Link className={`app-nav-link${location.pathname.startsWith('/admin') ? ' active' : ''}`} to="/admin" aria-current={location.pathname.startsWith('/admin') ? 'page' : undefined} onMouseEnter={() => { void import('../pages/AdminDashboardPage'); }}>Admin</Link>
               )}
             </div>
             
@@ -237,11 +242,11 @@ const displayName = nameParts.length > 1
                           </div>
                         </div>
                         <div className="app-nav-dropdown-divider" />
-                        <Link to="/profile" className="app-nav-dropdown-item">
+                        <Link to="/profile" className="app-nav-dropdown-item" onMouseEnter={() => { void import('../pages/ProfileSettingsPage'); }}>
                           <IconUser size={18} strokeWidth={2} />
                           <span>My Profile</span>
                         </Link>
-                        <Link to="/profile?tab=settings" className="app-nav-dropdown-item">
+                        <Link to="/profile?tab=settings" className="app-nav-dropdown-item" onMouseEnter={() => { void import('../pages/ProfileSettingsPage'); }}>
                           <IconSettings size={18} strokeWidth={2} />
                           <span>Settings</span>
                         </Link>
@@ -264,8 +269,8 @@ const displayName = nameParts.length > 1
                 </>
               ) : (
                 <>
-                  <Link className="app-nav-link" to="/auth">Sign In</Link>
-                  <Link className="app-nav-cta-secondary" to="/auth?mode=register">Get Started</Link>
+                  <Link className="app-nav-link" to="/auth" onMouseEnter={() => { void import('../pages/AuthPage'); }}>Sign In</Link>
+                  <Link className="app-nav-cta-secondary" to="/auth?mode=register" onMouseEnter={() => { void import('../pages/AuthPage'); }}>Get Started</Link>
                 </>
               )}
               
@@ -313,13 +318,13 @@ const displayName = nameParts.length > 1
         <nav className={`app-nav-mobile${mobileMenuOpen ? ' open' : ''}`} aria-label="Mobile navigation">
           <div className="app-nav-mobile-scroll">
             <div className="app-nav-mobile-links">
-              <Link className={`app-nav-mobile-link${location.pathname === '/' ? ' active' : ''}`} to="/">Home</Link>
-              <Link className={`app-nav-mobile-link${location.pathname.startsWith('/scan') && !location.search.includes('mode=product') ? ' active' : ''}`} to="/scan">Scan</Link>
-              <Link className={`app-nav-mobile-link${location.pathname.startsWith('/dashboard') ? ' active' : ''}`} to="/dashboard">Dashboard</Link>
-              <Link className={`app-nav-mobile-link${location.pathname.startsWith('/digital-twin') ? ' active' : ''}`} to="/digital-twin">Digital Twin</Link>
-              <Link className={`app-nav-mobile-link${location.pathname.startsWith('/about') ? ' active' : ''}`} to="/about">About</Link>
+              <Link className={`app-nav-mobile-link${location.pathname === '/' ? ' active' : ''}`} to="/" onTouchStart={() => { void import('../pages/HomePage'); }}>Home</Link>
+              <Link className={`app-nav-mobile-link${location.pathname.startsWith('/scan') && !location.search.includes('mode=product') ? ' active' : ''}`} to="/scan" onTouchStart={() => { void import('../pages/ScanPage'); }}>Scan</Link>
+              <Link className={`app-nav-mobile-link${location.pathname.startsWith('/dashboard') ? ' active' : ''}`} to="/dashboard" onTouchStart={() => { void import('../pages/DashboardPage'); }}>Dashboard</Link>
+              <Link className={`app-nav-mobile-link${location.pathname.startsWith('/digital-twin') ? ' active' : ''}`} to="/digital-twin" onTouchStart={() => { void import('../pages/DigitalTwinTimelinePage'); }}>Digital Twin</Link>
+              <Link className={`app-nav-mobile-link${location.pathname.startsWith('/about') ? ' active' : ''}`} to="/about" onTouchStart={() => { void import('../pages/AboutPage'); }}>About</Link>
               {isAuthenticated && user?.is_admin && (
-                <Link className={`app-nav-mobile-link${location.pathname.startsWith('/admin') ? ' active' : ''}`} to="/admin">Admin</Link>
+                <Link className={`app-nav-mobile-link${location.pathname.startsWith('/admin') ? ' active' : ''}`} to="/admin" onTouchStart={() => { void import('../pages/AdminDashboardPage'); }}>Admin</Link>
               )}
 
               {/* Features (expandable) */}
@@ -336,12 +341,12 @@ const displayName = nameParts.length > 1
                   <IconChevronRight size={18} strokeWidth={2} className="chevron" />
                 </button>
                 <div id="mobile-features" className={`app-nav-mobile-sublinks${featuresExpanded ? ' open' : ''}`}>
-                  <Link className={`app-nav-mobile-link sub${location.pathname === '/myshelf' ? ' active' : ''}`} to="/myshelf"><IconPackage size={16} /> My Shelf</Link>
-                  <Link className={`app-nav-mobile-link sub${location.pathname === '/favorites' ? ' active' : ''}`} to="/favorites"><IconHeart size={16} /> Favorites</Link>
-                  <Link className={`app-nav-mobile-link sub${location.pathname.startsWith('/routine-builder') ? ' active' : ''}`} to="/routine-builder">Routine Builder</Link>
-                  <Link className={`app-nav-mobile-link sub${location.pathname.startsWith('/scan') && location.search.includes('mode=product') ? ' active' : ''}`} to="/scan?mode=product">Product Scanner</Link>
-                  <Link className={`app-nav-mobile-link sub${location.pathname === '/recommendations' ? ' active' : ''}`} to="/recommendations">Recommendations</Link>
-                  <Link className={`app-nav-mobile-link sub${location.pathname === '/history' ? ' active' : ''}`} to="/history"><IconHistory size={16} /> History</Link>
+                  <Link className={`app-nav-mobile-link sub${location.pathname === '/myshelf' ? ' active' : ''}`} to="/myshelf" onTouchStart={() => { void import('../pages/MyShelfPage'); }}><IconPackage size={16} /> My Shelf</Link>
+                  <Link className={`app-nav-mobile-link sub${location.pathname === '/favorites' ? ' active' : ''}`} to="/favorites" onTouchStart={() => { void import('../pages/FavoritesPage'); }}><IconHeart size={16} /> Favorites</Link>
+                  <Link className={`app-nav-mobile-link sub${location.pathname.startsWith('/routine-builder') ? ' active' : ''}`} to="/routine-builder" onTouchStart={() => { void import('../pages/RoutineBuilderPage'); }}>Routine Builder</Link>
+                  <Link className={`app-nav-mobile-link sub${location.pathname.startsWith('/scan') && location.search.includes('mode=product') ? ' active' : ''}`} to="/scan?mode=product" onTouchStart={() => { void import('../pages/ScanPage'); }}>Product Scanner</Link>
+                  <Link className={`app-nav-mobile-link sub${location.pathname === '/recommendations' ? ' active' : ''}`} to="/recommendations" onTouchStart={() => { void import('../pages/Recommendations'); }}>Recommendations</Link>
+                  <Link className={`app-nav-mobile-link sub${location.pathname === '/history' ? ' active' : ''}`} to="/history" onTouchStart={() => { void import('../pages/HistoryPage'); }}><IconHistory size={16} /> History</Link>
                 </div>
               </div>
 
@@ -359,18 +364,18 @@ const displayName = nameParts.length > 1
                   <IconChevronRight size={18} strokeWidth={2} className="chevron" />
                 </button>
                 <div id="mobile-learn" className={`app-nav-mobile-sublinks${learnExpanded ? ' open' : ''}`}>
-                  <Link className={`app-nav-mobile-link sub${location.pathname === '/ingredients' ? ' active' : ''}`} to="/ingredients"><IconFileText size={16} /> Ingredient Dictionary</Link>
-                  <Link className={`app-nav-mobile-link sub${location.pathname === '/skin-type-guide' ? ' active' : ''}`} to="/skin-type-guide">Skin Type Guide</Link>
-                  <Link className={`app-nav-mobile-link sub${location.pathname === '/tutorials' ? ' active' : ''}`} to="/tutorials">Video Tutorials</Link>
+                  <Link className={`app-nav-mobile-link sub${location.pathname === '/ingredients' ? ' active' : ''}`} to="/ingredients" onTouchStart={() => { void import('../pages/IngredientDictionaryPage'); }}><IconFileText size={16} /> Ingredient Dictionary</Link>
+                  <Link className={`app-nav-mobile-link sub${location.pathname === '/skin-type-guide' ? ' active' : ''}`} to="/skin-type-guide" onTouchStart={() => { void import('../pages/SkinTypeGuidePage'); }}>Skin Type Guide</Link>
+                  <Link className={`app-nav-mobile-link sub${location.pathname === '/tutorials' ? ' active' : ''}`} to="/tutorials" onTouchStart={() => { void import('../pages/VideoTutorialsPage'); }}>Video Tutorials</Link>
                 </div>
               </div>
 
               {/* Issue #10: About/Contact/Privacy in app-shell so footer links reachable */}
               <div className="app-nav-mobile-legal">
-                <Link className="app-nav-mobile-link sub" to="/about">About</Link>
-                <Link className="app-nav-mobile-link sub" to="/contact">Contact</Link>
-                <Link className="app-nav-mobile-link sub" to="/privacy">Privacy</Link>
-                <Link className="app-nav-mobile-link sub" to="/terms">Terms</Link>
+                <Link className="app-nav-mobile-link sub" to="/about" onTouchStart={() => { void import('../pages/AboutPage'); }}>About</Link>
+                <Link className="app-nav-mobile-link sub" to="/contact" onTouchStart={() => { void import('../pages/ContactPage'); }}>Contact</Link>
+                <Link className="app-nav-mobile-link sub" to="/privacy" onTouchStart={() => { void import('../pages/PrivacyPage'); }}>Privacy</Link>
+                <Link className="app-nav-mobile-link sub" to="/terms" onTouchStart={() => { void import('../pages/TermsPage'); }}>Terms</Link>
               </div>
             </div>
 
@@ -385,10 +390,10 @@ const displayName = nameParts.length > 1
                     <p className="app-nav-mobile-user-email">{user?.email}</p>
                   </div>
                 </div>
-                <Link className="app-nav-mobile-link" to="/profile"><IconUser size={18} /> My Profile</Link>
-                <Link className="app-nav-mobile-link" to="/profile?tab=settings"><IconSettings size={18} /> Settings</Link>
-                <Link className="app-nav-mobile-link" to="/export"><IconDownload size={18} /> Data Export</Link>
-                <Link className="app-nav-mobile-link" to="/notifications">Notifications</Link>
+                <Link className="app-nav-mobile-link" to="/profile" onTouchStart={() => { void import('../pages/ProfileSettingsPage'); }}><IconUser size={18} /> My Profile</Link>
+                <Link className="app-nav-mobile-link" to="/profile?tab=settings" onTouchStart={() => { void import('../pages/ProfileSettingsPage'); }}><IconSettings size={18} /> Settings</Link>
+                <Link className="app-nav-mobile-link" to="/export" onTouchStart={() => { void import('../pages/DataExportPage'); }}><IconDownload size={18} /> Data Export</Link>
+                <Link className="app-nav-mobile-link" to="/notifications" onTouchStart={() => { void import('../pages/NotificationCenterPage'); }}>Notifications</Link>
                 <button
                   type="button"
                   className="app-nav-mobile-link app-nav-mobile-logout"
@@ -400,19 +405,19 @@ const displayName = nameParts.length > 1
               </div>
             ) : (
               <div className="app-nav-mobile-auth">
-                <Link className="app-nav-mobile-btn-secondary" to="/auth">Sign In</Link>
-                <Link className="app-nav-mobile-btn-primary" to="/auth?mode=register">Get Started Free</Link>
+                <Link className="app-nav-mobile-btn-secondary" to="/auth" onTouchStart={() => { void import('../pages/AuthPage'); }}>Sign In</Link>
+                <Link className="app-nav-mobile-btn-primary" to="/auth?mode=register" onTouchStart={() => { void import('../pages/AuthPage'); }}>Get Started Free</Link>
               </div>
             )}
 
             {!isAuthenticated && !location.pathname.startsWith('/scan') && (
-              <Link className="app-nav-mobile-cta" to="/scan" title="Start a free skin analysis">
+              <Link className="app-nav-mobile-cta" to="/scan" title="Start a free skin analysis" onTouchStart={() => { void import('../pages/ScanPage'); }}>
                 <IconScan size={20} strokeWidth={2} />
                 <span>Start Free Skin Scan</span>
               </Link>
             )}
             {isAuthenticated && !location.pathname.startsWith('/dashboard') && (
-              <Link className="app-nav-mobile-cta" to="/dashboard" title="View your dashboard">
+              <Link className="app-nav-mobile-cta" to="/dashboard" title="View your dashboard" onTouchStart={() => { void import('../pages/DashboardPage'); }}>
                 <span>Dashboard</span>
               </Link>
             )}

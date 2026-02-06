@@ -6,14 +6,14 @@ import { usePageTitle } from "../hooks/usePageTitle";
 import { initScan, uploadScanImage, getScanStatus, getScanResult } from "../services/scanApi";
 import { cameraService } from "../services/cameraService";
 import type { ScanResultResponse } from "../services/scanApi";
-import { validateAndCropFace } from "../utils/faceValidation";
 import { IconCamera, IconScan, IconUpload, IconSearch, IconCheckCircle, IconFileText, IconCheck, IconX } from '../components/Icons';
 import { ErrorCard } from '../components/ErrorCard';
 import { FaceMesh3D, type FaceMesh3DHandle } from '../components/FaceMesh3D';
 import { useIsMobileOrTablet } from '../hooks/useIsMobileOrTablet';
 import { useContainerSize } from '../hooks/useContainerSize';
-import ProductScannerPage from './ProductScannerPage';
 import './ScanPage.css';
+
+const ProductScannerPage = React.lazy(() => import('./ProductScannerPage'));
 
 type UploadMode = 'camera' | 'file';
 type ScanStep = 'upload' | 'scanning' | 'complete';
@@ -240,6 +240,7 @@ export default function ScanPage() {
       setCapturePreview(rawPreviewUrl);
 
       try {
+        const { validateAndCropFace } = await import("../utils/faceValidation");
         const { croppedBlob, previewUrl: croppedPreview } = await validateAndCropFace(selectedFile);
         const croppedFile = new File([croppedBlob], "face-crop.png", { type: "image/png" });
         setFile(croppedFile);
@@ -721,7 +722,9 @@ export default function ScanPage() {
 
           {scanType === 'product' ? (
             <div className="scan-product-panel">
-              <ProductScannerPage embedded />
+              <Suspense fallback={<div className="scan-step-text">Loading scanner...</div>}>
+                <ProductScannerPage embedded />
+              </Suspense>
             </div>
           ) : (
             <>

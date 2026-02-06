@@ -49,22 +49,30 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    const AUTH_ME_TIMEOUT_MS = 4000; // Don't block whole app if backend is slow (e.g. cold start)
+
     const initAuth = async () => {
+      // Try auto-login in development (if no token exists)
+      await devAutoLogin();
+
       const storedToken = localStorage.getItem('auth_token') || localStorage.getItem('access_token');
-      
       if (storedToken) {
-        try {
-          axios.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`;
-          const response = await axios.get(`${API_BASE_URL}/auth/me`);
+        axios.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`;
+        const mePromise = axios.get(`${API_BASE_URL}/auth/me`).then((response) => {
           setUser(response.data);
           setToken(storedToken);
-        } catch {
+        }).catch(() => {
           localStorage.removeItem('auth_token');
           localStorage.removeItem('access_token');
           delete axios.defaults.headers.common['Authorization'];
           setToken(null);
           setUser(null);
-        }
+        });
+        const timeoutPromise = new Promise<void>((resolve) => {
+          setTimeout(resolve, AUTH_ME_TIMEOUT_MS);
+        });
+        // Show app after /auth/me completes or after timeout so slow backend doesn't freeze UI
+        await Promise.race([mePromise, timeoutPromise]);
       }
       setIsLoading(false);
     };

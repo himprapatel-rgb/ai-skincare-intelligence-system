@@ -3,10 +3,11 @@ import { usePageTitle } from '../hooks/usePageTitle';
 import './SkinTypeGuidePage.css';
 
 const TYPES = [
-  { step: 1, name: 'Dry', desc: 'Often feels tight or flaky. Needs rich hydration and barrier care.' },
-  { step: 2, name: 'Oily', desc: 'Shiny T-zone and visible pores. Benefit from lightweight, balancing care.' },
-  { step: 3, name: 'Combination', desc: 'Mix of dry and oily areas. Target T-zone and hydrate cheeks.' },
-  { step: 4, name: 'Sensitive', desc: 'Prone to redness or irritation. Focus on calming and minimal formulas.' },
+  { name: 'Normal', desc: 'Balanced hydration, minimal concerns. Maintain with consistent gentle care.' },
+  { name: 'Dry', desc: 'Often feels tight or flaky. Needs rich hydration and barrier care.' },
+  { name: 'Oily', desc: 'Shiny T-zone and visible pores. Benefit from lightweight, balancing care.' },
+  { name: 'Combination', desc: 'Mix of dry and oily areas. Target T-zone and hydrate cheeks.' },
+  { name: 'Sensitive', desc: 'Prone to redness or irritation. Focus on calming and minimal formulas.' },
 ];
 
 const SkinTypeGuidePage: React.FC = () => {
@@ -21,7 +22,6 @@ const SkinTypeGuidePage: React.FC = () => {
         <div className="skin-type-grid">
           {TYPES.map((t) => (
             <div key={t.name} className="skin-type-card">
-              <span className="skin-type-step" aria-hidden="true">Step {t.step}</span>
               <h3>{t.name}</h3>
               <p>{t.desc}</p>
             </div>

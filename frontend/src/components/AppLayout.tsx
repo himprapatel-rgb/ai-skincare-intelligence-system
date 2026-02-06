@@ -457,7 +457,7 @@ const displayName = nameParts.length > 1
           <div className="app-footer-newsletter-content">
             <div className="app-footer-newsletter-text">
               <h3>Get Personalized Skin Tips</h3>
-              <p>Join 50,000+ others getting weekly skincare insights powered by AI.</p>
+              <p>Get weekly skincare insights and personalized recommendations powered by AI.</p>
             </div>
             <form
               className="app-footer-newsletter-form"

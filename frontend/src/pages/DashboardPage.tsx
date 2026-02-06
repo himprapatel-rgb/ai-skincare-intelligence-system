@@ -506,7 +506,7 @@ const DashboardPage: React.FC = () => {
                 <span>Date</span>
                 <input
                   type="date"
-                  value={scanReminder.date ?? ''}
+                  value={scanReminder.date ?? displayNextScan}
                   min={new Date().toISOString().slice(0, 10)}
                   onChange={(e) => saveScanReminder({ ...scanReminder, date: e.target.value || undefined })}
                   className="reminder-date-input"

@@ -1,15 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
-import './index.css'
-import './styles/premium-polish.css'
-import './styles/mobile-app-polish.css'
-import './styles/task-1000-design-mobile.css'
-import './styles/settings-mobile-app.css'
-import './styles/mobile-product-ux.css'
-import './styles/mobile-animations.css'      // ✨ Professional animations
-import './styles/mobile-gradients.css'       // ✨ Modern gradients
-import './styles/app-mobile-enhanced.css'    // ✨ Enhanced mobile app-wide styles
+import './index.css'  // index.css imports design-system, responsive-*, mobile-redesign, etc. via @import
 
 // Register service worker for PWA support
 import { registerServiceWorker } from './utils/registerServiceWorker'

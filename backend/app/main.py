@@ -112,6 +112,9 @@ app.add_middleware(RateLimiterMiddleware, max_requests=10, window_seconds=60)
 app.add_middleware(RequestTracingMiddleware)
 # Record IP and geolocation on each authenticated request; update User and UserAccessLog
 app.add_middleware(IPGeoLoggingMiddleware)
+# Performance logging: track slow requests (>1s) and add X-Response-Time header
+from middleware.performance_logging import PerformanceLoggingMiddleware
+app.add_middleware(PerformanceLoggingMiddleware)
 
 
 @app.middleware("http")

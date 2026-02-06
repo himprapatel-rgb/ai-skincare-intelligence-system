@@ -1,7 +1,7 @@
 """Public content API: blogs, videos, news."""
 from typing import List, Optional
 
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, Response
 from sqlalchemy.orm import Session
 
 from app.database import get_db
@@ -13,11 +13,13 @@ router = APIRouter(prefix="/content", tags=["content"])
 
 @router.get("/blogs", response_model=List[BlogResponse])
 def list_blogs(
+    response: Response,
     limit: int = Query(50, ge=1, le=100),
     offset: int = Query(0, ge=0),
     db: Session = Depends(get_db),
 ):
-    """Public list of published blogs."""
+    """Public list of published blogs (cached for 5 min)."""
+    response.headers["Cache-Control"] = "public, max-age=300"
     items = (
         db.query(Blog)
         .filter(Blog.published == True)
@@ -40,11 +42,13 @@ def get_blog(blog_id: int, db: Session = Depends(get_db)):
 
 @router.get("/videos", response_model=List[VideoResponse])
 def list_videos(
+    response: Response,
     limit: int = Query(50, ge=1, le=100),
     offset: int = Query(0, ge=0),
     db: Session = Depends(get_db),
 ):
-    """Public list of published videos."""
+    """Public list of published videos (cached for 5 min)."""
+    response.headers["Cache-Control"] = "public, max-age=300"
     items = (
         db.query(Video)
         .filter(Video.published == True)

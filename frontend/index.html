@@ -12,8 +12,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="format-detection" content="telephone=no" />
     <meta name="description" content="AI-powered skin analysis, personalized recommendations, and skincare routine builder. Get started with a free scan." />
-    <link rel="preconnect" href="https://pellicura.com" crossorigin />
-    <!-- T30: When adding custom fonts, use @font-face { font-display: swap; } and preload for critical font files -->
+    <!-- DNS prefetch for API and assets -->
+    <link rel="dns-prefetch" href="https://ai-skincare-intelligence-system-production.up.railway.app" />
+    <link rel="preconnect" href="https://ai-skincare-intelligence-system-production.up.railway.app" crossorigin />
+    <!-- T30: Self-host fonts for faster load (no Google Fonts DNS/HTTPS overhead) -->
     <meta name="theme-color" content="#ffffff" id="theme-color-meta" />
     <script>
       (function() {

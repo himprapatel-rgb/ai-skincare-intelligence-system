@@ -23,6 +23,8 @@
 | If you want to... | Read this |
 |-------------------|-----------|
 | **Understand the project** | [README.md](../../README.md) |
+| **Get the full app picture (tech, hosting, features, every page)** | [APP-OVERVIEW-COMPLETE-GUIDE.md](APP-OVERVIEW-COMPLETE-GUIDE.md) – one-place guide |
+| **See website / tablet / mobile structure and flow** | [APP-STRUCTURE-AND-FLOW.md](APP-STRUCTURE-AND-FLOW.md) – layout and navigation by viewport |
 | **See the solid app plan** | [APP-PLAN.md](../03-product/APP-PLAN.md) – vision, platforms, flows, roadmap |
 | **Set up development environment** | [Getting Started](../../README.md#getting-started) |
 | **Deploy the application** | [DEPLOYMENT_GUIDE.md](../DEPLOYMENT_GUIDE.md) |

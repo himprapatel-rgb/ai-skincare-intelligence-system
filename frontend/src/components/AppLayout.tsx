@@ -24,10 +24,6 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, isAuthenticated, logout, isLoading: authLoading } = useAuth();
-
-  if (authLoading) {
-    return <LoadingScreen message="Loading" fullscreen />;
-  }
   const toast = useToast();
   const notificationCtx = useNotificationsOptional();
   const notificationUnread = (isAuthenticated && notificationCtx?.unreadCount) ? notificationCtx.unreadCount : 0;
@@ -173,6 +169,10 @@ const displayName = nameParts.length > 1
   }, [location.pathname]);
 
   const isAppRoute = viewport === 'mobile' && pathIsAppRoute;
+
+  if (authLoading) {
+    return <LoadingScreen message="Loading" fullscreen />;
+  }
 
   return (
     <div

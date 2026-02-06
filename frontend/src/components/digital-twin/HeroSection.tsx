@@ -15,8 +15,8 @@ const HeroSection: React.FC<HeroSectionProps> = ({ currentScore, skinMood, total
       <div className="dt-hero-header">
         <div className="dt-hero-title-row">
           <div>
-            <h1>Digital Twin Timeline</h1>
-            <p>Your skin's living profile — track progress across every scan.</p>
+            <h1>Digital Twin</h1>
+            <p>Your skin&apos;s evolution — track progress across every scan.</p>
           </div>
           <button
             type="button"

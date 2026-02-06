@@ -129,23 +129,25 @@ function AppRoutes() {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <ThemeProvider>
-        <ShelfProvider>
-          <ToastProvider>
-          <DevBanner />
-          <NetworkStatus />
-          <BrowserRouter>
-            <NotificationProvider>
-              <AppLayout>
-                <AppRoutes />
-              </AppLayout>
-            </NotificationProvider>
-          </BrowserRouter>
-          <ToastContainer />
-          </ToastProvider>
-        </ShelfProvider>
-      </ThemeProvider>
-    </AuthProvider>
+    <ErrorBoundary onRetry={() => window.location.reload()}>
+      <AuthProvider>
+        <ThemeProvider>
+          <ShelfProvider>
+            <ToastProvider>
+            <DevBanner />
+            <NetworkStatus />
+            <BrowserRouter>
+              <NotificationProvider>
+                <AppLayout>
+                  <AppRoutes />
+                </AppLayout>
+              </NotificationProvider>
+            </BrowserRouter>
+            <ToastContainer />
+            </ToastProvider>
+          </ShelfProvider>
+        </ThemeProvider>
+      </AuthProvider>
+    </ErrorBoundary>
   );
 }

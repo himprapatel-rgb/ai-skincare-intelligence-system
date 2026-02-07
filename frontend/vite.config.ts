@@ -30,7 +30,7 @@ export default defineConfig(({ mode }) => ({
         manualChunks(id) {
           if (!id.includes('node_modules')) return;
           if (id.includes('react-dom') || id.includes('react')) return 'react-core';
-          if (id.includes('react-router')) return 'router';
+          if (id.includes('react-router-dom') || id.includes('react-router')) return 'router';
           if (id.includes('@mediapipe')) return 'mediapipe';
           if (id.includes('@tensorflow')) return 'tensorflow';
           if (id.includes('html5-qrcode') || id.includes('react-webcam')) return 'camera';

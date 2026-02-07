@@ -1,5 +1,3 @@
-import * as blazeface from "@tensorflow-models/blazeface";
-import * as tf from "@tensorflow/tfjs";
 import { removeBackground } from "./backgroundSegmentation";
 
 type FaceValidationResult = {
@@ -29,11 +27,16 @@ const MODEL_OPTIONS = {
   scoreThreshold: 0.75,
 };
 
-let modelPromise: Promise<blazeface.BlazeFaceModel> | null = null;
+type BlazeFaceModel = import("@tensorflow-models/blazeface").BlazeFaceModel;
+let modelPromise: Promise<BlazeFaceModel> | null = null;
 
-async function loadModel(): Promise<blazeface.BlazeFaceModel> {
+async function loadModel(): Promise<BlazeFaceModel> {
   if (!modelPromise) {
     modelPromise = (async () => {
+      const [blazeface, tf] = await Promise.all([
+        import("@tensorflow-models/blazeface"),
+        import("@tensorflow/tfjs"),
+      ]);
       await tf.ready();
       return blazeface.load(MODEL_OPTIONS);
     })();

@@ -48,10 +48,10 @@ else:
             _product_db_url,
             poolclass=QueuePool,
             pool_pre_ping=True,
-            pool_size=5,  # Smaller pool for product DB
-            max_overflow=10,
-            pool_timeout=30,
-            pool_recycle=1800,  # Recycle connections every 30 minutes
+            pool_size=settings.PRODUCT_DB_POOL_SIZE,
+            max_overflow=settings.PRODUCT_DB_MAX_OVERFLOW,
+            pool_timeout=settings.PRODUCT_DB_POOL_TIMEOUT,
+            pool_recycle=settings.PRODUCT_DB_POOL_RECYCLE,
         )
     
     # Session factory for product database

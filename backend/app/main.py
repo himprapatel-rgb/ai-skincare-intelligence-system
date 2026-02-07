@@ -143,6 +143,8 @@ async def add_security_headers(request, call_next):
 
 @app.middleware("http")
 async def request_timeout_middleware(request: Request, call_next):
+    if request.url.path in {"/", "/robots.txt", "/api/health", "/api/health/ready", "/api/health/live"}:
+        return await call_next(request)
     try:
         with anyio.fail_after(settings.REQUEST_TIMEOUT_SECONDS):
             return await call_next(request)

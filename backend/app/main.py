@@ -4,14 +4,15 @@ import sys
 import os
 from pathlib import Path
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from datetime import date, datetime
 
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from sqlalchemy import text
-from sqlalchemy.exc import IntegrityError, ProgrammingError
+from sqlalchemy.exc import IntegrityError, OperationalError, ProgrammingError
 
 from middleware.request_tracing import RequestTracingMiddleware
 from middleware.ip_geo_logging import IPGeoLoggingMiddleware
@@ -137,6 +138,19 @@ async def add_security_headers(request, call_next):
     if not settings.DEBUG:
         response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
     return response
+
+
+@app.exception_handler(OperationalError)
+async def handle_db_operational_error(request: Request, exc: OperationalError) -> JSONResponse:
+    message = "Database unavailable. Please retry shortly."
+    if "too many clients" in str(exc).lower():
+        message = "Database overloaded. Please retry shortly."
+    logger.warning("Database operational error: %s", exc)
+    return JSONResponse(
+        status_code=503,
+        content={"detail": message},
+        headers={"Retry-After": "5"},
+    )
 
 @app.on_event("startup")
 def ensure_test_user() -> None:

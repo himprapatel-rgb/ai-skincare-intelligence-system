@@ -72,6 +72,10 @@ class Settings(BaseSettings):
     # Database connection pool settings (main DB)
     DB_POOL_SIZE: int = Field(default=5, description="SQLAlchemy pool size for main DB")
     DB_MAX_OVERFLOW: int = Field(default=5, description="SQLAlchemy max overflow for main DB")
+    DB_POOL_TIMEOUT: int = Field(
+        default=5,
+        description="Seconds to wait for a DB connection before failing",
+    )
 
     # CORS Settings - stored as str to avoid pydantic-settings JSON decode of env
     allowed_origins_raw: str | None = Field(default=None, alias="ALLOWED_ORIGINS")

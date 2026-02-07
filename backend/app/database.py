@@ -3,6 +3,7 @@ Database configuration and session management.
 """
 
 from sqlalchemy import create_engine
+from sqlalchemy.pool import NullPool
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
 from app.config import settings
@@ -16,6 +17,7 @@ if settings.DATABASE_URL.startswith("sqlite"):
         settings.DATABASE_URL,
         connect_args={"check_same_thread": False},
     )
+    health_engine = engine
 else:
     connect_args = {
         "options": f"-c statement_timeout={settings.DB_STATEMENT_TIMEOUT_MS}"
@@ -29,6 +31,13 @@ else:
         max_overflow=settings.DB_MAX_OVERFLOW,
         pool_timeout=settings.DB_POOL_TIMEOUT,
         pool_recycle=settings.DB_POOL_RECYCLE,
+    )
+    # Use a separate engine for health checks to avoid pool exhaustion.
+    health_engine = create_engine(
+        settings.DATABASE_URL,
+        connect_args=connect_args,
+        poolclass=NullPool,
+        pool_pre_ping=True,
     )
 
 # Create session factory

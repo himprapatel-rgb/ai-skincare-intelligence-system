@@ -22,7 +22,7 @@ from app.api.v1.progress import router as progress_router
 from app.api.v1.routines import router as routines_router
 from app.config import settings
 from app.core.security import encrypt_sensitive_data
-from app.database import Base, SessionLocal, engine
+from app.database import Base, SessionLocal, engine, health_engine
 from app.product_database import create_product_tables, check_product_database_health
 from app.models.analysis_outputs import (
     DailySkinGuidance,
@@ -440,7 +440,7 @@ async def health_check():
     # Main Database health check
     try:
         start = time.time()
-        with engine.connect() as conn:
+        with health_engine.connect() as conn:
             conn.execute(text("SELECT 1"))
         checks["main_database"]["latency_ms"] = int((time.time() - start) * 1000)
     except Exception as e:
@@ -479,7 +479,7 @@ async def readiness_check():
     Returns 200 if service is ready to accept traffic.
     """
     try:
-        with engine.connect() as conn:
+        with health_engine.connect() as conn:
             conn.execute(text("SELECT 1"))
         return {"ready": True}
     except Exception:

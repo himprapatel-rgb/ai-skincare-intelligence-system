@@ -20,5 +20,5 @@ COPY migrations /app/backend/migrations
 EXPOSE 8000
 
 # Use Railway's PORT environment variable (Railway provides $PORT dynamically)
-# Use UVICORN_WORKERS (default 16) so high-CPU instances (e.g. 32 vCPU) can handle many concurrent requests
-CMD ["sh", "-c", "python3 /app/backend/scripts/run_migrations.py && uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000} --workers ${UVICORN_WORKERS:-16}"]
+# Use UVICORN_WORKERS (default 4) to avoid exhausting DB connections on small instances
+CMD ["sh", "-c", "python3 /app/backend/scripts/run_migrations.py && uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000} --workers ${UVICORN_WORKERS:-4}"]

@@ -69,6 +69,10 @@ class Settings(BaseSettings):
         description="Frontend base URL for email verification links",
     )
 
+    # Database connection pool settings (main DB)
+    DB_POOL_SIZE: int = Field(default=5, description="SQLAlchemy pool size for main DB")
+    DB_MAX_OVERFLOW: int = Field(default=5, description="SQLAlchemy max overflow for main DB")
+
     # CORS Settings - stored as str to avoid pydantic-settings JSON decode of env
     allowed_origins_raw: str | None = Field(default=None, alias="ALLOWED_ORIGINS")
     allowed_hosts_raw: str | None = Field(default=None, alias="ALLOWED_HOSTS")

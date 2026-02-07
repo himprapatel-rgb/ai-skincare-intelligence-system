@@ -410,6 +410,12 @@ def ensure_test_user() -> None:
         db.close()
 
 
+@app.get("/")
+async def root_health():
+    """Lightweight health check for platform probes."""
+    return {"status": "ok"}
+
+
 @app.get("/api/health")
 async def health_check():
     """

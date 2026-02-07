@@ -17,13 +17,18 @@ if settings.DATABASE_URL.startswith("sqlite"):
         connect_args={"check_same_thread": False},
     )
 else:
+    connect_args = {
+        "options": f"-c statement_timeout={settings.DB_STATEMENT_TIMEOUT_MS}"
+    }
     # Pool sized for many workers (e.g. UVICORN_WORKERS=16); each request may hold a connection
     engine = create_engine(
         settings.DATABASE_URL,
+        connect_args=connect_args,
         pool_pre_ping=True,
         pool_size=settings.DB_POOL_SIZE,
         max_overflow=settings.DB_MAX_OVERFLOW,
         pool_timeout=settings.DB_POOL_TIMEOUT,
+        pool_recycle=settings.DB_POOL_RECYCLE,
     )
 
 # Create session factory

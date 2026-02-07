@@ -76,12 +76,21 @@ class Settings(BaseSettings):
         default=5,
         description="Seconds to wait for a DB connection before failing",
     )
+    DB_POOL_RECYCLE: int = Field(default=1800, description="Recycle seconds for main DB")
+    DB_STATEMENT_TIMEOUT_MS: int = Field(
+        default=8000,
+        description="Postgres statement timeout in milliseconds",
+    )
 
     # Product database connection pool settings
     PRODUCT_DB_POOL_SIZE: int = Field(default=3, description="Pool size for product DB")
     PRODUCT_DB_MAX_OVERFLOW: int = Field(default=2, description="Max overflow for product DB")
     PRODUCT_DB_POOL_TIMEOUT: int = Field(default=5, description="Pool timeout for product DB")
     PRODUCT_DB_POOL_RECYCLE: int = Field(default=1800, description="Recycle seconds for product DB")
+    PRODUCT_DB_STATEMENT_TIMEOUT_MS: int = Field(
+        default=8000,
+        description="Postgres statement timeout for product DB in milliseconds",
+    )
 
     # CORS Settings - stored as str to avoid pydantic-settings JSON decode of env
     allowed_origins_raw: str | None = Field(default=None, alias="ALLOWED_ORIGINS")

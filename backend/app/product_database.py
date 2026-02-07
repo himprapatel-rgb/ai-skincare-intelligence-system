@@ -44,9 +44,13 @@ else:
             connect_args={"check_same_thread": False},
         )
     else:
+        connect_args = {
+            "options": f"-c statement_timeout={settings.PRODUCT_DB_STATEMENT_TIMEOUT_MS}"
+        }
         product_engine = create_engine(
             _product_db_url,
             poolclass=QueuePool,
+            connect_args=connect_args,
             pool_pre_ping=True,
             pool_size=settings.PRODUCT_DB_POOL_SIZE,
             max_overflow=settings.PRODUCT_DB_MAX_OVERFLOW,

@@ -5,7 +5,7 @@ import os
 from pathlib import Path
 
 from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, PlainTextResponse
 from fastapi.staticfiles import StaticFiles
 from datetime import date, datetime
 
@@ -414,6 +414,11 @@ def ensure_test_user() -> None:
 async def root_health():
     """Lightweight health check for platform probes."""
     return {"status": "ok"}
+
+
+@app.get("/robots.txt")
+async def robots_txt() -> PlainTextResponse:
+    return PlainTextResponse("User-agent: *\nDisallow: /\n")
 
 
 @app.get("/api/health")

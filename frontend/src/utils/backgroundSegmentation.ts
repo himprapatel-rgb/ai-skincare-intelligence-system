@@ -150,7 +150,6 @@ function featherAlpha(
   radius: number
 ): void {
   const r = Math.max(1, Math.floor(radius));
-  const size = (2 * r + 1) ** 2;
   for (let y = 0; y < h; y++) {
     for (let x = 0; x < w; x++) {
       let sum = 0;

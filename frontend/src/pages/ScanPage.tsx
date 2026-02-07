@@ -1,6 +1,5 @@
 // src/pages/ScanPage.tsx - Enhanced Face Scan Analysis Page
 import React, { useState, useCallback, useRef, useEffect, Suspense } from "react";
-import { FaceLandmarker, FilesetResolver } from "@mediapipe/tasks-vision";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { usePageTitle } from "../hooks/usePageTitle";
 import { initScan, uploadScanImage, getScanStatus, getScanResult } from "../services/scanApi";
@@ -8,12 +7,25 @@ import { cameraService } from "../services/cameraService";
 import type { ScanResultResponse } from "../services/scanApi";
 import { IconCamera, IconScan, IconUpload, IconSearch, IconCheckCircle, IconFileText, IconCheck, IconX } from '../components/Icons';
 import { ErrorCard } from '../components/ErrorCard';
-import { FaceMesh3D, type FaceMesh3DHandle } from '../components/FaceMesh3D';
+import type { FaceMesh3DHandle } from '../components/FaceMesh3D';
 import { useIsMobileOrTablet } from '../hooks/useIsMobileOrTablet';
 import { useContainerSize } from '../hooks/useContainerSize';
 import './ScanPage.css';
 
 const ProductScannerPage = React.lazy(() => import('./ProductScannerPage'));
+
+const MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024; // 10MB
+const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'] as const;
+
+type FaceLandmarkerType = typeof import("@mediapipe/tasks-vision").FaceLandmarker;
+type FaceMesh3DProps = {
+  width: number;
+  height: number;
+  className?: string;
+};
+type FaceMesh3DComponentType = React.ForwardRefExoticComponent<
+  FaceMesh3DProps & React.RefAttributes<FaceMesh3DHandle>
+>;
 
 type UploadMode = 'camera' | 'file';
 type ScanStep = 'upload' | 'scanning' | 'complete';
@@ -38,7 +50,7 @@ export default function ScanPage() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const overlayCanvasRef = useRef<HTMLCanvasElement>(null);
-  const landmarkerRef = useRef<FaceLandmarker | null>(null);
+  const landmarkerRef = useRef<InstanceType<FaceLandmarkerType> | null>(null);
   const rafRef = useRef<number | null>(null);
   const stableMsRef = useRef(0);
   const lastTimeRef = useRef(performance.now());
@@ -70,6 +82,7 @@ export default function ScanPage() {
   const [trackingRestartTick, setTrackingRestartTick] = useState(0);
   const [show3D, setShow3D] = useState(false);
   const isMobileOrTablet = useIsMobileOrTablet();
+  const [FaceMesh3DComponent, setFaceMesh3DComponent] = useState<FaceMesh3DComponentType | null>(null);
   const cameraContainerRef = useRef<HTMLDivElement>(null);
   const faceMesh3DRef = useRef<FaceMesh3DHandle>(null);
   const show3DRef = useRef(false);
@@ -88,6 +101,24 @@ export default function ScanPage() {
   useEffect(() => {
     show3DRef.current = show3D;
   }, [show3D]);
+
+  useEffect(() => {
+    if (!isMobileOrTablet) {
+      setFaceMesh3DComponent(null);
+      return;
+    }
+    let isMounted = true;
+    import('../components/FaceMesh3D')
+      .then((mod) => {
+        if (isMounted) setFaceMesh3DComponent(() => mod.FaceMesh3D);
+      })
+      .catch(() => {
+        if (isMounted) setFaceMesh3DComponent(null);
+      });
+    return () => {
+      isMounted = false;
+    };
+  }, [isMobileOrTablet]);
 
   const setCapturePreview = useCallback((url: string | null) => {
     if (capturePreviewRef.current) {
@@ -201,6 +232,7 @@ export default function ScanPage() {
     if (landmarkerRef.current) {
       return landmarkerRef.current;
     }
+    const { FaceLandmarker, FilesetResolver } = await import("@mediapipe/tasks-vision");
     const vision = await FilesetResolver.forVisionTasks(
       "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm"
     );
@@ -560,9 +592,6 @@ export default function ScanPage() {
     }
   }, [cameraActive, startFaceTracking, stopFaceTracking, trackingRestartTick, uploadMode]);
 
-  const MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024; // 10MB
-  const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
-
   const handleFileChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const selectedFile = e.target.files?.[0];
@@ -824,8 +853,8 @@ export default function ScanPage() {
                       ref={overlayCanvasRef}
                       className={`camera-overlay ${show3D ? 'scan-video-hidden-for-3d' : ''}`}
                     />
-                    {isMobileOrTablet && containerSize.width > 0 && containerSize.height > 0 && (
-                      <FaceMesh3D
+                    {FaceMesh3DComponent && isMobileOrTablet && containerSize.width > 0 && containerSize.height > 0 && (
+                      <FaceMesh3DComponent
                         ref={faceMesh3DRef}
                         width={containerSize.width}
                         height={containerSize.height}

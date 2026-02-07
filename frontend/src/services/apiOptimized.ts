@@ -7,12 +7,16 @@ import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { API_BASE_URL } from '../config';
 import { STORAGE_KEYS } from '../constants/storage';
 
+type RequestConfigWithTiming = AxiosRequestConfig & {
+  requestStartTime?: number;
+};
+
 // Cache configuration
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
-const cache = new Map<string, { data: any; timestamp: number }>();
+const cache = new Map<string, { data: unknown; timestamp: number }>();
 
 // Request deduplication
-const pendingRequests = new Map<string, Promise<any>>();
+const pendingRequests = new Map<string, Promise<unknown>>();
 
 /**
  * Optimized API Client with caching and performance features
@@ -42,7 +46,7 @@ class OptimizedApiClient {
         }
         
         // Add timestamp for performance tracking
-        (config as any).requestStartTime = Date.now();
+        (config as RequestConfigWithTiming).requestStartTime = Date.now();
         
         return config;
       },
@@ -53,11 +57,7 @@ class OptimizedApiClient {
     this.client.interceptors.response.use(
       (response) => {
         // Track response time
-        const startTime = (response.config as any).requestStartTime;
-        if (startTime) {
-          const duration = Date.now() - startTime;
-          console.log(`[API] ${response.config.method?.toUpperCase()} ${response.config.url} - ${duration}ms`);
-        }
+        void (response.config as RequestConfigWithTiming).requestStartTime;
 
         // Cache GET requests
         if (response.config.method?.toLowerCase() === 'get') {
@@ -101,20 +101,18 @@ class OptimizedApiClient {
   /**
    * GET request with caching
    */
-  async get<T = any>(url: string, config?: AxiosRequestConfig): Promise<T> {
+  async get<T = unknown>(url: string, config?: AxiosRequestConfig): Promise<T> {
     const cacheKey = this.getCacheKey({ ...config, method: 'get', url });
 
     // Return cached data if valid
     if (this.isCacheValid(cacheKey)) {
       const cached = cache.get(cacheKey);
-      console.log(`[Cache Hit] ${url}`);
-      return cached!.data;
+      return cached!.data as T;
     }
 
     // Deduplicate concurrent requests
     if (pendingRequests.has(cacheKey)) {
-      console.log(`[Dedup] ${url}`);
-      return pendingRequests.get(cacheKey)!;
+      return pendingRequests.get(cacheKey)! as Promise<T>;
     }
 
     // Make request
@@ -132,7 +130,7 @@ class OptimizedApiClient {
   /**
    * POST request (no caching)
    */
-  async post<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+  async post<T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T> {
     const response = await this.client.post<T>(url, data, config);
     
     // Invalidate related cache entries
@@ -144,7 +142,7 @@ class OptimizedApiClient {
   /**
    * PUT request (no caching)
    */
-  async put<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+  async put<T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T> {
     const response = await this.client.put<T>(url, data, config);
     this.invalidateCache(url);
     return response.data;
@@ -153,7 +151,7 @@ class OptimizedApiClient {
   /**
    * PATCH request (no caching)
    */
-  async patch<T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T> {
+  async patch<T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T> {
     const response = await this.client.patch<T>(url, data, config);
     this.invalidateCache(url);
     return response.data;
@@ -162,7 +160,7 @@ class OptimizedApiClient {
   /**
    * DELETE request (no caching)
    */
-  async delete<T = any>(url: string, config?: AxiosRequestConfig): Promise<T> {
+  async delete<T = unknown>(url: string, config?: AxiosRequestConfig): Promise<T> {
     const response = await this.client.delete<T>(url, config);
     this.invalidateCache(url);
     return response.data;
@@ -182,9 +180,7 @@ class OptimizedApiClient {
 
     keysToDelete.forEach((key) => cache.delete(key));
     
-    if (keysToDelete.length > 0) {
-      console.log(`[Cache Invalidated] ${keysToDelete.length} entries for ${urlPattern}`);
-    }
+    void keysToDelete.length;
   }
 
   /**
@@ -192,7 +188,6 @@ class OptimizedApiClient {
    */
   clearCache() {
     cache.clear();
-    console.log('[Cache] Cleared all cache');
   }
 
   /**

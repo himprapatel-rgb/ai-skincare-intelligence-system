@@ -92,6 +92,12 @@
   margin-bottom: 20px;
 }
 
+.recommendations-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
 .recommendations-geo-ingredients {
   margin: 0 0 8px;
   font-size: 0.9rem;
@@ -170,6 +176,10 @@
   box-shadow: var(--shadow-sm);
   padding: 24px;
   margin-bottom: 32px;
+}
+
+.recommendations-results {
+  min-width: 0;
 }
 
 .filters-header {
@@ -478,6 +488,38 @@
   color: var(--text-secondary);
 }
 
+.compare-bar {
+  margin-top: 24px;
+  padding: 16px 20px;
+  background: var(--bg-white);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  position: sticky;
+  bottom: 16px;
+  z-index: 8;
+}
+
+.compare-bar-info {
+  font-size: 0.95rem;
+  color: var(--text-primary);
+}
+
+.compare-bar-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.compare-bar-btn.is-disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
 .recommendations-state {
   padding: 80px 24px;
   display: flex;
@@ -582,6 +624,22 @@
     grid-template-columns: 1fr;
     gap: 20px;
   }
+
+  .compare-bar {
+    position: static;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .compare-bar-actions {
+    width: 100%;
+  }
+
+  .compare-bar-actions .btn-primary,
+  .compare-bar-actions .btn-secondary {
+    width: 100%;
+    text-align: center;
+  }
   
   .filters-header {
     flex-direction: column;
@@ -596,6 +654,36 @@
   .btn-add {
     padding: 12px 20px;
     min-height: 44px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .recommendations-layout {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .recommendations-filters {
+    position: sticky;
+    top: 16px;
+    flex: 0 0 320px;
+    max-width: 320px;
+    margin-bottom: 0;
+  }
+
+  .recommendations-results {
+    flex: 1 1 auto;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(3, minmax(240px, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .recommendations-filters {
+    flex-basis: 340px;
+    max-width: 340px;
   }
 }
 

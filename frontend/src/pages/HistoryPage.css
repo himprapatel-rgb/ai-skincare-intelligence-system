@@ -266,6 +266,18 @@
   gap: 16px;
 }
 
+@media (min-width: 1024px) {
+  .history-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  .history-item {
+    height: 100%;
+  }
+}
+
 .history-item {
   background: var(--bg-white);
   border-radius: var(--border-radius-md);

@@ -16,9 +16,9 @@ import uuid
 from datetime import datetime
 from typing import List, Optional
 
-from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, Response, status
 from PIL import Image
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, defer
 
 from app.config import settings
 from app.core.security import get_current_user, get_current_user_optional
@@ -71,7 +71,12 @@ def _create_scan(db: Session, user: Optional[User]) -> ScanSession:
     return scan
 
 
-def _get_user_scan_or_404(db: Session, scan_id: str, user: Optional[User]) -> ScanSession:
+def _get_user_scan_or_404(
+    db: Session,
+    scan_id: str,
+    user: Optional[User],
+    defer_image_data: bool = True,
+) -> ScanSession:
     try:
         scan_uuid = uuid.UUID(scan_id)
     except ValueError:
@@ -79,7 +84,10 @@ def _get_user_scan_or_404(db: Session, scan_id: str, user: Optional[User]) -> Sc
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Invalid scan ID format",
         )
-    scan = db.query(ScanSession).filter(ScanSession.id == scan_uuid).first()
+    query = db.query(ScanSession)
+    if defer_image_data:
+        query = query.options(defer(ScanSession.image_data))
+    scan = query.filter(ScanSession.id == scan_uuid).first()
     if not scan:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -323,7 +331,7 @@ async def upload_scan_image(
     Upload face image for an existing scan session (works for both authenticated and guest users).
     Performs image validation and runs mock analysis.
     """
-    scan = _get_user_scan_or_404(db=db, scan_id=scan_id, user=current_user)
+    scan = _get_user_scan_or_404(db=db, scan_id=scan_id, user=current_user, defer_image_data=True)
     
     if scan.status not in {"pending", "failed"}:
         raise HTTPException(
@@ -354,9 +362,6 @@ async def upload_scan_image(
     # Run analysis synchronously (TODO: move to background worker)
     try:
         if settings.OPENAI_API_KEY:
-            with open(image_path, "rb") as image_file:
-                image_bytes = image_file.read()
-
             openai_client = get_openai_client()
             openai_result = await openai_client.analyze_skin(
                 image_bytes=image_bytes,
@@ -430,13 +435,15 @@ async def upload_scan_image(
 )
 def get_scan_status(
     scan_id: str,
+    response: Response,
     db: Session = Depends(get_db),
     current_user: Optional[User] = Depends(get_current_user_optional),
 ):
     """
     Get the current status of a face scan (works for both authenticated and guest users).
     """
-    scan = _get_user_scan_or_404(db=db, scan_id=scan_id, user=current_user)
+    response.headers["Cache-Control"] = "private, max-age=15"
+    scan = _get_user_scan_or_404(db=db, scan_id=scan_id, user=current_user, defer_image_data=True)
     
     return ScanStatusResponse(
         scan_id=str(scan.id),
@@ -452,12 +459,14 @@ def get_scan_status(
 )
 def get_scan_results(
     scan_id: str,
+    response: Response,
     db: Session = Depends(get_db),
     current_user: Optional[User] = Depends(get_current_user_optional),
 ):
     """
     Get analysis results for a completed face scan (works for both authenticated and guest users).
     """
+    response.headers["Cache-Control"] = "private, max-age=30"
     scan = _get_user_scan_or_404(db=db, scan_id=scan_id, user=current_user)
     
     if scan.status != "completed":
@@ -497,18 +506,21 @@ def get_scan_results(
     response_model=ScanHistoryResponse,
 )
 def get_scan_history(
+    response: Response,
     db: Session = Depends(get_db),
     current_user: Optional[User] = Depends(get_current_user_optional),
 ):
     """
     Get the user's face scan history (returns empty list for guest users).
     """
+    response.headers["Cache-Control"] = "private, max-age=30"
     # Guest users have no history
     if not current_user:
         return ScanHistoryResponse(scans=[])
     
     scans: List[ScanSession] = (
         db.query(ScanSession)
+        .options(defer(ScanSession.image_data))
         .filter(ScanSession.user_id == current_user.id)
         .order_by(ScanSession.created_at.desc())
         .all()

@@ -38,7 +38,7 @@ export const MobileButton: React.FC<MobileButtonProps> = ({
 }) => {
   const [isPressed, setIsPressed] = useState(false);
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = () => {
     if (disabled || loading) return;
     
     // Trigger haptic feedback

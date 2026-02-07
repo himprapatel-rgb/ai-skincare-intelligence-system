@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { IconStar, IconAlertTriangle, IconHeart, IconArrowLeft, IconPackage } from '../components/Icons';
 import { SkeletonCardGrid } from '../components/Skeleton';
+import LazyImage from '../components/LazyImage';
 import { useToast } from '../context/ToastContext';
 import { hapticMedium } from '../utils/haptic';
 import { API_BASE_URL } from '../config';
@@ -45,6 +46,33 @@ interface Product {
   imageUrl?: string | null;
   purchaseUrl?: string | null;
 }
+
+const PLACEHOLDER_IMAGE =
+  'data:image/svg+xml;utf8,' +
+  encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">' +
+      '<defs>' +
+        '<linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">' +
+          '<stop offset="0%" stop-color="#f0f4ff"/>' +
+          '<stop offset="50%" stop-color="#e8f0fe"/>' +
+          '<stop offset="100%" stop-color="#dbeafe"/>' +
+        '</linearGradient>' +
+        '<linearGradient id="icon" x1="0%" y1="0%" x2="100%" y2="100%">' +
+          '<stop offset="0%" stop-color="#3b82f6"/>' +
+          '<stop offset="100%" stop-color="#8b5cf6"/>' +
+        '</linearGradient>' +
+      '</defs>' +
+      '<rect width="100%" height="100%" fill="url(#bg)"/>' +
+      '<g transform="translate(175, 115)">' +
+        '<rect x="5" y="0" width="40" height="70" rx="6" fill="url(#icon)" opacity="0.9"/>' +
+        '<rect x="10" y="5" width="30" height="12" rx="3" fill="white" opacity="0.3"/>' +
+        '<circle cx="25" cy="45" r="10" fill="white" opacity="0.2"/>' +
+      '</g>' +
+      '<text x="50%" y="220" text-anchor="middle" fill="#94a3b8" font-size="13" font-family="system-ui, sans-serif" font-weight="500">' +
+        'No image' +
+      '</text>' +
+    '</svg>'
+  );
 
 const Recommendations: React.FC = () => {
   usePageTitle('Recommendations');
@@ -219,6 +247,16 @@ const Recommendations: React.FC = () => {
     toast.success('Added to compare list');
   };
 
+  const handleClearCompare = () => {
+    try {
+      localStorage.setItem(COMPARE_IDS_KEY, JSON.stringify([]));
+    } catch {
+      // Ignore storage errors
+    }
+    setCompareIds([]);
+    toast.success('Compare list cleared');
+  };
+
   const toggleFavorite = (productId: string) => {
     const newFavorites = new Set(favorites);
     if (newFavorites.has(productId)) {
@@ -230,7 +268,7 @@ const Recommendations: React.FC = () => {
     localStorage.setItem('favorites', JSON.stringify(Array.from(newFavorites)));
   };
 
-  const filteredProducts = products.filter(product => {
+  const filteredProducts = useMemo(() => products.filter(product => {
     if (filters.category !== 'all' && product.category.toLowerCase() !== filters.category) return false;
     if (
       filters.concern !== 'all' &&
@@ -245,39 +283,16 @@ const Recommendations: React.FC = () => {
       if (!max && product.price < min) return false;
     }
     return true;
-  });
-  const hasFilters =
+  }), [products, filters]);
+  const hasFilters = useMemo(() =>
     filters.category !== 'all' ||
     filters.priceRange !== 'all' ||
-    filters.concern !== 'all';
-  const displayProducts = filteredProducts.length > 0 ? filteredProducts : products.slice(0, 4);
-
-  const placeholderImage =
-    'data:image/svg+xml;utf8,' +
-    encodeURIComponent(
-      '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">' +
-        '<defs>' +
-          '<linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">' +
-            '<stop offset="0%" stop-color="#f0f4ff"/>' +
-            '<stop offset="50%" stop-color="#e8f0fe"/>' +
-            '<stop offset="100%" stop-color="#dbeafe"/>' +
-          '</linearGradient>' +
-          '<linearGradient id="icon" x1="0%" y1="0%" x2="100%" y2="100%">' +
-            '<stop offset="0%" stop-color="#3b82f6"/>' +
-            '<stop offset="100%" stop-color="#8b5cf6"/>' +
-          '</linearGradient>' +
-        '</defs>' +
-        '<rect width="100%" height="100%" fill="url(#bg)"/>' +
-        '<g transform="translate(175, 115)">' +
-          '<rect x="5" y="0" width="40" height="70" rx="6" fill="url(#icon)" opacity="0.9"/>' +
-          '<rect x="10" y="5" width="30" height="12" rx="3" fill="white" opacity="0.3"/>' +
-          '<circle cx="25" cy="45" r="10" fill="white" opacity="0.2"/>' +
-        '</g>' +
-        '<text x="50%" y="220" text-anchor="middle" fill="#94a3b8" font-size="13" font-family="system-ui, sans-serif" font-weight="500">' +
-          'No image' +
-        '</text>' +
-      '</svg>'
-    );
+    filters.concern !== 'all',
+  [filters]);
+  const displayProducts = useMemo(
+    () => (filteredProducts.length > 0 ? filteredProducts : products.slice(0, 4)),
+    [filteredProducts, products]
+  );
 
   if (loading) {
     return (
@@ -349,124 +364,120 @@ const Recommendations: React.FC = () => {
             📍 Showing: Ireland prices from Amazon.co.uk
           </p>
         </div>
-        <div className={`recommendations-filters ${hasFilters ? 'has-active-filters' : ''}`}>
-          <div className="filters-header">
-            <h2>Filters</h2>
-            <button
-              onClick={() => setFilters({ category: 'all', priceRange: 'all', concern: 'all' })}
-              className="filters-reset"
-              type="button"
-            >
-              Clear all
-            </button>
-          </div>
-          <div className="filters-grid">
-            <div className="filter-group">
-              <label className="filter-label" htmlFor="filter-category">Category</label>
-              <select
-                id="filter-category"
-                value={filters.category}
-                onChange={(e) => setFilters({ ...filters, category: e.target.value })}
-                className="filter-select"
+        <div className="recommendations-layout">
+          <div className={`recommendations-filters ${hasFilters ? 'has-active-filters' : ''}`}>
+            <div className="filters-header">
+              <h2>Filters</h2>
+              <button
+                onClick={() => setFilters({ category: 'all', priceRange: 'all', concern: 'all' })}
+                className="filters-reset"
+                type="button"
               >
-                <option value="all">All Categories</option>
-                <option value="cleanser">Cleanser</option>
-                <option value="moisturizer">Moisturizer</option>
-                <option value="serum">Serum</option>
-                <option value="sunscreen">Sunscreen</option>
-                <option value="treatment">Treatment</option>
-              </select>
+                Clear all
+              </button>
             </div>
-            <div className="filter-group">
-              <label className="filter-label" htmlFor="filter-price">Price Range</label>
-              <select
-                id="filter-price"
-                value={filters.priceRange}
-                onChange={(e) => setFilters({ ...filters, priceRange: e.target.value })}
-                className="filter-select"
-              >
-                <option value="all">All Prices</option>
-                <option value="0-20">Under $20</option>
-                <option value="20-50">$20 - $50</option>
-                <option value="50-100">$50 - $100</option>
-                <option value="100">Over $100</option>
-              </select>
-            </div>
-            <div className="filter-group">
-              <label className="filter-label" htmlFor="filter-concern">Skin Concern</label>
-              <select
-                id="filter-concern"
-                value={filters.concern}
-                onChange={(e) => setFilters({ ...filters, concern: e.target.value })}
-                className="filter-select"
-              >
-                <option value="all">All Concerns</option>
-                <option value="acne">Acne</option>
-                <option value="wrinkles">Wrinkles</option>
-                <option value="dark spots">Dark Spots</option>
-                <option value="dryness">Dryness</option>
-                <option value="oiliness">Oiliness</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <div className="product-grid">
-          {displayProducts.length === 0 ? (
-            <div className="empty-recommendations">
-              <div className="empty-icon">
-                <IconAlertTriangle size={64} strokeWidth={2} />
-              </div>
-              <h3>No products match your filters</h3>
-              <p>Try a broader category or a different concern.</p>
-              {hasFilters && (
-                <button
-                  type="button"
-                  className="btn-primary empty-reset-filters"
-                  onClick={() => setFilters({ category: 'all', priceRange: 'all', concern: 'all' })}
+            <div className="filters-grid">
+              <div className="filter-group">
+                <label className="filter-label" htmlFor="filter-category">Category</label>
+                <select
+                  id="filter-category"
+                  value={filters.category}
+                  onChange={(e) => setFilters({ ...filters, category: e.target.value })}
+                  className="filter-select"
                 >
-                  Reset filters
-                </button>
-              )}
+                  <option value="all">All Categories</option>
+                  <option value="cleanser">Cleanser</option>
+                  <option value="moisturizer">Moisturizer</option>
+                  <option value="serum">Serum</option>
+                  <option value="sunscreen">Sunscreen</option>
+                  <option value="treatment">Treatment</option>
+                </select>
+              </div>
+              <div className="filter-group">
+                <label className="filter-label" htmlFor="filter-price">Price Range</label>
+                <select
+                  id="filter-price"
+                  value={filters.priceRange}
+                  onChange={(e) => setFilters({ ...filters, priceRange: e.target.value })}
+                  className="filter-select"
+                >
+                  <option value="all">All Prices</option>
+                  <option value="0-20">Under $20</option>
+                  <option value="20-50">$20 - $50</option>
+                  <option value="50-100">$50 - $100</option>
+                  <option value="100">Over $100</option>
+                </select>
+              </div>
+              <div className="filter-group">
+                <label className="filter-label" htmlFor="filter-concern">Skin Concern</label>
+                <select
+                  id="filter-concern"
+                  value={filters.concern}
+                  onChange={(e) => setFilters({ ...filters, concern: e.target.value })}
+                  className="filter-select"
+                >
+                  <option value="all">All Concerns</option>
+                  <option value="acne">Acne</option>
+                  <option value="wrinkles">Wrinkles</option>
+                  <option value="dark spots">Dark Spots</option>
+                  <option value="dryness">Dryness</option>
+                  <option value="oiliness">Oiliness</option>
+                </select>
+              </div>
             </div>
-          ) : (
-            displayProducts.map((product, index) => (
-              <div
-                key={product.id}
-                className={`product-card ${index === 0 ? 'product-card-best-match' : ''}`}
-              >
-                {index === 0 && (
-                  <span className="product-card-best-badge">🏆 Best match</span>
-                )}
-                <div className="product-media">
-                  <img
-                    src={product.imageUrl || placeholderImage}
-                    alt={product.name}
-                    className="product-image"
-                    loading="lazy"
-                    width={240}
-                    height={240}
-                    onError={(event) => {
-                      const target = event.currentTarget;
-                      if (target.src !== placeholderImage) {
-                        target.src = placeholderImage;
-                      }
-                    }}
-                  />
-                  <button
-                    onClick={() => toggleFavorite(product.id)}
-                    className={`favorite-button ${favorites.has(product.id) ? 'active' : ''}`}
-                    title={favorites.has(product.id) ? 'Remove from favorites' : 'Add to favorites'}
-                    aria-label={`${favorites.has(product.id) ? 'Remove' : 'Add'} ${product.name} ${favorites.has(product.id) ? 'from' : 'to'} favorites`}
-                    type="button"
-                  >
-                    <IconHeart
-                      size={18}
-                      strokeWidth={2}
-                      fill={favorites.has(product.id) ? 'currentColor' : 'none'}
-                    />
-                  </button>
+          </div>
+
+          <div className="recommendations-results">
+            <div className="product-grid">
+              {displayProducts.length === 0 ? (
+                <div className="empty-recommendations">
+                  <div className="empty-icon">
+                    <IconAlertTriangle size={64} strokeWidth={2} />
+                  </div>
+                  <h3>No products match your filters</h3>
+                  <p>Try a broader category or a different concern.</p>
+                  {hasFilters && (
+                    <button
+                      type="button"
+                      className="btn-primary empty-reset-filters"
+                      onClick={() => setFilters({ category: 'all', priceRange: 'all', concern: 'all' })}
+                    >
+                      Reset filters
+                    </button>
+                  )}
                 </div>
+              ) : (
+                displayProducts.map((product, index) => (
+                  <div
+                    key={product.id}
+                    className={`product-card ${index === 0 ? 'product-card-best-match' : ''}`}
+                  >
+                    {index === 0 && (
+                      <span className="product-card-best-badge">🏆 Best match</span>
+                    )}
+                    <div className="product-media">
+                      <LazyImage
+                        src={product.imageUrl || PLACEHOLDER_IMAGE}
+                        fallbackSrc={PLACEHOLDER_IMAGE}
+                        alt={product.name}
+                        className="product-image"
+                        width={240}
+                        height={240}
+                      />
+                      <button
+                        onClick={() => toggleFavorite(product.id)}
+                        className={`favorite-button ${favorites.has(product.id) ? 'active' : ''}`}
+                        title={favorites.has(product.id) ? 'Remove from favorites' : 'Add to favorites'}
+                        aria-label={`${favorites.has(product.id) ? 'Remove' : 'Add'} ${product.name} ${favorites.has(product.id) ? 'from' : 'to'} favorites`}
+                        type="button"
+                      >
+                        <IconHeart
+                          size={18}
+                          strokeWidth={2}
+                          fill={favorites.has(product.id) ? 'currentColor' : 'none'}
+                        />
+                      </button>
+                    </div>
 
                 <div className="product-content">
                   <div className="product-meta">
@@ -543,8 +554,10 @@ const Recommendations: React.FC = () => {
                   </div>
                 </div>
               </div>
-            ))
-          )}
+                ))
+              )}
+            </div>
+          </div>
         </div>
 
         {displayProducts.length > 0 && (
@@ -554,6 +567,33 @@ const Recommendations: React.FC = () => {
               : hasFilters
               ? 'Showing fallback picks. Clear filters to see more.'
               : `Showing ${displayProducts.length} of ${products.length} products`}
+          </div>
+        )}
+
+        {compareIds.length > 0 && (
+          <div className="compare-bar" role="region" aria-label="Compare products">
+            <div className="compare-bar-info">
+              <strong>{compareIds.length}</strong> product{compareIds.length === 1 ? '' : 's'} in compare
+            </div>
+            <div className="compare-bar-actions">
+              <Link
+                to={`/product/compare?ids=${compareIds.slice(0, MAX_COMPARE).join(',')}`}
+                className={`btn-primary compare-bar-btn ${compareIds.length < 2 ? 'is-disabled' : ''}`}
+                aria-disabled={compareIds.length < 2}
+                tabIndex={compareIds.length < 2 ? -1 : 0}
+                onClick={(event) => {
+                  if (compareIds.length < 2) {
+                    event.preventDefault();
+                    toast.info('Add at least 2 products to compare');
+                  }
+                }}
+              >
+                Compare now
+              </Link>
+              <button type="button" className="btn-secondary compare-bar-clear" onClick={handleClearCompare}>
+                Clear
+              </button>
+            </div>
           </div>
         )}
         {filteredProducts.length === 0 && hasFilters && (

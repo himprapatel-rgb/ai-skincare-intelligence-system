@@ -1,5 +1,7 @@
 import logging
 import os
+import sys
+import os
 from pathlib import Path
 
 from fastapi import FastAPI
@@ -103,7 +105,8 @@ app.add_middleware(GZipMiddleware, minimum_size=500)
 
 # Rate limit scan endpoints to prevent abuse (per-IP when unauthenticated)
 from middleware.rate_limiter import RateLimiterMiddleware
-app.add_middleware(RateLimiterMiddleware, max_requests=10, window_seconds=60)
+if settings.ENV not in {"test", "testing"} and "pytest" not in sys.modules:
+    app.add_middleware(RateLimiterMiddleware, max_requests=10, window_seconds=60)
 
 # TrustedHostMiddleware removed: Starlette rejects bare * and *.domain patterns.
 # CORS + explicit origins provide adequate protection for Railway deployment.

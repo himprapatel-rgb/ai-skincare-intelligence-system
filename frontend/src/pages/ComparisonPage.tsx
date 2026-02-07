@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import html2canvas from 'html2canvas';
 import { IconDownload, IconShare2, IconTrendingUp, IconTrendingDown } from '../components/Icons';
+import LazyImage from '../components/LazyImage';
 import { getScanHistory } from '../services/scanApi';
 import { usePageTitle } from '../hooks/usePageTitle';
 import './CommonStyles.css';
@@ -35,6 +34,7 @@ const ComparisonPage: React.FC = () => {
   // Loading state reserved for future API integration.
 
   const [allAnalysesForChart, setAllAnalysesForChart] = useState<Analysis[]>([]);
+  const [rechartsModule, setRechartsModule] = useState<typeof import('recharts') | null>(null);
   const comparisonCardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -86,6 +86,20 @@ const ComparisonPage: React.FC = () => {
     fetchAnalyses();
   }, []);
 
+  useEffect(() => {
+    let isMounted = true;
+    import('recharts')
+      .then((mod) => {
+        if (isMounted) setRechartsModule(mod);
+      })
+      .catch(() => {
+        if (isMounted) setRechartsModule(null);
+      });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   const getComparison = (key: keyof Analysis['concerns']) => {
     if (!selectedAnalyses[0] || !selectedAnalyses[1]) return null;
     const analysis1 = analyses.find(a => a.id === selectedAnalyses[0]);
@@ -119,19 +133,23 @@ const ComparisonPage: React.FC = () => {
   const analysis1 = analyses.find(a => a.id === selectedAnalyses[0]);
   const analysis2 = analyses.find(a => a.id === selectedAnalyses[1]);
 
-  const chartData = allAnalysesForChart
-    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
-    .map(a => ({
-      date: new Date(a.date).toLocaleDateString('en', { month: 'short', day: 'numeric' }),
-      score: a.overallScore,
-      acne: a.concerns.acne,
-      hydration: a.concerns.hydration
-    }));
+  const chartData = useMemo(
+    () => [...allAnalysesForChart]
+      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+      .map(a => ({
+        date: new Date(a.date).toLocaleDateString('en', { month: 'short', day: 'numeric' }),
+        score: a.overallScore,
+        acne: a.concerns.acne,
+        hydration: a.concerns.hydration
+      })),
+    [allAnalysesForChart]
+  );
 
   const handleExportComparison = async () => {
     const el = comparisonCardRef.current;
     if (!el) return;
     try {
+      const { default: html2canvas } = await import('html2canvas');
       const canvas = await html2canvas(el, { useCORS: true, scale: 2, backgroundColor: '#ffffff' });
       const link = document.createElement('a');
       link.download = `skin-comparison-${analysis1?.date || '1'}-vs-${analysis2?.date || '2'}.png`;
@@ -213,27 +231,26 @@ const ComparisonPage: React.FC = () => {
 
       {analysis1 && analysis2 && (
         <>
-          <div className="app-card comparison-card" ref={comparisonCardRef}>
-            <div className="comparison-card-header-row">
-              <h3>Visual comparison</h3>
-              <div className="comparison-actions-header">
-                <button onClick={handleShareComparison} className="btn-icon-small" title="Share">
-                  <IconShare2 size={18} strokeWidth={2} />
-                </button>
-                <button onClick={handleExportComparison} className="btn-icon-small" title="Export">
-                  <IconDownload size={18} strokeWidth={2} />
-                </button>
+          <div className="comparison-duo">
+            <div className="app-card comparison-card" ref={comparisonCardRef}>
+              <div className="comparison-card-header-row">
+                <h3>Visual comparison</h3>
+                <div className="comparison-actions-header">
+                  <button onClick={handleShareComparison} className="btn-icon-small" title="Share">
+                    <IconShare2 size={18} strokeWidth={2} />
+                  </button>
+                  <button onClick={handleExportComparison} className="btn-icon-small" title="Export">
+                    <IconDownload size={18} strokeWidth={2} />
+                  </button>
+                </div>
               </div>
-            </div>
-            <div className="comparison-images">
+              <div className="comparison-images">
                 <div className="comparison-image-container">
-                  <img 
-                    src={analysis1.imageUrl || analysis1.thumbnail} 
+                  <LazyImage
+                    src={analysis1.imageUrl || analysis1.thumbnail}
                     alt={`Analysis from ${analysis1.date}`}
                     className="comparison-image"
-                    loading="lazy"
-                    width={300}
-                    height={225}
+                    objectFit="cover"
                   />
                   <div className="comparison-image-label">
                     {analysis1.date} - Score: {analysis1.overallScore}
@@ -241,56 +258,55 @@ const ComparisonPage: React.FC = () => {
                 </div>
                 <div className="comparison-vs-divider">VS</div>
                 <div className="comparison-image-container">
-                  <img 
-                    src={analysis2.imageUrl || analysis2.thumbnail} 
+                  <LazyImage
+                    src={analysis2.imageUrl || analysis2.thumbnail}
                     alt={`Analysis from ${analysis2.date}`}
                     className="comparison-image"
-                    loading="lazy"
-                    width={300}
-                    height={225}
+                    objectFit="cover"
                   />
                   <div className="comparison-image-label">
                     {analysis2.date} - Score: {analysis2.overallScore}
                   </div>
                 </div>
               </div>
-          </div>
+            </div>
 
-          <div className="app-card comparison-card">
-            <h3 className="comparison-card-title">Overall score</h3>
-            <div>
-              <div className="comparison-summary">
-                <div className="comparison-score-card">
-                  <div className="comparison-score-date">{analysis1.date}</div>
-                  <div className="comparison-score-value primary">
-                    {analysis1.overallScore}
-                  </div>
-                  <div className="comparison-score-label">Current Score</div>
-                </div>
-                {overallChange && (
-                  <div className="comparison-score-card change-indicator">
-                    <div className="comparison-score-date">Change</div>
-                    <div className={`comparison-score-value ${overallChange.improved ? 'improved' : 'declined'}`}>
-                      {overallChange.improved ? (
-                        <IconTrendingUp size={32} strokeWidth={2} />
-                      ) : (
-                        <IconTrendingDown size={32} strokeWidth={2} />
-                      )}
-                      <span style={{ marginLeft: '8px' }}>
-                        {overallChange.improved ? '+' : ''}{overallChange.diff}
-                      </span>
+            <div className="app-card comparison-card">
+              <h3 className="comparison-card-title">Overall score</h3>
+              <div>
+                <div className="comparison-summary">
+                  <div className="comparison-score-card">
+                    <div className="comparison-score-date">{analysis1.date}</div>
+                    <div className="comparison-score-value primary">
+                      {analysis1.overallScore}
                     </div>
-                    <div className="comparison-score-label">
-                      {overallChange.improved ? 'Improved' : 'Declined'}
+                    <div className="comparison-score-label">Current Score</div>
+                  </div>
+                  {overallChange && (
+                    <div className="comparison-score-card change-indicator">
+                      <div className="comparison-score-date">Change</div>
+                      <div className={`comparison-score-value ${overallChange.improved ? 'improved' : 'declined'}`}>
+                        {overallChange.improved ? (
+                          <IconTrendingUp size={32} strokeWidth={2} />
+                        ) : (
+                          <IconTrendingDown size={32} strokeWidth={2} />
+                        )}
+                        <span style={{ marginLeft: '8px' }}>
+                          {overallChange.improved ? '+' : ''}{overallChange.diff}
+                        </span>
+                      </div>
+                      <div className="comparison-score-label">
+                        {overallChange.improved ? 'Improved' : 'Declined'}
+                      </div>
                     </div>
+                  )}
+                  <div className="comparison-score-card">
+                    <div className="comparison-score-date">{analysis2.date}</div>
+                    <div className="comparison-score-value muted">
+                      {analysis2.overallScore}
+                    </div>
+                    <div className="comparison-score-label">Previous Score</div>
                   </div>
-                )}
-                <div className="comparison-score-card">
-                  <div className="comparison-score-date">{analysis2.date}</div>
-                  <div className="comparison-score-value muted">
-                    {analysis2.overallScore}
-                  </div>
-                  <div className="comparison-score-label">Previous Score</div>
                 </div>
               </div>
             </div>
@@ -300,31 +316,37 @@ const ComparisonPage: React.FC = () => {
             <div className="app-card comparison-card">
               <h3 className="comparison-card-title">Progress timeline</h3>
               <div>
-                <ResponsiveContainer width="100%" height={300}>
-                  <LineChart data={chartData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" />
-                    <YAxis domain={[0, 100]} />
-                    <Tooltip />
-                    <Legend />
-                    <Line 
-                      type="monotone" 
-                      dataKey="score" 
-                      stroke="var(--primary)" 
-                      strokeWidth={3}
-                      name="Overall Score"
-                      dot={{ r: 6 }}
-                    />
-                    <Line 
-                      type="monotone" 
-                      dataKey="hydration" 
-                      stroke="var(--secondary)" 
-                      strokeWidth={2}
-                      name="Hydration"
-                      strokeDasharray="5 5"
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
+                {rechartsModule ? (
+                  <rechartsModule.ResponsiveContainer width="100%" height={300}>
+                    <rechartsModule.LineChart data={chartData}>
+                      <rechartsModule.CartesianGrid strokeDasharray="3 3" />
+                      <rechartsModule.XAxis dataKey="date" />
+                      <rechartsModule.YAxis domain={[0, 100]} />
+                      <rechartsModule.Tooltip />
+                      <rechartsModule.Legend />
+                      <rechartsModule.Line 
+                        type="monotone" 
+                        dataKey="score" 
+                        stroke="var(--primary)" 
+                        strokeWidth={3}
+                        name="Overall Score"
+                        dot={{ r: 6 }}
+                      />
+                      <rechartsModule.Line 
+                        type="monotone" 
+                        dataKey="hydration" 
+                        stroke="var(--secondary)" 
+                        strokeWidth={2}
+                        name="Hydration"
+                        strokeDasharray="5 5"
+                      />
+                    </rechartsModule.LineChart>
+                  </rechartsModule.ResponsiveContainer>
+                ) : (
+                  <div className="comparison-chart-placeholder">
+                    Loading chart…
+                  </div>
+                )}
               </div>
             </div>
           )}

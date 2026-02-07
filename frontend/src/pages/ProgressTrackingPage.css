@@ -130,6 +130,42 @@
   min-width: min(100%, 400px);
 }
 
+.chart-placeholder {
+  min-height: 320px;
+  border-radius: 12px;
+  border: 1px dashed var(--border);
+  background: var(--bg-light);
+  color: var(--text-gray);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+
+@media (min-width: 1024px) {
+  .progress-tracking-page .app-page-content {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    gap: 24px;
+  }
+
+  .stats-summary,
+  .compare-section {
+    grid-column: 1 / -1;
+  }
+
+  .chart-section {
+    grid-column: 1;
+  }
+
+  .milestones-section {
+    grid-column: 2;
+    align-self: start;
+    position: sticky;
+    top: 16px;
+  }
+}
+
 .trend-analysis {
   margin-top: var(--spacing-xl);
   padding-top: var(--spacing-xl);

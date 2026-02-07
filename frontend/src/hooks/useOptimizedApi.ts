@@ -8,12 +8,25 @@ import { optimizedApi } from '../services/apiOptimized';
 
 interface UseApiOptions<T> {
   onSuccess?: (data: T) => void;
-  onError?: (error: any) => void;
+  onError?: (error: unknown) => void;
   immediate?: boolean;
   showLoadingAfter?: number; // ms delay before showing loading
 }
 
-export function useOptimizedApi<T = any>(
+function getErrorMessage(err: unknown): string {
+  if (err && typeof err === 'object') {
+    const maybeError = err as { message?: unknown; response?: { data?: { detail?: unknown } } };
+    if (typeof maybeError.response?.data?.detail === 'string') {
+      return maybeError.response.data.detail;
+    }
+    if (typeof maybeError.message === 'string') {
+      return maybeError.message;
+    }
+  }
+  return 'Request failed';
+}
+
+export function useOptimizedApi<T = unknown>(
   url: string,
   options: UseApiOptions<T> = {}
 ) {
@@ -36,9 +49,9 @@ export function useOptimizedApi<T = any>(
       setLoading(false);
       onSuccess?.(result);
       return result;
-    } catch (err: any) {
+    } catch (err: unknown) {
       clearTimeout(loadingTimeout);
-      const errorMessage = err.response?.data?.detail || err.message || 'Request failed';
+      const errorMessage = getErrorMessage(err);
       setError(errorMessage);
       setLoading(false);
       onError?.(err);
@@ -60,11 +73,11 @@ export function useOptimizedApi<T = any>(
 /**
  * Hook for mutations (POST/PUT/DELETE)
  */
-export function useOptimizedMutation<TData = any, TVariables = any>(
+export function useOptimizedMutation<TData = unknown, TVariables = unknown>(
   mutationFn: (variables: TVariables) => Promise<TData>,
   options: {
     onSuccess?: (data: TData) => void;
-    onError?: (error: any) => void;
+    onError?: (error: unknown) => void;
   } = {}
 ) {
   const [loading, setLoading] = useState(false);
@@ -80,8 +93,8 @@ export function useOptimizedMutation<TData = any, TVariables = any>(
         setLoading(false);
         options.onSuccess?.(result);
         return result;
-      } catch (err: any) {
-        const errorMessage = err.response?.data?.detail || err.message || 'Request failed';
+      } catch (err: unknown) {
+        const errorMessage = getErrorMessage(err);
         setError(errorMessage);
         setLoading(false);
         options.onError?.(err);

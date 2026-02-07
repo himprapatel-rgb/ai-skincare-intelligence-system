@@ -130,6 +130,22 @@
   box-shadow: var(--shadow-sm);
 }
 
+@media (min-width: 1024px) {
+  .product-details-page {
+    padding: var(--spacing-2xl) var(--spacing-2xl);
+  }
+
+  .product-header {
+    grid-template-columns: minmax(320px, 420px) 1fr;
+    gap: 48px;
+  }
+
+  .product-image-section {
+    position: sticky;
+    top: 24px;
+  }
+}
+
 .product-image-section img {
   width: 100%;
   border-radius: var(--border-radius-md);

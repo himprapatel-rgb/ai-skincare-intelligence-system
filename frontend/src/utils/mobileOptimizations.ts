@@ -2,6 +2,41 @@
  * Mobile-specific optimizations and utilities
  */
 
+type WebkitMessageHandler = {
+  postMessage: (message: unknown) => void;
+};
+
+type WebkitWindow = Window & {
+  webkit?: {
+    messageHandlers?: {
+      haptic?: WebkitMessageHandler;
+    };
+  };
+};
+
+type NetworkInformationLike = {
+  effectiveType?: string;
+  saveData?: boolean;
+};
+
+type NavigatorWithConnection = Navigator & {
+  connection?: NetworkInformationLike;
+  mozConnection?: NetworkInformationLike;
+  webkitConnection?: NetworkInformationLike;
+  standalone?: boolean;
+};
+
+type BeforeInstallPromptEvent = Event & {
+  prompt: () => Promise<void>;
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
+};
+
+type NavigatorWithWakeLock = Navigator & {
+  wakeLock?: {
+    request: (type: 'screen') => Promise<WakeLockSentinel>;
+  };
+};
+
 /**
  * Prevent iOS rubber band scrolling on body
  */
@@ -57,7 +92,7 @@ export async function lockOrientation(orientation: 'portrait' | 'landscape' = 'p
       await screen.orientation.lock(orientation);
     }
   } catch (error) {
-    console.warn('Screen orientation lock not supported:', error);
+    void error;
   }
 }
 
@@ -70,7 +105,7 @@ export function unlockOrientation() {
       screen.orientation.unlock();
     }
   } catch (error) {
-    console.warn('Screen orientation unlock not supported:', error);
+    void error;
   }
 }
 
@@ -79,8 +114,9 @@ export function unlockOrientation() {
  */
 export function triggerHaptic(type: 'light' | 'medium' | 'heavy' = 'light') {
   // iOS Haptic Feedback
-  if ((window as any).webkit?.messageHandlers?.haptic) {
-    (window as any).webkit.messageHandlers.haptic.postMessage(type);
+  const webkitWindow = window as WebkitWindow;
+  if (webkitWindow.webkit?.messageHandlers?.haptic) {
+    webkitWindow.webkit.messageHandlers.haptic.postMessage(type);
   }
   
   // Web Vibration API (Android)
@@ -110,9 +146,10 @@ export async function requestNotificationPermission(): Promise<boolean> {
  * Check if app is installed as PWA
  */
 export function isPWAInstalled(): boolean {
+  const legacyNavigator = navigator as NavigatorWithConnection;
   return (
     window.matchMedia('(display-mode: standalone)').matches ||
-    (window.navigator as any).standalone === true ||
+    legacyNavigator.standalone === true ||
     document.referrer.includes('android-app://')
   );
 }
@@ -120,12 +157,12 @@ export function isPWAInstalled(): boolean {
 /**
  * Prompt user to install PWA (if available)
  */
-let deferredPrompt: any = null;
+let deferredPrompt: BeforeInstallPromptEvent | null = null;
 
 export function setupPWAInstallPrompt() {
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
-    deferredPrompt = e;
+    deferredPrompt = e as BeforeInstallPromptEvent;
   });
 }
 
@@ -154,9 +191,10 @@ export function getMobileImageUrl(url: string, width = 800): string {
  * Detect network speed (mobile optimization)
  */
 export function getNetworkSpeed(): 'slow' | 'medium' | 'fast' {
-  const connection = (navigator as any).connection || 
-                     (navigator as any).mozConnection || 
-                     (navigator as any).webkitConnection;
+  const legacyNavigator = navigator as NavigatorWithConnection;
+  const connection = legacyNavigator.connection ||
+                     legacyNavigator.mozConnection ||
+                     legacyNavigator.webkitConnection;
   
   if (!connection) return 'medium';
   
@@ -175,8 +213,9 @@ export function getNetworkSpeed(): 'slow' | 'medium' | 'fast' {
  * Check if device is in battery saver mode
  */
 export function isBatterySaverMode(): boolean {
+  const legacyNavigator = navigator as NavigatorWithConnection;
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const prefersReducedData = (navigator as any).connection?.saveData === true;
+  const prefersReducedData = legacyNavigator.connection?.saveData === true;
   
   return prefersReducedMotion || prefersReducedData;
 }
@@ -225,7 +264,7 @@ export async function shareContent(data: {
     await navigator.share(data);
     return true;
   } catch (error) {
-    console.warn('Share failed:', error);
+    void error;
     return false;
   }
 }
@@ -254,7 +293,7 @@ export async function copyToClipboard(text: string): Promise<boolean> {
     if (success) triggerHaptic('light');
     return success;
   } catch (error) {
-    console.error('Copy to clipboard failed:', error);
+    void error;
     return false;
   }
 }
@@ -262,18 +301,19 @@ export async function copyToClipboard(text: string): Promise<boolean> {
 /**
  * Wake lock to prevent screen from sleeping (useful for camera/scan)
  */
-let wakeLock: any = null;
+let wakeLock: WakeLockSentinel | null = null;
 
 export async function requestWakeLock() {
   try {
-    if ('wakeLock' in navigator) {
-      wakeLock = await (navigator as any).wakeLock.request('screen');
+    const navigatorWithWakeLock = navigator as NavigatorWithWakeLock;
+    if (navigatorWithWakeLock.wakeLock) {
+      wakeLock = await navigatorWithWakeLock.wakeLock.request('screen');
       wakeLock.addEventListener('release', () => {
-        console.log('Wake lock released');
+        // no-op
       });
     }
   } catch (error) {
-    console.warn('Wake lock not supported:', error);
+    void error;
   }
 }
 

@@ -8,7 +8,7 @@ import re
 from typing import List, Optional
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, Response
 from sqlalchemy import func
 from sqlalchemy.orm import Session, joinedload
 
@@ -42,6 +42,7 @@ router = APIRouter(
 
 @router.get("", response_model=List[ProductResponse])
 async def search_products(
+    response: Response,
     search: Optional[str] = Query(None),
     brand: Optional[str] = Query(None),
     category: Optional[str] = Query(None),
@@ -50,6 +51,7 @@ async def search_products(
     db: Session = Depends(get_db)
 ):
     """Search and filter products"""
+    response.headers["Cache-Control"] = "public, max-age=60"
     query = db.query(Product)
     
     if search:
@@ -69,9 +71,11 @@ async def search_products(
 @router.get("/{barcode}", response_model=ProductResponse)
 async def get_product_by_barcode(
     barcode: str,
+    response: Response,
     db: Session = Depends(get_db)
 ):
     """Lookup product by barcode (EAN-8 to EAN-14)"""
+    response.headers["Cache-Control"] = "public, max-age=300"
     if not re.fullmatch(r"\d{8,14}", barcode.strip()):
         raise HTTPException(
             status_code=400,
@@ -91,10 +95,12 @@ async def get_product_by_barcode(
 @router.get("/{product_id}/recommendations", response_model=List[ProductRecommendation])
 async def get_recommendations(
     product_id: UUID,
+    response: Response,
     limit: int = Query(10, ge=1, le=50),
     db: Session = Depends(get_db)
 ):
     """Get similar product recommendations using content-based filtering"""
+    response.headers["Cache-Control"] = "public, max-age=120"
     # Get target product
     product = db.query(Product).filter(Product.id == product_id).first()
     if not product:
@@ -166,6 +172,7 @@ async def analyze_ingredients(
 @router.get("/{product_id}/reviews", response_model=ReviewsListResponse)
 async def get_product_reviews(
     product_id: UUID,
+    response: Response,
     limit: int = Query(10, ge=1, le=50),
     offset: int = Query(0, ge=0),
     db: Session = Depends(get_db)
@@ -175,6 +182,7 @@ async def get_product_reviews(
     
     SRS: FR-REVIEWS - Product reviews and ratings
     """
+    response.headers["Cache-Control"] = "public, max-age=60"
     # Verify product exists
     product = db.query(Product).filter(Product.id == product_id).first()
     if not product:
@@ -280,12 +288,13 @@ async def create_product_review(
     db.refresh(review)
     
     # Update product average rating
-    all_reviews = db.query(ProductReview).filter(
-        ProductReview.product_id == product_id
-    ).all()
-    if all_reviews:
-        avg = sum(r.rating for r in all_reviews) / len(all_reviews)
-        product.average_rating = round(avg, 2)
+    avg_rating = (
+        db.query(func.avg(ProductReview.rating))
+        .filter(ProductReview.product_id == product_id)
+        .scalar()
+    )
+    if avg_rating is not None:
+        product.average_rating = round(float(avg_rating), 2)
         db.commit()
     
     display_name = current_user.email.split('@')[0]

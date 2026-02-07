@@ -8,13 +8,17 @@ export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
     svgr(),
-    visualizer({
-      filename: 'dist/stats.html',
-      open: false,
-      gzipSize: true,
-      brotliSize: true,
-      template: 'treemap',
-    }),
+    ...(mode === 'production'
+      ? [
+          visualizer({
+            filename: 'dist/stats.html',
+            open: false,
+            gzipSize: true,
+            brotliSize: true,
+            template: 'treemap',
+          }),
+        ]
+      : []),
   ],
   base: '/',
   server: {

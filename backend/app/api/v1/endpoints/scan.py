@@ -7,9 +7,9 @@ import sys
 from typing import Optional
 from uuid import UUID
 
-from fastapi import APIRouter, Body, Depends, File, HTTPException, Request, UploadFile, status
-from fastapi.responses import FileResponse, Response
-from sqlalchemy.orm import Session
+from fastapi import APIRouter, Body, Depends, File, HTTPException, Request, UploadFile, Response, status
+from fastapi.responses import FileResponse
+from sqlalchemy.orm import Session, defer
 
 from app.config import settings
 from app.database import get_db
@@ -152,6 +152,7 @@ async def upload_scan(
     
     scan_session = (
         db.query(ScanSession)
+        .options(defer(ScanSession.image_data))
         .filter(ScanSession.id == uuid_obj)
         .first()
     )
@@ -306,10 +307,12 @@ async def upload_scan(
 )
 def get_scan_status(
     scan_id: str,
+    response: Response,
     db: Session = Depends(get_db),
     current_user: Optional[User] = Depends(get_current_user_optional)
 ):
     """Get scan status."""
+    response.headers["Cache-Control"] = "private, max-age=30"
     # Validate UUID format
     try:
         uuid_obj = UUID(scan_id)
@@ -321,6 +324,7 @@ def get_scan_status(
 
     scan_session = (
         db.query(ScanSession)
+        .options(defer(ScanSession.image_data))
         .filter(ScanSession.id == uuid_obj)
         .first()
     )
@@ -356,10 +360,12 @@ def get_scan_status(
 )
 def get_scan_results(
     scan_id: str,
+    response: Response,
     db: Session = Depends(get_db),
     current_user: Optional[User] = Depends(get_current_user_optional)
 ):
     """Get scan results."""
+    response.headers["Cache-Control"] = "private, max-age=30"
     # Validate UUID format
     try:
         uuid_obj = UUID(scan_id)
@@ -493,16 +499,19 @@ def get_scan_image(
 )
 def get_scan_history(
     request: Request,
+    response: Response,
     db: Session = Depends(get_db),
     current_user: Optional[User] = Depends(get_current_user_optional)
 ):
     """Get user's scan history."""
+    response.headers["Cache-Control"] = "private, max-age=30"
     if not current_user:
         return {"scans": []}
     user_id = current_user.id
     base_url = str(request.base_url).rstrip("/")
     scans = (
         db.query(ScanSession)
+        .options(defer(ScanSession.image_data))
         .filter(ScanSession.user_id == user_id)
         .order_by(ScanSession.created_at.desc())
         .all()

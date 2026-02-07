@@ -1,6 +1,7 @@
 import React, { useMemo, useState, useEffect } from 'react';
-import { useSearchParams, Link } from 'react-router-dom';
+import { useSearchParams, Link, useNavigate } from 'react-router-dom';
 import { IconStar } from '../components/Icons';
+import LazyImage from '../components/LazyImage';
 import { BackButton } from '../components/BackButton';
 import { LoadingSpinner } from '../components/LoadingSpinner';
 import { usePageTitle } from '../hooks/usePageTitle';
@@ -82,12 +83,22 @@ function getProduct(id: string): CompareProduct {
 
 const ProductComparePage: React.FC = () => {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const idsParam = searchParams.get('ids') || '';
   const ids = useMemo(() => idsParam.split(',').map((s) => s.trim()).filter(Boolean).slice(0, 4), [idsParam]);
   const [products, setProducts] = useState<CompareProduct[]>([]);
   const [loading, setLoading] = useState(true);
 
   usePageTitle('Compare Products', 'Side-by-side product comparison.');
+
+  const handleClearCompare = () => {
+    try {
+      localStorage.setItem('compare_product_ids', JSON.stringify([]));
+    } catch {
+      // Ignore storage errors
+    }
+    navigate('/recommendations');
+  };
 
   useEffect(() => {
     let cancelled = false;
@@ -144,10 +155,34 @@ const ProductComparePage: React.FC = () => {
       <div className="app-page-content product-compare-container">
         <div className="compare-header">
           <BackButton className="compare-back" />
+          <div className="compare-header-actions">
+            <button type="button" className="btn btn-secondary" onClick={handleClearCompare}>
+              Clear compare list
+            </button>
+          </div>
         </div>
-        <div className="compare-grid" style={{ gridTemplateColumns: `repeat(${products.length}, 1fr)` }}>
+        <div
+          className="compare-grid"
+          style={{ '--compare-columns': products.length } as React.CSSProperties}
+        >
           {products.map((product) => (
             <div key={product.id} className="compare-card">
+              <div className="compare-card-media">
+                {product.imageUrl ? (
+                  <LazyImage
+                    src={product.imageUrl}
+                    alt={product.name}
+                    width="100%"
+                    height={180}
+                    objectFit="contain"
+                    className="compare-card-image"
+                  />
+                ) : (
+                  <div className="compare-card-placeholder" aria-hidden="true">
+                    {product.brand || 'No image'}
+                  </div>
+                )}
+              </div>
               <h3 className="compare-card-name">{product.name}</h3>
               <p className="compare-card-brand">{product.brand}</p>
               <p className="compare-card-meta">{product.category} · {product.price}</p>

@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
@@ -12,12 +12,6 @@ import { usePageTitle } from '../hooks/usePageTitle';
 import { GoogleSignInButton } from '../components/GoogleSignInButton';
 
 import { STORAGE_KEYS } from '../constants/storage';
-
-// Check if already logged in
-const checkExistingAuth = () => {
-  const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
-  return !!token;
-};
 import { 
   IconMail, 
   IconLock, 
@@ -49,7 +43,6 @@ export const AuthPageFixed: React.FC = () => {
   const { loginWithToken, isAuthenticated, isLoading: authLoading } = useAuth();
   const toast = useToast();
   const navigate = useNavigate();
-  const location = useLocation();
 
   usePageTitle(mode === 'register' ? 'Create Account' : 'Sign In');
 
@@ -69,7 +62,22 @@ export const AuthPageFixed: React.FC = () => {
   // Clear error when inputs change
   useEffect(() => {
     if (error) setError('');
-  }, [email, password, mode]);
+  }, [email, password, mode, error]);
+
+  const getAuthErrorMessage = (err: unknown): string => {
+    if (err && typeof err === 'object') {
+      const maybeError = err as { response?: { status?: number; data?: { detail?: unknown } }; request?: unknown };
+      const status = maybeError.response?.status;
+      const detail = maybeError.response?.data?.detail;
+
+      if (status === 401) return 'Invalid email or password';
+      if (status === 403) return 'Please verify your email first';
+      if (status === 422) return 'Invalid input - check your credentials';
+      if (typeof detail === 'string') return detail;
+      if (maybeError.request) return 'Cannot connect to server. Please check your connection.';
+    }
+    return 'Login failed. Please try again.';
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -142,8 +150,6 @@ export const AuthPageFixed: React.FC = () => {
           full_name: fullName.trim(),
         });
 
-        console.log('Register response:', response.status);
-
         if (response.data && response.data.token) {
           const token = response.data.token;
           const userData = response.data.user;
@@ -161,30 +167,8 @@ export const AuthPageFixed: React.FC = () => {
           }, 500);
         }
       }
-    } catch (err: any) {
-      console.error('Auth error:', err);
-      
-      let errorMsg = 'Login failed. Please try again.';
-      
-      if (err.response) {
-        // Server responded with error
-        const status = err.response.status;
-        const detail = err.response.data?.detail;
-        
-        if (status === 401) {
-          errorMsg = 'Invalid email or password';
-        } else if (status === 403) {
-          errorMsg = 'Please verify your email first';
-        } else if (status === 422) {
-          errorMsg = 'Invalid input - check your credentials';
-        } else if (detail) {
-          errorMsg = typeof detail === 'string' ? detail : 'Authentication error';
-        }
-      } else if (err.request) {
-        // Network error
-        errorMsg = 'Cannot connect to server. Please check your connection.';
-      }
-      
+    } catch (err: unknown) {
+      const errorMsg = getAuthErrorMessage(err);
       setError(errorMsg);
       toast.error(errorMsg);
     } finally {

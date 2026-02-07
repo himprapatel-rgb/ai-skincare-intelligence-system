@@ -116,6 +116,7 @@ const FaceMesh3D = forwardRef<FaceMesh3DHandle, FaceMesh3DProps>(function FaceMe
   }, [width, height]);
 
   useEffect(() => {
+    const containerEl = containerRef.current;
     initThree();
     return () => {
       if (pointsRef.current) {
@@ -126,9 +127,9 @@ const FaceMesh3D = forwardRef<FaceMesh3DHandle, FaceMesh3DProps>(function FaceMe
         meshRef.current.geometry.dispose();
         (meshRef.current.material as THREE.Material).dispose();
       }
-      if (rendererRef.current && containerRef.current?.contains(rendererRef.current.domElement)) {
+      if (rendererRef.current && containerEl?.contains(rendererRef.current.domElement)) {
         rendererRef.current.dispose();
-        containerRef.current?.removeChild(rendererRef.current.domElement);
+        containerEl.removeChild(rendererRef.current.domElement);
       }
       sceneRef.current = null;
       cameraRef.current = null;

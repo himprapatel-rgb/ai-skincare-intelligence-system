@@ -11,6 +11,7 @@ import { usePageTitle } from '../hooks/usePageTitle';
 import { useShelf } from '../context/ShelfContext';
 import { useToast } from '../context/ToastContext';
 import { hapticMedium } from '../utils/haptic';
+import LazyImage from '../components/LazyImage';
 import './ProductDetailsPage.css';
 
 import { API_BASE_URL } from '../config';
@@ -540,7 +541,7 @@ const ProductDetailsPage: React.FC = () => {
           {product.imageUrl ? (
             <>
               <button ref={zoomTriggerRef} type="button" className="product-image-zoom-trigger" onClick={() => setImageZoomed(true)} aria-label="Zoom product image">
-                <img src={product.imageUrl} alt={product.name} loading="lazy" width={320} height={320} />
+                <LazyImage src={product.imageUrl} alt={product.name} width={320} height={320} />
               </button>
               {imageZoomed && (
                 <div ref={zoomOverlayRef} className="product-image-zoom-overlay" role="dialog" aria-modal="true" aria-label="Enlarged product image" onClick={(e) => e.target === e.currentTarget && closeZoom()}>

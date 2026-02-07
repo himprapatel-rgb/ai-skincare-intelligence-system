@@ -32,8 +32,9 @@ def list_blogs(
 
 
 @router.get("/blogs/{blog_id}", response_model=BlogResponse)
-def get_blog(blog_id: int, db: Session = Depends(get_db)):
+def get_blog(blog_id: int, response: Response, db: Session = Depends(get_db)):
     """Public blog by ID."""
+    response.headers["Cache-Control"] = "public, max-age=300"
     blog = db.query(Blog).filter(Blog.id == blog_id, Blog.published == True).first()
     if not blog:
         raise HTTPException(status_code=404, detail="Blog not found")
@@ -62,12 +63,14 @@ def list_videos(
 
 @router.get("/news", response_model=List[NewsResponse])
 def list_news(
+    response: Response,
     limit: int = Query(20, ge=1, le=100),
     offset: int = Query(0, ge=0),
     featured_only: bool = Query(False),
     db: Session = Depends(get_db),
 ):
     """Public list of published news items."""
+    response.headers["Cache-Control"] = "public, max-age=300"
     query = db.query(NewsItem).filter(NewsItem.published == True)
     if featured_only:
         query = query.filter(NewsItem.is_featured == True)

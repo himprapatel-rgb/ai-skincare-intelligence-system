@@ -5,7 +5,6 @@
 
 export async function registerServiceWorker() {
   if (!('serviceWorker' in navigator)) {
-    console.log('Service Worker not supported');
     return false;
   }
 
@@ -14,7 +13,7 @@ export async function registerServiceWorker() {
       scope: '/',
     });
 
-    console.log('Service Worker registered:', registration.scope);
+    void registration.scope;
 
     // Check for updates periodically (every hour)
     setInterval(() => {
@@ -29,8 +28,6 @@ export async function registerServiceWorker() {
       newWorker.addEventListener('statechange', () => {
         if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
           // New service worker available
-          console.log('New service worker available');
-          
           // Show update notification to user
           if (confirm('A new version is available! Reload to update?')) {
             newWorker.postMessage({ type: 'SKIP_WAITING' });
@@ -42,13 +39,12 @@ export async function registerServiceWorker() {
 
     // Handle controller change (new SW activated)
     navigator.serviceWorker.addEventListener('controllerchange', () => {
-      console.log('Service Worker controller changed');
       window.location.reload();
     });
 
     return true;
   } catch (error) {
-    console.error('Service Worker registration failed:', error);
+    void error;
     return false;
   }
 }
@@ -63,12 +59,11 @@ export async function unregisterServiceWorker() {
     const registration = await navigator.serviceWorker.getRegistration();
     if (registration) {
       await registration.unregister();
-      console.log('Service Worker unregistered');
       return true;
     }
     return false;
   } catch (error) {
-    console.error('Service Worker unregistration failed:', error);
+    void error;
     return false;
   }
 }
@@ -83,7 +78,7 @@ export function isServiceWorkerActive(): boolean {
 /**
  * Send message to service worker
  */
-export function sendMessageToSW(message: any): Promise<any> {
+export function sendMessageToSW(message: unknown): Promise<unknown> {
   return new Promise((resolve, reject) => {
     if (!navigator.serviceWorker.controller) {
       reject(new Error('No service worker controller'));
@@ -93,8 +88,9 @@ export function sendMessageToSW(message: any): Promise<any> {
     const messageChannel = new MessageChannel();
     
     messageChannel.port1.onmessage = (event) => {
-      if (event.data.error) {
-        reject(event.data.error);
+      const payload = event.data as { error?: unknown };
+      if (payload.error) {
+        reject(payload.error);
       } else {
         resolve(event.data);
       }
@@ -117,7 +113,7 @@ export async function cacheUrls(urls: string[]) {
     });
     return true;
   } catch (error) {
-    console.error('Failed to cache URLs:', error);
+    void error;
     return false;
   }
 }
@@ -131,10 +127,9 @@ export async function clearAllCaches() {
   try {
     const cacheNames = await caches.keys();
     await Promise.all(cacheNames.map(name => caches.delete(name)));
-    console.log('All caches cleared');
     return true;
   } catch (error) {
-    console.error('Failed to clear caches:', error);
+    void error;
     return false;
   }
 }

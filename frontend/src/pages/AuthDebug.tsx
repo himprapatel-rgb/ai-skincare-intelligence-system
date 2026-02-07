@@ -16,6 +16,20 @@ export const AuthDebug: React.FC = () => {
   const [logs, setLogs] = useState<string[]>([]);
   const [testResult, setTestResult] = useState<string>('');
 
+  const getErrorSummary = (err: unknown): string => {
+    if (err && typeof err === 'object') {
+      const maybeError = err as { response?: { status?: number; data?: { detail?: unknown } }; message?: unknown };
+      const status = typeof maybeError.response?.status === 'number' ? maybeError.response.status : 'unknown';
+      const detail = typeof maybeError.response?.data?.detail === 'string'
+        ? maybeError.response.data.detail
+        : typeof maybeError.message === 'string'
+        ? maybeError.message
+        : 'Unknown error';
+      return `${status} - ${detail}`;
+    }
+    return 'Unknown error';
+  };
+
   useEffect(() => {
     const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
     const log = [
@@ -46,8 +60,8 @@ export const AuthDebug: React.FC = () => {
         headers: { Authorization: `Bearer ${token}` }
       });
       setTestResult(`✅ Token valid! User: ${response.data.email}`);
-    } catch (error: any) {
-      setTestResult(`❌ Token invalid: ${error.response?.status} - ${error.response?.data?.detail || error.message}`);
+    } catch (error: unknown) {
+      setTestResult(`❌ Token invalid: ${getErrorSummary(error)}`);
     }
   };
 

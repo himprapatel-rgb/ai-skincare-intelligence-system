@@ -5,6 +5,17 @@
 
 import { useState, useEffect } from 'react';
 
+type LegacyNavigator = Navigator & {
+  vendor?: string;
+  msMaxTouchPoints?: number;
+  standalone?: boolean;
+};
+
+type LegacyWindow = Window & {
+  opera?: string;
+  MSStream?: unknown;
+};
+
 export interface MobileDetection {
   isMobile: boolean;
   isIOS: boolean;
@@ -47,12 +58,13 @@ export function useMobileDetection(): MobileDetection {
  * Get mobile detection information (can be used outside React)
  */
 export function getMobileDetection(): MobileDetection {
-  const ua = navigator.userAgent || navigator.vendor || (window as any).opera || '';
+  const legacyNavigator = navigator as LegacyNavigator;
+  const legacyWindow = window as LegacyWindow;
+  const ua = navigator.userAgent || legacyNavigator.vendor || legacyWindow.opera || '';
   const width = window.innerWidth;
-  const height = window.innerHeight;
 
   // Detect iOS
-  const isIOS = /iPad|iPhone|iPod/.test(ua) && !(window as any).MSStream;
+  const isIOS = /iPad|iPhone|iPod/.test(ua) && !legacyWindow.MSStream;
 
   // Detect Android
   const isAndroid = /android/i.test(ua);
@@ -61,12 +73,12 @@ export function getMobileDetection(): MobileDetection {
   const isTouch = 
     ('ontouchstart' in window) || 
     (navigator.maxTouchPoints > 0) || 
-    ((navigator as any).msMaxTouchPoints > 0);
+    ((legacyNavigator.msMaxTouchPoints ?? 0) > 0);
 
   // Detect standalone mode (PWA)
   const isStandalone = 
     window.matchMedia('(display-mode: standalone)').matches ||
-    (window.navigator as any).standalone === true ||
+    legacyNavigator.standalone === true ||
     document.referrer.includes('android-app://');
 
   // Detect mobile browser
@@ -176,7 +188,7 @@ export function useKeyboardVisible(): boolean {
     const detection = getMobileDetection();
     if (!detection.isMobile) return;
 
-    let initialHeight = window.visualViewport?.height || window.innerHeight;
+    const initialHeight = window.visualViewport?.height || window.innerHeight;
 
     const handleResize = () => {
       const currentHeight = window.visualViewport?.height || window.innerHeight;

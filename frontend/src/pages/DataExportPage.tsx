@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { jsPDF } from 'jspdf';
 import { IconDownload, IconCheckCircle, IconFileText, IconArrowLeft } from '../components/Icons';
 import { useToast } from '../context/ToastContext';
 import { API_BASE_URL } from '../config';
@@ -66,6 +65,7 @@ const DataExportPage: React.FC = () => {
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
       } else {
+        const { jsPDF } = await import('jspdf');
         const pdf = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'a4' });
         const pageW = pdf.internal.pageSize.getWidth();
         const margin = 40;

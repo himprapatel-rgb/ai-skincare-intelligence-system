@@ -20,8 +20,7 @@ import {
   IconUser, 
   IconSparkles, 
   IconCamera,
-  IconBarChart,
-  IconCheckCircle 
+  IconBarChart
 } from '../components/Icons';
 import { API_BASE_URL } from '../config';
 import { STORAGE_KEYS } from '../constants/storage';
@@ -49,7 +48,7 @@ export const AuthPageMobile: React.FC = () => {
   const toast = useToast();
   const navigate = useNavigate();
   const location = useLocation();
-  const { isMobile } = useMobileDetection();
+  useMobileDetection();
 
   usePageTitle(mode === 'register' ? 'Create Account' : 'Sign In');
 

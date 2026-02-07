@@ -5,6 +5,7 @@ import { getScanHistory } from '../services/scanApi';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { SkeletonHistoryList } from '../components/Skeleton';
 import { EmptyState } from '../components/EmptyState';
+import LazyImage from '../components/LazyImage';
 import './HistoryPage.css';
 
 interface ScanHistory {
@@ -62,7 +63,7 @@ const HistoryPage: React.FC = () => {
     }
   };
 
-  const filterHistory = () => {
+  const filteredHistory = useMemo(() => {
     const now = new Date();
     return history.filter(item => {
       const itemDate = new Date(item.date);
@@ -75,12 +76,13 @@ const HistoryPage: React.FC = () => {
       if (filter === '90days') return daysDiff <= 90;
       return true;
     });
-  };
-
-  const filteredHistory = filterHistory();
-  const visibleHistory = showFailed
-    ? filteredHistory
-    : filteredHistory.filter((item) => item.status !== 'failed' && item.score > 0);
+  }, [history, filter]);
+  const visibleHistory = useMemo(
+    () => (showFailed
+      ? filteredHistory
+      : filteredHistory.filter((item) => item.status !== 'failed' && item.score > 0)),
+    [filteredHistory, showFailed]
+  );
   const failedCount = filteredHistory.length - visibleHistory.length;
   const totalScans = filteredHistory.length;
   const completedHistory = filteredHistory.filter((item) => item.status !== 'failed');
@@ -242,7 +244,15 @@ const HistoryPage: React.FC = () => {
                   }}
                 >
                   <div className="history-thumbnail">
-                    {item.imageUrl ? <img src={item.imageUrl} alt={`Scan from ${new Date(item.date).toLocaleDateString('en')}`} loading="lazy" width={80} height={80} /> : (
+                    {item.imageUrl ? (
+                      <LazyImage
+                        src={item.imageUrl}
+                        alt={`Scan from ${new Date(item.date).toLocaleDateString('en')}`}
+                        width="100%"
+                        height="100%"
+                        objectFit="cover"
+                      />
+                    ) : (
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%', background: 'var(--bg-light)' }}>
                         <IconScan size={32} strokeWidth={2} color="var(--text-gray)" />
                       </div>

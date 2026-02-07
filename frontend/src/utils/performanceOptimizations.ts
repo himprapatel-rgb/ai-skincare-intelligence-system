@@ -22,7 +22,7 @@ export function prefetchCriticalResources() {
       document.head.appendChild(link);
     });
   } catch (error) {
-    console.warn('Prefetch failed:', error);
+    void error;
   }
 }
 
@@ -55,7 +55,7 @@ export function lazyLoadImages() {
 /**
  * Debounce function for search/input
  */
-export function debounce<T extends (...args: any[]) => any>(
+export function debounce<T extends (...args: unknown[]) => unknown>(
   func: T,
   wait: number
 ): (...args: Parameters<T>) => void {
@@ -70,7 +70,7 @@ export function debounce<T extends (...args: any[]) => any>(
 /**
  * Throttle function for scroll/resize
  */
-export function throttle<T extends (...args: any[]) => any>(
+export function throttle<T extends (...args: unknown[]) => unknown>(
   func: T,
   limit: number
 ): (...args: Parameters<T>) => void {
@@ -130,9 +130,7 @@ export function monitorPerformance() {
 
   // First Contentful Paint
   const observer = new PerformanceObserver((list) => {
-    for (const entry of list.getEntries()) {
-      console.log(`[Performance] ${entry.name}: ${entry.startTime.toFixed(2)}ms`);
-    }
+    void list;
   });
 
   try {
@@ -147,7 +145,7 @@ export function monitorPerformance() {
       setTimeout(() => {
         const timing = performance.timing;
         const tti = timing.domInteractive - timing.navigationStart;
-        console.log(`[Performance] Time to Interactive: ${tti}ms`);
+        void tti;
       }, 0);
     });
   }
@@ -158,7 +156,7 @@ export function monitorPerformance() {
  */
 export function runWhenIdle(callback: () => void) {
   if ('requestIdleCallback' in window) {
-    (window as any).requestIdleCallback(callback);
+    (window as Window & { requestIdleCallback?: (cb: () => void) => void }).requestIdleCallback?.(callback);
   } else {
     setTimeout(callback, 1);
   }
@@ -200,7 +198,7 @@ export function preconnectToAPI() {
     dns.href = apiUrl;
     document.head.appendChild(dns);
   } catch (error) {
-    console.warn('Preconnect failed:', error);
+    void error;
   }
 }
 
@@ -208,9 +206,14 @@ export function preconnectToAPI() {
  * Detect slow network and adjust behavior
  */
 export function isSlowNetwork(): boolean {
-  const connection = (navigator as any).connection || 
-                     (navigator as any).mozConnection || 
-                     (navigator as any).webkitConnection;
+  const legacyNavigator = navigator as Navigator & {
+    connection?: { effectiveType?: string };
+    mozConnection?: { effectiveType?: string };
+    webkitConnection?: { effectiveType?: string };
+  };
+  const connection = legacyNavigator.connection ||
+                     legacyNavigator.mozConnection ||
+                     legacyNavigator.webkitConnection;
 
   if (!connection) return false;
 

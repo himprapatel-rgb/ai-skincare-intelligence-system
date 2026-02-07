@@ -5,6 +5,7 @@ import { IconStar, IconPackage, IconMoreVertical, IconChevronDown, IconTrash2, I
 import { Illustrations } from '../components/Illustrations';
 import { ConfirmModal } from '../components/ConfirmModal';
 import { SkeletonCardGrid } from '../components/Skeleton';
+import LazyImage from '../components/LazyImage';
 import { useShelf } from '../context/ShelfContext';
 import './MyShelfPage.css';
 
@@ -25,6 +26,33 @@ interface DisplayProduct {
   /** Match % from scan (suitability_score in ingredients_json) */
   matchPct?: number | null;
 }
+
+const PLACEHOLDER_IMAGE =
+  'data:image/svg+xml;utf8,' +
+  encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">' +
+      '<defs>' +
+        '<linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">' +
+          '<stop offset="0%" stop-color="#f0f4ff"/>' +
+          '<stop offset="50%" stop-color="#e8f0fe"/>' +
+          '<stop offset="100%" stop-color="#dbeafe"/>' +
+        '</linearGradient>' +
+        '<linearGradient id="icon" x1="0%" y1="0%" x2="100%" y2="100%">' +
+          '<stop offset="0%" stop-color="#3b82f6"/>' +
+          '<stop offset="100%" stop-color="#8b5cf6"/>' +
+        '</linearGradient>' +
+      '</defs>' +
+      '<rect width="100%" height="100%" fill="url(#bg)"/>' +
+      '<g transform="translate(175, 115)">' +
+        '<rect x="5" y="0" width="40" height="70" rx="6" fill="url(#icon)" opacity="0.9"/>' +
+        '<rect x="10" y="5" width="30" height="12" rx="3" fill="white" opacity="0.3"/>' +
+        '<circle cx="25" cy="45" r="10" fill="white" opacity="0.2"/>' +
+      '</g>' +
+      '<text x="50%" y="220" text-anchor="middle" fill="#94a3b8" font-size="13" font-family="system-ui, sans-serif" font-weight="500">' +
+        'No image' +
+      '</text>' +
+    '</svg>'
+  );
 
 const MyShelfPage: React.FC = () => {
   usePageTitle('My Shelf');
@@ -181,33 +209,6 @@ const MyShelfPage: React.FC = () => {
     );
   }
 
-  const placeholderImage =
-    'data:image/svg+xml;utf8,' +
-    encodeURIComponent(
-      '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">' +
-        '<defs>' +
-          '<linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">' +
-            '<stop offset="0%" stop-color="#f0f4ff"/>' +
-            '<stop offset="50%" stop-color="#e8f0fe"/>' +
-            '<stop offset="100%" stop-color="#dbeafe"/>' +
-          '</linearGradient>' +
-          '<linearGradient id="icon" x1="0%" y1="0%" x2="100%" y2="100%">' +
-            '<stop offset="0%" stop-color="#3b82f6"/>' +
-            '<stop offset="100%" stop-color="#8b5cf6"/>' +
-          '</linearGradient>' +
-        '</defs>' +
-        '<rect width="100%" height="100%" fill="url(#bg)"/>' +
-        '<g transform="translate(175, 115)">' +
-          '<rect x="5" y="0" width="40" height="70" rx="6" fill="url(#icon)" opacity="0.9"/>' +
-          '<rect x="10" y="5" width="30" height="12" rx="3" fill="white" opacity="0.3"/>' +
-          '<circle cx="25" cy="45" r="10" fill="white" opacity="0.2"/>' +
-        '</g>' +
-        '<text x="50%" y="220" text-anchor="middle" fill="#94a3b8" font-size="13" font-family="system-ui, sans-serif" font-weight="500">' +
-          'No image' +
-        '</text>' +
-      '</svg>'
-    );
-
   return (
     <div className="myshelf-page app-page">
       <header className="myshelf-hero">
@@ -253,11 +254,14 @@ const MyShelfPage: React.FC = () => {
                 className="myshelf-expiring-card"
                 onClick={() => handleProductClick(product.id)}
               >
-                <img
-                  src={product.imageUrl || placeholderImage}
+                <LazyImage
+                  src={product.imageUrl || PLACEHOLDER_IMAGE}
+                  fallbackSrc={PLACEHOLDER_IMAGE}
                   alt=""
                   className="myshelf-expiring-thumb"
-                  onError={(e) => { (e.target as HTMLImageElement).src = placeholderImage; }}
+                  width={56}
+                  height={56}
+                  objectFit="contain"
                 />
                 <span className="myshelf-expiring-name">{product.name}</span>
                 <span className={`myshelf-expiring-badge ${isExpired(product.expiryDate) ? 'expired' : 'warning'}`}>
@@ -291,166 +295,171 @@ const MyShelfPage: React.FC = () => {
         )}
       </section>
 
-      <div className="myshelf-toolbar">
-        <div className="myshelf-search-wrap">
-          <IconSearch size={20} strokeWidth={2} className="myshelf-search-icon" aria-hidden />
-          <input
-            type="search"
-            className="myshelf-search-input"
-            placeholder="Search shelf..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            aria-label="Search shelf"
-          />
-          {searchTerm.length > 0 && (
-            <button
-              type="button"
-              className="myshelf-search-clear"
-              onClick={() => setSearchTerm('')}
-              aria-label="Clear search"
-            >
-              <IconX size={18} strokeWidth={2} />
-            </button>
-          )}
-        </div>
-        <div className="myshelf-pills-wrap">
-          <div className="myshelf-pills" role="tablist" aria-label="Shelf filter">
-            <button type="button" role="tab" aria-selected={filter === 'all'} className={filter === 'all' ? 'active' : ''} onClick={() => setFilter('all')}>All</button>
-            <button type="button" role="tab" aria-selected={filter === 'using'} className={filter === 'using' ? 'active' : ''} onClick={() => setFilter('using')}>Using</button>
-            <button type="button" role="tab" aria-selected={filter === 'wishlist'} className={filter === 'wishlist' ? 'active' : ''} onClick={() => setFilter('wishlist')}>Wishlist</button>
-            <button type="button" role="tab" aria-selected={filter === 'discontinued'} className={filter === 'discontinued' ? 'active' : ''} onClick={() => setFilter('discontinued')}>Done</button>
-          </div>
-          <button type="button" className="myshelf-add-btn myshelf-add-btn-inline" onClick={() => navigate('/scanner')}>
-            <IconPlus size={20} strokeWidth={2.5} />
-            <span>Add product</span>
-          </button>
-        </div>
-      </div>
-
-      <div className="myshelf-sort-row">
-        <select
-          id="sort-select"
-          value={sortBy}
-          onChange={(e) => setSortBy(e.target.value as 'recent' | 'name' | 'brand' | 'rating')}
-          className="myshelf-sort-select"
-          aria-label="Sort by"
-        >
-          <option value="recent">Recent</option>
-          <option value="name">Name</option>
-          <option value="brand">Brand</option>
-          <option value="rating">Rating</option>
-        </select>
-        <select
-          id="category-select"
-          value={categoryFilter}
-          onChange={(e) => setCategoryFilter(e.target.value)}
-          className="myshelf-sort-select"
-          aria-label="Category"
-        >
-          {categories.map(cat => (
-            <option key={cat} value={cat}>{cat === 'all' ? 'All categories' : cat}</option>
-          ))}
-        </select>
-        <span className="myshelf-results">{filteredProducts.length} shown</span>
-      </div>
-
-      {filteredProducts.length === 0 ? (
-        <div className="myshelf-empty">
-          <div className="myshelf-empty-icon" aria-hidden><Illustrations.EmptyShelf width={80} height={80} /></div>
-          <h2 className="myshelf-empty-title">Your shelf is empty</h2>
-          <p className="myshelf-empty-desc">Add products from recommendations or scan a barcode to start your collection.</p>
-          <button type="button" className="myshelf-add-btn myshelf-empty-cta" onClick={() => navigate('/scanner')}>
-            <IconPlus size={20} strokeWidth={2.5} />
-            Add your first product
-          </button>
-        </div>
-      ) : (
-        <div className="products-grid">
-          {filteredProducts.map(product => (
-            <div key={product.id} className="product-card">
-              <div className="product-image-wrapper">
+      <div className="myshelf-layout">
+        <div className="myshelf-controls">
+          <div className="myshelf-toolbar">
+            <div className="myshelf-search-wrap">
+              <IconSearch size={20} strokeWidth={2} className="myshelf-search-icon" aria-hidden />
+              <input
+                type="search"
+                className="myshelf-search-input"
+                placeholder="Search shelf..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                aria-label="Search shelf"
+              />
+              {searchTerm.length > 0 && (
                 <button
                   type="button"
-                  className="product-image-button"
-                  onClick={() => handleProductClick(product.id)}
-                  aria-label={`Open ${product.name}`}
+                  className="myshelf-search-clear"
+                  onClick={() => setSearchTerm('')}
+                  aria-label="Clear search"
                 >
-                  <img
-                    src={product.imageUrl || placeholderImage}
-                    alt=""
-                    loading="lazy"
-                    onError={(event) => {
-                      const target = event.currentTarget;
-                      if (target.src !== placeholderImage) target.src = placeholderImage;
-                    }}
-                  />
+                  <IconX size={18} strokeWidth={2} />
                 </button>
+              )}
+            </div>
+            <div className="myshelf-pills-wrap">
+              <div className="myshelf-pills" role="tablist" aria-label="Shelf filter">
+                <button type="button" role="tab" aria-selected={filter === 'all'} className={filter === 'all' ? 'active' : ''} onClick={() => setFilter('all')}>All</button>
+                <button type="button" role="tab" aria-selected={filter === 'using'} className={filter === 'using' ? 'active' : ''} onClick={() => setFilter('using')}>Using</button>
+                <button type="button" role="tab" aria-selected={filter === 'wishlist'} className={filter === 'wishlist' ? 'active' : ''} onClick={() => setFilter('wishlist')}>Wishlist</button>
+                <button type="button" role="tab" aria-selected={filter === 'discontinued'} className={filter === 'discontinued' ? 'active' : ''} onClick={() => setFilter('discontinued')}>Done</button>
               </div>
-              <div className="product-info">
-                <button type="button" className="product-title-button" onClick={() => handleProductClick(product.id)}>
-                  {product.name}
-                </button>
-                <p className="brand">{product.brand}</p>
-                <div className="product-card-meta-row">
-                  <span className="product-status-pill" data-status={product.status}>{product.status === 'using' ? 'Using' : product.status === 'wishlist' ? 'Wishlist' : 'Done'}</span>
-                  {product.matchPct != null && (
-                    <span className="product-card-match" title="Match for your skin">🎯 {product.matchPct}% Match</span>
-                  )}
-                </div>
-                <p className="category product-card-category">{product.category}</p>
-                <div className="rating interactive-rating product-card-rating">
-                  {Array.from({ length: 5 }).map((_, index) => (
+              <button type="button" className="myshelf-add-btn myshelf-add-btn-inline" onClick={() => navigate('/scanner')}>
+                <IconPlus size={20} strokeWidth={2.5} />
+                <span>Add product</span>
+              </button>
+            </div>
+          </div>
+
+          <div className="myshelf-sort-row">
+            <select
+              id="sort-select"
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as 'recent' | 'name' | 'brand' | 'rating')}
+              className="myshelf-sort-select"
+              aria-label="Sort by"
+            >
+              <option value="recent">Recent</option>
+              <option value="name">Name</option>
+              <option value="brand">Brand</option>
+              <option value="rating">Rating</option>
+            </select>
+            <select
+              id="category-select"
+              value={categoryFilter}
+              onChange={(e) => setCategoryFilter(e.target.value)}
+              className="myshelf-sort-select"
+              aria-label="Category"
+            >
+              {categories.map(cat => (
+                <option key={cat} value={cat}>{cat === 'all' ? 'All categories' : cat}</option>
+              ))}
+            </select>
+            <span className="myshelf-results">{filteredProducts.length} shown</span>
+          </div>
+        </div>
+
+        <div className="myshelf-results-pane">
+          {filteredProducts.length === 0 ? (
+            <div className="myshelf-empty">
+              <div className="myshelf-empty-icon" aria-hidden><Illustrations.EmptyShelf width={80} height={80} /></div>
+              <h2 className="myshelf-empty-title">Your shelf is empty</h2>
+              <p className="myshelf-empty-desc">Add products from recommendations or scan a barcode to start your collection.</p>
+              <button type="button" className="myshelf-add-btn myshelf-empty-cta" onClick={() => navigate('/scanner')}>
+                <IconPlus size={20} strokeWidth={2.5} />
+                Add your first product
+              </button>
+            </div>
+          ) : (
+            <div className="products-grid">
+              {filteredProducts.map(product => (
+                <div key={product.id} className="product-card">
+                  <div className="product-image-wrapper">
                     <button
-                      key={index}
                       type="button"
-                      className="star-button"
-                      onClick={(e) => { e.stopPropagation(); handleRatingChange(product.id, index + 1); }}
-                      aria-label={`Rate ${index + 1} stars`}
+                      className="product-image-button"
+                      onClick={() => handleProductClick(product.id)}
+                      aria-label={`Open ${product.name}`}
                     >
-                      <IconStar size={16} strokeWidth={2} fill={index < Math.floor(product.rating) ? '#f59e0b' : 'none'} color={index < Math.floor(product.rating) ? '#f59e0b' : '#d1d5db'} />
+                      <LazyImage
+                        src={product.imageUrl || PLACEHOLDER_IMAGE}
+                        fallbackSrc={PLACEHOLDER_IMAGE}
+                        alt=""
+                        width="100%"
+                        height="100%"
+                        objectFit="contain"
+                      />
                     </button>
-                  ))}
-                  <span className="rating-value">{product.rating > 0 ? product.rating : '-'}</span>
-                </div>
-                <div className="repurchase-toggle product-card-repurchase">
-                  <button type="button" className={`repurchase-btn ${product.wouldRepurchase ? 'yes' : ''}`} onClick={(e) => { e.stopPropagation(); handleWouldRepurchaseToggle(product.id, product.wouldRepurchase); }}>
-                    {product.wouldRepurchase ? '✓ Would repurchase' : 'Would repurchase?'}
-                  </button>
-                </div>
-                {product.expiryDate && (
-                  <div className={`expiry-badge product-card-expiry ${isExpired(product.expiryDate) ? 'expired' : isExpiryApproaching(product.expiryDate) ? 'warning' : ''}`}>
-                    {isExpired(product.expiryDate) ? 'Expired' : isExpiryApproaching(product.expiryDate) ? `Expires ${new Date(product.expiryDate).toLocaleDateString()}` : `Expires ${new Date(product.expiryDate).toLocaleDateString()}`}
                   </div>
-                )}
-                {product.notes && <p className="notes product-card-notes">{product.notes}</p>}
-                <div className="product-actions product-card-actions-desk">
-                  <select value={product.status} onChange={(e) => handleUpdateStatus(product.id, e.target.value as DisplayProduct['status'])} className="status-select">
-                    <option value="using">Using</option>
-                    <option value="wishlist">Wishlist</option>
-                    <option value="discontinued">Discontinued</option>
-                  </select>
-                  <button type="button" className="btn-remove" onClick={() => handleRemoveProduct(product.id)}>Remove</button>
-                </div>
-                <div className="product-card-actions-mobile" ref={productMenuId === product.id ? productMenuRef : undefined}>
-                  <button type="button" className="product-card-menu-btn" onClick={(e) => { e.stopPropagation(); setProductMenuId(productMenuId === product.id ? null : product.id); }} aria-label="Options" aria-expanded={productMenuId === product.id}>
-                    <IconMoreVertical size={20} strokeWidth={2} />
-                  </button>
-                  {productMenuId === product.id && (
-                    <div className="product-card-dropdown" role="menu">
-                      <button type="button" role="menuitem" onClick={() => { handleUpdateStatus(product.id, 'using'); setProductMenuId(null); }}>Using</button>
-                      <button type="button" role="menuitem" onClick={() => { handleUpdateStatus(product.id, 'wishlist'); setProductMenuId(null); }}>Wishlist</button>
-                      <button type="button" role="menuitem" onClick={() => { handleUpdateStatus(product.id, 'discontinued'); setProductMenuId(null); }}>Done</button>
-                      <button type="button" role="menuitem" className="product-card-dropdown-remove" onClick={() => { handleRemoveProduct(product.id); setProductMenuId(null); }}>
-                        <IconTrash2 size={16} strokeWidth={2} /> Remove
+                  <div className="product-info">
+                    <button type="button" className="product-title-button" onClick={() => handleProductClick(product.id)}>
+                      {product.name}
+                    </button>
+                    <p className="brand">{product.brand}</p>
+                    <div className="product-card-meta-row">
+                      <span className="product-status-pill" data-status={product.status}>{product.status === 'using' ? 'Using' : product.status === 'wishlist' ? 'Wishlist' : 'Done'}</span>
+                      {product.matchPct != null && (
+                        <span className="product-card-match" title="Match for your skin">🎯 {product.matchPct}% Match</span>
+                      )}
+                    </div>
+                    <p className="category product-card-category">{product.category}</p>
+                    <div className="rating interactive-rating product-card-rating">
+                      {Array.from({ length: 5 }).map((_, index) => (
+                        <button
+                          key={index}
+                          type="button"
+                          className="star-button"
+                          onClick={(e) => { e.stopPropagation(); handleRatingChange(product.id, index + 1); }}
+                          aria-label={`Rate ${index + 1} stars`}
+                        >
+                          <IconStar size={16} strokeWidth={2} fill={index < Math.floor(product.rating) ? '#f59e0b' : 'none'} color={index < Math.floor(product.rating) ? '#f59e0b' : '#d1d5db'} />
+                        </button>
+                      ))}
+                      <span className="rating-value">{product.rating > 0 ? product.rating : '-'}</span>
+                    </div>
+                    <div className="repurchase-toggle product-card-repurchase">
+                      <button type="button" className={`repurchase-btn ${product.wouldRepurchase ? 'yes' : ''}`} onClick={(e) => { e.stopPropagation(); handleWouldRepurchaseToggle(product.id, product.wouldRepurchase); }}>
+                        {product.wouldRepurchase ? '✓ Would repurchase' : 'Would repurchase?'}
                       </button>
                     </div>
-                  )}
+                    {product.expiryDate && (
+                      <div className={`expiry-badge product-card-expiry ${isExpired(product.expiryDate) ? 'expired' : isExpiryApproaching(product.expiryDate) ? 'warning' : ''}`}>
+                        {isExpired(product.expiryDate) ? 'Expired' : isExpiryApproaching(product.expiryDate) ? `Expires ${new Date(product.expiryDate).toLocaleDateString()}` : `Expires ${new Date(product.expiryDate).toLocaleDateString()}`}
+                      </div>
+                    )}
+                    {product.notes && <p className="notes product-card-notes">{product.notes}</p>}
+                    <div className="product-actions product-card-actions-desk">
+                      <select value={product.status} onChange={(e) => handleUpdateStatus(product.id, e.target.value as DisplayProduct['status'])} className="status-select">
+                        <option value="using">Using</option>
+                        <option value="wishlist">Wishlist</option>
+                        <option value="discontinued">Discontinued</option>
+                      </select>
+                      <button type="button" className="btn-remove" onClick={() => handleRemoveProduct(product.id)}>Remove</button>
+                    </div>
+                    <div className="product-card-actions-mobile" ref={productMenuId === product.id ? productMenuRef : undefined}>
+                      <button type="button" className="product-card-menu-btn" onClick={(e) => { e.stopPropagation(); setProductMenuId(productMenuId === product.id ? null : product.id); }} aria-label="Options" aria-expanded={productMenuId === product.id}>
+                        <IconMoreVertical size={20} strokeWidth={2} />
+                      </button>
+                      {productMenuId === product.id && (
+                        <div className="product-card-dropdown" role="menu">
+                          <button type="button" role="menuitem" onClick={() => { handleUpdateStatus(product.id, 'using'); setProductMenuId(null); }}>Using</button>
+                          <button type="button" role="menuitem" onClick={() => { handleUpdateStatus(product.id, 'wishlist'); setProductMenuId(null); }}>Wishlist</button>
+                          <button type="button" role="menuitem" onClick={() => { handleUpdateStatus(product.id, 'discontinued'); setProductMenuId(null); }}>Done</button>
+                          <button type="button" role="menuitem" className="product-card-dropdown-remove" onClick={() => { handleRemoveProduct(product.id); setProductMenuId(null); }}>
+                            <IconTrash2 size={16} strokeWidth={2} /> Remove
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </div>
-              </div>
+              ))}
             </div>
-          ))}
+          )}
         </div>
-      )}
+      </div>
 
       <ConfirmModal
         open={!!confirmRemoveId}

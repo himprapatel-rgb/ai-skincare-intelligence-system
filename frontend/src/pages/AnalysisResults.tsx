@@ -1,11 +1,10 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import html2canvas from 'html2canvas';
-import { jsPDF } from 'jspdf';
 import { IconScan, IconHome, IconCheck, IconAlertTriangle, IconArrowLeft, IconCopy, IconShare2, IconBrandX, IconHeart, IconDownload, IconShoppingCart, getSkinConcernIcon } from '../components/Icons';
 import { BackButton } from '../components/BackButton';
 import { BreadcrumbJsonLd } from '../components/BreadcrumbJsonLd';
 import { SkeletonAnalysis } from '../components/Skeleton';
+import LazyImage from '../components/LazyImage';
 import { getScanHistory, getScanResult } from '../services/scanApi';
 import { useToast } from '../context/ToastContext';
 import { usePageTitle } from '../hooks/usePageTitle';
@@ -40,6 +39,7 @@ const AnalysisResults: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [failureMessage, setFailureMessage] = useState<string | null>(null);
   const [previousScans, setPreviousScans] = useState<ScanHistoryItem[]>([]);
+  const [imageError, setImageError] = useState(false);
   const [savedToFavorites, setSavedToFavorites] = useState(false);
   const [exporting, setExporting] = useState<'pdf' | 'image' | null>(null);
   const exportContainerRef = useRef<HTMLDivElement>(null);
@@ -123,7 +123,10 @@ const AnalysisResults: React.FC = () => {
         throw new Error('Missing scan id');
       }
 
-      const scanResult = await getScanResult(analysisId);
+      const [scanResult, historyData] = await Promise.all([
+        getScanResult(analysisId),
+        getScanHistory(),
+      ]);
       const status = typeof (scanResult as { status?: string }).status === 'string'
         ? String((scanResult as { status?: string }).status)
         : null;
@@ -140,8 +143,6 @@ const AnalysisResults: React.FC = () => {
         setFailureMessage('No analysis data returned. Please retry the scan with a clear, front-facing selfie.');
       }
       setAnalysis(mapped);
-
-      const historyData = await getScanHistory();
       const scans = (historyData as { scans?: ScanHistoryItem[] }).scans || [];
       setPreviousScans(scans);
     } catch (err) {
@@ -157,6 +158,7 @@ const AnalysisResults: React.FC = () => {
 
   useEffect(() => {
     if (!analysisId) return;
+    setImageError(false);
     try {
       const list = JSON.parse(localStorage.getItem('favorite_analyses') || '[]');
       setSavedToFavorites(Array.isArray(list) && list.includes(analysisId));
@@ -180,9 +182,10 @@ const AnalysisResults: React.FC = () => {
     }
   };
 
-  const captureForExport = useCallback(() => {
+  const captureForExport = useCallback(async () => {
     const el = exportContainerRef.current;
     if (!el) return null;
+    const { default: html2canvas } = await import('html2canvas');
     return html2canvas(el, {
       useCORS: true,
       allowTaint: true,
@@ -223,6 +226,7 @@ const AnalysisResults: React.FC = () => {
         return;
       }
       const imgData = canvas.toDataURL('image/png');
+      const { jsPDF } = await import('jspdf');
       const pdf = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'a4' });
       const pageW = pdf.internal.pageSize.getWidth();
       const pageH = pdf.internal.pageSize.getHeight();
@@ -291,7 +295,7 @@ const AnalysisResults: React.FC = () => {
           <h1>Skin Analysis</h1>
           <p className="app-header-subtitle">We couldn&apos;t load this analysis</p>
         </header>
-        <div className="app-page-content">
+        <div className="app-page-content results-body">
           <div className="analysis-error">
             <div className="analysis-error-icon">
               <IconAlertTriangle size={48} strokeWidth={2} />
@@ -472,24 +476,19 @@ const AnalysisResults: React.FC = () => {
           <div className="result-card">
             <h2>Analyzed Image</h2>
             <div className="analysis-image">
-              {analysis.imageUrl ? (
-                <img
+              {analysis.imageUrl && !imageError ? (
+                <LazyImage
                   src={analysis.imageUrl}
                   alt="Skin analysis"
-                  loading="lazy"
                   width={400}
                   height={300}
-                  onError={(e) => {
-                    const target = e.currentTarget;
-                    target.style.display = 'none';
-                    const fallback = target.nextElementSibling;
-                    if (fallback instanceof HTMLElement) fallback.style.display = 'flex';
-                  }}
+                  objectFit="cover"
+                  onError={() => setImageError(true)}
                 />
               ) : null}
               <div
                 className="analysis-image-fallback"
-                style={{ display: analysis.imageUrl ? 'none' : 'flex' }}
+                style={{ display: analysis.imageUrl && !imageError ? 'none' : 'flex' }}
               >
                 <IconScan size={32} strokeWidth={2} />
                 <div>

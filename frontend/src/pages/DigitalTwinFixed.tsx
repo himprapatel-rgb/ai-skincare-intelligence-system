@@ -3,7 +3,7 @@
  * Shows message when no data is available
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { BackButton } from '../components/BackButton';
@@ -22,16 +22,7 @@ const DigitalTwinFixed: React.FC = () => {
   const [hasData, setHasData] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  useEffect(() => {
-    if (!isAuthenticated) {
-      navigate('/auth');
-      return;
-    }
-
-    fetchData();
-  }, [isAuthenticated, navigate]);
-
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setIsLoading(true);
     setHasError(false);
 
@@ -43,13 +34,15 @@ const DigitalTwinFixed: React.FC = () => {
       } else {
         setHasData(false);
       }
-    } catch (error: any) {
-      console.error('Digital Twin fetch error:', error);
+    } catch (error: unknown) {
       setHasError(true);
       
-      if (error.response?.status === 404) {
+      const status = typeof error === 'object' && error
+        ? (error as { response?: { status?: number } }).response?.status
+        : undefined;
+      if (status === 404) {
         setErrorMessage('No scan data found. Complete a face scan first!');
-      } else if (error.response?.status === 401) {
+      } else if (status === 401) {
         setErrorMessage('Please log in to view your Digital Twin.');
         setTimeout(() => navigate('/auth'), 2000);
       } else {
@@ -58,7 +51,16 @@ const DigitalTwinFixed: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [navigate]);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/auth');
+      return;
+    }
+
+    fetchData();
+  }, [isAuthenticated, navigate, fetchData]);
 
   if (isLoading) {
     return (

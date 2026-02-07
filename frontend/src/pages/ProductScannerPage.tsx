@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Html5Qrcode, Html5QrcodeSupportedFormats } from 'html5-qrcode';
 import { 
   IconScan, 
   IconCamera, 
@@ -17,6 +16,7 @@ import { usePageTitle } from '../hooks/usePageTitle';
 import { useAuth } from '../context/AuthContext';
 import { useShelf } from '../context/ShelfContext';
 import { useToast } from '../context/ToastContext';
+import LazyImage from '../components/LazyImage';
 import {
   getCameraPermissionStatus,
   getCameraCapabilities,
@@ -130,6 +130,13 @@ interface ScanHistoryItem {
 
 const SCAN_HISTORY_KEY = 'pellicura_scan_history';
 const MAX_HISTORY_ITEMS = 5;
+
+type Html5QrcodeType = typeof import('html5-qrcode').Html5Qrcode;
+type Html5QrcodeSupportedFormatsType = typeof import('html5-qrcode').Html5QrcodeSupportedFormats;
+type Html5QrcodeModule = {
+  Html5Qrcode: Html5QrcodeType;
+  Html5QrcodeSupportedFormats: Html5QrcodeSupportedFormatsType;
+};
 
 /** How to use: best time from category */
 function getUsageTime(category: string | undefined): string {
@@ -353,10 +360,22 @@ const ProductScannerPage: React.FC<ProductScannerPageProps> = ({ embedded = fals
   };
   
   // Refs
-  const scannerRef = useRef<Html5Qrcode | null>(null);
+  const scannerRef = useRef<InstanceType<Html5QrcodeType> | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const scannerContainerRef = useRef<HTMLDivElement>(null);
   const errorCardRef = useRef<HTMLDivElement>(null);
+  const [html5QrcodeModule, setHtml5QrcodeModule] = useState<Html5QrcodeModule | null>(null);
+
+  const loadHtml5Qrcode = useCallback(async () => {
+    if (html5QrcodeModule) return html5QrcodeModule;
+    const mod = await import('html5-qrcode');
+    const loaded = {
+      Html5Qrcode: mod.Html5Qrcode,
+      Html5QrcodeSupportedFormats: mod.Html5QrcodeSupportedFormats,
+    };
+    setHtml5QrcodeModule(loaded);
+    return loaded;
+  }, [html5QrcodeModule]);
 
   // Scroll error card into view when error is set (e.g. product not found)
   useEffect(() => {
@@ -392,6 +411,7 @@ const ProductScannerPage: React.FC<ProductScannerPageProps> = ({ embedded = fals
       await warmUpDelay();
       
       // Task 52: Support more barcode formats
+      const { Html5Qrcode, Html5QrcodeSupportedFormats } = await loadHtml5Qrcode();
       const html5Qrcode = new Html5Qrcode("barcode-scanner", {
         formatsToSupport: [
           Html5QrcodeSupportedFormats.EAN_13,
@@ -1058,16 +1078,13 @@ const ProductScannerPage: React.FC<ProductScannerPageProps> = ({ embedded = fals
               <div className="card-content">
                 <div className="product-header">
                   <div className="product-image">
-                    <img 
-                      src={scannedProduct.imageUrl || placeholderImage} 
-                      alt={scannedProduct.name} 
-                      loading="lazy" 
-                      width={120} 
-                      height={120} 
-                      onError={(e) => {
-                        // Use placeholder on error
-                        (e.target as HTMLImageElement).src = placeholderImage;
-                      }}
+                    <LazyImage
+                      src={scannedProduct.imageUrl || placeholderImage}
+                      fallbackSrc={placeholderImage}
+                      alt={scannedProduct.name}
+                      width={120}
+                      height={120}
+                      objectFit="contain"
                       className="product-img"
                     />
                   </div>
@@ -1532,12 +1549,13 @@ const ProductScannerPage: React.FC<ProductScannerPageProps> = ({ embedded = fals
                 tabIndex={0}
               >
                 <div className="history-image">
-                  <img 
-                    src={item.imageUrl || placeholderImage} 
+                  <LazyImage
+                    src={item.imageUrl || placeholderImage}
+                    fallbackSrc={placeholderImage}
                     alt={item.name}
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = placeholderImage;
-                    }}
+                    width="100%"
+                    height="100%"
+                    objectFit="contain"
                   />
                 </div>
                 <div className="history-details">

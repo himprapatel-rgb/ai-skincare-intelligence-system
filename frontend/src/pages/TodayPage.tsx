@@ -13,6 +13,7 @@ import { API_BASE_URL } from '../config';
 import { STORAGE_KEYS } from '../constants/storage';
 import { IconSettings } from '../components/Icons';
 import { Illustrations } from '../components/Illustrations';
+import LazyImage from '../components/LazyImage';
 import NotificationBell from '../components/notifications/NotificationBell';
 import { getStreak, checkInToday, hasCheckedInToday } from '../utils/streakStorage';
 import {
@@ -305,7 +306,7 @@ const TodayPage: React.FC = () => {
       <div className="today-content">
         {/* AI Prediction card – surface "See Your Skin's Future" */}
         {!loading && data != null && currentScore > 0 && (
-          <section className="today-card today-card-prediction">
+          <section className="today-card today-card-prediction today-card-wide">
             <h2 className="today-prediction-title">🔮 Your skin&apos;s future</h2>
             <p className="today-prediction-statement">
               In 30 days: <strong>{predictedScore}</strong> {predictedDelta > 0 && <span className="today-prediction-delta">(+{predictedDelta} pts)</span>}
@@ -318,7 +319,7 @@ const TodayPage: React.FC = () => {
         )}
 
         {/* 🧬 YOUR SKIN TODAY – compact score + actions */}
-        <section className="today-card today-card-skin today-card-skin-glow today-card-skin-compact">
+        <section className="today-card today-card-skin today-card-skin-glow today-card-skin-compact today-card-wide">
           <div className="today-card-title-row">
             <Illustrations.SkinToday className="today-ill today-ill-section" />
             <h2 className="today-card-title today-card-title-caps">Your skin today</h2>
@@ -545,7 +546,7 @@ const TodayPage: React.FC = () => {
         )}
 
         {/* Recommended for you – product cards */}
-        <section className="today-card today-card-toppick" aria-labelledby="today-recommended-head">
+        <section className="today-card today-card-toppick today-card-wide" aria-labelledby="today-recommended-head">
           <div className="today-card-head">
             <span className="today-foryou-icon" aria-hidden="true">
               <Illustrations.Recommended className="today-ill today-ill-section" />
@@ -562,7 +563,13 @@ const TodayPage: React.FC = () => {
               <article key={product.id} className="today-product-card" role="listitem">
                 <div className="today-product-card-image">
                   {product.imageUrl ? (
-                    <img src={product.imageUrl} alt={`${product.name} by ${product.brand}`} loading="lazy" />
+                    <LazyImage
+                      src={product.imageUrl}
+                      alt={`${product.name} by ${product.brand}`}
+                      width="100%"
+                      height="100%"
+                      objectFit="contain"
+                    />
                   ) : (
                     <span className="today-product-card-placeholder" aria-hidden="true">
                       {product.brand}
@@ -598,7 +605,7 @@ const TodayPage: React.FC = () => {
         </section>
 
         {shelfCount === 0 && (
-          <section className="today-card today-card-cta">
+          <section className="today-card today-card-cta today-card-wide">
             <Illustrations.Package className="today-cta-ill" />
             <p>Add products to your shelf to get better recommendations.</p>
             <button type="button" className="btn btn-secondary" onClick={() => navigate('/scan?mode=product')}>

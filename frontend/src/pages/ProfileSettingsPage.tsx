@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { useTheme } from '../context/ThemeContext';
@@ -107,6 +106,7 @@ const ProfileSettingsPage: React.FC = () => {
   const [pullDistance, setPullDistance] = useState(0);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const pullStartY = useRef(0);
+  const [rechartsModule, setRechartsModule] = useState<typeof import('recharts') | null>(null);
   
   const [profile, setProfile] = useState<UserProfile>({
     name: '',
@@ -255,6 +255,8 @@ const ProfileSettingsPage: React.FC = () => {
   }, [fetchUserProfile]);
 
   useEffect(() => {
+    if (activeTab !== 'stats') return;
+    let isMounted = true;
     const loadStats = async () => {
       try {
         const historyData = await getScanHistory();
@@ -288,6 +290,7 @@ const ProfileSettingsPage: React.FC = () => {
             score: rawScore
           };
         });
+        if (!isMounted) return;
         setStats({
           skinHealthScore: avgScore,
           totalScans: scans.length,
@@ -301,13 +304,30 @@ const ProfileSettingsPage: React.FC = () => {
     };
 
     loadStats();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    return () => {
+      isMounted = false;
+    };
+  }, [activeTab, shelfProductCount]);
 
   // Update shelf count when it changes
   useEffect(() => {
     setStats(prev => ({ ...prev, productsInShelf: shelfProductCount }));
   }, [shelfProductCount]);
+
+  useEffect(() => {
+    if (activeTab !== 'stats' || rechartsModule) return;
+    let isMounted = true;
+    import('recharts')
+      .then((mod) => {
+        if (isMounted) setRechartsModule(mod);
+      })
+      .catch(() => {
+        if (isMounted) setRechartsModule(null);
+      });
+    return () => {
+      isMounted = false;
+    };
+  }, [activeTab, rechartsModule]);
 
   useEffect(() => {
     if (!initialProfileRef.current) {
@@ -1289,14 +1309,23 @@ const ProfileSettingsPage: React.FC = () => {
                 <h3>Progress Over Time</h3>
                 <div className="progress-chart-card">
                   {progressData.length > 0 ? (
-                    <ResponsiveContainer width="100%" height={240}>
-                      <LineChart data={progressData}>
-                        <XAxis dataKey="date" tickLine={false} axisLine={false} />
-                        <YAxis domain={[0, 100]} tickLine={false} axisLine={false} />
-                        <Tooltip />
-                        <Line type="monotone" dataKey="score" stroke="var(--primary)" strokeWidth={3} dot={false} />
-                      </LineChart>
-                    </ResponsiveContainer>
+                    rechartsModule ? (
+                      <rechartsModule.ResponsiveContainer width="100%" height={240}>
+                        <rechartsModule.LineChart data={progressData}>
+                          <rechartsModule.XAxis dataKey="date" tickLine={false} axisLine={false} />
+                          <rechartsModule.YAxis domain={[0, 100]} tickLine={false} axisLine={false} />
+                          <rechartsModule.Tooltip />
+                          <rechartsModule.Line type="monotone" dataKey="score" stroke="var(--primary)" strokeWidth={3} dot={false} />
+                        </rechartsModule.LineChart>
+                      </rechartsModule.ResponsiveContainer>
+                    ) : (
+                      <div className="progress-chart-placeholder">
+                        <p>
+                          <IconTrendingUp size={20} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '8px' }} />
+                          Loading chart…
+                        </p>
+                      </div>
+                    )
                   ) : (
                     <div className="progress-chart-placeholder">
                       <p>

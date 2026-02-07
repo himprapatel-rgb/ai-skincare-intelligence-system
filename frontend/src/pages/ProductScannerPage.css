@@ -2013,6 +2013,46 @@
   margin-bottom: 24px;
 }
 
+@media (min-width: 1024px) {
+  .scanner-container {
+    max-width: 1200px;
+  }
+
+  .mode-selector {
+    justify-content: flex-start;
+  }
+
+  .scanner-section {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    gap: 24px;
+    align-items: start;
+  }
+
+  .scanner-card {
+    width: 100%;
+    margin: 0;
+  }
+
+  .manual-entry-section {
+    text-align: left;
+  }
+
+  .manual-entry-form {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .photo-capture-options {
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .capture-option {
+    max-width: 320px;
+  }
+}
+
 .capture-option {
   width: 100%;
   max-width: 300px;

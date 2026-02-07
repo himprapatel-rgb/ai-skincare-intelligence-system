@@ -12,6 +12,8 @@ interface LazyImageProps {
   height?: number | string;
   placeholder?: string;
   blurDataUrl?: string;
+  fallbackSrc?: string;
+  objectFit?: React.CSSProperties['objectFit'];
   onLoad?: () => void;
   onError?: () => void;
 }
@@ -27,13 +29,22 @@ export const LazyImage: React.FC<LazyImageProps> = ({
   height,
   placeholder = DEFAULT_PLACEHOLDER,
   blurDataUrl,
+  fallbackSrc,
+  objectFit = 'cover',
   onLoad,
   onError,
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isInView, setIsInView] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const [currentSrc, setCurrentSrc] = useState(src);
   const imgRef = useRef<HTMLImageElement>(null);
+
+  useEffect(() => {
+    setCurrentSrc(src);
+    setHasError(false);
+    setIsLoaded(false);
+  }, [src]);
 
   // Task 382: Intersection Observer for lazy loading
   useEffect(() => {
@@ -65,6 +76,10 @@ export const LazyImage: React.FC<LazyImageProps> = ({
   };
 
   const handleError = () => {
+    if (fallbackSrc && currentSrc !== fallbackSrc) {
+      setCurrentSrc(fallbackSrc);
+      return;
+    }
     setHasError(true);
     onError?.();
   };
@@ -92,7 +107,7 @@ export const LazyImage: React.FC<LazyImageProps> = ({
           left: 0,
           width: '100%',
           height: '100%',
-          objectFit: 'cover',
+          objectFit,
           filter: 'blur(20px)',
           transform: 'scale(1.1)',
           opacity: isLoaded ? 0 : 1,
@@ -103,7 +118,7 @@ export const LazyImage: React.FC<LazyImageProps> = ({
       {/* Actual image - only load when in view */}
       {isInView && !hasError && (
         <img
-          src={src}
+          src={currentSrc}
           alt={alt}
           onLoad={handleLoad}
           onError={handleError}
@@ -112,7 +127,7 @@ export const LazyImage: React.FC<LazyImageProps> = ({
             position: 'relative',
             width: '100%',
             height: '100%',
-            objectFit: 'cover',
+            objectFit,
             opacity: isLoaded ? 1 : 0,
             transition: 'opacity 0.3s ease-out',
           }}

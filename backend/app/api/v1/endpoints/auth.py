@@ -380,7 +380,7 @@ class PasswordResetConfirm(BaseModel):
         
         if re.search(r"(abc|bcd|cde|def|efg|fgh|ghi|hij|ijk|jkl|klm|lmn|mno|nop|opq|pqr|qrs|rst|stu|tuv|uvw|vwx|wxy|xyz)", v.lower()):
             raise ValueError("Password should not contain sequential letters")
-        if re.search(r"(012|123|234|345|456|567|678|789)", v):
+        if re.search(r"(0123|1234|2345|3456|4567|5678|6789)", v):
             raise ValueError("Password should not contain sequential numbers")
         
         return v

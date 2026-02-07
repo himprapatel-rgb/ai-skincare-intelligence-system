@@ -33,10 +33,18 @@ export const LoginLoadingState: React.FC<LoginLoadingStateProps> = ({ duration =
       timeouts.push(timeout);
     });
 
+    if (duration > 0) {
+      const timeout = setTimeout(() => {
+        setMessage('Finishing up...');
+        setProgress(100);
+      }, duration);
+      timeouts.push(timeout);
+    }
+
     return () => {
       timeouts.forEach(clearTimeout);
     };
-  }, []);
+  }, [duration]);
 
   return (
     <div className="login-loading-state">

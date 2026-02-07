@@ -872,6 +872,51 @@
   margin-top: 32px;
 }
 
+@media (min-width: 1024px) {
+  .scan-container {
+    max-width: 1200px;
+  }
+
+  .scan-content {
+    padding: 64px 56px;
+  }
+
+  .scan-header {
+    text-align: left;
+  }
+
+  .scan-subtitle {
+    margin-left: 0;
+  }
+
+  .scan-mode-toggle {
+    justify-content: flex-start;
+  }
+
+  .scan-upload-section {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    gap: 24px;
+    align-items: start;
+  }
+
+  .scan-upload-section > * {
+    grid-column: 1;
+  }
+
+  .scan-tips {
+    grid-column: 2;
+    margin-bottom: 0;
+    position: sticky;
+    top: 24px;
+  }
+
+  .scan-actions {
+    grid-column: 1 / -1;
+    justify-content: flex-start;
+  }
+}
+
 .scan-btn-primary {
   flex: 1;
   padding: 16px 32px;

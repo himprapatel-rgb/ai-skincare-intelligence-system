@@ -9,9 +9,7 @@ import { registerServiceWorker } from './utils/registerServiceWorker'
 // Register service worker in production
 if (import.meta.env.PROD) {
   registerServiceWorker().then((registered) => {
-    if (registered) {
-      console.log('✅ PWA enabled - App works offline!')
-    }
+    void registered;
   })
 }
 

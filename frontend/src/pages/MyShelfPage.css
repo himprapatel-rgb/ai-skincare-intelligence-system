@@ -340,6 +340,23 @@
   gap: 12px;
 }
 
+/* ----- Desktop layout: controls + results ----- */
+.myshelf-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.myshelf-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.myshelf-results-pane {
+  min-width: 0;
+}
+
 .myshelf-pills {
   display: flex;
   gap: 8px;
@@ -517,6 +534,25 @@
 
   .myshelf-add-btn-inline {
     display: none;
+  }
+}
+
+@media (min-width: 1024px) {
+  .myshelf-layout {
+    display: grid;
+    grid-template-columns: 280px minmax(0, 1fr);
+    gap: 24px;
+    align-items: start;
+  }
+
+  .myshelf-controls {
+    position: sticky;
+    top: 16px;
+  }
+
+  .myshelf-controls .myshelf-toolbar,
+  .myshelf-controls .myshelf-sort-row {
+    margin-bottom: 0;
   }
 }
 

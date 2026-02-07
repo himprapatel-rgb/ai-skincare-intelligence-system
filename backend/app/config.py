@@ -68,6 +68,10 @@ class Settings(BaseSettings):
         default=30,
         description="Global request timeout in seconds",
     )
+    MAX_REQUEST_BODY_BYTES: int = Field(
+        default=5 * 1024 * 1024,
+        description="Max request body size in bytes",
+    )
     FRONTEND_URL: str = Field(
         default="http://localhost:3000",
         description="Frontend base URL for email verification links",

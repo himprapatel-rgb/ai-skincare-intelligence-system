@@ -155,6 +155,19 @@ async def request_timeout_middleware(request: Request, call_next):
         )
 
 
+@app.middleware("http")
+async def request_size_limit_middleware(request: Request, call_next):
+    if request.method in {"POST", "PUT", "PATCH"}:
+        content_length = request.headers.get("content-length")
+        if content_length and content_length.isdigit():
+            if int(content_length) > settings.MAX_REQUEST_BODY_BYTES:
+                return JSONResponse(
+                    status_code=413,
+                    content={"detail": "Request body too large"},
+                )
+    return await call_next(request)
+
+
 @app.exception_handler(OperationalError)
 async def handle_db_operational_error(request: Request, exc: OperationalError) -> JSONResponse:
     message = "Database unavailable. Please retry shortly."

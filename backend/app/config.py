@@ -64,6 +64,10 @@ class Settings(BaseSettings):
     APP_VERSION: str = Field(default="1.0.0", description="Application version")
     DEBUG: bool = Field(default=False, description="Debug mode")
     ENV: str = Field(default="development", description="Runtime environment")
+    REQUEST_TIMEOUT_SECONDS: int = Field(
+        default=30,
+        description="Global request timeout in seconds",
+    )
     FRONTEND_URL: str = Field(
         default="http://localhost:3000",
         description="Frontend base URL for email verification links",

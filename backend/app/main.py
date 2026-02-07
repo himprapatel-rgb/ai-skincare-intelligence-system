@@ -8,6 +8,7 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse, PlainTextResponse
 from fastapi.staticfiles import StaticFiles
 from datetime import date, datetime
+import anyio
 
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
@@ -138,6 +139,18 @@ async def add_security_headers(request, call_next):
     if not settings.DEBUG:
         response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
     return response
+
+
+@app.middleware("http")
+async def request_timeout_middleware(request: Request, call_next):
+    try:
+        with anyio.fail_after(settings.REQUEST_TIMEOUT_SECONDS):
+            return await call_next(request)
+    except TimeoutError:
+        return JSONResponse(
+            status_code=504,
+            content={"detail": "Request timed out"},
+        )
 
 
 @app.exception_handler(OperationalError)

@@ -9,6 +9,7 @@ from typing import List, Optional
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Query
+from sqlalchemy import func
 from sqlalchemy.orm import Session, joinedload
 
 from app.core.security import get_current_user
@@ -71,6 +72,11 @@ async def get_product_by_barcode(
     db: Session = Depends(get_db)
 ):
     """Lookup product by barcode (EAN-8 to EAN-14)"""
+    if not re.fullmatch(r"\d{8,14}", barcode.strip()):
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid barcode format. Use 8–14 digits.",
+        )
     product = db.query(Product).filter(Product.upc == barcode).first()
     
     if not product:
@@ -175,25 +181,30 @@ async def get_product_reviews(
         raise HTTPException(status_code=404, detail="Product not found")
     
     # Get reviews with pagination
-    reviews_query = db.query(ProductReview).filter(
-        ProductReview.product_id == product_id
-    ).order_by(ProductReview.created_at.desc())
-    
+    reviews_query = (
+        db.query(ProductReview)
+        .options(joinedload(ProductReview.user))
+        .filter(ProductReview.product_id == product_id)
+        .order_by(ProductReview.created_at.desc())
+    )
     total = reviews_query.count()
     reviews = reviews_query.offset(offset).limit(limit).all()
-    
-    # Calculate rating distribution
+
+    # Calculate rating distribution and average rating in SQL
     rating_dist = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0}
-    all_reviews = db.query(ProductReview).filter(
-        ProductReview.product_id == product_id
-    ).all()
-    
+    ratings_summary = (
+        db.query(ProductReview.rating, func.count(ProductReview.id))
+        .filter(ProductReview.product_id == product_id)
+        .group_by(ProductReview.rating)
+        .all()
+    )
     total_rating = 0
-    for r in all_reviews:
-        rating_dist[r.rating] = rating_dist.get(r.rating, 0) + 1
-        total_rating += r.rating
-    
-    avg_rating = (total_rating / len(all_reviews)) if all_reviews else 0.0
+    total_count = 0
+    for rating_value, rating_count in ratings_summary:
+        rating_dist[int(rating_value)] = rating_count
+        total_rating += int(rating_value) * rating_count
+        total_count += rating_count
+    avg_rating = (total_rating / total_count) if total_count else 0.0
     
     # Build response with user display names (user already loaded via joinedload)
     review_responses = []
@@ -581,6 +592,7 @@ async def scan_barcode(
 
 
 import base64
+import binascii
 import os
 
 # ===== Product Image Recognition Endpoint (FR28 Enhanced) =====
@@ -639,6 +651,10 @@ class ProductImageResponse(BaseModel):
     safety_report: Optional[SafetyReport] = None  # Detailed safety analysis
     product_image_url: Optional[str] = None  # Clean product image URL
     image_source: Optional[str] = None  # Where the image came from
+
+
+MAX_PRODUCT_IMAGE_BYTES = 4 * 1024 * 1024  # 4 MB
+MIN_PRODUCT_IMAGE_BYTES = 64
 
 
 async def fetch_clean_product_image(brand: str, product_name: str) -> tuple[Optional[str], Optional[str]]:
@@ -766,6 +782,25 @@ async def identify_product_from_image(
             # Extract base64 part from data URL
             image_data = image_data.split(",")[1]
         
+        # Validate base64 image payload
+        try:
+            decoded_bytes = base64.b64decode(image_data, validate=True)
+        except (binascii.Error, ValueError):
+            raise HTTPException(
+                status_code=400,
+                detail="Invalid image data. Provide base64-encoded image.",
+            )
+        if len(decoded_bytes) < MIN_PRODUCT_IMAGE_BYTES:
+            raise HTTPException(
+                status_code=400,
+                detail="Image data is too small.",
+            )
+        if len(decoded_bytes) > MAX_PRODUCT_IMAGE_BYTES:
+            raise HTTPException(
+                status_code=413,
+                detail="Image too large. Maximum size is 4 MB.",
+            )
+
         # Call OpenAI Vision API
         client = openai.OpenAI(api_key=openai_key)
         

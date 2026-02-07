@@ -98,6 +98,22 @@
   word-break: break-word;
 }
 
+/* ========== MEDIA SAFETY (shared) ========== */
+:where(img, video, canvas, svg) {
+  max-width: 100%;
+  height: auto;
+}
+
+:where(pre, code) {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.r-scroll-x {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 /* ========== REDUCED MOTION (accessibility, shared) ========== */
 @media (prefers-reduced-motion: reduce) {
   .r-grid,

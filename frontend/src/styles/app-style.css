@@ -17,6 +17,8 @@
   padding: 0 var(--spacing-lg);
   padding-left: max(var(--spacing-lg), env(safe-area-inset-left));
   padding-right: max(var(--spacing-lg), env(safe-area-inset-right));
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* Gradient header card (for any page) */

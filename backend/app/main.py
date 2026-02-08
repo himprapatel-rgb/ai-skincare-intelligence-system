@@ -25,6 +25,7 @@ from app.config import settings
 from app.core.security import encrypt_sensitive_data
 from app.database import Base, SessionLocal, engine, health_engine
 from app.product_database import create_product_tables, check_product_database_health
+from middleware.slow_query_logger import setup_slow_query_logging
 from app.models.analysis_outputs import (
     DailySkinGuidance,
     EnvironmentalReading,
@@ -184,6 +185,10 @@ async def handle_db_operational_error(request: Request, exc: OperationalError) -
 def ensure_test_user() -> None:
     """Create all database tables and seed test user if missing."""
     try:
+        # Setup slow query logging for monitoring
+        setup_slow_query_logging(engine, threshold_seconds=0.5)
+        logger.info("✅ Slow query logging enabled")
+        
         # Create all tables from SQLAlchemy models (non-destructive)
         logger.info("Creating database tables (if not exist)...")
         Base.metadata.create_all(bind=engine, checkfirst=True)

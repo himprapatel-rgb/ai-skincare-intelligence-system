@@ -246,6 +246,16 @@ npm run dev
 
 ## Documentation
 
+Use the documentation hub and canonical map first:
+
+- [Documentation Hub](./docs/README.md)
+- [Canonical Docs Map](./docs/00-index/CANONICAL-DOCS.md)
+- [Current Status Snapshot](./docs/00-index/WHERE-WE-ARE.md)
+- [Doc Naming & Date Standard](./docs/00-index/DOC-NAMING-AND-DATE-STANDARD.md)
+- [Root Legacy Notes Index](./docs/99-archive/ROOT-LEGACY-NOTES-INDEX.md)
+
+### Core Engineering Docs
+
 | Document | Description |
 |----------|-------------|
 | [ARCHITECTURE.md](./docs/ARCHITECTURE.md) | System architecture and design |

@@ -449,7 +449,7 @@ async def get_data_quality(
 
 @router.get("/export")
 async def export_catalog(
-    format: str = Query("json", regex="^(json|csv)$"),
+    format: str = Query("json", pattern="^(json|csv)$"),
     limit: int = Query(10000, ge=1, le=50000),
     offset: int = Query(0, ge=0),
     category: Optional[str] = Query(None),

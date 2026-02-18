@@ -1,148 +1,69 @@
-# Pellicura - AI Skincare Intelligence System Documentation
+# Pellicura Documentation Hub
 
-> **Master Documentation Index** - Single source of truth for all project documentation
+This is the central navigation page for team documentation.
 
-## 📋 Agile iteration (sprints)
-
-We use **traditional agile iterations** (sprints). All iteration artifacts and how to run them are in one place:
-
-| Document | Purpose |
-|----------|---------|
-| **[AGILE-ITERATION-GUIDE.md](./AGILE-ITERATION-GUIDE.md)** | **Start here** – product backlog, sprint backlog, planning, review, retrospective, release; where each doc lives |
-| [12-tasks/ACTIVE-TASKS.md](./12-tasks/ACTIVE-TASKS.md) | Current sprint backlog (in progress, next, blocked) |
-| [03-product/Product-Backlog-V5.md](./03-product/Product-Backlog-V5.md) | Product backlog (user stories, epics) |
-| [07-sprints/README.md](./07-sprints/README.md) | Sprint index and past sprint summaries |
-| [07-sprints/SPRINT-TEMPLATE.md](./07-sprints/SPRINT-TEMPLATE.md) | Template for new sprint |
-| [11-working/AI-AGILE-ITERATION-LOG.md](./11-working/AI-AGILE-ITERATION-LOG.md) | Iteration log (what changed per iteration) |
-| [09-reports/RETROSPECTIVE-TEMPLATE.md](./09-reports/RETROSPECTIVE-TEMPLATE.md) | Sprint retrospective template |
-
-## 🎯 Project Status
-
-| Milestone | Status | Date |
-|-----------|--------|------|
-| **500 Task Checklist** | ✅ Complete (500/500) | 2026-01-28 |
-| **Railway Deployment** | ✅ Live | 2026-01-28 |
-| **Cloudflare Migration** | 🔄 Scheduled | 2026-01-29 |
-| **Production Domain** | pellicura.com | Pending |
-
-## 🚀 Quick Start
-
-**New to the project?** Start here:
-1. [Quick Start Guide](./00-index/Quick-Start.md)
-2. [System Requirements](./01-requirements/SRS-V5.3-External-Pretrained-ML.md)
-3. [Product Backlog](./03-product/Product-Backlog-V5.md)
-
-**Learning the codebase (mobile / web / tablet, login, loading):** [CODEBASE-LEARNING-GUIDE.md](./11-working/CODEBASE-LEARNING-GUIDE.md)
-
-## 📦 Deployment & Migration
-
-| Document | Description |
-|----------|-------------|
-| [Active Tasks](./12-tasks/ACTIVE-TASKS.md) | Current tasks (legacy lists in [99-archive/task-lists-legacy](./99-archive/task-lists-legacy/)) |
-| [ZERO-DOWNTIME-MIGRATION-PLAN.md](./ZERO-DOWNTIME-MIGRATION-PLAN.md) | Cloudflare migration (2026-01-29) |
-| [CLOUDFLARE-MIGRATION-PLAN.md](./CLOUDFLARE-MIGRATION-PLAN.md) | Architecture details |
-| [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md) | Current & target deployment |
-
-## 📋 Core Documentation
-
-### Requirements & Architecture
-- **[SRS V5.3](./01-requirements/SRS-V5.3-External-Pretrained-ML.md)** - Software requirements specification
-- **[Feature Implementation Traceability (Jan 26, 2026)](./01-requirements/Feature-Implementation-Traceability-2026-01-26.md)** - Maps SRS to code
-- **[Traceability Matrix](./01-requirements/Traceability-Matrix.md)** - Original traceability
-- **[Architecture Decisions](./02-architecture/Architecture-Decisions.md)** - ADRs and design decisions
-
-### Product & Agile (traditional iteration)
-- **[AGILE-ITERATION-GUIDE.md](./AGILE-ITERATION-GUIDE.md)** – how we run sprints; where backlogs, sprint backlog, review, retro live
-- **[Product Backlog](./03-product/Product-Backlog-V5.md)** – main product backlog
-- **[Product Tracker](./03-product/Product-Tracker.md)** – status tracker
-- **[Sprint Index](./07-sprints/README.md)** – sprint summaries; **[SPRINT-TEMPLATE](./07-sprints/SPRINT-TEMPLATE.md)** – new sprint
-- **[12-tasks/](./12-tasks/)** – ACTIVE-TASKS = sprint backlog; BACKLOG, IMPROVEMENT-BACKLOG = product backlog
-
-### Operations (Living Docs)
-- **[Implementation Status (Jan 26, 2026)](./06-operations/Implementation-Status-2026-01-26.md)** - Latest comprehensive status
-- **[Features Left to Implement](./06-operations/Features-Left-to-Implement.md)** - Consolidated list of remaining features (Jan 27, 2026)
-- **[Current State](./06-operations/Current-State.md)** - Living document with addendums
-- **[Pages Status](./06-operations/Pages-Created-Status.md)** - All 31 pages inventory
-- **[Baseline Healthcheck](./06-operations/Baseline-Healthcheck.md)**
-- **[Action Plan](./06-operations/Action-Plan-Today.md)**
-
-## 🧪 Testing & Deployment
-
-- **[Testing Guide](./04-testing/Testing-Guide.md)**
-- **[Testing Strategy (External ML Models)](./04-testing/Testing-Strategy-External-ML-Models.md)**
-- **[Deployment Guide](./05-deployment/Deployment-Guide.md)**
-- **[Required Secrets](./05-deployment/Required-Secrets.md)**
-
-## 📂 Documentation Structure
-
-```
-/docs
-├── README.md (THIS FILE)
-├── /00-index        Entry point & navigation
-├── /01-requirements SRS + traceability
-├── /02-architecture ADRs + integrations
-├── /03-product      Backlog + trackers
-├── /04-testing      Test strategy
-├── /05-deployment   Deployment + secrets
-├── /06-operations   Live ops docs
-├── /07-sprints      Sprint summaries & folders
-├── /08-audits       Audit reports
-├── /09-reports      Progress and completion reports
-├── /11-working      Working notes during implementation
-└── /99-archive      Legacy & historical docs
-```
-
-## 🔍 Finding What You Need
-
-| I want to... | Go to |
-|--------------|-------|
-| See what's implemented NOW | [Implementation Status (Jan 26)](./06-operations/Implementation-Status-2026-01-26.md) |
-| See what's left to implement | [Features Left to Implement](./06-operations/Features-Left-to-Implement.md) |
-| Check which features are complete | [Feature Traceability](./01-requirements/Feature-Implementation-Traceability-2026-01-26.md) |
-| Understand system requirements | [SRS V5.3](./01-requirements/SRS-V5.3-External-Pretrained-ML.md) |
-| See all 31 frontend pages | [Pages Status](./06-operations/Pages-Created-Status.md) |
-| Review sprint history | [Sprint Index](./07-sprints/README.md) |
-| Run or understand agile iterations | [AGILE-ITERATION-GUIDE.md](./AGILE-ITERATION-GUIDE.md) |
-| See current sprint work | [12-tasks/ACTIVE-TASKS.md](./12-tasks/ACTIVE-TASKS.md) |
-| See current priorities / product backlog | [Product Backlog](./03-product/Product-Backlog-V5.md) |
-| Audit mobile app vs best apps (100 issues) | [08-audits/MOBILE-APP-100-ISSUES-AUDIT-2026.md](./08-audits/MOBILE-APP-100-ISSUES-AUDIT-2026.md) |
-| See agents (E2E, Improvement, Human, API Smoke) | [agents/README.md](./agents/README.md) |
-| See active tasks | [12-tasks/ACTIVE-TASKS.md](./12-tasks/ACTIVE-TASKS.md) |
-| Follow dev workflow | [13-workflow/DEVELOPMENT-WORKFLOW.md](./13-workflow/DEVELOPMENT-WORKFLOW.md) |
-| Check production URLs | [README (root)](../README.md#live-production-urls) |
-| Set up development environment | [Quick Start](./00-index/Quick-Start.md) |
-| Deploy to production | [Deployment Guide](./05-deployment/Deployment-Guide.md) |
-| Run tests | [Testing Guide](./04-testing/Testing-Guide.md) |
-| View legacy docs | [Archive](./99-archive/) |
-
-## 📖 Documentation Principles
-
-✅ **Single Source of Truth**  
-✅ **Living Docs for Operations**  
-✅ **Immutable Sprint Summaries**  
-✅ **Archive for Legacy/Evidence**
-
-## 🔄 Document Lifecycle
-
-1. **Active** - Current, referenced from this index
-2. **Complete** - Sprint closed, moved to `/07-sprints`
-3. **Archived** - Evidence preserved in `/99-archive`
+Use this file and the canonical map to avoid duplicate or conflicting docs.
 
 ---
 
-## 🌐 Live URLs
+## Team Start Points
 
-### Current (Railway)
-- Frontend: https://frontend-production-0415.up.railway.app
-- Backend: https://ai-skincare-intelligence-system-production.up.railway.app
-- API Docs: https://ai-skincare-intelligence-system-production.up.railway.app/docs
-
-### Target (Cloudflare) - After Migration
-- Frontend: https://pellicura.com
-- Backend: https://api.pellicura.com
+| Goal | Read this first |
+|------|------------------|
+| Understand project and run locally | [`../README.md`](../README.md) |
+| See current project state | [`00-index/WHERE-WE-ARE.md`](./00-index/WHERE-WE-ARE.md) |
+| Find source-of-truth docs | [`00-index/CANONICAL-DOCS.md`](./00-index/CANONICAL-DOCS.md) |
+| Follow naming/date standards | [`00-index/DOC-NAMING-AND-DATE-STANDARD.md`](./00-index/DOC-NAMING-AND-DATE-STANDARD.md) |
+| See active sprint work | [`12-tasks/ACTIVE-TASKS.md`](./12-tasks/ACTIVE-TASKS.md) |
+| Follow team workflow | [`13-workflow/DEVELOPMENT-WORKFLOW.md`](./13-workflow/DEVELOPMENT-WORKFLOW.md) |
 
 ---
 
-**Last Updated:** January 28, 2026  
-**Domain:** pellicura.com  
-**Maintained by:** Pellicura Team
+## Core Engineering Docs
+
+| Area | Document |
+|------|----------|
+| Architecture | [`ARCHITECTURE.md`](./ARCHITECTURE.md) |
+| Backend guide | [`BACKEND_GUIDE.md`](./BACKEND_GUIDE.md) |
+| Frontend guide | [`FRONTEND_GUIDE.md`](./FRONTEND_GUIDE.md) |
+| Database schema | [`DATABASE_SCHEMA.md`](./DATABASE_SCHEMA.md) |
+| Environment variables | [`ENVIRONMENT_VARIABLES.md`](./ENVIRONMENT_VARIABLES.md) |
+| Deployment guide | [`DEPLOYMENT_GUIDE.md`](./DEPLOYMENT_GUIDE.md) |
+| Testing guide | [`04-testing/Testing-Guide.md`](./04-testing/Testing-Guide.md) |
+
+---
+
+## Folder Guide
+
+| Folder | Purpose |
+|--------|---------|
+| `00-index/` | Navigation and status |
+| `01-requirements/` | Requirements and traceability |
+| `02-architecture/` | Architecture and technical decisions |
+| `03-product/` | Product strategy and backlog |
+| `04-testing/` | Testing guides and plans |
+| `05-deployment/` | Deployment and infrastructure setup |
+| `06-operations/` | Operational runbooks |
+| `07-sprints/` | Sprint artifacts |
+| `08-audits/` | Audits and assessments |
+| `09-reports/` | Reports and retrospectives |
+| `10-branding/` | Brand and design direction |
+| `11-working/` | Working notes and temporary docs |
+| `12-tasks/` | Active/completed tasks and backlog |
+| `13-workflow/` | Team process and checklists |
+| `99-archive/` | Historical/legacy material |
+
+---
+
+## Documentation Rules
+
+- Update existing canonical docs before creating new ones.
+- Keep status and planning docs date-stamped.
+- Move completed historical docs into `99-archive/`.
+- Keep short temporary notes in `11-working/` and promote only stable knowledge.
+- When creating a new key process doc, also update `00-index/CANONICAL-DOCS.md`.
+- Root-level legacy notes are indexed in [`99-archive/ROOT-LEGACY-NOTES-INDEX.md`](./99-archive/ROOT-LEGACY-NOTES-INDEX.md).
+
+---
+
+Last updated: 2026-02-18

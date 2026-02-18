@@ -29,11 +29,12 @@ ai-skincare-intelligence-system/
 ├── docs/                   # 50+ documentation files
 ├── .gitignore
 ├── CI_CD_TEST.md
-├── DEPLOYMENT_ARCHITECTURE_UPDATE.md
-├── DEPLOYMENT_CHECKLIST.md
-├── DEPLOYMENT_STATUS.md
-├── DEPLOYMENT_STATUS_FINAL.md
-├── DEPLOYMENT_URLS.md
+├── docs/99-archive/root-legacy-notes/  # Archived root status notes
+│   ├── DEPLOYMENT_ARCHITECTURE_UPDATE.md
+│   ├── DEPLOYMENT_CHECKLIST.md
+│   ├── DEPLOYMENT_STATUS.md
+│   ├── DEPLOYMENT_STATUS_FINAL.md
+│   └── DEPLOYMENT_URLS.md
 ├── README.md
 ├── docker-compose.yml      # Local orchestration
 ├── pytest.ini              # Global pytest config

@@ -353,7 +353,7 @@ If health check or smoke tests fail:
 ### To Be Updated
 - [ ] Traceability-Matrix.md
 - [ ] README.md (with realistic status)
-- [ ] DEPLOYMENT_STATUS.md
+- [ ] docs/99-archive/root-legacy-notes/DEPLOYMENT_STATUS.md
 - [ ] Product Tracker
 
 ---
@@ -391,7 +391,7 @@ If health check or smoke tests fail:
 - [AUDIT-REPORT.md](./AUDIT-REPORT.md) - Full audit findings
 - [Traceability Matrix](../01-requirements/Traceability-Matrix.md) - Requirements mapping
 - [Product Backlog V5](../03-product/Product-Backlog-V5.md) - All 650 user stories
-- [DEPLOYMENT_STATUS.md](./DEPLOYMENT_STATUS.md) - Current deployment state
+- [DEPLOYMENT_STATUS.md](../99-archive/root-legacy-notes/DEPLOYMENT_STATUS.md) - Current deployment state (archived)
 
 ---
 

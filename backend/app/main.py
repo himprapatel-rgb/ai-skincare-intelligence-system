@@ -1,7 +1,6 @@
 import logging
 import os
 import sys
-import os
 from pathlib import Path
 
 from fastapi import FastAPI, Request
@@ -183,23 +182,35 @@ async def handle_db_operational_error(request: Request, exc: OperationalError) -
 
 @app.on_event("startup")
 def ensure_test_user() -> None:
-    """Create all database tables and seed test user if missing."""
+    """Best-effort startup bootstrap. Never crash the API process."""
+    db_bootstrap_available = True
     try:
         # Setup slow query logging for monitoring
         setup_slow_query_logging(engine, threshold_seconds=0.5)
         logger.info("✅ Slow query logging enabled")
-        
+
         # Create all tables from SQLAlchemy models (non-destructive)
         logger.info("Creating database tables (if not exist)...")
         Base.metadata.create_all(bind=engine, checkfirst=True)
         logger.info("✅ Main database tables ensured")
-        
+    except (ProgrammingError, OperationalError) as exc:
+        logger.warning("Main DB bootstrap unavailable; startup continues without seed: %s", exc)
+        db_bootstrap_available = False
+    except Exception as exc:  # defensive: never crash app startup
+        logger.exception("Unexpected main DB bootstrap error; startup continues: %s", exc)
+        db_bootstrap_available = False
+
+    try:
         # Create product catalog tables (separate database)
         logger.info("Creating product catalog tables...")
         create_product_tables()
         logger.info("✅ Product catalog tables ensured")
-        
-        if engine.dialect.name != "sqlite":
+    except Exception as exc:
+        # Product DB is optional for API liveness; keep service up and report via /api/health
+        logger.warning("Product DB bootstrap skipped: %s", exc)
+
+    if db_bootstrap_available and engine.dialect.name != "sqlite":
+        try:
             with engine.begin() as conn:
                 # Ensure admin flag exists on users table (production safety)
                 try:
@@ -208,20 +219,20 @@ def ensure_test_user() -> None:
                             "ALTER TABLE users ADD COLUMN IF NOT EXISTS is_admin BOOLEAN DEFAULT FALSE"
                         )
                     )
-                except ProgrammingError:
+                except (ProgrammingError, OperationalError):
                     pass
                 try:
                     conn.execute(
                         text("ALTER TABLE user_profiles ALTER COLUMN skin_type TYPE TEXT")
                     )
-                except ProgrammingError:
+                except (ProgrammingError, OperationalError):
                     pass
                 # Allow NULL user_id for guest scans
                 try:
                     conn.execute(
                         text("ALTER TABLE scan_sessions ALTER COLUMN user_id DROP NOT NULL")
                     )
-                except ProgrammingError:
+                except (ProgrammingError, OperationalError):
                     pass  # Column might already be nullable
                 # Ensure scan image storage columns exist (Railway/Postgres)
                 try:
@@ -238,20 +249,26 @@ def ensure_test_user() -> None:
                             "ALTER TABLE scan_sessions ADD COLUMN IF NOT EXISTS image_filename VARCHAR(255)"
                         )
                     )
-                except ProgrammingError:
+                except (ProgrammingError, OperationalError):
                     pass
                 # IP & geolocation tracking
                 try:
                     conn.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS last_ip_address VARCHAR(45)"))
                     conn.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS last_geolocation JSONB"))
                     conn.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS last_seen_at TIMESTAMP WITH TIME ZONE"))
-                except ProgrammingError:
+                except (ProgrammingError, OperationalError):
                     pass
-    except ProgrammingError:
-        logger.warning("Unable to create auth tables; skipping seed.")
+        except Exception as exc:
+            logger.warning("Startup schema safety updates skipped: %s", exc)
+
+    if not db_bootstrap_available:
         return
 
-    db = SessionLocal()
+    try:
+        db = SessionLocal()
+    except Exception as exc:
+        logger.warning("Unable to open DB session for seeding; skipping seed: %s", exc)
+        return
     try:
         # Do not seed test users in production unless explicitly enabled (security audit)
         if settings.ENV == "production" and (os.getenv("SEED_TEST_USERS", "").lower() not in ("1", "true", "yes")):

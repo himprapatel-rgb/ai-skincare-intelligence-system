@@ -13,7 +13,7 @@
 | **GUI (4,200 tasks)** | ✅ Complete | Design tokens, mobile, a11y across 42 pages. See [COMPLETED](../12-tasks/COMPLETED.md) |
 | **Mobile 100-Issue Audit** | 🟡 In progress | P0 done; many P1/P2 fixed and pushed. See [MOBILE-APP-100-ISSUES-AUDIT-2026.md](../08-audits/MOBILE-APP-100-ISSUES-AUDIT-2026.md) |
 | **Frontend** | ✅ Cloudflare Pages | [pellicura.pages.dev](https://pellicura.pages.dev) (prod), staging available |
-| **Backend** | ✅ Live | Railway / Fly.io per [README](../../README.md) and DEPLOYMENT_URLS.md |
+| **Backend** | ✅ Live | Railway / Fly.io per [README](../../README.md) and [archived deployment URLs](../99-archive/root-legacy-notes/DEPLOYMENT_URLS.md) |
 | **Database** | ✅ Railway PostgreSQL | Main DB + product catalog (two-DB) |
 | **Google Sign-In** | ✅ Working | Live |
 | **Agents** | ✅ Running | See [docs/agents/](../agents/README.md) |
@@ -70,6 +70,7 @@
 
 | Priority | Action | Why |
 |----------|--------|-----|
+| **0** | **Deploy backend (hardened startup)** | Backend no longer crashes on DB bootstrap failure; serves with degraded health. Fixes: notifications `Query` import, catalog `regex`→`pattern`. Push to `main` and trigger Railway redeploy so production 502 is resolved. |
 | **1** | **Continue mobile audit** | More P2/P3 from [MOBILE-APP-100-ISSUES-AUDIT-2026.md](../08-audits/MOBILE-APP-100-ISSUES-AUDIT-2026.md): star ratings tap target, tap feedback, card radius token, one H1 per page, etc. |
 | **2** | **Verify deploy** | After push: confirm [pellicura.pages.dev](https://pellicura.pages.dev) (or your frontend URL) shows the new mobile fixes; run E2E if needed. |
 | **3** | **Verify both DBs** | Confirm health shows both DBs ok. Run: `python backend/scripts/verify_two_databases.py --url <backend_url>` |
@@ -98,7 +99,7 @@
 | Catalog API | `backend/app/routers/catalog.py` |
 | Catalog service (frontend) | `frontend/src/services/catalogService.ts` |
 | Railway product DB deploy | `docs/05-deployment/Railway-Product-Database-Deploy.md` |
-| Deployment URLs | `DEPLOYMENT_URLS.md` |
+| Deployment URLs | [`docs/99-archive/root-legacy-notes/DEPLOYMENT_URLS.md`](../99-archive/root-legacy-notes/DEPLOYMENT_URLS.md) |
 | Required secrets | `docs/05-deployment/Required-Secrets.md` |
 | Google SSO setup | `docs/05-deployment/Google-SSO-Setup.md` |
 | Google login troubleshooting | `docs/11-working/GOOGLE-LOGIN-TROUBLESHOOTING.md` |

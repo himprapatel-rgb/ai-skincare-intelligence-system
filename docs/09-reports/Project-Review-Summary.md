@@ -105,14 +105,14 @@ The following files exist at the docs/ root level and represent sprint-based dev
 ## 4. Identified Duplications
 
 ### 4.1 Root Level Deployment Files
-These files at repository root can be consolidated:
-- `DEPLOYMENT_ARCHITECTURE_UPDATE.md`
-- `DEPLOYMENT_CHECKLIST.md`
-- `DEPLOYMENT_STATUS.md`
-- `DEPLOYMENT_STATUS_FINAL.md`
-- `DEPLOYMENT_URLS.md`
+These files were previously at repository root and are now archived:
+- `docs/99-archive/root-legacy-notes/DEPLOYMENT_ARCHITECTURE_UPDATE.md`
+- `docs/99-archive/root-legacy-notes/DEPLOYMENT_CHECKLIST.md`
+- `docs/99-archive/root-legacy-notes/DEPLOYMENT_STATUS.md`
+- `docs/99-archive/root-legacy-notes/DEPLOYMENT_STATUS_FINAL.md`
+- `docs/99-archive/root-legacy-notes/DEPLOYMENT_URLS.md`
 
-**Recommendation:** Move to `docs/Archive/deployment-history/`
+**Status:** Archived under `docs/99-archive/root-legacy-notes/`
 
 ### 4.2 Multiple SRS Versions
 Multiple SRS versions exist in docs/:

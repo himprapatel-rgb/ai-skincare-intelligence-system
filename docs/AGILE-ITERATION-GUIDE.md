@@ -14,7 +14,7 @@ We use **time-boxed iterations** (sprints). Each iteration has:
 | **Daily Work / Execution** | Implement, test, integrate | Code + [11-working/AI-AGILE-ITERATION-LOG.md](11-working/AI-AGILE-ITERATION-LOG.md) (iteration log entries) |
 | **Sprint Review / Demo** | Show done work; accept or carry over | [07-sprints/](07-sprints/) – one summary per sprint; [09-reports/](09-reports/) for completion reports |
 | **Sprint Retrospective** | What went well, what to improve, actions | [09-reports/RETROSPECTIVE-TEMPLATE.md](09-reports/RETROSPECTIVE-TEMPLATE.md); can be section in sprint summary |
-| **Release / Version** | Ship to production; record version | [DEPLOYMENT_URLS.md](../DEPLOYMENT_URLS.md), [05-deployment/](05-deployment/), [09-reports/](09-reports/) |
+| **Release / Version** | Ship to production; record version | [Deployment URLs (archived)](99-archive/root-legacy-notes/DEPLOYMENT_URLS.md), [05-deployment/](05-deployment/), [09-reports/](09-reports/) |
 
 ## 2. Document Map (Agile Artifacts)
 

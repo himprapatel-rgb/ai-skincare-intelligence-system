@@ -509,6 +509,8 @@ def confirm_password_reset(
 ALLOWED_GOOGLE_REDIRECT_URIS = [
     "https://pellicura.com/auth/google/callback",
     "https://www.pellicura.com/auth/google/callback",
+    "https://pellicura.pages.dev/auth/google/callback",
+    "https://staging.pellicura.pages.dev/auth/google/callback",
     "https://frontend-production-0415.up.railway.app/auth/google/callback",
     "http://localhost:5173/auth/google/callback",
 ]

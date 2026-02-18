@@ -33,6 +33,7 @@ DEFAULT_ORIGINS = [
     "https://ai-skincare-intelligence-system-production.up.railway.app",
     "https://frontend-production-0415.up.railway.app",
     "https://pellicura.com", "https://www.pellicura.com",
+    "https://pellicura.pages.dev", "https://staging.pellicura.pages.dev",
 ]
 DEFAULT_HOSTS = ["*", "healthcheck.railway.app", "ai-skincare-intelligence-system-production.up.railway.app"]
 

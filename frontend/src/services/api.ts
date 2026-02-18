@@ -73,7 +73,7 @@ class ApiClient {
         if (status === 429) {
           detail = 'Too many requests. Please try again in a few minutes.';
         } else if (status === 0 || error.code === 'ERR_NETWORK') {
-          detail = 'Connection problem. Check your connection and try again. You can retry your request after reconnecting.';
+          detail = 'We couldn\'t reach the server. Check your connection and try again — or the service may be temporarily unavailable (try again in a moment).';
         } else if (status === 401) {
           const isAuthRequest = config.url && (/\/auth\/login\/?$/.test(config.url) || /\/auth\/register\/?$/.test(config.url));
           if (isAuthRequest) {

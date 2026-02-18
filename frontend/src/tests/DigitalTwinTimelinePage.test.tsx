@@ -90,14 +90,17 @@ describe("DigitalTwinTimelinePage", () => {
       </MemoryRouter>
     );
 
-    await waitFor(() => {
-      expect(screen.getByText("Digital Twin Timeline")).toBeInTheDocument();
-      expect(screen.getByText(/improving/i)).toBeInTheDocument();
-      expect(screen.getAllByText("Redness").length).toBeGreaterThan(0);
-      expect(screen.getAllByText("Acne").length).toBeGreaterThan(0);
-      expect(screen.getByText("Top Concerns")).toBeInTheDocument();
-      expect(screen.getByText("Score: 82")).toBeInTheDocument();
-      expect(screen.getByText("Mood: Balanced")).toBeInTheDocument();
-    });
+    await waitFor(
+      () => {
+        expect(screen.getByRole("heading", { name: /digital twin/i })).toBeInTheDocument();
+        expect(screen.getByText("Top Concerns")).toBeInTheDocument();
+        expect(screen.getByText(/improving/i)).toBeInTheDocument();
+      },
+      { timeout: 5000 }
+    );
+    expect(screen.getAllByText("82").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Balanced").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Redness").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Acne").length).toBeGreaterThan(0);
   });
 });

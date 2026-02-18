@@ -70,7 +70,7 @@
 
 | Priority | Action | Why |
 |----------|--------|-----|
-| **0** | **Deploy backend (hardened startup)** | Backend no longer crashes on DB bootstrap failure; serves with degraded health. Fixes: notifications `Query` import, catalog `regex`→`pattern`. Push to `main` and trigger Railway redeploy so production 502 is resolved. |
+| **0** | **Deploy backend + frontend** | Backend: fault-tolerant startup, CORS + Google redirect URIs for pellicura.pages.dev, notifications/catalog fixes. Frontend: clearer connection-error message and Google callback UX. Push to `main`, redeploy Railway backend and frontend (e.g. Cloudflare Pages). See [Login-Troubleshooting](../06-operations/Login-Troubleshooting.md). |
 | **1** | **Continue mobile audit** | More P2/P3 from [MOBILE-APP-100-ISSUES-AUDIT-2026.md](../08-audits/MOBILE-APP-100-ISSUES-AUDIT-2026.md): star ratings tap target, tap feedback, card radius token, one H1 per page, etc. |
 | **2** | **Verify deploy** | After push: confirm [pellicura.pages.dev](https://pellicura.pages.dev) (or your frontend URL) shows the new mobile fixes; run E2E if needed. |
 | **3** | **Verify both DBs** | Confirm health shows both DBs ok. Run: `python backend/scripts/verify_two_databases.py --url <backend_url>` |

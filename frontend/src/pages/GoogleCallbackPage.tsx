@@ -150,18 +150,28 @@ const GoogleCallbackPage: React.FC = () => {
           <h2>Signing in with Google...</h2>
           <p>
             {slowMessage
-              ? 'This is taking longer than usual — the server may be waking up (staging can take 30–60 seconds). You can wait or go back and try again; the second attempt is usually faster.'
+              ? 'The server is taking longer than usual — it may be waking up (often 30–60 seconds on first request). You can keep waiting or go back and try again; the second attempt is usually faster.'
               : 'Please wait while we complete your authentication.'}
           </p>
           {slowMessage && (
-            <button type="button" className="btn-secondary" onClick={() => navigate('/auth', { replace: true })} style={{ marginTop: '1rem' }}>
-              Back to Sign In
-            </button>
+            <div style={{ marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem', alignItems: 'center' }}>
+              <button type="button" className="btn-primary" onClick={() => navigate('/auth', { replace: true })}>
+                Back to Sign In — try again in a moment
+              </button>
+              <button type="button" className="btn-secondary" onClick={() => window.location.reload()}>
+                Keep waiting (refresh)
+              </button>
+            </div>
           )}
         </div>
       </div>
     );
   }
+
+  const isConnectionError = error && (
+    /couldn't reach|connection|unavailable|network|timeout/i.test(error) ||
+    /ECONNREFUSED|ECONNABORTED|ERR_NETWORK/i.test(error)
+  );
 
   if (error) {
     return (
@@ -170,6 +180,11 @@ const GoogleCallbackPage: React.FC = () => {
           <div className="error-icon">✕</div>
           <h2>Sign-in Failed</h2>
           <p>{error}</p>
+          {isConnectionError && (
+            <p style={{ marginTop: '0.75rem', fontSize: '0.9rem', color: 'var(--text-gray, #555)' }}>
+              Tip: Go back and try &quot;Continue with Google&quot; again in a moment — the server may be starting up.
+            </p>
+          )}
           {backendRedirectUri && (
             <div className="callback-redirect-hint" style={{ marginTop: '1rem', textAlign: 'left' }}>
               <strong>Add this URL to Authorized redirect URIs in Google Cloud Console:</strong>

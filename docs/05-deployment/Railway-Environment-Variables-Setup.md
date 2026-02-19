@@ -225,6 +225,14 @@ curl -X GET https://ai-skincare-intelligence-system-production.up.railway.app/ap
 
 ---
 
+## 🏥 Healthcheck and startup
+
+- **Health path:** Railway should use **`/api/health`** (or `/` for a minimal check). The app returns **HTTP 200** with `"status": "healthy"` or `"status": "degraded"` (e.g. when DB is temporarily down). The server must be listening for the healthcheck to pass.
+- **Required to start:** **`DATABASE_URL`** must be set. The backend raises at startup if it is missing, so the process will exit and the healthcheck will never get a response.
+- **Migrations (optional):** To run DB migrations on deploy, set **`RUN_MIGRATIONS=true`** and in production **`ALLOW_PROD_MIGRATIONS=true`**. If these are not set, the migration script will not run, but the server still starts (migrations are non-blocking in the Dockerfile).
+
+---
+
 ## 🛠️ Troubleshooting
 
 ### Issue: "ModuleNotFoundError: decrypt_sensitive_data"
@@ -250,6 +258,14 @@ curl -X GET https://ai-skincare-intelligence-system-production.up.railway.app/ap
 
 **Cause:** Database credentials invalid  
 **Fix:** Verify DATABASE_URL in Railway matches actual database
+
+### Issue: Healthcheck fails / "1/1 replicas never became healthy"
+
+**Cause:** The app process exits before listening (e.g. migration script failed and blocked startup, or DATABASE_URL missing).  
+**Fix:**
+1. Ensure **DATABASE_URL** is set in Railway (required for the app to start).
+2. Ensure the service health path is **`/api/health`** (returns 200 with status healthy/degraded).
+3. After the Dockerfile change (migrations non-blocking), the server starts even if migrations fail; redeploy so the new image is used.
 
 ---
 

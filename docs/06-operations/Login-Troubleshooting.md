@@ -6,6 +6,36 @@ If users cannot sign in with **email/password** or **Google**, check the followi
 
 ---
 
+## “We couldn’t reach the server” (connection error)
+
+**What you see:**  
+Sign-in Failed — *We couldn't reach the server. Check your connection and try again — or the service may be temporarily unavailable (try again in a moment).*  
+Tip: *Go back and try "Continue with Google" again in a moment — the server may be starting up.*
+
+**Meaning:** The **backend API** the frontend calls (e.g. Railway) is not responding. The browser cannot open a connection to it (down, sleeping, or wrong URL).
+
+**Do this (in order):**
+
+1. **Open the backend health URL in your browser**  
+   Default backend:  
+   **https://ai-skincare-intelligence-system-production.up.railway.app/api/health**  
+   - If the page **loads and shows JSON** with `"status": "healthy"` or `"degraded"` → backend is up; the problem may be CORS, Google config, or a different frontend URL.  
+   - If the page **does not load**, **times out**, or shows an error → **backend is down or not deployed.**
+
+2. **If the backend is down**  
+   - In **Railway** → your project → **Backend** (or API) service:  
+     - Check **Deployments**: is the latest deploy **Success** and **Active**?  
+     - If the deploy **failed** (e.g. “Healthcheck failed”):  
+       - Ensure **DATABASE_URL** is set for the backend service.  
+       - Redeploy (the repo has fixes: non-blocking migrations, health path `/api/health`).  
+     - If the service is **sleeping** (free tier): trigger a new deploy or open the health URL; the first request can take 30–60 seconds.  
+   - After fixing, wait a minute and open the health URL again; then try sign-in again.
+
+3. **If the backend health URL works but login still fails**  
+   - Follow the rest of this doc: CORS, Google redirect URIs, and backend env vars (e.g. `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`).
+
+---
+
 ## Why did login stop working? (It was fine before)
 
 Login often stops working for one of these reasons. Check in this order:

@@ -7,7 +7,17 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../services/api';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { API_BASE_URL } from '../config';
 import './GoogleCallbackPage.css';
+
+/** Backend health URL for "check server" link. */
+const HEALTH_URL = (() => {
+  try {
+    return `${new URL(API_BASE_URL).origin}/api/health`;
+  } catch {
+    return 'https://ai-skincare-intelligence-system-production.up.railway.app/api/health';
+  }
+})();
 
 /** Timeout for backend /auth/google (ms). */
 const AUTH_GOOGLE_TIMEOUT_MS = 60000;
@@ -172,6 +182,10 @@ const GoogleCallbackPage: React.FC = () => {
     /couldn't reach|connection|unavailable|network|timeout/i.test(error) ||
     /ECONNREFUSED|ECONNABORTED|ERR_NETWORK/i.test(error)
   );
+  const isRedirectMismatch = error && /redirect_uri_mismatch|redirect_uri/i.test(error);
+  const callbackUrlUsed = typeof window !== 'undefined'
+    ? `${window.location.origin}/auth/google/callback`
+    : '';
 
   if (error) {
     return (
@@ -181,28 +195,52 @@ const GoogleCallbackPage: React.FC = () => {
           <h2>Sign-in Failed</h2>
           <p>{error}</p>
           {isConnectionError && (
-            <p style={{ marginTop: '0.75rem', fontSize: '0.9rem', color: 'var(--text-gray, #555)' }}>
-              Tip: Go back and try &quot;Continue with Google&quot; again in a moment — the server may be starting up.
-            </p>
+            <>
+              <p style={{ marginTop: '0.75rem', fontSize: '0.9rem', color: 'var(--text-gray, #555)' }}>
+                Tip: Go back and try &quot;Continue with Google&quot; again in a moment — the server may be starting up.
+              </p>
+              <p style={{ marginTop: '0.5rem', fontSize: '0.9rem' }}>
+                <strong>Backend:</strong>{' '}
+                <code style={{ fontSize: '0.8rem', wordBreak: 'break-all' }}>{new URL(API_BASE_URL).origin}</code>
+              </p>
+              <p style={{ marginTop: '0.5rem', fontSize: '0.9rem' }}>
+                <a href={HEALTH_URL} target="_blank" rel="noopener noreferrer" className="btn-link">
+                  Check server status
+                </a>
+                {' — if the page does not load or shows an error, the backend is down. Restart or redeploy it on Railway.'}
+              </p>
+            </>
           )}
-          {backendRedirectUri && (
-            <div className="callback-redirect-hint" style={{ marginTop: '1rem', textAlign: 'left' }}>
-              <strong>Add this URL to Authorized redirect URIs in Google Cloud Console:</strong>
-              <code style={{ display: 'block', marginTop: '0.5rem', padding: '0.5rem', background: '#f5f5f5', borderRadius: 4, wordBreak: 'break-all' }}>
-                {backendRedirectUri}
-              </code>
-              <button
-                type="button"
-                className="btn-secondary"
-                style={{ marginTop: '0.5rem' }}
-                onClick={() => {
-                  navigator.clipboard?.writeText(backendRedirectUri);
-                }}
-              >
-                Copy URL
-              </button>
-            </div>
-          )}
+          <div className="callback-redirect-hint" style={{ marginTop: '1rem', textAlign: 'left', fontSize: '0.9rem' }}>
+            <strong>Common fixes:</strong>
+            <ol style={{ marginTop: '0.5rem', paddingLeft: '1.25rem' }}>
+              <li>
+                In <strong>Google Cloud Console</strong> → APIs &amp; Services → Credentials → your OAuth client → <strong>Authorized redirect URIs</strong>, add exactly:
+                <code style={{ display: 'block', marginTop: '0.35rem', padding: '0.5rem', background: 'var(--bg-light, #f5f5f5)', borderRadius: 4, wordBreak: 'break-all', fontSize: '0.85rem' }}>
+                  {backendRedirectUri || callbackUrlUsed || 'https://your-site.com/auth/google/callback'}
+                </code>
+                <button
+                  type="button"
+                  className="btn-secondary"
+                  style={{ marginTop: '0.35rem', fontSize: '0.8rem' }}
+                  onClick={() => navigator.clipboard?.writeText(backendRedirectUri || callbackUrlUsed)}
+                >
+                  Copy URL
+                </button>
+              </li>
+              <li style={{ marginTop: '0.5rem' }}>
+                Check the backend is running: open your API health URL (e.g. <code style={{ fontSize: '0.8rem' }}>/api/health</code>) and ensure it returns 200.
+              </li>
+              <li style={{ marginTop: '0.25rem' }}>
+                On the server (e.g. Railway), set <code>GOOGLE_CLIENT_ID</code> and <code>GOOGLE_CLIENT_SECRET</code> from Google Cloud Console.
+              </li>
+            </ol>
+            {isRedirectMismatch && (
+              <p style={{ marginTop: '0.5rem', color: 'var(--text-gray, #555)' }}>
+                The error above usually means the redirect URI in Google Console does not match exactly (including https and no trailing slash).
+              </p>
+            )}
+          </div>
           <button onClick={() => navigate('/auth')} className="btn-primary" style={{ marginTop: '1rem' }}>
             Back to Sign In
           </button>

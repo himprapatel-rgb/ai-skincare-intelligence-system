@@ -84,7 +84,8 @@ TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engin
 @pytest.fixture
 def test_db():
     """Create test database and tables"""
-    import app.models  # noqa: F401
+    import app.models  # noqa: F401 - ensure User and all models registered on Base
+    from app.models.user import User  # noqa: F401 - ensure users table in metadata
     Base.metadata.create_all(bind=engine)
     db = TestingSessionLocal()
     try:

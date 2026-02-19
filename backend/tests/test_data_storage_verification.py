@@ -55,7 +55,7 @@ class TestUserProfileStorage:
 class TestScanStorage:
     """Scan session stores device_context and analysis result in scan_metadata."""
 
-    def test_scan_init_stores_device_context(self, client, auth_headers):
+    def test_scan_init_stores_device_context(self, client, auth_headers, test_db: Session):
         """POST /api/v1/scan/init with device_context persists it in scan_metadata."""
         body = {
             "device_context": {
@@ -71,21 +71,16 @@ class TestScanStorage:
         scan_id = data.get("scan_id")
         assert scan_id
 
-        # Fetch scan from DB and verify device_context stored
-        from app.database import SessionLocal
-        db = SessionLocal()
-        try:
-            scan = db.query(ScanSession).filter(ScanSession.id == uuid.UUID(scan_id)).first()
-            assert scan is not None
-            assert scan.scan_metadata is not None
-            assert isinstance(scan.scan_metadata, dict)
-            assert "device_context" in scan.scan_metadata
-            ctx = scan.scan_metadata["device_context"]
-            assert ctx["screen"]["width"] == 390
-            assert ctx["locale"]["timezone"] == "Europe/Dublin"
-            assert ctx["device"]["platform"] == "Win32"
-        finally:
-            db.close()
+        # Fetch scan using same test session the client used (avoid app engine/session mismatch)
+        scan = test_db.query(ScanSession).filter(ScanSession.id == uuid.UUID(scan_id)).first()
+        assert scan is not None
+        assert scan.scan_metadata is not None
+        assert isinstance(scan.scan_metadata, dict)
+        assert "device_context" in scan.scan_metadata
+        ctx = scan.scan_metadata["device_context"]
+        assert ctx["screen"]["width"] == 390
+        assert ctx["locale"]["timezone"] == "Europe/Dublin"
+        assert ctx["device"]["platform"] == "Win32"
 
     def test_scan_metadata_stores_analysis_result(self, test_db: Session, test_user):
         """scan_metadata can hold full analysis result (summary, recommendations)."""

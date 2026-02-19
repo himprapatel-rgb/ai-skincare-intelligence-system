@@ -249,6 +249,7 @@ export const AuthPageMobileV2: React.FC = () => {
             <div className={`input-float ${nameFocused || fullName ? 'input-float-active' : ''}`}>
               <IconUser size={20} className="input-icon" />
               <input
+                id="auth-full-name"
                 type="text"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
@@ -258,7 +259,7 @@ export const AuthPageMobileV2: React.FC = () => {
                 required
                 className="input-field"
               />
-              <label className="input-label">Full Name</label>
+              <label className="input-label" htmlFor="auth-full-name">Full Name</label>
               <div className="input-border" />
             </div>
           )}
@@ -266,6 +267,7 @@ export const AuthPageMobileV2: React.FC = () => {
           <div className={`input-float ${emailFocused || email ? 'input-float-active' : ''}`}>
             <IconMail size={20} className="input-icon" />
             <input
+              id="auth-email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -275,13 +277,14 @@ export const AuthPageMobileV2: React.FC = () => {
               required
               className="input-field"
             />
-            <label className="input-label">Email</label>
+            <label className="input-label" htmlFor="auth-email">Email</label>
             <div className="input-border" />
           </div>
 
           <div className={`input-float ${passwordFocused || password ? 'input-float-active' : ''}`}>
             <IconLock size={20} className="input-icon" />
             <input
+              id="auth-password"
               type={showPassword ? 'text' : 'password'}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -291,12 +294,13 @@ export const AuthPageMobileV2: React.FC = () => {
               required
               className="input-field"
             />
-            <label className="input-label">Password</label>
+            <label className="input-label" htmlFor="auth-password">Password</label>
             <button
               type="button"
               className="password-toggle-btn"
               onClick={() => setShowPassword(!showPassword)}
               tabIndex={-1}
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
             >
               {showPassword ? <IconEyeOff size={18} /> : <IconEye size={18} />}
             </button>

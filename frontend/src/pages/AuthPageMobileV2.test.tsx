@@ -14,8 +14,26 @@ import { ToastProvider } from '../context/ToastContext';
 vi.mock('../utils/mobileOptimizations', () => ({
   triggerHaptic: vi.fn(),
 }));
+vi.mock('../utils/devAutoLogin', () => ({
+  devAutoLogin: vi.fn().mockResolvedValue(false),
+}));
 
-vi.mock('axios');
+// Mock axios so ApiClient (used by AuthProvider) gets a client with interceptors
+vi.mock('axios', () => ({
+  default: {
+    create: vi.fn(() => ({
+      interceptors: {
+        request: { use: vi.fn() },
+        response: { use: vi.fn() },
+      },
+      get: vi.fn(),
+      post: vi.fn(),
+      put: vi.fn(),
+      patch: vi.fn(),
+      delete: vi.fn(),
+    })),
+  },
+}));
 
 const renderAuthPage = () => {
   return render(
@@ -44,26 +62,29 @@ describe('AuthPageMobileV2', () => {
 
     it('should render tab switcher with Sign In and Sign Up', () => {
       renderAuthPage();
-      
-      expect(screen.getByText('Sign In')).toBeInTheDocument();
-      expect(screen.getByText('Sign Up')).toBeInTheDocument();
+      const signInButtons = screen.getAllByText('Sign In');
+      const signUpButtons = screen.getAllByText('Sign Up');
+      expect(signInButtons.length).toBeGreaterThanOrEqual(1);
+      expect(signUpButtons.length).toBeGreaterThanOrEqual(1);
     });
 
     it('should show Sign In mode by default', () => {
       renderAuthPage();
-      
       expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+      expect(screen.getByLabelText('Password')).toBeInTheDocument();
       expect(screen.queryByLabelText(/full name/i)).not.toBeInTheDocument();
     });
   });
 
+  function getSignUpTab() {
+    const buttons = screen.getAllByRole('button', { name: /sign up/i });
+    return buttons.find((b) => b.className.includes('auth-tab')) ?? buttons[0];
+  }
+
   describe('Tab Switching', () => {
     it('should switch to Sign Up mode when clicking Sign Up tab', async () => {
       renderAuthPage();
-      
-      const signUpTab = screen.getByRole('button', { name: /sign up/i });
-      fireEvent.click(signUpTab);
+      fireEvent.click(getSignUpTab());
 
       await waitFor(() => {
         expect(screen.getByLabelText(/full name/i)).toBeInTheDocument();
@@ -72,11 +93,9 @@ describe('AuthPageMobileV2', () => {
 
     it('should show password strength indicator in Sign Up mode', async () => {
       renderAuthPage();
-      
-      const signUpTab = screen.getByRole('button', { name: /sign up/i });
-      fireEvent.click(signUpTab);
+      fireEvent.click(getSignUpTab());
 
-      const passwordInput = screen.getByLabelText(/password/i);
+      const passwordInput = screen.getByLabelText('Password');
       fireEvent.change(passwordInput, { target: { value: 'Test123!' } });
 
       await waitFor(() => {
@@ -86,17 +105,13 @@ describe('AuthPageMobileV2', () => {
 
     it('should hide features when switching back to Sign In', async () => {
       renderAuthPage();
-      
-      // Go to Sign Up
-      const signUpTab = screen.getByRole('button', { name: /sign up/i });
-      fireEvent.click(signUpTab);
-      
+      fireEvent.click(getSignUpTab());
+
       await waitFor(() => {
         expect(screen.getByText(/AI Skin Analysis/i)).toBeInTheDocument();
       });
 
-      // Go back to Sign In
-      const signInTab = screen.getByRole('button', { name: /sign in/i });
+      const signInTab = screen.getAllByRole('button', { name: /sign in/i })[0];
       fireEvent.click(signInTab);
 
       await waitFor(() => {
@@ -108,9 +123,9 @@ describe('AuthPageMobileV2', () => {
   describe('Form Validation', () => {
     it('should show error when submitting empty form', async () => {
       renderAuthPage();
-      
-      const submitButton = screen.getByRole('button', { name: /sign in/i });
-      fireEvent.click(submitButton);
+      const form = screen.getByRole('textbox', { name: /email/i }).closest('form');
+      expect(form).toBeInTheDocument();
+      fireEvent.submit(form!);
 
       await waitFor(() => {
         expect(screen.getByRole('alert')).toBeInTheDocument();
@@ -119,9 +134,9 @@ describe('AuthPageMobileV2', () => {
 
     it('should validate email format', async () => {
       renderAuthPage();
-      
       const emailInput = screen.getByLabelText(/email/i);
-      const submitButton = screen.getByRole('button', { name: /sign in/i });
+      const signInButtons = screen.getAllByRole('button', { name: /sign in/i });
+      const submitButton = signInButtons.find((b) => (b as HTMLButtonElement).type === 'submit') ?? signInButtons[0];
 
       fireEvent.change(emailInput, { target: { value: 'invalidemail' } });
       fireEvent.click(submitButton);
@@ -134,12 +149,10 @@ describe('AuthPageMobileV2', () => {
   describe('Password Features', () => {
     it('should toggle password visibility', async () => {
       renderAuthPage();
-      
-      const passwordInput = screen.getByLabelText(/password/i) as HTMLInputElement;
+      const passwordInput = screen.getByLabelText('Password') as HTMLInputElement;
       expect(passwordInput.type).toBe('password');
 
-      // Find and click the eye icon button
-      const toggleButton = screen.getByRole('button', { name: /show password/i });
+      const toggleButton = screen.getByRole('button', { name: 'Show password' });
       fireEvent.click(toggleButton);
 
       await waitFor(() => {
@@ -149,12 +162,9 @@ describe('AuthPageMobileV2', () => {
 
     it('should calculate password strength correctly', async () => {
       renderAuthPage();
-      
-      // Switch to Sign Up mode
-      const signUpTab = screen.getByRole('button', { name: /sign up/i });
-      fireEvent.click(signUpTab);
+      fireEvent.click(getSignUpTab());
 
-      const passwordInput = screen.getByLabelText(/password/i);
+      const passwordInput = screen.getByLabelText('Password');
 
       // Weak password
       fireEvent.change(passwordInput, { target: { value: 'abc' } });
@@ -185,9 +195,7 @@ describe('AuthPageMobileV2', () => {
 
     it('should not show Remember Me in Sign Up mode', async () => {
       renderAuthPage();
-      
-      const signUpTab = screen.getByRole('button', { name: /sign up/i });
-      fireEvent.click(signUpTab);
+      fireEvent.click(getSignUpTab());
 
       await waitFor(() => {
         expect(screen.queryByText(/remember me/i)).not.toBeInTheDocument();
@@ -206,15 +214,10 @@ describe('AuthPageMobileV2', () => {
   describe('Features Section', () => {
     it('should show features only in Sign Up mode', async () => {
       renderAuthPage();
-      
-      // Not visible in Sign In mode
       expect(screen.queryByText(/AI Skin Analysis/i)).not.toBeInTheDocument();
 
-      // Switch to Sign Up
-      const signUpTab = screen.getByRole('button', { name: /sign up/i });
-      fireEvent.click(signUpTab);
+      fireEvent.click(getSignUpTab());
 
-      // Now visible
       await waitFor(() => {
         expect(screen.getByText(/AI Skin Analysis/i)).toBeInTheDocument();
         expect(screen.getByText(/Personalized Routines/i)).toBeInTheDocument();
@@ -226,9 +229,8 @@ describe('AuthPageMobileV2', () => {
   describe('Accessibility', () => {
     it('should have proper ARIA labels', () => {
       renderAuthPage();
-      
       const emailInput = screen.getByLabelText(/email/i);
-      const passwordInput = screen.getByLabelText(/password/i);
+      const passwordInput = screen.getByLabelText('Password');
 
       expect(emailInput).toHaveAttribute('required');
       expect(passwordInput).toHaveAttribute('required');
@@ -236,9 +238,9 @@ describe('AuthPageMobileV2', () => {
 
     it('should show error with role="alert"', async () => {
       renderAuthPage();
-      
-      const submitButton = screen.getByRole('button', { name: /sign in/i });
-      fireEvent.click(submitButton);
+      const form = screen.getByLabelText(/email/i).closest('form');
+      expect(form).toBeInTheDocument();
+      fireEvent.submit(form!);
 
       await waitFor(() => {
         const alert = screen.getByRole('alert');

@@ -5,9 +5,9 @@
     "dockerfilePath": "backend/Dockerfile"
   },
   "deploy": {
-    "startCommand": "python3 /app/backend/scripts/run_migrations.py && uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000} --workers ${UVICORN_WORKERS:-16}",
-    "healthcheckPath": "/api/health/ready",
-    "healthcheckTimeout": 30,
+    "startCommand": "(python3 /app/backend/scripts/run_migrations.py || true) && exec uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000} --workers ${UVICORN_WORKERS:-4}",
+    "healthcheckPath": "/api/health",
+    "healthcheckTimeout": 120,
     "restartPolicyType": "ON_FAILURE"
   }
 }

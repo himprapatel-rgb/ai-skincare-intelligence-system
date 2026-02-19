@@ -1,3 +1,5 @@
+# DEPRECATED: Backend deploy uses railway.json at repo root (same Dockerfile; migrations and healthcheck are correct there).
+# Keep this file only for reference; do not create a second Railway service from it.
 [build]
 builder = "DOCKERFILE"
 dockerfilePath = "backend/Dockerfile"

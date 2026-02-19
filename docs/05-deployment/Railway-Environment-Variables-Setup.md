@@ -267,6 +267,37 @@ curl -X GET https://ai-skincare-intelligence-system-production.up.railway.app/ap
 2. Ensure the service health path is **`/api/health`** (returns 200 with status healthy/degraded).
 3. After the Dockerfile change (migrations non-blocking), the server starts even if migrations fail; redeploy so the new image is used.
 
+### Issue: Two backend deployments / duplicate backend services
+
+**Cause:** The Railway project has two services that both build and deploy the backend (e.g. two services with the same repo and root directory, or both pointing at the backend).
+
+**Fix (keep a single backend):**
+1. In [Railway](https://railway.com) → your project → **Services**.
+2. Identify which service is your real backend (e.g. the one with the correct URL: `ai-skincare-intelligence-system-production.up.railway.app`, or the one that has **Variables** and **DATABASE_URL** set).
+3. **Remove the duplicate:** Open the other backend service → **Settings** → **Danger** (or service settings) → **Remove Service** (or delete that service).  
+   - If you prefer to repurpose it: change that service’s **Root Directory** to `frontend` and use it as the frontend app instead, so you end up with one backend + one frontend service.
+4. Ensure the **remaining** backend service uses **Root Directory** = repo root (empty or `/`) and that the repo’s **railway.json** at root is used (it points to `backend/Dockerfile`). Do not create a second service from the same root unless you intend a separate frontend (with root = `frontend`).
+
+**Config in this repo:** The canonical backend config is **`railway.json`** at the repo root (non-blocking migrations, health at `/api/health`). There is also a root **`railway.toml`** with older settings; Railway typically uses one config per service. If both were ever applied to two services, consolidate to one backend service as above.
+
+### Issue: Backend shows old deployment (e.g. "2 weeks old")
+
+**Cause:** The service is still running the last **successful** deploy. New pushes may not be triggering a deploy, or recent deploys are failing so Railway keeps the old one live.
+
+**Fix:**
+1. **Trigger a new deploy from latest code**
+   - Railway dashboard → your **backend** service → **Deployments**.
+   - Click **Deploy** / **Redeploy** and choose **Deploy from latest commit** (or **Redeploy** on the latest deployment).
+   - Or push an empty commit to `main`: `git commit --allow-empty -m "Trigger Railway redeploy"` then `git push origin main`.
+2. **Confirm the service is connected to GitHub**
+   - **Settings** → **Source**: connected repo and **Branch** should be **`main`** (or the branch you push to). If Branch is wrong, set it to `main` and redeploy.
+3. **If new deploys keep failing**
+   - Open the **latest** deployment (the one that failed) and check **Build** and **Deploy** logs. Common causes: **DATABASE_URL** missing, healthcheck timeout (use **`/api/health`** and timeout ≥ 120 s), or migration errors. Fix env/config and redeploy.
+4. **If you have two backend services**
+   - Use the service that you actually want (the one with the correct domain and variables), trigger a redeploy on **that** service, and remove or ignore the other so you’re not looking at an old duplicate.
+
+After a successful deploy, the deployment list will show a new timestamp and the backend will serve the latest code.
+
 ---
 
 ## 📈 Variable Summary

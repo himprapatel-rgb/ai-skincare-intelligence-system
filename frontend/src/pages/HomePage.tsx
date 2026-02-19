@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { 
@@ -7,6 +7,47 @@ import {
   IconCheck, IconStar
 } from '../components/Icons';
 import './HomePage.css';
+
+interface FadeInSectionProps {
+  children: React.ReactNode;
+  className?: string;
+  'aria-label'?: string;
+}
+
+const FadeInSection: React.FC<FadeInSectionProps> = ({ children, className = '', 'aria-label': ariaLabel }) => {
+  const [isVisible, setVisible] = useState(false);
+  const domRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const current = domRef.current;
+    if (!current) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisible(true);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+    );
+    observer.observe(current);
+    return () => {
+      observer.unobserve(current);
+    };
+  }, []);
+
+  return (
+    <section
+      className={`fade-in-section ${isVisible ? 'is-visible' : ''} ${className}`}
+      ref={domRef}
+      aria-label={ariaLabel}
+    >
+      {children}
+    </section>
+  );
+};
 
 const HomePage: React.FC = () => {
   usePageTitle(null);
@@ -30,7 +71,7 @@ const HomePage: React.FC = () => {
   return (
     <div className="homepage app-page">
       {/* Hero Section - Updated with safer claims */}
-      <section className="hero">
+      <FadeInSection className="hero">
         <div className="hero-decoration" aria-hidden="true">
           <span className="hero-blob hero-blob--1" />
           <span className="hero-blob hero-blob--2" />
@@ -93,11 +134,11 @@ const HomePage: React.FC = () => {
               <p className="preview-disclaimer">Results are estimates based on visible features and image quality.</p>
           </div>
         </div>
-      </section>
+      </FadeInSection>
 
       <div className="app-page-content">
       {/* Trust Badges - Privacy first, then Encrypted, Research, Delete */}
-      <section className="trust-badges-section">
+      <FadeInSection className="trust-badges-section">
         <div className="trust-badges-grid">
           <div className="trust-badge-card trust-badge-privacy">
             <span className="trust-badge-icon">
@@ -124,10 +165,10 @@ const HomePage: React.FC = () => {
             <span className="trust-badge-text">Delete Data Anytime</span>
           </div>
         </div>
-      </section>
+      </FadeInSection>
 
       {/* As featured / Social proof (Task 213, issue #63: badge-style for credibility) */}
-      <section className="as-featured-section" aria-label="As featured in">
+      <FadeInSection className="as-featured-section" aria-label="As featured in">
         <p className="as-featured-label">As featured in</p>
         <div className="as-featured-logos" role="list">
           <span className="as-featured-badge" role="listitem">Allure</span>
@@ -135,10 +176,10 @@ const HomePage: React.FC = () => {
           <span className="as-featured-badge" role="listitem">TechCrunch</span>
           <span className="as-featured-badge" role="listitem">Skincare.com</span>
         </div>
-      </section>
+      </FadeInSection>
 
       {/* Community Stats */}
-      <section className="stats-section">
+      <FadeInSection className="stats-section">
         <div className="section-header">
           <span className="section-tag">Trusted Platform</span>
           <h2>Join Thousands of Skincare Enthusiasts</h2>
@@ -162,10 +203,10 @@ const HomePage: React.FC = () => {
             <span className="stat-label">Satisfaction Rate</span>
           </div>
         </div>
-      </section>
+      </FadeInSection>
 
       {/* What You'll Get Section - NEW */}
-      <section className="results-preview">
+      <FadeInSection className="results-preview">
         <div className="section-header">
           <span className="section-tag">Your Results</span>
           <h2>What You'll Get</h2>
@@ -201,10 +242,10 @@ const HomePage: React.FC = () => {
                         <p>Track improvements over time with scan history comparisons <span className="account-note">(Optional – requires account)</span></p>
           </div>
         </div>
-      </section>
+      </FadeInSection>
 
       {/* How It Works - Updated with guidance */}
-      <section className="how-it-works">
+      <FadeInSection className="how-it-works">
         <div className="section-header">
           <span className="section-tag">Simple Process</span>
           <h2>How It Works</h2>
@@ -250,10 +291,10 @@ const HomePage: React.FC = () => {
             <p>Receive a skin summary, concern scores, and personalized routine suggestions</p>
           </div>
         </div>
-      </section>
+      </FadeInSection>
 
       {/* Testimonials */}
-      <section className="testimonials-section">
+      <FadeInSection className="testimonials-section">
         <div className="section-header">
           <span className="section-tag">Real Results</span>
           <h2>Stories from Our Users</h2>
@@ -321,10 +362,10 @@ const HomePage: React.FC = () => {
             </p>
           </div>
         </div>
-      </section>
+      </FadeInSection>
 
         {/* FAQ Section */}
-        <section className="faq-section">
+        <FadeInSection className="faq-section">
           <div className="section-header">
             <span className="section-tag">Common Questions</span>
             <h2>FAQ</h2>
@@ -363,10 +404,10 @@ const HomePage: React.FC = () => {
               <p>Lighting, camera quality, image clarity, and whether makeup is present can all affect the analysis results.</p>
             </details>
           </div>
-        </section>
+        </FadeInSection>
 
       {/* CTA Section - single link to avoid duplicate primary CTA (Phase 1 fix) */}
-      <section className="cta-section">
+      <FadeInSection className="cta-section">
         <div className="cta-content">
           <h2>Ready to Understand Your Skin?</h2>
           <p>Get instant AI-powered insights from a single photo</p>
@@ -376,7 +417,7 @@ const HomePage: React.FC = () => {
             Your photo is processed securely and never shared
           </p>
         </div>
-      </section>
+      </FadeInSection>
       </div>
 
       {/* Single CTA on home: hero button only (no floating CTA to avoid duplicate) */}

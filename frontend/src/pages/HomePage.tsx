@@ -15,10 +15,15 @@ interface FadeInSectionProps {
 }
 
 const FadeInSection: React.FC<FadeInSectionProps> = ({ children, className = '', 'aria-label': ariaLabel }) => {
-  const [isVisible, setVisible] = useState(false);
+  const shouldAnimate =
+    typeof window !== 'undefined' &&
+    'IntersectionObserver' in window &&
+    !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const [isVisible, setVisible] = useState(!shouldAnimate);
   const domRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (!shouldAnimate) return;
     const current = domRef.current;
     if (!current) return;
     const observer = new IntersectionObserver(
@@ -36,7 +41,7 @@ const FadeInSection: React.FC<FadeInSectionProps> = ({ children, className = '',
     return () => {
       observer.unobserve(current);
     };
-  }, []);
+  }, [shouldAnimate]);
 
   return (
     <section

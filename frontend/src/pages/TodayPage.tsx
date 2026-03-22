@@ -192,13 +192,18 @@ const TodayPage: React.FC = () => {
     };
     
     // Use requestIdleCallback to defer until after first paint
-    if ('requestIdleCallback' in window) {
+    if (typeof window.requestIdleCallback === 'function') {
       const id = window.requestIdleCallback(() => loadData());
-      return () => { cancelled = true; window.cancelIdleCallback(id); };
-    } else {
-      const id = window.setTimeout(() => loadData(), 0);
-      return () => { cancelled = true; window.clearTimeout(id); };
+      return () => {
+        cancelled = true;
+        window.cancelIdleCallback(id);
+      };
     }
+    const id = window.setTimeout(() => loadData(), 0);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(id);
+    };
   }, [isAuthenticated, user]);
 
   useEffect(() => {

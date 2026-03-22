@@ -8,6 +8,7 @@ import type { ScanResultResponse } from "../services/scanApi";
 import { IconCamera, IconScan, IconUpload, IconSearch, IconCheckCircle, IconFileText, IconCheck, IconX } from '../components/Icons';
 import { ErrorCard } from '../components/ErrorCard';
 import type { FaceMesh3DHandle } from '../components/FaceMesh3D';
+import { validateAndCropFace } from '../utils/faceValidation';
 import { useIsMobileOrTablet } from '../hooks/useIsMobileOrTablet';
 import { useContainerSize } from '../hooks/useContainerSize';
 import './ScanPage.css';
@@ -17,7 +18,10 @@ const ProductScannerPage = React.lazy(() => import('./ProductScannerPage'));
 const MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024; // 10MB
 const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'] as const;
 
-type FaceLandmarkerType = typeof import("@mediapipe/tasks-vision").FaceLandmarker;
+/** MediaPipe FaceLandmarker instance from createFromOptions (class ctor is not public for InstanceType<>) */
+type FaceLandmarkerInstance = Awaited<
+  ReturnType<typeof import("@mediapipe/tasks-vision").FaceLandmarker.createFromOptions>
+>;
 type FaceMesh3DProps = {
   width: number;
   height: number;
@@ -50,7 +54,7 @@ export default function ScanPage() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const overlayCanvasRef = useRef<HTMLCanvasElement>(null);
-  const landmarkerRef = useRef<InstanceType<FaceLandmarkerType> | null>(null);
+  const landmarkerRef = useRef<FaceLandmarkerInstance | null>(null);
   const rafRef = useRef<number | null>(null);
   const stableMsRef = useRef(0);
   const lastTimeRef = useRef(performance.now());
@@ -442,8 +446,8 @@ export default function ScanPage() {
         if (show3DRef.current && faceMesh3DRef.current) {
           faceMesh3DRef.current.updateLandmarks(lm);
         }
-        const xs = lm.map((p) => p.x);
-        const ys = lm.map((p) => p.y);
+        const xs = lm.map((p: { x: number; y: number }) => p.x);
+        const ys = lm.map((p: { x: number; y: number }) => p.y);
         const minX = Math.min(...xs) * overlayCanvas.width;
         const maxX = Math.max(...xs) * overlayCanvas.width;
         const minY = Math.min(...ys) * overlayCanvas.height;
@@ -596,7 +600,7 @@ export default function ScanPage() {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const selectedFile = e.target.files?.[0];
       if (!selectedFile) return;
-      if (!ACCEPTED_IMAGE_TYPES.includes(selectedFile.type)) {
+      if (!(ACCEPTED_IMAGE_TYPES as readonly string[]).includes(selectedFile.type)) {
         setError('Please choose a JPEG, PNG, or WebP image.');
         e.target.value = '';
         return;
@@ -757,15 +761,9 @@ export default function ScanPage() {
 
           {scanType === 'product' ? (
             <div className="scan-product-panel">
-              <ErrorCard
-                title="Product Scanner"
-                message="Loading product scanner..."
-                onRetry={() => window.location.reload()}
-              >
-                <Suspense fallback={<div className="scan-step-text">Loading scanner...</div>}>
-                  <ProductScannerPage embedded />
-                </Suspense>
-              </ErrorCard>
+              <Suspense fallback={<div className="scan-step-text">Loading scanner...</div>}>
+                <ProductScannerPage embedded />
+              </Suspense>
             </div>
           ) : (
             <>

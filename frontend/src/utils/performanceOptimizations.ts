@@ -218,7 +218,8 @@ export function isSlowNetwork(): boolean {
   if (!connection) return false;
 
   const slowTypes = ['slow-2g', '2g'];
-  return slowTypes.includes(connection.effectiveType);
+  const effectiveType = connection.effectiveType;
+  return typeof effectiveType === 'string' && slowTypes.includes(effectiveType);
 }
 
 /**

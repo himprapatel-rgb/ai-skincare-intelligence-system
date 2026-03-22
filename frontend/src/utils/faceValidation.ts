@@ -1,3 +1,4 @@
+import * as tf from "@tensorflow/tfjs";
 import { removeBackground } from "./backgroundSegmentation";
 
 type FaceValidationResult = {
@@ -33,11 +34,11 @@ let modelPromise: Promise<BlazeFaceModel> | null = null;
 async function loadModel(): Promise<BlazeFaceModel> {
   if (!modelPromise) {
     modelPromise = (async () => {
-      const [blazeface, tf] = await Promise.all([
+      const [blazeface, tfjs] = await Promise.all([
         import("@tensorflow-models/blazeface"),
         import("@tensorflow/tfjs"),
       ]);
-      await tf.ready();
+      await tfjs.ready();
       return blazeface.load(MODEL_OPTIONS);
     })();
   }

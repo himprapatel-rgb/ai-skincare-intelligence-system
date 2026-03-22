@@ -1,3 +1,10 @@
+# Local toolchain (portable Git/Python — see .vscode/settings.json)
+.tools/
+
+# Local scratch (do not commit)
+tmp_frontend_*.html
+tmp_frontend_*.js
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]

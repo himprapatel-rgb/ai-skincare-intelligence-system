@@ -1,11 +1,13 @@
 # Active Tasks
 
-**Last updated:** 2026-01-26
+**Last updated:** 2026-03-22
 
 ---
 
 ## In progress
 
+- [ ] Confirm **CI - Tests** green on `main` after push (workflow sets `ALLOW_TEST_DB` for Postgres in Actions)
+- [ ] **GitHub Pages:** enable **Source: GitHub Actions** in repo Settings → Pages (fixes deploy 404)
 - [ ] Seed product catalog (optional) | See [WHERE-WE-ARE](../00-index/WHERE-WE-ARE.md) §6
 - [ ] Verify both DBs after deploy | Run `verify_two_databases.py`
 
@@ -13,6 +15,7 @@
 
 ## Next
 
+- [ ] Triage open PRs: `#2` docs reorganization, `#3` draft connection status
 - [ ] PDF export enhancements (if needed)
 - [ ] Service worker for offline (PWA)
 - [ ] Broader E2E coverage for mobile flows
@@ -21,7 +24,7 @@
 
 ## Blocked
 
-*None*
+- **GitHub Pages deploy** — blocked until Pages source is set to **GitHub Actions** (not a code-only fix)
 
 ---
 

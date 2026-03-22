@@ -139,7 +139,6 @@ export const AuthPageFixed: React.FC = () => {
             }
           }, 500);
         } else {
-          clearTimeout(slowLoadingTimeout);
           setError('Login failed - no token received');
         }
       } else {

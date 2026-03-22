@@ -27,8 +27,3 @@ export { PageTransition } from './PageTransition';
 export { MobileBottomSheet } from './MobileBottomSheet';
 export { MobileActionSheet } from './MobileActionSheet';
 export type { ActionSheetOption } from './MobileActionSheet';
-
-// Type exports (if needed in other files)
-export type { default as MobileButtonProps } from './MobileButton';
-export type { default as MobileCardProps } from './MobileCard';
-export type { default as MobileInputProps } from './MobileInput';

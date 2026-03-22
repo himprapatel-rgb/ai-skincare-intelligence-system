@@ -86,10 +86,16 @@ export function hideAddressBar() {
 /**
  * Lock screen orientation to portrait (if supported)
  */
+type OrientationWithLock = ScreenOrientation & {
+  lock?: (orientation: string) => Promise<void>;
+  unlock?: () => void;
+};
+
 export async function lockOrientation(orientation: 'portrait' | 'landscape' = 'portrait') {
   try {
-    if (screen.orientation && screen.orientation.lock) {
-      await screen.orientation.lock(orientation);
+    const o = screen.orientation as OrientationWithLock | undefined;
+    if (o?.lock) {
+      await o.lock(orientation);
     }
   } catch (error) {
     void error;
@@ -101,9 +107,8 @@ export async function lockOrientation(orientation: 'portrait' | 'landscape' = 'p
  */
 export function unlockOrientation() {
   try {
-    if (screen.orientation && screen.orientation.unlock) {
-      screen.orientation.unlock();
-    }
+    const o = screen.orientation as OrientationWithLock | undefined;
+    o?.unlock?.();
   } catch (error) {
     void error;
   }

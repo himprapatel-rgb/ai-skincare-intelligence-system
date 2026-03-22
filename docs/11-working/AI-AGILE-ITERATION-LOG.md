@@ -5,6 +5,38 @@ This log is part of our [traditional agile iteration cycle](../AGILE-ITERATION-G
 
 ---
 
+## Iteration 2026-03-22 (CI Postgres, tooling, frontend TS, ops scripts)
+
+### Goal
+Restore **CI - Tests** on `main`, keep local tooling documented, clear TypeScript debt, and add safe DB inspection without pasting secrets.
+
+### Scope (Completed)
+- **`.github/workflows/ci-tests.yml`**: Set `ALLOW_TEST_DB=true`, align `TEST_DATABASE_URL` / `PRODUCT_DATABASE_URL` with the Actions Postgres service; fix `pip install` indentation in the install step.
+- **`.gitignore`**: Ignore `.tools/` (portable Git/Python).
+- **`.vscode/settings.json`**: Prepend `PATH` with `backend\.venv\Scripts`, MinGit, portable Python (Cursor terminals).
+- **Frontend**: `@types/three`; fix `mobile/index.ts` bogus type re-exports; `AuthPageFixed` remove invalid `clearTimeout`; `faceValidation` / `ScanPage` / `TodayPage` / mobile+perf utils TypeScript fixes; product scan panel `Suspense` without invalid `ErrorCard` props.
+- **`backend/scripts/list_db_tables.py`**: List `public` tables using `DATABASE_PUBLIC_URL` when run via `railway run -s Postgres`.
+- **`deploy-frontend.yml`**: Comment linking to **Settings → Pages** (Actions source) for 404 deploy failures.
+- **Docs**: This log entry; **ACTIVE-TASKS** refreshed (Pages enable + CI verify).
+
+### Key Changes (Code)
+- `.github/workflows/ci-tests.yml`, `.github/workflows/deploy-frontend.yml`
+- `.gitignore`, `.vscode/settings.json`
+- `frontend/package.json`, `frontend/package-lock.json`, multiple `frontend/src/**`
+- `backend/scripts/list_db_tables.py`
+
+### Verification / Tests
+- Local: `frontend` — `npm run typecheck`, `npm run lint`, `npm run test -- --run` (pass).
+- Local: `backend` — `pytest tests/ --no-cov` with venv (pass before this commit).
+- **GitHub**: Push required; confirm **CI - Tests** and re-run **Deploy Frontend** after enabling Pages.
+
+### Risks / Follow-ups
+- **`backend/.venv` was tracked in git** — remove from index in this iteration (do not commit venv contents).
+- **Secrets**: If `DATABASE_URL` was ever pasted in chat, rotate Railway Postgres password.
+- **PRs #2 / #3**: Merge, split, or close manually.
+
+---
+
 ## Iteration 2026-01-27 (Database Tables & Startup Fix)
 
 ### Goal

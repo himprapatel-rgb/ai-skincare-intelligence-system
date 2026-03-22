@@ -6,7 +6,6 @@
 
 ## In progress
 
-- [ ] Confirm **CI - Tests** green on `main` after push (workflow sets `ALLOW_TEST_DB` for Postgres in Actions)
 - [ ] **GitHub Pages:** enable **Source: GitHub Actions** in repo Settings → Pages (fixes deploy 404)
 - [ ] Seed product catalog (optional) | See [WHERE-WE-ARE](../00-index/WHERE-WE-ARE.md) §6
 - [ ] Verify both DBs after deploy | Run `verify_two_databases.py`
@@ -30,6 +29,7 @@
 
 ## Done this week
 
+- [x] **CI - Tests** green on `main` (Postgres in Actions: `ALLOW_TEST_DB` + catalog FTS `match()` fix)
 - [x] DB verification: Both DBs ok; catalog 0 products (seed with import_obf_catalog)
 - [x] Dashboard: Empty-state CTAs for 0 Products / 0 Routines
 - [x] Product Scanner: Lighter frame, centered Start Camera, simplified placeholder text

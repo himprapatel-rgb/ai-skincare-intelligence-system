@@ -35,6 +35,10 @@ Restore **CI - Tests** on `main`, keep local tooling documented, clear TypeScrip
 - **Secrets**: If `DATABASE_URL` was ever pasted in chat, rotate Railway Postgres password.
 - **PRs #2 / #3**: Merge, split, or close manually.
 
+### Post-push fix (same day)
+- **`product_catalog.search`**: Use `search_vector.match(query)` with plain text only; removed nested `plainto_tsquery` that caused `UndefinedFunction: plainto_tsquery(tsquery)` under CI Postgres.
+- **CI - Tests** run `23394041751`: **success** on `main`.
+
 ---
 
 ## Iteration 2026-01-27 (Database Tables & Startup Fix)

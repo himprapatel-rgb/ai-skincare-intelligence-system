@@ -1,6 +1,4 @@
-# GitHub Pages must use "GitHub Actions" as the source, or deploy-pages returns 404.
-# Repo admin: Settings → Pages → Build and deployment → Source: GitHub Actions
-# https://github.com/himprapatel-rgb/ai-skincare-intelligence-system/settings/pages
+# Pages source: GitHub Actions (build_type workflow). Enabled via POST .../pages or Settings → Pages.
 name: Deploy Frontend to GitHub Pages
 
 on:

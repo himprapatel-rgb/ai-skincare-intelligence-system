@@ -6,7 +6,6 @@
 
 ## In progress
 
-- [ ] **GitHub Pages:** enable **Source: GitHub Actions** in repo Settings → Pages (fixes deploy 404)
 - [ ] Seed product catalog (optional) | See [WHERE-WE-ARE](../00-index/WHERE-WE-ARE.md) §6
 - [ ] Verify both DBs after deploy | Run `verify_two_databases.py`
 
@@ -21,14 +20,10 @@
 
 ---
 
-## Blocked
-
-- **GitHub Pages deploy** — blocked until Pages source is set to **GitHub Actions** (not a code-only fix)
-
----
-
 ## Done this week
 
+- [x] **GitHub Pages:** `build_type: workflow` via API; **Deploy Frontend** run `23394684493` success; site **200** at `himprapatel-rgb.github.io/ai-skincare-intelligence-system/`
+- [x] **`daily-ai-agile-summary.yml`:** `SUMMARY_ENDPOINT` / `SUMMARY_TOKEN` from secrets; no `GPTGPT_API_BASE` URL fallback; errors post to issue instead of failing the job
 - [x] **Backend CI/CD** green on `main` (isort across `backend/`; lint + test matrix)
 - [x] **CI - Tests** green on `main` (Postgres in Actions: `ALLOW_TEST_DB` + catalog FTS `match()` fix)
 - [x] DB verification: Both DBs ok; catalog 0 products (seed with import_obf_catalog)

@@ -42,6 +42,8 @@ Restore **CI - Tests** on `main`, keep local tooling documented, clear TypeScrip
 ### 2026-03-22 (continued)
 - **`style(backend): isort`**: Ran `isort` with `profile=black` on backend; **Backend CI/CD** run `23394213670` **success**.
 - **`daily-ai-agile-reminder.yml`**: Fixed embedded script syntax (apostrophe in `you've` broke `github-script`); use plain wording and `join('\n')`.
+- **GitHub Pages**: `POST /repos/.../pages` with `build_type=workflow` (no manual Settings step). **Deploy Frontend** run `23394684493` **success**; Pages URL returns **HTTP 200**.
+- **`daily-ai-agile-summary.yml`**: Wire `SUMMARY_ENDPOINT` / `SUMMARY_TOKEN`; remove mistaken use of `GPTGPT_API_BASE` as POST URL; catch endpoint errors and still comment on the reminder issue.
 
 ---
 

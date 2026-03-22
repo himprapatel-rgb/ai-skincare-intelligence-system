@@ -17,11 +17,12 @@ jobs:
 
       - name: Generate and post daily summary
         uses: actions/github-script@v7
-        # Provide the API key from secrets; optional GPTGPT_API_BASE secret can override the default.
+        # SUMMARY_ENDPOINT + SUMMARY_TOKEN: POST { prompt } -> { summary } (or { text }).
+        # Do not use GPTGPT_API_BASE as the URL here; it is an OpenAI-style base, not this contract.
         env:
+          SUMMARY_ENDPOINT: ${{ secrets.SUMMARY_ENDPOINT }}
+          SUMMARY_TOKEN: ${{ secrets.SUMMARY_TOKEN }}
           GPTGPT_API_KEY: ${{ secrets.GPTGPT_API_KEY }}
-          GPTGPT_API_BASE: ${{ secrets.GPTGPT_API_BASE }}
-          # Optional: GitHub username to assign the daily summary issue to
           DAILY_ASSIGNEE: ${{ secrets.DAILY_ASSIGNEE }}
         with:
           script: |
@@ -57,47 +58,51 @@ jobs:
             // Build a concise prompt for the LLM
             const prompt = `You are an assistant asked to produce a short, actionable daily project summary for the AI Skincare Intelligence System repo. Produce two sections in Markdown:\n\n1) Where we are: a concise summary of current status based on the provided files.\n2) Next steps: 3-6 concrete next tasks for the active sprint, prioritized and actionable.\n\nFiles (concatenate):\n---AI_AGILE_WORKFLOW---\n${aiWorkflow.slice(0,4000)}\n---PROJECT_PROGRESS_TRACKER---\n${progress.slice(0,4000)}\n---SPRINT_FILES---\n${sprintFiles.slice(0,4000)}\n---README---\n${readme.slice(0,2000)}\n\nKeep the output to about 300-600 words, in Markdown, suitable to paste directly into a GitHub issue comment.`;
 
-            // Prefer calling an internal deployed summary endpoint for security and auditing.
-            // The endpoint should accept POST { prompt } and return { summary }.
-            const summaryEndpoint = process.env.SUMMARY_ENDPOINT || process.env.GPTGPT_API_BASE;
-            const summaryToken = process.env.SUMMARY_TOKEN || process.env.GPTGPT_API_KEY;
+            const summaryEndpoint = (process.env.SUMMARY_ENDPOINT || '').trim();
+            const summaryToken =
+              (process.env.SUMMARY_TOKEN || process.env.GPTGPT_API_KEY || '').trim();
             if (!summaryEndpoint) {
-              console.log('No SUMMARY_ENDPOINT configured. Skipping LLM call.');
+              console.log('No SUMMARY_ENDPOINT secret. Skipping LLM call (set repo secret SUMMARY_ENDPOINT).');
               return;
             }
 
-            console.log('Calling internal summary endpoint at', summaryEndpoint);
+            console.log('Calling summary endpoint');
 
-            const resp = await fetch(summaryEndpoint, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'X-SUMMARY-TOKEN': summaryToken || ''
-              },
-              body: JSON.stringify({ prompt })
-            });
-
-            if (!resp.ok) {
-              const text = await resp.text();
-              throw new Error(`Summary endpoint failed: ${resp.status} ${text}`);
-            }
-
-            const payload = await resp.json();
             let summary = '';
-            if (payload && typeof payload === 'object' && payload.summary) {
-              summary = payload.summary;
-            } else if (payload && typeof payload === 'object' && payload.text) {
-              summary = payload.text;
-            } else {
-              summary = JSON.stringify(payload, null, 2);
+            try {
+              const resp = await fetch(summaryEndpoint, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'X-SUMMARY-TOKEN': summaryToken || '',
+                },
+                body: JSON.stringify({ prompt }),
+              });
+
+              if (!resp.ok) {
+                const text = await resp.text();
+                throw new Error(`Summary endpoint failed: ${resp.status} ${text}`);
+              }
+
+              const payload = await resp.json();
+              if (payload && typeof payload === 'object' && payload.summary) {
+                summary = payload.summary;
+              } else if (payload && typeof payload === 'object' && payload.text) {
+                summary = payload.text;
+              } else {
+                summary = JSON.stringify(payload, null, 2);
+              }
+            } catch (err) {
+              const msg = err && err.message ? err.message : String(err);
+              console.error('Summary generation failed:', msg);
+              summary = `_(Summary generation failed — check SUMMARY_ENDPOINT and workflow logs.)_\n\n\`\`\`\n${msg}\n\`\`\``;
             }
 
-            // Post the summary as a comment on the reminder issue
             await github.rest.issues.createComment({
               owner,
               repo,
               issue_number: issue.number,
-              body: `**Automated daily summary (generated)**\n\n${summary}`
+              body: `**Automated daily summary (generated)**\n\n${summary}`,
             });
 
             // Add labels to indicate automation ran

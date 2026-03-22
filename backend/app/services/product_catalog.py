@@ -130,13 +130,16 @@ class ProductCatalogService:
         base_query = self.db.query(CatalogProduct)
         
         if query:
-            # Use PostgreSQL full-text search
-            search_vector = func.to_tsvector('english', 
-                CatalogProduct.name + ' ' + CatalogProduct.brand + ' ' + 
-                func.coalesce(CatalogProduct.description, '')
+            # Use PostgreSQL full-text search (pass plain text to .match — do not nest plainto_tsquery)
+            search_vector = func.to_tsvector(
+                "english",
+                CatalogProduct.name
+                + " "
+                + CatalogProduct.brand
+                + " "
+                + func.coalesce(CatalogProduct.description, ""),
             )
-            search_query = func.plainto_tsquery('english', query)
-            base_query = base_query.filter(search_vector.match(search_query))
+            base_query = base_query.filter(search_vector.match(query))
         
         if category:
             base_query = base_query.filter(CatalogProduct.category == category)

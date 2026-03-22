@@ -1,21 +1,18 @@
 import logging
 import os
 import sys
+from datetime import date, datetime
 from pathlib import Path
 
-from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse, PlainTextResponse
-from fastapi.staticfiles import StaticFiles
-from datetime import date, datetime
 import anyio
-
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
+from fastapi.responses import JSONResponse, PlainTextResponse
+from fastapi.staticfiles import StaticFiles
 from sqlalchemy import text
 from sqlalchemy.exc import IntegrityError, OperationalError, ProgrammingError
 
-from middleware.request_tracing import RequestTracingMiddleware
-from middleware.ip_geo_logging import IPGeoLoggingMiddleware
 from app.api.v1 import api_router
 from app.api.v1.products import router as external_products_router
 from app.api.v1.progress import router as progress_router
@@ -23,8 +20,6 @@ from app.api.v1.routines import router as routines_router
 from app.config import settings
 from app.core.security import encrypt_sensitive_data
 from app.database import Base, SessionLocal, engine, health_engine
-from app.product_database import create_product_tables, check_product_database_health
-from middleware.slow_query_logger import setup_slow_query_logging
 from app.models.analysis_outputs import (
     DailySkinGuidance,
     EnvironmentalReading,
@@ -39,6 +34,7 @@ from app.models.analysis_outputs import (
     UserEvent,
     UserProgressSnapshot,
 )
+from app.models.content import Blog, NewsItem, Video
 from app.models.engagement import (
     GeoAlert,
     NotificationEvent,
@@ -70,8 +66,8 @@ from app.models.shelf import ShelfProduct
 
 # Import ALL models to ensure tables are created at startup
 from app.models.twin_models import *  # Digital Twin models
-from app.models.content import Blog, NewsItem, Video
 from app.models.user import PolicyVersion, User, UserAccessLog, UserConsent, UserProfile
+from app.product_database import check_product_database_health, create_product_tables
 from app.routers import (  # GDPR & User Management
     admin,
     catalog,
@@ -86,6 +82,9 @@ from app.routers import (  # GDPR & User Management
     shelf,
 )
 from app.services.auth_service import auth_service
+from middleware.ip_geo_logging import IPGeoLoggingMiddleware
+from middleware.request_tracing import RequestTracingMiddleware
+from middleware.slow_query_logger import setup_slow_query_logging
 
 logger = logging.getLogger(__name__)
 
@@ -107,6 +106,7 @@ app.add_middleware(GZipMiddleware, minimum_size=500)
 
 # Rate limit scan endpoints to prevent abuse (per-IP when unauthenticated)
 from middleware.rate_limiter import RateLimiterMiddleware
+
 if settings.ENV not in {"test", "testing"} and "pytest" not in sys.modules:
     app.add_middleware(RateLimiterMiddleware, max_requests=10, window_seconds=60)
 
@@ -119,6 +119,7 @@ app.add_middleware(RequestTracingMiddleware)
 app.add_middleware(IPGeoLoggingMiddleware)
 # Performance logging: track slow requests (>1s) and add X-Response-Time header
 from middleware.performance_logging import PerformanceLoggingMiddleware
+
 app.add_middleware(PerformanceLoggingMiddleware)
 
 

@@ -11,7 +11,9 @@ from app.schemas.product_schemas import (
     RecommendationItem,
     RecommendationsResponse,
 )
-from app.services.amazon_affiliate_service import search_products as amazon_search_products
+from app.services.amazon_affiliate_service import (
+    search_products as amazon_search_products,
+)
 
 router = APIRouter()
 

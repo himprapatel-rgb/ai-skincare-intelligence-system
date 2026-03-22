@@ -3,8 +3,8 @@ Database configuration and session management.
 """
 
 from sqlalchemy import create_engine
-from sqlalchemy.pool import NullPool
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
+from sqlalchemy.pool import NullPool
 
 from app.config import settings
 

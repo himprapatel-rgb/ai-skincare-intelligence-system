@@ -139,7 +139,7 @@ class TestMainDbHarvest:
 
     def test_skin_analysis_persists(self, test_db: Session, test_user):
         """Skin analysis results persist and link to scan."""
-        from app.models.scan import ScanSession, SkinAnalysis, ScanStatus, SkinType
+        from app.models.scan import ScanSession, ScanStatus, SkinAnalysis, SkinType
 
         scan = ScanSession(user_id=test_user.id, status=ScanStatus.COMPLETED)
         test_db.add(scan)
@@ -194,6 +194,7 @@ class TestMainDbHarvest:
     def test_saved_routine_persists(self, test_db: Session, test_user):
         """Routines persist to saved_routines."""
         from datetime import datetime
+
         from app.models.saved_routine import SavedRoutine
 
         routine = SavedRoutine(
@@ -208,6 +209,7 @@ class TestMainDbHarvest:
     def test_progress_photo_persists(self, test_db: Session, test_user):
         """Progress photos persist."""
         from datetime import datetime
+
         from app.models.progress_photo import ProgressPhoto
 
         photo = ProgressPhoto(
@@ -287,6 +289,7 @@ class TestDatabaseRouting:
     def test_catalog_uses_product_db(self):
         """Catalog router uses get_product_db (product database)."""
         from app.routers.catalog import router
+
         # Catalog endpoints depend on get_product_db
         for route in router.routes:
             if hasattr(route, "dependant"):
@@ -301,14 +304,14 @@ class TestDatabaseRouting:
 
     def test_shelf_uses_main_db(self):
         """Shelf model uses Base (main database)."""
-        from app.models.shelf import ShelfProduct
         from app.database import Base
+        from app.models.shelf import ShelfProduct
         assert ShelfProduct.__table__.metadata is Base.metadata
 
     def test_scan_uses_main_db(self):
         """Scan model uses Base (main database)."""
-        from app.models.scan import ScanSession
         from app.database import Base
+        from app.models.scan import ScanSession
         assert ScanSession.__table__.metadata is Base.metadata
 
 

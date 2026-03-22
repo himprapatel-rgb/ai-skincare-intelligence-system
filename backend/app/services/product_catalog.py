@@ -558,8 +558,8 @@ class ProductCatalogService:
         products = query.offset(offset).limit(limit).all()
         
         if format == "csv":
-            import io
             import csv
+            import io
             output = io.StringIO()
             writer = csv.writer(output)
             writer.writerow([

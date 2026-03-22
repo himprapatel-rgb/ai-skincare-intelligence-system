@@ -9,11 +9,11 @@ from pathlib import Path
 # Add parent directory to path
 sys.path.append(str(Path(__file__).parent))
 
-from app.database_sqlite import engine, Base
-from app.models.user import User, UserProfile
-from app.core.security import hash_password
 from sqlalchemy.orm import Session
-from app.database_sqlite import SessionLocal
+
+from app.core.security import hash_password
+from app.database_sqlite import Base, SessionLocal, engine
+from app.models.user import User, UserProfile
 
 print("=" * 80)
 print("  Setting Up Local SQLite Database")

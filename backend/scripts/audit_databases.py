@@ -18,9 +18,11 @@ import sys
 from collections.abc import Generator
 from typing import Any
 
+
 # Defer imports that need DATABASE_URL
 def _get_engines():
     from sqlalchemy import create_engine, text
+
     from app.config import settings
     if not settings.DATABASE_URL:
         raise ValueError("DATABASE_URL is not configured.")

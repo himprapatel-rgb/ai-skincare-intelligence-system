@@ -7,7 +7,17 @@ import sys
 from typing import Optional
 from uuid import UUID
 
-from fastapi import APIRouter, Body, Depends, File, HTTPException, Request, UploadFile, Response, status
+from fastapi import (
+    APIRouter,
+    Body,
+    Depends,
+    File,
+    HTTPException,
+    Request,
+    Response,
+    UploadFile,
+    status,
+)
 from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session, defer
 

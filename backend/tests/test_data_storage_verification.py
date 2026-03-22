@@ -17,15 +17,15 @@ import pytest
 from sqlalchemy.orm import Session
 
 from app.models.favorites import UserFavorite
+from app.models.scan import ScanSession, ScanStatus
 from app.models.shelf import ShelfProduct
 from app.models.user import User, UserAccessLog, UserConsent, UserProfile
-from app.models.scan import ScanSession, ScanStatus
 
 
 # Ensure tables exist (shelf/favorites are loaded via app.main; import here for this test module)
 def _ensure_models_loaded():
-    import app.models.shelf  # noqa: F401
     import app.models.favorites  # noqa: F401
+    import app.models.shelf  # noqa: F401
 
 
 class TestUserProfileStorage:

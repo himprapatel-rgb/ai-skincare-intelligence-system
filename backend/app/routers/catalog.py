@@ -18,8 +18,8 @@ from sqlalchemy.orm import Session
 
 from app.core.security import get_current_user
 from app.dependencies import get_db
-from app.product_database import get_product_db
 from app.models.user import User
+from app.product_database import get_product_db
 from app.services.product_catalog import ProductCatalogService
 
 router = APIRouter(prefix="/catalog", tags=["catalog"])
@@ -460,8 +460,9 @@ async def export_catalog(
     Export catalog as JSON or CSV (Task 394).
     Requires authentication.
     """
-    from fastapi.responses import Response, JSONResponse
     from datetime import datetime
+
+    from fastapi.responses import JSONResponse, Response
     catalog = ProductCatalogService(db)
     data, content_type = catalog.export_products(format=format, limit=limit, offset=offset, category=category)
     if format == "csv":
@@ -497,8 +498,9 @@ async def list_brands(
     """
     List all brands in the catalog (Task 385).
     """
-    from app.models.catalog_models import CatalogBrand
     from sqlalchemy import func
+
+    from app.models.catalog_models import CatalogBrand
     
     brands = db.query(CatalogBrand).order_by(
         CatalogBrand.product_count.desc().nullslast()
@@ -529,8 +531,9 @@ async def list_ingredients(
     """
     List ingredients in the catalog (Task 366).
     """
-    from app.models.catalog_models import CatalogIngredient
     from sqlalchemy import func
+
+    from app.models.catalog_models import CatalogIngredient
     
     query = db.query(CatalogIngredient)
     
@@ -828,9 +831,15 @@ async def catalog_health(
     """
     Product catalog health check (Task 398).
     """
-    from app.models.catalog_models import CatalogProduct, CatalogIngredient, CatalogBrand
-    from sqlalchemy import func
     import time
+
+    from sqlalchemy import func
+
+    from app.models.catalog_models import (
+        CatalogBrand,
+        CatalogIngredient,
+        CatalogProduct,
+    )
     
     start = time.time()
     

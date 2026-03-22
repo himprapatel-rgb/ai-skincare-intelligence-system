@@ -13,9 +13,11 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.config import settings
+from app.core.geo import fetch_geolocation, get_client_ip
+from app.core.rate_limit import check_login_rate_limit, record_login_attempt
 from app.core.security import create_access_token, get_current_user
 from app.database import get_db
-from app.models.user import User
+from app.models.user import User, UserAccessLog
 from app.schemas.user import (
     AuthResponse,
     EmailVerificationConfirm,
@@ -25,9 +27,6 @@ from app.schemas.user import (
     UserLogin,
     UserResponse,
 )
-from app.core.rate_limit import check_login_rate_limit, record_login_attempt
-from app.core.geo import fetch_geolocation, get_client_ip
-from app.models.user import UserAccessLog
 from app.services.auth_service import auth_service
 from app.services.email_service import send_verification_email
 
@@ -138,6 +137,7 @@ def register(
 def _login_record_ip_geo(user_id: int, ip: str) -> None:
     """Background task: fetch geo for IP and update user + UserAccessLog. Never raises."""
     import logging
+
     from app.database import SessionLocal
     _log = logging.getLogger(__name__)
     try:

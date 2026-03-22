@@ -11,6 +11,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 from sqlalchemy import text
+
 from app.database import engine
 
 logger = logging.getLogger(__name__)

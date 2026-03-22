@@ -13,7 +13,6 @@ from app.database import SessionLocal
 from app.models.user import User
 from app.services.auth_service import auth_service
 
-
 TEST_ACCOUNTS = [
     ("himanshu@test.com", "Test1234!", "Himanshu Patel"),
     ("himprapatel@gmail.com", "Test1234!", "Himanshu Patel"),

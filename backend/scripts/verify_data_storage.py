@@ -45,8 +45,9 @@ def _register_sqlite_compilers():
 
 
 def get_engine():
-    from app.config import settings
     from sqlalchemy import create_engine
+
+    from app.config import settings
     url = settings.DATABASE_URL
     if not url:
         raise SystemExit("DATABASE_URL is not set. Set it or use a .env file in backend/.")
@@ -134,18 +135,19 @@ def run_read_check(engine):
 def run_write_test(engine):
     """Insert sample rows, read them back, then delete. Proves write -> DB -> read."""
     from sqlalchemy.orm import Session
-    from app.database import Base
+
     from app.core.security import hash_password
-    from app.models.user import User, UserProfile, UserConsent, UserAccessLog
+    from app.database import Base
+    from app.models.favorites import UserFavorite
     from app.models.scan import ScanSession, ScanStatus
     from app.models.shelf import ShelfProduct
-    from app.models.favorites import UserFavorite
+    from app.models.user import User, UserAccessLog, UserConsent, UserProfile
 
     # Ensure tables exist (e.g. fresh SQLite)
     _register_sqlite_compilers()
     import app.models  # noqa: F401 - register all models
-    import app.models.shelf
     import app.models.favorites
+    import app.models.shelf
     Base.metadata.create_all(bind=engine)
 
     print("=== Write-then-read test ===\n")

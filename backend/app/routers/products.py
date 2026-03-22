@@ -14,9 +14,9 @@ from sqlalchemy.orm import Session, joinedload
 
 from app.core.security import get_current_user
 from app.database import get_db
-from app.product_database import get_product_db, ProductSessionLocal
 from app.models.product_models import Ingredient, Product, ProductReview
 from app.models.user import User
+from app.product_database import ProductSessionLocal, get_product_db
 from app.schemas.product_schemas import (
     IngredientAnalysisRequest,
     ProductRecommendation,

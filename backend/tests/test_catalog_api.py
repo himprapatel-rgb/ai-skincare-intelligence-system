@@ -3,9 +3,10 @@ Tests for Product Catalog API (Tasks 451-475)
 Tests the separate product database functionality.
 """
 import os
+from unittest.mock import MagicMock, patch
+
 import pytest
 from fastapi.testclient import TestClient
-from unittest.mock import patch, MagicMock
 
 from app.main import app
 from app.product_database import create_product_tables

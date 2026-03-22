@@ -5,7 +5,9 @@ Add indexes for frequently queried fields to improve performance.
 Run: python -m scripts.run_migrations
 """
 import logging
+
 from sqlalchemy import text
+
 from app.database import engine
 
 logger = logging.getLogger(__name__)

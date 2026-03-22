@@ -314,9 +314,10 @@ def get_db_status(
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized"
         )
+    from sqlalchemy import text
+
     from app.database import SessionLocal
     from app.models.user import User
-    from sqlalchemy import text
 
     db = SessionLocal()
     try:

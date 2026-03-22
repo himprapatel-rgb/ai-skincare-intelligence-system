@@ -3,10 +3,11 @@ SQLite Database Configuration for Local Development
 Lightweight alternative to PostgreSQL for testing
 """
 
+import os
+
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-import os
 
 # SQLite database file path
 SQLALCHEMY_DATABASE_URL = "sqlite:///./skincare_local.db"

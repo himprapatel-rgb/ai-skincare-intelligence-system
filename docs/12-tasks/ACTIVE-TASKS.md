@@ -29,6 +29,7 @@
 
 ## Done this week
 
+- [x] **Backend CI/CD** green on `main` (isort across `backend/`; lint + test matrix)
 - [x] **CI - Tests** green on `main` (Postgres in Actions: `ALLOW_TEST_DB` + catalog FTS `match()` fix)
 - [x] DB verification: Both DBs ok; catalog 0 products (seed with import_obf_catalog)
 - [x] Dashboard: Empty-state CTAs for 0 Products / 0 Routines

@@ -39,6 +39,10 @@ Restore **CI - Tests** on `main`, keep local tooling documented, clear TypeScrip
 - **`product_catalog.search`**: Use `search_vector.match(query)` with plain text only; removed nested `plainto_tsquery` that caused `UndefinedFunction: plainto_tsquery(tsquery)` under CI Postgres.
 - **CI - Tests** run `23394041751`: **success** on `main`.
 
+### 2026-03-22 (continued)
+- **`style(backend): isort`**: Ran `isort` with `profile=black` on backend; **Backend CI/CD** run `23394213670` **success**.
+- **`daily-ai-agile-reminder.yml`**: Fixed embedded script syntax (apostrophe in `you've` broke `github-script`); use plain wording and `join('\n')`.
+
 ---
 
 ## Iteration 2026-01-27 (Database Tables & Startup Fix)

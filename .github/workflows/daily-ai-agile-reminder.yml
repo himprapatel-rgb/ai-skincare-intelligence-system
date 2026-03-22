@@ -25,8 +25,8 @@ jobs:
                 '- /docs/sprint-X.Y.md',
                 '- Ensure tests exist/updated for changed code',
                 '',
-                'If you\\'ve already updated today, close this issue. This reminder is part of the team\\'s daily update rule.'
-              ].join('\\n');
+                'If you already updated today, close this issue. This reminder is part of the team daily update rule.',
+              ].join('\n');
 
               const { owner, repo } = context.repo;
 

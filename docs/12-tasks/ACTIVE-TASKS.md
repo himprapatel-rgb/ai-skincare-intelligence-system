@@ -7,7 +7,6 @@
 ## In progress
 
 - [ ] Seed product catalog (optional) | See [WHERE-WE-ARE](../00-index/WHERE-WE-ARE.md) §6
-- [ ] Verify both DBs after deploy | Run `verify_two_databases.py`
 
 ---
 
@@ -26,6 +25,7 @@
 - [x] **`daily-ai-agile-summary.yml`:** `SUMMARY_ENDPOINT` / `SUMMARY_TOKEN` from secrets; no `GPTGPT_API_BASE` URL fallback; errors post to issue instead of failing the job
 - [x] **Backend CI/CD** green on `main` (isort across `backend/`; lint + test matrix)
 - [x] **CI - Tests** green on `main` (Postgres in Actions: `ALLOW_TEST_DB` + catalog FTS `match()` fix)
+- [x] Production DB check: `scripts/verify_two_databases.py` vs Railway backend (main + product + catalog healthy)
 - [x] DB verification: Both DBs ok; catalog 0 products (seed with import_obf_catalog)
 - [x] Dashboard: Empty-state CTAs for 0 Products / 0 Routines
 - [x] Product Scanner: Lighter frame, centered Start Camera, simplified placeholder text

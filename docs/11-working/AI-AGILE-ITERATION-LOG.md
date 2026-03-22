@@ -44,6 +44,8 @@ Restore **CI - Tests** on `main`, keep local tooling documented, clear TypeScrip
 - **`daily-ai-agile-reminder.yml`**: Fixed embedded script syntax (apostrophe in `you've` broke `github-script`); use plain wording and `join('\n')`.
 - **GitHub Pages**: `POST /repos/.../pages` with `build_type=workflow` (no manual Settings step). **Deploy Frontend** run `23394684493` **success**; Pages URL returns **HTTP 200**.
 - **`daily-ai-agile-summary.yml`**: Wire `SUMMARY_ENDPOINT` / `SUMMARY_TOKEN`; remove mistaken use of `GPTGPT_API_BASE` as POST URL; catch endpoint errors and still comment on the reminder issue.
+- **Production**: `verify_two_databases.py` against Railway — main/product/catalog healthy (0 catalog rows).
+- **`profile` router**: Pydantic v2 — `dict()` → `model_dump()` on profile create/update paths.
 
 ---
 

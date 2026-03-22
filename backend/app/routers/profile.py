@@ -171,7 +171,7 @@ async def create_baseline_profile(
             db=db,
             user_id=current_user.id,
             event_type="profile_created",
-            new_value=profile_data.dict(),
+            new_value=profile_data.model_dump(),
             ip_address=None,  # TODO: Extract from request
         )
 
@@ -245,7 +245,7 @@ async def update_profile(
     }
 
     # Update fields if provided
-    update_data = profile_update.dict(exclude_unset=True)
+    update_data = profile_update.model_dump(exclude_unset=True)
 
     if "goals" in update_data:
         if len(update_data["goals"]) < 1 or len(update_data["goals"]) > 3:

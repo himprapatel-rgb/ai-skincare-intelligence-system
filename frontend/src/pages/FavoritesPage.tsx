@@ -208,7 +208,7 @@ const FavoritesPage: React.FC = () => {
                 </div>
                 <div className="favorites-meta">
                   <span className="favorites-rating">
-                    <IconStar size={16} strokeWidth={2} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
+                    <IconStar size={16} strokeWidth={2} className="icon-inline" />
                     {product.rating}
                   </span>
                   <span className="favorites-price">€{product.price.toFixed(2)}</span>

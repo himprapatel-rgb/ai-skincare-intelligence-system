@@ -102,7 +102,7 @@ body {
 .app-nav-mobile-btn-primary,
 .app-nav-mobile-cta,
 .cta-section-link {
-  background: linear-gradient(135deg, #1f5fbf 0%, #3f7fd6 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
   box-shadow: 0 4px 12px rgba(31, 95, 191, 0.22);
   border-radius: var(--clinical-radius-sm);
   min-height: 44px;
@@ -121,7 +121,7 @@ body {
 .btn-ghost,
 .app-nav-cta-secondary,
 .app-nav-mobile-btn-secondary {
-  background: #ffffff;
+  background: var(--white);
   border: 1px solid var(--clinical-border);
   color: var(--primary);
   border-radius: var(--clinical-radius-sm);
@@ -143,7 +143,7 @@ body {
 
 .app-logo-mark,
 .app-footer-logo-mark {
-  background: linear-gradient(135deg, #1f5fbf 0%, #4f8ad9 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
   box-shadow: 0 4px 10px rgba(31, 95, 191, 0.25);
 }
 
@@ -179,16 +179,16 @@ body {
 }
 
 .app-footer-newsletter {
-  background: linear-gradient(135deg, #1f5fbf 0%, #2f74cf 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
 }
 
 .app-footer-bottom {
-  background: #f7fafd;
+  background: var(--clinical-surface-muted);
 }
 
 .app-footer-disclaimer {
-  background: #eef4fc;
-  border: 1px solid #d9e6f6;
+  background: var(--primary-50, #eef4fc);
+  border: 1px solid var(--clinical-border);
 }
 
 /* Core page accents */
@@ -220,9 +220,9 @@ body {
 
 .score-circle.good,
 .score-circle.medium {
-  background: #eef4fc;
+  background: var(--primary-50, #eef4fc);
   color: var(--primary-dark);
-  border: 1px solid #cfdff4;
+  border: 1px solid var(--clinical-border);
 }
 
 .dashboard-refresh-btn,
@@ -242,7 +242,7 @@ body {
 .result-card:hover,
 .step-card:hover,
 .testimonial-card:hover {
-  border-color: #c6d6ea;
+  border-color: var(--clinical-border);
   box-shadow: var(--shadow-md);
 }
 
@@ -311,11 +311,11 @@ body {
 
 .dashboard-page .dashboard-refresh-btn {
   border: 1px solid var(--clinical-border);
-  background: #f7fafd;
+  background: var(--clinical-surface-muted);
 }
 
 .dashboard-page .dashboard-refresh-btn:hover:not(:disabled) {
-  background: #edf4fe;
+  background: var(--primary-50, #edf4fe);
 }
 
 /* Forms (Auth + Profile) */
@@ -324,7 +324,7 @@ body {
 }
 
 .auth-left {
-  background: linear-gradient(180deg, #204f97 0%, #1b427e 100%);
+  background: linear-gradient(180deg, var(--primary-dark) 0%, var(--primary-dark) 100%);
 }
 
 .auth-feature {
@@ -411,7 +411,7 @@ textarea,
 .input {
   border: 1px solid var(--clinical-border);
   border-radius: var(--clinical-radius-sm);
-  background: #ffffff;
+  background: var(--white);
   min-height: 44px;
   padding: 10px 12px;
 }

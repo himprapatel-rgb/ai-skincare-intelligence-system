@@ -9,6 +9,18 @@
   background: var(--bg-secondary, #f8fafc);
   padding-bottom: max(80px, env(safe-area-inset-bottom));
   font-family: var(--font-family);
+  animation: pageEnter 0.25s ease-out;
+}
+
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .app-page-content {
@@ -23,11 +35,11 @@
 
 /* Gradient header card (for any page) */
 .app-header-card {
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
   border-radius: 0 0 24px 24px;
   padding: 24px 16px 32px;
   text-align: center;
-  color: white;
+  color: var(--white);
 }
 
 .app-header-card h1 {
@@ -110,23 +122,23 @@
 }
 
 .app-list-icon.purple {
-  background: #ede9fe;
-  color: #7c3aed;
+  background: var(--purple-100, #ede9fe);
+  color: var(--accent);
 }
 
 .app-list-icon.blue {
-  background: #dbeafe;
-  color: #2563eb;
+  background: var(--primary-100, #dbeafe);
+  color: var(--primary);
 }
 
 .app-list-icon.green {
-  background: #d1fae5;
-  color: #059669;
+  background: var(--success-100, #d1fae5);
+  color: var(--success-600, #059669);
 }
 
 .app-list-icon.orange {
-  background: #ffedd5;
-  color: #ea580c;
+  background: var(--warning-100, #ffedd5);
+  color: var(--warning-600, #ea580c);
 }
 
 .app-list-label {

@@ -117,12 +117,12 @@ const ComparisonPage: React.FC = () => {
       <span className={`comparison-delta ${improved ? 'improved' : 'declined'}`}>
         {improved ? (
           <>
-            <IconTrendingDown size={14} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '4px' }} />
+            <IconTrendingDown size={14} strokeWidth={2} className="icon-inline" />
             {Math.abs(diff)}%
           </>
         ) : (
           <>
-            <IconTrendingUp size={14} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '4px' }} />
+            <IconTrendingUp size={14} strokeWidth={2} className="icon-inline" />
             {Math.abs(diff)}%
           </>
         )}

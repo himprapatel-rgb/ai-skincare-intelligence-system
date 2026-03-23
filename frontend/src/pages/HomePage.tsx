@@ -498,7 +498,7 @@ const HomePage: React.FC = () => {
           <p>Get instant AI-powered insights from a single photo</p>
           <Link to="/scan" className="cta-section-link">Go to free skin scan</Link>
           <p className="cta-reassurance">
-            <IconShield size={16} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '6px' }} />
+            <IconShield size={16} strokeWidth={2} className="icon-inline" />
             Your photo is processed securely and never shared
           </p>
         </div>

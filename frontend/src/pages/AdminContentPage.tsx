@@ -260,9 +260,9 @@ const AdminContentPage: React.FC = () => {
             <div className="admin-form-card">
               <h3>{editingBlog ? 'Edit Blog' : 'New Blog'}</h3>
               <form onSubmit={saveBlog}>
-                <div className="form-group"><label>Title</label><input value={blogForm.title} onChange={(e) => setBlogForm({ ...blogForm, title: e.target.value })} required /></div>
-                <div className="form-group"><label>Excerpt</label><textarea rows={2} value={blogForm.excerpt} onChange={(e) => setBlogForm({ ...blogForm, excerpt: e.target.value })} /></div>
-                <div className="form-group"><label>Content</label><textarea rows={6} value={blogForm.content} onChange={(e) => setBlogForm({ ...blogForm, content: e.target.value })} /></div>
+                <div className="form-group"><label htmlFor="blog-title">Title</label><input id="blog-title" value={blogForm.title} onChange={(e) => setBlogForm({ ...blogForm, title: e.target.value })} required /></div>
+                <div className="form-group"><label htmlFor="blog-excerpt">Excerpt</label><textarea id="blog-excerpt" rows={2} value={blogForm.excerpt} onChange={(e) => setBlogForm({ ...blogForm, excerpt: e.target.value })} /></div>
+                <div className="form-group"><label htmlFor="blog-content">Content</label><textarea id="blog-content" rows={6} value={blogForm.content} onChange={(e) => setBlogForm({ ...blogForm, content: e.target.value })} /></div>
                 <AdminImageUpload
                   label="Cover Image"
                   recommendedSize="1200×630px recommended"
@@ -271,7 +271,7 @@ const AdminContentPage: React.FC = () => {
                   id="blog-cover"
                 />
                 <div className="form-row">
-                  <div className="form-group"><label>Read time (min)</label><input type="number" min={1} value={blogForm.read_time_min} onChange={(e) => setBlogForm({ ...blogForm, read_time_min: parseInt(e.target.value, 10) || 5 })} /></div>
+                  <div className="form-group"><label htmlFor="blog-readtime">Read time (min)</label><input id="blog-readtime" type="number" min={1} value={blogForm.read_time_min} onChange={(e) => setBlogForm({ ...blogForm, read_time_min: parseInt(e.target.value, 10) || 5 })} /></div>
                   <div className="form-group checkbox"><label><input type="checkbox" checked={blogForm.published} onChange={(e) => setBlogForm({ ...blogForm, published: e.target.checked })} /> Published</label></div>
                 </div>
                 <div className="form-actions"><button type="submit" className="btn btn-primary">Save</button><button type="button" className="btn btn-secondary" onClick={() => { setShowForm(null); setEditingBlog(null); }}>Cancel</button></div>
@@ -312,9 +312,9 @@ const AdminContentPage: React.FC = () => {
             <div className="admin-form-card">
               <h3>{editingVideo ? 'Edit Video' : 'New Video'}</h3>
               <form onSubmit={saveVideo}>
-                <div className="form-group"><label>Title</label><input value={videoForm.title} onChange={(e) => setVideoForm({ ...videoForm, title: e.target.value })} required /></div>
-                <div className="form-group"><label>Description</label><textarea rows={2} value={videoForm.description} onChange={(e) => setVideoForm({ ...videoForm, description: e.target.value })} /></div>
-                <div className="form-group"><label>Video URL (YouTube, Vimeo, etc.)</label><input type="url" value={videoForm.video_url} onChange={(e) => setVideoForm({ ...videoForm, video_url: e.target.value })} placeholder="https://youtube.com/watch?v=..." required /></div>
+                <div className="form-group"><label htmlFor="video-title">Title</label><input id="video-title" value={videoForm.title} onChange={(e) => setVideoForm({ ...videoForm, title: e.target.value })} required /></div>
+                <div className="form-group"><label htmlFor="video-desc">Description</label><textarea id="video-desc" rows={2} value={videoForm.description} onChange={(e) => setVideoForm({ ...videoForm, description: e.target.value })} /></div>
+                <div className="form-group"><label htmlFor="video-url">Video URL (YouTube, Vimeo, etc.)</label><input id="video-url" type="url" value={videoForm.video_url} onChange={(e) => setVideoForm({ ...videoForm, video_url: e.target.value })} placeholder="https://youtube.com/watch?v=..." required /></div>
                 <AdminImageUpload
                   label="Thumbnail Image"
                   recommendedSize="1280×720px recommended"
@@ -323,8 +323,8 @@ const AdminContentPage: React.FC = () => {
                   id="video-thumb"
                 />
                 <div className="form-row">
-                  <div className="form-group"><label>Duration (sec)</label><input type="number" min={0} value={videoForm.duration_sec} onChange={(e) => setVideoForm({ ...videoForm, duration_sec: e.target.value })} placeholder="192" /></div>
-                  <div className="form-group"><label>Difficulty</label><select value={videoForm.difficulty} onChange={(e) => setVideoForm({ ...videoForm, difficulty: e.target.value })}><option value="Beginner">Beginner</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option></select></div>
+                  <div className="form-group"><label htmlFor="video-duration">Duration (sec)</label><input id="video-duration" type="number" min={0} value={videoForm.duration_sec} onChange={(e) => setVideoForm({ ...videoForm, duration_sec: e.target.value })} placeholder="192" /></div>
+                  <div className="form-group"><label htmlFor="video-difficulty">Difficulty</label><select id="video-difficulty" value={videoForm.difficulty} onChange={(e) => setVideoForm({ ...videoForm, difficulty: e.target.value })}><option value="Beginner">Beginner</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option></select></div>
                   <div className="form-group checkbox"><label><input type="checkbox" checked={videoForm.published} onChange={(e) => setVideoForm({ ...videoForm, published: e.target.checked })} /> Published</label></div>
                 </div>
                 <div className="form-actions"><button type="submit" className="btn btn-primary">Save</button><button type="button" className="btn btn-secondary" onClick={() => { setShowForm(null); setEditingVideo(null); }}>Cancel</button></div>
@@ -366,7 +366,7 @@ const AdminContentPage: React.FC = () => {
             <div className="admin-form-card">
               <h3>{editingNews ? 'Edit News' : 'New News'}</h3>
               <form onSubmit={saveNews}>
-                <div className="form-group"><label>Title</label><input value={newsForm.title} onChange={(e) => setNewsForm({ ...newsForm, title: e.target.value })} required /></div>
+                <div className="form-group"><label htmlFor="news-title">Title</label><input id="news-title" value={newsForm.title} onChange={(e) => setNewsForm({ ...newsForm, title: e.target.value })} required /></div>
                 <div className="form-group"><label>Body</label><textarea rows={4} value={newsForm.body} onChange={(e) => setNewsForm({ ...newsForm, body: e.target.value })} /></div>
                 <div className="form-group"><label>Link URL</label><input type="url" value={newsForm.link_url} onChange={(e) => setNewsForm({ ...newsForm, link_url: e.target.value })} placeholder="https://..." /></div>
                 <div className="form-group checkbox-row"><label><input type="checkbox" checked={newsForm.is_featured} onChange={(e) => setNewsForm({ ...newsForm, is_featured: e.target.checked })} /> Featured</label><label><input type="checkbox" checked={newsForm.published} onChange={(e) => setNewsForm({ ...newsForm, published: e.target.checked })} /> Published</label></div>

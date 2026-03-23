@@ -58,14 +58,14 @@
 .app-nav-cta,
 .app-nav-mobile-btn-primary,
 .app-nav-mobile-cta {
-  background: linear-gradient(135deg, #1f5fbf 0%, #3a78cf 100%) !important;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%) !important;
   box-shadow: 0 6px 16px rgba(31, 95, 191, 0.24) !important;
 }
 
 .btn-secondary,
 .btn-ghost,
 .btn-outline {
-  background: #ffffff !important;
+  background: var(--white) !important;
   color: var(--designer-primary) !important;
   border: 1px solid var(--designer-border) !important;
 }

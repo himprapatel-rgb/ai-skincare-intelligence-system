@@ -10,7 +10,7 @@
   flex-direction: column;
   position: relative;
   overflow-x: hidden;
-  background: #f8f9fa;
+  background: var(--gray-50, #f8f9fa);
 }
 
 /* === Animated Background === */
@@ -148,7 +148,7 @@
 .auth-mobile-error {
   padding: 14px 16px;
   background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
-  border: 1px solid #fecaca;
+  border: 1px solid var(--danger-200, #fecaca);
   border-left: 4px solid var(--danger);
   border-radius: var(--border-radius-lg);
   color: var(--danger);

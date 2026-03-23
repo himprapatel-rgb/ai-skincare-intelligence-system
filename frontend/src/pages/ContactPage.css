@@ -186,7 +186,7 @@
 .form-group.has-error input,
 .form-group.has-error textarea {
   border-color: var(--danger);
-  background: #fef2f2;
+  background: var(--danger-50, #fef2f2);
 }
 .form-error {
   display: block;

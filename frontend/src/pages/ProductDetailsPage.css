@@ -942,19 +942,19 @@
 .ingredient-item.ingredient-active {
   background: linear-gradient(135deg, #dcfce7, #bbf7d0);
   border-color: var(--success);
-  color: #166534;
+  color: var(--success-800, #166534);
 }
 
 .ingredient-item.ingredient-concern {
   background: linear-gradient(135deg, #fef3c7, #fde68a);
   border-color: var(--warning);
-  color: #92400e;
+  color: var(--warning-800, #92400e);
 }
 
 .ingredient-item.ingredient-allergen {
   background: linear-gradient(135deg, #fee2e2, #fecaca);
   border-color: var(--danger);
-  color: #991b1b;
+  color: var(--danger-800, #991b1b);
 }
 
 .ingredient-rank {
@@ -1161,7 +1161,7 @@
 
 .severity-badge.moderate {
   background: rgba(245, 158, 11, 0.15);
-  color: #b45309;
+  color: var(--warning-700, #b45309);
   padding: 2px 8px;
   border-radius: 999px;
   font-size: 0.75rem;
@@ -1248,7 +1248,7 @@
 
 .safety-badge.warning {
   background: var(--warning-100, #fef3c7);
-  color: #b45309;
+  color: var(--warning-700, #b45309);
   border: 1px solid var(--warning);
 }
 
@@ -1357,11 +1357,11 @@
 }
 
 .pairing-good {
-  color: #166534;
+  color: var(--success-800, #166534);
 }
 
 .pairing-avoid {
-  color: #991b1b;
+  color: var(--danger-800, #991b1b);
   border-top: 1px solid var(--border-color);
   margin-top: 8px;
   padding-top: 16px;

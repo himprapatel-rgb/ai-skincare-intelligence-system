@@ -511,7 +511,7 @@
 }
 
 .settings-icon.purple {
-  background: #ede9fe;
+  background: var(--purple-100, #ede9fe);
   color: var(--accent);
 }
 
@@ -521,7 +521,7 @@
 }
 
 .settings-icon.green {
-  background: #d1fae5;
+  background: var(--success-100, #d1fae5);
   color: var(--success-600, #059669);
 }
 
@@ -1090,18 +1090,18 @@
 .form-group textarea {
   width: 100%;
   padding: 12px 16px;
-  border: 1.5px solid #e2e8f0;
+  border: 1.5px solid var(--gray-200, #e2e8f0);
   border-radius: 10px;
   font-size: 0.95rem;
   color: var(--text-primary);
-  background: #fafbfc;
+  background: var(--gray-50, #fafbfc);
   transition: all 0.25s ease;
 }
 
 .form-group input:hover,
 .form-group select:hover,
 .form-group textarea:hover {
-  border-color: #cbd5e1;
+  border-color: var(--gray-300, #cbd5e1);
   background: var(--bg-white);
 }
 
@@ -1197,7 +1197,7 @@
 
 .btn-secondary {
   background: white;
-  border: 1.5px solid #e2e8f0;
+  border: 1.5px solid var(--gray-200, #e2e8f0);
   border-radius: var(--border-radius-md);
   padding: 12px 24px;
   font-weight: 500;
@@ -1331,7 +1331,7 @@
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius-xl);
   font-size: 0.8rem;
-  color: #475569;
+  color: var(--gray-600, #475569);
   margin: 4px;
   gap: 6px;
 }
@@ -1344,7 +1344,7 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: #cbd5e1;
+  background: var(--gray-300, #cbd5e1);
   color: var(--white);
   font-size: 0.65rem;
   cursor: pointer;

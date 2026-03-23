@@ -189,7 +189,7 @@
 }
 .analysis-legal-disclaimer {
   font-size: 0.875rem;
-  color: #4b5563;
+  color: var(--gray-600, #4b5563);
   margin: 8px 0 0;
   line-height: 1.5;
   width: 100%;
@@ -518,7 +518,7 @@
 }
 
 .severity-high {
-  background: #ff6a55;
+  background: var(--danger);
 }
 
 .severity-medium {

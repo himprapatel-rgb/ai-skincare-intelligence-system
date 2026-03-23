@@ -474,17 +474,17 @@
 
 .trend.improving {
   background: var(--success);
-  color: #065f46;
+  color: var(--success-800, #065f46);
 }
 
 .trend.stable {
   background: #FEF3C7; /* Warm Cream */
-  color: #92400e;
+  color: var(--warning-800, #92400e);
 }
 
 .trend.declining {
-  background: #FEE2E2;
-  color: #991b1b;
+  background: var(--danger-100, #FEE2E2);
+  color: var(--danger-800, #991b1b);
 }
 
 .stat-card.primary .trend {

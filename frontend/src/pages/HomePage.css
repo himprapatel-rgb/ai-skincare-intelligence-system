@@ -363,7 +363,7 @@
 
 .homepage {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: #f8fbff;
+  background: var(--primary-50, #f8fbff);
   min-height: 100vh;
   color: var(--text-dark);
 }
@@ -2015,7 +2015,7 @@
 }
 
 .score-circle.medium {
-  background: #f1f5ff;
+  background: var(--primary-50, #f1f5ff);
 }
 
 .concern-badge {
@@ -2024,7 +2024,7 @@
   border-radius: 999px;
   border: 1px solid rgba(31, 111, 235, 0.2);
   color: var(--primary-dark);
-  background: #f1f5ff;
+  background: var(--primary-50, #f1f5ff);
   font-size: 0.75rem;
   margin-right: 8px;
 }
@@ -2989,7 +2989,7 @@
 .hero-cta-secondary:hover {
   border-color: var(--primary);
   color: var(--primary);
-  background: #f8fbff;
+  background: var(--primary-50, #f8fbff);
   box-shadow: 0 8px 15px rgba(37, 99, 235, 0.1);
 }
 

@@ -317,7 +317,7 @@
 }
 
 .product-rating svg {
-  color: #fbbf24;
+  color: var(--warning-400, #fbbf24);
 }
 
 .product-name {

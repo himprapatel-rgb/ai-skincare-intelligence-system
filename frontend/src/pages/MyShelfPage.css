@@ -114,7 +114,7 @@
   margin: 0 0 12px 0;
   font-size: 1rem;
   font-weight: 700;
-  color: #b45309;
+  color: var(--warning-700, #b45309);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -183,11 +183,11 @@
 
 .myshelf-expiring-badge.warning {
   background: var(--warning-100, #fef3c7);
-  color: #b45309;
+  color: var(--warning-700, #b45309);
 }
 
 .myshelf-expiring-badge.expired {
-  background: #fee2e2;
+  background: var(--danger-100, #fee2e2);
   color: var(--danger);
 }
 
@@ -665,8 +665,8 @@
 }
 
 .product-status-pill[data-status="wishlist"] {
-  background: #fce7f3;
-  color: #be185d;
+  background: var(--pink-100, #fce7f3);
+  color: var(--pink-700, #be185d);
 }
 
 .product-status-pill[data-status="discontinued"] {
@@ -850,9 +850,9 @@
 }
 
 .repurchase-btn.yes {
-  background: #dcfce7;
+  background: var(--success-100, #dcfce7);
   border-color: var(--success);
-  color: #15803d;
+  color: var(--success-700, #15803d);
 }
 
 .expiry-badge {
@@ -866,11 +866,11 @@
 
 .expiry-badge.warning {
   background: var(--warning-100, #fef3c7);
-  color: #b45309;
+  color: var(--warning-700, #b45309);
 }
 
 .expiry-badge.expired {
-  background: #fee2e2;
+  background: var(--danger-100, #fee2e2);
   color: var(--danger);
   font-weight: 600;
 }

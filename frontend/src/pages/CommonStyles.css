@@ -157,7 +157,7 @@
 }
 
 .btn-remove:hover:not(:disabled) {
-  background-color: #b91c1c;
+  background-color: var(--danger-700, #b91c1c);
 }
 
 .btn-remove:focus-visible {

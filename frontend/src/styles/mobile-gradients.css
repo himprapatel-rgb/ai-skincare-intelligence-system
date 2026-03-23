@@ -5,7 +5,7 @@
 
 :root {
   /* === Primary Gradients === */
-  --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-primary: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
   --gradient-primary-soft: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
   
   /* === Secondary Gradients === */
@@ -45,11 +45,11 @@
   /* === Animated Gradients === */
   --gradient-animated: linear-gradient(
     -45deg, 
-    #667eea 0%, 
-    #764ba2 25%, 
+    var(--primary) 0%, 
+    var(--accent) 25%, 
     #f093fb 50%, 
-    #764ba2 75%, 
-    #667eea 100%
+    var(--accent) 75%, 
+    var(--primary) 100%
   );
 }
 

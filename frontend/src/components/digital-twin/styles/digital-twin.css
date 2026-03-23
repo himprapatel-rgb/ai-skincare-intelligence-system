@@ -763,7 +763,7 @@
 }
 
 .simulation-header svg {
-  color: #8b5cf6;
+  color: var(--accent);
 }
 
 .simulation-header h3 {
@@ -812,7 +812,7 @@
 .simulation-form input:focus,
 .simulation-form select:focus {
   outline: none;
-  border-color: #8b5cf6;
+  border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
 }
 
@@ -821,7 +821,7 @@
   align-items: center;
   gap: 8px;
   padding: 10px 20px;
-  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  background: linear-gradient(135deg, var(--accent), var(--accent));
   color: white;
   border: none;
   border-radius: 8px;

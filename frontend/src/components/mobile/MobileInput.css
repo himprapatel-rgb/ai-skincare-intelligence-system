@@ -76,7 +76,7 @@
   transform: translateY(0);
   font-size: 12px;
   font-weight: 600;
-  color: #667eea;
+  color: var(--primary);
 }
 
 .mobile-input--error.mobile-input--focused .mobile-input__label,
@@ -111,7 +111,7 @@
 }
 
 .mobile-input--focused .mobile-input__icon {
-  color: #667eea;
+  color: var(--primary);
 }
 
 .mobile-input--has-icon .mobile-input__input {
@@ -130,7 +130,7 @@
   transform: translateX(-50%);
   width: 0;
   height: 2px;
-  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
   transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   border-radius: 2px;
 }

@@ -235,7 +235,7 @@
   transform: translateX(-50%);
   width: 20px;
   height: 3px;
-  background: linear-gradient(90deg, #3b82f6, #7c3aed);
+  background: linear-gradient(90deg, var(--primary), var(--accent));
   border-radius: 2px;
 }
 
@@ -421,7 +421,7 @@
   border-radius: 10px;
   font-weight: 600;
   font-size: 0.9rem;
-  color: #6366f1;
+  color: var(--primary);
   background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(168, 85, 247, 0.08));
   border: 1px solid rgba(99, 102, 241, 0.15);
   text-decoration: none;

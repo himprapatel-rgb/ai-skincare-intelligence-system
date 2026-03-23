@@ -14,7 +14,7 @@
   width: 40px;
   height: 40px;
   border: 4px solid rgba(102, 126, 234, 0.2);
-  border-top-color: #667eea;
+  border-top-color: var(--primary);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -26,7 +26,7 @@
 .login-loading-message {
   font-size: 16px;
   font-weight: 600;
-  color: #667eea;
+  color: var(--primary);
   text-align: center;
 }
 
@@ -40,7 +40,7 @@
 
 .login-loading-progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
   transition: width 0.5s ease-out;
   border-radius: 2px;
 }

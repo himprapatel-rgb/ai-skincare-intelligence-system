@@ -61,7 +61,7 @@
 
 /* Variants */
 .action-sheet-option--primary {
-  color: #667eea;
+  color: var(--primary);
   font-weight: 600;
 }
 

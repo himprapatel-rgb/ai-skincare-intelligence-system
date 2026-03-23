@@ -3,14 +3,20 @@
  * Registers the service worker and handles updates
  */
 
+function getServiceWorkerBaseScope(): string {
+  const baseUrl = import.meta.env.BASE_URL || '/';
+  return baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`;
+}
+
 export async function registerServiceWorker() {
   if (!('serviceWorker' in navigator)) {
     return false;
   }
 
   try {
-    const registration = await navigator.serviceWorker.register('/service-worker.js', {
-      scope: '/',
+    const scope = getServiceWorkerBaseScope();
+    const registration = await navigator.serviceWorker.register(`${scope}service-worker.js`, {
+      scope,
     });
 
     void registration.scope;
@@ -56,7 +62,7 @@ export async function unregisterServiceWorker() {
   if (!('serviceWorker' in navigator)) return false;
 
   try {
-    const registration = await navigator.serviceWorker.getRegistration();
+    const registration = await navigator.serviceWorker.getRegistration(getServiceWorkerBaseScope());
     if (registration) {
       await registration.unregister();
       return true;

@@ -8,7 +8,7 @@ const leftItem = { to: '/', icon: IconBarChart, label: 'Today' };
 const centerItem = { to: '/scan', icon: IconScan, label: 'Scan' };
 const rightItem = { to: '/me', icon: IconUser, label: 'Me' };
 
-export const BottomNav: React.FC = () => {
+export const BottomNav: React.FC = React.memo(() => {
   const location = useLocation();
 
   const isActive = (to: string) =>
@@ -52,4 +52,5 @@ export const BottomNav: React.FC = () => {
       </Link>
     </nav>
   );
-};
+});
+BottomNav.displayName = 'BottomNav';

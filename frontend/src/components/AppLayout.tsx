@@ -44,10 +44,19 @@ const displayName = nameParts.length > 1
   const [newsletterMessage, setNewsletterMessage] = useState<'success' | 'error' | null>(null);
   const userDropdownRef = useRef<HTMLDivElement>(null);
   
-  // Handle scroll for header shadow
+  // Handle scroll for header shadow (RAF-throttled to avoid per-event re-renders)
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 10);
-    window.addEventListener('scroll', handleScroll);
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          setScrolled(window.scrollY > 10);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
   

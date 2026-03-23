@@ -2,7 +2,7 @@
   text-align: center;
   padding: var(--spacing-2xl) var(--spacing-lg);
   background: var(--bg-white);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--border-radius-lg);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-sm);
   min-height: 50vh;
@@ -10,6 +10,18 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  animation: emptyFadeIn 0.4s ease-out;
+}
+
+@keyframes emptyFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Compact variant for inline empty states (e.g. within tabs/sections) */
+.empty-state--compact {
+  min-height: auto;
+  padding: var(--spacing-xl) var(--spacing-lg);
 }
 
 .empty-state-icon {
@@ -17,8 +29,11 @@
   align-items: center;
   justify-content: center;
   margin: 0 auto var(--spacing-lg);
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--primary-light);
   color: var(--primary);
-  opacity: 0.9;
 }
 
 .empty-state-icon svg {

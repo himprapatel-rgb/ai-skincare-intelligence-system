@@ -12,6 +12,8 @@ export interface EmptyStateProps {
   actionLabel?: string;
   onAction?: () => void;
   children?: ReactNode;
+  /** Use 'compact' for inline sections, 'default' for full-page */
+  variant?: 'default' | 'compact';
 }
 
 export function EmptyState({
@@ -22,9 +24,10 @@ export function EmptyState({
   actionLabel,
   onAction,
   children,
+  variant = 'default',
 }: EmptyStateProps) {
   return (
-    <div className="empty-state" data-empty-state>
+    <div className={`empty-state${variant === 'compact' ? ' empty-state--compact' : ''}`} data-empty-state>
       {icon && <div className="empty-state-icon">{icon}</div>}
       <h3 className="empty-state-title">{title}</h3>
       {description && <p className="empty-state-description">{description}</p>}

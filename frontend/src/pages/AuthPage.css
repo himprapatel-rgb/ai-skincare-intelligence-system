@@ -59,7 +59,7 @@
   gap: 20px;
   padding: 20px;
   background: rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
+  border-radius: var(--border-radius-xl);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.15);
   transition: all 0.3s ease;
@@ -220,7 +220,7 @@
   background: none;
   color: var(--gray-500);
   cursor: pointer;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -309,7 +309,7 @@
   margin-top: 8px;
   background: rgba(31, 111, 235, 0.06);
   border: 1px solid rgba(31, 111, 235, 0.2);
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   padding: 10px 12px;
   font-size: 0.85rem;
   color: var(--text-secondary);
@@ -366,7 +366,7 @@
   color: white;
   padding: 12px 24px; /* Brand guideline: 12px 24px */
   border: none;
-  border-radius: 8px; /* Brand guideline: 8px */
+  border-radius: var(--border-radius-md); /* Brand guideline: 8px */
   font-size: 1rem; /* Brand guideline: 16px Body */
   font-weight: 600; /* Brand guideline */
   cursor: pointer;
@@ -391,7 +391,7 @@
   align-items: center;
   gap: 16px;
   margin: 24px 0;
-  color: #94a3b8;
+  color: var(--text-muted);
   font-size: 0.85rem;
 }
 
@@ -413,7 +413,7 @@
 
 .auth-toggle span {
   display: block;
-  color: #64748b;
+  color: var(--text-secondary);
   font-size: 0.95rem;
   margin-bottom: 16px;
 }
@@ -427,7 +427,7 @@
   text-decoration: none;
   background: transparent;
   border: 2px solid var(--primary);
-  border-radius: 8px; /* Brand guideline: 8px */
+  border-radius: var(--border-radius-md); /* Brand guideline: 8px */
   padding: 12px 32px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -467,7 +467,7 @@
 .error-message {
   background: #fef2f2;
   border: 1px solid #fecaca;
-  color: #dc2626;
+  color: var(--danger);
   padding: 12px 16px;
   border-radius: 10px;
   font-size: 0.9rem;
@@ -479,7 +479,7 @@
 .success-message {
   background: #f0fdf4;
   border: 1px solid #bbf7d0;
-  color: #16a34a;
+  color: var(--success);
   padding: 12px 16px;
   border-radius: 10px;
   font-size: 0.9rem;
@@ -560,7 +560,7 @@
   margin-top: 32px;
   padding-top: 28px;
   border-top: 1px solid #e2e8f0;
-  color: #64748b;
+  color: var(--text-secondary);
   font-size: 0.95rem;
 }
 
@@ -572,7 +572,7 @@
   text-decoration: none;
   background: transparent;
   border: 2px solid var(--primary);
-  border-radius: 8px; /* Brand guideline: 8px */
+  border-radius: var(--border-radius-md); /* Brand guideline: 8px */
   padding: 12px 32px;
   margin-top: 12px;
   cursor: pointer;
@@ -598,7 +598,7 @@
   background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
   border: 1px solid #fecaca;
   border-left: 4px solid var(--danger);
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   margin-bottom: 20px;
   animation: errorSlideIn 0.3s ease-out;
   box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.1);
@@ -613,7 +613,7 @@
 
 .error-message__icon {
   font-size: 1.25rem;
-  color: #dc2626;
+  color: var(--danger);
   flex-shrink: 0;
 }
 
@@ -690,7 +690,7 @@
   color: white;
   background: var(--primary); /* Brand blue */
   border: none;
-  border-radius: 8px; /* Brand guideline: 8px */
+  border-radius: var(--border-radius-md); /* Brand guideline: 8px */
   cursor: pointer;
   transition: all 0.2s ease;
   box-shadow: 0 4px 12px rgba(31, 111, 235, 0.2);

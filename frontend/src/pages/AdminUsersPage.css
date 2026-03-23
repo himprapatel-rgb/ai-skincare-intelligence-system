@@ -5,9 +5,9 @@
 }
 
 .admin-card {
-  background: #ffffff;
+  background: var(--bg-white);
   border: 1px solid var(--border-color);
-  border-radius: 16px;
+  border-radius: var(--border-radius-xl);
   padding: 16px;
   box-shadow: var(--shadow-md);
 }
@@ -37,9 +37,9 @@
   width: 100%;
   min-width: 640px;
   border-collapse: collapse;
-  background: #ffffff;
+  background: var(--bg-white);
   border: 1px solid var(--border-color);
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   overflow: hidden;
 }
 
@@ -111,7 +111,7 @@
   left: 3px;
   width: 16px;
   height: 16px;
-  background: #ffffff;
+  background: var(--bg-white);
   border-radius: 50%;
   transition: transform 0.2s ease;
 }

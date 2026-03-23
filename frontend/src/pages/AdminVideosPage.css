@@ -44,7 +44,7 @@
   width: 100%;
   padding: 10px 12px;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   font-size: 1rem;
 }
 
@@ -104,7 +104,7 @@
   background: transparent;
   color: var(--text-gray);
   cursor: pointer;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
 }
 
 .admin-videos-page .btn-icon:hover {

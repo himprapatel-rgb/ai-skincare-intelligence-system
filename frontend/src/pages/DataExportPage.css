@@ -18,7 +18,7 @@
   min-width: 44px;
   min-height: 44px;
   color: var(--text-primary);
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   flex-shrink: 0;
 }
 .data-export-back:hover {
@@ -89,7 +89,7 @@
   padding: 16px;
   margin-bottom: 8px;
   background: var(--bg-light);
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   border: 1px solid var(--border);
 }
 
@@ -129,7 +129,7 @@
   padding: 24px;
   background: var(--bg-light);
   border: 2px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   cursor: pointer;
   transition: all 0.2s ease;
   text-align: center;

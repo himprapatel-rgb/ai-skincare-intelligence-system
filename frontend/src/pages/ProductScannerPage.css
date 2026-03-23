@@ -92,7 +92,7 @@
   min-width: 0;
   background: var(--bg-white);
   border: 2px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   font-size: 1rem;
   font-weight: 600;
   color: var(--text-gray);
@@ -173,7 +173,7 @@
   max-width: 600px;
   margin: 0 auto;
   min-height: 280px;
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   overflow: hidden;
   background: var(--bg-tertiary, #f1f5f9);
   border: 1px solid var(--border);
@@ -218,7 +218,7 @@
   padding: 16px;
   margin-top: 16px;
   background: rgba(31, 111, 235, 0.1);
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   color: var(--primary);
   font-weight: 500;
 }
@@ -262,7 +262,7 @@
   padding: 48px 32px;
   background: var(--bg-light);
   border: 2px dashed var(--border);
-  border-radius: 16px;
+  border-radius: var(--border-radius-xl);
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -292,7 +292,7 @@
 .photo-tips {
   text-align: left;
   background: var(--bg-light);
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   padding: 20px;
 }
 
@@ -313,7 +313,7 @@
 /* Processing State */
 .processing-card {
   background: var(--bg-white);
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   padding: 64px 32px;
   text-align: center;
   box-shadow: var(--shadow);
@@ -353,7 +353,7 @@
 .source-badge {
   display: inline-block;
   padding: 4px 12px;
-  border-radius: 16px;
+  border-radius: var(--border-radius-xl);
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -371,7 +371,7 @@
 
 .source-badge.catalog-badge {
   background: rgba(34, 197, 94, 0.15);
-  color: #16a34a;
+  color: var(--success);
   margin-left: 6px;
 }
 
@@ -380,7 +380,7 @@
   background: #22c55e;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   font-weight: 600;
   font-size: 1rem;
   display: flex;
@@ -409,7 +409,7 @@
   font-size: 0.95rem;
   text-decoration: none;
   border: 2px solid var(--primary);
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   transition: all 0.2s ease;
 }
 
@@ -430,7 +430,7 @@
   width: 56px;
   height: 56px;
   background: rgba(31, 111, 235, 0.1);
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -474,7 +474,7 @@
 
 .scanner-card {
   background: var(--bg-white);
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   padding: 32px;
   box-shadow: var(--shadow);
   border: 1px solid var(--border);
@@ -499,7 +499,7 @@
   background: var(--primary);
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -514,7 +514,7 @@
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   overflow: hidden;
   background: #000;
 }
@@ -541,7 +541,7 @@
   width: 80%;
   height: 40%;
   border: 3px solid var(--primary);
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5);
 }
 
@@ -555,14 +555,14 @@
   text-align: center;
   background: rgba(0, 0, 0, 0.7);
   padding: 8px 16px;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
 }
 
 .camera-placeholder {
   text-align: center;
   padding: 64px 32px;
   background: var(--bg-light);
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   border: 2px dashed var(--border);
   color: var(--text-gray);
 }
@@ -583,7 +583,7 @@
   background: var(--primary);
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   font-size: 1.125rem;
   font-weight: 600;
   cursor: pointer;
@@ -606,7 +606,7 @@
 .scanner-guide {
   margin-top: 48px;
   background: var(--bg-white);
-  border-radius: 16px;
+  border-radius: var(--border-radius-xl);
   padding: 32px;
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
@@ -626,7 +626,7 @@
 
 .guide-card {
   background: var(--bg-light);
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   padding: 20px;
   border: 1px solid var(--border);
 }
@@ -651,7 +651,7 @@
 }
 
 .example-card {
-  background: #ffffff;
+  background: var(--bg-white);
   border: 1px dashed rgba(31, 111, 235, 0.35);
   border-radius: 14px;
   padding: 20px;
@@ -671,7 +671,7 @@
 
 .error-card {
   background: var(--bg-white);
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   padding: 48px;
   text-align: center;
   box-shadow: var(--shadow);
@@ -733,7 +733,7 @@
 .btn-icon-small {
   background: transparent;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   padding: 8px;
   cursor: pointer;
   color: var(--text-gray);
@@ -758,10 +758,10 @@
 }
 
 .product-image {
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow);
-  background: #ffffff;
+  background: var(--bg-white);
   border: 1px solid var(--border);
   padding: 8px;
 }
@@ -772,15 +772,15 @@
   height: 120px;
   display: block;
   object-fit: contain;
-  background: #ffffff;
-  border-radius: 8px;
+  background: var(--bg-white);
+  border-radius: var(--border-radius-md);
 }
 
 .product-image-placeholder {
   width: 120px;
   height: 120px;
-  background: #ffffff;
-  border-radius: 8px;
+  background: var(--bg-white);
+  border-radius: var(--border-radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -808,7 +808,7 @@
 
 /* Your Skin Match card – personalized match % after scan */
 .skin-match-card {
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   padding: 20px;
   margin-bottom: 24px;
   border: 1px solid var(--border);
@@ -860,7 +860,7 @@
   margin-top: 16px;
   padding: 16px;
   background: var(--bg-secondary);
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   border: 1px solid var(--border-color);
 }
 .how-to-use-title {
@@ -892,7 +892,7 @@
   padding: 16px;
   background: rgba(245, 158, 11, 0.1);
   border: 1px solid rgba(245, 158, 11, 0.4);
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
 }
 .ingredient-conflict-title {
   margin: 0 0 8px 0;
@@ -918,7 +918,7 @@
 }
 .track-product-modal {
   background: var(--bg-white);
-  border-radius: 16px;
+  border-radius: var(--border-radius-xl);
   padding: 24px;
   max-width: 360px;
   width: 100%;
@@ -941,7 +941,7 @@
   width: 100%;
   padding: 10px 12px;
   border: 1px solid var(--border-color);
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   font-size: 1rem;
 }
 .track-product-actions {
@@ -968,9 +968,9 @@
   margin-bottom: 12px;
 }
 
-.skin-match-card.good .skin-match-value { color: #16a34a; }
+.skin-match-card.good .skin-match-value { color: var(--success); }
 .skin-match-card.fair .skin-match-value { color: #d97706; }
-.skin-match-card.low .skin-match-value { color: #dc2626; }
+.skin-match-card.low .skin-match-value { color: var(--danger); }
 
 .skin-match-bullets {
   list-style: none;
@@ -998,7 +998,7 @@
 
 .rating-card {
   background: var(--bg-light);
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   padding: 20px;
 }
 
@@ -1020,7 +1020,7 @@
   width: 100%;
   height: 8px;
   background: var(--border);
-  border-radius: 4px;
+  border-radius: var(--border-radius-sm);
   overflow: hidden;
 }
 
@@ -1105,7 +1105,7 @@
   padding: 6px 12px;
   background: var(--bg-light);
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: var(--border-radius-xl);
   font-size: 0.875rem;
   color: var(--text-dark);
 }
@@ -1308,20 +1308,20 @@
 .safety-badge.safe {
   background: #ecfdf5;
   color: #059669;
-  border: 1px solid #10b981;
+  border: 1px solid var(--success);
 }
 
 .safety-badge.warning {
   background: #fef3c7;
   color: #d97706;
-  border: 1px solid #f59e0b;
+  border: 1px solid var(--warning);
 }
 
 /* Original Warnings Section (legacy fallback) */
 .warnings-section {
   background: rgba(249, 115, 22, 0.1);
   border: 1px solid var(--secondary);
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   padding: 20px;
   margin-bottom: 32px;
 }
@@ -1629,7 +1629,7 @@
 
 /* ===== Scan History Section ===== */
 .scan-history-section {
-  background: #f8fafc;
+  background: var(--bg-secondary);
   padding: 48px 24px;
   margin-top: 0;
 }
@@ -1659,7 +1659,7 @@
 
 .history-card {
   background: white;
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   overflow: hidden;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -1775,7 +1775,7 @@
   width: 280px;
   height: 160px;
   border: 2px dashed rgba(255, 255, 255, 0.5);
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
 }
 
 .scan-zone-guide .corner {
@@ -1852,7 +1852,7 @@
   gap: 12px;
   padding: 12px;
   background: var(--bg-light);
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   margin-top: 12px;
 }
 
@@ -1906,14 +1906,14 @@
   margin-top: 12px;
   padding: 16px;
   background: var(--bg-light);
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
 }
 
 .manual-entry-form .barcode-input {
   flex: 1;
   padding: 12px 16px;
   border: 2px solid var(--border-color);
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   font-size: 1rem;
   font-family: 'Courier New', monospace;
   letter-spacing: 2px;
@@ -1980,12 +1980,12 @@
 
 .camera-permission-indicator.granted {
   background: rgba(34, 197, 94, 0.1);
-  color: #16a34a;
+  color: var(--success);
 }
 
 .camera-permission-indicator.denied {
   background: rgba(239, 68, 68, 0.1);
-  color: #dc2626;
+  color: var(--danger);
 }
 
 .camera-permission-indicator.prompt {
@@ -2067,7 +2067,7 @@
   gap: 8px;
   width: 100%;
   padding: 24px;
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
@@ -2075,7 +2075,7 @@
 }
 
 .capture-btn {
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark, #2563eb));
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark, var(--primary)));
   color: white;
   border: none;
   box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
@@ -2135,7 +2135,7 @@
   gap: 12px;
   padding: 32px;
   border: 2px dashed var(--border-color);
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   background: var(--bg-light);
   color: var(--text-muted);
   transition: all 0.2s ease;
@@ -2171,18 +2171,18 @@
   flex: 1;
   height: 8px;
   background: #e5e7eb;
-  border-radius: 4px;
+  border-radius: var(--border-radius-sm);
   overflow: hidden;
 }
 
 .confidence-fill {
   height: 100%;
-  border-radius: 4px;
+  border-radius: var(--border-radius-sm);
   transition: width 0.5s ease;
 }
 
 .confidence-fill.high {
-  background: linear-gradient(90deg, #22c55e, #16a34a);
+  background: linear-gradient(90deg, #22c55e, var(--success));
 }
 
 .confidence-fill.medium {
@@ -2205,7 +2205,7 @@
   text-align: center;
   padding: 16px;
   background: rgba(234, 179, 8, 0.1);
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   margin-top: 16px;
 }
 
@@ -2220,7 +2220,7 @@
   color: #78350f;
   border: none;
   padding: 10px 20px;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   font-weight: 600;
   cursor: pointer;
 }

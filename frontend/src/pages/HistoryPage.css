@@ -129,7 +129,7 @@
   margin-bottom: 24px;
   padding: 16px;
   background: var(--bg-white);
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-sm);
 }
@@ -151,7 +151,7 @@
   flex: 1;
   padding: 10px 14px;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   font-size: 1rem;
   background: var(--bg-light);
 }
@@ -203,7 +203,7 @@
 .history-sort-select {
   padding: 8px 12px;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   font-size: 0.9375rem;
   background: var(--bg-white);
   cursor: pointer;
@@ -219,7 +219,7 @@
 
 .stat-card {
   background: var(--bg-white);
-  border-radius: 12px; /* Brand guideline: 12px for cards */
+  border-radius: var(--border-radius-lg); /* Brand guideline: 12px for cards */
   padding: 32px 24px;
   text-align: center;
   box-shadow: var(--shadow);
@@ -237,7 +237,7 @@
   width: 64px;
   height: 64px;
   background: var(--bg-light);
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -375,7 +375,7 @@
   gap: 8px;
   padding: 6px 14px;
   background: var(--success);
-  border-radius: 16px;
+  border-radius: var(--border-radius-xl);
   font-size: 0.875rem;
   font-weight: 600;
   color: #065f46;
@@ -395,14 +395,14 @@
   color: #9b1c1c;
   background: #fef2f2;
   border: 1px solid #fecaca;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   padding: 8px 12px;
 }
 
 .concern-tag {
   padding: 4px 12px;
   background: var(--bg-light);
-  border-radius: 16px;
+  border-radius: var(--border-radius-xl);
   font-size: 0.875rem;
   color: var(--text-gray);
   font-weight: 500;
@@ -420,7 +420,7 @@
   padding: 10px 20px;
   background: var(--primary); /* Brand blue */
   border: none;
-  border-radius: 8px; /* Brand guideline: 8px */
+  border-radius: var(--border-radius-md); /* Brand guideline: 8px */
   color: white;
   font-weight: 600;
   font-size: 0.95rem;
@@ -445,7 +445,7 @@
   text-align: center;
   padding: 80px 40px;
   background: var(--bg-white);
-  border-radius: 12px; /* Brand guideline: 12px for cards */
+  border-radius: var(--border-radius-lg); /* Brand guideline: 12px for cards */
   box-shadow: var(--shadow);
   border: 1px solid var(--border);
 }

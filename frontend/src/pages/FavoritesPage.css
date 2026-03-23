@@ -130,14 +130,14 @@
   flex: 1;
   padding: 10px 12px;
   border: 1px solid var(--border, #e2e8f0);
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   font-size: 0.9375rem;
   background: var(--bg-light, #f8fafc);
 }
 
 .favorites-search-input:focus {
   outline: none;
-  border-color: var(--primary, #1f6feb);
+  border-color: var(--primary, var(--primary));
   box-shadow: 0 0 0 3px rgba(31, 111, 235, 0.1);
 }
 
@@ -163,7 +163,7 @@
 }
 
 .favorites-search-clear:focus-visible {
-  outline: 2px solid var(--primary, #1f6feb);
+  outline: 2px solid var(--primary, var(--primary));
   outline-offset: 2px;
 }
 

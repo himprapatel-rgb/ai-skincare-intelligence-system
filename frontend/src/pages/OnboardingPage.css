@@ -329,7 +329,7 @@
   color: var(--ds-gray-700);
 }
 .completion-checklist li svg {
-  color: var(--ds-success, #10b981);
+  color: var(--ds-success, var(--success));
   flex-shrink: 0;
 }
 

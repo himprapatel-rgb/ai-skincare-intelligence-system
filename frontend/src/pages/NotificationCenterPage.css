@@ -21,7 +21,7 @@
   min-width: 44px;
   min-height: 44px;
   color: rgba(255, 255, 255, 0.95);
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   flex-shrink: 0;
 }
 .notif-back:hover {
@@ -131,7 +131,7 @@
   font-size: 1rem;
   padding: 8px 12px;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   background: var(--bg-white);
   color: var(--text-primary);
   min-width: 120px;
@@ -238,7 +238,7 @@
   width: 48px;
   height: 48px;
   background: var(--bg-tertiary);
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   flex-shrink: 0;
   color: var(--notification-color, var(--primary));
 }
@@ -314,15 +314,15 @@
 
 .btn-action.btn-delete:hover {
   background: rgba(220, 38, 38, 0.1);
-  border-color: #dc2626;
-  color: #dc2626;
+  border-color: var(--danger);
+  color: var(--danger);
 }
 
 .empty-state {
   text-align: center;
   padding: 64px 32px;
   background: var(--white);
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   border: 2px dashed var(--border-color);
 }
 

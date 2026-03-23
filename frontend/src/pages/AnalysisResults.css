@@ -44,7 +44,7 @@
   padding: 48px;
   background: var(--bg-white);
   border: 1px solid var(--border);
-  border-radius: 12px; /* Brand guideline: 12px for cards */
+  border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow);
 }
 
@@ -103,7 +103,7 @@
   flex-wrap: wrap;
   background: var(--bg-white);
   padding: 32px;
-  border-radius: 12px; /* Brand guideline: 12px for cards */
+  border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow);
   border: 1px solid var(--border);
 }
@@ -160,7 +160,7 @@
   border: 1px solid var(--border, #e2e8f0);
   color: var(--text-gray, #64748b);
   padding: 10px 16px;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   font-size: 0.9375rem;
   font-weight: 500;
   text-decoration: none;
@@ -203,7 +203,7 @@
   border: 1px solid var(--border, #e2e8f0);
   color: var(--text-gray, #64748b);
   padding: 10px 16px;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   font-size: 0.9375rem;
   font-weight: 500;
   cursor: pointer;
@@ -221,7 +221,7 @@
   border: 2px solid var(--primary);
   color: var(--primary);
   padding: 10px 20px;
-  border-radius: 8px; /* Brand guideline: 8px */
+  border-radius: var(--border-radius-md);
   font-weight: 600;
   font-size: 0.95rem;
   cursor: pointer;
@@ -241,7 +241,7 @@
   flex-wrap: wrap;
   background: var(--bg-white);
   padding: 24px 32px;
-  border-radius: 12px; /* Brand guideline: 12px for cards */
+  border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow);
   border: 1px solid var(--border);
   color: var(--text-gray);
@@ -252,7 +252,7 @@
   flex: 1;
   min-width: 200px;
   background: var(--bg-light);
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   height: 10px;
   overflow: hidden;
   border: 1px solid var(--border);
@@ -260,8 +260,8 @@
 
 .confidence-fill {
   height: 100%;
-  background: linear-gradient(90deg, #10b981 0%, #3b82f6 100%);
-  border-radius: 8px;
+  background: linear-gradient(90deg, var(--success) 0%, var(--primary) 100%);
+  border-radius: var(--border-radius-md);
   transition: width 0.4s ease;
   box-shadow: 0 2px 8px rgba(31, 111, 235, 0.3);
 }
@@ -304,7 +304,7 @@
 .result-card {
   background: var(--bg-white);
   border: 1px solid var(--border);
-  border-radius: 12px; /* Brand guideline: 12px for cards */
+  border-radius: var(--border-radius-lg);
   padding: 32px;
   box-shadow: var(--shadow);
   transition: all 0.3s ease;
@@ -355,7 +355,7 @@
 
 .analysis-image img {
   width: 100%;
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   display: block;
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
@@ -364,7 +364,7 @@
 .analysis-image-fallback {
   align-items: center;
   background: var(--bg-light);
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   border: 1px dashed var(--border);
   color: var(--text-gray);
   display: flex;
@@ -398,7 +398,7 @@
   background: var(--primary-light);
   color: var(--primary);
   padding: 8px 16px;
-  border-radius: 8px; /* Brand guideline: 8px */
+  border-radius: var(--border-radius-md);
   font-weight: 600;
   font-size: 1rem;
   display: inline-block;
@@ -414,7 +414,7 @@
   background: var(--warning-light);
   color: var(--warning-text);
   padding: 6px 12px;
-  border-radius: 16px;
+  border-radius: var(--border-radius-xl);
   font-size: 0.875rem; /* Brand guideline: 14px Body Small */
   font-weight: 600;
 }
@@ -440,7 +440,7 @@
 
 .severity-card {
   border: 1px solid var(--border);
-  border-radius: 12px; /* Brand guideline: 12px for cards */
+  border-radius: var(--border-radius-lg);
   padding: 20px;
   background: var(--bg-light);
   transition: all 0.2s ease;
@@ -487,13 +487,13 @@
   font-size: 0.75rem;
   font-weight: 700;
   padding: 4px 12px;
-  border-radius: 16px;
+  border-radius: var(--border-radius-xl);
   color: #ffffff;
 }
 
 .severity-bar {
   background: var(--bg-light);
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   height: 10px;
   overflow: hidden;
   margin-bottom: 8px;
@@ -502,7 +502,7 @@
 
 .severity-fill {
   height: 100%;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   transition: width 0.4s ease;
 }
 
@@ -545,7 +545,7 @@
 .recommendations-list li {
   padding: 12px 16px;
   background: var(--bg-light);
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   border-left: 4px solid var(--primary);
   color: var(--text-dark);
   font-size: 1rem;
@@ -592,7 +592,7 @@
   border: 2px solid var(--primary);
   color: var(--primary);
   padding: 8px 16px;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   font-weight: 600;
   font-size: 0.875rem;
   cursor: pointer;
@@ -614,7 +614,7 @@
 
 .results-actions .btn {
   padding: 12px 24px;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
@@ -747,7 +747,7 @@
 
 .analysis-ingredient-card {
   padding: 16px;
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   border: 1px solid var(--border);
   background: var(--bg-light);
 }

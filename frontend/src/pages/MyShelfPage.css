@@ -29,7 +29,7 @@
 .myshelf-hero-icon {
   width: 52px;
   height: 52px;
-  border-radius: 16px;
+  border-radius: var(--border-radius-xl);
   background: rgba(255, 255, 255, 0.2);
   display: flex;
   align-items: center;
@@ -105,7 +105,7 @@
 .myshelf-expiring-soon {
   background: linear-gradient(135deg, #fef3c7 0%, #fef9c3 100%);
   border: 1px solid rgba(245, 158, 11, 0.3);
-  border-radius: 16px;
+  border-radius: var(--border-radius-xl);
   padding: 16px;
   margin-bottom: 20px;
 }
@@ -144,7 +144,7 @@
   gap: 8px;
   padding: 12px;
   background: var(--bg-white);
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   border: 1px solid rgba(245, 158, 11, 0.2);
   cursor: pointer;
   text-align: center;
@@ -159,7 +159,7 @@
   width: 56px;
   height: 56px;
   object-fit: contain;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   background: var(--bg-secondary);
 }
 
@@ -178,7 +178,7 @@
   font-size: 0.7rem;
   font-weight: 600;
   padding: 4px 8px;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
 }
 
 .myshelf-expiring-badge.warning {
@@ -188,13 +188,13 @@
 
 .myshelf-expiring-badge.expired {
   background: #fee2e2;
-  color: #dc2626;
+  color: var(--danger);
 }
 
 /* ----- Onboarding (collapsible tips) ----- */
 .myshelf-onboarding {
   background: var(--bg-white);
-  border-radius: 16px;
+  border-radius: var(--border-radius-xl);
   border: 1px solid var(--border-color, #e2e8f0);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   margin-bottom: 20px;
@@ -251,7 +251,7 @@
   line-height: 1.5;
   padding: 12px;
   background: var(--gray-50);
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
 }
 
 .myshelf-tip strong {
@@ -439,7 +439,7 @@
 .myshelf-sort-select {
   padding: 10px 14px;
   border: 1px solid var(--border-color);
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   background: var(--bg-white);
   font-size: 0.875rem;
   color: var(--text-primary);
@@ -565,7 +565,7 @@
 
 .product-card {
   background: var(--bg-white);
-  border-radius: 16px;
+  border-radius: var(--border-radius-xl);
   padding: 0;
   border: 1px solid var(--border-color);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
@@ -653,7 +653,7 @@
   text-transform: uppercase;
   letter-spacing: 0.03em;
   padding: 4px 10px;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   align-self: flex-start;
   background: var(--gray-100);
   color: var(--text-muted);
@@ -703,7 +703,7 @@
   border: none;
   background: transparent;
   color: var(--text-muted);
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   cursor: pointer;
 }
 
@@ -768,7 +768,7 @@
   min-height: 44px;
   padding: 10px 14px;
   border: 1px solid var(--border-color);
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   background: var(--bg-white);
   font-size: 0.875rem;
   color: var(--text-primary);
@@ -786,7 +786,7 @@
   background: transparent;
   color: var(--danger);
   border: 1px solid var(--danger);
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   font-weight: 600;
   font-size: 0.875rem;
   cursor: pointer;
@@ -834,7 +834,7 @@
 .repurchase-btn {
   background: var(--gray-100);
   border: 1px solid var(--border-color);
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   padding: 6px 12px;
   font-size: 0.8125rem;
   cursor: pointer;
@@ -871,7 +871,7 @@
 
 .expiry-badge.expired {
   background: #fee2e2;
-  color: #dc2626;
+  color: var(--danger);
   font-weight: 600;
 }
 
@@ -1025,7 +1025,7 @@
 .product-image-button:focus-visible {
   outline: 2px solid var(--primary);
   outline-offset: 2px;
-  border-radius: 4px;
+  border-radius: var(--border-radius-sm);
 }
 
 /* Dark mode tweaks */

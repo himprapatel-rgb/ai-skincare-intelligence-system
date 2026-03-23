@@ -13,7 +13,7 @@
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #2563eb 0%, #7c3aed 50%, #ec4899 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, #7c3aed 50%, #ec4899 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -151,7 +151,7 @@
   font-weight: 800;
   color: var(--text-dark);
   letter-spacing: -0.02em;
-  background: linear-gradient(135deg, #1e293b 0%, #3b82f6 100%);
+  background: linear-gradient(135deg, #1e293b 0%, var(--primary) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -183,7 +183,7 @@
   .stat-item {
     padding: 16px 8px;
     background: rgba(255, 255, 255, 0.8);
-    border-radius: 12px;
+    border-radius: var(--border-radius-lg);
     border: 1px solid rgba(226, 232, 240, 0.6);
   }
   
@@ -205,8 +205,8 @@
 }
 
 .testimonial-card {
-  background: #ffffff;
-  border-radius: 16px;
+  background: var(--bg-white);
+  border-radius: var(--border-radius-xl);
   padding: 24px;
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
@@ -286,7 +286,7 @@
 .faq-item {
   padding: 18px 20px;
   border-radius: 14px;
-  background: #ffffff;
+  background: var(--bg-white);
   border: 1px solid var(--border);
 }
 
@@ -431,7 +431,7 @@
   background: var(--primary);
   color: white;
   padding: 12px 24px;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   text-decoration: none;
   font-weight: 600;
   font-size: 0.95rem;
@@ -651,7 +651,7 @@
   color: var(--gray-800, #1e293b);
   letter-spacing: 0.03em;
   padding: 12px 20px;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   background: var(--gray-50, #f8fafc);
   border: 1px solid var(--gray-200, #e2e8f0);
   display: inline-flex;
@@ -724,7 +724,7 @@
   background: var(--bg-light);
   color: var(--primary);
   padding: 6px 16px;
-  border-radius: 16px;
+  border-radius: var(--border-radius-xl);
   font-size: 0.875rem;
   font-weight: 600;
   margin-bottom: 16px;
@@ -752,7 +752,7 @@
 .feature-card {
   background: var(--bg-white);
   padding: 40px 32px;
-  border-radius: 16px;
+  border-radius: var(--border-radius-xl);
   border: 1px solid var(--border);
   text-align: center;
   transition: all 0.3s;
@@ -768,7 +768,7 @@
   width: 64px;
   height: 64px;
   background: linear-gradient(135deg, #e0f2fe 0%, #ccfbf1 100%);
-  border-radius: 16px;
+  border-radius: var(--border-radius-xl);
   margin: 0 auto 24px;
   display: flex;
   align-items: center;
@@ -1071,7 +1071,7 @@
 .step-card {
   background: var(--bg-light);
   padding: 40px 32px;
-  border-radius: 16px;
+  border-radius: var(--border-radius-xl);
   text-align: center;
   position: relative;
   border: 1px solid var(--border);
@@ -1230,7 +1230,7 @@
 
 .sample-report-preview {
   background: white;
-  border-radius: 16px;
+  border-radius: var(--border-radius-xl);
   padding: 24px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   border: 1px solid var(--border);
@@ -1268,7 +1268,7 @@
 }
 
 .score-circle.good {
-  background: linear-gradient(135deg, #10b981, #34d399);
+  background: linear-gradient(135deg, var(--success), #34d399);
 }
 
 .score-circle.medium {
@@ -1285,7 +1285,7 @@
   padding: 4px 12px;
   background: #fef3c7;
   color: #92400e;
-  border-radius: 16px;
+  border-radius: var(--border-radius-xl);
   font-size: 0.75rem;
   font-weight: 500;
 }
@@ -1321,7 +1321,7 @@
 
 .result-card {
   background: white;
-  border-radius: 16px;
+  border-radius: var(--border-radius-xl);
   padding: 24px;
   text-align: center;
   box-shadow: var(--shadow);
@@ -1524,7 +1524,7 @@
 
 .faq-item {
   background: var(--bg-light);
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   padding: 24px;
   border-left: 4px solid var(--primary);
 }
@@ -1582,7 +1582,7 @@
 /* Clean sample card */
 .sample-report-preview {
   background: white;
-  border-radius: 16px;
+  border-radius: var(--border-radius-xl);
   padding: 32px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   border: 1px solid var(--border);
@@ -1593,7 +1593,7 @@
   background: var(--primary);
   color: white;
   padding: 14px 28px;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   font-weight: 600;
   border: none;
   transition: opacity 0.2s;
@@ -1607,7 +1607,7 @@
   background: white;
   color: var(--text-dark);
   padding: 14px 28px;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   font-weight: 500;
   border: 1px solid var(--border);
   transition: background 0.2s;
@@ -1638,7 +1638,7 @@
 .result-card,
 .step-card {
   background: white;
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   padding: 32px;
   border: 1px solid var(--border);
   transition: border-color 0.2s;
@@ -1847,7 +1847,7 @@
 }
 
 .sample-report-preview {
-  border-radius: 16px;
+  border-radius: var(--border-radius-xl);
   border: 1px solid rgba(227, 236, 255, 0.9);
   box-shadow:
     0 22px 52px rgba(13, 27, 62, 0.12),
@@ -1974,7 +1974,7 @@
   left: 20px;
   right: 20px;
   height: 3px;
-  background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%);
+  background: linear-gradient(90deg, var(--primary) 0%, #8b5cf6 50%, #ec4899 100%);
   border-radius: 0 0 4px 4px;
 }
 
@@ -2190,7 +2190,7 @@
 }
 
 .homepage .btn-primary {
-  background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, #7c3aed 100%);
   border-radius: 14px;
   padding: 16px 32px;
   letter-spacing: 0.01em;
@@ -2252,7 +2252,7 @@
 }
 
 .trust-badges .badge-item {
-  background: #ffffff;
+  background: var(--bg-white);
   border: 1px solid var(--border);
   padding: 10px 16px;
   border-radius: 999px;
@@ -2260,7 +2260,7 @@
 }
 
 .faq-item {
-  background: #ffffff;
+  background: var(--bg-white);
   box-shadow: 0 12px 26px rgba(13, 27, 62, 0.08);
   border-left-color: var(--accent);
 }
@@ -2279,7 +2279,7 @@
 }
 
 .cta-section .btn-primary.large {
-  background: #ffffff;
+  background: var(--bg-white);
   color: var(--primary);
   border: 1px solid rgba(255, 255, 255, 0.7);
 }
@@ -2358,7 +2358,7 @@
 .result-card .result-icon svg {
   width: 36px;
   height: 36px;
-  color: #3b82f6;
+  color: var(--primary);
 }
 
 .result-card h3 {
@@ -2623,7 +2623,7 @@
   width: 100%;
   max-width: 240px;
   padding: 20px;
-  border-radius: 16px;
+  border-radius: var(--border-radius-xl);
   border: 1px solid rgba(31, 111, 235, 0.18);
   background: linear-gradient(180deg, rgba(31, 111, 235, 0.08) 0%, rgba(31, 111, 235, 0.02) 100%);
   box-shadow: 0 2px 12px rgba(31, 111, 235, 0.06);
@@ -2633,7 +2633,7 @@
    HOW IT WORKS: ART-DIRECTED CARD LAYOUT
 ============================================= */
 .homepage .how-it-works {
-  background: #ffffff;
+  background: var(--bg-white);
 }
 
 .homepage .steps-container {
@@ -2641,7 +2641,7 @@
 }
 
 .homepage .steps-container .step-card {
-  background: #ffffff;
+  background: var(--bg-white);
   border: 1px solid rgba(31, 111, 235, 0.14);
   border-radius: 22px;
   padding: 32px 26px;
@@ -2750,7 +2750,7 @@
   padding: 12px 24px;
   font-size: 0.95rem;
   font-weight: 600;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   min-width: 160px;
   text-align: center;
 }
@@ -2775,9 +2775,9 @@
   align-items: center;
   gap: 12px;
   padding: 24px 16px;
-  background: #ffffff;
-  border-radius: 16px;
-  border: 1px solid #e2e8f0;
+  background: var(--bg-white);
+  border-radius: var(--border-radius-xl);
+  border: 1px solid var(--border-color);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   transition: all 0.3s ease;
   text-align: center;
@@ -2813,7 +2813,7 @@
 /* Distinct colors for each badge */
 .trust-badge-security .trust-badge-icon {
   background: linear-gradient(135deg, rgba(59, 130, 246, 0.12) 0%, rgba(59, 130, 246, 0.06) 100%);
-  color: #3b82f6;
+  color: var(--primary);
 }
 .trust-badge-security:hover {
   border-color: rgba(59, 130, 246, 0.3);
@@ -2829,7 +2829,7 @@
 
 .trust-badge-delete .trust-badge-icon {
   background: linear-gradient(135deg, rgba(239, 68, 68, 0.12) 0%, rgba(239, 68, 68, 0.06) 100%);
-  color: #ef4444;
+  color: var(--danger);
 }
 .trust-badge-delete:hover {
   border-color: rgba(239, 68, 68, 0.3);
@@ -2933,7 +2933,7 @@
 .hero-title {
   letter-spacing: -0.04em;
   font-weight: 800;
-  color: #0f172a;
+  color: var(--text-primary);
 }
 
 .gradient-text {
@@ -2980,7 +2980,7 @@
 
 .hero-cta-secondary {
   background: white;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--border-color);
   color: var(--text-dark);
   box-shadow: 0 2px 4px rgba(0,0,0,0.02);
   transition: all 0.3s ease;
@@ -3002,14 +3002,14 @@
 }
 
 .score-circle.good {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
   color: white;
   text-shadow: 0 1px 2px rgba(0,0,0,0.1);
   box-shadow: 0 8px 16px -4px rgba(16, 185, 129, 0.3);
 }
 
 .score-circle.medium {
-  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  background: linear-gradient(135deg, var(--warning) 0%, #d97706 100%);
   color: white;
   text-shadow: 0 1px 2px rgba(0,0,0,0.1);
   box-shadow: 0 8px 16px -4px rgba(245, 158, 11, 0.3);
@@ -3026,7 +3026,7 @@
 /* Make icons stand out */
 .result-icon {
   background: linear-gradient(135deg, rgba(37, 99, 235, 0.1) 0%, rgba(124, 58, 237, 0.05) 100%);
-  border-radius: 16px;
+  border-radius: var(--border-radius-xl);
   width: 64px;
   height: 64px;
   display: flex;
@@ -3057,7 +3057,7 @@
 .testimonial-card {
   position: relative;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  background: #ffffff;
+  background: var(--bg-white);
   z-index: 0;
 }
 
@@ -3207,7 +3207,7 @@
 .faq-summary:focus-visible {
   outline: 2px solid var(--primary);
   outline-offset: 2px;
-  border-radius: 4px;
+  border-radius: var(--border-radius-sm);
 }
 
 .faq-chevron {

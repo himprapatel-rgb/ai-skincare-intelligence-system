@@ -106,7 +106,7 @@
   position: relative;
   display: flex;
   background: rgba(102, 126, 234, 0.08);
-  border-radius: 16px;
+  border-radius: var(--border-radius-xl);
   padding: 5px;
   margin-bottom: 28px;
 }
@@ -120,11 +120,11 @@
   border: none;
   font-size: 16px;
   font-weight: 700;
-  color: #64748b;
+  color: var(--text-secondary);
   cursor: pointer;
   transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   -webkit-tap-highlight-color: transparent;
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
 }
 
 .auth-tab-active {
@@ -138,7 +138,7 @@
   width: calc(50% - 5px);
   height: calc(100% - 10px);
   background: white;
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 1;
@@ -156,9 +156,9 @@
   padding: 16px;
   background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
   border: 1.5px solid #fecaca;
-  border-left: 4px solid #ef4444;
+  border-left: 4px solid var(--danger);
   border-radius: 14px;
-  color: #dc2626;
+  color: var(--danger);
   font-size: 14px;
   font-weight: 500;
   line-height: 1.6;
@@ -189,7 +189,7 @@
   line-height: 1.5;
   background: rgba(0, 0, 0, 0.03);
   border: 2px solid transparent;
-  border-radius: 16px;
+  border-radius: var(--border-radius-xl);
   outline: none;
   color: #1a1a1a;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -206,7 +206,7 @@
   left: 16px;
   top: 50%;
   transform: translateY(-50%);
-  color: #94a3b8;
+  color: var(--text-muted);
   pointer-events: none;
   z-index: 1;
   transition: color 0.3s;
@@ -225,7 +225,7 @@
   pointer-events: none;
   font-size: 16px;
   font-weight: 500;
-  color: #64748b;
+  color: var(--text-secondary);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   background: transparent;
   padding: 0 4px;
@@ -271,9 +271,9 @@
   justify-content: center;
   background: transparent;
   border: none;
-  color: #94a3b8;
+  color: var(--text-muted);
   cursor: pointer;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   transition: all 0.2s;
   -webkit-tap-highlight-color: transparent;
 }
@@ -303,23 +303,23 @@
 
 .strength-bar.strength-weak {
   width: 33%;
-  background: linear-gradient(90deg, #ef4444 0%, #dc2626 100%);
+  background: linear-gradient(90deg, var(--danger) 0%, var(--danger) 100%);
 }
 
 .strength-bar.strength-medium {
   width: 66%;
-  background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%);
+  background: linear-gradient(90deg, var(--warning) 0%, #d97706 100%);
 }
 
 .strength-bar.strength-strong {
   width: 100%;
-  background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+  background: linear-gradient(90deg, var(--success) 0%, #059669 100%);
 }
 
 .strength-text {
   display: block;
   font-size: 13px;
-  color: #64748b;
+  color: var(--text-secondary);
   margin-top: 8px;
   font-weight: 500;
 }
@@ -342,7 +342,7 @@
   align-items: center;
   gap: 10px;
   font-size: 14px;
-  color: #64748b;
+  color: var(--text-secondary);
   font-weight: 500;
   cursor: pointer;
   user-select: none;
@@ -366,7 +366,7 @@
   text-decoration: none;
   font-weight: 700;
   padding: 8px 12px;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   transition: all 0.2s;
 }
 
@@ -385,7 +385,7 @@
   color: white;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border: none;
-  border-radius: 16px;
+  border-radius: var(--border-radius-xl);
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 
@@ -448,7 +448,7 @@
   align-items: center;
   gap: 14px;
   margin: 28px 0;
-  color: #94a3b8;
+  color: var(--text-muted);
   font-size: 14px;
   font-weight: 500;
 }
@@ -471,7 +471,7 @@
 /* Override Google button styles */
 .social-buttons .google-signin-btn {
   min-height: 54px;
-  border-radius: 16px;
+  border-radius: var(--border-radius-xl);
   font-size: 16px;
   font-weight: 600;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
@@ -493,7 +493,7 @@
 }
 
 .switch-text {
-  color: #64748b;
+  color: var(--text-secondary);
   font-weight: 500;
 }
 
@@ -506,7 +506,7 @@
   cursor: pointer;
   margin-left: 6px;
   padding: 6px 12px;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   transition: all 0.2s;
   -webkit-tap-highlight-color: transparent;
 }
@@ -569,7 +569,7 @@
 
 .feature-content p {
   font-size: 14px;
-  color: #64748b;
+  color: var(--text-secondary);
   margin: 0;
   line-height: 1.5;
   font-weight: 500;
@@ -581,7 +581,7 @@
   z-index: 2;
   text-align: center;
   padding: 0 32px 32px;
-  color: #94a3b8;
+  color: var(--text-muted);
   font-size: 13px;
   line-height: 1.7;
   font-weight: 500;

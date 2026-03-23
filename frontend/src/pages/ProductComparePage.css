@@ -70,7 +70,7 @@
 
 .compare-card-media {
   width: 100%;
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   background: var(--bg-light);
   border: 1px solid var(--border);
   overflow: hidden;
@@ -152,7 +152,7 @@
   display: inline-block;
   padding: 4px 10px;
   background: rgba(31, 111, 235, 0.1);
-  color: var(--primary, #1f6feb);
+  color: var(--primary, var(--primary));
   border-radius: 6px;
   font-size: 0.8125rem;
 }
@@ -179,7 +179,7 @@
 .btn-secondary {
   display: inline-block;
   padding: 10px 20px;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
@@ -188,7 +188,7 @@
 }
 
 .btn-primary {
-  background: var(--primary, #1f6feb);
+  background: var(--primary, var(--primary));
   color: white;
   border: none;
 }

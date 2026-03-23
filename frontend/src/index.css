@@ -21,6 +21,8 @@
 @import './styles/designer-hotfix.css';
 @import './styles/page-block-polish.css';
 @import './styles/mobile-ux-2026.css';
+@import './styles/creative-restructure.css';
+@import './styles/page-creative.css';
 
 /* CSS Variables */
 :root {

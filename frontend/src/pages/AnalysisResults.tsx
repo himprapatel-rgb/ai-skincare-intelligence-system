@@ -427,7 +427,7 @@ const AnalysisResults: React.FC = () => {
               {savedToFavorites ? 'Saved' : 'Save analysis'}
             </button>
             <button onClick={() => navigate('/')} className="results-back">
-              <IconArrowLeft size={16} strokeWidth={2} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
+              <IconArrowLeft size={16} strokeWidth={2} className="icon-inline" />
               Back to Dashboard
             </button>
           </div>
@@ -587,7 +587,7 @@ const AnalysisResults: React.FC = () => {
             </div>
           </div>
           <button type="button" onClick={() => navigate('/recommendations')} className="btn btn-primary analysis-ingredient-cta">
-            <IconShoppingCart size={18} strokeWidth={2} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+            <IconShoppingCart size={18} strokeWidth={2} className="icon-inline" />
             Find products with these ingredients
           </button>
         </div>
@@ -619,7 +619,7 @@ const AnalysisResults: React.FC = () => {
             <ul className="recommendations-list">
               {analysis.recommendations.map((rec, index) => (
                 <li key={index}>
-                  <IconCheck size={16} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '8px' }} />
+                  <IconCheck size={16} strokeWidth={2} className="icon-inline" />
                   {rec}
                 </li>
               ))}
@@ -677,11 +677,11 @@ const AnalysisResults: React.FC = () => {
 
         <div className="results-actions">
           <button onClick={() => navigate('/scan')} className="btn btn-primary">
-            <IconScan size={18} strokeWidth={2} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+            <IconScan size={18} strokeWidth={2} className="icon-inline" />
             Take New Scan
           </button>
           <button onClick={() => navigate('/')} className="btn btn-secondary">
-            <IconHome size={18} strokeWidth={2} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+            <IconHome size={18} strokeWidth={2} className="icon-inline" />
             Back to Dashboard
           </button>
         </div>

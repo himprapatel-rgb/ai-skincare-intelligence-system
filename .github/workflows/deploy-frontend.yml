@@ -49,6 +49,7 @@ jobs:
         run: npm run build
         env:
           VITE_API_URL: https://ai-skincare-intelligence-system-production.up.railway.app
+          VITE_APP_BASE: /ai-skincare-intelligence-system/
 
       - name: Add SPA fallback page
         run: cp dist/index.html dist/404.html

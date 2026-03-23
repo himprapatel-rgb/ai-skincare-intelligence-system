@@ -570,14 +570,6 @@ _uploads_dir = Path(__file__).resolve().parent.parent / "uploads"
 _uploads_dir.mkdir(parents=True, exist_ok=True)
 app.mount("/uploads", StaticFiles(directory=str(_uploads_dir)), name="uploads")
 
-@app.get("/", tags=["Root"])
-def read_root():
-    return {
-        "message": "AI Skincare Intelligence System API",
-        "version": settings.APP_VERSION,
-    }
-
-
 # Sprint 3 Digital Twin deployment trigger - Force redeploy
 # Backend redeploy stamp: 2026-01-19-02
 # Watch path test: /backend/** configured

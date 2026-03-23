@@ -18,7 +18,7 @@ from fastapi import (
     UploadFile,
 )
 from pydantic import BaseModel
-from sqlalchemy import text
+from sqlalchemy import func as sqlfunc, text
 from sqlalchemy.orm import Session
 
 from app.core.security import get_current_admin
@@ -400,19 +400,23 @@ async def get_admin_summary(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_admin),
 ):
-    user_count = db.query(User).count()
-    active_user_count = db.query(User).filter(User.is_active == True).count()
-    scan_count = db.query(ScanSession).count()
-    product_count = db.query(Product).count()
-    routine_count = db.query(SavedRoutine).count()
-    snapshot_count = db.query(SkinStateSnapshot).count()
+    # Single query with subselects instead of 6 sequential COUNT queries
+    row = db.execute(text("""
+        SELECT
+            (SELECT count(*) FROM users) AS user_count,
+            (SELECT count(*) FROM users WHERE is_active = true) AS active_user_count,
+            (SELECT count(*) FROM scan_sessions) AS scan_count,
+            (SELECT count(*) FROM products) AS product_count,
+            (SELECT count(*) FROM saved_routines) AS routine_count,
+            (SELECT count(*) FROM skin_state_snapshots) AS snapshot_count
+    """)).fetchone()
     return AdminSummary(
-        user_count=user_count,
-        active_user_count=active_user_count,
-        scan_count=scan_count,
-        product_count=product_count,
-        routine_count=routine_count,
-        snapshot_count=snapshot_count,
+        user_count=row[0],
+        active_user_count=row[1],
+        scan_count=row[2],
+        product_count=row[3],
+        routine_count=row[4],
+        snapshot_count=row[5],
     )
 
 

@@ -79,8 +79,8 @@ class Settings(BaseSettings):
     )
 
     # Database connection pool settings (main DB)
-    DB_POOL_SIZE: int = Field(default=5, description="SQLAlchemy pool size for main DB")
-    DB_MAX_OVERFLOW: int = Field(default=5, description="SQLAlchemy max overflow for main DB")
+    DB_POOL_SIZE: int = Field(default=3, description="SQLAlchemy pool size for main DB (per worker)")
+    DB_MAX_OVERFLOW: int = Field(default=7, description="SQLAlchemy max overflow for main DB (per worker)")
     DB_POOL_TIMEOUT: int = Field(
         default=5,
         description="Seconds to wait for a DB connection before failing",
@@ -92,8 +92,8 @@ class Settings(BaseSettings):
     )
 
     # Product database connection pool settings
-    PRODUCT_DB_POOL_SIZE: int = Field(default=3, description="Pool size for product DB")
-    PRODUCT_DB_MAX_OVERFLOW: int = Field(default=2, description="Max overflow for product DB")
+    PRODUCT_DB_POOL_SIZE: int = Field(default=2, description="Pool size for product DB (per worker)")
+    PRODUCT_DB_MAX_OVERFLOW: int = Field(default=5, description="Max overflow for product DB (per worker)")
     PRODUCT_DB_POOL_TIMEOUT: int = Field(default=5, description="Pool timeout for product DB")
     PRODUCT_DB_POOL_RECYCLE: int = Field(default=1800, description="Recycle seconds for product DB")
     PRODUCT_DB_STATEMENT_TIMEOUT_MS: int = Field(

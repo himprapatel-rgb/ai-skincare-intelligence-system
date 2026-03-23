@@ -12,7 +12,7 @@ from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
-from sqlalchemy import or_
+from sqlalchemy import func as sqlfunc, or_
 from sqlalchemy.orm import Session
 
 from app.core.security import get_current_user
@@ -130,11 +130,14 @@ async def get_shelf(
         ShelfProduct.created_at.desc()
     ).all()
     
-    # Count by status
-    status_counts = {}
-    all_products = db.query(ShelfProduct).filter(ShelfProduct.user_id == current_user.id).all()
-    for p in all_products:
-        status_counts[p.status] = status_counts.get(p.status, 0) + 1
+    # Count by status using aggregate query (avoids duplicate full-table fetch)
+    status_rows = (
+        db.query(ShelfProduct.status, sqlfunc.count(ShelfProduct.id))
+        .filter(ShelfProduct.user_id == current_user.id)
+        .group_by(ShelfProduct.status)
+        .all()
+    )
+    status_counts = {row[0]: row[1] for row in status_rows}
     
     return ShelfListResponse(
         products=[

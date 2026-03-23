@@ -201,8 +201,9 @@ const ComparisonPage: React.FC = () => {
         <h3 className="comparison-card-title">Select two analyses</h3>
         <div className="comparison-selects">
           <div className="comparison-select">
-            <label className="comparison-label">First Analysis (Newer)</label>
+            <label className="comparison-label" htmlFor="comparison-first">First Analysis (Newer)</label>
             <select
+              id="comparison-first"
               value={selectedAnalyses[0] || ''}
               onChange={(e) => setSelectedAnalyses([e.target.value, selectedAnalyses[1]])}
               className="comparison-input"
@@ -214,8 +215,9 @@ const ComparisonPage: React.FC = () => {
             </select>
           </div>
           <div className="comparison-select">
-            <label className="comparison-label">Second Analysis (Older)</label>
+            <label className="comparison-label" htmlFor="comparison-second">Second Analysis (Older)</label>
             <select
+              id="comparison-second"
               value={selectedAnalyses[1] || ''}
               onChange={(e) => setSelectedAnalyses([selectedAnalyses[0], e.target.value])}
               className="comparison-input"

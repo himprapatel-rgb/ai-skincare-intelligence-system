@@ -156,8 +156,8 @@ const FavoritesPage: React.FC = () => {
             )}
           </div>
           <div className="favorites-sort">
-            <label>Sort by: </label>
-            <select value={sortBy} onChange={(e) => setSortBy(e.target.value as 'date' | 'name' | 'price')}>
+            <label htmlFor="favorites-sort">Sort by: </label>
+            <select id="favorites-sort" value={sortBy} onChange={(e) => setSortBy(e.target.value as 'date' | 'name' | 'price')}>
               <option value="date">Date Added</option>
               <option value="name">Name</option>
               <option value="price">Price</option>

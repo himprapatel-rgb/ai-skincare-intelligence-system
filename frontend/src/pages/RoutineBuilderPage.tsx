@@ -364,8 +364,9 @@ const RoutineBuilderPage: React.FC = () => {
                 <div className="step-number">{step.order}</div>
                 <div className="step-content">
                   <div className="step-field">
-                    <label>Category:</label>
-                    <select 
+                    <label htmlFor={`step-category-${step.id}`}>Category:</label>
+                    <select
+                      id={`step-category-${step.id}`}
                       value={step.category}
                       onChange={(e) => handleUpdateCategory(step.id, e.target.value)}
                     >

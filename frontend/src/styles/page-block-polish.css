@@ -1,0 +1,593 @@
+/* Page-by-page, block-by-block visual polish layer */
+
+/* ------------------------------
+   HOME PAGE BLOCKS
+------------------------------ */
+.homepage .hero-badge {
+  border-radius: 999px;
+  padding: 8px 14px;
+}
+
+.homepage .section-header {
+  margin-bottom: 28px;
+}
+
+.homepage .section-header h2 {
+  font-size: clamp(1.4rem, 2.2vw, 2rem);
+  letter-spacing: -0.015em;
+}
+
+.homepage .result-card,
+.homepage .step-card,
+.homepage .testimonial-card,
+.homepage .faq-item {
+  border-radius: 14px;
+}
+
+.homepage .cta-section {
+  border-radius: 14px;
+  margin: 0 16px 24px;
+}
+
+@media (max-width: 768px) {
+  .homepage .hero-cta {
+    flex-direction: column;
+  }
+}
+
+/* ------------------------------
+   DASHBOARD PAGE BLOCKS
+------------------------------ */
+.dashboard-page {
+  background: #f5f8fc;
+}
+
+.dashboard-page .dashboard-hero,
+.dashboard-page .app-header-card {
+  border-radius: 12px;
+  border: 1px solid #d9e3ef;
+  box-shadow: 0 2px 10px rgba(16, 24, 40, 0.06);
+}
+
+.dashboard-page .dashboard-stats {
+  gap: 14px;
+}
+
+.dashboard-page .stat-card {
+  border: 1px solid #d9e3ef;
+  border-radius: 12px;
+  min-height: 150px;
+  animation: none;
+}
+
+.dashboard-page .stat-card:hover {
+  box-shadow: 0 4px 12px rgba(16, 24, 40, 0.08);
+}
+
+.dashboard-page .dashboard-section {
+  border: 1px solid #d9e3ef;
+  border-radius: 12px;
+}
+
+.dashboard-page .activity-item:hover,
+.dashboard-page .action-card:hover {
+  transform: none;
+}
+
+/* ------------------------------
+   SCAN PAGE BLOCKS
+------------------------------ */
+.scan-page .scan-content {
+  border: 1px solid #d9e3ef;
+  box-shadow: 0 2px 10px rgba(16, 24, 40, 0.06);
+}
+
+.scan-page .scan-title .gradient-text {
+  background: none;
+  -webkit-text-fill-color: initial;
+  color: #1f5fbf;
+  animation: none;
+}
+
+.scan-page .scan-upload-label {
+  border-radius: 14px;
+  border-width: 2px;
+  min-height: 290px;
+}
+
+.scan-page .scan-tips {
+  border-radius: 14px;
+  border-color: #d9e3ef;
+  background: #f8fbff;
+}
+
+.scan-page .scan-tips li:hover,
+.scan-page .scan-upload-label:hover,
+.scan-page .scan-btn-primary:hover:not(:disabled),
+.scan-page .scan-btn-secondary:hover:not(:disabled) {
+  transform: none;
+}
+
+.scan-page .scan-btn-primary,
+.scan-page .scan-btn-secondary {
+  border-radius: 10px;
+}
+
+/* ------------------------------
+   ANALYSIS RESULTS PAGE BLOCKS
+------------------------------ */
+.analysis-results .results-header,
+.analysis-results .result-card,
+.analysis-results .confidence-row,
+.analysis-results .analysis-inline-warning {
+  border-radius: 12px;
+  border-color: #d9e3ef;
+}
+
+.analysis-results .result-card:hover,
+.analysis-results .results-back:hover,
+.analysis-results .results-actions .btn-primary:hover,
+.analysis-results .results-actions .btn-secondary:hover {
+  transform: none;
+}
+
+.analysis-results .results-grid {
+  gap: 16px;
+}
+
+.analysis-results .severity-card {
+  border-radius: 10px;
+}
+
+/* ------------------------------
+   MYSHELF PAGE BLOCKS
+------------------------------ */
+.myshelf-page .myshelf-hero {
+  background: linear-gradient(135deg, #1f5fbf 0%, #3d77cb 100%);
+  border-radius: 0 0 16px 16px;
+}
+
+.myshelf-page .myshelf-toolbar,
+.myshelf-page .myshelf-onboarding,
+.myshelf-page .myshelf-empty {
+  border-radius: 12px;
+}
+
+.myshelf-page .product-card {
+  border-radius: 12px;
+  border-color: #d9e3ef;
+}
+
+.myshelf-page .product-card:hover,
+.myshelf-page .myshelf-add-btn:hover,
+.myshelf-page .myshelf-fab:hover {
+  transform: none;
+}
+
+.myshelf-page .myshelf-search-wrap:focus-within {
+  box-shadow: 0 0 0 3px rgba(31, 95, 191, 0.16);
+}
+
+@media (max-width: 768px) {
+  .myshelf-page .product-card {
+    border-radius: 0;
+  }
+}
+
+/* ------------------------------
+   AUTH PAGE BLOCKS
+------------------------------ */
+.auth-page .auth-left {
+  background: linear-gradient(135deg, #1f5fbf 0%, #2f6fca 100%);
+}
+
+.auth-page .auth-feature {
+  border-radius: 12px;
+  transform: none !important;
+}
+
+.auth-page .auth-card {
+  border: 1px solid #d9e3ef;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(16, 24, 40, 0.06);
+}
+
+.auth-page .auth-header h2 {
+  font-size: clamp(1.4rem, 2vw, 1.9rem);
+}
+
+.auth-page .auth-submit,
+.auth-page .btn-primary,
+.auth-page .btn-link {
+  border-radius: 10px;
+  transform: none !important;
+}
+
+/* ------------------------------
+   PROFILE SETTINGS PAGE BLOCKS
+------------------------------ */
+.profile-settings-page {
+  background: #f5f8fc;
+}
+
+.profile-settings-page .profile-header-card {
+  background: linear-gradient(135deg, #1f5fbf 0%, #3a78cf 100%);
+}
+
+.profile-settings-page .profile-card,
+.profile-settings-page .profile-content,
+.profile-settings-page .settings-group,
+.profile-settings-page .section-card,
+.profile-settings-page .profile-modal {
+  border: 1px solid #d9e3ef;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(16, 24, 40, 0.06);
+}
+
+.profile-settings-page .settings-item.active {
+  background: #edf4fe;
+  color: #1f5fbf;
+}
+
+.profile-settings-page .btn-primary,
+.profile-settings-page .btn-secondary,
+.profile-settings-page .btn-upload,
+.profile-settings-page .profile-floating-save-btn {
+  border-radius: 10px;
+  transform: none !important;
+}
+
+/* ------------------------------
+   PRODUCT DETAILS PAGE BLOCKS
+------------------------------ */
+.product-details-page {
+  background: #f5f8fc;
+}
+
+.product-details-page .product-image-section,
+.product-details-page .product-details-tabs,
+.product-details-page .ingredient-card,
+.product-details-page .review-card,
+.product-details-page .review-form,
+.product-details-page .no-reviews {
+  border-color: #d9e3ef;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(16, 24, 40, 0.06);
+}
+
+.product-details-page .tabs-header button.active {
+  background: #edf4fe;
+}
+
+.product-details-page .btn-primary,
+.product-details-page .btn-secondary,
+.product-details-page .btn-outline,
+.product-details-page .view-btn {
+  border-radius: 10px;
+  transform: none !important;
+}
+
+/* ------------------------------
+   TODAY PAGE BLOCKS
+------------------------------ */
+.today-page {
+  background: #f5f8fc;
+}
+
+.today-page .today-card {
+  border: 1px solid #d9e3ef;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(16, 24, 40, 0.06);
+}
+
+.today-page .today-card-prediction,
+.today-page .today-card-streak,
+.today-page .today-card-toppick {
+  background: #ffffff;
+  border-color: #d9e3ef;
+}
+
+.today-page .today-routine-tab.active {
+  background: #edf4fe;
+}
+
+.today-page .today-product-card {
+  border-radius: 10px;
+}
+
+.today-page .today-products-grid {
+  gap: 12px;
+}
+
+/* ------------------------------
+   HISTORY PAGE BLOCKS
+------------------------------ */
+.history-page {
+  background: #f5f8fc;
+}
+
+.history-page .history-toolbar,
+.history-page .history-item,
+.history-page .stat-card,
+.history-page .empty-state {
+  border: 1px solid #d9e3ef;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(16, 24, 40, 0.06);
+}
+
+.history-page .filter-btn.active {
+  background: #1f5fbf;
+  border-color: #1f5fbf;
+}
+
+.history-page .history-item:hover,
+.history-page .stat-card:hover,
+.history-page .filter-btn:hover,
+.history-page .view-btn:hover {
+  transform: none;
+}
+
+/* ------------------------------
+   ROUTINE BUILDER PAGE BLOCKS
+------------------------------ */
+.routine-builder-page {
+  background: #f5f8fc;
+}
+
+.routine-builder-page .routine-builder,
+.routine-builder-page .routine-step,
+.routine-builder-page .suggestion-card,
+.routine-builder-page .routine-tips,
+.routine-builder-page .routine-reminders,
+.routine-builder-page .empty-state {
+  border: 1px solid #d9e3ef;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(16, 24, 40, 0.06);
+}
+
+.routine-builder-page .routine-toggle {
+  border-radius: 12px;
+}
+
+.routine-builder-page .routine-toggle button.active {
+  background: #1f5fbf;
+}
+
+.routine-builder-page .routine-step:hover,
+.routine-builder-page .btn-add-step:hover,
+.routine-builder-page .routine-actions .btn-primary:hover,
+.routine-builder-page .routine-actions .btn-secondary:hover {
+  transform: none;
+}
+
+/* ------------------------------
+   PRODUCT SCANNER PAGE BLOCKS
+------------------------------ */
+.product-scanner-page {
+  background: #f5f8fc;
+}
+
+.product-scanner-page .scanner-card,
+.product-scanner-page .processing-card,
+.product-scanner-page .error-card,
+.product-scanner-page .product-info-card,
+.product-scanner-page .guide-card,
+.product-scanner-page .example-card {
+  border: 1px solid #d9e3ef;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(16, 24, 40, 0.06);
+}
+
+.product-scanner-page .mode-btn.active {
+  background: #1f5fbf;
+  border-color: #1f5fbf;
+}
+
+.product-scanner-page .btn-scan,
+.product-scanner-page .btn-success,
+.product-scanner-page .btn-view-details,
+.product-scanner-page .btn-toggle-camera {
+  border-radius: 10px;
+  transform: none !important;
+}
+
+.product-scanner-page .upload-label:hover,
+.product-scanner-page .capture-btn:hover,
+.product-scanner-page .scanner-card .btn-scan:hover {
+  transform: none;
+}
+
+/* ------------------------------
+   NOTIFICATION CENTER PAGE BLOCKS
+------------------------------ */
+.notification-center-page {
+  background: #f5f8fc;
+}
+
+.notification-center-page .settings-card,
+.notification-center-page .notification-item,
+.notification-center-page .empty-state {
+  border: 1px solid #d9e3ef;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(16, 24, 40, 0.06);
+}
+
+.notification-center-page .filter-btn.active {
+  background: #1f5fbf;
+  border-color: #1f5fbf;
+}
+
+.notification-center-page .notification-item:hover,
+.notification-center-page .btn-mark-all:hover,
+.notification-center-page .btn-settings:hover,
+.notification-center-page .btn-action:hover {
+  transform: none;
+}
+
+/* ------------------------------
+   REMAINING PAGES - COMPLETION PASS
+------------------------------ */
+/* Informational pages */
+.about-page,
+.contact-page,
+.privacy-page,
+.terms-page,
+.blog-page,
+.sample-report-page,
+.consent-page,
+.onboarding-page,
+.comparison-page,
+.favorites-page,
+.recommendations-page,
+.progress-tracking-page,
+.digital-twin-timeline-page,
+.product-compare-page,
+.ingredient-dictionary-page,
+.skin-goals-page,
+.skin-type-guide-page,
+.device-context-page,
+.me-page,
+.not-found-page {
+  background: #f5f8fc;
+}
+
+.about-page .card,
+.contact-page .card,
+.privacy-page .card,
+.terms-page .card,
+.blog-page .card,
+.sample-report-page .card,
+.consent-page .card,
+.onboarding-page .card,
+.comparison-page .card,
+.favorites-page .card,
+.recommendations-page .card,
+.progress-tracking-page .card,
+.digital-twin-timeline-page .card,
+.product-compare-page .card,
+.ingredient-dictionary-page .card,
+.skin-goals-page .card,
+.skin-type-guide-page .card,
+.device-context-page .card,
+.me-page .card,
+.not-found-page .card,
+.about-page .app-section,
+.contact-page .app-section,
+.privacy-page .app-section,
+.terms-page .app-section,
+.blog-page .app-section,
+.sample-report-page .app-section,
+.consent-page .app-section,
+.onboarding-page .app-section,
+.comparison-page .app-section,
+.favorites-page .app-section,
+.recommendations-page .app-section,
+.progress-tracking-page .app-section,
+.digital-twin-timeline-page .app-section,
+.product-compare-page .app-section,
+.ingredient-dictionary-page .app-section,
+.skin-goals-page .app-section,
+.skin-type-guide-page .app-section,
+.device-context-page .app-section,
+.me-page .app-section,
+.not-found-page .app-section {
+  border: 1px solid #d9e3ef;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(16, 24, 40, 0.06);
+}
+
+/* Admin pages */
+.admin-dashboard-page,
+.admin-content-page,
+.admin-products-page,
+.admin-catalog-page,
+.admin-users-page,
+.admin-blogs-page,
+.admin-videos-page,
+.admin-news-page {
+  background: #f5f8fc;
+}
+
+.admin-dashboard-page .card,
+.admin-content-page .card,
+.admin-products-page .card,
+.admin-catalog-page .card,
+.admin-users-page .card,
+.admin-blogs-page .card,
+.admin-videos-page .card,
+.admin-news-page .card,
+.admin-dashboard-page .app-section,
+.admin-content-page .app-section,
+.admin-products-page .app-section,
+.admin-catalog-page .app-section,
+.admin-users-page .app-section,
+.admin-blogs-page .app-section,
+.admin-videos-page .app-section,
+.admin-news-page .app-section {
+  border: 1px solid #d9e3ef;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(16, 24, 40, 0.06);
+}
+
+/* Common controls on remaining pages */
+.about-page .btn,
+.contact-page .btn,
+.privacy-page .btn,
+.terms-page .btn,
+.blog-page .btn,
+.sample-report-page .btn,
+.consent-page .btn,
+.onboarding-page .btn,
+.comparison-page .btn,
+.favorites-page .btn,
+.recommendations-page .btn,
+.progress-tracking-page .btn,
+.digital-twin-timeline-page .btn,
+.product-compare-page .btn,
+.ingredient-dictionary-page .btn,
+.skin-goals-page .btn,
+.skin-type-guide-page .btn,
+.device-context-page .btn,
+.me-page .btn,
+.not-found-page .btn,
+.admin-dashboard-page .btn,
+.admin-content-page .btn,
+.admin-products-page .btn,
+.admin-catalog-page .btn,
+.admin-users-page .btn,
+.admin-blogs-page .btn,
+.admin-videos-page .btn,
+.admin-news-page .btn {
+  border-radius: 10px;
+}
+
+.about-page .btn:hover,
+.contact-page .btn:hover,
+.privacy-page .btn:hover,
+.terms-page .btn:hover,
+.blog-page .btn:hover,
+.sample-report-page .btn:hover,
+.consent-page .btn:hover,
+.onboarding-page .btn:hover,
+.comparison-page .btn:hover,
+.favorites-page .btn:hover,
+.recommendations-page .btn:hover,
+.progress-tracking-page .btn:hover,
+.digital-twin-timeline-page .btn:hover,
+.product-compare-page .btn:hover,
+.ingredient-dictionary-page .btn:hover,
+.skin-goals-page .btn:hover,
+.skin-type-guide-page .btn:hover,
+.device-context-page .btn:hover,
+.me-page .btn:hover,
+.not-found-page .btn:hover,
+.admin-dashboard-page .btn:hover,
+.admin-content-page .btn:hover,
+.admin-products-page .btn:hover,
+.admin-catalog-page .btn:hover,
+.admin-users-page .btn:hover,
+.admin-blogs-page .btn:hover,
+.admin-videos-page .btn:hover,
+.admin-news-page .btn:hover {
+  transform: none;
+}

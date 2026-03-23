@@ -18,6 +18,8 @@
 @import './components/Skeleton.css';
 @import './styles/ui-polish-2026.css';
 @import './styles/clinical-clean.css';
+@import './styles/designer-hotfix.css';
+@import './styles/page-block-polish.css';
 
 /* CSS Variables */
 :root {

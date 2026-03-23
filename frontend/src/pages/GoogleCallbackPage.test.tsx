@@ -43,7 +43,10 @@ describe("GoogleCallbackPage", () => {
     });
 
     render(
-      <MemoryRouter initialEntries={["/auth/google/callback?code=test-code"]}>
+      <MemoryRouter
+        initialEntries={["/auth/google/callback?code=test-code"]}
+        future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+      >
         <GoogleCallbackPage />
       </MemoryRouter>
     );
@@ -66,7 +69,10 @@ describe("GoogleCallbackPage", () => {
 
   it("shows error when Google returns error param", async () => {
     render(
-      <MemoryRouter initialEntries={["/auth/google/callback?error=access_denied"]}>
+      <MemoryRouter
+        initialEntries={["/auth/google/callback?error=access_denied"]}
+        future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+      >
         <GoogleCallbackPage />
       </MemoryRouter>
     );

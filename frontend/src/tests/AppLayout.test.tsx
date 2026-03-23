@@ -1,8 +1,12 @@
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import AuthContext, { AuthResponse, User } from "../context/AuthContext";
 import AppLayout from "../components/AppLayout";
+
+vi.mock("../components/ApiStatusIndicator", () => ({
+  ApiStatusIndicator: () => null,
+}));
 
 const renderWithAuth = (authValue: {
   user: User | null;
@@ -17,7 +21,7 @@ const renderWithAuth = (authValue: {
 }) => {
   return render(
     <AuthContext.Provider value={authValue}>
-      <MemoryRouter>
+      <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <AppLayout>
           <div>Content</div>
         </AppLayout>

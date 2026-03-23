@@ -7,7 +7,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthPageMobileV2 } from './AuthPageMobileV2';
-import { AuthProvider } from '../context/AuthContext';
+import AuthContext, { AuthResponse, User } from '../context/AuthContext';
 import { ToastProvider } from '../context/ToastContext';
 
 // Mock modules
@@ -36,13 +36,35 @@ vi.mock('axios', () => ({
 }));
 
 const renderAuthPage = () => {
+  const authValue: {
+    user: User | null;
+    token: string | null;
+    isAuthenticated: boolean;
+    isLoading: boolean;
+    login: () => Promise<void>;
+    loginWithToken: () => void;
+    register: () => Promise<AuthResponse>;
+    logout: () => void;
+    updateUser: () => void;
+  } = {
+    user: null,
+    token: null,
+    isAuthenticated: false,
+    isLoading: false,
+    login: async () => {},
+    loginWithToken: () => {},
+    register: async () => ({ token: 'token', user: { id: 1, email: 'test@example.com' } }),
+    logout: () => {},
+    updateUser: () => {},
+  };
+
   return render(
-    <BrowserRouter>
-      <AuthProvider>
+    <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+      <AuthContext.Provider value={authValue}>
         <ToastProvider>
           <AuthPageMobileV2 />
         </ToastProvider>
-      </AuthProvider>
+      </AuthContext.Provider>
     </BrowserRouter>
   );
 };

@@ -29,7 +29,7 @@ vi.mock("../hooks/useDeviceContext", () => ({
 describe("DeviceContextPage", () => {
   it("renders Device & context heading and main actions", () => {
     render(
-      <MemoryRouter>
+      <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <DeviceContextPage />
       </MemoryRouter>
     );
@@ -43,7 +43,7 @@ describe("DeviceContextPage", () => {
 
   it("has back link to profile", () => {
     render(
-      <MemoryRouter>
+      <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <DeviceContextPage />
       </MemoryRouter>
     );
@@ -55,7 +55,7 @@ describe("DeviceContextPage", () => {
 
   it("shows Screen and Locale sections", () => {
     render(
-      <MemoryRouter>
+      <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <DeviceContextPage />
       </MemoryRouter>
     );

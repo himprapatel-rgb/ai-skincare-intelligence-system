@@ -37,7 +37,7 @@ vi.mock("../services/scanApi", () => ({
 describe("ProfileSettingsPage", () => {
   it("renders profile settings with section titles when authenticated", async () => {
     render(
-      <MemoryRouter>
+      <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <ProfileSettingsPage />
       </MemoryRouter>
     );
@@ -50,7 +50,7 @@ describe("ProfileSettingsPage", () => {
 
   it("shows Personal Info and Skin Goals in sidebar", () => {
     render(
-      <MemoryRouter>
+      <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <ProfileSettingsPage />
       </MemoryRouter>
     );

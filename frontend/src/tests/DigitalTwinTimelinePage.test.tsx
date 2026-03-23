@@ -25,7 +25,7 @@ describe("DigitalTwinTimelinePage", () => {
     });
 
     render(
-      <MemoryRouter>
+      <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <DigitalTwinTimelinePage />
       </MemoryRouter>
     );
@@ -85,7 +85,7 @@ describe("DigitalTwinTimelinePage", () => {
     });
 
     render(
-      <MemoryRouter>
+      <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <DigitalTwinTimelinePage />
       </MemoryRouter>
     );

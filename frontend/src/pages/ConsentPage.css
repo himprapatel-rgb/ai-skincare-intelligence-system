@@ -14,15 +14,7 @@
   margin: 0 auto;
 }
 
-.consent-existing-notice {
-  background: color-mix(in srgb, var(--primary) 10%, transparent);
-  border: 1px solid var(--primary-light);
-  border-radius: var(--border-radius-lg);
-  padding: 12px 16px;
-  font-size: 0.9375rem;
-  color: var(--text-primary);
-  margin-bottom: 20px;
-}
+
 
 .consent-header {
   margin-bottom: 20px;

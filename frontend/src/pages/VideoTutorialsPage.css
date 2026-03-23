@@ -88,6 +88,7 @@
 }
 
 .video-thumb {
+  position: relative;
   aspect-ratio: 16 / 9;
   background: linear-gradient(135deg, rgba(31, 111, 235, 0.12) 0%, rgba(31, 111, 235, 0.06) 100%);
   border: 1px solid rgba(31, 111, 235, 0.25);
@@ -108,9 +109,6 @@
 }
 
 /* Difficulty badge (Task 229) */
-.video-thumb {
-  position: relative;
-}
 .video-difficulty {
   position: absolute;
   top: 8px;

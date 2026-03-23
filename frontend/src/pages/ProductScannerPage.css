@@ -1993,16 +1993,6 @@
   color: var(--warning-600, #ca8a04);
 }
 
-/* Spin animation for loader */
-.spin {
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
 /* ===== Enhanced Photo Capture UI (Tasks 101-150) ===== */
 
 .photo-capture-options {
@@ -2087,7 +2077,7 @@
 }
 
 .upload-btn {
-  background: white;
+  background: var(--white);
   color: var(--text-dark);
   border: 2px solid var(--border-color);
 }

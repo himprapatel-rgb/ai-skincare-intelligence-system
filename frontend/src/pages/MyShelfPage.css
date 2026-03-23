@@ -24,6 +24,7 @@
   display: flex;
   align-items: center;
   gap: 16px;
+  position: relative;
 }
 
 .myshelf-hero-icon {
@@ -60,10 +61,6 @@
   border-radius: 999px;
   font-size: 0.875rem;
   font-weight: 600;
-}
-
-.myshelf-hero-inner {
-  position: relative;
 }
 
 .myshelf-refresh-btn {

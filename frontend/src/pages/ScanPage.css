@@ -6,6 +6,7 @@
   background: var(--bg-light);
   padding: var(--spacing-lg) var(--spacing-md);
   font-family: var(--font-family);
+  animation: pageEnter 0.5s ease-out;
 }
 
 /* Unified Scan: Face vs Product toggle — Pill/Segment Control */
@@ -146,10 +147,6 @@
   }
 }
 
-.scan-page {
-  animation: pageEnter 0.5s ease-out;
-}
-
 /* Pulse animation for scanning */
 @keyframes pulse {
   0%, 100% {
@@ -191,10 +188,6 @@
   50% {
     box-shadow: 0 0 20px rgba(31, 111, 235, 0.6);
   }
-}
-
-.progress-bar {
-  animation: progressGlow 2s ease-in-out infinite;
 }
 
 /* Scan button hover effect */
@@ -1099,6 +1092,7 @@
   margin-bottom: 16px;
   border: 1px solid var(--border);
   position: relative;
+  animation: progressGlow 2s ease-in-out infinite;
 }
 
 .progress-fill {

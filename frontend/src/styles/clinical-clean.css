@@ -8,6 +8,11 @@
   --clinical-body: #334a63;
   --clinical-label: #5e738c;
   --clinical-radius: 10px;
+  --clinical-radius-sm: 8px;
+  --clinical-radius-lg: 12px;
+  --clinical-space-sm: 12px;
+  --clinical-space-md: 16px;
+  --clinical-space-lg: 24px;
 }
 
 body {
@@ -64,8 +69,21 @@ body {
 .results-section {
   background: var(--clinical-surface);
   border: 1px solid var(--clinical-border);
-  border-radius: var(--clinical-radius);
+  border-radius: var(--clinical-radius-lg);
   box-shadow: var(--shadow-sm);
+}
+
+/* Global card/form rhythm normalization */
+.card,
+.app-section,
+.dashboard-section,
+.result-card,
+.step-card,
+.testimonial-card,
+.faq-item,
+.auth-card,
+.profile-card {
+  padding: var(--clinical-space-md);
 }
 
 .section-tag,
@@ -86,6 +104,9 @@ body {
 .cta-section-link {
   background: linear-gradient(135deg, #1f5fbf 0%, #3f7fd6 100%);
   box-shadow: 0 4px 12px rgba(31, 95, 191, 0.22);
+  border-radius: var(--clinical-radius-sm);
+  min-height: 44px;
+  padding: 10px 20px;
 }
 
 .btn-primary:hover,
@@ -103,6 +124,9 @@ body {
   background: #ffffff;
   border: 1px solid var(--clinical-border);
   color: var(--primary);
+  border-radius: var(--clinical-radius-sm);
+  min-height: 44px;
+  padding: 10px 20px;
 }
 
 /* App shell */
@@ -210,7 +234,7 @@ body {
 .faq-item {
   border: 1px solid var(--clinical-border);
   background: #fff;
-  border-radius: var(--clinical-radius);
+  border-radius: var(--clinical-radius-sm);
 }
 
 .app-list-item:hover,
@@ -386,8 +410,10 @@ select,
 textarea,
 .input {
   border: 1px solid var(--clinical-border);
-  border-radius: 8px;
+  border-radius: var(--clinical-radius-sm);
   background: #ffffff;
+  min-height: 44px;
+  padding: 10px 12px;
 }
 
 input:focus,
@@ -418,15 +444,47 @@ textarea:focus,
 
 .profile-settings-page .profile-header-card {
   background: linear-gradient(135deg, #265cae 0%, #3d74c7 100%);
-  border-radius: 0 0 16px 16px;
+  border-radius: 0 0 12px 12px;
 }
 
 .profile-settings-page .profile-card,
 .profile-settings-page .settings-section,
 .profile-settings-page .app-section {
-  border-radius: 10px;
+  border-radius: var(--clinical-radius-lg);
   border: 1px solid var(--clinical-border);
   box-shadow: var(--shadow-sm);
+}
+
+/* Normalize noisy per-page radii and shadows into clinical system */
+.homepage .hero,
+.homepage .hero-content,
+.homepage .sample-report-preview,
+.dashboard-page .dashboard-empty-wrapper,
+.dashboard-page .overlay-cta,
+.scan-page .scan-content,
+.scan-page .scan-upload-card,
+.myshelf-page .myshelf-hero,
+.myshelf-page .product-card,
+.analysis-results .result-card,
+.auth-page .auth-feature,
+.profile-settings-page .profile-modal {
+  border-radius: var(--clinical-radius-lg) !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+
+/* Keep mobile spacing readable and compact */
+@media (max-width: 768px) {
+  .card,
+  .app-section,
+  .dashboard-section,
+  .result-card,
+  .step-card,
+  .testimonial-card,
+  .faq-item,
+  .auth-card,
+  .profile-card {
+    padding: var(--clinical-space-sm);
+  }
 }
 
 .profile-settings-page .settings-section-title,

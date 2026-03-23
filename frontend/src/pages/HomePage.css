@@ -75,7 +75,7 @@
     font-weight: 600;
     font-size: 1rem;
     text-decoration: none;
-    border-radius: 14px;
+    border-radius: var(--border-radius-lg);
     box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
@@ -285,7 +285,7 @@
 
 .faq-item {
   padding: 18px 20px;
-  border-radius: 14px;
+  border-radius: var(--border-radius-lg);
   background: var(--bg-white);
   border: 1px solid var(--border);
 }
@@ -580,7 +580,7 @@
   background: var(--primary);
   color: var(--white);
   padding: 16px 32px;
-  border-radius: 10px;
+  border-radius: var(--border-radius-md);
   font-weight: 600;
   font-size: 1rem;
   border: none;
@@ -602,7 +602,7 @@
   background: var(--bg-white);
   color: var(--text-dark);
   padding: 16px 32px;
-  border-radius: 10px;
+  border-radius: var(--border-radius-md);
   font-weight: 600;
   font-size: 1rem;
   border: 1px solid var(--border);
@@ -830,10 +830,10 @@
 }
 
 .cta-button {
-  background: white;
+  background: var(--white);
   color: var(--primary);
   padding: 16px 40px;
-  border-radius: 10px;
+  border-radius: var(--border-radius-md);
   font-weight: 600;
   font-size: 1rem;
   border: none;
@@ -1229,7 +1229,7 @@
 }
 
 .sample-report-preview {
-  background: white;
+  background: var(--white);
   border-radius: var(--border-radius-xl);
   padding: 24px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
@@ -1320,7 +1320,7 @@
 }
 
 .result-card {
-  background: white;
+  background: var(--white);
   border-radius: var(--border-radius-xl);
   padding: 24px;
   text-align: center;
@@ -1581,7 +1581,7 @@
 
 /* Clean sample card */
 .sample-report-preview {
-  background: white;
+  background: var(--white);
   border-radius: var(--border-radius-xl);
   padding: 32px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
@@ -1604,7 +1604,7 @@
 }
 
 .btn-secondary {
-  background: white;
+  background: var(--white);
   color: var(--text-dark);
   padding: 14px 28px;
   border-radius: var(--border-radius-md);
@@ -1637,7 +1637,7 @@
 /* Clean cards */
 .result-card,
 .step-card {
-  background: white;
+  background: var(--white);
   border-radius: var(--border-radius-lg);
   padding: 32px;
   border: 1px solid var(--border);
@@ -1955,7 +1955,7 @@
 
 .sample-report-preview {
   padding: 28px;
-  border-radius: 20px;
+  border-radius: var(--border-radius-xl);
   border: 1px solid rgba(227, 236, 255, 0.9);
   box-shadow: 
     0 20px 50px rgba(13, 27, 62, 0.12),
@@ -2191,7 +2191,7 @@
 
 .homepage .btn-primary {
   background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-  border-radius: 14px;
+  border-radius: var(--border-radius-lg);
   padding: 16px 32px;
   letter-spacing: 0.01em;
   font-weight: 600;
@@ -2223,7 +2223,7 @@
 
 .homepage .btn-secondary {
   background: rgba(255, 255, 255, 0.95);
-  border-radius: 14px;
+  border-radius: var(--border-radius-lg);
   border: 2px solid rgba(31, 95, 191, 0.15);
   box-shadow: 0 8px 20px rgba(13, 27, 62, 0.08);
   font-weight: 600;
@@ -2795,7 +2795,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 14px;
+  border-radius: var(--border-radius-lg);
   transition: transform 0.3s ease;
 }
 
@@ -2979,7 +2979,7 @@
 }
 
 .hero-cta-secondary {
-  background: white;
+  background: var(--white);
   border: 1px solid var(--border-color);
   color: var(--text-dark);
   box-shadow: 0 2px 4px rgba(0,0,0,0.02);

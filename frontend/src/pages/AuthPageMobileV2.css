@@ -61,7 +61,7 @@
   height: 88px;
   margin: 0 auto 24px;
   background: rgba(255, 255, 255, 0.98);
-  border-radius: 24px;
+  border-radius: var(--border-radius-xl);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -94,7 +94,7 @@
   z-index: 3;
   margin: 0 20px 24px;
   padding: 36px 28px;
-  background: white;
+  background: var(--white);
   border-radius: 28px;
   box-shadow: 
     0 4px 24px rgba(0, 0, 0, 0.08),
@@ -137,7 +137,7 @@
   left: 5px;
   width: calc(50% - 5px);
   height: calc(100% - 10px);
-  background: white;
+  background: var(--white);
   border-radius: var(--border-radius-lg);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
@@ -157,7 +157,7 @@
   background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
   border: 1.5px solid var(--danger-200, #fecaca);
   border-left: 4px solid var(--danger);
-  border-radius: 14px;
+  border-radius: var(--border-radius-lg);
   color: var(--danger);
   font-size: 14px;
   font-weight: 500;
@@ -353,7 +353,7 @@
   height: 22px;
   accent-color: var(--primary);
   cursor: pointer;
-  border-radius: 6px;
+  border-radius: var(--border-radius-sm);
 }
 
 .checkbox-text {
@@ -531,7 +531,7 @@
   align-items: center;
   gap: 18px;
   padding: 20px;
-  background: white;
+  background: var(--white);
   border-radius: 18px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -550,7 +550,7 @@
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-  border-radius: 14px;
+  border-radius: var(--border-radius-lg);
   color: var(--white);
   box-shadow: 0 4px 12px rgba(102, 126, 234, 0.25);
 }

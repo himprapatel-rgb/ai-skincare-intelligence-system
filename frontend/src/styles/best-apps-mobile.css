@@ -255,7 +255,7 @@
   }
 
   .dashboard-page .stat-card.primary .stat-content h3 {
-    color: white;
+    color: var(--white);
   }
 
   .dashboard-page .stat-card.primary .stat-content p {

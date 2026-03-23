@@ -447,7 +447,7 @@
 
 .scan-3d-toggle {
   padding: 8px 16px;
-  border-radius: 20px;
+  border-radius: var(--border-radius-xl);
   border: 1px solid var(--border);
   background: var(--surface);
   color: var(--text-secondary);
@@ -891,7 +891,7 @@
   align-items: center;
   transition: all 0.2s ease;
   background: rgba(255, 255, 255, 0.7);
-  border-radius: 10px;
+  border-radius: var(--border-radius-md);
   border: 1px solid transparent;
 }
 

@@ -6,7 +6,7 @@
   right: max(12px, env(safe-area-inset-right));
   z-index: 999;
   background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-  color: white;
+  color: var(--white);
   padding: 12px 16px;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4);
@@ -39,7 +39,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: var(--white);
   cursor: pointer;
   flex-shrink: 0;
 }
@@ -76,7 +76,7 @@
 
 .add-to-home-prompt-btn {
   flex-shrink: 0;
-  background: white;
+  background: var(--white);
   color: var(--primary);
   border: none;
   padding: 8px 16px;

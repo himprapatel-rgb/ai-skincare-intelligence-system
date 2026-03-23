@@ -65,7 +65,7 @@
 .btn-add-to-compare {
   padding: 6px 12px;
   font-size: 0.8125rem;
-  border-radius: 6px;
+  border-radius: var(--border-radius-sm);
   border: 1px solid var(--border, #e2e8f0);
   background: var(--bg-white);
   color: var(--text-dark);
@@ -237,7 +237,7 @@
 
 .filter-select {
   padding: 10px 14px;
-  border-radius: 10px;
+  border-radius: var(--border-radius-md);
   border: 1px solid var(--border-color);
   background: var(--gray-50);
   color: var(--text-primary);

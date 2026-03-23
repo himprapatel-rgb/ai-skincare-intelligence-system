@@ -490,7 +490,7 @@
 .btn-icon-action {
   background: transparent;
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: var(--border-radius-sm);
   min-width: 44px;
   min-height: 44px;
   padding: 6px;

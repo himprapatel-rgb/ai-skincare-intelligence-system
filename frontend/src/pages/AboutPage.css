@@ -113,7 +113,7 @@
 .stat-card {
   background: linear-gradient(180deg, rgba(31, 111, 235, 0.08), rgba(255, 255, 255, 0));
   border: 1px solid rgba(31, 111, 235, 0.18);
-  border-radius: 14px;
+  border-radius: var(--border-radius-lg);
   padding: 24px;
   text-align: center;
 }

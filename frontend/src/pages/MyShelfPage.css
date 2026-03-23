@@ -270,7 +270,7 @@
   align-items: center;
   background: var(--bg-white);
   border: 1px solid var(--border-color);
-  border-radius: 14px;
+  border-radius: var(--border-radius-lg);
   padding: 0 16px;
   min-height: 48px;
   transition: border-color 0.2s, box-shadow 0.2s;
@@ -402,7 +402,7 @@
   gap: 8px;
   padding: 0 20px;
   min-height: 44px;
-  border-radius: 14px;
+  border-radius: var(--border-radius-lg);
   border: none;
   background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
   color: var(--white);
@@ -460,7 +460,7 @@
 /* ----- Empty state ----- */
 .myshelf-empty {
   background: var(--bg-white);
-  border-radius: 20px;
+  border-radius: var(--border-radius-xl);
   border: 1px solid var(--border-color);
   padding: 48px 28px;
   text-align: center;
@@ -717,7 +717,7 @@
   min-width: 180px;
   background: var(--bg-white);
   border: 1px solid var(--border-color);
-  border-radius: 14px;
+  border-radius: var(--border-radius-lg);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
   z-index: 20;
   padding: 8px;
@@ -734,7 +734,7 @@
   text-align: left;
   font-size: 0.9375rem;
   color: var(--text-primary);
-  border-radius: 10px;
+  border-radius: var(--border-radius-md);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -856,7 +856,7 @@
   display: inline-block;
   font-size: 0.75rem;
   padding: 4px 10px;
-  border-radius: 10px;
+  border-radius: var(--border-radius-md);
   background: var(--gray-100);
   color: var(--text-muted);
 }
@@ -926,7 +926,7 @@
     height: 72px;
     aspect-ratio: unset;
     margin: 12px 0 12px 12px;
-    border-radius: 14px;
+    border-radius: var(--border-radius-lg);
     flex-shrink: 0;
   }
 

@@ -23,7 +23,7 @@
   flex: 1;
   min-width: 240px;
   padding: 10px 14px;
-  border-radius: 10px;
+  border-radius: var(--border-radius-md);
   border: 1px solid var(--border-color);
 }
 
@@ -46,7 +46,7 @@
 
 .admin-product-grid input {
   padding: 10px 12px;
-  border-radius: 10px;
+  border-radius: var(--border-radius-md);
   border: 1px solid var(--border-color);
 }
 

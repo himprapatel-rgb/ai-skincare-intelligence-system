@@ -97,7 +97,7 @@
 /* Danger variant */
 .mobile-button--danger {
   background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
-  color: white;
+  color: var(--white);
   box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
 }
 

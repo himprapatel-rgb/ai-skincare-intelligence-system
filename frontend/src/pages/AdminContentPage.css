@@ -277,7 +277,7 @@
   font-size: 0.75rem;
   background: var(--primary);
   color: var(--white);
-  border-radius: 6px;
+  border-radius: var(--border-radius-sm);
 }
 
 .admin-list-actions {

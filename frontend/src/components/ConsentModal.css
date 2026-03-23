@@ -121,7 +121,7 @@
 
 .consent-modal .btn-danger {
   background: var(--danger);
-  color: white;
+  color: var(--white);
 }
 
 .consent-modal .btn-danger:hover {
@@ -131,7 +131,7 @@
 
 .consent-modal .btn-primary {
   background: var(--primary);
-  color: white;
+  color: var(--white);
 }
 
 .consent-modal .btn-primary:hover {

@@ -355,7 +355,7 @@
   right: 0;
   padding: 6px 8px;
   font-size: 0.7rem;
-  color: white;
+  color: var(--white);
   background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
 }
 
@@ -519,7 +519,7 @@
 
 .dt-help-button:hover {
   background: var(--primary);
-  color: white;
+  color: var(--white);
 }
 
 .dt-hero-tooltip {
@@ -554,7 +554,7 @@
 .dt-tooltip-close {
   border: none;
   background: var(--primary);
-  color: white;
+  color: var(--white);
   padding: 8px 16px;
   border-radius: 8px;
   font-weight: 600;
@@ -607,7 +607,7 @@
 
 .dt-delete-button:hover {
   background: var(--danger, #ef4444);
-  color: white;
+  color: var(--white);
   border-color: var(--danger, #ef4444);
 }
 
@@ -748,7 +748,7 @@
 
 /* ===== Simulation Panel ===== */
 .simulation-panel {
-  background: white;
+  background: var(--white);
   border-radius: 16px;
   padding: 24px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
@@ -822,7 +822,7 @@
   gap: 8px;
   padding: 10px 20px;
   background: linear-gradient(135deg, var(--accent), var(--accent));
-  color: white;
+  color: var(--white);
   border: none;
   border-radius: 8px;
   font-weight: 500;
@@ -885,7 +885,7 @@
 }
 
 .metric-item {
-  background: white;
+  background: var(--white);
   padding: 12px;
   border-radius: 8px;
   border: 1px solid #eee;

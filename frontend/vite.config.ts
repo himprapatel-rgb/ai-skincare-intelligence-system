@@ -20,7 +20,7 @@ export default defineConfig(({ mode }) => ({
         ]
       : []),
   ],
-  base: '/',
+  base: mode === 'production' ? '/ai-skincare-intelligence-system/' : '/',
   server: {
     port: 3000,
     host: true,

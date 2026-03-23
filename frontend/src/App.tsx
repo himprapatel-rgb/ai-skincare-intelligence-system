@@ -128,6 +128,7 @@ function AppRoutes() {
 }
 
 export default function App() {
+  const routerBase = import.meta.env.BASE_URL || "/";
   return (
     <ErrorBoundary onRetry={() => window.location.reload()}>
       <AuthProvider>
@@ -136,7 +137,7 @@ export default function App() {
             <ToastProvider>
             <DevBanner />
             <NetworkStatus />
-            <BrowserRouter>
+            <BrowserRouter basename={routerBase}>
               <NotificationProvider>
                 <AppLayout>
                   <AppRoutes />

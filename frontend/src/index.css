@@ -23,6 +23,8 @@
 @import './styles/mobile-ux-2026.css';
 @import './styles/creative-restructure.css';
 @import './styles/page-creative.css';
+@import './styles/creative-mobile.css';
+@import './styles/creative-tablet.css';
 
 /* CSS Variables */
 :root {

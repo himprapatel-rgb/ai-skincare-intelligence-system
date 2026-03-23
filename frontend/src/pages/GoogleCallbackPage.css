@@ -198,3 +198,19 @@
 [data-theme="dark"] .callback-container p {
   color: #a0a0a0;
 }
+
+@media (max-width: 480px) {
+  .google-callback-page {
+    padding: var(--spacing-md);
+    align-items: flex-start;
+    padding-top: 10vh;
+  }
+
+  .callback-container {
+    padding: var(--spacing-lg);
+  }
+
+  .callback-container.error {
+    max-width: 100%;
+  }
+}

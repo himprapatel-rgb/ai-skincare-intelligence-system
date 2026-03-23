@@ -162,3 +162,19 @@
 .ingredient-empty-text {
   margin: 0;
 }
+
+@media (max-width: 480px) {
+  .ingredient-page {
+    padding: var(--spacing-lg) var(--spacing-md);
+  }
+
+  .alphabet-nav .alphabet-letter {
+    width: 28px;
+    height: 28px;
+    font-size: 0.7rem;
+  }
+
+  .ingredient-grid {
+    grid-template-columns: 1fr;
+  }
+}

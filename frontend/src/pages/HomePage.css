@@ -362,7 +362,7 @@
 }
 
 .homepage {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: var(--font-family);
   background: var(--primary-50, #f8fbff);
   min-height: 100vh;
   color: var(--text-dark);

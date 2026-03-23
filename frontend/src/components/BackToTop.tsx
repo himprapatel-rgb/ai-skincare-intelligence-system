@@ -1,16 +1,25 @@
 /**
  * Back to top button - Task 9
  */
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IconArrowUp } from './Icons';
 import './BackToTop.css';
 
-export function BackToTop() {
+export const BackToTop = React.memo(function BackToTop() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setVisible(window.scrollY > 400);
-    window.addEventListener('scroll', onScroll);
+    let ticking = false;
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          setVisible(window.scrollY > 400);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
@@ -28,4 +37,4 @@ export function BackToTop() {
       <IconArrowUp size={20} strokeWidth={2.5} aria-hidden="true" />
     </button>
   );
-}
+});

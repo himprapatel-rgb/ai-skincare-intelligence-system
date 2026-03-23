@@ -2,7 +2,7 @@
  * Task 44: Health-check endpoint or status indicator
  * Shows API connection status in footer.
  */
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { API_BASE_URL } from '../config';
 const API_BASE = API_BASE_URL;
@@ -22,7 +22,7 @@ type ApiStatusIndicatorProps = {
   hideWhenConnected?: boolean;
 };
 
-export function ApiStatusIndicator({ hideWhenConnected = false }: ApiStatusIndicatorProps) {
+export const ApiStatusIndicator = React.memo(function ApiStatusIndicator({ hideWhenConnected = false }: ApiStatusIndicatorProps) {
   const [status, setStatus] = useState<'checking' | 'up' | 'down'>('checking');
 
   useEffect(() => {
@@ -50,4 +50,4 @@ export function ApiStatusIndicator({ hideWhenConnected = false }: ApiStatusIndic
       {status === 'up' ? 'API connected' : 'API offline'}
     </span>
   );
-}
+});

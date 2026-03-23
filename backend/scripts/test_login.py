@@ -32,7 +32,7 @@ def test_login(email: str, password: str):
         try:
             data = response.json()
             print(f"Response Body: {json.dumps(data, indent=2)}")
-        except:
+        except (ValueError, KeyError):
             print(f"Response Text: {response.text}")
         
         if response.status_code == 200:

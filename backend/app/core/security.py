@@ -1,7 +1,10 @@
 import base64
 import json
+import logging
 import os
 from typing import List, Union
+
+logger = logging.getLogger(__name__)
 
 from argon2 import PasswordHasher
 from argon2.exceptions import VerifyMismatchError
@@ -176,8 +179,8 @@ async def get_current_admin(
 
 # Sensitive Data Encryption (NFR4: AES-256)
 
-# TODO: Move to environment variables - CRITICAL SECURITY
-# This is a placeholder - MUST be replaced with proper key management
+# SECURITY: ENCRYPTION_KEY must be set via environment variable in production.
+# The fallback below is only used if the env var is not set (development only).
 ENCRYPTION_KEY = os.getenv(
     "ENCRYPTION_KEY",
     "your-encryption-key-here-must-be-32-bytes-base64-encoded"
@@ -200,7 +203,8 @@ def get_fernet():
     if not key_str or not salt_str:
         if os.getenv("ENV") == "production":
             raise RuntimeError("ENCRYPTION_KEY or ENCRYPTION_SALT not set!")
-        # Development fallback
+        # Development fallback — never used in production (guarded above)
+        logger.warning("ENCRYPTION_KEY/ENCRYPTION_SALT not set — using development fallback keys")
         key_str = "development-key-must-be-32-chars-long-"
         salt_str = "dev-salt"
     

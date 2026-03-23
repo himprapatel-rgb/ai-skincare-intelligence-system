@@ -7,9 +7,12 @@ Epic 16: External Pre-Trained ML Model Integration
 Story 16.1: Configure Railway Volume for ML Models
 """
 
+import logging
 import os
 from pathlib import Path
 from typing import Dict
+
+logger = logging.getLogger(__name__)
 
 
 class StorageConfig:
@@ -34,9 +37,9 @@ class StorageConfig:
         """
         try:
             cls.MODEL_CACHE_DIR.mkdir(parents=True, exist_ok=True)
-            print(f"✅ Model cache directory ready: {cls.MODEL_CACHE_DIR}")
+            logger.info("Model cache directory ready: %s", cls.MODEL_CACHE_DIR)
         except Exception as e:
-            print(f"❌ Error creating cache directory: {e}")
+            logger.error("Error creating cache directory: %s", e)
             raise
     
     @classmethod
@@ -83,7 +86,7 @@ class StorageConfig:
                 "available_space_gb": round(available_space, 2)
             }
         except Exception as e:
-            print(f"⚠️  Error getting cache stats: {e}")
+            logger.warning("Error getting cache stats: %s", e)
             return {
                 "size_mb": 0,
                 "files": 0,
@@ -105,10 +108,10 @@ class StorageConfig:
                 elif item.is_dir():
                     import shutil
                     shutil.rmtree(item)
-            print(f"✅ Cache cleared: {cls.MODEL_CACHE_DIR}")
+            logger.info("Cache cleared: %s", cls.MODEL_CACHE_DIR)
             return True
         except Exception as e:
-            print(f"❌ Error clearing cache: {e}")
+            logger.error("Error clearing cache: %s", e)
             return False
     
     @classmethod
@@ -126,7 +129,7 @@ class StorageConfig:
             test_file.unlink()
             return True
         except Exception as e:
-            print(f"❌ Cache not available: {e}")
+            logger.error("Cache not available: %s", e)
             return False
 
 
@@ -134,4 +137,4 @@ class StorageConfig:
 try:
     StorageConfig.ensure_cache_dir_exists()
 except Exception as e:
-    print(f"⚠️  Warning: Could not initialize cache directory: {e}")
+    logger.warning("Could not initialize cache directory: %s", e)

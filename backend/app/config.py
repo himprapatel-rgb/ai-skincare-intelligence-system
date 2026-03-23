@@ -3,10 +3,13 @@ Application configuration settings.
 """
 
 import json
+import logging
 from typing import Any
 
-from pydantic import Field
+from pydantic import Field, model_validator
 from pydantic_settings import BaseSettings
+
+logger = logging.getLogger(__name__)
 
 
 def _parse_list_str(value: Any) -> list[str]:
@@ -236,6 +239,15 @@ class Settings(BaseSettings):
     )
 
     model_config = {"env_file": ".env", "case_sensitive": True, "populate_by_name": True}
+
+    @model_validator(mode="after")
+    def _warn_insecure_defaults(self) -> "Settings":
+        if self.SECRET_KEY == "dev-secret-key-change-in-production":
+            logger.warning(
+                "SECRET_KEY is using the default development value — "
+                "set a strong SECRET_KEY env var before deploying to production"
+            )
+        return self
 
 
 # Create settings instance

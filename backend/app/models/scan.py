@@ -13,6 +13,7 @@ from datetime import datetime
 from sqlalchemy import (
     Column,
     DateTime,
+    Index,
 )
 from sqlalchemy import Enum as SQLEnum
 from sqlalchemy import (
@@ -94,7 +95,11 @@ class ScanSession(Base):
         back_populates="scan_session",
         cascade="all, delete-orphan",
     )
-    
+
+    __table_args__ = (
+        Index('ix_scan_sessions_user_created', 'user_id', 'created_at'),
+    )
+
     def __repr__(self):
         return f"<ScanSession(id={self.id}, user_id={self.user_id}, status={self.status})>"
     

@@ -79,6 +79,8 @@ class ShelfProduct(Base):
         Index('ix_shelf_products_user_status', 'user_id', 'status'),
         Index('ix_shelf_products_status', 'status'),
         Index('ix_shelf_products_created_at', 'created_at'),
+        Index('ix_shelf_products_category', 'product_category'),
+        Index('ix_shelf_products_routine_type', 'routine_type'),
     )
     
     def __repr__(self):

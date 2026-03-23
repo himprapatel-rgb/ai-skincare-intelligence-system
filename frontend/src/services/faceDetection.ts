@@ -57,7 +57,7 @@ export class FaceDetectionService {
         }
       };
     } catch (error) {
-      console.error('Face validation failed:', error);
+      if (import.meta.env.DEV) console.error('Face validation failed:', error);
       return {
         faceDetected: false,
         confidence: 0,

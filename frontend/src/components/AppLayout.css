@@ -43,7 +43,7 @@
   outline: var(--focus-ring);
   outline-offset: var(--focus-ring-offset);
   box-shadow: var(--focus-shadow);
-  z-index: 10060;
+  z-index: var(--z-nav);
 }
 
 /* =============================================
@@ -546,7 +546,7 @@
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 9998;
+  z-index: var(--z-overlay);
 }
 
 /* Mobile Navigation - full-width panel below header (fix: ensure visible panel, not thin sliver) */
@@ -560,7 +560,7 @@
   width: 100%;
   max-width: 100vw;
   min-width: 280px;
-  z-index: 9999;
+  z-index: var(--z-modal);
   background: #ffffff;
   -webkit-tap-highlight-color: transparent;
   border: none;

@@ -70,10 +70,10 @@
     font-size: 16px !important;
     font-weight: 700 !important;
     border-radius: 16px !important;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%) !important;
     border: none !important;
-    color: white !important;
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3) !important;
+    color: var(--white) !important;
+    box-shadow: 0 4px 12px rgba(31, 95, 191, 0.3) !important;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
   }
   

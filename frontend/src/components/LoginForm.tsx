@@ -99,13 +99,13 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegis
       }
       onSuccess();
     } catch (err: unknown) {
-      console.error('Login error:', err);
+      if (import.meta.env.DEV) console.error('Login error:', err);
       if (axios.isAxiosError(err)) {
         const detail = err.response?.data?.detail || err.response?.data?.message;
         const raw = typeof detail === 'string' ? detail : '';
         const fallback = !err.response ? err.message : '';
         const message = toFriendlyAuthError(raw || fallback, err.response?.status) || raw || fallback || 'Login failed. Please try again.';
-        console.error('Login API error:', {
+        if (import.meta.env.DEV) console.error('Login API error:', {
           status: err.response?.status,
           data: err.response?.data,
           message

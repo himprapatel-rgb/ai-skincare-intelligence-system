@@ -1,11 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-// TODO: Implement these components and services
-// import { OnboardingStep } from './components/OnboardingStep';
-// import { ProgressIndicator } from '../../components/ProgressIndicator';
-// import { ProfileService } from '../../services/ProfileService';
-// import { useAuth } from '../../hooks/useAuth';
-// import { OnboardingData } from './types';
 
 // Stub components and functions to fix build
 type OnboardingData = {

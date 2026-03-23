@@ -47,6 +47,12 @@ Restore **CI - Tests** on `main`, keep local tooling documented, clear TypeScrip
 - **Production**: `verify_two_databases.py` against Railway — main/product/catalog healthy (0 catalog rows).
 - **`profile` router**: Pydantic v2 — `dict()` → `model_dump()` on profile create/update paths.
 
+### 2026-03-23 (continuation)
+- **Catalog seed on Railway**: created catalog tables and seeded initial OBF data using `import_obf_catalog.py` (`--category skincare --page-size 20`) due intermittent OBF API 500s on broad query.
+- **Production verify**: `/api/v1/catalog/health` now reports `products=9` (was 0).
+- **PR triage**: commented on PR #2 and closed stale draft PR #3.
+- **Daily summary workflow**: manual dispatch `23433432550` completed **success** with current workflow guardrails.
+
 ---
 
 ## Iteration 2026-01-27 (Database Tables & Startup Fix)
@@ -656,4 +662,5 @@ Design and implement an extensible schema to store all scan outputs, future skin
 - Data privacy: ensure image retention policy is explicit for production.
 
 ---
+
 

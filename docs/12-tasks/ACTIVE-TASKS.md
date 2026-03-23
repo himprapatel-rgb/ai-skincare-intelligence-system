@@ -1,18 +1,19 @@
 # Active Tasks
 
-**Last updated:** 2026-03-22
+**Last updated:** 2026-03-23
 
 ---
 
 ## In progress
 
-- [ ] Seed product catalog (optional) | See [WHERE-WE-ARE](../00-index/WHERE-WE-ARE.md) §6
+- [ ] Add Railway secrets for daily summary generation: `SUMMARY_ENDPOINT` (+ `SUMMARY_TOKEN` if required)
+- [ ] Expand catalog seed beyond initial import batch (currently 9 products)
 
 ---
 
 ## Next
 
-- [ ] Triage open PRs: `#2` docs reorganization, `#3` draft connection status
+- [ ] Triage open PRs: `#2` docs reorganization
 - [ ] PDF export enhancements (if needed)
 - [ ] Service worker for offline (PWA)
 - [ ] Broader E2E coverage for mobile flows
@@ -26,7 +27,7 @@
 - [x] **Backend CI/CD** green on `main` (isort across `backend/`; lint + test matrix)
 - [x] **CI - Tests** green on `main` (Postgres in Actions: `ALLOW_TEST_DB` + catalog FTS `match()` fix)
 - [x] Production DB check: `scripts/verify_two_databases.py` vs Railway backend (main + product + catalog healthy)
-- [x] DB verification: Both DBs ok; catalog 0 products (seed with import_obf_catalog)
+- [x] Catalog seed + verify: created catalog tables on Railway Postgres; imported first 9 OBF products (skincare category filter)
 - [x] Dashboard: Empty-state CTAs for 0 Products / 0 Routines
 - [x] Product Scanner: Lighter frame, centered Start Camera, simplified placeholder text
 - [x] Analysis Results: Hide failed scans in comparison table

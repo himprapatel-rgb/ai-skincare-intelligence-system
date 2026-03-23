@@ -115,7 +115,7 @@
 
 .btn-export-chart:hover {
   background: var(--primary);
-  color: white;
+  color: var(--white);
   border-color: var(--primary);
 }
 

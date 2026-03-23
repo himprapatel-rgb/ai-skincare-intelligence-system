@@ -20,7 +20,7 @@
   left: 0;
   right: 0;
   height: 45vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
   z-index: 0;
 }
 
@@ -51,7 +51,7 @@
   z-index: 1;
   padding: 60px 24px 40px;
   text-align: center;
-  color: white;
+  color: var(--white);
 }
 
 .auth-mobile-logo {
@@ -64,7 +64,7 @@
   align-items: center;
   justify-content: center;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-  color: #667eea;
+  color: var(--primary);
 }
 
 .auth-mobile-title {
@@ -121,7 +121,7 @@
 }
 
 .auth-mobile-tab.active {
-  color: #667eea;
+  color: var(--primary);
 }
 
 .auth-mobile-tab-indicator {
@@ -226,13 +226,13 @@
 .auth-mobile-checkbox input[type="checkbox"] {
   width: 20px;
   height: 20px;
-  accent-color: #667eea;
+  accent-color: var(--primary);
   cursor: pointer;
 }
 
 .auth-mobile-link {
   font-size: 14px;
-  color: #667eea;
+  color: var(--primary);
   text-decoration: none;
   font-weight: 600;
 }
@@ -272,7 +272,7 @@
 .auth-mobile-switch-btn {
   background: none;
   border: none;
-  color: #667eea;
+  color: var(--primary);
   font-size: 15px;
   font-weight: 700;
   cursor: pointer;
@@ -315,9 +315,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
   border-radius: var(--border-radius-lg);
-  color: white;
+  color: var(--white);
 }
 
 .feature-item-text h3 {
@@ -346,7 +346,7 @@
 }
 
 .auth-mobile-footer a {
-  color: #667eea;
+  color: var(--primary);
   text-decoration: none;
   font-weight: 600;
 }
@@ -404,7 +404,7 @@
   }
   
   .feature-item-text h3 {
-    color: #ffffff;
+    color: var(--white);
   }
   
   .feature-item-text p {

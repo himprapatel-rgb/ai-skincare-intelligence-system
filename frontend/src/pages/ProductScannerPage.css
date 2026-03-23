@@ -109,7 +109,7 @@
 .mode-btn.active {
   background: var(--primary);
   border-color: var(--primary);
-  color: white;
+  color: var(--white);
 }
 
 .mode-btn svg {
@@ -378,7 +378,7 @@
 .btn-success {
   padding: 12px 24px;
   background: #22c55e;
-  color: white;
+  color: var(--white);
   border: none;
   border-radius: var(--border-radius-md);
   font-weight: 600;
@@ -415,7 +415,7 @@
 
 .btn-view-details:hover {
   background: var(--primary);
-  color: white;
+  color: var(--white);
 }
 
 .view-details-row {
@@ -497,7 +497,7 @@
 .btn-toggle-camera {
   padding: 10px 20px;
   background: var(--primary);
-  color: white;
+  color: var(--white);
   border: none;
   border-radius: var(--border-radius-md);
   font-weight: 500;
@@ -550,7 +550,7 @@
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
-  color: white;
+  color: var(--white);
   font-weight: 500;
   text-align: center;
   background: rgba(0, 0, 0, 0.7);
@@ -581,7 +581,7 @@
 .btn-scan {
   padding: 16px 32px;
   background: var(--primary);
-  color: white;
+  color: var(--white);
   border: none;
   border-radius: var(--border-radius-md);
   font-size: 1.125rem;
@@ -1375,7 +1375,7 @@
 
 .product-actions .btn-primary {
   background: var(--primary);
-  color: white;
+  color: var(--white);
   border: none;
 }
 
@@ -1721,7 +1721,7 @@
 
 .history-badge.image {
   background: #f3e8ff;
-  color: #7c3aed;
+  color: var(--accent);
 }
 
 @media (max-width: 600px) {
@@ -1838,7 +1838,7 @@
 .scan-hint {
   margin-top: 16px;
   font-size: 0.85rem;
-  color: white;
+  color: var(--white);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
   background: rgba(0, 0, 0, 0.4);
   padding: 6px 16px;
@@ -1878,7 +1878,7 @@
 .scanner-quick-controls .control-btn.active {
   background: var(--primary);
   border-color: var(--primary);
-  color: white;
+  color: var(--white);
 }
 
 /* Manual barcode entry */
@@ -2076,7 +2076,7 @@
 
 .capture-btn {
   background: linear-gradient(135deg, var(--primary), var(--primary-dark, var(--primary)));
-  color: white;
+  color: var(--white);
   border: none;
   box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }

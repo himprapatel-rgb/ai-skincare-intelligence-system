@@ -147,8 +147,8 @@
   z-index: 2;
   padding: 6px 12px;
   border-radius: var(--border-radius-md);
-  background: linear-gradient(135deg, var(--primary), #7c3aed);
-  color: #fff;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: var(--white);
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -211,7 +211,7 @@
 }
 .recommendations-filters.has-active-filters .filters-reset {
   background: var(--primary);
-  color: white;
+  color: var(--white);
 }
 .recommendations-filters.has-active-filters .filters-reset:hover {
   background: var(--primary-hover);
@@ -399,7 +399,7 @@
 .btn-add-to-shelf:hover:not(:disabled) {
   background: var(--primary);
   border-color: var(--primary);
-  color: white;
+  color: var(--white);
 }
 .btn-add-to-shelf.on-shelf,
 .btn-add-to-shelf:disabled {
@@ -418,7 +418,7 @@
   background: var(--primary);
   border: none;
   border-radius: var(--border-radius-md); /* Brand guideline: 8px */
-  color: white;
+  color: var(--white);
   font-weight: 600;
   font-size: 0.95rem;
   cursor: pointer;
@@ -437,11 +437,11 @@
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  color: white;
+  color: var(--white);
 }
 
 .btn-view-details:hover {
-  color: white;
+  color: var(--white);
 }
 
 .btn-disabled {
@@ -478,7 +478,7 @@
 
 .favorite-button.active {
   background: var(--primary);
-  color: #ffffff;
+  color: var(--white);
   border-color: var(--primary);
 }
 

@@ -276,7 +276,7 @@
   margin-left: 8px;
   font-size: 0.75rem;
   background: var(--primary);
-  color: #fff;
+  color: var(--white);
   border-radius: 6px;
 }
 

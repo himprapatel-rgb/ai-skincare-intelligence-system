@@ -126,7 +126,7 @@
   display: inline-block;
   margin-top: 12px;
   background: linear-gradient(135deg, var(--primary) 0%, #5a8bff 100%);
-  color: #ffffff;
+  color: var(--white);
   padding: 12px 22px;
   border-radius: 999px;
   text-decoration: none;

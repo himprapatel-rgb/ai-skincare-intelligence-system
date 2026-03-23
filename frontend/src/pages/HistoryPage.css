@@ -421,7 +421,7 @@
   background: var(--primary); /* Brand blue */
   border: none;
   border-radius: var(--border-radius-md); /* Brand guideline: 8px */
-  color: white;
+  color: var(--white);
   font-weight: 600;
   font-size: 0.95rem;
   cursor: pointer;

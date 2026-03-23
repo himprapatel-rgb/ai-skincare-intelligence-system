@@ -20,7 +20,7 @@
   left: 0;
   right: 0;
   height: 48vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
   z-index: 0;
 }
 
@@ -68,7 +68,7 @@
   box-shadow: 
     0 8px 32px rgba(0, 0, 0, 0.12),
     0 4px 16px rgba(102, 126, 234, 0.2);
-  color: #667eea;
+  color: var(--primary);
 }
 
 .auth-title {
@@ -76,7 +76,7 @@
   font-weight: 800;
   margin: 0 0 8px;
   letter-spacing: -1px;
-  color: white;
+  color: var(--white);
   text-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
 }
 
@@ -85,7 +85,7 @@
   opacity: 0.96;
   margin: 0;
   font-weight: 500;
-  color: white;
+  color: var(--white);
 }
 
 /* === AUTH CARD === */
@@ -128,7 +128,7 @@
 }
 
 .auth-tab-active {
-  color: #667eea;
+  color: var(--primary);
 }
 
 .auth-tab-slider {
@@ -198,7 +198,7 @@
 
 .input-field:focus {
   background: rgba(102, 126, 234, 0.05);
-  border-color: #667eea;
+  border-color: var(--primary);
 }
 
 .input-icon {
@@ -214,7 +214,7 @@
 
 .input-float-active .input-icon,
 .input-field:focus ~ .input-icon {
-  color: #667eea;
+  color: var(--primary);
 }
 
 .input-label {
@@ -236,7 +236,7 @@
   top: 14px;
   font-size: 11px;
   font-weight: 700;
-  color: #667eea;
+  color: var(--primary);
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
@@ -248,7 +248,7 @@
   transform: translateX(-50%);
   width: 0;
   height: 3px;
-  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
   transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   border-radius: 3px;
   z-index: 1;
@@ -280,7 +280,7 @@
 
 .password-toggle-btn:active {
   background: rgba(0, 0, 0, 0.05);
-  color: #667eea;
+  color: var(--primary);
 }
 
 /* === PASSWORD STRENGTH === */
@@ -351,7 +351,7 @@
 .checkbox-modern input[type="checkbox"] {
   width: 22px;
   height: 22px;
-  accent-color: #667eea;
+  accent-color: var(--primary);
   cursor: pointer;
   border-radius: 6px;
 }
@@ -362,7 +362,7 @@
 
 .link-primary {
   font-size: 14px;
-  color: #667eea;
+  color: var(--primary);
   text-decoration: none;
   font-weight: 700;
   padding: 8px 12px;
@@ -382,8 +382,8 @@
   font-size: 17px;
   font-weight: 700;
   letter-spacing: 0.3px;
-  color: white;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: var(--white);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
   border: none;
   border-radius: var(--border-radius-xl);
   cursor: pointer;
@@ -433,7 +433,7 @@
   width: 20px;
   height: 20px;
   border: 3px solid rgba(255, 255, 255, 0.3);
-  border-top-color: white;
+  border-top-color: var(--white);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -500,7 +500,7 @@
 .switch-btn {
   background: none;
   border: none;
-  color: #667eea;
+  color: var(--primary);
   font-size: 15px;
   font-weight: 800;
   cursor: pointer;
@@ -549,9 +549,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
   border-radius: 14px;
-  color: white;
+  color: var(--white);
   box-shadow: 0 4px 12px rgba(102, 126, 234, 0.25);
 }
 
@@ -588,7 +588,7 @@
 }
 
 .auth-legal-footer a {
-  color: #667eea;
+  color: var(--primary);
   text-decoration: none;
   font-weight: 700;
 }
@@ -647,7 +647,7 @@
   
   .input-field {
     background: rgba(255, 255, 255, 0.05);
-    color: white;
+    color: var(--white);
   }
   
   .input-field:focus {
@@ -677,7 +677,7 @@
   }
   
   .feature-content h3 {
-    color: white;
+    color: var(--white);
   }
   
   .feature-content p {
@@ -685,7 +685,7 @@
   }
   
   .strength-text strong {
-    color: white;
+    color: var(--white);
   }
 }
 

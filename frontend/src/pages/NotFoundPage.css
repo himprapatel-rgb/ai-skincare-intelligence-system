@@ -66,14 +66,14 @@
 
 .not-found-btn-primary {
   background: var(--primary);
-  color: white;
+  color: var(--white);
   border-color: var(--primary);
 }
 
 .not-found-btn-primary:hover {
   background: var(--primary-dark);
   border-color: var(--primary-dark);
-  color: white;
+  color: var(--white);
 }
 
 .not-found-btn-secondary {

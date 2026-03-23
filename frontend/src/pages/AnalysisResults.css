@@ -230,7 +230,7 @@
 
 .results-back:hover {
   background: var(--primary);
-  color: white;
+  color: var(--white);
   transform: translateY(-2px);
 }
 
@@ -488,7 +488,7 @@
   font-weight: 700;
   padding: 4px 12px;
   border-radius: var(--border-radius-xl);
-  color: #ffffff;
+  color: var(--white);
 }
 
 .severity-bar {
@@ -601,7 +601,7 @@
 
 .link-button:hover {
   background: var(--primary);
-  color: white;
+  color: var(--white);
   transform: translateY(-2px);
 }
 
@@ -623,7 +623,7 @@
 
 .results-actions .btn-primary {
   background: var(--primary);
-  color: white;
+  color: var(--white);
   border: none;
   box-shadow: 0 4px 12px rgba(31, 111, 235, 0.2);
 }

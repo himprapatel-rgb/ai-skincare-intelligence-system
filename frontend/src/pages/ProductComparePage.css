@@ -189,7 +189,7 @@
 
 .btn-primary {
   background: var(--primary, var(--primary));
-  color: white;
+  color: var(--white);
   border: none;
 }
 

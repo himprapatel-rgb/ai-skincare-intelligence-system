@@ -43,7 +43,7 @@
 
 .scan-type-tab:hover {
   color: var(--text-primary);
-  background: rgba(99, 102, 241, 0.04);
+  background: rgba(31, 95, 191, 0.04);
 }
 
 .scan-type-tab:active {
@@ -55,7 +55,7 @@
   background: var(--bg-white);
   box-shadow:
     0 1px 3px rgba(0, 0, 0, 0.1),
-    0 4px 12px rgba(99, 102, 241, 0.08);
+    0 4px 12px rgba(31, 95, 191, 0.08);
 }
 
 .scan-type-emoji {
@@ -239,7 +239,7 @@
 }
 
 .scan-title .gradient-text {
-  background: linear-gradient(135deg, var(--primary) 0%, #7c3aed 50%, #ec4899 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 50%, #ec4899 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -530,7 +530,7 @@
   inset: 14px;
   border: none;
   border-radius: var(--border-radius-lg);
-  box-shadow: inset 0 0 30px rgba(99, 102, 241, 0.12);
+  box-shadow: inset 0 0 30px rgba(31, 95, 191, 0.12);
   z-index: 1;
 }
 
@@ -576,8 +576,8 @@
 
 /* Animate corners when face is locked */
 .face-locked ~ .scan-hud .hud-corner {
-  border-color: rgba(99, 102, 241, 1);
-  box-shadow: 0 0 8px rgba(99, 102, 241, 0.5);
+  border-color: rgba(31, 95, 191, 1);
+  box-shadow: 0 0 8px rgba(31, 95, 191, 0.5);
 }
 
 .scan-sweep-line {
@@ -643,7 +643,7 @@
   bottom: 24px;
   left: 50%;
   transform: translateX(-50%);
-  color: white;
+  color: var(--white);
   background: rgba(31, 111, 235, 0.9); /* Brand blue */
   padding: 10px 20px;
   border-radius: var(--border-radius-xl);
@@ -699,28 +699,28 @@
   padding: 56px 40px;
   border: 3px dashed var(--primary-300, #a5b4fc);
   border-radius: var(--border-radius-xl);
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.04) 0%, rgba(139, 92, 246, 0.03) 50%, rgba(99, 102, 241, 0.02) 100%);
+  background: linear-gradient(135deg, rgba(31, 95, 191, 0.04) 0%, rgba(139, 92, 246, 0.03) 50%, rgba(31, 95, 191, 0.02) 100%);
   cursor: pointer;
   transition: all 0.3s ease, border-color 0.3s ease;
   min-height: 350px;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.08);
+  box-shadow: 0 0 0 1px rgba(31, 95, 191, 0.08);
 }
 
 .scan-upload-label::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(139, 92, 246, 0.05) 100%);
+  background: linear-gradient(135deg, rgba(31, 95, 191, 0.08) 0%, rgba(139, 92, 246, 0.05) 100%);
   opacity: 0;
   transition: opacity 0.3s ease;
 }
 
 .scan-upload-label:hover {
-  border-color: var(--primary-500, #6366f1);
+  border-color: var(--primary-500, var(--primary));
   transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(99, 102, 241, 0.12);
+  box-shadow: 0 12px 32px rgba(31, 95, 191, 0.12);
 }
 
 .scan-upload-label:hover::before {
@@ -736,22 +736,22 @@
 .scan-upload-label.drag-over {
   border-color: transparent;
   background-image:
-    repeating-linear-gradient(90deg, var(--primary-500, #6366f1) 0px, var(--primary-500, #6366f1) 12px, transparent 12px, transparent 20px),
-    repeating-linear-gradient(90deg, var(--primary-500, #6366f1) 0px, var(--primary-500, #6366f1) 12px, transparent 12px, transparent 20px),
-    repeating-linear-gradient(0deg, var(--primary-500, #6366f1) 0px, var(--primary-500, #6366f1) 12px, transparent 12px, transparent 20px),
-    repeating-linear-gradient(0deg, var(--primary-500, #6366f1) 0px, var(--primary-500, #6366f1) 12px, transparent 12px, transparent 20px);
+    repeating-linear-gradient(90deg, var(--primary-500, var(--primary)) 0px, var(--primary-500, var(--primary)) 12px, transparent 12px, transparent 20px),
+    repeating-linear-gradient(90deg, var(--primary-500, var(--primary)) 0px, var(--primary-500, var(--primary)) 12px, transparent 12px, transparent 20px),
+    repeating-linear-gradient(0deg, var(--primary-500, var(--primary)) 0px, var(--primary-500, var(--primary)) 12px, transparent 12px, transparent 20px),
+    repeating-linear-gradient(0deg, var(--primary-500, var(--primary)) 0px, var(--primary-500, var(--primary)) 12px, transparent 12px, transparent 20px);
   background-size: 200px 3px, 200px 3px, 3px 200px, 3px 200px;
   background-position: 0 0, 100% 100%, 0 100%, 100% 0;
   background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
   animation: dashMarquee 2s linear infinite;
-  background-color: rgba(99, 102, 241, 0.06);
+  background-color: rgba(31, 95, 191, 0.06);
   transform: scale(1.01);
-  box-shadow: 0 8px 32px rgba(99, 102, 241, 0.18), inset 0 0 60px rgba(99, 102, 241, 0.04);
+  box-shadow: 0 8px 32px rgba(31, 95, 191, 0.18), inset 0 0 60px rgba(31, 95, 191, 0.04);
 }
 
 .scan-upload-label.drag-over::before {
   opacity: 1;
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.08) 100%);
+  background: linear-gradient(135deg, rgba(31, 95, 191, 0.1) 0%, rgba(139, 92, 246, 0.08) 100%);
 }
 
 .preview-container {
@@ -786,7 +786,7 @@
   height: 40px;
   border-radius: 50%;
   background: rgba(220, 38, 38, 0.9);
-  color: white;
+  color: var(--white);
   border: 2px solid white;
   font-size: 20px;
   cursor: pointer;
@@ -866,7 +866,7 @@
   left: 0;
   width: 4px;
   height: 100%;
-  background: linear-gradient(180deg, var(--primary) 0%, #7c3aed 100%);
+  background: linear-gradient(180deg, var(--primary) 0%, var(--accent) 100%);
   border-radius: 4px 0 0 4px;
 }
 
@@ -971,7 +971,7 @@
   flex: 1;
   padding: 16px 32px;
   background: var(--primary); /* Brand teal */
-  color: white;
+  color: var(--white);
   border: none;
   border-radius: var(--border-radius-md); /* Brand guideline: 8px */
   font-size: 1.1rem;
@@ -1033,8 +1033,8 @@
   border-radius: 50%;
   background: conic-gradient(
     from 0deg,
-    var(--primary-500, #6366f1) 0%,
-    var(--secondary-500, #8b5cf6) 25%,
+    var(--primary-500, var(--primary)) 0%,
+    var(--secondary-500, var(--accent)) 25%,
     var(--primary-400, #818cf8) 50%,
     transparent 50%
   );
@@ -1052,8 +1052,8 @@
 }
 
 @keyframes progressRingPulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.3); }
-  50% { box-shadow: 0 0 0 12px rgba(99, 102, 241, 0); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(31, 95, 191, 0.3); }
+  50% { box-shadow: 0 0 0 12px rgba(31, 95, 191, 0); }
 }
 
 .progress-phase {
@@ -1103,11 +1103,11 @@
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--primary-500, #6366f1) 0%, var(--secondary-500, #8b5cf6) 50%, var(--primary-400, #818cf8) 100%);
+  background: linear-gradient(90deg, var(--primary-500, var(--primary)) 0%, var(--secondary-500, var(--accent)) 50%, var(--primary-400, #818cf8) 100%);
   background-size: 200% 100%;
   border-radius: var(--border-radius-md);
   transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 2px 8px rgba(31, 95, 191, 0.3);
   width: var(--progress-width, 0%);
   animation: progressShimmer 2s ease-in-out infinite;
   position: relative;
@@ -1178,16 +1178,16 @@
 }
 
 .scan-step-indicator.active .scan-step-dot {
-  border-color: var(--primary-500, #6366f1);
-  background: var(--primary-500, #6366f1);
-  color: #fff;
-  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+  border-color: var(--primary-500, var(--primary));
+  background: var(--primary-500, var(--primary));
+  color: var(--white);
+  box-shadow: 0 0 0 4px rgba(31, 95, 191, 0.15);
 }
 
 .scan-step-indicator.completed .scan-step-dot {
   border-color: var(--success-500, #22c55e);
   background: var(--success-500, #22c55e);
-  color: #fff;
+  color: var(--white);
 }
 
 .scan-step-label {
@@ -1199,7 +1199,7 @@
 }
 
 .scan-step-indicator.active .scan-step-label {
-  color: var(--primary-500, #6366f1);
+  color: var(--primary-500, var(--primary));
 }
 
 .scan-step-indicator.completed .scan-step-label {

@@ -39,8 +39,8 @@
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary) 0%, #7c3aed 100%);
-  color: #fff;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  color: var(--white);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -113,8 +113,8 @@
 .me-twin-card {
   display: block;
   padding: 20px;
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(124, 58, 237, 0.06) 100%);
-  border: 1px solid rgba(99, 102, 241, 0.2);
+  background: linear-gradient(135deg, rgba(31, 95, 191, 0.08) 0%, rgba(124, 58, 237, 0.06) 100%);
+  border: 1px solid rgba(31, 95, 191, 0.2);
   border-radius: var(--border-radius-xl);
   text-decoration: none;
   color: var(--text-primary);
@@ -123,8 +123,8 @@
 }
 
 .me-twin-card:hover {
-  box-shadow: 0 6px 16px rgba(99, 102, 241, 0.15);
-  border-color: rgba(99, 102, 241, 0.35);
+  box-shadow: 0 6px 16px rgba(31, 95, 191, 0.15);
+  border-color: rgba(31, 95, 191, 0.35);
 }
 
 .me-twin-icon {

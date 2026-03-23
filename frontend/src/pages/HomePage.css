@@ -13,7 +13,7 @@
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, var(--primary) 0%, #7c3aed 50%, #ec4899 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 50%, #ec4899 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -70,8 +70,8 @@
     width: 100%;
     min-height: 52px;
     padding: 14px 20px;
-    background: linear-gradient(135deg, var(--primary) 0%, #7c3aed 100%);
-    color: #fff;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    color: var(--white);
     font-weight: 600;
     font-size: 1rem;
     text-decoration: none;
@@ -429,7 +429,7 @@
 
 .nav-btn-primary {
   background: var(--primary);
-  color: white;
+  color: var(--white);
   padding: 12px 24px;
   border-radius: var(--border-radius-md);
   text-decoration: none;
@@ -540,7 +540,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: var(--white);
 }
 
 .btn-icon svg {
@@ -578,7 +578,7 @@
 
 .btn-primary {
   background: var(--primary);
-  color: white;
+  color: var(--white);
   padding: 16px 32px;
   border-radius: 10px;
   font-weight: 600;
@@ -807,7 +807,7 @@
   margin: 8px 0;
 }
 .cta-section-link:hover {
-  color: #fff;
+  color: var(--white);
   text-decoration-thickness: 2px;
 }
 
@@ -819,7 +819,7 @@
 .cta-title {
   font-size: 2rem;
   font-weight: 700;
-  color: white;
+  color: var(--white);
   margin-bottom: 16px;
 }
 
@@ -877,7 +877,7 @@
 .footer-logo {
   font-size: 1.5rem;
   font-weight: 700;
-  color: white;
+  color: var(--white);
   margin-bottom: 16px;
 }
 
@@ -887,7 +887,7 @@
 }
 
 .footer-links h4 {
-  color: white;
+  color: var(--white);
   font-size: 1rem;
 }
   .footer-links a {   display: block;
@@ -898,7 +898,7 @@
 }
 
 .footer-links a:hover {
-  color: white;
+  color: var(--white);
 }
 
 .footer-bottom {
@@ -1091,7 +1091,7 @@
   width: 56px;
   height: 56px;
   background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-  color: white;
+  color: var(--white);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -1263,7 +1263,7 @@
   justify-content: center;
   font-weight: 700;
   font-size: 1.25rem;
-  color: white;
+  color: var(--white);
   margin-bottom: 8px;
 }
 
@@ -1591,7 +1591,7 @@
 /* Simple buttons */
 .btn-primary {
   background: var(--primary);
-  color: white;
+  color: var(--white);
   padding: 14px 28px;
   border-radius: var(--border-radius-md);
   font-weight: 600;
@@ -1654,7 +1654,7 @@
   width: 40px;
   height: 40px;
   background: var(--primary);
-  color: white;
+  color: var(--white);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -1974,7 +1974,7 @@
   left: 20px;
   right: 20px;
   height: 3px;
-  background: linear-gradient(90deg, var(--primary) 0%, #8b5cf6 50%, #ec4899 100%);
+  background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 50%, #ec4899 100%);
   border-radius: 0 0 4px 4px;
 }
 
@@ -2146,7 +2146,7 @@
 
 .hero {
   background: 
-    radial-gradient(ellipse 1200px 600px at 0% 0%, rgba(99, 102, 241, 0.15), transparent 50%),
+    radial-gradient(ellipse 1200px 600px at 0% 0%, rgba(31, 95, 191, 0.15), transparent 50%),
     radial-gradient(ellipse 1000px 500px at 100% 0%, rgba(168, 85, 247, 0.12), transparent 50%),
     radial-gradient(ellipse 800px 400px at 50% 100%, rgba(59, 130, 246, 0.08), transparent 50%),
     linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
@@ -2160,7 +2160,7 @@
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3), transparent);
+  background: linear-gradient(90deg, transparent, rgba(31, 95, 191, 0.3), rgba(168, 85, 247, 0.3), transparent);
 }
 
 .hero-title {
@@ -2174,9 +2174,9 @@
 }
 
 .hero-badge {
-  border: 1px solid rgba(99, 102, 241, 0.2);
+  border: 1px solid rgba(31, 95, 191, 0.2);
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 250, 252, 0.9));
-  color: #6366f1;
+  color: var(--primary);
   backdrop-filter: blur(10px);
   font-weight: 600;
 }
@@ -2190,7 +2190,7 @@
 }
 
 .homepage .btn-primary {
-  background: linear-gradient(135deg, var(--primary) 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
   border-radius: 14px;
   padding: 16px 32px;
   letter-spacing: 0.01em;
@@ -2224,15 +2224,15 @@
 .homepage .btn-secondary {
   background: rgba(255, 255, 255, 0.95);
   border-radius: 14px;
-  border: 2px solid rgba(99, 102, 241, 0.15);
+  border: 2px solid rgba(31, 95, 191, 0.15);
   box-shadow: 0 8px 20px rgba(13, 27, 62, 0.08);
   font-weight: 600;
-  color: #4f46e5;
+  color: var(--primary);
 }
 
 .homepage .btn-secondary:hover {
-  border-color: #6366f1;
-  background: rgba(99, 102, 241, 0.05);
+  border-color: var(--primary);
+  background: rgba(31, 95, 191, 0.05);
   transform: translateY(-2px);
 }
 
@@ -2654,7 +2654,7 @@
   height: 44px;
   border-radius: 999px;
   background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-  color: #fff;
+  color: var(--white);
   font-weight: 700;
   font-size: 1rem;
   box-shadow: 0 10px 22px rgba(31, 111, 235, 0.28);
@@ -2821,7 +2821,7 @@
 
 .trust-badge-research .trust-badge-icon {
   background: linear-gradient(135deg, rgba(139, 92, 246, 0.12) 0%, rgba(139, 92, 246, 0.06) 100%);
-  color: #8b5cf6;
+  color: var(--accent);
 }
 .trust-badge-research:hover {
   border-color: rgba(139, 92, 246, 0.3);
@@ -2968,7 +2968,7 @@
 
 /* Button Refinements */
 .btn-primary--hero {
-  background: linear-gradient(135deg, var(--primary) 0%, #4f46e5 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary) 100%);
   box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.4);
   transition: all 0.3s ease;
 }
@@ -3003,14 +3003,14 @@
 
 .score-circle.good {
   background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
-  color: white;
+  color: var(--white);
   text-shadow: 0 1px 2px rgba(0,0,0,0.1);
   box-shadow: 0 8px 16px -4px rgba(16, 185, 129, 0.3);
 }
 
 .score-circle.medium {
   background: linear-gradient(135deg, var(--warning) 0%, #d97706 100%);
-  color: white;
+  color: var(--white);
   text-shadow: 0 1px 2px rgba(0,0,0,0.1);
   box-shadow: 0 8px 16px -4px rgba(245, 158, 11, 0.3);
 }

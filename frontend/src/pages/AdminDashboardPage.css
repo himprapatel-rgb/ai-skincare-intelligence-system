@@ -30,7 +30,7 @@
 }
 
 .admin-quick-upload {
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(99, 102, 241, 0.06) 100%);
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(31, 95, 191, 0.06) 100%);
   border: 1px solid rgba(59, 130, 246, 0.2);
   border-radius: var(--border-radius-xl);
   padding: 24px;

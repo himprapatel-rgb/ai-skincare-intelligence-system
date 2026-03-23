@@ -124,14 +124,14 @@
 }
 
 .today-card-skin-glow .today-skin-ring-wrap {
-  filter: drop-shadow(0 0 12px rgba(99, 102, 241, 0.25));
+  filter: drop-shadow(0 0 12px rgba(31, 95, 191, 0.25));
 }
 
 /* AI Prediction card */
 .today-card-prediction {
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.06) 0%, rgba(124, 58, 237, 0.04) 100%);
-  border-color: rgba(99, 102, 241, 0.2);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 0 20px rgba(99, 102, 241, 0.08);
+  background: linear-gradient(135deg, rgba(31, 95, 191, 0.06) 0%, rgba(124, 58, 237, 0.04) 100%);
+  border-color: rgba(31, 95, 191, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 0 20px rgba(31, 95, 191, 0.08);
 }
 
 .today-prediction-title {
@@ -485,7 +485,7 @@
   height: 72px;
   border-radius: var(--border-radius-xl);
   background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(124, 58, 237, 0.08));
-  border: 1px solid rgba(99, 102, 241, 0.25);
+  border: 1px solid rgba(31, 95, 191, 0.25);
 }
 
 .today-skin-score-num {
@@ -690,7 +690,7 @@
 .today-toppick-bar-fill {
   height: 100%;
   border-radius: 999px;
-  background: linear-gradient(90deg, var(--primary), #7c3aed);
+  background: linear-gradient(90deg, var(--primary), var(--accent));
 }
 
 .today-toppick-meta {
@@ -886,7 +886,7 @@
 .today-product-card-bar-fill {
   height: 100%;
   border-radius: var(--border-radius-sm);
-  background: linear-gradient(90deg, var(--primary), #7c3aed);
+  background: linear-gradient(90deg, var(--primary), var(--accent));
   transition: width 0.35s ease;
 }
 
@@ -958,7 +958,7 @@
 .today-routine-bar-fill {
   height: 100%;
   border-radius: 999px;
-  background: linear-gradient(90deg, var(--primary), #7c3aed);
+  background: linear-gradient(90deg, var(--primary), var(--accent));
   transition: width 0.3s ease;
 }
 

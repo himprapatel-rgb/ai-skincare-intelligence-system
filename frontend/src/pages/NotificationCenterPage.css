@@ -26,7 +26,7 @@
 }
 .notif-back:hover {
   background: rgba(255, 255, 255, 0.2);
-  color: white;
+  color: var(--white);
 }
 .notif-header-text {
   flex: 1;
@@ -53,7 +53,7 @@
   background: rgba(255, 255, 255, 0.25);
   border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: 10px;
-  color: white;
+  color: var(--white);
   font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
@@ -70,7 +70,7 @@
   background: rgba(255, 255, 255, 0.25);
   border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: 10px;
-  color: white;
+  color: var(--white);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -198,7 +198,7 @@
 
 .filter-btn.active {
   background: var(--primary);
-  color: white;
+  color: var(--white);
   border-color: var(--primary);
 }
 

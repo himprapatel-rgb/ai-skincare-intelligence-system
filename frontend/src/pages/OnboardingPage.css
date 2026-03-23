@@ -268,8 +268,8 @@
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background: var(--ds-gradient-primary, linear-gradient(135deg, var(--primary), #7c3aed));
-  color: #fff;
+  background: var(--ds-gradient-primary, linear-gradient(135deg, var(--primary), var(--accent)));
+  color: var(--white);
   display: flex;
   align-items: center;
   justify-content: center;

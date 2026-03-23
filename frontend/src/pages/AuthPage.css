@@ -21,7 +21,7 @@
   flex-direction: column;
   justify-content: center;
   padding: var(--spacing-3xl);
-  color: #ffffff;
+  color: var(--white);
 }
 
 .auth-brand {
@@ -34,14 +34,14 @@
   margin-bottom: var(--spacing-md);
   letter-spacing: var(--letter-spacing-tight);
   line-height: var(--line-height-tight);
-  color: #ffffff;
+  color: var(--white);
 }
 
 .auth-brand p {
   font-size: 1.125rem;
   line-height: 1.6;
   max-width: 500px;
-  color: #ffffff;
+  color: var(--white);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
 }
 
@@ -96,7 +96,7 @@
   font-size: 1.15rem;
   font-weight: 600;
   margin-bottom: 6px;
-  color: #ffffff;
+  color: var(--white);
 }
 
 .feature-text p {
@@ -363,7 +363,7 @@
 
 .auth-submit {
   background: var(--primary); /* Brand blue */
-  color: white;
+  color: var(--white);
   padding: 12px 24px; /* Brand guideline: 12px 24px */
   border: none;
   border-radius: var(--border-radius-md); /* Brand guideline: 8px */
@@ -452,7 +452,7 @@
 
 .auth-toggle a:hover,
 .auth-toggle button:hover {
-  color: white;
+  color: var(--white);
   border-color: var(--primary);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(31, 111, 235, 0.3);
@@ -581,7 +581,7 @@
 
 .btn-link:hover {
   background: var(--primary);
-  color: white;
+  color: var(--white);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(31, 111, 235, 0.3);
 }
@@ -653,7 +653,7 @@
 
 .error-message__button--retry:hover {
   background: var(--danger);
-  color: white;
+  color: var(--white);
 }
 
 .error-message__button--dismiss {
@@ -687,7 +687,7 @@
   padding: 12px 24px; /* Brand guideline: 12px 24px */
   font-size: 1rem; /* Brand guideline: 16px Body */
   font-weight: 600; /* Brand guideline */
-  color: white;
+  color: var(--white);
   background: var(--primary); /* Brand blue */
   border: none;
   border-radius: var(--border-radius-md); /* Brand guideline: 8px */

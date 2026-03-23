@@ -212,7 +212,7 @@
   height: 56px;
   border-radius: var(--border-radius-xl);
   background: var(--primary);
-  color: white;
+  color: var(--white);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -396,7 +396,7 @@
 
 .stat-card.primary {
   background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-  color: white;
+  color: var(--white);
   box-shadow: 0 4px 16px rgba(31, 111, 235, 0.3);
 }
 
@@ -428,7 +428,7 @@
 
 .stat-card.primary .stat-icon {
   background: rgba(255, 255, 255, 0.2);
-  color: white;
+  color: var(--white);
 }
 
 .stat-content {
@@ -449,7 +449,7 @@
 }
 
 .stat-card.primary .stat-content h3 {
-  color: white;
+  color: var(--white);
 }
 
 .stat-content p {
@@ -489,7 +489,7 @@
 
 .stat-card.primary .trend {
   background: rgba(255, 255, 255, 0.25);
-  color: white;
+  color: var(--white);
 }
 
 /* Dashboard Content */
@@ -887,7 +887,7 @@
 .btn-primary {
   padding: 12px 24px; /* Brand guideline: 12px 24px */
   background: var(--primary); /* Brand blue */
-  color: white;
+  color: var(--white);
   border: none;
   border-radius: var(--border-radius-md); /* Brand guideline: 8px */
   font-size: 1rem; /* Brand guideline: 16px Body */

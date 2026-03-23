@@ -127,20 +127,20 @@
   text-decoration: none;
   border: 2px solid var(--primary);
   background: var(--primary);
-  color: white;
+  color: var(--white);
   font-family: inherit;
 }
 
 .info-card a.info-card-action:hover {
   background: var(--primary-dark);
   border-color: var(--primary-dark);
-  color: white;
+  color: var(--white);
 }
 
 .info-card button.info-card-action:hover {
   background: var(--primary-dark);
   border-color: var(--primary-dark);
-  color: white;
+  color: var(--white);
 }
 
 .contact-form {
@@ -211,7 +211,7 @@
   width: 100%;
   padding: 12px 24px; /* Brand guideline: 12px 24px */
   background: var(--primary); /* Brand blue */
-  color: white;
+  color: var(--white);
   border: none;
   border-radius: var(--border-radius-md); /* Brand guideline: 8px */
   font-size: 1rem; /* Brand guideline: 16px Body */
@@ -232,7 +232,7 @@
   width: 100%;
   padding: 12px 24px;
   background: var(--primary);
-  color: white;
+  color: var(--white);
   border: none;
   border-radius: var(--border-radius-md);
   font-size: 1rem;

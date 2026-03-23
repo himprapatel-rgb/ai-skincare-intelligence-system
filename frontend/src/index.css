@@ -42,12 +42,41 @@
   /* Status Colors */
   --success: #1b7f53;
   --success-light: #e8f7ef;
+  --success-50: #f0fdf4;
+  --success-100: #dcfce7;
+  --success-200: #bbf7d0;
+  --success-600: #059669;
+  --success-700: #15803d;
+  --success-800: #065f46;
   --warning: #b97710;
   --warning-light: #fff5e6;
+  --warning-100: #fef3c7;
+  --warning-400: #fbbf24;
+  --warning-600: #d97706;
+  --warning-700: #b45309;
+  --warning-800: #92400e;
+  --warning-900: #78350f;
   --danger: #b42318;
   --danger-light: #fdeceb;
+  --danger-50: #fef2f2;
+  --danger-100: #fee2e2;
+  --danger-200: #fecaca;
+  --danger-700: #b91c1c;
+  --danger-800: #991b1b;
   --info: #1f5fbf;
   --info-light: #e8f0fd;
+
+  /* Extended Primary Palette */
+  --primary-50: #eff6ff;
+  --primary-100: #dbeafe;
+  --primary-200: #bfdbfe;
+  --primary-700: #1d4ed8;
+
+  /* Extended Palette */
+  --pink-100: #fce7f3;
+  --pink-700: #be185d;
+  --purple-100: #f3e8ff;
+  --gray-950: #0a0a0a;
   
   /* Neutral Colors */
   --white: #ffffff;

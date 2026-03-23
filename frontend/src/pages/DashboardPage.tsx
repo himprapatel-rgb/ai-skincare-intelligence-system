@@ -43,6 +43,13 @@ const ONBOARDING_PROGRESS_KEY = 'onboarding_progress';
 
 type ScanReminder = { date?: string; frequency?: 'weekly' | 'biweekly' | 'monthly' };
 
+const getGreeting = (): string => {
+  const hour = new Date().getHours();
+  if (hour < 12) return 'Good morning';
+  if (hour < 18) return 'Good afternoon';
+  return 'Good evening';
+};
+
 const DashboardPage: React.FC = () => {
   usePageTitle('Dashboard', 'Your skincare dashboard: recent scans, skin score, shelf, and quick actions.');
   const { user } = useAuth();
@@ -262,7 +269,7 @@ const DashboardPage: React.FC = () => {
     <div className="dashboard-page app-page clinical-page">
       <header className="app-header-card dashboard-hero dashboard-hero-with-refresh">
         <div className="dashboard-hero-text">
-          <h1>Welcome back, {user?.full_name || 'User'}!</h1>
+          <h1>{getGreeting()}, {user?.full_name || 'User'}!</h1>
           <p className="app-header-subtitle">Here is your current skin-care overview</p>
         </div>
         <button
@@ -294,21 +301,30 @@ const DashboardPage: React.FC = () => {
             </div>
           </div>
           <div className="overlay-cta">
+            <div className="overlay-cta__icon-row">
+              <span className="overlay-cta__icon-circle"><IconCamera size={24} strokeWidth={2} /></span>
+              <span className="overlay-cta__icon-circle"><IconTrendingUp size={24} strokeWidth={2} /></span>
+              <span className="overlay-cta__icon-circle"><IconSparkles size={24} strokeWidth={2} /></span>
+            </div>
             <h2>Your Skin Dashboard</h2>
             <p>Track your skin health over time with personalized insights</p>
             <button type="button" className="btn btn-primary" onClick={() => navigate('/scan')}>
-              Start Your First Scan →
+              Start Your First Scan
+              <IconArrowRight size={18} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginLeft: '6px' }} />
             </button>
           </div>
         </div>
       )}
       <div className="dashboard-stats">
         <button type="button" className="stat-card primary" onClick={() => navigate('/history')}>
-          <div className="stat-icon">
-            <IconTrendingUp size={32} strokeWidth={2} />
+          <div
+            className="skin-score-ring"
+            style={{ '--score': data.skinScore } as React.CSSProperties}
+            aria-label={`Skin health score: ${data.skinScore}%`}
+          >
+            <span className="skin-score-ring__value">{data.skinScore}%</span>
           </div>
           <div className="stat-content">
-            <h3>{data.skinScore}%</h3>
             <p>Skin Health Score</p>
             <span className={`trend ${data.skinTrend}`}>
               {data.skinTrend === 'improving' ? (

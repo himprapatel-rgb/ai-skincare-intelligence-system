@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { usePageTitle } from '../hooks/usePageTitle';
-import { 
-  IconZap, IconScan, IconClock, IconShield, IconBookOpen, 
-  IconBarChart, IconSearch, IconSparkles, IconTrendingUp, 
+import {
+  IconZap, IconScan, IconClock, IconShield, IconBookOpen,
+  IconBarChart, IconSearch, IconSparkles, IconTrendingUp,
   IconCheck, IconStar
 } from '../components/Icons';
 import './HomePage.css';
@@ -51,6 +51,118 @@ const FadeInSection: React.FC<FadeInSectionProps> = ({ children, className = '',
     >
       {children}
     </section>
+  );
+};
+
+/** Animated number counter that counts up when scrolled into view */
+const AnimatedCounter: React.FC<{
+  end: number; suffix?: string; prefix?: string; duration?: number; decimal?: boolean;
+}> = ({ end, suffix = '', prefix = '', duration = 1800, decimal = false }) => {
+  const [count, setCount] = useState(0);
+  const [hasAnimated, setHasAnimated] = useState(false);
+  const ref = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) {
+      setCount(end);
+      return;
+    }
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasAnimated) {
+          setHasAnimated(true);
+          const startTime = performance.now();
+          const animate = (now: number) => {
+            const elapsed = now - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+            setCount(Math.round(eased * end));
+            if (progress < 1) requestAnimationFrame(animate);
+          };
+          requestAnimationFrame(animate);
+        }
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [end, duration, hasAnimated]);
+
+  const displayValue = decimal
+    ? (count / 10).toFixed(1)
+    : count.toLocaleString();
+
+  return (
+    <span ref={ref} className="stat-number stat-number--animated">
+      {prefix}{displayValue}{suffix}
+    </span>
+  );
+};
+
+/** Scroll-down chevron indicator */
+const ScrollIndicator: React.FC = () => {
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    const onScroll = () => setVisible(window.scrollY < 100);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  return (
+    <div className={`scroll-indicator ${visible ? 'scroll-indicator--visible' : ''}`} aria-hidden="true">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M7 13l5 5 5-5" />
+        <path d="M7 6l5 5 5-5" />
+      </svg>
+    </div>
+  );
+};
+
+const faqData = [
+  { q: 'Is this a medical diagnosis?', a: 'No. This tool provides informational insights only. It is not intended to diagnose, treat, or prevent any condition.' },
+  { q: 'Do you store my photos?', a: 'Photos are processed securely and can be deleted anytime from your account or automatically after analysis.' },
+  { q: 'Is this free to use?', a: 'Yes! Basic skin analysis scans are completely free with no signup required. Advanced features like progress tracking require a free account.' },
+  { q: 'What skin types are supported?', a: 'Our AI works with all skin types and tones. However, accuracy improves with clear, well-lit photos and front-facing angles.' },
+  { q: 'How long does analysis take?', a: 'Most scans complete in 20-40 seconds. Complex images may take up to 60 seconds depending on server load.' },
+  { q: 'Can I use this for medical purposes?', a: 'No. This is an informational tool only and should never replace professional medical advice from a qualified dermatologist or healthcare provider.' },
+  { q: 'Do you sell my data?', a: 'Never. We do not sell, share, or monetize your personal data or photos. Your privacy is our priority.' },
+  { q: 'What affects accuracy?', a: 'Lighting, camera quality, image clarity, and whether makeup is present can all affect the analysis results.' },
+];
+
+const FaqAccordion: React.FC = () => {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  const toggle = useCallback((i: number) => {
+    setOpenIndex(prev => (prev === i ? null : i));
+  }, []);
+
+  return (
+    <div className="faq-container">
+      {faqData.map((item, i) => (
+        <div
+          key={i}
+          className={`faq-item ${openIndex === i ? 'faq-item--open' : ''}`}
+          role="region"
+        >
+          <button
+            type="button"
+            className="faq-summary"
+            onClick={() => toggle(i)}
+            aria-expanded={openIndex === i}
+          >
+            {item.q}
+            <span className="faq-chevron" aria-hidden="true" />
+          </button>
+          <div className="faq-answer">
+            <p>{item.a}</p>
+          </div>
+        </div>
+      ))}
+    </div>
   );
 };
 
@@ -139,6 +251,7 @@ const HomePage: React.FC = () => {
               <p className="preview-disclaimer">Results are estimates based on visible features and image quality.</p>
           </div>
         </div>
+        <ScrollIndicator />
       </FadeInSection>
 
       <div className="app-page-content">
@@ -192,19 +305,19 @@ const HomePage: React.FC = () => {
         </div>
         <div className="stats-grid">
           <div className="stat-item">
-            <span className="stat-number">50,000+</span>
+            <AnimatedCounter end={50000} suffix="+" />
             <span className="stat-label">Scans Completed</span>
           </div>
           <div className="stat-item">
-            <span className="stat-number">12,000+</span>
+            <AnimatedCounter end={12000} suffix="+" />
             <span className="stat-label">Active Users</span>
           </div>
           <div className="stat-item">
-            <span className="stat-number">4.8/5</span>
+            <AnimatedCounter end={48} suffix="/5" decimal />
             <span className="stat-label">User Rating</span>
           </div>
           <div className="stat-item">
-            <span className="stat-number">95%</span>
+            <AnimatedCounter end={95} suffix="%" />
             <span className="stat-label">Satisfaction Rate</span>
           </div>
         </div>
@@ -375,40 +488,7 @@ const HomePage: React.FC = () => {
             <span className="section-tag">Common Questions</span>
             <h2>FAQ</h2>
           </div>
-          <div className="faq-container">
-            <details className="faq-item">
-              <summary>Is this a medical diagnosis?</summary>
-              <p>No. This tool provides informational insights only. It is not intended to diagnose, treat, or prevent any condition.</p>
-            </details>
-            <details className="faq-item">
-              <summary>Do you store my photos?</summary>
-              <p>Photos are processed securely and can be deleted anytime from your account or automatically after analysis.</p>
-            </details>
-            <details className="faq-item">
-              <summary>Is this free to use?</summary>
-              <p>Yes! Basic skin analysis scans are completely free with no signup required. Advanced features like progress tracking require a free account.</p>
-            </details>
-            <details className="faq-item">
-              <summary>What skin types are supported?</summary>
-              <p>Our AI works with all skin types and tones. However, accuracy improves with clear, well-lit photos and front-facing angles.</p>
-            </details>
-            <details className="faq-item">
-              <summary>How long does analysis take?</summary>
-              <p>Most scans complete in 20-40 seconds. Complex images may take up to 60 seconds depending on server load.</p>
-            </details>
-            <details className="faq-item">
-              <summary>Can I use this for medical purposes?</summary>
-              <p>No. This is an informational tool only and should never replace professional medical advice from a qualified dermatologist or healthcare provider.</p>
-            </details>
-            <details className="faq-item">
-              <summary>Do you sell my data?</summary>
-              <p>Never. We do not sell, share, or monetize your personal data or photos. Your privacy is our priority.</p>
-            </details>
-            <details className="faq-item">
-              <summary>What affects accuracy?</summary>
-              <p>Lighting, camera quality, image clarity, and whether makeup is present can all affect the analysis results.</p>
-            </details>
-          </div>
+          <FaqAccordion />
         </FadeInSection>
 
       {/* CTA Section - single link to avoid duplicate primary CTA (Phase 1 fix) */}

@@ -941,7 +941,7 @@
 
 .ingredient-item.ingredient-active {
   background: linear-gradient(135deg, #dcfce7, #bbf7d0);
-  border-color: #22c55e;
+  border-color: var(--success);
   color: #166534;
 }
 
@@ -994,7 +994,7 @@
 }
 
 .legend-dot.active {
-  background: #22c55e;
+  background: var(--success);
 }
 
 .legend-dot.concern {
@@ -1241,13 +1241,13 @@
 }
 
 .safety-badge.safe {
-  background: #ecfdf5;
-  color: #059669;
+  background: var(--success-50, #ecfdf5);
+  color: var(--success-600, #059669);
   border: 1px solid var(--success);
 }
 
 .safety-badge.warning {
-  background: #fef3c7;
+  background: var(--warning-100, #fef3c7);
   color: #b45309;
   border: 1px solid var(--warning);
 }

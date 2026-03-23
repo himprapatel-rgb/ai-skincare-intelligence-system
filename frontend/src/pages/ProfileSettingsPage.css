@@ -516,13 +516,13 @@
 }
 
 .settings-icon.blue {
-  background: #dbeafe;
+  background: var(--primary-100, #dbeafe);
   color: var(--primary);
 }
 
 .settings-icon.green {
   background: #d1fae5;
-  color: #059669;
+  color: var(--success-600, #059669);
 }
 
 .settings-label {
@@ -1081,7 +1081,7 @@
   display: block;
   font-size: 0.9rem;
   font-weight: 500;
-  color: #374151;
+  color: var(--gray-700, #374151);
   margin-bottom: 6px;
 }
 

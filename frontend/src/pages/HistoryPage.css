@@ -393,7 +393,7 @@
   margin-top: 10px;
   font-size: 0.9rem;
   color: #9b1c1c;
-  background: #fef2f2;
+  background: var(--danger-50, #fef2f2);
   border: 1px solid #fecaca;
   border-radius: var(--border-radius-md);
   padding: 8px 12px;

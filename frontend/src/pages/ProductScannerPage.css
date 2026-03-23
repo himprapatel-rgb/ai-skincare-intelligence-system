@@ -180,7 +180,7 @@
 }
 
 .barcode-scanner-container.active {
-  background: #1a1a1a;
+  background: var(--gray-900, #1a1a1a);
 }
 
 .barcode-scanner-container:not(.active) {
@@ -377,7 +377,7 @@
 
 .btn-success {
   padding: 12px 24px;
-  background: #22c55e;
+  background: var(--success);
   color: var(--white);
   border: none;
   border-radius: var(--border-radius-md);
@@ -904,7 +904,7 @@
   gap: 6px;
 }
 .ingredient-conflict-text { margin: 0 0 6px 0; font-size: 0.9rem; color: var(--text-secondary); }
-.ingredient-conflict-advice { margin: 0; font-size: 0.85rem; font-weight: 600; color: #b45309; }
+.ingredient-conflict-advice { margin: 0; font-size: 0.85rem; font-weight: 600; color: var(--warning-700, #b45309); }
 
 .track-product-modal-overlay {
   position: fixed;
@@ -969,7 +969,7 @@
 }
 
 .skin-match-card.good .skin-match-value { color: var(--success); }
-.skin-match-card.fair .skin-match-value { color: #d97706; }
+.skin-match-card.fair .skin-match-value { color: var(--warning-600, #d97706); }
 .skin-match-card.low .skin-match-value { color: var(--danger); }
 
 .skin-match-bullets {
@@ -1283,7 +1283,7 @@
 
 .safety-recommendations li {
   font-size: 0.9rem;
-  color: #78350f;
+  color: var(--warning-900, #78350f);
   margin-bottom: 6px;
   line-height: 1.4;
 }
@@ -1306,14 +1306,14 @@
 }
 
 .safety-badge.safe {
-  background: #ecfdf5;
-  color: #059669;
+  background: var(--success-50, #ecfdf5);
+  color: var(--success-600, #059669);
   border: 1px solid var(--success);
 }
 
 .safety-badge.warning {
-  background: #fef3c7;
-  color: #d97706;
+  background: var(--warning-100, #fef3c7);
+  color: var(--warning-600, #d97706);
   border: 1px solid var(--warning);
 }
 
@@ -1577,7 +1577,7 @@
 
 .processing-steps .step.done {
   opacity: 1;
-  color: #22c55e;
+  color: var(--success);
 }
 
 .step-dot {
@@ -1609,7 +1609,7 @@
 .confidence-bar-container {
   flex: 1;
   height: 6px;
-  background: #e5e7eb;
+  background: var(--gray-200, #e5e7eb);
   border-radius: 3px;
   overflow: hidden;
   max-width: 100px;
@@ -1663,7 +1663,7 @@
   overflow: hidden;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--gray-200, #e5e7eb);
 }
 
 .history-card:hover {
@@ -1688,7 +1688,7 @@
 
 .history-details {
   padding: 12px;
-  border-top: 1px solid #f3f4f6;
+  border-top: 1px solid var(--gray-100, #f3f4f6);
 }
 
 .history-details h4 {
@@ -1715,12 +1715,12 @@
 }
 
 .history-badge.barcode {
-  background: #dbeafe;
-  color: #1d4ed8;
+  background: var(--primary-100, #dbeafe);
+  color: var(--primary-700, #1d4ed8);
 }
 
 .history-badge.image {
-  background: #f3e8ff;
+  background: var(--purple-100, #f3e8ff);
   color: var(--accent);
 }
 
@@ -1990,7 +1990,7 @@
 
 .camera-permission-indicator.prompt {
   background: rgba(234, 179, 8, 0.1);
-  color: #ca8a04;
+  color: var(--warning-600, #ca8a04);
 }
 
 /* Spin animation for loader */
@@ -2170,7 +2170,7 @@
 .confidence-track {
   flex: 1;
   height: 8px;
-  background: #e5e7eb;
+  background: var(--gray-200, #e5e7eb);
   border-radius: var(--border-radius-sm);
   overflow: hidden;
 }
@@ -2210,14 +2210,14 @@
 }
 
 .not-sure-prompt p {
-  color: #92400e;
+  color: var(--warning-800, #92400e);
   font-size: 0.9rem;
   margin-bottom: 12px;
 }
 
 .not-sure-prompt .btn-retry {
-  background: #fbbf24;
-  color: #78350f;
+  background: var(--warning-400, #fbbf24);
+  color: var(--warning-900, #78350f);
   border: none;
   padding: 10px 20px;
   border-radius: var(--border-radius-md);

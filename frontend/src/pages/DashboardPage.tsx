@@ -310,7 +310,7 @@ const DashboardPage: React.FC = () => {
             <p>Track your skin health over time with personalized insights</p>
             <button type="button" className="btn btn-primary" onClick={() => navigate('/scan')}>
               Start Your First Scan
-              <IconArrowRight size={18} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginLeft: '6px' }} />
+              <IconArrowRight size={18} strokeWidth={2} className="icon-inline" />
             </button>
           </div>
         </div>
@@ -329,17 +329,17 @@ const DashboardPage: React.FC = () => {
             <span className={`trend ${data.skinTrend}`}>
               {data.skinTrend === 'improving' ? (
                 <>
-                  <IconTrendingUp size={16} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '4px' }} />
+                  <IconTrendingUp size={16} strokeWidth={2} className="icon-inline" />
                   Improving
                 </>
               ) : data.skinTrend === 'declining' ? (
                 <>
-                  <IconTrendingDown size={16} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '4px' }} />
+                  <IconTrendingDown size={16} strokeWidth={2} className="icon-inline" />
                   Declining
                 </>
               ) : (
                 <>
-                  <IconArrowRight size={16} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '4px' }} />
+                  <IconArrowRight size={16} strokeWidth={2} className="icon-inline" />
                   Stable
                 </>
               )}

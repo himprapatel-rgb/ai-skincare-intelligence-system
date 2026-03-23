@@ -182,7 +182,7 @@
 }
 
 .myshelf-expiring-badge.warning {
-  background: #fef3c7;
+  background: var(--warning-100, #fef3c7);
   color: #b45309;
 }
 
@@ -660,8 +660,8 @@
 }
 
 .product-status-pill[data-status="using"] {
-  background: #dbeafe;
-  color: #1d4ed8;
+  background: var(--primary-100, #dbeafe);
+  color: var(--primary-700, #1d4ed8);
 }
 
 .product-status-pill[data-status="wishlist"] {
@@ -851,7 +851,7 @@
 
 .repurchase-btn.yes {
   background: #dcfce7;
-  border-color: #22c55e;
+  border-color: var(--success);
   color: #15803d;
 }
 
@@ -865,7 +865,7 @@
 }
 
 .expiry-badge.warning {
-  background: #fef3c7;
+  background: var(--warning-100, #fef3c7);
   color: #b45309;
 }
 

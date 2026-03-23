@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { IconTrendingUp, IconCheckCircle, IconCircle, IconDownload } from '../components/Icons';
+import { SkeletonHeading, SkeletonText, SkeletonCard } from '../components/Skeleton';
 import { getProgressSummary } from '../services/scanApi';
 import './CommonStyles.css';
 import './ProgressTrackingPage.css';
@@ -79,8 +80,17 @@ const ProgressTrackingPage: React.FC = () => {
   if (isLoading) {
     return (
       <div className="progress-tracking-page app-page">
+        <header className="app-header-card">
+          <SkeletonHeading style={{ width: 180, height: 28 }} />
+          <SkeletonText style={{ width: 220, marginTop: 8 }} />
+        </header>
         <div className="app-page-content">
-          <p className="progress-loading-text">Loading progress…</p>
+          <div className="stats-summary">
+            {[1, 2, 3].map((i) => (
+              <SkeletonCard key={i} hasImage={false} style={{ minHeight: 80 }} />
+            ))}
+          </div>
+          <SkeletonCard hasImage={false} style={{ minHeight: 200, marginTop: 24 }} />
         </div>
       </div>
     );

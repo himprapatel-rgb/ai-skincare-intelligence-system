@@ -323,7 +323,7 @@
 .feature-item-text h3 {
   font-size: 15px;
   font-weight: 600;
-  color: #1a1a1a;
+  color: var(--gray-900, #1a1a1a);
   margin: 0 0 4px;
 }
 

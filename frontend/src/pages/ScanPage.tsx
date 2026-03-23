@@ -730,7 +730,7 @@ export default function ScanPage() {
   };
 
   return (
-    <div className="scan-page app-page">
+    <div className="scan-page app-page clinical-page">
       <main className="scan-container app-page-content">
         <div className="scan-content">
           {/* Issue #12: Home/escape from deep screens */}

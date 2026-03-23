@@ -176,7 +176,7 @@ const displayName = nameParts.length > 1
 
   return (
     <div
-      className={`app-layout${isAppRoute ? ' app-shell-mode' : ''}`}
+      className={`app-layout clinical-clean-shell${isAppRoute ? ' app-shell-mode' : ''}`}
       data-viewport={viewport}
     >
       <a className="skip-link" href="#main-content">Skip to main content</a>
@@ -270,14 +270,14 @@ const displayName = nameParts.length > 1
               ) : (
                 <>
                   <Link className="app-nav-link" to="/auth" onMouseEnter={() => { void import('../pages/AuthPage'); }}>Sign In</Link>
-                  <Link className="app-nav-cta-secondary" to="/auth?mode=register" onMouseEnter={() => { void import('../pages/AuthPage'); }}>Get Started</Link>
+                  <Link className="app-nav-cta-secondary" to="/auth?mode=register" onMouseEnter={() => { void import('../pages/AuthPage'); }}>Create Account</Link>
                 </>
               )}
               
               {!isAuthenticated && !location.pathname.startsWith('/scan') && !location.pathname.startsWith('/analysis') && (
                 <Link className="app-nav-cta" to="/scan" title="Start a free skin analysis" onMouseEnter={() => void import('../pages/ScanPage')}>
                   <IconScan size={18} strokeWidth={2} />
-                  <span>Free Scan</span>
+                  <span>Start Assessment</span>
                 </Link>
               )}
               {isAuthenticated && !location.pathname.startsWith('/dashboard') && (
@@ -406,14 +406,14 @@ const displayName = nameParts.length > 1
             ) : (
               <div className="app-nav-mobile-auth">
                 <Link className="app-nav-mobile-btn-secondary" to="/auth" onTouchStart={() => { void import('../pages/AuthPage'); }}>Sign In</Link>
-                <Link className="app-nav-mobile-btn-primary" to="/auth?mode=register" onTouchStart={() => { void import('../pages/AuthPage'); }}>Get Started Free</Link>
+                <Link className="app-nav-mobile-btn-primary" to="/auth?mode=register" onTouchStart={() => { void import('../pages/AuthPage'); }}>Create Account</Link>
               </div>
             )}
 
             {!isAuthenticated && !location.pathname.startsWith('/scan') && (
-              <Link className="app-nav-mobile-cta" to="/scan" title="Start a free skin analysis" onTouchStart={() => { void import('../pages/ScanPage'); }}>
+              <Link className="app-nav-mobile-cta" to="/scan" title="Start a skin assessment" onTouchStart={() => { void import('../pages/ScanPage'); }}>
                 <IconScan size={20} strokeWidth={2} />
-                <span>Start Free Skin Scan</span>
+                <span>Start Assessment</span>
               </Link>
             )}
             {isAuthenticated && !location.pathname.startsWith('/dashboard') && (
@@ -567,7 +567,7 @@ const displayName = nameParts.length > 1
             </p>
             <p className="app-footer-disclaimer">
               <span className="app-footer-disclaimer-icon">ℹ️</span>
-              Not a medical device. For informational purposes only.
+              Informational support only. Consult a qualified clinician for diagnosis or treatment decisions.
             </p>
           </div>
         </div>

@@ -86,7 +86,7 @@ export const AuthPage: React.FC = () => {
     });
   };
   return (
-    <div className="auth-page app-page">
+    <div className="auth-page app-page clinical-page">
       {/* Mobile-only compact brand (shows when auth-left hidden) */}
       <div className="auth-mobile-brand" aria-hidden="true">
         <h1>SkinCareAI</h1>

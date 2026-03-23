@@ -210,7 +210,7 @@ const MyShelfPage: React.FC = () => {
   }
 
   return (
-    <div className="myshelf-page app-page">
+    <div className="myshelf-page app-page clinical-page">
       <header className="myshelf-hero">
         <div className="myshelf-hero-inner">
           <div className="myshelf-hero-icon" aria-hidden>

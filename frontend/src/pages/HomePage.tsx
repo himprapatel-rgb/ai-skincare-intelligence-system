@@ -74,7 +74,7 @@ const HomePage: React.FC = () => {
     )}`;
 
   return (
-    <div className="homepage app-page">
+    <div className="homepage app-page clinical-page">
       {/* Hero Section - Updated with safer claims */}
       <FadeInSection className="hero">
         <div className="hero-decoration" aria-hidden="true">
@@ -88,14 +88,14 @@ const HomePage: React.FC = () => {
               <span className="badge-icon">
                 <IconZap size={20} strokeWidth={2} />
               </span>
-              Premium Skin Intelligence
+              Clinical Skin Insights
             </div>
             <h1 className="hero-title">
-              AI Skin Analysis<br />
+              AI Skin Assessment<br />
               <span className="gradient-text">From a Single Photo</span>
             </h1>
             <p className="hero-subtitle">
-              Get instant AI insights on your skin health and personalized routine recommendations.
+              Receive clear skin-quality insights and practical care recommendations in under a minute.
             </p>
             <div className="hero-cta">
               <button type="button" className="btn btn-primary btn-primary--hero" onClick={() => navigate('/scan')}>

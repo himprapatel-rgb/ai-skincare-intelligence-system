@@ -17,51 +17,52 @@
 @import './styles/mobile-redesign.css';
 @import './components/Skeleton.css';
 @import './styles/ui-polish-2026.css';
+@import './styles/clinical-clean.css';
 
 /* CSS Variables */
 :root {
-  /* Primary Colors - VIBRANT Blue */
-  --primary: #2563eb;
-  --primary-hover: #1d4ed8;
-  --primary-light: #dbeafe;
-  --primary-dark: #1e40af;
-  --accent: #60a5fa;
-  --accent-light: #eff6ff;
+  /* Clinical-clean palette */
+  --primary: #1f5fbf;
+  --primary-hover: #174a95;
+  --primary-light: #e8f0fd;
+  --primary-dark: #153f80;
+  --accent: #4f8ad9;
+  --accent-light: #f2f6fd;
   
   /* Gradient Colors */
-  --gradient-start: #2563eb;
-  --gradient-end: #7c3aed;
-  --gradient-primary: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
-  --gradient-blue: linear-gradient(135deg, #2563eb 0%, #60a5fa 100%);
-  --gradient-glow: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+  --gradient-start: #1f5fbf;
+  --gradient-end: #4f8ad9;
+  --gradient-primary: linear-gradient(135deg, #1f5fbf 0%, #4f8ad9 100%);
+  --gradient-blue: linear-gradient(135deg, #1f5fbf 0%, #6ea1e3 100%);
+  --gradient-glow: linear-gradient(135deg, #6ea1e3 0%, #9bbdef 100%);
   
   /* Status Colors */
-  --success: #10b981;
-  --success-light: #d1fae5;
-  --warning: #f59e0b;
-  --warning-light: #fef3c7;
-  --danger: #ef4444;
-  --danger-light: #fee2e2;
-  --info: #3b82f6;
-  --info-light: #dbeafe;
+  --success: #1b7f53;
+  --success-light: #e8f7ef;
+  --warning: #b97710;
+  --warning-light: #fff5e6;
+  --danger: #b42318;
+  --danger-light: #fdeceb;
+  --info: #1f5fbf;
+  --info-light: #e8f0fd;
   
   /* Neutral Colors */
   --white: #ffffff;
-  --gray-50: #f8fafc;
-  --gray-100: #f1f5f9;
-  --gray-200: #e2e8f0;
-  --gray-300: #cbd5e1;
-  --gray-400: #94a3b8;
-  --gray-500: #64748b;
-  --gray-600: #475569;
-  --gray-700: #334155;
-  --gray-800: #1e293b;
-  --gray-900: #0f172a;
+  --gray-50: #f9fbfd;
+  --gray-100: #f2f5f8;
+  --gray-200: #e4e9ef;
+  --gray-300: #d1d9e4;
+  --gray-400: #97a6ba;
+  --gray-500: #6c7d93;
+  --gray-600: #4e6078;
+  --gray-700: #36485f;
+  --gray-800: #27364c;
+  --gray-900: #162133;
   
   /* Background Colors */
   --bg-primary: var(--white);
-  --bg-secondary: #f8fafc;
-  --bg-tertiary: #f1f5f9;
+  --bg-secondary: #f6f8fb;
+  --bg-tertiary: #eef2f6;
   
   /* Text Colors */
   --text-primary: var(--gray-900);
@@ -100,23 +101,23 @@
   
   /* Border */
   --border-color: var(--gray-200);
-  --border-radius-sm: 6px;
-  --border-radius-md: 10px;
-  --border-radius-lg: 16px;
-  --border-radius-xl: 24px;
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+  --border-radius-xl: 16px;
   --border-radius-full: 9999px;
   /* P2 #51: Single token for cards so radius is consistent across app */
   --card-radius: var(--radius-lg, 12px);
   
   /* Shadows - Premium Multi-layered */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.04);
-  --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.04), 0 4px 8px rgba(0, 0, 0, 0.04), 0 8px 16px rgba(0, 0, 0, 0.04);
-  --shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.04), 0 8px 16px rgba(0, 0, 0, 0.04), 0 16px 32px rgba(0, 0, 0, 0.04);
-  --shadow-xl: 0 8px 16px rgba(0, 0, 0, 0.04), 0 16px 32px rgba(0, 0, 0, 0.06), 0 24px 48px rgba(0, 0, 0, 0.08);
-  --shadow-glow: 0 0 40px rgba(37, 99, 235, 0.25);
-  --shadow-primary: 0 10px 30px -10px rgba(37, 99, 235, 0.5);
-  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 8px rgba(0, 0, 0, 0.04), 0 12px 24px rgba(0, 0, 0, 0.04);
-  --shadow-card-hover: 0 4px 8px rgba(0, 0, 0, 0.06), 0 12px 24px rgba(0, 0, 0, 0.06), 0 20px 40px rgba(59, 130, 246, 0.08);
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.04);
+  --shadow-md: 0 2px 8px rgba(16, 24, 40, 0.06);
+  --shadow-lg: 0 8px 20px rgba(16, 24, 40, 0.08);
+  --shadow-xl: 0 14px 36px rgba(16, 24, 40, 0.12);
+  --shadow-glow: 0 0 0 transparent;
+  --shadow-primary: 0 8px 18px -8px rgba(31, 95, 191, 0.35);
+  --shadow-card: 0 1px 2px rgba(16, 24, 40, 0.04), 0 3px 8px rgba(16, 24, 40, 0.05);
+  --shadow-card-hover: 0 4px 14px rgba(16, 24, 40, 0.08);
   
   /* Spacing */
   --spacing-xs: 4px;

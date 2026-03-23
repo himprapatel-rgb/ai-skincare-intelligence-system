@@ -553,7 +553,7 @@ const ProfileSettingsPage: React.FC = () => {
   };
 
   return (
-    <div className="profile-settings-page settings-page-app">
+    <div className="profile-settings-page settings-page-app clinical-page">
       {/* Mobile: back to Me at top (Task 3) */}
       <div className="profile-top-bar mobile-only">
         <Link to="/me" className="profile-back-link" aria-label="Back to profile">

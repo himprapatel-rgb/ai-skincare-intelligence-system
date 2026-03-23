@@ -290,7 +290,7 @@ const AnalysisResults: React.FC = () => {
 
   if (error || !analysis) {
     return (
-      <div className="analysis-results app-page">
+      <div className="analysis-results app-page clinical-page">
         <header className="app-header-card">
           <h1>Skin Analysis</h1>
           <p className="app-header-subtitle">We couldn&apos;t load this analysis</p>
@@ -312,7 +312,7 @@ const AnalysisResults: React.FC = () => {
   }
 
   return (
-    <div className="analysis-results app-page">
+    <div className="analysis-results app-page clinical-page">
       <BreadcrumbJsonLd
         items={[
           { name: 'Home', path: '/' },

@@ -1,0 +1,488 @@
+/* Clinical-clean UI override layer */
+
+:root {
+  --clinical-surface: #ffffff;
+  --clinical-surface-muted: #f8fafd;
+  --clinical-border: #d8e0ea;
+  --clinical-heading: #162133;
+  --clinical-body: #334a63;
+  --clinical-label: #5e738c;
+  --clinical-radius: 10px;
+}
+
+body {
+  background: var(--bg-secondary);
+  color: var(--clinical-body);
+}
+
+.app-page h1,
+.app-page h2,
+.app-page h3,
+.app-page h4 {
+  color: var(--clinical-heading);
+  letter-spacing: -0.01em;
+}
+
+.app-page p,
+.app-page li {
+  color: var(--clinical-body);
+}
+
+.app-page h1 {
+  font-size: clamp(1.75rem, 2.6vw, 2.25rem);
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+.app-page h2 {
+  font-size: clamp(1.35rem, 2.1vw, 1.75rem);
+  line-height: 1.28;
+  font-weight: 650;
+}
+
+.app-page h3 {
+  font-size: clamp(1.05rem, 1.5vw, 1.2rem);
+  line-height: 1.35;
+  font-weight: 600;
+}
+
+.app-page p {
+  line-height: 1.58;
+}
+
+.card,
+.app-section,
+.app-list-group,
+.app-header-card,
+.myshelf-hero,
+.hero-content,
+.sample-report-preview,
+.auth-card,
+.profile-main,
+.profile-card,
+.dashboard-section,
+.results-section {
+  background: var(--clinical-surface);
+  border: 1px solid var(--clinical-border);
+  border-radius: var(--clinical-radius);
+  box-shadow: var(--shadow-sm);
+}
+
+.section-tag,
+.hero-badge,
+.concern-badge,
+.goal-tag,
+.stat-cta {
+  background: var(--clinical-surface-muted);
+  border: 1px solid var(--clinical-border);
+  color: var(--primary);
+  border-radius: 999px;
+}
+
+.btn-primary,
+.app-nav-cta,
+.app-nav-mobile-btn-primary,
+.app-nav-mobile-cta,
+.cta-section-link {
+  background: linear-gradient(135deg, #1f5fbf 0%, #3f7fd6 100%);
+  box-shadow: 0 4px 12px rgba(31, 95, 191, 0.22);
+}
+
+.btn-primary:hover,
+.app-nav-cta:hover,
+.app-nav-mobile-btn-primary:hover,
+.app-nav-mobile-cta:hover,
+.cta-section-link:hover {
+  box-shadow: 0 8px 18px rgba(31, 95, 191, 0.28);
+}
+
+.btn-secondary,
+.btn-ghost,
+.app-nav-cta-secondary,
+.app-nav-mobile-btn-secondary {
+  background: #ffffff;
+  border: 1px solid var(--clinical-border);
+  color: var(--primary);
+}
+
+/* App shell */
+.app-header {
+  background: rgba(255, 255, 255, 0.98);
+  border-bottom: 1px solid var(--clinical-border);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.app-header.scrolled {
+  box-shadow: 0 4px 12px rgba(16, 24, 40, 0.08);
+}
+
+.app-logo-mark,
+.app-footer-logo-mark {
+  background: linear-gradient(135deg, #1f5fbf 0%, #4f8ad9 100%);
+  box-shadow: 0 4px 10px rgba(31, 95, 191, 0.25);
+}
+
+.app-logo-ai {
+  background: none;
+  -webkit-text-fill-color: initial;
+  color: var(--primary);
+}
+
+.app-nav-link:hover,
+.app-nav-link.active,
+.app-nav-mobile-link:hover,
+.app-nav-mobile-link.active {
+  background: var(--clinical-surface-muted);
+  color: var(--primary);
+}
+
+.app-nav-link.active::after {
+  background: var(--primary);
+  height: 2px;
+}
+
+.app-nav-dropdown-menu,
+.app-nav-mobile,
+.app-nav-mobile-user-info {
+  border: 1px solid var(--clinical-border);
+  box-shadow: var(--shadow-md);
+}
+
+.app-footer {
+  background: #fff;
+  border-top: 1px solid var(--clinical-border);
+}
+
+.app-footer-newsletter {
+  background: linear-gradient(135deg, #1f5fbf 0%, #2f74cf 100%);
+}
+
+.app-footer-bottom {
+  background: #f7fafd;
+}
+
+.app-footer-disclaimer {
+  background: #eef4fc;
+  border: 1px solid #d9e6f6;
+}
+
+/* Core page accents */
+.hero,
+.results-preview,
+.how-it-works,
+.stats-section,
+.testimonials-section,
+.faq-section,
+.cta-section,
+.dashboard-page .dashboard-stats,
+.scan-page-container,
+.analysis-results-page,
+.myshelf-page,
+.profile-settings-page {
+  background: transparent;
+}
+
+.hero-blob,
+.hero-decoration {
+  display: none;
+}
+
+.gradient-text {
+  background: none;
+  -webkit-text-fill-color: initial;
+  color: var(--primary);
+}
+
+.score-circle.good,
+.score-circle.medium {
+  background: #eef4fc;
+  color: var(--primary-dark);
+  border: 1px solid #cfdff4;
+}
+
+.dashboard-refresh-btn,
+.app-list-item,
+.stat-card,
+.result-card,
+.step-card,
+.testimonial-card,
+.faq-item {
+  border: 1px solid var(--clinical-border);
+  background: #fff;
+  border-radius: var(--clinical-radius);
+}
+
+.app-list-item:hover,
+.stat-card:hover,
+.result-card:hover,
+.step-card:hover,
+.testimonial-card:hover {
+  border-color: #c6d6ea;
+  box-shadow: var(--shadow-md);
+}
+
+/* Dashboard density and rhythm */
+.dashboard-page .dashboard-hero,
+.dashboard-page .app-header-card {
+  border-radius: 12px;
+  padding: 18px 20px;
+}
+
+.dashboard-page .dashboard-hero h1 {
+  font-size: clamp(1.35rem, 2vw, 1.8rem);
+  margin-bottom: 2px;
+}
+
+.dashboard-page .app-header-subtitle {
+  font-size: 0.95rem;
+  color: var(--clinical-label);
+}
+
+.dashboard-page .dashboard-stats {
+  gap: 14px;
+}
+
+.dashboard-page .stat-card {
+  padding: 14px 16px;
+  border-radius: 10px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+
+.dashboard-page .stat-card .stat-content h3 {
+  font-size: 1.35rem;
+  line-height: 1.2;
+}
+
+.dashboard-page .stat-card .stat-content p {
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: var(--clinical-label);
+}
+
+.dashboard-page .dashboard-section {
+  border-radius: 10px;
+  padding: 14px;
+}
+
+.dashboard-page .dashboard-section .app-section-title {
+  font-size: 1rem;
+  font-weight: 650;
+  margin-bottom: 10px;
+}
+
+.dashboard-page .app-list-item {
+  min-height: 52px;
+  border-radius: 9px;
+}
+
+.dashboard-page .app-list-label {
+  font-weight: 600;
+  color: var(--clinical-heading);
+}
+
+.dashboard-page .app-list-value {
+  color: var(--clinical-label);
+}
+
+.dashboard-page .dashboard-refresh-btn {
+  border: 1px solid var(--clinical-border);
+  background: #f7fafd;
+}
+
+.dashboard-page .dashboard-refresh-btn:hover:not(:disabled) {
+  background: #edf4fe;
+}
+
+/* Forms (Auth + Profile) */
+.auth-page {
+  background: linear-gradient(180deg, #f7fafd 0%, #f2f6fb 100%);
+}
+
+.auth-left {
+  background: linear-gradient(180deg, #204f97 0%, #1b427e 100%);
+}
+
+.auth-feature {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--clinical-radius);
+}
+
+.auth-card .auth-header h2 {
+  color: var(--clinical-heading);
+}
+
+.auth-card .auth-header p {
+  color: var(--clinical-label);
+}
+
+.auth-container {
+  max-width: 460px;
+}
+
+.auth-card {
+  padding: 22px;
+  border-radius: 12px;
+}
+
+.auth-header {
+  margin-bottom: 18px;
+}
+
+.auth-header h2 {
+  font-size: clamp(1.3rem, 1.8vw, 1.6rem);
+  margin-bottom: 6px;
+}
+
+.auth-header p {
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.auth-form .form-group {
+  margin-bottom: 16px;
+  gap: 7px;
+}
+
+.auth-form .form-group label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--clinical-heading);
+}
+
+.auth-form .form-hint,
+.auth-form .form-error {
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+.auth-left .auth-brand h1 {
+  font-size: clamp(1.45rem, 2.2vw, 1.95rem);
+  line-height: 1.25;
+}
+
+.auth-left .auth-brand p {
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+.auth-left .auth-feature {
+  padding: 14px;
+  border-radius: 12px;
+}
+
+.auth-left .feature-text h3 {
+  margin-bottom: 4px;
+}
+
+.auth-left .feature-text p {
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+input,
+select,
+textarea,
+.input {
+  border: 1px solid var(--clinical-border);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+.input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(31, 95, 191, 0.14);
+  background: #fff;
+}
+
+.profile-tab,
+.tab-button {
+  border: 1px solid var(--clinical-border);
+  background: #fff;
+}
+
+.profile-tab.active,
+.tab-button.active {
+  border-color: #9fc0e8;
+  background: #ecf4ff;
+  color: var(--primary-dark);
+}
+
+.profile-settings-page {
+  background: linear-gradient(180deg, #f7fafd 0%, #f3f7fc 100%);
+}
+
+.profile-settings-page .profile-header-card {
+  background: linear-gradient(135deg, #265cae 0%, #3d74c7 100%);
+  border-radius: 0 0 16px 16px;
+}
+
+.profile-settings-page .profile-card,
+.profile-settings-page .settings-section,
+.profile-settings-page .app-section {
+  border-radius: 10px;
+  border: 1px solid var(--clinical-border);
+  box-shadow: var(--shadow-sm);
+}
+
+.profile-settings-page .settings-section-title,
+.profile-settings-page .section-title {
+  font-size: 1rem;
+  font-weight: 650;
+  margin-bottom: 8px;
+}
+
+.profile-settings-page .form-group {
+  margin-bottom: 14px;
+  gap: 6px;
+}
+
+.profile-settings-page label,
+.profile-settings-page .form-label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--clinical-heading);
+}
+
+.profile-settings-page .form-hint,
+.profile-settings-page .helper-text,
+.profile-settings-page .field-description {
+  font-size: 0.82rem;
+  line-height: 1.42;
+  color: var(--clinical-label);
+}
+
+/* Tables / status blocks */
+.table-responsive,
+.analysis-table,
+.results-grid,
+.products-grid {
+  border-color: var(--clinical-border);
+}
+
+/* Reduce over-animated feel for medical UI */
+.card:hover,
+.btn:hover,
+.app-nav-link:hover,
+.app-nav-cta:hover {
+  transform: none;
+}
+
+@media (max-width: 768px) {
+  .dashboard-page .dashboard-hero,
+  .dashboard-page .app-header-card {
+    padding: 14px;
+  }
+
+  .dashboard-page .stat-card {
+    padding: 12px;
+  }
+
+  .dashboard-page .dashboard-section {
+    padding: 12px;
+  }
+}

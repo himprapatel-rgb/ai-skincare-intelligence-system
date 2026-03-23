@@ -195,10 +195,10 @@ const DashboardPage: React.FC = () => {
 
   if (!user) {
     return (
-      <div className="dashboard-page app-page dashboard-page--guest">
+      <div className="dashboard-page app-page clinical-page dashboard-page--guest">
         <header className="app-header-card dashboard-hero">
           <h1>Your Dashboard</h1>
-          <p className="app-header-subtitle">Track your skin and routines in one place</p>
+          <p className="app-header-subtitle">Track your skin observations and routine adherence in one place</p>
         </header>
         <div className="app-page-content dashboard-guest-content">
           <EmptyState
@@ -230,7 +230,7 @@ const DashboardPage: React.FC = () => {
 
   if (loading || !data) {
     return (
-      <div className="dashboard-page app-page dashboard-page--skeleton">
+      <div className="dashboard-page app-page clinical-page dashboard-page--skeleton">
         <div className="dashboard-header" style={{ marginBottom: 32 }}>
           <SkeletonHeading style={{ width: 280, margin: '0 auto 8px', height: 32 }} />
           <SkeletonText style={{ width: 200, margin: '0 auto' }} />
@@ -259,11 +259,11 @@ const DashboardPage: React.FC = () => {
   }
 
   return (
-    <div className="dashboard-page app-page">
+    <div className="dashboard-page app-page clinical-page">
       <header className="app-header-card dashboard-hero dashboard-hero-with-refresh">
         <div className="dashboard-hero-text">
           <h1>Welcome back, {user?.full_name || 'User'}!</h1>
-          <p className="app-header-subtitle">Here&apos;s your skincare overview</p>
+          <p className="app-header-subtitle">Here is your current skin-care overview</p>
         </div>
         <button
           type="button"

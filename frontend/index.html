@@ -49,7 +49,7 @@
     {"@context":"https://schema.org","@type":"Organization","name":"SkinCareAI","url":"https://pellicura.com","description":"Clinical-grade AI-powered skin analysis platform."}
     </script>
     <style>
-      #app-splash{position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#2563eb 0%,#7c3aed 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);pointer-events:none}#app-splash.hidden{opacity:0;transition:opacity .2s ease}#app-splash-icon{width:72px;height:72px;margin-bottom:16px;background:rgba(255,255,255,.3);border-radius:18px}#app-splash-text{color:white;font-family:system-ui,-apple-system,sans-serif;font-size:1.25rem;font-weight:600;letter-spacing:-.02em}
+      #app-splash{position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#2563eb 0%,#7c3aed 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);pointer-events:none;animation:splash-auto-hide .25s ease 3.5s forwards}#app-splash.hidden{opacity:0;transition:opacity .2s ease}#app-splash-icon{width:72px;height:72px;margin-bottom:16px;background:rgba(255,255,255,.3);border-radius:18px}#app-splash-text{color:white;font-family:system-ui,-apple-system,sans-serif;font-size:1.25rem;font-weight:600;letter-spacing:-.02em}@keyframes splash-auto-hide{to{opacity:0;visibility:hidden}}
     </style>
   </head>
   <body>

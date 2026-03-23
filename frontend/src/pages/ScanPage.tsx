@@ -70,6 +70,7 @@ export default function ScanPage() {
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [scanStep, setScanStep] = useState<ScanStep>('upload');
+  const [dragOver, setDragOver] = useState(false);
   const [scanning, setScanning] = useState(false);
   const [progress, setProgress] = useState(0);
   const [statusMessage, setStatusMessage] = useState("Initializing scan...");
@@ -796,6 +797,24 @@ export default function ScanPage() {
             )}
           </div>
 
+          {/* Step indicators */}
+          <div className="scan-step-indicators" aria-label="Scan progress steps">
+            <div className={`scan-step-indicator ${scanStep === 'upload' ? 'active' : ''}${scanStep === 'scanning' || scanStep === 'complete' ? ' completed' : ''}`}>
+              <span className="scan-step-dot">{scanStep === 'scanning' || scanStep === 'complete' ? '\u2713' : '1'}</span>
+              <span className="scan-step-label">Upload</span>
+            </div>
+            <div className={`scan-step-line${scanStep === 'scanning' || scanStep === 'complete' ? ' filled' : ''}`} />
+            <div className={`scan-step-indicator ${scanStep === 'scanning' ? 'active' : ''}${scanStep === 'complete' ? ' completed' : ''}`}>
+              <span className="scan-step-dot">{scanStep === 'complete' ? '\u2713' : '2'}</span>
+              <span className="scan-step-label">Scanning</span>
+            </div>
+            <div className={`scan-step-line${scanStep === 'complete' ? ' filled' : ''}`} />
+            <div className={`scan-step-indicator ${scanStep === 'complete' ? 'active' : ''}`}>
+              <span className="scan-step-dot">3</span>
+              <span className="scan-step-label">Results</span>
+            </div>
+          </div>
+
           {/* Legal disclaimer (Tasks 245, 246) */}
           <p className="scan-legal-disclaimer" role="note">
             This tool is for informational use only and is not a medical device. It does not replace professional dermatological advice.
@@ -948,7 +967,14 @@ export default function ScanPage() {
                     className="scan-file-input"
                     id="file-upload"
                   />
-                  <label htmlFor="file-upload" className="scan-upload-label">
+                  <label
+                    htmlFor="file-upload"
+                    className={`scan-upload-label${dragOver ? ' drag-over' : ''}`}
+                    onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+                    onDragEnter={(e) => { e.preventDefault(); setDragOver(true); }}
+                    onDragLeave={() => setDragOver(false)}
+                    onDrop={() => setDragOver(false)}
+                  >
                     {previewUrl ? (
                       <div className="preview-container">
                         <img

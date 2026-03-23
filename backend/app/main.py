@@ -565,6 +565,10 @@ app.include_router(goals.router, prefix="/api/v1", tags=["goals"])  # Skin Goals
 app.include_router(catalog.router, prefix="/api/v1", tags=["catalog"])  # Product Catalog Database
 app.include_router(content.router, prefix="/api/v1", tags=["content"])  # Public blogs, videos, news
 
+# AI Intelligence Engine — all AI-powered features
+from app.routers import ai as ai_router_module
+app.include_router(ai_router_module.router)  # Router already includes /api/v1/ai prefix
+
 # Admin image uploads (blog covers, video thumbnails)
 _uploads_dir = Path(__file__).resolve().parent.parent / "uploads"
 _uploads_dir.mkdir(parents=True, exist_ok=True)

@@ -146,6 +146,11 @@ class Settings(BaseSettings):
         default=60, description="OpenAI API timeout in seconds"
     )
 
+    # Anthropic API (for future Claude-powered features)
+    ANTHROPIC_API_KEY: str | None = Field(
+        default=None, description="Anthropic API key for Claude"
+    )
+
     # Skinive API settings
     SKINIVE_API_BASE: str = Field(
         default="https://api.skiniver.com",

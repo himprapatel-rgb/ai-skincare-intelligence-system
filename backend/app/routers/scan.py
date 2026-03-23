@@ -370,11 +370,32 @@ async def upload_scan_image(
     # Run analysis synchronously (TODO: move to background worker)
     try:
         if settings.OPENAI_API_KEY:
+            # Build profile context to enhance AI analysis accuracy
+            user_context = None
+            if current_user:
+                try:
+                    from app.services.ai_intelligence_service import build_profile_context
+                    from app.models.user import UserProfile
+                    from app.services.auth_service import decrypt_sensitive_data
+                    up = db.query(UserProfile).filter(UserProfile.user_id == current_user.id).first()
+                    if up:
+                        profile_data = {
+                            "skin_type": decrypt_sensitive_data(up.skin_type) if up.skin_type else None,
+                            "age": getattr(up, "age", None),
+                            "concerns": [],
+                            "climate": getattr(up, "climate", None),
+                            "water_intake": getattr(up, "water_intake", None),
+                            "sleep_hours": getattr(up, "sleep_hours", None),
+                        }
+                        user_context = build_profile_context(profile_data)
+                except Exception:
+                    pass  # Graceful fallback — scan works without profile context
             openai_client = get_openai_client()
             openai_result = await openai_client.analyze_skin(
                 image_bytes=image_bytes,
                 filename=file.filename or os.path.basename(image_path),
                 content_type=file.content_type or "image/jpeg",
+                user_context=user_context,
             )
             analysis_result = {
                 "scan_id": str(scan.id),

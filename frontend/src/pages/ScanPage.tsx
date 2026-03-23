@@ -35,7 +35,7 @@ type UploadMode = 'camera' | 'file';
 type ScanStep = 'upload' | 'scanning' | 'complete';
 /** Pro restructure: unified scan tab – Face vs Product */
 type ScanType = 'face' | 'product';
-const ENABLE_LIVE_QUALITY_CHECKS = false;
+const ENABLE_LIVE_QUALITY_CHECKS = true;
 
 export default function ScanPage() {
   const navigate = useNavigate();

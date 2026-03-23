@@ -136,6 +136,7 @@ class OpenAIVisionClient:
         image_bytes: bytes,
         filename: str,
         content_type: str,
+        user_context: Optional[str] = None,
     ) -> Dict[str, Any]:
         image_b64 = base64.b64encode(image_bytes).decode("ascii")
         data_url = f"data:{content_type};base64,{image_b64}"
@@ -157,6 +158,7 @@ class OpenAIVisionClient:
                         "and specific affected_areas (e.g. forehead, cheeks, nose, under_eyes, chin). "
                         "Recommendations should be 2-5 short, actionable skincare tips (ingredients or habits), not generic advice. "
                         "Notes: one sentence on image quality or limitation if relevant, otherwise brief summary."
+                        + (f"\n\n{user_context}" if user_context else "")
                     ),
                 },
                 {

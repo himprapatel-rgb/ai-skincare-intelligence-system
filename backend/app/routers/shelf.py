@@ -16,7 +16,6 @@ from sqlalchemy import func as sqlfunc, or_
 from sqlalchemy.orm import Session
 
 from app.core.security import get_current_user
-from app.database import Base, engine
 from app.dependencies import get_db
 from app.models.shelf import ShelfProduct
 from app.models.user import User

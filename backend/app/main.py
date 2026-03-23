@@ -65,7 +65,13 @@ from app.models.scan import (
 from app.models.shelf import ShelfProduct
 
 # Import ALL models to ensure tables are created at startup
-from app.models.twin_models import *  # Digital Twin models
+from app.models.twin_models import (  # noqa: F401 — Digital Twin models
+    EnvironmentSnapshot,
+    RoutineInstance,
+    RoutineProductUsage,
+    SkinRegionState,
+    SkinStateSnapshot,
+)
 from app.models.user import PolicyVersion, User, UserAccessLog, UserConsent, UserProfile
 from app.product_database import check_product_database_health, create_product_tables
 from app.routers import (  # GDPR & User Management
@@ -271,8 +277,8 @@ def ensure_test_user() -> None:
         logger.warning("Unable to open DB session for seeding; skipping seed: %s", exc)
         return
     try:
-        # Do not seed test users in production unless explicitly enabled (security audit)
-        if settings.ENV == "production" and (os.getenv("SEED_TEST_USERS", "").lower() not in ("1", "true", "yes")):
+        # Do not seed test users unless explicitly enabled via SEED_TEST_USERS=1
+        if os.getenv("SEED_TEST_USERS", "").lower() not in ("1", "true", "yes"):
             db.close()
             return
         test_users = [

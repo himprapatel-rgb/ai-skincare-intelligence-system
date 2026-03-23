@@ -1,0 +1,155 @@
+/* AnalysisLoader — Premium scanning animation */
+
+.analysis-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.analysis-loader-visual {
+  position: relative;
+  width: 160px;
+  height: 200px;
+  margin-bottom: 28px;
+}
+
+.analysis-loader-face {
+  width: 100%;
+  height: 100%;
+}
+
+/* Scanning laser line */
+.analysis-loader-laser {
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--primary) 20%,
+    rgba(31, 95, 191, 0.8) 50%,
+    var(--primary) 80%,
+    transparent 100%
+  );
+  box-shadow: 0 0 8px rgba(31, 95, 191, 0.4);
+  border-radius: 1px;
+  animation: laserScan 2.5s ease-in-out infinite;
+}
+
+@keyframes laserScan {
+  0%   { top: 12%; opacity: 0; }
+  5%   { opacity: 1; }
+  50%  { top: 78%; opacity: 1; }
+  95%  { opacity: 1; }
+  100% { top: 12%; opacity: 0; }
+}
+
+/* Pulse rings */
+.analysis-loader-pulse {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 80px;
+  height: 80px;
+  margin: -40px 0 0 -40px;
+  border: 2px solid var(--primary);
+  border-radius: 50%;
+  opacity: 0;
+  animation: pulseRing 2s ease-out infinite;
+}
+
+.analysis-loader-pulse--delayed {
+  animation-delay: 0.8s;
+}
+
+@keyframes pulseRing {
+  0%   { transform: scale(0.8); opacity: 0.5; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+/* Content */
+.analysis-loader-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 300px;
+}
+
+.analysis-loader-stage-icon {
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+  animation: iconBob 1.5s ease-in-out infinite;
+}
+
+@keyframes iconBob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.analysis-loader-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 6px;
+}
+
+.analysis-loader-message {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin: 0 0 20px;
+  line-height: 1.4;
+}
+
+/* Progress bar */
+.analysis-loader-progress {
+  width: 100%;
+  height: 6px;
+  background: var(--gray-100);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.analysis-loader-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+
+.analysis-loader-pct {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 16px;
+}
+
+/* Stage dots */
+.analysis-loader-stages {
+  display: flex;
+  gap: 8px;
+}
+
+.analysis-loader-stage-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gray-200);
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.analysis-loader-stage-dot.active {
+  background: var(--primary);
+  transform: scale(1.15);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .analysis-loader-laser { animation: none; opacity: 0.5; top: 50%; }
+  .analysis-loader-pulse { animation: none; }
+  .analysis-loader-stage-icon { animation: none; }
+}

@@ -51,7 +51,12 @@ const HistoryPage: React.FC = () => {
           imageUrl: typeof scan.image_url === 'string' ? scan.image_url : undefined,
           concerns,
           score: overallScore,
-          recommendations: 0,
+          recommendations: (() => {
+            const result = (scan as Record<string, unknown>).result as Record<string, unknown> | undefined;
+            const analysis = result?.analysis as Record<string, unknown> | undefined;
+            const recs = (result?.recommendations || analysis?.recommendations || []) as unknown[];
+            return Array.isArray(recs) ? recs.length : 0;
+          })(),
           status: typeof scan.status === 'string' ? scan.status : undefined,
         } as ScanHistory;
       });

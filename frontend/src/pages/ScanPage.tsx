@@ -11,6 +11,9 @@ import type { FaceMesh3DHandle } from '../components/FaceMesh3D';
 import { validateAndCropFace } from '../utils/faceValidation';
 import { useIsMobileOrTablet } from '../hooks/useIsMobileOrTablet';
 import { useContainerSize } from '../hooks/useContainerSize';
+import { ScanCoach, shouldShowScanCoach } from '../components/ScanCoach';
+import { AnalysisLoader } from '../components/AnalysisLoader';
+import { compressImage } from '../utils/imageCompression';
 import './ScanPage.css';
 
 const ProductScannerPage = React.lazy(() => import('./ProductScannerPage'));
@@ -78,6 +81,8 @@ export default function ScanPage() {
   const [error, setError] = useState<string | null>(null);
   const [cameraActive, setCameraActive] = useState(false);
   const [validating, setValidating] = useState(false);
+  const [showCoach, setShowCoach] = useState(() => shouldShowScanCoach());
+  const [showPreview, setShowPreview] = useState(false);
   const [validationMessage, setValidationMessage] = useState<string | null>(null);
   const [faceLocked, setFaceLocked] = useState(false);
   const [autoCaptureEnabled] = useState(true);
@@ -318,6 +323,19 @@ export default function ScanPage() {
     if (!videoRef.current || !canvasRef.current || validating) return;
     try {
       stopFaceTracking();
+      // Haptic + sound feedback
+      try { navigator.vibrate?.(50); } catch {}
+      try {
+        const audioCtx = new AudioContext();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.frequency.value = 880;
+        gain.gain.value = 0.1;
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.08);
+      } catch {}
       const canvas = canvasRef.current;
       const video = videoRef.current;
       canvas.width = video.videoWidth;
@@ -661,9 +679,21 @@ export default function ScanPage() {
         throw new Error("Scan initialization did not return a session id");
       }
       
+      setProgress(20);
+      setStatusMessage("Compressing image...");
+      let uploadFile = file;
+      try {
+        const compressed = await compressImage(file);
+        if (compressed.compressedSize < file.size) {
+          uploadFile = new File([compressed.blob], file.name, { type: 'image/jpeg' });
+        }
+      } catch {
+        // Compression failed, use original
+      }
+
       setProgress(30);
       setStatusMessage("Uploading image...");
-      await uploadScanImage(sessionId, file);
+      await uploadScanImage(sessionId, uploadFile);
       
       setProgress(50);
       setStatusMessage("Analyzing your skin...");
@@ -768,6 +798,11 @@ export default function ScanPage() {
             </div>
           ) : (
             <>
+          {/* Guided scan coach for first-time users */}
+          {showCoach && (
+            <ScanCoach onComplete={() => setShowCoach(false)} />
+          )}
+
           <div className="scan-header">
             <h1 className="scan-title">
               AI Face Scan Analysis<br />
@@ -1050,14 +1085,14 @@ export default function ScanPage() {
               {file && (
                 <div className="scan-actions">
                   <button
-                    onClick={handleScan}
+                    onClick={() => setShowPreview(true)}
                     disabled={scanning || validating}
                     className="scan-btn-primary"
                   >
                     {scanning ? "Analyzing..." : validating ? "Validating..." : (
                       <>
                         <IconSearch size={18} strokeWidth={2} className="inline-icon" />
-                        Start Analysis
+                        Review &amp; Analyze
                       </>
                     )}
                   </button>
@@ -1068,6 +1103,46 @@ export default function ScanPage() {
                   >
                     Cancel
                   </button>
+                </div>
+              )}
+
+              {/* Preview & Confirm Modal */}
+              {showPreview && previewUrl && (
+                <div className="scan-preview-modal" onClick={() => setShowPreview(false)}>
+                  <div className="scan-preview-card" onClick={(e) => e.stopPropagation()}>
+                    <h3>Confirm Your Photo</h3>
+                    <img src={previewUrl} alt="Scan preview" className="scan-preview-image" />
+                    <div className="scan-preview-quality">
+                      <span className="scan-quality-dot">
+                        <span className={`scan-quality-dot-indicator ${faceLocked ? 'good' : 'warn'}`} />
+                        Face
+                      </span>
+                      <span className="scan-quality-dot">
+                        <span className="scan-quality-dot-indicator good" />
+                        Lighting
+                      </span>
+                      <span className="scan-quality-dot">
+                        <span className="scan-quality-dot-indicator good" />
+                        Focus
+                      </span>
+                    </div>
+                    <div className="scan-preview-actions">
+                      <button
+                        type="button"
+                        className="scan-preview-retake"
+                        onClick={() => { setShowPreview(false); resetScan(); }}
+                      >
+                        Retake
+                      </button>
+                      <button
+                        type="button"
+                        className="scan-preview-analyze"
+                        onClick={() => { setShowPreview(false); handleScan(); }}
+                      >
+                        Analyze Now
+                      </button>
+                    </div>
+                  </div>
                 </div>
               )}
 
@@ -1100,26 +1175,9 @@ export default function ScanPage() {
             </div>
           )}
 
-          {/* Scanning Progress */}
+          {/* Scanning Progress — Premium AnalysisLoader */}
           {scanStep === 'scanning' && (
-            <div className="scan-progress-section" role="status" aria-live="polite" aria-label={`Scan progress: ${progress}%. ${statusMessage}`}>
-              <div className="progress-container">
-                <div className="progress-spinner" aria-hidden="true"></div>
-                <p className="progress-phase" aria-hidden="true">
-                  {progress < 50 ? 'Step 1: Uploading your photo' : 'Step 2: Analyzing your skin'}
-                </p>
-                <h2 className="progress-title">{progress < 50 ? 'Uploading…' : 'Analyzing your skin…'}</h2>
-                <p className="progress-message">{statusMessage}</p>
-                <p className="progress-hint" aria-hidden="true">This usually takes 30–60 seconds.</p>
-                <div className="progress-bar">
-                  <div
-                    className="progress-fill"
-                    style={{ '--progress-width': `${progress}%` } as React.CSSProperties}
-                  ></div>
-                </div>
-                <div className="progress-percentage">{progress}%</div>
-              </div>
-            </div>
+            <AnalysisLoader progress={progress} message={statusMessage} />
           )}
 
           {/* Results Preview */}

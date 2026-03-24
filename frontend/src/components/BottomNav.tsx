@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { IconBarChart, IconScan, IconUser } from './Icons';
-import { useKeyboardVisible } from '../hooks/useMobileDetection';
+import { useKeyboardVisible } from '../hooks/useKeyboardVisible';
 import './BottomNav.css';
 
 /* Pro restructure: 3 tabs (Jobs-To-Be-Done) – TODAY | SCAN | ME */

@@ -99,10 +99,10 @@
   --primary-rgb: 31, 95, 191;
   --accent-rgb: 79, 138, 217;
 
-  /* Section spacing */
-  --section-padding-y: var(--spacing-3xl, 64px);
+  /* Section spacing — tightened to eliminate excessive whitespace */
+  --section-padding-y: 36px;
   --section-padding-x: var(--spacing-lg, 24px);
-  --section-header-gap: 40px;
+  --section-header-gap: 24px;
 
   /* Background Colors */
   --bg-primary: var(--white);
@@ -112,8 +112,8 @@
   /* Text Colors */
   --text-primary: var(--gray-900);
   --text-secondary: var(--gray-600);
-  --text-muted: var(--gray-400);
-  --placeholder-color: var(--gray-400);
+  --text-muted: var(--gray-500);
+  --placeholder-color: var(--gray-500);
 
   /* Legacy aliases (page-level styles) */
   --primary-dark: var(--primary-hover);

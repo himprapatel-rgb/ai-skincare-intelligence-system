@@ -836,8 +836,8 @@
 .app-main {
   flex: 1;
   background: var(--bg-secondary);
-  padding: 24px 0 48px;
-  padding-bottom: calc(48px + env(safe-area-inset-bottom));
+  padding: 0;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 /* Page transition: subtle fade for app-like navigation */
@@ -970,7 +970,7 @@
 /* Newsletter Section */
 .app-footer-newsletter {
   background: linear-gradient(135deg, var(--primary) 0%, #5a8bff 100%);
-  padding: 48px 24px;
+  padding: 28px 24px;
 }
 
 .app-footer-newsletter-content {
@@ -1043,7 +1043,7 @@
 
 /* Main Footer */
 .app-footer-main {
-  padding: var(--spacing-3xl) var(--spacing-lg) var(--spacing-2xl);
+  padding: 32px var(--spacing-lg) 24px;
   background: var(--bg-white);
 }
 

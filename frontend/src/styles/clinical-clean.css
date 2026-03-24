@@ -60,8 +60,6 @@ body {
 .app-list-group,
 .app-header-card,
 .myshelf-hero,
-.hero-content,
-.sample-report-preview,
 .auth-card,
 .profile-main,
 .profile-card,
@@ -71,6 +69,14 @@ body {
   border: 1px solid var(--clinical-border);
   border-radius: var(--clinical-radius-lg);
   box-shadow: var(--shadow-sm);
+}
+
+/* Hero content should NOT look like a card — keep it open */
+.hero-content,
+.sample-report-preview {
+  background: transparent;
+  border: none;
+  box-shadow: none;
 }
 
 /* Global card/form rhythm normalization */

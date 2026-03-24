@@ -99,11 +99,11 @@
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
   align-items: center;
-  gap: 64px;
+  gap: 48px;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 80px var(--section-padding-x) 64px;
-  min-height: min(85vh, 700px);
+  padding: 48px var(--section-padding-x) 40px;
+  min-height: auto;
 }
 
 /* Decorative background blobs */

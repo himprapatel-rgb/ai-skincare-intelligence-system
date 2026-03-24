@@ -18,6 +18,7 @@ import {
   IconRefresh
 } from '../components/Icons';
 import { EmptyState } from '../components/EmptyState';
+import { ScanStreak } from '../components/ScanStreak';
 import { SkeletonStat, SkeletonHeading, SkeletonText, SkeletonCard } from '../components/Skeleton';
 import './DashboardPage.css';
 
@@ -57,6 +58,7 @@ const DashboardPage: React.FC = () => {
   const navigate = useNavigate();
   const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [scanDates, setScanDates] = useState<string[]>([]);
   const [scanReminder, setScanReminder] = useState<ScanReminder>(() => {
     try {
       const raw = localStorage.getItem(SCAN_REMINDER_KEY);
@@ -140,6 +142,12 @@ const DashboardPage: React.FC = () => {
         title: 'Completed skin scan',
         date: String(scan.created_at || new Date().toISOString()),
       }));
+
+      // Collect scan dates for streak tracking
+      const dates = sortedScans
+        .map(s => String(s.created_at || ''))
+        .filter(d => d.length > 0);
+      setScanDates(dates);
 
       const dashboardData: DashboardData = {
         recentScans: scans.length,
@@ -383,6 +391,17 @@ const DashboardPage: React.FC = () => {
           </div>
         </button>
       </div>
+
+      {/* Scan Streak Widget */}
+      {scanDates.length > 0 && (
+        <div className="app-section dashboard-section">
+          <h2 className="app-section-title">Your Scan Streak</h2>
+          <ScanStreak
+            scanDates={scanDates}
+            frequency={scanReminder.frequency || 'weekly'}
+          />
+        </div>
+      )}
 
       <div className="dashboard-content">
         {onboardingProgress != null && onboardingProgress.step < 5 && (

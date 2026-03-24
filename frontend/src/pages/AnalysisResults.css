@@ -791,3 +791,116 @@
   justify-content: center;
   min-height: 48px;
 }
+
+/* ===== Animated Score Reveal (Phase 3D) ===== */
+
+@keyframes scoreRevealSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes confidenceBarFill {
+  from {
+    width: 0;
+  }
+}
+
+@keyframes severityBarFill {
+  from {
+    width: 0;
+  }
+}
+
+@keyframes scoreCountUp {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Confidence bar animated fill on page load */
+.confidence-fill {
+  animation: confidenceBarFill 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.confidence-value {
+  animation: scoreCountUp 0.6s ease 0.8s both;
+}
+
+.confidence-interpretation {
+  animation: scoreRevealSlideUp 0.5s ease 1s both;
+}
+
+/* Staggered severity card entrance */
+.severity-card {
+  animation: scoreRevealSlideUp 0.4s ease both;
+}
+
+.severity-card:nth-child(1) { animation-delay: 0.1s; }
+.severity-card:nth-child(2) { animation-delay: 0.2s; }
+.severity-card:nth-child(3) { animation-delay: 0.3s; }
+.severity-card:nth-child(4) { animation-delay: 0.4s; }
+.severity-card:nth-child(5) { animation-delay: 0.5s; }
+.severity-card:nth-child(6) { animation-delay: 0.6s; }
+.severity-card:nth-child(7) { animation-delay: 0.7s; }
+.severity-card:nth-child(8) { animation-delay: 0.8s; }
+.severity-card:nth-child(9) { animation-delay: 0.9s; }
+.severity-card:nth-child(10) { animation-delay: 1.0s; }
+
+/* Severity bar animated fill */
+.severity-fill {
+  animation: severityBarFill 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Result cards staggered entrance */
+.result-card {
+  animation: scoreRevealSlideUp 0.5s ease both;
+}
+
+.results-grid .result-card:nth-child(1) { animation-delay: 0.05s; }
+.results-grid .result-card:nth-child(2) { animation-delay: 0.15s; }
+
+/* Ingredient cards staggered */
+.analysis-ingredient-card {
+  animation: scoreRevealSlideUp 0.4s ease both;
+}
+
+.analysis-ingredient-card:nth-child(1) { animation-delay: 0.1s; }
+.analysis-ingredient-card:nth-child(2) { animation-delay: 0.2s; }
+.analysis-ingredient-card:nth-child(3) { animation-delay: 0.3s; }
+.analysis-ingredient-card:nth-child(4) { animation-delay: 0.4s; }
+
+/* Concern tag entrance */
+.concern-tag {
+  animation: scoreRevealSlideUp 0.3s ease both;
+}
+
+.concern-tag:nth-child(1) { animation-delay: 0.05s; }
+.concern-tag:nth-child(2) { animation-delay: 0.1s; }
+.concern-tag:nth-child(3) { animation-delay: 0.15s; }
+.concern-tag:nth-child(4) { animation-delay: 0.2s; }
+.concern-tag:nth-child(5) { animation-delay: 0.25s; }
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .confidence-fill,
+  .confidence-value,
+  .confidence-interpretation,
+  .severity-card,
+  .severity-fill,
+  .result-card,
+  .analysis-ingredient-card,
+  .concern-tag {
+    animation: none !important;
+  }
+}

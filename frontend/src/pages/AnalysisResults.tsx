@@ -10,6 +10,7 @@ import { TrendSparkline } from '../components/TrendSparkline';
 import { getScanHistory, getScanResult } from '../services/scanApi';
 import { useToast } from '../context/ToastContext';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { generateDermatologistReport } from '../utils/dermatologistReport';
 import { API_BASE_URL } from '../config';
 import './AnalysisResults.css';
 
@@ -487,6 +488,37 @@ const AnalysisResults: React.FC = () => {
               >
                 <IconDownload size={16} strokeWidth={2} />
                 {exporting === 'image' ? 'Exporting…' : 'Image'}
+              </button>
+              <button
+                type="button"
+                className="results-copy-link results-export-btn"
+                onClick={async () => {
+                  if (!analysis) return;
+                  try {
+                    setExporting('pdf');
+                    await generateDermatologistReport({
+                      scanId: analysis.id,
+                      date: analysis.timestamp,
+                      skinType: analysis.skinType,
+                      confidence: analysis.confidence,
+                      concerns: analysis.concerns,
+                      severity: analysis.severity,
+                      recommendations: analysis.recommendations || [],
+                      ingredients: getPersonalizedIngredients(analysis.concerns, analysis.severity),
+                    });
+                    toast.success('Dermatologist report downloaded');
+                  } catch {
+                    toast.error('Could not generate report');
+                  } finally {
+                    setExporting(null);
+                  }
+                }}
+                disabled={!!exporting}
+                title="Export clinical report for your dermatologist"
+                aria-label="Export dermatologist report"
+              >
+                <IconDownload size={16} strokeWidth={2} />
+                Derm Report
               </button>
             </div>
             <button

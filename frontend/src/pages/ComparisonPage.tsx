@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { IconDownload, IconShare2, IconTrendingUp, IconTrendingDown } from '../components/Icons';
 import LazyImage from '../components/LazyImage';
+import { ComparisonSlider } from '../components/ComparisonSlider';
 import { getScanHistory } from '../services/scanApi';
 import { usePageTitle } from '../hooks/usePageTitle';
 import './CommonStyles.css';
@@ -246,31 +247,45 @@ const ComparisonPage: React.FC = () => {
                   </button>
                 </div>
               </div>
-              <div className="comparison-images">
-                <div className="comparison-image-container">
-                  <LazyImage
-                    src={analysis1.imageUrl || analysis1.thumbnail}
-                    alt={`Analysis from ${analysis1.date}`}
-                    className="comparison-image"
-                    objectFit="cover"
+              {/* Interactive before/after slider overlay */}
+              {(analysis2.imageUrl || analysis2.thumbnail) && (analysis1.imageUrl || analysis1.thumbnail) ? (
+                <div style={{ maxWidth: 480, margin: '16px auto' }}>
+                  <ComparisonSlider
+                    beforeImage={analysis2.imageUrl || analysis2.thumbnail}
+                    afterImage={analysis1.imageUrl || analysis1.thumbnail}
+                    beforeLabel={`${analysis2.date}`}
+                    afterLabel={`${analysis1.date}`}
+                    beforeScore={analysis2.overallScore}
+                    afterScore={analysis1.overallScore}
                   />
-                  <div className="comparison-image-label">
-                    {analysis1.date} - Score: {analysis1.overallScore}
+                </div>
+              ) : (
+                <div className="comparison-images">
+                  <div className="comparison-image-container">
+                    <LazyImage
+                      src={analysis1.imageUrl || analysis1.thumbnail}
+                      alt={`Analysis from ${analysis1.date}`}
+                      className="comparison-image"
+                      objectFit="cover"
+                    />
+                    <div className="comparison-image-label">
+                      {analysis1.date} - Score: {analysis1.overallScore}
+                    </div>
+                  </div>
+                  <div className="comparison-vs-divider">VS</div>
+                  <div className="comparison-image-container">
+                    <LazyImage
+                      src={analysis2.imageUrl || analysis2.thumbnail}
+                      alt={`Analysis from ${analysis2.date}`}
+                      className="comparison-image"
+                      objectFit="cover"
+                    />
+                    <div className="comparison-image-label">
+                      {analysis2.date} - Score: {analysis2.overallScore}
+                    </div>
                   </div>
                 </div>
-                <div className="comparison-vs-divider">VS</div>
-                <div className="comparison-image-container">
-                  <LazyImage
-                    src={analysis2.imageUrl || analysis2.thumbnail}
-                    alt={`Analysis from ${analysis2.date}`}
-                    className="comparison-image"
-                    objectFit="cover"
-                  />
-                  <div className="comparison-image-label">
-                    {analysis2.date} - Score: {analysis2.overallScore}
-                  </div>
-                </div>
-              </div>
+              )}
             </div>
 
             <div className="app-card comparison-card">

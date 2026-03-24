@@ -18,6 +18,7 @@ from typing import List, Optional
 
 from fastapi import (
     APIRouter,
+    BackgroundTasks,
     Depends,
     File,
     HTTPException,
@@ -288,6 +289,71 @@ def _update_scan_status(
     return scan
 
 
+# ---------- Background tasks ----------
+
+def _generate_post_scan_notifications(
+    user_id: int,
+    scan_id: str,
+    analysis_result: dict,
+) -> None:
+    """Background task: generate smart notifications after scan analysis completes."""
+    try:
+        from app.database import SessionLocal
+        from app.models.user import UserProfile
+        from app.services.auth_service import decrypt_sensitive_data
+        import asyncio
+
+        db = SessionLocal()
+        try:
+            # Build lightweight profile context
+            profile = db.query(UserProfile).filter(UserProfile.user_id == user_id).first()
+            user_profile = {"skin_type": "unknown", "concerns": []}
+            if profile:
+                try:
+                    raw = decrypt_sensitive_data(profile.skin_type)
+                    if raw:
+                        user_profile["skin_type"] = raw
+                except Exception:
+                    pass
+
+            # Extract scan summary for notification context
+            analysis = analysis_result.get("analysis", {})
+            summary = analysis.get("summary", {})
+            scores = summary.get("scores", {})
+
+            recent_scan = {
+                "scan_id": scan_id,
+                "overall_score": summary.get("overall_score", 0),
+                "scores": scores,
+                "concerns": [c.get("concern_type", "") for c in analysis.get("concerns_detail", [])],
+            }
+
+            # Call AI notification service (async)
+            from app.services.ai_intelligence_service import ai_generate_notifications
+
+            loop = asyncio.new_event_loop()
+            try:
+                notifications = loop.run_until_complete(
+                    ai_generate_notifications(
+                        user_profile=user_profile,
+                        recent_scans=[recent_scan],
+                        shelf_products=[],
+                    )
+                )
+                logger.info(
+                    "Generated %d post-scan notifications for user %s scan %s",
+                    len(notifications) if isinstance(notifications, list) else 0,
+                    user_id,
+                    scan_id,
+                )
+            finally:
+                loop.close()
+        finally:
+            db.close()
+    except Exception:
+        logger.exception("Failed to generate post-scan notifications for scan %s", scan_id)
+
+
 # ---------- Endpoints ----------
 
 @router.post(
@@ -331,6 +397,7 @@ def get_scan_actions():
 )
 async def upload_scan_image(
     scan_id: str,
+    background_tasks: BackgroundTasks,
     file: UploadFile = File(...),
     db: Session = Depends(get_db),
     current_user: Optional[User] = Depends(get_current_user_optional),
@@ -367,7 +434,7 @@ async def upload_scan_image(
         image_url=image_path,
     )
     
-    # Run analysis synchronously (TODO: move to background worker)
+    # Run analysis in background (non-blocking) so the upload returns immediately
     try:
         if settings.OPENAI_API_KEY:
             # Build profile context to enhance AI analysis accuracy
@@ -428,6 +495,15 @@ async def upload_scan_image(
             status_value="completed",
             result=analysis_result,
         )
+
+        # Fire-and-forget: generate smart notifications for the user after analysis
+        if current_user:
+            background_tasks.add_task(
+                _generate_post_scan_notifications,
+                user_id=current_user.id,
+                scan_id=str(scan.id),
+                analysis_result=analysis_result,
+            )
     except OpenAIVisionError as exc:
         logger.warning("OpenAI API failure: %s", exc)
         scan = _update_scan_status(
@@ -449,7 +525,7 @@ async def upload_scan_image(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to process scan. Please try again later.",
         )
-    
+
     return ScanUploadResponse(
         scan_id=str(scan.id),
         status=scan.status,

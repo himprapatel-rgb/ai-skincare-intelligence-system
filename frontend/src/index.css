@@ -95,6 +95,15 @@
   --gray-800: #27364c;
   --gray-900: #162133;
   
+  /* RGB channel values for rgba() usage */
+  --primary-rgb: 31, 95, 191;
+  --accent-rgb: 79, 138, 217;
+
+  /* Section spacing */
+  --section-padding-y: var(--spacing-3xl, 64px);
+  --section-padding-x: var(--spacing-lg, 24px);
+  --section-header-gap: 40px;
+
   /* Background Colors */
   --bg-primary: var(--white);
   --bg-secondary: #f6f8fb;

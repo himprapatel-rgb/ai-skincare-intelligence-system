@@ -725,3 +725,34 @@
   display: none;
 }
 
+/* ========== TABLET (769px–1024px) ========== */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .auth-page {
+    flex-direction: column;
+  }
+
+  .auth-left {
+    padding: var(--spacing-xl, 32px);
+    min-height: auto;
+  }
+
+  .auth-right {
+    padding: var(--spacing-xl, 32px);
+    max-width: 520px;
+    margin: 0 auto;
+    width: 100%;
+  }
+}
+
+/* ========== DESKTOP (≥1025px) ========== */
+@media (min-width: 1025px) {
+  .auth-right {
+    max-width: 520px;
+    padding: var(--spacing-2xl, 48px);
+  }
+
+  .auth-left {
+    padding: var(--spacing-3xl, 64px);
+  }
+}
+

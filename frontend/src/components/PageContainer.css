@@ -1,0 +1,60 @@
+/* PageContainer — responsive content wrapper */
+
+.page-container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: max(var(--spacing-md, 16px), env(safe-area-inset-left));
+  padding-right: max(var(--spacing-md, 16px), env(safe-area-inset-right));
+  padding-bottom: max(var(--spacing-md, 16px), env(safe-area-inset-bottom));
+  box-sizing: border-box;
+}
+
+/* Variant max-widths */
+.page-container--narrow {
+  max-width: 520px;
+}
+
+.page-container--medium {
+  max-width: 768px;
+}
+
+.page-container--wide {
+  max-width: 1200px;
+}
+
+.page-container--full {
+  max-width: 100%;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Mobile: tighter padding, bottom nav clearance */
+@media (max-width: 768px) {
+  .page-container {
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+    padding-bottom: max(96px, calc(96px + env(safe-area-inset-bottom)));
+  }
+
+  .page-container--full {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+/* Tablet: wider padding */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .page-container {
+    padding-left: max(var(--spacing-lg, 24px), env(safe-area-inset-left));
+    padding-right: max(var(--spacing-lg, 24px), env(safe-area-inset-right));
+  }
+}
+
+/* Desktop: generous padding */
+@media (min-width: 1025px) {
+  .page-container {
+    padding-left: max(var(--spacing-xl, 32px), env(safe-area-inset-left));
+    padding-right: max(var(--spacing-xl, 32px), env(safe-area-inset-right));
+  }
+}

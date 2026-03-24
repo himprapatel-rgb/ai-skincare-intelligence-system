@@ -915,6 +915,23 @@
   margin-top: 32px;
 }
 
+/* ========== TABLET (769px–1024px) ========== */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .scan-page {
+    padding-bottom: var(--spacing-xl, 32px);
+  }
+
+  .scan-container {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-lg, 24px);
+  }
+
+  .scan-content {
+    padding: 40px 32px;
+  }
+}
+
 @media (min-width: 1024px) {
   .scan-container {
     max-width: 1200px;

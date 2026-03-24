@@ -1,0 +1,40 @@
+/* ResponsiveGrid — auto-responsive column layout */
+
+.responsive-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  box-sizing: border-box;
+}
+
+/* Gap variants */
+.responsive-grid--gap-sm { gap: var(--spacing-sm, 8px); }
+.responsive-grid--gap-md { gap: var(--spacing-md, 16px); }
+.responsive-grid--gap-lg { gap: var(--spacing-lg, 24px); }
+
+/* Tablet: 2 columns for all variants */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .responsive-grid--2col,
+  .responsive-grid--3col,
+  .responsive-grid--4col {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Desktop: configurable columns */
+@media (min-width: 1025px) {
+  .responsive-grid--2col {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .responsive-grid--3col {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .responsive-grid--4col {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  /* Larger gap on desktop */
+  .responsive-grid--gap-md { gap: var(--spacing-lg, 24px); }
+  .responsive-grid--gap-lg { gap: var(--spacing-xl, 32px); }
+}

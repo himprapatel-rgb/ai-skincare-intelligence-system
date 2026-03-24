@@ -1330,3 +1330,57 @@
   font-size: 0.95rem;
   color: var(--text-secondary);
 }
+
+/* ========== TABLET (769px–1024px) ========== */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .today-page {
+    padding-bottom: var(--spacing-xl, 32px);
+  }
+
+  .today-content {
+    max-width: 640px;
+    padding: 0 var(--spacing-lg, 24px) var(--spacing-xl, 32px);
+  }
+
+  .today-header {
+    padding-left: var(--spacing-lg, 24px);
+    padding-right: var(--spacing-lg, 24px);
+  }
+
+  .today-products-grid,
+  .today-foryou-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .today-routine-steps {
+    max-width: 600px;
+  }
+}
+
+/* ========== DESKTOP (≥1025px) ========== */
+@media (min-width: 1025px) {
+  .today-page {
+    padding-bottom: var(--spacing-2xl, 48px);
+  }
+
+  .today-content {
+    max-width: 720px;
+    padding: 0 var(--spacing-xl, 32px) var(--spacing-2xl, 48px);
+  }
+
+  .today-header {
+    padding-left: var(--spacing-xl, 32px);
+    padding-right: var(--spacing-xl, 32px);
+  }
+
+  .today-products-grid,
+  .today-foryou-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .today-routine-steps {
+    max-width: 640px;
+  }
+}

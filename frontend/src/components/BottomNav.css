@@ -1,5 +1,12 @@
+/* Hide bottom nav when keyboard is open */
+.bottom-nav--hidden {
+  transform: translateY(100%);
+  pointer-events: none;
+}
+
 /* Bottom Nav - Mobile only, Bumble-style; fits all screens, blends with safe area */
 .bottom-nav {
+  transition: transform 0.2s ease;
   display: none;
   position: fixed;
   bottom: 0;

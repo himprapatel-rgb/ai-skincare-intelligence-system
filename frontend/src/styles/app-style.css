@@ -5,9 +5,9 @@
 
 /* Standard app page container */
 .app-page {
-  min-height: 100vh;
+  min-height: auto;
   background: var(--bg-secondary, #f8fafc);
-  padding-bottom: max(80px, env(safe-area-inset-bottom));
+  padding-bottom: env(safe-area-inset-bottom, 0px);
   font-family: var(--font-family);
   animation: pageEnter 0.25s ease-out;
 }
@@ -221,7 +221,7 @@
 /* Mobile web: touch-friendly targets and bottom safe area */
 @media (max-width: 768px) {
   .app-page {
-    padding-bottom: max(88px, calc(80px + env(safe-area-inset-bottom)));
+    padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px));
   }
   .app-page button:not(.btn-icon-small):not(.btn-action),
   .app-page .btn,

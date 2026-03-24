@@ -65,7 +65,13 @@ from app.models.scan import (
 from app.models.shelf import ShelfProduct
 
 # Import ALL models to ensure tables are created at startup
-from app.models.twin_models import *  # Digital Twin models
+from app.models.twin_models import (  # noqa: F401 — Digital Twin models
+    EnvironmentSnapshot,
+    RoutineInstance,
+    RoutineProductUsage,
+    SkinRegionState,
+    SkinStateSnapshot,
+)
 from app.models.user import PolicyVersion, User, UserAccessLog, UserConsent, UserProfile
 from app.product_database import check_product_database_health, create_product_tables
 from app.routers import (  # GDPR & User Management
@@ -271,8 +277,8 @@ def ensure_test_user() -> None:
         logger.warning("Unable to open DB session for seeding; skipping seed: %s", exc)
         return
     try:
-        # Do not seed test users in production unless explicitly enabled (security audit)
-        if settings.ENV == "production" and (os.getenv("SEED_TEST_USERS", "").lower() not in ("1", "true", "yes")):
+        # Do not seed test users unless explicitly enabled via SEED_TEST_USERS=1
+        if os.getenv("SEED_TEST_USERS", "").lower() not in ("1", "true", "yes"):
             db.close()
             return
         test_users = [
@@ -564,6 +570,10 @@ app.include_router(shelf.router, prefix="/api/v1", tags=["shelf"])  # Product Sh
 app.include_router(goals.router, prefix="/api/v1", tags=["goals"])  # Skin Goals API
 app.include_router(catalog.router, prefix="/api/v1", tags=["catalog"])  # Product Catalog Database
 app.include_router(content.router, prefix="/api/v1", tags=["content"])  # Public blogs, videos, news
+
+# AI Intelligence Engine — all AI-powered features
+from app.routers import ai as ai_router_module
+app.include_router(ai_router_module.router)  # Router already includes /api/v1/ai prefix
 
 # Admin image uploads (blog covers, video thumbnails)
 _uploads_dir = Path(__file__).resolve().parent.parent / "uploads"

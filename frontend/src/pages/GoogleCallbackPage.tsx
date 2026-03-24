@@ -164,7 +164,7 @@ const GoogleCallbackPage: React.FC = () => {
               : 'Please wait while we complete your authentication.'}
           </p>
           {slowMessage && (
-            <div style={{ marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem', alignItems: 'center' }}>
+            <div className="callback-slow-actions">
               <button type="button" className="btn-primary" onClick={() => navigate('/auth', { replace: true })}>
                 Back to Sign In — try again in a moment
               </button>
@@ -196,14 +196,14 @@ const GoogleCallbackPage: React.FC = () => {
           <p>{error}</p>
           {isConnectionError && (
             <>
-              <p style={{ marginTop: '0.75rem', fontSize: '0.9rem', color: 'var(--text-gray, #555)' }}>
+              <p className="callback-tip">
                 Tip: Go back and try &quot;Continue with Google&quot; again in a moment — the server may be starting up.
               </p>
-              <p style={{ marginTop: '0.5rem', fontSize: '0.9rem' }}>
+              <p className="callback-backend-info">
                 <strong>Backend:</strong>{' '}
-                <code style={{ fontSize: '0.8rem', wordBreak: 'break-all' }}>{new URL(API_BASE_URL).origin}</code>
+                <code>{new URL(API_BASE_URL).origin}</code>
               </p>
-              <p style={{ marginTop: '0.5rem', fontSize: '0.9rem' }}>
+              <p className="callback-backend-info">
                 <a href={HEALTH_URL} target="_blank" rel="noopener noreferrer" className="btn-link">
                   Check server status
                 </a>
@@ -211,37 +211,36 @@ const GoogleCallbackPage: React.FC = () => {
               </p>
             </>
           )}
-          <div className="callback-redirect-hint" style={{ marginTop: '1rem', textAlign: 'left', fontSize: '0.9rem' }}>
+          <div className="callback-redirect-hint">
             <strong>Common fixes:</strong>
-            <ol style={{ marginTop: '0.5rem', paddingLeft: '1.25rem' }}>
+            <ol>
               <li>
                 In <strong>Google Cloud Console</strong> → APIs &amp; Services → Credentials → your OAuth client → <strong>Authorized redirect URIs</strong>, add exactly:
-                <code style={{ display: 'block', marginTop: '0.35rem', padding: '0.5rem', background: 'var(--bg-light, #f5f5f5)', borderRadius: 4, wordBreak: 'break-all', fontSize: '0.85rem' }}>
+                <code className="callback-redirect-code">
                   {backendRedirectUri || callbackUrlUsed || 'https://your-site.com/auth/google/callback'}
                 </code>
                 <button
                   type="button"
-                  className="btn-secondary"
-                  style={{ marginTop: '0.35rem', fontSize: '0.8rem' }}
+                  className="btn-secondary callback-copy-btn"
                   onClick={() => navigator.clipboard?.writeText(backendRedirectUri || callbackUrlUsed)}
                 >
                   Copy URL
                 </button>
               </li>
-              <li style={{ marginTop: '0.5rem' }}>
-                Check the backend is running: open your API health URL (e.g. <code style={{ fontSize: '0.8rem' }}>/api/health</code>) and ensure it returns 200.
+              <li>
+                Check the backend is running: open your API health URL (e.g. <code>/api/health</code>) and ensure it returns 200.
               </li>
-              <li style={{ marginTop: '0.25rem' }}>
+              <li>
                 On the server (e.g. Railway), set <code>GOOGLE_CLIENT_ID</code> and <code>GOOGLE_CLIENT_SECRET</code> from Google Cloud Console.
               </li>
             </ol>
             {isRedirectMismatch && (
-              <p style={{ marginTop: '0.5rem', color: 'var(--text-gray, #555)' }}>
+              <p className="callback-mismatch-hint">
                 The error above usually means the redirect URI in Google Console does not match exactly (including https and no trailing slash).
               </p>
             )}
           </div>
-          <button onClick={() => navigate('/auth')} className="btn-primary" style={{ marginTop: '1rem' }}>
+          <button onClick={() => navigate('/auth')} className="btn-primary callback-back-btn">
             Back to Sign In
           </button>
         </div>

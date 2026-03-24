@@ -76,7 +76,7 @@
 .ingredient-filters .filter-btn.active {
   background: var(--primary);
   border-color: var(--primary);
-  color: #fff;
+  color: var(--white);
 }
 
 .alphabet-nav {
@@ -93,7 +93,7 @@
   justify-content: center;
   width: 32px;
   height: 32px;
-  border-radius: 6px;
+  border-radius: var(--border-radius-sm);
   font-size: 0.8rem;
   font-weight: 600;
   color: var(--primary);
@@ -105,7 +105,7 @@
 
 .alphabet-nav .alphabet-letter:hover {
   background: var(--primary);
-  color: #fff;
+  color: var(--white);
   border-color: var(--primary);
 }
 
@@ -161,4 +161,20 @@
 }
 .ingredient-empty-text {
   margin: 0;
+}
+
+@media (max-width: 480px) {
+  .ingredient-page {
+    padding: var(--spacing-lg) var(--spacing-md);
+  }
+
+  .alphabet-nav .alphabet-letter {
+    width: 28px;
+    height: 28px;
+    font-size: 0.7rem;
+  }
+
+  .ingredient-grid {
+    grid-template-columns: 1fr;
+  }
 }

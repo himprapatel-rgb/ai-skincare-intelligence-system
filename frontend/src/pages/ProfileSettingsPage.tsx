@@ -1321,7 +1321,7 @@ const ProfileSettingsPage: React.FC = () => {
                     ) : (
                       <div className="progress-chart-placeholder">
                         <p>
-                          <IconTrendingUp size={20} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '8px' }} />
+                          <IconTrendingUp size={20} strokeWidth={2} className="icon-inline" />
                           Loading chart…
                         </p>
                       </div>
@@ -1329,7 +1329,7 @@ const ProfileSettingsPage: React.FC = () => {
                   ) : (
                     <div className="progress-chart-placeholder">
                       <p>
-                        <IconTrendingUp size={20} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '8px' }} />
+                        <IconTrendingUp size={20} strokeWidth={2} className="icon-inline" />
                         No progress data yet
                       </p>
                       <p className="help-text">Complete a scan to see your trend line.</p>
@@ -1347,7 +1347,7 @@ const ProfileSettingsPage: React.FC = () => {
                 <h3>Before/After Comparison</h3>
                 <div className="comparison-placeholder">
                   <p>
-                    <IconScan size={20} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '8px' }} />
+                    <IconScan size={20} strokeWidth={2} className="icon-inline" />
                     Upload photos to see your transformation
                   </p>
                   <button type="button" className="btn-secondary" onClick={() => navigate('/comparison')}>View Comparison</button>

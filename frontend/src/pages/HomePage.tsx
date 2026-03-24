@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { usePageTitle } from '../hooks/usePageTitle';
 import {
   IconZap, IconScan, IconClock, IconShield, IconBookOpen,
@@ -186,7 +186,7 @@ const HomePage: React.FC = () => {
     )}`;
 
   return (
-    <div className="homepage app-page clinical-page">
+    <div className="homepage">
       {/* Hero Section - Updated with safer claims */}
       <FadeInSection className="hero">
         <div className="hero-decoration" aria-hidden="true">
@@ -224,7 +224,7 @@ const HomePage: React.FC = () => {
               <IconClock size={16} strokeWidth={2} className="inline-icon" />
               Takes ~30 seconds &bull; No signup required &bull; Delete your photo anytime
             </p>
-            <Link to="/about" className="hero-learn-more">Learn more</Link>
+            {/* Learn more link removed — all sections now visible on mobile */}
           </div>
         </div>
         <div className="hero-visual">
@@ -254,7 +254,6 @@ const HomePage: React.FC = () => {
         <ScrollIndicator />
       </FadeInSection>
 
-      <div className="app-page-content">
       {/* Trust Badges - Privacy first, then Encrypted, Research, Delete */}
       <FadeInSection className="trust-badges-section">
         <div className="trust-badges-grid">
@@ -373,7 +372,7 @@ const HomePage: React.FC = () => {
           <div className="step-card">
             <div className="step-number">1</div>
             <div className="step-illustration step-illustration--primary" aria-hidden="true">
-              <img src="/how-it-works-upload.svg" alt="Upload your photo for skin analysis" loading="lazy" width="200" height="160" />
+              <img src="/how-it-works-upload.svg" alt="Upload your photo for skin analysis" loading="lazy" width="200" height="160" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
             </div>
             <h3>Upload Photo</h3>
             <p>Take or upload a clear selfie</p>
@@ -395,7 +394,7 @@ const HomePage: React.FC = () => {
           <div className="step-card">
             <div className="step-number">2</div>
             <div className="step-illustration step-illustration--accent" aria-hidden="true">
-              <img src="/how-it-works-analysis.svg" alt="AI analyzes your skin" loading="lazy" width="200" height="160" />
+              <img src="/how-it-works-analysis.svg" alt="AI analyzes your skin" loading="lazy" width="200" height="160" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
             </div>
             <h3>AI Analysis</h3>
             <p>Our model detects visible signs of acne, redness, pigmentation, and texture patterns</p>
@@ -403,7 +402,7 @@ const HomePage: React.FC = () => {
           <div className="step-card">
             <div className="step-number">3</div>
             <div className="step-illustration step-illustration--soft" aria-hidden="true">
-              <img src="/how-it-works-results.svg" alt="View your personalized results" loading="lazy" width="200" height="160" />
+              <img src="/how-it-works-results.svg" alt="View your personalized results" loading="lazy" width="200" height="160" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
             </div>
             <h3>Get Results</h3>
             <p>Receive a skin summary, concern scores, and personalized routine suggestions</p>
@@ -496,15 +495,13 @@ const HomePage: React.FC = () => {
         <div className="cta-content">
           <h2>Ready to Understand Your Skin?</h2>
           <p>Get instant AI-powered insights from a single photo</p>
-          <Link to="/scan" className="cta-section-link">Go to free skin scan</Link>
+          <button type="button" className="btn btn-cta-hero" onClick={() => navigate('/scan')}>Start Free Skin Scan</button>
           <p className="cta-reassurance">
-            <IconShield size={16} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '6px' }} />
+            <IconShield size={16} strokeWidth={2} className="icon-inline" />
             Your photo is processed securely and never shared
           </p>
         </div>
       </FadeInSection>
-      </div>
-
       {/* Single CTA on home: hero button only (no floating CTA to avoid duplicate) */}
     </div>
   );

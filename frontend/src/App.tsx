@@ -2,6 +2,7 @@
 import React, { Suspense } from "react";
 import { BrowserRouter, Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
+import { ScanProvider } from "./context/ScanContext";
 import { ToastProvider } from "./context/ToastContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import { ShelfProvider } from "./context/ShelfContext";
@@ -134,6 +135,7 @@ export default function App() {
       <AuthProvider>
         <ThemeProvider>
           <ShelfProvider>
+            <ScanProvider>
             <ToastProvider>
             <DevBanner />
             <NetworkStatus />
@@ -146,6 +148,7 @@ export default function App() {
             </BrowserRouter>
             <ToastContainer />
             </ToastProvider>
+            </ScanProvider>
           </ShelfProvider>
         </ThemeProvider>
       </AuthProvider>

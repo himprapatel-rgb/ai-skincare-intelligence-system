@@ -26,9 +26,9 @@
   line-height: 1.5;
   
   /* Appearance */
-  background: rgba(0, 0, 0, 0.02);
-  border: 2px solid transparent;
-  border-radius: 16px;
+  background: var(--bg-secondary, rgba(0, 0, 0, 0.02));
+  border: 1.5px solid transparent;
+  border-radius: var(--border-radius-lg);
   outline: none;
   color: var(--text-primary, #1a1a1a);
   
@@ -40,13 +40,13 @@
 }
 
 .mobile-input__input:focus {
-  background: rgba(102, 126, 234, 0.04);
-  border-color: #667eea;
+  background: var(--primary-light, rgba(31, 95, 191, 0.04));
+  border-color: var(--primary);
 }
 
 .mobile-input--error .mobile-input__input {
-  border-color: #ef4444;
-  background: rgba(239, 68, 68, 0.04);
+  border-color: var(--danger);
+  background: var(--danger-light);
 }
 
 .mobile-input--disabled .mobile-input__input {
@@ -76,7 +76,7 @@
   transform: translateY(0);
   font-size: 12px;
   font-weight: 600;
-  color: #667eea;
+  color: var(--primary);
 }
 
 .mobile-input--error.mobile-input--focused .mobile-input__label,
@@ -111,7 +111,7 @@
 }
 
 .mobile-input--focused .mobile-input__icon {
-  color: #667eea;
+  color: var(--primary);
 }
 
 .mobile-input--has-icon .mobile-input__input {
@@ -130,7 +130,7 @@
   transform: translateX(-50%);
   width: 0;
   height: 2px;
-  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
   transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   border-radius: 2px;
 }

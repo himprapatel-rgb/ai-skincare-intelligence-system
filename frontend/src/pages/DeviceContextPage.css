@@ -21,7 +21,7 @@
   justify-content: center;
   color: var(--text-primary);
   padding: 4px;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
 }
 
 .device-ctx-back:hover {
@@ -42,7 +42,7 @@
   padding: 16px;
   margin: 16px;
   background: var(--bg-white);
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   border: 1px solid var(--border-color);
 }
 
@@ -76,7 +76,7 @@
   padding: 12px;
   background: rgba(239, 68, 68, 0.1);
   border: 1px solid rgba(239, 68, 68, 0.3);
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   color: var(--text-primary);
   font-size: 0.9rem;
 }
@@ -89,7 +89,7 @@
 
 .device-ctx-section {
   background: var(--bg-white);
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   padding: 16px;
   margin-bottom: 12px;
   border: 1px solid var(--border-color);

@@ -116,6 +116,64 @@ class OpenAIVisionClient:
                         "type": "array",
                         "items": {"type": "string"},
                     },
+                    "zone_analysis": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "additionalProperties": False,
+                            "properties": {
+                                "zone": {
+                                    "type": "string",
+                                    "enum": [
+                                        "forehead",
+                                        "left_cheek",
+                                        "right_cheek",
+                                        "nose",
+                                        "chin",
+                                        "under_eye_left",
+                                        "under_eye_right",
+                                    ],
+                                },
+                                "concerns": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "additionalProperties": False,
+                                        "properties": {
+                                            "type": {"type": "string"},
+                                            "severity": {
+                                                "type": "string",
+                                                "enum": ["clear", "light", "mild", "moderate", "severe"],
+                                            },
+                                            "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+                                        },
+                                        "required": ["type", "severity", "confidence"],
+                                    },
+                                },
+                                "texture_score": {"type": "number", "minimum": 0, "maximum": 100},
+                                "notes": {"type": "string"},
+                            },
+                            "required": ["zone", "concerns", "texture_score", "notes"],
+                        },
+                    },
+                    "actionable_recommendations": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "additionalProperties": False,
+                            "properties": {
+                                "concern": {"type": "string"},
+                                "ingredient": {"type": "string"},
+                                "product_type": {"type": "string"},
+                                "why": {"type": "string"},
+                                "priority": {
+                                    "type": "string",
+                                    "enum": ["high", "medium", "low"],
+                                },
+                            },
+                            "required": ["concern", "ingredient", "product_type", "why", "priority"],
+                        },
+                    },
                     "notes": {"type": "string"},
                 },
                 "required": [
@@ -125,6 +183,8 @@ class OpenAIVisionClient:
                     "confidence_score",
                     "concerns_detail",
                     "recommendations",
+                    "zone_analysis",
+                    "actionable_recommendations",
                     "notes",
                 ],
             },
@@ -136,6 +196,7 @@ class OpenAIVisionClient:
         image_bytes: bytes,
         filename: str,
         content_type: str,
+        user_context: Optional[str] = None,
     ) -> Dict[str, Any]:
         image_b64 = base64.b64encode(image_bytes).decode("ascii")
         data_url = f"data:{content_type};base64,{image_b64}"
@@ -155,8 +216,14 @@ class OpenAIVisionClient:
                         "Be consistent: similar appearance should yield similar scores. "
                         "In concerns_detail: list each detected concern with severity (mild/moderate/severe), confidence (0-1), "
                         "and specific affected_areas (e.g. forehead, cheeks, nose, under_eyes, chin). "
-                        "Recommendations should be 2-5 short, actionable skincare tips (ingredients or habits), not generic advice. "
+                        "ZONE ANALYSIS: For each of the 7 face zones (forehead, left_cheek, right_cheek, nose, chin, "
+                        "under_eye_left, under_eye_right), provide zone-specific concerns with severity and confidence, "
+                        "a texture_score (0-100), and a brief note about that zone's condition. "
+                        "ACTIONABLE RECOMMENDATIONS: Provide 2-5 specific ingredient + product type recommendations "
+                        "mapped to specific concerns, with priority (high/medium/low) and explanation of why it helps. "
+                        "Recommendations should be specific actionable skincare tips, not generic advice. "
                         "Notes: one sentence on image quality or limitation if relevant, otherwise brief summary."
+                        + (f"\n\n{user_context}" if user_context else "")
                     ),
                 },
                 {

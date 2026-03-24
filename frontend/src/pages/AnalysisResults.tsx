@@ -5,9 +5,12 @@ import { BackButton } from '../components/BackButton';
 import { BreadcrumbJsonLd } from '../components/BreadcrumbJsonLd';
 import { SkeletonAnalysis } from '../components/Skeleton';
 import LazyImage from '../components/LazyImage';
+import { FaceHeatmap } from '../components/FaceHeatmap';
+import { TrendSparkline } from '../components/TrendSparkline';
 import { getScanHistory, getScanResult } from '../services/scanApi';
 import { useToast } from '../context/ToastContext';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { generateDermatologistReport } from '../utils/dermatologistReport';
 import { API_BASE_URL } from '../config';
 import './AnalysisResults.css';
 
@@ -280,6 +283,77 @@ const AnalysisResults: React.FC = () => {
     return 'Low – Retake with clearer, front-facing photo for better analysis';
   };
 
+  /** Dynamic ingredient recommendations based on detected concerns */
+  const getPersonalizedIngredients = (
+    concerns: string[],
+    severity: Record<string, number>,
+  ): Array<{ name: string; why: string; targets: string[] }> => {
+    const INGREDIENT_DB: Record<string, { name: string; why: string; targets: string[] }> = {
+      acne: { name: 'Salicylic Acid (BHA)', why: 'Penetrates pores to dissolve excess oil and dead skin, reducing breakouts.', targets: ['Acne', 'Pores'] },
+      redness: { name: 'Centella Asiatica (Cica)', why: 'Calms inflammation and strengthens the skin barrier to reduce redness.', targets: ['Redness', 'Sensitivity'] },
+      pigmentation: { name: 'Vitamin C (Ascorbic Acid)', why: 'Inhibits melanin production, fades dark spots and evens skin tone.', targets: ['Pigmentation', 'Dark Spots'] },
+      dehydration: { name: 'Hyaluronic Acid', why: 'Attracts and holds up to 1000x its weight in water, deeply hydrating skin.', targets: ['Dehydration', 'Fine Lines'] },
+      sensitivity: { name: 'Ceramides', why: 'Restores the skin barrier, locking in moisture and shielding from irritants.', targets: ['Sensitivity', 'Barrier Repair'] },
+      wrinkles: { name: 'Retinol (Vitamin A)', why: 'Accelerates cell turnover, boosts collagen, and smooths fine lines.', targets: ['Wrinkles', 'Texture'] },
+      pores: { name: 'Niacinamide (Vitamin B3)', why: 'Minimizes pore appearance, regulates oil production, and brightens skin.', targets: ['Pores', 'Oiliness'] },
+      dark_circles: { name: 'Caffeine', why: 'Constricts blood vessels under eyes, reducing puffiness and dark circles.', targets: ['Dark Circles', 'Puffiness'] },
+      texture: { name: 'Glycolic Acid (AHA)', why: 'Exfoliates surface skin cells, revealing smoother, more radiant texture.', targets: ['Texture', 'Dullness'] },
+      oiliness: { name: 'Zinc PCA', why: 'Regulates sebum production without over-drying, keeping skin balanced.', targets: ['Oiliness', 'Shine Control'] },
+    };
+
+    // Sort concerns by severity (highest first) and map to ingredients
+    const sorted = Object.entries(severity)
+      .sort(([, a], [, b]) => b - a)
+      .filter(([, v]) => v > 15); // Only recommend for non-trivial concerns
+
+    const results: Array<{ name: string; why: string; targets: string[] }> = [];
+    const usedNames = new Set<string>();
+
+    for (const [concern] of sorted) {
+      const ing = INGREDIENT_DB[concern.toLowerCase()];
+      if (ing && !usedNames.has(ing.name)) {
+        results.push(ing);
+        usedNames.add(ing.name);
+      }
+      if (results.length >= 4) break;
+    }
+
+    // Ensure at least 2 recommendations
+    if (results.length < 2) {
+      const fallbacks = [
+        INGREDIENT_DB.dehydration,
+        INGREDIENT_DB.pores,
+        INGREDIENT_DB.pigmentation,
+      ];
+      for (const fb of fallbacks) {
+        if (!usedNames.has(fb.name)) {
+          results.push(fb);
+          usedNames.add(fb.name);
+        }
+        if (results.length >= 3) break;
+      }
+    }
+
+    return results;
+  };
+
+  /** Map concern types to likely face zones for heatmap display */
+  const inferAffectedAreas = (concern: string): string[] => {
+    const mapping: Record<string, string[]> = {
+      acne: ['forehead', 'cheeks', 'chin', 't_zone'],
+      redness: ['cheeks', 'nose'],
+      pigmentation: ['cheeks', 'forehead'],
+      dehydration: ['cheeks', 'forehead'],
+      sensitivity: ['cheeks'],
+      wrinkles: ['forehead', 'under_eyes'],
+      pores: ['nose', 't_zone', 'cheeks'],
+      dark_circles: ['under_eyes', 'under_eye_left', 'under_eye_right'],
+      texture: ['forehead', 'cheeks'],
+      oiliness: ['forehead', 'nose', 't_zone'],
+    };
+    return mapping[concern.toLowerCase()] || ['cheeks'];
+  };
+
   if (loading) {
     return (
       <div className="app-page">
@@ -415,6 +489,37 @@ const AnalysisResults: React.FC = () => {
                 <IconDownload size={16} strokeWidth={2} />
                 {exporting === 'image' ? 'Exporting…' : 'Image'}
               </button>
+              <button
+                type="button"
+                className="results-copy-link results-export-btn"
+                onClick={async () => {
+                  if (!analysis) return;
+                  try {
+                    setExporting('pdf');
+                    await generateDermatologistReport({
+                      scanId: analysis.id,
+                      date: analysis.timestamp,
+                      skinType: analysis.skinType,
+                      confidence: analysis.confidence,
+                      concerns: analysis.concerns,
+                      severity: analysis.severity,
+                      recommendations: analysis.recommendations || [],
+                      ingredients: getPersonalizedIngredients(analysis.concerns, analysis.severity),
+                    });
+                    toast.success('Dermatologist report downloaded');
+                  } catch {
+                    toast.error('Could not generate report');
+                  } finally {
+                    setExporting(null);
+                  }
+                }}
+                disabled={!!exporting}
+                title="Export clinical report for your dermatologist"
+                aria-label="Export dermatologist report"
+              >
+                <IconDownload size={16} strokeWidth={2} />
+                Derm Report
+              </button>
             </div>
             <button
               type="button"
@@ -427,7 +532,7 @@ const AnalysisResults: React.FC = () => {
               {savedToFavorites ? 'Saved' : 'Save analysis'}
             </button>
             <button onClick={() => navigate('/')} className="results-back">
-              <IconArrowLeft size={16} strokeWidth={2} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
+              <IconArrowLeft size={16} strokeWidth={2} className="icon-inline" />
               Back to Dashboard
             </button>
           </div>
@@ -471,6 +576,42 @@ const AnalysisResults: React.FC = () => {
             {getConfidenceInterpretation(analysis.confidence)}
           </span>
         </div>
+
+        {/* Interactive Face Zone Heatmap */}
+        <FaceHeatmap
+          concerns={analysis.concerns.length > 0
+            ? Object.entries(analysis.severity).map(([key, val]) => ({
+                concern_type: key,
+                severity: val >= 80 ? 'severe' : val >= 60 ? 'moderate' : val >= 40 ? 'mild' : val >= 20 ? 'light' : 'clear',
+                confidence: val / 100,
+                affected_areas: inferAffectedAreas(key),
+              }))
+            : undefined
+          }
+          overallScore={analysis.confidence}
+        />
+
+        {/* Score Trend Sparkline */}
+        {previousScans.length >= 2 && (() => {
+          const scores = previousScans
+            .filter(s => String(s.status || '').toLowerCase() !== 'failed')
+            .slice(0, 10)
+            .map(s => {
+              const meta = (s as Record<string, unknown>).scan_metadata as Record<string, unknown> | undefined;
+              const result = meta?.result as Record<string, unknown> | undefined;
+              const analysisData = result?.analysis as Record<string, unknown> | undefined;
+              const summary = analysisData?.summary as Record<string, unknown> | undefined;
+              return (summary?.overall_score as number) ?? null;
+            })
+            .filter((v): v is number => v !== null)
+            .reverse();
+          return scores.length >= 2 ? (
+            <div className="result-card" style={{ textAlign: 'center' }}>
+              <h2>Your Score Trend</h2>
+              <TrendSparkline scores={scores} width={200} height={50} onViewHistory={() => navigate('/history')} />
+            </div>
+          ) : null;
+        })()}
 
         <div className="results-grid">
           <div className="result-card">
@@ -554,40 +695,28 @@ const AnalysisResults: React.FC = () => {
           </div>
         </div>
 
-        {/* AI Ingredient Recommendations – design system */}
+        {/* AI Ingredient Recommendations — Dynamic based on concerns */}
         <div className="result-card analysis-ingredient-rec">
-          <h2>🧪 AI Ingredient Recommendations</h2>
+          <h2>AI Ingredient Recommendations</h2>
           <p className="analysis-ingredient-intro">
             Based on your analysis, these ingredients will help most:
           </p>
           <div className="analysis-ingredient-cards">
-            <div className="analysis-ingredient-card">
-              <h3 className="analysis-ingredient-name">💧 Hyaluronic Acid</h3>
-              <p className="analysis-ingredient-why">
-                Why: Deeply hydrates skin, plumps and reduces fine lines caused by dehydration.
-              </p>
-              <p className="analysis-ingredient-targets">Targets: Dehydration ✓</p>
-              <Link to="/ingredients" className="analysis-ingredient-learn">ℹ️ Learn More</Link>
-            </div>
-            <div className="analysis-ingredient-card">
-              <h3 className="analysis-ingredient-name">🍊 Vitamin C (Ascorbic Acid)</h3>
-              <p className="analysis-ingredient-why">
-                Why: Brightens under-eye area, reduces pigmentation, boosts collagen production.
-              </p>
-              <p className="analysis-ingredient-targets">Targets: Dark Circles ✓ · Dullness ✓</p>
-              <Link to="/ingredients" className="analysis-ingredient-learn">ℹ️ Learn More</Link>
-            </div>
-            <div className="analysis-ingredient-card">
-              <h3 className="analysis-ingredient-name">☕ Caffeine</h3>
-              <p className="analysis-ingredient-why">
-                Why: Constricts blood vessels, reduces puffiness and dark circles.
-              </p>
-              <p className="analysis-ingredient-targets">Targets: Dark Circles ✓ · Puffiness ✓</p>
-              <Link to="/ingredients" className="analysis-ingredient-learn">ℹ️ Learn More</Link>
-            </div>
+            {getPersonalizedIngredients(analysis.concerns, analysis.severity).map((rec, i) => (
+              <div key={i} className="analysis-ingredient-card">
+                <h3 className="analysis-ingredient-name">{rec.name}</h3>
+                <p className="analysis-ingredient-why">
+                  {rec.why}
+                </p>
+                <p className="analysis-ingredient-targets">
+                  Targets: {rec.targets.join(' · ')}
+                </p>
+                <Link to="/ingredients" className="analysis-ingredient-learn">Learn More</Link>
+              </div>
+            ))}
           </div>
           <button type="button" onClick={() => navigate('/recommendations')} className="btn btn-primary analysis-ingredient-cta">
-            <IconShoppingCart size={18} strokeWidth={2} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+            <IconShoppingCart size={18} strokeWidth={2} className="icon-inline" />
             Find products with these ingredients
           </button>
         </div>
@@ -619,7 +748,7 @@ const AnalysisResults: React.FC = () => {
             <ul className="recommendations-list">
               {analysis.recommendations.map((rec, index) => (
                 <li key={index}>
-                  <IconCheck size={16} strokeWidth={2} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '8px' }} />
+                  <IconCheck size={16} strokeWidth={2} className="icon-inline" />
                   {rec}
                 </li>
               ))}
@@ -677,11 +806,11 @@ const AnalysisResults: React.FC = () => {
 
         <div className="results-actions">
           <button onClick={() => navigate('/scan')} className="btn btn-primary">
-            <IconScan size={18} strokeWidth={2} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+            <IconScan size={18} strokeWidth={2} className="icon-inline" />
             Take New Scan
           </button>
           <button onClick={() => navigate('/')} className="btn btn-secondary">
-            <IconHome size={18} strokeWidth={2} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+            <IconHome size={18} strokeWidth={2} className="icon-inline" />
             Back to Dashboard
           </button>
         </div>

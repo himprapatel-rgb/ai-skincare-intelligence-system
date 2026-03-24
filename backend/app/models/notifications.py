@@ -10,6 +10,7 @@ from sqlalchemy import (
     DateTime,
     Enum,
     ForeignKey,
+    Index,
     Integer,
     String,
     Text,
@@ -50,7 +51,12 @@ class Notification(Base):
     
     # Relationships
     user = relationship("User", backref="notifications")
-    
+
+    __table_args__ = (
+        Index('ix_notifications_user_read', 'user_id', 'read'),
+        Index('ix_notifications_user_created', 'user_id', 'created_at'),
+    )
+
     def __repr__(self):
         return f"<Notification id={self.id} user_id={self.user_id} type={self.type}>"
 

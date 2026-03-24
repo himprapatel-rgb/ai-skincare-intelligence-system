@@ -43,7 +43,7 @@
   width: 100%;
   padding: 10px 12px;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   font-size: 1rem;
 }
 
@@ -88,7 +88,7 @@
   font-size: 0.7rem;
   padding: 2px 8px;
   background: var(--primary);
-  color: white;
+  color: var(--white);
   border-radius: 999px;
 }
 
@@ -109,7 +109,7 @@
   background: transparent;
   color: var(--text-gray);
   cursor: pointer;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
 }
 
 .admin-news-page .btn-icon:hover {

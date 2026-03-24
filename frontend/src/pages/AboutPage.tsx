@@ -196,7 +196,7 @@ const AboutPage: React.FC = () => {
         <section className="about-section disclaimer-section">
           <div className="disclaimer-box">
             <h3>
-              <IconAlertTriangle size={20} strokeWidth={2} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+              <IconAlertTriangle size={20} strokeWidth={2} className="icon-inline" />
               Important Medical Disclaimer
             </h3>
             <p>

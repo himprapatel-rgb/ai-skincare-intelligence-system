@@ -11,9 +11,9 @@
 }
 
 .admin-card {
-  background: #ffffff;
+  background: var(--bg-white);
   border: 1px solid var(--border-color);
-  border-radius: 16px;
+  border-radius: var(--border-radius-xl);
   padding: 16px;
   box-shadow: var(--shadow-md);
 }
@@ -30,9 +30,9 @@
 }
 
 .admin-quick-upload {
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(99, 102, 241, 0.06) 100%);
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(31, 95, 191, 0.06) 100%);
   border: 1px solid rgba(59, 130, 246, 0.2);
-  border-radius: 16px;
+  border-radius: var(--border-radius-xl);
   padding: 24px;
   margin-bottom: 8px;
 }

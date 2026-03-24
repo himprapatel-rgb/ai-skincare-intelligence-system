@@ -62,14 +62,14 @@ const ConsentModal: React.FC<ConsentModalProps> = ({ visible, onAccept, onDeclin
       if (userId) await axios.post('/api/v1/consent/record', { userId, ...consentData });
       onAccept(consentData);
     } catch (error) {
-      console.error('Failed to record consent:', error);
+      if (import.meta.env.DEV) console.error('Failed to record consent:', error);
     } finally {
       setLoading(false);
     }
   };
 
   const handleDecline = () => {
-    if (userId) axios.post('/api/v1/consent/decline', { userId, timestamp: new Date().toISOString(), userAgent: navigator.userAgent }).catch(err => console.error(err));
+    if (userId) axios.post('/api/v1/consent/decline', { userId, timestamp: new Date().toISOString(), userAgent: navigator.userAgent }).catch(err => { if (import.meta.env.DEV) console.error(err); });
     onDecline();
   };
 

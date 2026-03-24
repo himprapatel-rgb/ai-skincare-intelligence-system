@@ -42,7 +42,7 @@ export class CameraService {
 
       return this.stream;
     } catch (error) {
-      console.error('Camera initialization failed:', error);
+      if (import.meta.env.DEV) console.error('Camera initialization failed:', error);
       throw new Error(
         error instanceof Error 
           ? `Camera access denied: ${error.message}`
@@ -116,7 +116,7 @@ export class CameraService {
       const devices = await navigator.mediaDevices.enumerateDevices();
       return devices.filter(device => device.kind === 'videoinput');
     } catch (error) {
-      console.error('Failed to enumerate devices:', error);
+      if (import.meta.env.DEV) console.error('Failed to enumerate devices:', error);
       return [];
     }
   }

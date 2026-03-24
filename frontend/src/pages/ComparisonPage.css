@@ -86,7 +86,7 @@
 
 .comparison-score-card {
   background: var(--bg-white);
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   padding: 24px;
   text-align: center;
   box-shadow: var(--shadow);
@@ -130,7 +130,7 @@
   width: 100%;
   max-width: 400px;
   height: auto;
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow);
   border: 2px solid var(--border);
   object-fit: cover;
@@ -159,7 +159,7 @@
 .btn-icon-small {
   background: transparent;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   padding: 8px;
   cursor: pointer;
   color: var(--text-gray);
@@ -222,7 +222,7 @@
 .comparison-delta {
   font-weight: 600;
   padding: 4px 8px;
-  border-radius: 4px;
+  border-radius: var(--border-radius-sm);
 }
 
 .comparison-delta.improved {
@@ -251,7 +251,7 @@
 
 .comparison-chart-placeholder {
   min-height: 260px;
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   border: 1px dashed var(--border);
   background: var(--bg-light);
   color: var(--text-gray);

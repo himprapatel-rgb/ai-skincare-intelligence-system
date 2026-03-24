@@ -3,10 +3,13 @@ Application configuration settings.
 """
 
 import json
+import logging
 from typing import Any
 
-from pydantic import Field
+from pydantic import Field, model_validator
 from pydantic_settings import BaseSettings
+
+logger = logging.getLogger(__name__)
 
 
 def _parse_list_str(value: Any) -> list[str]:
@@ -79,8 +82,8 @@ class Settings(BaseSettings):
     )
 
     # Database connection pool settings (main DB)
-    DB_POOL_SIZE: int = Field(default=5, description="SQLAlchemy pool size for main DB")
-    DB_MAX_OVERFLOW: int = Field(default=5, description="SQLAlchemy max overflow for main DB")
+    DB_POOL_SIZE: int = Field(default=3, description="SQLAlchemy pool size for main DB (per worker)")
+    DB_MAX_OVERFLOW: int = Field(default=7, description="SQLAlchemy max overflow for main DB (per worker)")
     DB_POOL_TIMEOUT: int = Field(
         default=5,
         description="Seconds to wait for a DB connection before failing",
@@ -92,8 +95,8 @@ class Settings(BaseSettings):
     )
 
     # Product database connection pool settings
-    PRODUCT_DB_POOL_SIZE: int = Field(default=3, description="Pool size for product DB")
-    PRODUCT_DB_MAX_OVERFLOW: int = Field(default=2, description="Max overflow for product DB")
+    PRODUCT_DB_POOL_SIZE: int = Field(default=2, description="Pool size for product DB (per worker)")
+    PRODUCT_DB_MAX_OVERFLOW: int = Field(default=5, description="Max overflow for product DB (per worker)")
     PRODUCT_DB_POOL_TIMEOUT: int = Field(default=5, description="Pool timeout for product DB")
     PRODUCT_DB_POOL_RECYCLE: int = Field(default=1800, description="Recycle seconds for product DB")
     PRODUCT_DB_STATEMENT_TIMEOUT_MS: int = Field(
@@ -144,6 +147,11 @@ class Settings(BaseSettings):
     )
     OPENAI_TIMEOUT_SECONDS: int = Field(
         default=60, description="OpenAI API timeout in seconds"
+    )
+
+    # Anthropic API (for future Claude-powered features)
+    ANTHROPIC_API_KEY: str | None = Field(
+        default=None, description="Anthropic API key for Claude"
     )
 
     # Skinive API settings
@@ -231,6 +239,15 @@ class Settings(BaseSettings):
     )
 
     model_config = {"env_file": ".env", "case_sensitive": True, "populate_by_name": True}
+
+    @model_validator(mode="after")
+    def _warn_insecure_defaults(self) -> "Settings":
+        if self.SECRET_KEY == "dev-secret-key-change-in-production":
+            logger.warning(
+                "SECRET_KEY is using the default development value — "
+                "set a strong SECRET_KEY env var before deploying to production"
+            )
+        return self
 
 
 # Create settings instance

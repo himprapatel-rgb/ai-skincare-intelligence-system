@@ -39,13 +39,13 @@
    DASHBOARD PAGE BLOCKS
 ------------------------------ */
 .dashboard-page {
-  background: #f5f8fc;
+  background: var(--bg-secondary);
 }
 
 .dashboard-page .dashboard-hero,
 .dashboard-page .app-header-card {
   border-radius: 12px;
-  border: 1px solid #d9e3ef;
+  border: 1px solid var(--clinical-border, #d9e3ef);
   box-shadow: 0 2px 10px rgba(16, 24, 40, 0.06);
 }
 
@@ -54,7 +54,7 @@
 }
 
 .dashboard-page .stat-card {
-  border: 1px solid #d9e3ef;
+  border: 1px solid var(--clinical-border, #d9e3ef);
   border-radius: 12px;
   min-height: 150px;
   animation: none;
@@ -65,7 +65,7 @@
 }
 
 .dashboard-page .dashboard-section {
-  border: 1px solid #d9e3ef;
+  border: 1px solid var(--clinical-border, #d9e3ef);
   border-radius: 12px;
 }
 
@@ -78,14 +78,14 @@
    SCAN PAGE BLOCKS
 ------------------------------ */
 .scan-page .scan-content {
-  border: 1px solid #d9e3ef;
+  border: 1px solid var(--clinical-border, #d9e3ef);
   box-shadow: 0 2px 10px rgba(16, 24, 40, 0.06);
 }
 
 .scan-page .scan-title .gradient-text {
   background: none;
   -webkit-text-fill-color: initial;
-  color: #1f5fbf;
+  color: var(--primary);
   animation: none;
 }
 
@@ -97,8 +97,8 @@
 
 .scan-page .scan-tips {
   border-radius: 14px;
-  border-color: #d9e3ef;
-  background: #f8fbff;
+  border-color: var(--clinical-border, #d9e3ef);
+  background: var(--primary-50, #f8fbff);
 }
 
 .scan-page .scan-tips li:hover,
@@ -121,7 +121,7 @@
 .analysis-results .confidence-row,
 .analysis-results .analysis-inline-warning {
   border-radius: 12px;
-  border-color: #d9e3ef;
+  border-color: var(--clinical-border, #d9e3ef);
 }
 
 .analysis-results .result-card:hover,
@@ -143,7 +143,7 @@
    MYSHELF PAGE BLOCKS
 ------------------------------ */
 .myshelf-page .myshelf-hero {
-  background: linear-gradient(135deg, #1f5fbf 0%, #3d77cb 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
   border-radius: 0 0 16px 16px;
 }
 
@@ -155,7 +155,7 @@
 
 .myshelf-page .product-card {
   border-radius: 12px;
-  border-color: #d9e3ef;
+  border-color: var(--clinical-border, #d9e3ef);
 }
 
 .myshelf-page .product-card:hover,
@@ -178,7 +178,7 @@
    AUTH PAGE BLOCKS
 ------------------------------ */
 .auth-page .auth-left {
-  background: linear-gradient(135deg, #1f5fbf 0%, #2f6fca 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
 }
 
 .auth-page .auth-feature {
@@ -187,7 +187,7 @@
 }
 
 .auth-page .auth-card {
-  border: 1px solid #d9e3ef;
+  border: 1px solid var(--clinical-border, #d9e3ef);
   border-radius: 12px;
   box-shadow: 0 2px 10px rgba(16, 24, 40, 0.06);
 }
@@ -207,11 +207,11 @@
    PROFILE SETTINGS PAGE BLOCKS
 ------------------------------ */
 .profile-settings-page {
-  background: #f5f8fc;
+  background: var(--bg-secondary);
 }
 
 .profile-settings-page .profile-header-card {
-  background: linear-gradient(135deg, #1f5fbf 0%, #3a78cf 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
 }
 
 .profile-settings-page .profile-card,
@@ -219,14 +219,14 @@
 .profile-settings-page .settings-group,
 .profile-settings-page .section-card,
 .profile-settings-page .profile-modal {
-  border: 1px solid #d9e3ef;
+  border: 1px solid var(--clinical-border, #d9e3ef);
   border-radius: 12px;
   box-shadow: 0 2px 10px rgba(16, 24, 40, 0.06);
 }
 
 .profile-settings-page .settings-item.active {
-  background: #edf4fe;
-  color: #1f5fbf;
+  background: var(--primary-50, #edf4fe);
+  color: var(--primary);
 }
 
 .profile-settings-page .btn-primary,
@@ -241,7 +241,7 @@
    PRODUCT DETAILS PAGE BLOCKS
 ------------------------------ */
 .product-details-page {
-  background: #f5f8fc;
+  background: var(--bg-secondary);
 }
 
 .product-details-page .product-image-section,
@@ -250,13 +250,13 @@
 .product-details-page .review-card,
 .product-details-page .review-form,
 .product-details-page .no-reviews {
-  border-color: #d9e3ef;
+  border-color: var(--clinical-border, #d9e3ef);
   border-radius: 12px;
   box-shadow: 0 2px 10px rgba(16, 24, 40, 0.06);
 }
 
 .product-details-page .tabs-header button.active {
-  background: #edf4fe;
+  background: var(--primary-50, #edf4fe);
 }
 
 .product-details-page .btn-primary,
@@ -271,11 +271,11 @@
    TODAY PAGE BLOCKS
 ------------------------------ */
 .today-page {
-  background: #f5f8fc;
+  background: var(--bg-secondary);
 }
 
 .today-page .today-card {
-  border: 1px solid #d9e3ef;
+  border: 1px solid var(--clinical-border, #d9e3ef);
   border-radius: 12px;
   box-shadow: 0 2px 10px rgba(16, 24, 40, 0.06);
 }
@@ -283,12 +283,12 @@
 .today-page .today-card-prediction,
 .today-page .today-card-streak,
 .today-page .today-card-toppick {
-  background: #ffffff;
-  border-color: #d9e3ef;
+  background: var(--white);
+  border-color: var(--clinical-border, #d9e3ef);
 }
 
 .today-page .today-routine-tab.active {
-  background: #edf4fe;
+  background: var(--primary-50, #edf4fe);
 }
 
 .today-page .today-product-card {
@@ -303,21 +303,21 @@
    HISTORY PAGE BLOCKS
 ------------------------------ */
 .history-page {
-  background: #f5f8fc;
+  background: var(--bg-secondary);
 }
 
 .history-page .history-toolbar,
 .history-page .history-item,
 .history-page .stat-card,
 .history-page .empty-state {
-  border: 1px solid #d9e3ef;
+  border: 1px solid var(--clinical-border, #d9e3ef);
   border-radius: 12px;
   box-shadow: 0 2px 10px rgba(16, 24, 40, 0.06);
 }
 
 .history-page .filter-btn.active {
-  background: #1f5fbf;
-  border-color: #1f5fbf;
+  background: var(--primary);
+  border-color: var(--primary);
 }
 
 .history-page .history-item:hover,
@@ -331,7 +331,7 @@
    ROUTINE BUILDER PAGE BLOCKS
 ------------------------------ */
 .routine-builder-page {
-  background: #f5f8fc;
+  background: var(--bg-secondary);
 }
 
 .routine-builder-page .routine-builder,
@@ -340,7 +340,7 @@
 .routine-builder-page .routine-tips,
 .routine-builder-page .routine-reminders,
 .routine-builder-page .empty-state {
-  border: 1px solid #d9e3ef;
+  border: 1px solid var(--clinical-border, #d9e3ef);
   border-radius: 12px;
   box-shadow: 0 2px 10px rgba(16, 24, 40, 0.06);
 }
@@ -350,7 +350,7 @@
 }
 
 .routine-builder-page .routine-toggle button.active {
-  background: #1f5fbf;
+  background: var(--primary);
 }
 
 .routine-builder-page .routine-step:hover,
@@ -364,7 +364,7 @@
    PRODUCT SCANNER PAGE BLOCKS
 ------------------------------ */
 .product-scanner-page {
-  background: #f5f8fc;
+  background: var(--bg-secondary);
 }
 
 .product-scanner-page .scanner-card,
@@ -373,14 +373,14 @@
 .product-scanner-page .product-info-card,
 .product-scanner-page .guide-card,
 .product-scanner-page .example-card {
-  border: 1px solid #d9e3ef;
+  border: 1px solid var(--clinical-border, #d9e3ef);
   border-radius: 12px;
   box-shadow: 0 2px 10px rgba(16, 24, 40, 0.06);
 }
 
 .product-scanner-page .mode-btn.active {
-  background: #1f5fbf;
-  border-color: #1f5fbf;
+  background: var(--primary);
+  border-color: var(--primary);
 }
 
 .product-scanner-page .btn-scan,
@@ -401,20 +401,20 @@
    NOTIFICATION CENTER PAGE BLOCKS
 ------------------------------ */
 .notification-center-page {
-  background: #f5f8fc;
+  background: var(--bg-secondary);
 }
 
 .notification-center-page .settings-card,
 .notification-center-page .notification-item,
 .notification-center-page .empty-state {
-  border: 1px solid #d9e3ef;
+  border: 1px solid var(--clinical-border, #d9e3ef);
   border-radius: 12px;
   box-shadow: 0 2px 10px rgba(16, 24, 40, 0.06);
 }
 
 .notification-center-page .filter-btn.active {
-  background: #1f5fbf;
-  border-color: #1f5fbf;
+  background: var(--primary);
+  border-color: var(--primary);
 }
 
 .notification-center-page .notification-item:hover,
@@ -448,7 +448,7 @@
 .device-context-page,
 .me-page,
 .not-found-page {
-  background: #f5f8fc;
+  background: var(--bg-secondary);
 }
 
 .about-page .card,
@@ -491,7 +491,7 @@
 .device-context-page .app-section,
 .me-page .app-section,
 .not-found-page .app-section {
-  border: 1px solid #d9e3ef;
+  border: 1px solid var(--clinical-border, #d9e3ef);
   border-radius: 12px;
   box-shadow: 0 2px 10px rgba(16, 24, 40, 0.06);
 }
@@ -505,7 +505,7 @@
 .admin-blogs-page,
 .admin-videos-page,
 .admin-news-page {
-  background: #f5f8fc;
+  background: var(--bg-secondary);
 }
 
 .admin-dashboard-page .card,
@@ -524,7 +524,7 @@
 .admin-blogs-page .app-section,
 .admin-videos-page .app-section,
 .admin-news-page .app-section {
-  border: 1px solid #d9e3ef;
+  border: 1px solid var(--clinical-border, #d9e3ef);
   border-radius: 12px;
   box-shadow: 0 2px 10px rgba(16, 24, 40, 0.06);
 }

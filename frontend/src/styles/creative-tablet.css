@@ -1,0 +1,383 @@
+/* ============================================================
+   Creative Restructure — TABLET (769px – 1024px)
+   Hybrid experience: touch-friendly but more screen real estate.
+   2-column grids, contained heroes, moderate glassmorphism.
+   ============================================================ */
+
+@media (min-width: 769px) and (max-width: 1024px) {
+
+  /* ---- Cards: medium glassmorphism ---- */
+  .app-card,
+  .result-card,
+  .stat-card,
+  .product-card,
+  .favorites-product-card,
+  .history-card-container,
+  .routine-builder,
+  .progress-card,
+  .comparison-card,
+  .notification-item,
+  .ingredient-card,
+  .skin-type-card,
+  .video-card,
+  .blog-card,
+  .contact-form-card,
+  .about-card,
+  .sample-card,
+  .data-export-card {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.88);
+    border-radius: 18px;
+  }
+
+  /* Subtle hover — reduced travel for touch+pointer */
+  .app-card:hover,
+  .result-card:hover,
+  .stat-card:hover,
+  .product-card:hover,
+  .favorites-product-card:hover,
+  .ingredient-card:hover,
+  .skin-type-card:hover,
+  .video-card:hover,
+  .blog-card:hover,
+  .sample-card:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 4px 12px rgba(16, 24, 40, 0.06),
+      0 8px 24px rgba(16, 24, 40, 0.06);
+  }
+
+  /* ---- Hero Headers: rounded, contained ---- */
+  .app-header-card,
+  .dashboard-hero,
+  .myshelf-hero,
+  .scan-hero {
+    border-radius: 20px;
+    margin: 0 8px;
+    padding: 28px 28px 36px;
+  }
+
+  .app-header-card::before {
+    width: 320px;
+    height: 320px;
+  }
+
+  .dashboard-hero h1 {
+    font-size: 1.6rem;
+  }
+
+  /* ---- Stat Cards: 2x2 grid ---- */
+  .dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .dashboard-stats .stat-card {
+    border-radius: 16px;
+    padding: 18px;
+  }
+
+  .dashboard-stats .stat-card.primary {
+    grid-column: 1 / -1;
+  }
+
+  /* ---- Section Titles ---- */
+  .app-section-title {
+    font-size: 1.15rem;
+  }
+
+  /* ---- List Items: comfortable spacing ---- */
+  .app-list-item {
+    min-height: 50px;
+    padding: 12px 18px;
+    border-radius: 14px;
+  }
+
+  /* ---- Buttons: contained width ---- */
+  .btn-primary,
+  .btn.btn-primary {
+    min-height: 46px;
+    border-radius: 14px;
+    min-width: 200px;
+  }
+
+  .btn-secondary,
+  .btn.btn-secondary {
+    min-height: 46px;
+    border-radius: 14px;
+  }
+
+  /* ---- Empty States ---- */
+  .app-empty-state {
+    padding: 44px 28px;
+  }
+
+  .app-empty-state-icon {
+    width: 68px;
+    height: 68px;
+  }
+
+  /* ---- Overlay CTA ---- */
+  .overlay-cta {
+    padding: 24px 28px;
+    max-width: 340px;
+    border-radius: 18px;
+  }
+
+  /* ---- Toolbars: sticky frosted ---- */
+  .favorites-toolbar,
+  .history-toolbar,
+  .myshelf-toolbar,
+  .recommendations-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    border-radius: 14px;
+    padding: 12px 20px;
+    margin-bottom: 16px;
+  }
+
+  /* ---- Tags: comfortable size ---- */
+  .goal-tag,
+  .concern-tag,
+  .filter-btn.active {
+    padding: 7px 14px;
+    font-size: 0.875rem;
+  }
+
+  /* ---- Modal: centered panel ---- */
+  .confirm-modal-overlay .confirm-modal,
+  .modal-overlay .modal-content {
+    max-width: 480px;
+    border-radius: 20px;
+  }
+
+  /* ======== PAGE-SPECIFIC TABLET ======== */
+
+  /* Dashboard: content in 2-col where possible */
+  .dashboard-content {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .dashboard-content .dashboard-section {
+    break-inside: avoid;
+  }
+
+  .dashboard-content .dashboard-activity-section,
+  .dashboard-content .continue-onboarding,
+  .dashboard-content .reminder {
+    grid-column: 1 / -1;
+  }
+
+  .dashboard-section.reminder {
+    border-radius: 18px;
+    padding: 24px;
+  }
+
+  /* Today: score card elevated */
+  .today-score-card {
+    margin-top: -24px;
+    margin-left: 20px;
+    margin-right: 20px;
+    border-radius: 18px;
+    box-shadow: 0 8px 28px rgba(16, 24, 40, 0.08);
+  }
+
+  /* Scan: upload zone with generous padding */
+  .scan-upload-zone {
+    border-radius: 18px;
+    min-height: 220px;
+    padding: 32px;
+  }
+
+  /* My Shelf: 2-col product grid */
+  .myshelf-product-card {
+    border-radius: 16px;
+  }
+
+  /* Product Details: contained layout */
+  .product-details-page .product-hero {
+    border-radius: 18px;
+    overflow: hidden;
+  }
+
+  .product-details-page .tab-btn {
+    min-height: 44px;
+  }
+
+  /* Recommendations: 2-col grid with accent bars */
+  .recommendations-page .product-card {
+    border-radius: 16px;
+  }
+
+  /* Favorites: 2-col grid */
+  .favorites-page .favorites-match {
+    padding: 4px 12px;
+    font-size: 0.8rem;
+  }
+
+  /* Profile (Me): horizontal stat row */
+  .me-profile-avatar {
+    width: 80px;
+    height: 80px;
+  }
+
+  /* Onboarding: 2-col option grid */
+  .onboarding-page .option-card {
+    border-radius: 16px;
+  }
+
+  .onboarding-page .step-indicator .step {
+    width: 36px;
+    height: 36px;
+  }
+
+  /* Routine Builder: comfortable step cards */
+  .routine-builder-page .time-btn {
+    min-height: 44px;
+    border-radius: 14px;
+  }
+
+  .routine-builder-page .step-card {
+    border-radius: 14px;
+    padding: 16px;
+  }
+
+  /* History: items with comfortable spacing */
+  .history-page .history-item {
+    border-radius: 14px;
+    padding: 14px 18px;
+  }
+
+  /* Digital Twin: snapshot cards in 2-col */
+  .digital-twin-page .snapshot-card {
+    border-radius: 16px;
+  }
+
+  /* Progress Tracking: chart contained */
+  .progress-tracking-page .chart-section {
+    padding: 20px;
+    border-radius: 18px;
+  }
+
+  .progress-tracking-page .milestone-item {
+    border-radius: 14px;
+  }
+
+  /* Ingredient Dictionary: 2-col cards */
+  .ingredient-page .ingredient-card {
+    border-radius: 14px;
+  }
+
+  /* Blog: 2-col card grid */
+  .blog-page .blog-card {
+    border-radius: 18px;
+  }
+
+  /* Contact: form centered */
+  .contact-page .form-group input,
+  .contact-page .form-group textarea {
+    border-radius: 12px;
+    min-height: 46px;
+  }
+
+  /* About: value cards in 2-col */
+  .about-page .value-card {
+    border-radius: 16px;
+  }
+
+  /* Notification Center: comfortable items */
+  .notification-center .notification-item {
+    border-radius: 14px;
+    padding: 14px 18px;
+  }
+
+  /* Data Export: format buttons in 2-col */
+  .data-export-page .export-format-btn {
+    border-radius: 14px;
+    padding: 16px;
+  }
+
+  /* Auth: centered card */
+  .auth-page .auth-card,
+  .auth-mobile-v2 .auth-card {
+    max-width: 440px;
+    margin: 40px auto;
+    border-radius: 20px;
+  }
+
+  /* Not Found: buttons in row */
+  .not-found-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+  }
+
+  .not-found-actions .not-found-btn {
+    min-width: 180px;
+    border-radius: 14px;
+  }
+
+  /* Legal Pages */
+  .privacy-page,
+  .terms-page {
+    max-width: 680px;
+    margin: 0 auto;
+    font-size: 0.9375rem;
+  }
+
+  /* Sample Report: 2-col cards */
+  .sample-report-page .sample-card {
+    border-radius: 18px;
+  }
+
+  /* Video Tutorials: 2-col */
+  .video-page .video-card {
+    border-radius: 18px;
+  }
+
+  /* Skin Type Guide: 2-col cards */
+  .skin-type-page .skin-type-card {
+    border-radius: 16px;
+  }
+
+  /* Comparison: side-by-side enabled */
+  .comparison-page .comparison-input {
+    border-radius: 14px;
+    min-height: 46px;
+  }
+
+  /* Skin Goals: 2-col goal grid */
+  .skin-goals-page .goal-card {
+    border-radius: 14px;
+  }
+
+  /* Admin: stat cards in 2x3 grid */
+  .admin-stat-card {
+    border-radius: 16px;
+  }
+
+  .admin-products-table,
+  .admin-users-table {
+    border-radius: 16px;
+  }
+
+  .admin-products-table th,
+  .admin-users-table th {
+    padding: 12px 16px;
+  }
+}
+
+/* ---- Reduced Motion (tablet) ---- */
+@media (min-width: 769px) and (max-width: 1024px) and (prefers-reduced-motion: reduce) {
+  .app-card:hover,
+  .stat-card:hover,
+  .product-card:hover {
+    transform: none;
+  }
+}

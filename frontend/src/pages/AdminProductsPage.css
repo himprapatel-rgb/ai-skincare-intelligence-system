@@ -5,9 +5,9 @@
 }
 
 .admin-card {
-  background: #ffffff;
+  background: var(--bg-white);
   border: 1px solid var(--border-color);
-  border-radius: 16px;
+  border-radius: var(--border-radius-xl);
   padding: 16px;
   box-shadow: var(--shadow-md);
 }
@@ -23,14 +23,14 @@
   flex: 1;
   min-width: 240px;
   padding: 10px 14px;
-  border-radius: 10px;
+  border-radius: var(--border-radius-md);
   border: 1px solid var(--border-color);
 }
 
 .admin-product-form {
-  background: #ffffff;
+  background: var(--bg-white);
   border: 1px solid var(--border-color);
-  border-radius: 16px;
+  border-radius: var(--border-radius-xl);
   padding: 16px;
   box-shadow: var(--shadow-md);
   display: flex;
@@ -46,7 +46,7 @@
 
 .admin-product-grid input {
   padding: 10px 12px;
-  border-radius: 10px;
+  border-radius: var(--border-radius-md);
   border: 1px solid var(--border-color);
 }
 
@@ -70,9 +70,9 @@
   width: 100%;
   min-width: 640px;
   border-collapse: collapse;
-  background: #ffffff;
+  background: var(--bg-white);
   border: 1px solid var(--border-color);
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   overflow: hidden;
 }
 

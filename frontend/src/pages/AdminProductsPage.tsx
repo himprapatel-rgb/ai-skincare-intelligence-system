@@ -216,12 +216,12 @@ const AdminProductsPage: React.FC = () => {
       <div className="admin-product-form">
         <h3>{editingId ? 'Edit Product' : 'Add Product'}</h3>
         <div className="admin-product-grid">
-          <input placeholder="Brand" value={form.brand} onChange={handleChange('brand')} />
-          <input placeholder="Name" value={form.name} onChange={handleChange('name')} />
-          <input placeholder="Category" value={form.category} onChange={handleChange('category')} />
-          <input placeholder="UPC" value={form.upc} onChange={handleChange('upc')} />
-          <input placeholder="Price USD" value={form.price_usd} onChange={handleChange('price_usd')} />
-          <input placeholder="Image URL" value={form.product_image_url} onChange={handleChange('product_image_url')} />
+          <input placeholder="Brand" aria-label="Brand" value={form.brand} onChange={handleChange('brand')} />
+          <input placeholder="Name" aria-label="Product name" value={form.name} onChange={handleChange('name')} />
+          <input placeholder="Category" aria-label="Category" value={form.category} onChange={handleChange('category')} />
+          <input placeholder="UPC" aria-label="UPC barcode" value={form.upc} onChange={handleChange('upc')} />
+          <input placeholder="Price USD" aria-label="Price in USD" value={form.price_usd} onChange={handleChange('price_usd')} />
+          <input placeholder="Image URL" aria-label="Image URL" value={form.product_image_url} onChange={handleChange('product_image_url')} />
         </div>
         <div className="admin-product-actions">
           <button className="btn btn-primary" onClick={submitProduct}>

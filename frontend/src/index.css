@@ -21,6 +21,10 @@
 @import './styles/designer-hotfix.css';
 @import './styles/page-block-polish.css';
 @import './styles/mobile-ux-2026.css';
+@import './styles/creative-restructure.css';
+@import './styles/page-creative.css';
+@import './styles/creative-mobile.css';
+@import './styles/creative-tablet.css';
 
 /* CSS Variables */
 :root {
@@ -42,12 +46,41 @@
   /* Status Colors */
   --success: #1b7f53;
   --success-light: #e8f7ef;
+  --success-50: #f0fdf4;
+  --success-100: #dcfce7;
+  --success-200: #bbf7d0;
+  --success-600: #059669;
+  --success-700: #15803d;
+  --success-800: #065f46;
   --warning: #b97710;
   --warning-light: #fff5e6;
+  --warning-100: #fef3c7;
+  --warning-400: #fbbf24;
+  --warning-600: #d97706;
+  --warning-700: #b45309;
+  --warning-800: #92400e;
+  --warning-900: #78350f;
   --danger: #b42318;
   --danger-light: #fdeceb;
+  --danger-50: #fef2f2;
+  --danger-100: #fee2e2;
+  --danger-200: #fecaca;
+  --danger-700: #b91c1c;
+  --danger-800: #991b1b;
   --info: #1f5fbf;
   --info-light: #e8f0fd;
+
+  /* Extended Primary Palette */
+  --primary-50: #eff6ff;
+  --primary-100: #dbeafe;
+  --primary-200: #bfdbfe;
+  --primary-700: #1d4ed8;
+
+  /* Extended Palette */
+  --pink-100: #fce7f3;
+  --pink-700: #be185d;
+  --purple-100: #f3e8ff;
+  --gray-950: #0a0a0a;
   
   /* Neutral Colors */
   --white: #ffffff;
@@ -62,6 +95,15 @@
   --gray-800: #27364c;
   --gray-900: #162133;
   
+  /* RGB channel values for rgba() usage */
+  --primary-rgb: 31, 95, 191;
+  --accent-rgb: 79, 138, 217;
+
+  /* Section spacing */
+  --section-padding-y: var(--spacing-3xl, 64px);
+  --section-padding-x: var(--spacing-lg, 24px);
+  --section-header-gap: 40px;
+
   /* Background Colors */
   --bg-primary: var(--white);
   --bg-secondary: #f6f8fb;
@@ -112,6 +154,15 @@
   /* P2 #51: Single token for cards so radius is consistent across app */
   --card-radius: var(--radius-lg, 12px);
   
+  /* Z-Index Scale — use tokens to prevent z-index wars */
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-overlay: 300;
+  --z-modal: 400;
+  --z-toast: 500;
+  --z-nav: 600;
+  --z-banner: 700;
+
   /* Shadows - Premium Multi-layered */
   --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.04);
   --shadow-md: 0 2px 8px rgba(16, 24, 40, 0.06);
@@ -844,9 +895,9 @@ input[type="radio"] {
 
 /* Primary Button - Vibrant Gradient with Premium Animations */
 .btn-primary {
-  background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
-  color: #ffffff;
-  box-shadow: 0 8px 24px -8px rgba(37, 99, 235, 0.5);
+  background: var(--gradient-primary);
+  color: var(--white);
+  box-shadow: var(--shadow-primary);
   border: none;
   position: relative;
   overflow: hidden;
@@ -861,7 +912,7 @@ input[type="radio"] {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, #3b82f6 0%, #9333ea 100%);
+  background: var(--gradient-blue);
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -879,8 +930,8 @@ input[type="radio"] {
 }
 
 .btn-primary:hover:not(:disabled) {
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 16px 40px -12px rgba(37, 99, 235, 0.55);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 12px 28px -8px rgba(31, 95, 191, 0.5);
 }
 
 .btn-primary:hover:not(:disabled)::before {
@@ -1004,12 +1055,133 @@ input[type="radio"] {
 .input:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1), 0 2px 8px rgba(37, 99, 235, 0.1);
+  box-shadow: 0 0 0 4px rgba(31, 95, 191, 0.1), 0 2px 8px rgba(31, 95, 191, 0.1);
   background: #fafbff;
 }
 
 .input-error {
   border-color: var(--danger);
+}
+
+/* ============================================================
+   GLOBAL UI POLISH — Focus, Hover, Reduced Motion, Cards
+   ============================================================ */
+
+/* Universal focus ring for keyboard navigation */
+*:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Remove focus ring for mouse clicks */
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Card hover elevation — applies to any element with [data-card] or .card class */
+[data-card],
+.card,
+.stat-card,
+.product-card,
+.testimonial-card,
+.result-card,
+.step-card,
+.today-card,
+.me-twin-card,
+.today-product-card {
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-card]:hover,
+.card:hover,
+.product-card:hover,
+.testimonial-card:hover,
+.result-card:hover,
+.step-card:hover,
+.today-product-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card-hover);
+}
+
+/* List item interactive state */
+.app-list-item,
+.me-list-item,
+[role="listitem"] {
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.app-list-item:hover,
+.me-list-item:hover {
+  background: var(--bg-secondary);
+}
+
+/* Link hover underline animation */
+a:not(.btn):not(.bottom-nav-item):not(.app-nav-link):hover {
+  text-decoration-color: currentColor;
+}
+
+/* Smooth page section transitions */
+section,
+.page-section,
+[data-section] {
+  animation: sectionFadeIn 0.4s ease-out;
+}
+
+@keyframes sectionFadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Minimum touch target size (WCAG 2.1 Level AAA) */
+button,
+[role="button"],
+input[type="checkbox"],
+input[type="radio"],
+select {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Improve select/dropdown styling */
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%236c7d93' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  padding-right: 40px;
+}
+
+/* Smooth scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gray-300);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gray-400);
 }
 
 .input-error:focus {
@@ -1126,7 +1298,7 @@ input[type="radio"] {
   inset: 0;
   border-radius: var(--radius-xl);
   padding: 1px;
-  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  background: linear-gradient(135deg, var(--primary), var(--accent));
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
@@ -1703,7 +1875,7 @@ body {
 
 /* Accent gradient (for CTAs, highlights) */
 .bg-gradient-accent {
-  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
 }
 
 /* ============================================================

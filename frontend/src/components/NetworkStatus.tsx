@@ -102,20 +102,20 @@ export const NetworkStatus: React.FC<NetworkStatusProps> = ({ children }) => {
         }
 
         .network-banner.offline {
-          background: linear-gradient(135deg, #fef2f2, #fee2e2);
-          color: #991b1b;
+          background: linear-gradient(135deg, var(--danger-light, #fdeceb), #fee2e2);
+          color: var(--danger, #b42318);
           border-bottom: 1px solid #fecaca;
         }
 
         .network-banner.reconnected {
-          background: linear-gradient(135deg, #f0fdf4, #dcfce7);
-          color: #166534;
+          background: linear-gradient(135deg, var(--success-light, #e8f7ef), #dcfce7);
+          color: var(--success, #1b7f53);
           border-bottom: 1px solid #bbf7d0;
         }
 
         .network-banner.slow {
-          background: linear-gradient(135deg, #fffbeb, #fef3c7);
-          color: #92400e;
+          background: linear-gradient(135deg, var(--warning-light, #fff5e6), #fef3c7);
+          color: var(--warning, #b97710);
           border-bottom: 1px solid #fde68a;
         }
 

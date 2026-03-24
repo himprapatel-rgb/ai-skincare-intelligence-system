@@ -65,7 +65,7 @@
 .btn-add-to-compare {
   padding: 6px 12px;
   font-size: 0.8125rem;
-  border-radius: 6px;
+  border-radius: var(--border-radius-sm);
   border: 1px solid var(--border, #e2e8f0);
   background: var(--bg-white);
   color: var(--text-dark);
@@ -87,7 +87,7 @@
 .recommendations-geo-banner {
   background: linear-gradient(135deg, rgba(37, 99, 235, 0.08), rgba(124, 58, 237, 0.06));
   border: 1px solid var(--border-color);
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   padding: 14px 18px;
   margin-bottom: 20px;
 }
@@ -146,9 +146,9 @@
   left: 12px;
   z-index: 2;
   padding: 6px 12px;
-  border-radius: 8px;
-  background: linear-gradient(135deg, var(--primary), #7c3aed);
-  color: #fff;
+  border-radius: var(--border-radius-md);
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: var(--white);
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -172,7 +172,7 @@
   z-index: 10;
   background: var(--bg-white, var(--white));
   border: 1px solid var(--border-color);
-  border-radius: 16px;
+  border-radius: var(--border-radius-xl);
   box-shadow: var(--shadow-sm);
   padding: 24px;
   margin-bottom: 32px;
@@ -202,7 +202,7 @@
   color: var(--primary);
   font-weight: 600;
   padding: 8px 16px;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -211,7 +211,7 @@
 }
 .recommendations-filters.has-active-filters .filters-reset {
   background: var(--primary);
-  color: white;
+  color: var(--white);
 }
 .recommendations-filters.has-active-filters .filters-reset:hover {
   background: var(--primary-hover);
@@ -237,7 +237,7 @@
 
 .filter-select {
   padding: 10px 14px;
-  border-radius: 10px;
+  border-radius: var(--border-radius-md);
   border: 1px solid var(--border-color);
   background: var(--gray-50);
   color: var(--text-primary);
@@ -317,7 +317,7 @@
 }
 
 .product-rating svg {
-  color: #fbbf24;
+  color: var(--warning-400, #fbbf24);
 }
 
 .product-name {
@@ -389,7 +389,7 @@
   padding: 8px 14px;
   background: var(--bg-light, #f1f5f9);
   border: 1px solid var(--border-color, #e2e8f0);
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   color: var(--text-primary);
   font-weight: 500;
   font-size: 0.875rem;
@@ -399,7 +399,7 @@
 .btn-add-to-shelf:hover:not(:disabled) {
   background: var(--primary);
   border-color: var(--primary);
-  color: white;
+  color: var(--white);
 }
 .btn-add-to-shelf.on-shelf,
 .btn-add-to-shelf:disabled {
@@ -417,8 +417,8 @@
   padding: 10px 20px;
   background: var(--primary);
   border: none;
-  border-radius: 8px; /* Brand guideline: 8px */
-  color: white;
+  border-radius: var(--border-radius-md); /* Brand guideline: 8px */
+  color: var(--white);
   font-weight: 600;
   font-size: 0.95rem;
   cursor: pointer;
@@ -437,16 +437,16 @@
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  color: white;
+  color: var(--white);
 }
 
 .btn-view-details:hover {
-  color: white;
+  color: var(--white);
 }
 
 .btn-disabled {
   padding: 10px 20px;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   border: 1px solid var(--border-color);
   background: var(--gray-100);
   color: var(--text-muted);
@@ -462,7 +462,7 @@
   height: 36px;
   border-radius: 50%;
   border: 1px solid rgba(31, 111, 235, 0.2);
-  background: #ffffff;
+  background: var(--bg-white);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -478,7 +478,7 @@
 
 .favorite-button.active {
   background: var(--primary);
-  color: #ffffff;
+  color: var(--white);
   border-color: var(--primary);
 }
 
@@ -493,7 +493,7 @@
   padding: 16px 20px;
   background: var(--bg-white);
   border: 1px solid var(--border-color);
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow-sm);
   display: flex;
   align-items: center;
@@ -535,7 +535,7 @@
   max-width: 520px;
   background: var(--white);
   border: 1px solid var(--border-color);
-  border-radius: 16px;
+  border-radius: var(--border-radius-xl);
   box-shadow: var(--shadow-md);
   padding: 32px;
   text-align: center;
@@ -560,7 +560,7 @@
   text-align: center;
   padding: 80px 40px;
   background: var(--white);
-  border-radius: 12px; /* Brand guideline: 12px for cards */
+  border-radius: var(--border-radius-lg); /* Brand guideline: 12px for cards */
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--border-color);
 }

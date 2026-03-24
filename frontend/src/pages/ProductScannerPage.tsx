@@ -1541,12 +1541,14 @@ const ProductScannerPage: React.FC<ProductScannerPageProps> = ({ embedded = fals
           
           <div className="history-grid">
             {scanHistory.map((item) => (
-              <div 
-                key={item.id} 
+              <div
+                key={item.id}
                 className="history-card"
                 onClick={() => navigate(`/product/${item.barcode || item.id}`)}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(`/product/${item.barcode || item.id}`); } }}
                 role="button"
                 tabIndex={0}
+                aria-label={`View ${item.name}`}
               >
                 <div className="history-image">
                   <LazyImage

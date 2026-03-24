@@ -138,7 +138,7 @@ const PasswordResetConfirmPage: React.FC = () => {
             )}
             <div className="form-group">
               <label htmlFor="password">
-                <IconLock size={16} strokeWidth={2} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
+                <IconLock size={16} strokeWidth={2} className="icon-inline" />
                 New Password
               </label>
               <input
@@ -155,7 +155,7 @@ const PasswordResetConfirmPage: React.FC = () => {
             </div>
             <div className="form-group">
               <label htmlFor="confirmPassword">
-                <IconLock size={16} strokeWidth={2} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
+                <IconLock size={16} strokeWidth={2} className="icon-inline" />
                 Confirm Password
               </label>
               <input

@@ -720,7 +720,7 @@ async def fetch_clean_product_image(brand: str, product_name: str) -> tuple[Opti
                                 content_length = img_check.headers.get("content-length", "0")
                                 if int(content_length) > 5000:  # At least 5KB
                                     return (image_url, "open_beauty_facts")
-                        except:
+                        except Exception:
                             continue
             
             # Try Open Food Facts as fallback
@@ -739,7 +739,7 @@ async def fetch_clean_product_image(brand: str, product_name: str) -> tuple[Opti
                             img_check = await client.head(image_url, timeout=5.0)
                             if img_check.status_code == 200:
                                 return (image_url, "open_food_facts")
-                        except:
+                        except Exception:
                             continue
                         
     except Exception as e:

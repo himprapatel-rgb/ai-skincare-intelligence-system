@@ -102,8 +102,9 @@ const AdminUsersPage: React.FC = () => {
 
       <div className="admin-users-toolbar">
         <input
-          type="text"
+          type="search"
           placeholder="Search by email or name"
+          aria-label="Search users by email or name"
           value={search}
           onChange={(event) => setSearch(event.target.value)}
         />

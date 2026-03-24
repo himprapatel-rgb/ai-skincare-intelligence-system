@@ -162,7 +162,7 @@ const DataExportPage: React.FC = () => {
           <h2>Export complete</h2>
           <p className="export-complete-text">Your file is ready. Download it below or request another export.</p>
           <button className="btn btn-primary" onClick={handleExport} disabled={isExporting}>
-            {isExporting ? 'Preparing…' : <><IconDownload size={18} strokeWidth={2} style={{ marginRight: '8px', verticalAlign: 'middle' }} />Download {exportFormat.toUpperCase()}</>}
+            {isExporting ? 'Preparing…' : <><IconDownload size={18} strokeWidth={2} className="icon-inline" />Download {exportFormat.toUpperCase()}</>}
           </button>
           <div className="export-complete-actions">
             <button type="button" className="btn btn-secondary" onClick={() => setExportComplete(false)}>Export again</button>
@@ -227,7 +227,7 @@ const DataExportPage: React.FC = () => {
 
           <div className="export-actions">
             <Link to="/profile" className="btn btn-secondary">
-              <IconArrowLeft size={16} strokeWidth={2} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
+              <IconArrowLeft size={16} strokeWidth={2} className="icon-inline" />
               Back to Profile
             </Link>
             <button 
@@ -239,7 +239,7 @@ const DataExportPage: React.FC = () => {
                 'Exporting...'
               ) : (
                 <>
-                  <IconDownload size={18} strokeWidth={2} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+                  <IconDownload size={18} strokeWidth={2} className="icon-inline" />
                   Export Data
                 </>
               )}

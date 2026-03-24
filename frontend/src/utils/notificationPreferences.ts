@@ -47,6 +47,6 @@ export function setNotificationPrefs(prefs: Partial<NotificationPrefs>): void {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
   } catch (e) {
-    console.warn('Failed to save notification prefs', e);
+    if (import.meta.env.DEV) console.warn('Failed to save notification prefs', e);
   }
 }

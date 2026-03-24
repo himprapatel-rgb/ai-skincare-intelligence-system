@@ -7,19 +7,19 @@
    1. DESIGN TOKENS
    ============================================================ */
 :root {
-  /* Brand Colors - LOCKED Blue/White Scheme */
-  --ds-primary: #1f6feb;
-  --ds-primary-hover: #1e4fd6;
-  --ds-primary-light: #e6efff;
-  --ds-primary-dark: #1a5bc7;
-  
-  --ds-secondary: #1f6feb;
-  --ds-secondary-hover: #1e4fd6;
-  --ds-secondary-light: #e6efff;
-  
-  --ds-accent: #a9c7ff;
-  --ds-accent-hover: #8ab4ff;
-  --ds-accent-light: #f1f5ff;
+  /* Brand Colors — aligned with index.css --primary palette */
+  --ds-primary: var(--primary, #1f5fbf);
+  --ds-primary-hover: var(--primary-hover, #174a95);
+  --ds-primary-light: var(--primary-light, #e8f0fd);
+  --ds-primary-dark: var(--primary-dark, #153f80);
+
+  --ds-secondary: var(--primary, #1f5fbf);
+  --ds-secondary-hover: var(--primary-hover, #174a95);
+  --ds-secondary-light: var(--primary-light, #e8f0fd);
+
+  --ds-accent: var(--accent, #4f8ad9);
+  --ds-accent-hover: var(--accent, #4f8ad9);
+  --ds-accent-light: var(--accent-light, #f2f6fd);
   
   /* Semantic Colors */
   --ds-success: #10b981;

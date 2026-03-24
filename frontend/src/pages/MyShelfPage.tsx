@@ -431,7 +431,7 @@ const MyShelfPage: React.FC = () => {
                     )}
                     {product.notes && <p className="notes product-card-notes">{product.notes}</p>}
                     <div className="product-actions product-card-actions-desk">
-                      <select value={product.status} onChange={(e) => handleUpdateStatus(product.id, e.target.value as DisplayProduct['status'])} className="status-select">
+                      <select value={product.status} onChange={(e) => handleUpdateStatus(product.id, e.target.value as DisplayProduct['status'])} className="status-select" aria-label={`Status for ${product.name}`}>
                         <option value="using">Using</option>
                         <option value="wishlist">Wishlist</option>
                         <option value="discontinued">Discontinued</option>

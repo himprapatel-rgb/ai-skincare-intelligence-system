@@ -91,21 +91,21 @@ Please download it manually from Kaggle:
             # Remove currency symbols and parse
             price_clean = price_str.replace('$', '').replace(',', '').strip()
             price_usd = Decimal(price_clean) if price_clean else None
-        except:
+        except (ValueError, TypeError, ArithmeticError):
             price_usd = None
         
         # Parse rating
         rating_str = row.get('rating', row.get('rating_value', '0')).strip()
         try:
             rating = Decimal(rating_str) if rating_str else None
-        except:
+        except (ValueError, TypeError, ArithmeticError):
             rating = None
         
         # Parse review count
         review_count_str = row.get('reviews', row.get('review_count', '0')).strip()
         try:
             review_count = int(review_count_str) if review_count_str else 0
-        except:
+        except (ValueError, TypeError):
             review_count = 0
         
         return {

@@ -14,15 +14,7 @@
   margin: 0 auto;
 }
 
-.consent-existing-notice {
-  background: color-mix(in srgb, var(--primary) 10%, transparent);
-  border: 1px solid var(--primary-light);
-  border-radius: 12px;
-  padding: 12px 16px;
-  font-size: 0.9375rem;
-  color: var(--text-primary);
-  margin-bottom: 20px;
-}
+
 
 .consent-header {
   margin-bottom: 20px;
@@ -124,7 +116,7 @@
   background: var(--primary-light);
   color: var(--primary);
   padding: 12px 16px;
-  border-radius: 8px;
+  border-radius: var(--border-radius-md);
   font-size: 0.875rem;
   margin-top: 12px;
   text-align: center;

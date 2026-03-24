@@ -7,7 +7,7 @@ interface LoadingScreenProps {
   fullscreen?: boolean;
 }
 
-const LoadingScreen: React.FC<LoadingScreenProps> = ({
+const LoadingScreen: React.FC<LoadingScreenProps> = React.memo(({
   message = 'Loading',
   fullscreen = true,
 }) => {
@@ -26,6 +26,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
       </div>
     </div>
   );
-};
+});
+LoadingScreen.displayName = 'LoadingScreen';
 
 export default LoadingScreen;

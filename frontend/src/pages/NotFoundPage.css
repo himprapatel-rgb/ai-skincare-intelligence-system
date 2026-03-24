@@ -17,7 +17,7 @@
 }
 
 .not-found-title {
-  font-size: var(--font-size-6xl);
+  font-size: clamp(4rem, 15vw, 8rem);
   font-weight: var(--font-weight-extrabold);
   color: var(--text-primary);
   margin: 0 0 var(--spacing-md);
@@ -26,6 +26,13 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  animation: notfound-float 3s ease-in-out infinite;
+  user-select: none;
+}
+
+@keyframes notfound-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
 }
 
 .not-found-sub {
@@ -50,7 +57,7 @@
   width: 100%;
   min-height: 48px;
   padding: 12px 16px;
-  border-radius: 12px;
+  border-radius: var(--border-radius-lg);
   font-size: 1rem;
   font-weight: 600;
   text-decoration: none;
@@ -66,14 +73,14 @@
 
 .not-found-btn-primary {
   background: var(--primary);
-  color: white;
+  color: var(--white);
   border-color: var(--primary);
 }
 
 .not-found-btn-primary:hover {
   background: var(--primary-dark);
   border-color: var(--primary-dark);
-  color: white;
+  color: var(--white);
 }
 
 .not-found-btn-secondary {
@@ -88,11 +95,15 @@
   color: var(--primary-dark);
 }
 
-@media (max-width: 480px) {
+@media (prefers-reduced-motion: reduce) {
   .not-found-title {
-    font-size: var(--font-size-4xl);
+    animation: none;
   }
-  .not-found-message {
-    font-size: var(--font-size-xl);
+}
+
+@media (min-width: 640px) {
+  .not-found-actions {
+    max-width: 320px;
+    margin: 0 auto;
   }
 }

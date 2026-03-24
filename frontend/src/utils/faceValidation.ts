@@ -18,7 +18,7 @@ type ValidationError =
   | "lighting_high"
   | "low_contrast";
 
-const ENABLE_QUALITY_CHECKS = false;
+const ENABLE_QUALITY_CHECKS = true;
 
 const MODEL_OPTIONS = {
   maxFaces: 2,

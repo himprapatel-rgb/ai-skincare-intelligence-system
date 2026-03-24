@@ -316,14 +316,14 @@ const RoutineBuilderPage: React.FC = () => {
           className={`time-btn ${activeTime === 'morning' ? 'active' : ''}`}
           onClick={() => setActiveTime('morning')}
         >
-          <IconSun size={20} strokeWidth={2} style={{ marginRight: '8px' }} />
+          <IconSun size={20} strokeWidth={2} className="icon-inline" />
           Morning Routine
         </button>
         <button 
           className={`time-btn ${activeTime === 'evening' ? 'active' : ''}`}
           onClick={() => setActiveTime('evening')}
         >
-          <IconMoon size={20} strokeWidth={2} style={{ marginRight: '8px' }} />
+          <IconMoon size={20} strokeWidth={2} className="icon-inline" />
           Evening Routine
         </button>
       </div>
@@ -364,8 +364,9 @@ const RoutineBuilderPage: React.FC = () => {
                 <div className="step-number">{step.order}</div>
                 <div className="step-content">
                   <div className="step-field">
-                    <label>Category:</label>
-                    <select 
+                    <label htmlFor={`step-category-${step.id}`}>Category:</label>
+                    <select
+                      id={`step-category-${step.id}`}
                       value={step.category}
                       onChange={(e) => handleUpdateCategory(step.id, e.target.value)}
                     >
@@ -543,7 +544,7 @@ const RoutineBuilderPage: React.FC = () => {
           View My Shelf
         </button>
         <button onClick={handleSaveRoutine} className="btn-primary">
-          <IconCheck size={18} strokeWidth={2} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+          <IconCheck size={18} strokeWidth={2} className="icon-inline" />
           Save Routine
         </button>
       </div>

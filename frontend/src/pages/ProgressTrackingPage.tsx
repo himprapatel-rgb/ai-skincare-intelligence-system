@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { IconTrendingUp, IconCheckCircle, IconCircle, IconDownload } from '../components/Icons';
+import { SkeletonHeading, SkeletonText, SkeletonCard } from '../components/Skeleton';
 import { getProgressSummary } from '../services/scanApi';
 import './CommonStyles.css';
 import './ProgressTrackingPage.css';
@@ -69,6 +70,43 @@ const ProgressTrackingPage: React.FC = () => {
     return progressData[0].overallScore - progressData[progressData.length - 1].overallScore;
   }, [progressData]);
 
+  /** Compute actual trends from real data instead of hardcoding */
+  const computedTrends = useMemo(() => {
+    if (progressData.length < 2) {
+      return [
+        { label: 'Overall Trend', text: 'Not enough data', direction: 'neutral' as const, description: 'Take at least 2 scans to see trends.' },
+      ];
+    }
+
+    const computeTrend = (
+      label: string,
+      getValue: (d: ProgressData) => number,
+      isLowerBetter: boolean,
+    ) => {
+      const first = getValue(progressData[progressData.length - 1]);
+      const last = getValue(progressData[0]);
+      const diff = last - first;
+      const pctChange = first > 0 ? Math.round((diff / first) * 100) : 0;
+      const isImproving = isLowerBetter ? diff < -2 : diff > 2;
+      const isDeclining = isLowerBetter ? diff > 2 : diff < -2;
+
+      return {
+        label,
+        text: isImproving ? 'Improving' : isDeclining ? 'Declining' : 'Stable',
+        direction: isImproving ? 'positive' : isDeclining ? 'negative' : 'neutral',
+        description: Math.abs(pctChange) > 0
+          ? `Changed by ${pctChange > 0 ? '+' : ''}${pctChange}% over this period`
+          : 'No significant change detected',
+      };
+    };
+
+    return [
+      computeTrend('Overall Trend', (d) => d.overallScore, false),
+      computeTrend('Acne Trend', (d) => d.acne, true),
+      computeTrend('Hydration Trend', (d) => d.hydration, false),
+    ];
+  }, [progressData]);
+
   const milestones = useMemo(() => ([
     { id: 1, title: 'First Scan Completed', achieved: progressData.length > 0, date: progressData[progressData.length - 1]?.date || null },
     { id: 2, title: '5 Scans Milestone', achieved: progressData.length >= 5, date: progressData[0]?.date || null },
@@ -79,8 +117,17 @@ const ProgressTrackingPage: React.FC = () => {
   if (isLoading) {
     return (
       <div className="progress-tracking-page app-page">
+        <header className="app-header-card">
+          <SkeletonHeading style={{ width: 180, height: 28 }} />
+          <SkeletonText style={{ width: 220, marginTop: 8 }} />
+        </header>
         <div className="app-page-content">
-          <p className="progress-loading-text">Loading progress…</p>
+          <div className="stats-summary">
+            {[1, 2, 3].map((i) => (
+              <SkeletonCard key={i} hasImage={false} style={{ minHeight: 80 }} />
+            ))}
+          </div>
+          <SkeletonCard hasImage={false} style={{ minHeight: 200, marginTop: 24 }} />
         </div>
       </div>
     );
@@ -117,7 +164,7 @@ const ProgressTrackingPage: React.FC = () => {
           <div className="chart-header">
             <h2>Progress Chart</h2>
             <div className="chart-controls">
-              <select value={timeRange} onChange={(e) => setTimeRange(e.target.value as 'week' | 'month' | '3months')}>
+              <select value={timeRange} onChange={(e) => setTimeRange(e.target.value as 'week' | 'month' | '3months')} aria-label="Time range">
                 <option value="week">Last Week</option>
                 <option value="month">Last Month</option>
                 <option value="3months">Last 3 Months</option>
@@ -239,34 +286,20 @@ const ProgressTrackingPage: React.FC = () => {
             )}
           </div>
           
-          {/* Trend Analysis */}
+          {/* Trend Analysis — Computed from actual data */}
           <div className="trend-analysis">
             <h3>Trend Analysis</h3>
             <div className="trend-cards">
-              <div className="trend-card">
-                <div className="trend-label">Overall Trend</div>
-                <div className="trend-value positive">
-                  <IconTrendingUp size={24} strokeWidth={2} />
-                  Improving
+              {computedTrends.map((trend, i) => (
+                <div key={i} className="trend-card">
+                  <div className="trend-label">{trend.label}</div>
+                  <div className={`trend-value ${trend.direction}`}>
+                    <IconTrendingUp size={24} strokeWidth={2} style={trend.direction === 'negative' ? { transform: 'scaleY(-1)' } : undefined} />
+                    {trend.text}
+                  </div>
+                  <div className="trend-description">{trend.description}</div>
                 </div>
-                <div className="trend-description">Your skin health is improving steadily</div>
-              </div>
-              <div className="trend-card">
-                <div className="trend-label">Acne Trend</div>
-                <div className="trend-value positive">
-                  <IconTrendingUp size={24} strokeWidth={2} />
-                  Decreasing
-                </div>
-                <div className="trend-description">Acne concerns reduced by 15%</div>
-              </div>
-              <div className="trend-card">
-                <div className="trend-label">Hydration Trend</div>
-                <div className="trend-value positive">
-                  <IconTrendingUp size={24} strokeWidth={2} />
-                  Increasing
-                </div>
-                <div className="trend-description">Hydration improved by 10%</div>
-              </div>
+              ))}
             </div>
           </div>
         </div>

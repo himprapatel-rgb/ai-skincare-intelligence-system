@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useMemo, ReactNode } from 'react';
 import axios from 'axios';
 import { api } from '../services/api';
 import { STORAGE_KEYS } from '../constants/storage';
@@ -121,26 +121,24 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setUser(null);
   }, []);
 
-  const updateUser = (userData: Partial<User>) => {
-    if (user) {
-      setUser({ ...user, ...userData });
-    }
-  };
+  const updateUser = useCallback((userData: Partial<User>) => {
+    setUser((prev) => prev ? { ...prev, ...userData } : null);
+  }, []);
+
+  const value = useMemo(() => ({
+    user,
+    token,
+    isAuthenticated: !!token && !!user,
+    isLoading,
+    login,
+    loginWithToken,
+    register,
+    logout,
+    updateUser,
+  }), [user, token, isLoading, login, loginWithToken, register, logout, updateUser]);
 
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        token,
-        isAuthenticated: !!token && !!user,
-        isLoading,
-        login,
-        loginWithToken,
-        register,
-        logout,
-        updateUser,
-      }}
-    >
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );

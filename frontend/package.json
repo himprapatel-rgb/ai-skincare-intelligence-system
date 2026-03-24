@@ -43,6 +43,7 @@
     "zustand": "^4.4.7"
   },
   "devDependencies": {
+    "@fullhuman/postcss-purgecss": "^8.0.0",
     "@playwright/test": "^1.54.2",
     "@testing-library/jest-dom": "^6.1.5",
     "@testing-library/react": "^14.1.2",

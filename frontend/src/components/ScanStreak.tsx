@@ -59,7 +59,7 @@ export const ScanStreak: React.FC<ScanStreakProps> = ({
     }
 
     // Calculate longest streak similarly (simplified)
-    let longest = currentStreak;
+    const longest = currentStreak;
 
     const nextMilestone = MILESTONES.find(m => m > currentStreak) || currentStreak + 30;
 

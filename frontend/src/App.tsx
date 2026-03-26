@@ -1,6 +1,7 @@
 // src/App.tsx - Premium GUI v3 - Complete Frontend
 import React, { Suspense } from "react";
 import { BrowserRouter, Routes, Route, useNavigate, Navigate } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from "./context/AuthContext";
 import { ScanProvider } from "./context/ScanContext";
 import { ToastProvider } from "./context/ToastContext";
@@ -128,11 +129,22 @@ function AppRoutes() {
   );
 }
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000,
+      gcTime: 10 * 60 * 1000,
+      retry: 1,
+    },
+  },
+});
+
 export default function App() {
   const routerBase = import.meta.env.BASE_URL || "/";
   return (
     <ErrorBoundary onRetry={() => window.location.reload()}>
       <AuthProvider>
+        <QueryClientProvider client={queryClient}>
         <ThemeProvider>
           <ShelfProvider>
             <ScanProvider>
@@ -151,6 +163,7 @@ export default function App() {
             </ScanProvider>
           </ShelfProvider>
         </ThemeProvider>
+        </QueryClientProvider>
       </AuthProvider>
     </ErrorBoundary>
   );

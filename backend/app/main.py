@@ -216,57 +216,8 @@ def ensure_test_user() -> None:
         # Product DB is optional for API liveness; keep service up and report via /api/health
         logger.warning("Product DB bootstrap skipped: %s", exc)
 
-    if db_bootstrap_available and engine.dialect.name != "sqlite":
-        try:
-            with engine.begin() as conn:
-                # Ensure admin flag exists on users table (production safety)
-                try:
-                    conn.execute(
-                        text(
-                            "ALTER TABLE users ADD COLUMN IF NOT EXISTS is_admin BOOLEAN DEFAULT FALSE"
-                        )
-                    )
-                except (ProgrammingError, OperationalError):
-                    pass
-                try:
-                    conn.execute(
-                        text("ALTER TABLE user_profiles ALTER COLUMN skin_type TYPE TEXT")
-                    )
-                except (ProgrammingError, OperationalError):
-                    pass
-                # Allow NULL user_id for guest scans
-                try:
-                    conn.execute(
-                        text("ALTER TABLE scan_sessions ALTER COLUMN user_id DROP NOT NULL")
-                    )
-                except (ProgrammingError, OperationalError):
-                    pass  # Column might already be nullable
-                # Ensure scan image storage columns exist (Railway/Postgres)
-                try:
-                    conn.execute(
-                        text("ALTER TABLE scan_sessions ADD COLUMN IF NOT EXISTS image_data BYTEA")
-                    )
-                    conn.execute(
-                        text(
-                            "ALTER TABLE scan_sessions ADD COLUMN IF NOT EXISTS image_content_type VARCHAR(100)"
-                        )
-                    )
-                    conn.execute(
-                        text(
-                            "ALTER TABLE scan_sessions ADD COLUMN IF NOT EXISTS image_filename VARCHAR(255)"
-                        )
-                    )
-                except (ProgrammingError, OperationalError):
-                    pass
-                # IP & geolocation tracking
-                try:
-                    conn.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS last_ip_address VARCHAR(45)"))
-                    conn.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS last_geolocation JSONB"))
-                    conn.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS last_seen_at TIMESTAMP WITH TIME ZONE"))
-                except (ProgrammingError, OperationalError):
-                    pass
-        except Exception as exc:
-            logger.warning("Startup schema safety updates skipped: %s", exc)
+    # Schema migrations are now managed by Alembic (see alembic/versions/).
+    # Run: alembic upgrade head
 
     if not db_bootstrap_available:
         return

@@ -1,0 +1,69 @@
+.tabs {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: all 200ms;
+  color: var(--text-secondary, #4b5b76);
+  min-height: 44px;
+  padding: 8px 16px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Underline variant */
+.underline { border-bottom: 2px solid var(--border-color, #e2e8f0); gap: 0; }
+.underline .tab {
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  border-radius: 0;
+}
+.underline .active {
+  color: var(--primary, #1f6feb);
+  border-bottom-color: var(--primary, #1f6feb);
+}
+
+/* Pills variant */
+.pills .tab { border-radius: 9999px; }
+.pills .active {
+  background: var(--primary, #1f6feb);
+  color: #fff;
+}
+
+/* Segmented variant */
+.segmented {
+  background: var(--bg-tertiary, #f1f5f9);
+  border-radius: 12px;
+  padding: 4px;
+}
+.segmented .tab { border-radius: 8px; font-size: 0.875rem; }
+.segmented .active {
+  background: #fff;
+  color: var(--primary, #1f6feb);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+.icon { display: inline-flex; }
+.icon svg { width: 16px; height: 16px; }
+
+@media (hover: hover) {
+  .tab:hover:not(.active) {
+    color: var(--text-primary, #0b1220);
+    background: var(--bg-tertiary, #f1f5f9);
+    border-radius: 8px;
+  }
+  .underline .tab:hover:not(.active) { border-radius: 0; background: none; }
+}

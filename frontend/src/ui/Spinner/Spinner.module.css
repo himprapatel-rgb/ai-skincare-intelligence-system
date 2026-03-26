@@ -1,0 +1,20 @@
+.spinner {
+  display: inline-flex;
+  color: var(--primary, #1f6feb);
+}
+
+.sm .svg { width: 16px; height: 16px; }
+.md .svg { width: 24px; height: 24px; }
+.lg .svg { width: 40px; height: 40px; }
+
+.svg {
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .svg { animation-duration: 2s; }
+}

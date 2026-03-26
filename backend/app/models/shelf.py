@@ -65,6 +65,10 @@ class ShelfProduct(Base):
     would_repurchase = Column(Boolean, nullable=True)
     times_repurchased = Column(Integer, default=0)
     
+    # PAO (Period After Opening) tracking
+    opened_date = Column(DateTime(timezone=True), nullable=True)
+    pao_months = Column(Integer, nullable=True)
+
     # Ingredient snapshot (preserved at time of addition)
     ingredients_json = Column(JSONB, nullable=True)  # {ingredients: [], key_ingredients: [], captured_at: timestamp}
     

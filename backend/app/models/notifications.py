@@ -46,9 +46,12 @@ class Notification(Base):
     read = Column(Boolean, default=False, index=True)
     read_at = Column(DateTime(timezone=True), nullable=True)
     
+    priority = Column(String(10), default='normal')
+    category = Column(String(50), nullable=True)
+
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     expires_at = Column(DateTime(timezone=True), nullable=True)
-    
+
     # Relationships
     user = relationship("User", backref="notifications")
 

@@ -1,0 +1,30 @@
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border-left: 4px solid;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.info { background: #eff6ff; border-color: #3b82f6; color: #1e40af; }
+.success { background: #f0fdf4; border-color: #10b981; color: #065f46; }
+.warning { background: #fffbeb; border-color: #f59e0b; color: #92400e; }
+.error { background: #fef2f2; border-color: #ef4444; color: #991b1b; }
+
+.content { flex: 1; }
+.title { display: block; margin-bottom: 4px; }
+.message { opacity: 0.9; }
+
+.dismiss {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  opacity: 0.6;
+  color: inherit;
+  flex-shrink: 0;
+}
+.dismiss:hover { opacity: 1; }

@@ -29,7 +29,7 @@ Transform Pellicura from a functional MVP into a **production-grade, scalable, d
 | **Sprint 2** | 3-4 | Backend-API, Frontend-Core, AI | Auth/Scan/Products API upgrades, UI component library, AI Chat backend |
 | **Sprint 3** | 5-6 | Frontend-Pages, AI, Backend-API | Core 15 page redesigns, AI Chat frontend, remaining API upgrades |
 | **Sprint 4** | 7-8 | Frontend-Pages, New-Features, Backend-API | Remaining 35+ pages, real-time notifications (WebSocket), PWA |
-| **Sprint 5** | 9-10 | New-Features, Frontend-Pages, Testing | Gamification, community, admin analytics, E2E tests |
+| **Sprint 5** | 9-10 | New-Features, Frontend-Pages, Testing | Clinical insights, derm reports, admin analytics, multi-scan, E2E tests |
 | **Sprint 6** | 11-12 | Testing, DevOps, Polish | Performance optimization, i18n, security hardening, CI/CD |
 
 ---

@@ -130,69 +130,46 @@ CREATE TABLE ai_chat_messages (
 CREATE INDEX idx_chat_messages_session ON ai_chat_messages(session_id, created_at);
 ```
 
-### Gamification (Sprint 5)
+### Clinical Insights (Sprint 5)
 ```sql
-CREATE TABLE user_achievements (
-    id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
-    achievement_type VARCHAR(50) NOT NULL,
-    achievement_name VARCHAR(200) NOT NULL,
-    description TEXT,
-    tier VARCHAR(20) DEFAULT 'bronze',
-    unlocked_at TIMESTAMPTZ DEFAULT now(),
-    progress_current INTEGER DEFAULT 0,
-    progress_target INTEGER,
-    metadata JSONB
-);
-CREATE INDEX idx_achievements_user ON user_achievements(user_id);
-
-CREATE TABLE user_streaks (
-    id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
-    streak_type VARCHAR(50) NOT NULL,
-    current_count INTEGER DEFAULT 0,
-    longest_count INTEGER DEFAULT 0,
-    last_activity_date DATE,
-    started_at TIMESTAMPTZ DEFAULT now()
-);
-CREATE UNIQUE INDEX idx_streaks_user_type ON user_streaks(user_id, streak_type);
-```
-
-### Community / Social (Sprint 5)
-```sql
-CREATE TABLE community_posts (
+CREATE TABLE skin_alerts (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
-    content TEXT NOT NULL,
-    image_url VARCHAR(500),
-    post_type VARCHAR(30) DEFAULT 'update',
-    visibility VARCHAR(20) DEFAULT 'public',
-    like_count INTEGER DEFAULT 0,
-    comment_count INTEGER DEFAULT 0,
-    created_at TIMESTAMPTZ DEFAULT now(),
-    updated_at TIMESTAMPTZ DEFAULT now(),
-    deleted_at TIMESTAMPTZ
-);
-CREATE INDEX idx_posts_user ON community_posts(user_id, created_at DESC);
-CREATE INDEX idx_posts_feed ON community_posts(created_at DESC) WHERE deleted_at IS NULL;
-
-CREATE TABLE community_comments (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    post_id UUID REFERENCES community_posts(id) ON DELETE CASCADE,
-    user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
-    content TEXT NOT NULL,
-    parent_comment_id UUID REFERENCES community_comments(id),
-    created_at TIMESTAMPTZ DEFAULT now(),
-    deleted_at TIMESTAMPTZ
-);
-
-CREATE TABLE community_likes (
-    id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
-    post_id UUID REFERENCES community_posts(id) ON DELETE CASCADE,
+    alert_type VARCHAR(50) NOT NULL,  -- trend_worsening, derm_referral, ingredient_warning, uv_alert
+    severity VARCHAR(20) NOT NULL,     -- info, warning, critical
+    concern VARCHAR(100),
+    title VARCHAR(300) NOT NULL,
+    message TEXT NOT NULL,
+    recommendation TEXT,
+    is_dismissed BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMPTZ DEFAULT now(),
-    UNIQUE(user_id, post_id)
+    dismissed_at TIMESTAMPTZ
 );
+CREATE INDEX idx_alerts_user ON skin_alerts(user_id, created_at DESC);
+CREATE INDEX idx_alerts_active ON skin_alerts(user_id) WHERE is_dismissed = FALSE;
+
+CREATE TABLE derm_reports (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    scan_ids JSONB NOT NULL,           -- array of scan UUIDs included
+    report_data JSONB NOT NULL,        -- full report content
+    share_token VARCHAR(100) UNIQUE,   -- for shareable link
+    share_expires_at TIMESTAMPTZ,
+    created_at TIMESTAMPTZ DEFAULT now()
+);
+CREATE INDEX idx_derm_reports_user ON derm_reports(user_id, created_at DESC);
+
+CREATE TABLE ingredient_interactions (
+    id SERIAL PRIMARY KEY,
+    ingredient_a VARCHAR(200) NOT NULL,
+    ingredient_b VARCHAR(200) NOT NULL,
+    interaction_type VARCHAR(50) NOT NULL,  -- conflict, synergy, caution
+    severity VARCHAR(20),
+    description TEXT NOT NULL,
+    source VARCHAR(200),
+    created_at TIMESTAMPTZ DEFAULT now()
+);
+CREATE INDEX idx_interactions_ingredients ON ingredient_interactions(ingredient_a, ingredient_b);
 ```
 
 ### Scan Images (Sprint 1 — with R2 migration)
@@ -283,6 +260,5 @@ CREATE TABLE ab_assignments (
 3. scan_images table + R2 migration (Sprint 1-2)
 4. AI chat tables (Sprint 2)
 5. Performance indexes + materialized views (Sprint 2)
-6. Gamification tables (Sprint 5)
-7. Community tables (Sprint 5)
-8. A/B experiment tables (Sprint 6)
+6. Clinical insights tables — skin_alerts, derm_reports, ingredient_interactions (Sprint 5)
+7. A/B experiment tables (Sprint 6)

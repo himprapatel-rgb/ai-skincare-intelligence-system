@@ -199,22 +199,17 @@ GET  /search/suggestions  — typeahead autocomplete
 ```
 Backed by PostgreSQL full-text search + pg_trgm. Track queries in `search_queries` table.
 
-### Community Router — `/api/v1/community` (Sprint 5)
+### Clinical Router — `/api/v1/clinical` (Sprint 5)
 ```
-GET    /community/feed                — paginated feed
-POST   /community/posts               — create post
-GET    /community/posts/{id}          — post detail + comments
-POST   /community/posts/{id}/like     — like/unlike
-POST   /community/posts/{id}/comments — add comment
-POST   /community/posts/{id}/report   — report content
-DELETE /community/posts/{id}          — delete own post
-```
-
-### Achievements Router — `/api/v1/achievements` (Sprint 5)
-```
-GET  /achievements          — list all with unlock status
-GET  /achievements/progress — current progress toward next
-GET  /achievements/recent   — recently unlocked
+GET  /clinical/report/{scan_id}       — generate dermatologist PDF report
+POST /clinical/share-report           — create secure shareable link
+GET  /clinical/trends                 — skin health trend analysis over time
+GET  /clinical/alerts                 — active skin health alerts
+POST /clinical/alerts/{id}/dismiss    — dismiss an alert
+GET  /clinical/correlations           — environmental factor correlations
+POST /clinical/ingredient-check       — full safety check with drug interactions + pregnancy
+GET  /clinical/benchmark              — anonymized comparative benchmarking (opt-in)
+POST /clinical/longitudinal-analysis  — AI analysis across multiple scans over time
 ```
 
 ### AI Chat Router — `/api/v1/ai/chat` (Sprint 2)
@@ -282,7 +277,6 @@ DELETE /ai/chat/sessions/{id}               — delete session
 | Consent | 4 | 7 |
 | Admin | 20 | 28 |
 | Search | 0 | 2 |
-| Community | 0 | 7 |
-| Achievements | 0 | 3 |
+| Clinical | 0 | 9 |
 | AI Chat | 0 | 5 |
 | **Total** | **113** | **~200** |

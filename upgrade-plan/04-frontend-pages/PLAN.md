@@ -289,9 +289,8 @@ Educational, legal, admin pages.
 
 | Page | Route | Sprint | Description |
 |------|-------|--------|-------------|
-| **AIChatPage** | `/chat` | 3 | Full conversational AI assistant |
-| **CommunityFeedPage** | `/community` | 5 | Social feed with posts, likes, comments |
-| **AchievementsPage** | `/achievements` | 5 | Achievement gallery with progress |
+| **AIChatPage** | `/chat` | 3 | Full conversational AI skincare advisor |
+| **ClinicalDashboardPage** | `/clinical` | 5 | Skin health trends, alerts, derm reports, correlations |
 | **SearchPage** | `/search` | 4 | Unified search results |
 
 ---

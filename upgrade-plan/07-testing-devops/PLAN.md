@@ -34,8 +34,7 @@ backend/tests/
 ├── test_content.py          — blogs, videos, news, search, likes
 ├── test_consent.py          — policies, accept, withdraw, export, delete
 ├── test_admin.py            — summary, users, products, content, analytics
-├── test_community.py        — posts, comments, likes, reports, moderation
-├── test_achievements.py     — triggers, progress, streaks, XP
+├── test_clinical.py         — derm reports, alerts, trends, ingredient interactions
 ├── test_search.py           — unified search, suggestions, analytics
 ├── test_middleware.py        — rate limit, CORS, tracing, performance
 ├── test_services/
@@ -136,7 +135,7 @@ frontend/e2e/
 ├── routine.spec.ts       — create routine, reorder, check-in
 ├── profile.spec.ts       — edit profile, upload photo
 ├── ai-chat.spec.ts       — open chat, send message, view response
-├── community.spec.ts     — create post, like, comment
+├── clinical.spec.ts      — derm report, alerts, trends
 ├── admin.spec.ts         — user management, content CRUD
 ├── responsive.spec.ts    — all pages at 375px, 768px, 1440px
 ├── a11y.spec.ts          — axe accessibility audit on all pages
@@ -323,5 +322,5 @@ Expose at `GET /metrics`:
 | 2 | Auth + scan + product endpoint tests (30% coverage) |
 | 3 | AI + profile + shelf tests (50% coverage), frontend unit tests |
 | 4 | E2E tests for core flows, a11y audits |
-| 5 | Community + gamification tests (70% coverage) |
+| 5 | Clinical insights + admin analytics tests (70% coverage) |
 | 6 | Full coverage (80% backend, 60% frontend), security audit, performance testing |

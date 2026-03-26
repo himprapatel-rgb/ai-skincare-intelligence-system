@@ -36,7 +36,7 @@ const HistoryPage: React.FC = () => {
     try {
       setLoading(true);
       const historyData = await getScanHistory();
-      const scans = (historyData as { scans?: Array<Record<string, unknown>> }).scans || [];
+      const scans = (historyData as Record<string, unknown>).data as Array<Record<string, unknown>> || (historyData as Record<string, unknown>).scans as Array<Record<string, unknown>> || [];
       const mapped = scans.map((scan) => {
         const summary = (scan.summary || {}) as Record<string, unknown>;
         const concerns = Array.isArray(summary.concerns)

@@ -42,7 +42,7 @@ const ComparisonPage: React.FC = () => {
     const fetchAnalyses = async () => {
       try {
         const historyData = await getScanHistory();
-        const scans = (historyData as { scans?: Array<Record<string, unknown>> }).scans || [];
+        const scans = (historyData as Record<string, unknown>).data as Array<Record<string, unknown>> || (historyData as Record<string, unknown>).scans as Array<Record<string, unknown>> || [];
 
         const mapped = scans.map((scan) => {
           const summary = (scan.summary || {}) as Record<string, unknown>;

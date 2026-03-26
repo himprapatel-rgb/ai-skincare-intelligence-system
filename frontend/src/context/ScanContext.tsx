@@ -35,7 +35,11 @@ export function ScanProvider({ children }: { children: React.ReactNode }) {
     queryKey: queryKeys.scans.history(user?.id ?? 0),
     queryFn: async () => {
       const data = await getScanHistory();
-      const items = Array.isArray(data) ? data : (data as { scans?: ScanHistoryItem[] }).scans || [];
+      const items = Array.isArray(data)
+        ? data
+        : (data as { data?: ScanHistoryItem[]; scans?: ScanHistoryItem[] }).data
+          || (data as { scans?: ScanHistoryItem[] }).scans
+          || [];
       return items as ScanHistoryItem[];
     },
     enabled: !!user,

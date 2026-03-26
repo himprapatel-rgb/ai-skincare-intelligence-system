@@ -53,3 +53,6 @@ redis==7.3.0
 # Additional utilities
 huggingface-hub==1.7.2
 tokenizers==0.22.2
+
+# Error tracking
+sentry-sdk[fastapi]==2.14.0

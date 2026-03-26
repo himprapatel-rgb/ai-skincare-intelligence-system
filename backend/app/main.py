@@ -72,8 +72,11 @@ from app.models.twin_models import (  # noqa: F401 — Digital Twin models
     SkinRegionState,
     SkinStateSnapshot,
 )
+from app.models.ai_chat import AIChatMessage, AIChatSession, AIUsageLog  # noqa: F401
 from app.models.user import PolicyVersion, User, UserAccessLog, UserConsent, UserProfile
 from app.product_database import check_product_database_health, create_product_tables
+from app.core.exceptions import AppException, app_exception_handler
+from app.routers import ai_chat as ai_chat_router_module
 from app.routers import (  # GDPR & User Management
     admin,
     catalog,
@@ -93,6 +96,21 @@ from middleware.request_tracing import RequestTracingMiddleware
 from middleware.slow_query_logger import setup_slow_query_logging
 
 logger = logging.getLogger(__name__)
+
+# Sentry error tracking (optional — only init if SENTRY_DSN is set)
+if settings.SENTRY_DSN:
+    try:
+        import sentry_sdk
+        sentry_sdk.init(
+            dsn=settings.SENTRY_DSN,
+            traces_sample_rate=0.1,  # 10% of requests
+            profiles_sample_rate=0.05,
+            environment=settings.ENV,
+            release=settings.APP_VERSION,
+        )
+        logger.info("Sentry initialized for %s", settings.ENV)
+    except Exception as exc:
+        logger.warning("Sentry init failed: %s", exc)
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -525,6 +543,12 @@ app.include_router(content.router, prefix="/api/v1", tags=["content"])  # Public
 # AI Intelligence Engine — all AI-powered features
 from app.routers import ai as ai_router_module
 app.include_router(ai_router_module.router)  # Router already includes /api/v1/ai prefix
+
+# Sprint 2: AI Chat Assistant (SSE streaming)
+app.include_router(ai_chat_router_module.router, prefix="/api/v1", tags=["ai_chat"])
+
+# Sprint 2: Standardized exception handler
+app.add_exception_handler(AppException, app_exception_handler)
 
 # Admin image uploads (blog covers, video thumbnails)
 _uploads_dir = Path(__file__).resolve().parent.parent / "uploads"

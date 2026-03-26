@@ -1,0 +1,84 @@
+.container {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm, 8px);
+}
+
+.track {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  border-radius: 12px;
+  border: 2px solid var(--border-color, #e2e8f0);
+  background: var(--border-color, #e2e8f0);
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+  transition: background 200ms cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  /* 44px touch target */
+  min-height: 44px;
+  min-width: 44px;
+  display: flex;
+  align-items: center;
+}
+
+.trackChecked {
+  background: var(--primary, #1f6feb);
+  border-color: var(--primary, #1f6feb);
+}
+
+.thumb {
+  position: absolute;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: var(--shadow-sm, 0 1px 3px rgba(0, 0, 0, 0.1));
+  transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+.thumbChecked {
+  transform: translateX(20px);
+}
+
+.label {
+  font-size: var(--font-sm, 0.875rem);
+  color: var(--text-primary, #0b1220);
+  cursor: pointer;
+  user-select: none;
+  line-height: 1.4;
+}
+
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.disabled + .label {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (hover: hover) {
+  .track:hover:not(:disabled) {
+    border-color: var(--primary, #1f6feb);
+  }
+}
+
+.track:focus-visible {
+  outline: 2px solid var(--primary, #1f6feb);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    transition: none;
+  }
+
+  .thumb {
+    transition: none;
+  }
+}

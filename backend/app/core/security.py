@@ -74,6 +74,21 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
 oauth2_scheme_optional = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login", auto_error=False)
 
 
+REFRESH_TOKEN_EXPIRE_DAYS = 7
+
+# In-memory token blacklist (use Redis in production)
+_token_blacklist: set[str] = set()
+
+
+def blacklist_token(token: str) -> None:
+    """Add a token to the blacklist (called on logout)."""
+    _token_blacklist.add(token)
+
+
+def is_token_blacklisted(token: str) -> bool:
+    return token in _token_blacklist
+
+
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     """Create JWT access token"""
     to_encode = data.copy()
@@ -81,9 +96,28 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
         expire = datetime.utcnow() + expires_delta
     else:
         expire = datetime.utcnow() + timedelta(minutes=15)
-    to_encode.update({"exp": expire})
+    to_encode.update({"exp": expire, "type": "access"})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
+
+
+def create_refresh_token(data: dict) -> str:
+    """Create a longer-lived JWT refresh token."""
+    to_encode = data.copy()
+    expire = datetime.utcnow() + timedelta(days=REFRESH_TOKEN_EXPIRE_DAYS)
+    to_encode.update({"exp": expire, "type": "refresh"})
+    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+
+
+def decode_refresh_token(token: str) -> Optional[dict]:
+    """Decode and validate a refresh token. Returns payload or None."""
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        if payload.get("type") != "refresh":
+            return None
+        return payload
+    except JWTError:
+        return None
 
 
 async def get_current_user(
@@ -96,6 +130,11 @@ async def get_current_user(
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
+
+    # Check blacklist (logged-out tokens)
+    if is_token_blacklisted(token):
+        raise credentials_exception
+
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         subject: str | None = payload.get("sub")
@@ -110,6 +149,18 @@ async def get_current_user(
         user = db.query(User).filter(User.email == subject).first()
     if user is None:
         raise credentials_exception
+
+    # Check soft-deleted
+    if user.deleted_at is not None:
+        raise credentials_exception
+
+    # Check account lockout
+    if user.locked_until and user.locked_until > datetime.utcnow():
+        raise HTTPException(
+            status_code=status.HTTP_423_LOCKED,
+            detail="Account temporarily locked. Try again later.",
+        )
+
     if not user.is_verified:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,

@@ -192,6 +192,12 @@ class Settings(BaseSettings):
         default="Beauty", description="PA-API SearchIndex for product category (e.g. Beauty)"
     )
 
+    # Refresh token
+    REFRESH_TOKEN_EXPIRE_DAYS: int = Field(default=7, description="Refresh token expiry in days")
+
+    # Sentry error tracking
+    SENTRY_DSN: str | None = Field(default=None, description="Sentry DSN for backend error tracking")
+
     # Rate limiting (multi-worker / multi-instance): when set, scan rate limit uses Redis
     REDIS_URL: str | None = Field(
         default=None,

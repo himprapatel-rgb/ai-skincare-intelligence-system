@@ -10,7 +10,7 @@ import uuid
 from datetime import datetime
 from typing import List, Optional
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from pydantic import BaseModel
 from sqlalchemy import func as sqlfunc, or_
 from sqlalchemy.orm import Session
@@ -104,32 +104,49 @@ async def get_shelf(
     status_filter: Optional[str] = None,
     category: Optional[str] = None,
     routine_type: Optional[str] = None,
+    sort_by: Optional[str] = Query(None, description="Sort by: recent, name, brand, rating"),
+    page: int = Query(1, ge=1),
+    per_page: int = Query(50, ge=1, le=200),
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
     """
-    Get user's product shelf.
-    
+    Get user's product shelf with pagination + filtering.
+
     Query params:
     - status_filter: active, finished, discontinued, wishlist
     - category: cleanser, serum, moisturizer, etc.
     - routine_type: am, pm, both
+    - sort_by: recent, name, brand, rating
+    - page, per_page: pagination
     """
     query = db.query(ShelfProduct).filter(ShelfProduct.user_id == current_user.id)
-    
+
     if status_filter:
         query = query.filter(ShelfProduct.status == status_filter)
     if category:
         query = query.filter(ShelfProduct.product_category == category)
     if routine_type:
         query = query.filter(ShelfProduct.routine_type == routine_type)
-    
-    products = query.order_by(
-        ShelfProduct.routine_order.asc().nullslast(),
-        ShelfProduct.created_at.desc()
-    ).all()
-    
-    # Count by status using aggregate query (avoids duplicate full-table fetch)
+
+    # Sorting
+    if sort_by == "name":
+        query = query.order_by(ShelfProduct.product_name.asc())
+    elif sort_by == "brand":
+        query = query.order_by(ShelfProduct.product_brand.asc().nullslast(), ShelfProduct.product_name.asc())
+    elif sort_by == "rating":
+        query = query.order_by(ShelfProduct.rating.desc().nullslast(), ShelfProduct.created_at.desc())
+    else:  # default: recent / routine order
+        query = query.order_by(
+            ShelfProduct.routine_order.asc().nullslast(),
+            ShelfProduct.created_at.desc()
+        )
+
+    total = query.count()
+    offset = (page - 1) * per_page
+    products = query.offset(offset).limit(per_page).all()
+
+    # Count by status using aggregate query
     status_rows = (
         db.query(ShelfProduct.status, sqlfunc.count(ShelfProduct.id))
         .filter(ShelfProduct.user_id == current_user.id)
@@ -137,7 +154,7 @@ async def get_shelf(
         .all()
     )
     status_counts = {row[0]: row[1] for row in status_rows}
-    
+
     return ShelfListResponse(
         products=[
             ShelfProductResponse(
@@ -164,7 +181,7 @@ async def get_shelf(
             )
             for p in products
         ],
-        total=len(products),
+        total=total,
         by_status=status_counts,
     )
 

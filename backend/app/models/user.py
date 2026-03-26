@@ -51,6 +51,9 @@ class User(Base):
     failed_login_count = Column(Integer, default=0)
     locked_until = Column(DateTime(timezone=True), nullable=True)
 
+    # JWT refresh token (rotated on each use)
+    refresh_token = Column(String(512), nullable=True, index=True)
+
     # Soft delete & preferences
     deleted_at = Column(DateTime(timezone=True), nullable=True)
     language = Column(String(10), default='en')

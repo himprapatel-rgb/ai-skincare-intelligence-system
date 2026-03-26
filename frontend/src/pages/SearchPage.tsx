@@ -191,6 +191,12 @@ const SearchPage: React.FC = () => {
 
   return (
     <div className={styles.page}>
+      {/* Page Header */}
+      <header className="app-header-card">
+        <h1>Search</h1>
+        <p className="app-header-subtitle">Search products, ingredients, and articles</p>
+      </header>
+
       {/* Search Bar */}
       <div className={styles.searchBarWrapper} ref={typeaheadRef}>
         <div className={styles.searchInputContainer}>

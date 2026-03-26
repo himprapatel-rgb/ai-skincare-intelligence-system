@@ -167,11 +167,12 @@ async def add_security_headers(request, call_next):
         response.headers["Cross-Origin-Resource-Policy"] = "same-site"
     response.headers["Content-Security-Policy"] = (
         "default-src 'self'; "
-        "script-src 'self'; "
-        "style-src 'self' 'unsafe-inline'; "
-        "img-src 'self' data: https://images.unsplash.com https://*.pellicura.com; "
-        "connect-src 'self' https://api.openai.com wss://*.pellicura.com; "
+        "script-src 'self' https://accounts.google.com https://apis.google.com; "
+        "style-src 'self' 'unsafe-inline' https://accounts.google.com; "
+        "img-src 'self' data: https://images.unsplash.com https://*.pellicura.com https://*.googleusercontent.com; "
+        "connect-src 'self' https://api.openai.com https://accounts.google.com https://oauth2.googleapis.com https://*.pellicura.com wss://*.pellicura.com; "
         "font-src 'self'; "
+        "frame-src https://accounts.google.com; "
         "frame-ancestors 'none'"
     )
     if not settings.DEBUG:

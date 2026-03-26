@@ -35,10 +35,13 @@ const AdminAnalyticsPage: React.FC = () => {
     try {
       setIsLoading(true);
       setError(null);
-      const { data } = await api.get('/api/v1/admin/analytics', {
-        params: { range: dateRange },
+      const { data } = await api.get('/api/v1/admin/analytics/overview');
+      setKpis({
+        dau: data.dau ?? 0,
+        mau: data.mau ?? 0,
+        total_scans: data.total_scans ?? 0,
+        ai_cost_30d: data.ai_cost_30d ?? 0,
       });
-      setKpis(data.kpis || null);
       setTopConcerns(data.top_concerns || []);
       setSkinTypes(data.skin_types || []);
     } catch {

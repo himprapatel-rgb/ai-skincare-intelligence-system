@@ -1,21 +1,23 @@
 import React, { useState } from 'react';
 import styles from './DermReportPreview.module.css';
 
-export type DermReportSection = {
-  title: string;
-  content: string;
+export type DermReport = {
+  id: number;
+  report_data: {
+    generated_at?: string;
+    scan?: Record<string, unknown>;
+    profile_summary?: Record<string, unknown> | null;
+    analysis?: Record<string, unknown>;
+    current_products?: Array<{ name: string; brand?: string; category?: string }>;
+    clinical_notes?: string[];
+    scan_history_count?: number;
+    [key: string]: unknown;
+  };
+  share_token?: string | null;
+  created_at: string;
 };
 
-export type DermReport = {
-  id: string;
-  generated_at: string;
-  profile_summary: DermReportSection;
-  ai_analysis: DermReportSection;
-  concern_timeline: DermReportSection;
-  zone_summary: DermReportSection;
-  ingredient_warnings: DermReportSection;
-  recommendations: DermReportSection;
-};
+type ReportSection = { title: string; content: string };
 
 type DermReportPreviewProps = {
   report: DermReport;
@@ -65,14 +67,34 @@ const SECTION_ICONS: Record<string, JSX.Element> = {
   ),
 };
 
-const SECTION_KEYS: (keyof Omit<DermReport, 'id' | 'generated_at'>)[] = [
-  'profile_summary',
-  'ai_analysis',
-  'concern_timeline',
-  'zone_summary',
-  'ingredient_warnings',
-  'recommendations',
-];
+function buildSections(report: DermReport): ReportSection[] {
+  const rd = report.report_data || {};
+  const sections: ReportSection[] = [];
+
+  if (rd.profile_summary) {
+    const ps = rd.profile_summary as Record<string, string | null>;
+    sections.push({ title: 'Patient Skin Profile', content: Object.entries(ps).filter(([, v]) => v).map(([k, v]) => `${k.replace(/_/g, ' ')}: ${v}`).join('\n') });
+  }
+  if (rd.analysis) {
+    const a = rd.analysis as Record<string, unknown>;
+    sections.push({ title: 'AI Analysis', content: JSON.stringify(a, null, 2) });
+  }
+  if (rd.clinical_notes && rd.clinical_notes.length > 0) {
+    sections.push({ title: 'Clinical Notes', content: rd.clinical_notes.join('\n• ') });
+  }
+  if (rd.current_products && rd.current_products.length > 0) {
+    sections.push({ title: 'Current Products', content: rd.current_products.map(p => `${p.brand || ''} ${p.name}`).join(', ') });
+  }
+  if (rd.scan) {
+    sections.push({ title: 'Scan Details', content: `Scan ID: ${rd.scan.id || 'N/A'}, Date: ${rd.scan.date || 'N/A'}` });
+  }
+  if (sections.length === 0) {
+    sections.push({ title: 'Report', content: 'No detailed data available for this scan.' });
+  }
+  return sections;
+}
+
+const SECTION_ORDER = ['profile_summary', 'ai_analysis', 'concern_timeline', 'zone_summary', 'ingredient_warnings', 'recommendations'];
 
 const DermReportPreview: React.FC<DermReportPreviewProps> = ({ report, onShare, onDownload }) => {
   const [copiedLink, setCopiedLink] = useState(false);
@@ -89,7 +111,7 @@ const DermReportPreview: React.FC<DermReportPreviewProps> = ({ report, onShare, 
         <div>
           <h2 className={styles.title}>Dermatology Report</h2>
           <p className={styles.date}>
-            Generated {new Date(report.generated_at).toLocaleDateString('en-US', {
+            Generated {new Date(report.report_data?.generated_at || report.created_at).toLocaleDateString('en-US', {
               year: 'numeric',
               month: 'long',
               day: 'numeric',
@@ -125,19 +147,18 @@ const DermReportPreview: React.FC<DermReportPreviewProps> = ({ report, onShare, 
       </div>
 
       <div className={styles.sections}>
-        {SECTION_KEYS.map((key) => {
-          const section = report[key] as DermReportSection;
-          if (!section) return null;
+        {buildSections(report).map((section, idx) => {
+          const iconKey = SECTION_ORDER[idx] || 'recommendations';
           return (
-            <div key={key} className={styles.sectionCard}>
+            <div key={section.title} className={styles.sectionCard}>
               <div className={styles.sectionHeader}>
                 <span className={styles.sectionIcon}>
-                  {SECTION_ICONS[key]}
+                  {SECTION_ICONS[iconKey] || SECTION_ICONS.recommendations}
                 </span>
                 <h3 className={styles.sectionTitle}>{section.title}</h3>
               </div>
               <div className={styles.sectionContent}>
-                {section.content}
+                {section.content.split('\n').map((line, i) => <p key={i}>{line}</p>)}
               </div>
             </div>
           );

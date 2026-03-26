@@ -7,7 +7,7 @@ export type SkinAlert = {
   severity: 'low' | 'medium' | 'high' | 'critical';
   concern: string;
   message: string;
-  recommendation: string;
+  recommendation?: string | null;
   is_dismissed: boolean;
   created_at: string;
 };

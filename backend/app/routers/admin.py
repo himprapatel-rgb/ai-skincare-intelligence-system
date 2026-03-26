@@ -21,14 +21,15 @@ from pydantic import BaseModel
 from sqlalchemy import func as sqlfunc, text
 from sqlalchemy.orm import Session
 
+from app.config import settings
 from app.core.security import get_current_admin
-from app.database import get_db
+from app.database import get_db, engine
 from app.models.content import Blog, NewsItem, Video
 from app.models.product_models import Product
 from app.models.saved_routine import SavedRoutine
 from app.models.scan import ScanSession
 from app.models.twin_models import SkinStateSnapshot
-from app.models.user import User
+from app.models.user import User, UserAccessLog
 from app.schemas.content_schemas import (
     BlogCreate,
     BlogResponse,
@@ -809,3 +810,98 @@ def admin_delete_news(
     db.delete(news)
     db.commit()
     return None
+
+
+# --- Audit Log ---
+
+class AuditLogEntry(BaseModel):
+    id: int
+    user_id: int
+    ip_address: str
+    geolocation: Optional[dict] = None
+    created_at: Optional[datetime] = None
+
+
+@router.get("/audit-log", response_model=list[AuditLogEntry])
+async def get_audit_log(
+    limit: int = Query(50, ge=1, le=500),
+    offset: int = Query(0, ge=0),
+    user_id: Optional[int] = Query(None),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_admin),
+):
+    """Return paginated user access log entries (audit trail)."""
+    query = db.query(UserAccessLog)
+    if user_id is not None:
+        query = query.filter(UserAccessLog.user_id == user_id)
+    logs = (
+        query.order_by(UserAccessLog.created_at.desc())
+        .offset(offset)
+        .limit(limit)
+        .all()
+    )
+    return [
+        AuditLogEntry(
+            id=log.id,
+            user_id=log.user_id,
+            ip_address=log.ip_address,
+            geolocation=log.geolocation,
+            created_at=log.created_at,
+        )
+        for log in logs
+    ]
+
+
+# --- System Health (detailed) ---
+
+@router.get("/system/health")
+async def system_health(
+    current_user: User = Depends(get_current_admin),
+):
+    """
+    Detailed system health: DB pool stats, Redis connectivity, OpenAI key check.
+    """
+    import time
+
+    health: dict = {"status": "ok", "checks": {}}
+
+    # DB pool stats
+    try:
+        pool = engine.pool
+        health["checks"]["database"] = {
+            "status": "ok",
+            "pool_size": pool.size(),
+            "checked_in": pool.checkedin(),
+            "checked_out": pool.checkedout(),
+            "overflow": pool.overflow(),
+        }
+    except Exception as exc:
+        health["checks"]["database"] = {"status": "error", "detail": str(exc)[:200]}
+        health["status"] = "degraded"
+
+    # Redis connectivity
+    redis_url = settings.REDIS_URL
+    if redis_url:
+        try:
+            import redis
+            start = time.time()
+            r = redis.from_url(redis_url, socket_connect_timeout=3)
+            r.ping()
+            latency = int((time.time() - start) * 1000)
+            health["checks"]["redis"] = {"status": "ok", "latency_ms": latency}
+        except Exception as exc:
+            health["checks"]["redis"] = {"status": "error", "detail": str(exc)[:200]}
+            health["status"] = "degraded"
+    else:
+        health["checks"]["redis"] = {"status": "not_configured"}
+
+    # OpenAI key check (non-empty, starts with sk-)
+    openai_key = settings.OPENAI_API_KEY
+    if openai_key and openai_key.startswith("sk-"):
+        health["checks"]["openai"] = {"status": "ok", "key_prefix": openai_key[:7] + "..."}
+    elif openai_key:
+        health["checks"]["openai"] = {"status": "warning", "detail": "Key present but unexpected format"}
+    else:
+        health["checks"]["openai"] = {"status": "not_configured"}
+
+    return health

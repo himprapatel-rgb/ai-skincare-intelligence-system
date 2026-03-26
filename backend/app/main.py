@@ -88,8 +88,10 @@ from app.routers import (  # GDPR & User Management
     notifications,
     products,
     profile,
+    search,
     shelf,
 )
+from app.core.websocket import manager as ws_manager  # noqa: F401 — WebSocket manager singleton
 from app.services.auth_service import auth_service
 from middleware.ip_geo_logging import IPGeoLoggingMiddleware
 from middleware.request_tracing import RequestTracingMiddleware
@@ -539,6 +541,7 @@ app.include_router(shelf.router, prefix="/api/v1", tags=["shelf"])  # Product Sh
 app.include_router(goals.router, prefix="/api/v1", tags=["goals"])  # Skin Goals API
 app.include_router(catalog.router, prefix="/api/v1", tags=["catalog"])  # Product Catalog Database
 app.include_router(content.router, prefix="/api/v1", tags=["content"])  # Public blogs, videos, news
+app.include_router(search.router, prefix="/api/v1", tags=["search"])  # Unified search
 
 # AI Intelligence Engine — all AI-powered features
 from app.routers import ai as ai_router_module

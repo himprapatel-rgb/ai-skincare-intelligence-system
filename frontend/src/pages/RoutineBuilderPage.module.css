@@ -1,0 +1,300 @@
+/* RoutineBuilderPage — CSS Module (Sprint 4 Track D) */
+
+/* ===== Page Container ===== */
+.page {
+  min-height: 100vh;
+  background: var(--bg-secondary, #f6f8fb);
+  padding-bottom: max(80px, env(safe-area-inset-bottom));
+}
+
+/* ===== Header ===== */
+.header {
+  padding: var(--spacing-lg, 24px) var(--spacing-md, 16px) var(--spacing-md, 16px);
+}
+
+.headerTitle {
+  font-size: var(--font-size-2xl, 1.5rem);
+  font-weight: var(--font-weight-bold, 700);
+  color: var(--text-primary, #162133);
+  margin: 0 0 var(--spacing-xs, 4px);
+}
+
+.headerSubtitle {
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--text-secondary, #4e6078);
+  margin: 0;
+}
+
+/* ===== Content ===== */
+.content {
+  padding: 0 var(--spacing-md, 16px);
+  max-width: var(--max-width-xl, 1280px);
+  margin: 0 auto;
+}
+
+/* ===== Step Cards ===== */
+.stepList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm, 8px);
+}
+
+.stepCard {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md, 16px);
+  background: var(--bg-primary, #fff);
+  border-radius: var(--radius-lg, 12px);
+  padding: var(--spacing-md, 16px);
+  box-shadow: var(--shadow-card);
+  cursor: grab;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  min-height: 44px;
+}
+
+.stepCard:active {
+  cursor: grabbing;
+  box-shadow: var(--shadow-card-hover);
+  transform: scale(1.01);
+}
+
+.stepNumber {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--primary-light, #e8f0fd);
+  color: var(--primary, #1f5fbf);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-sm, 0.875rem);
+  font-weight: var(--font-weight-bold, 700);
+  flex-shrink: 0;
+}
+
+.stepBody {
+  flex: 1;
+  min-width: 0;
+}
+
+.stepLabel {
+  font-size: var(--font-size-xs, 0.75rem);
+  color: var(--text-muted, #6c7d93);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide, 0.025em);
+  margin: 0 0 2px;
+}
+
+.stepProductName {
+  font-size: var(--font-size-base, 1rem);
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--text-primary, #162133);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stepDragHandle {
+  color: var(--text-muted, #6c7d93);
+  font-size: 1.25rem;
+  flex-shrink: 0;
+  cursor: grab;
+  padding: var(--spacing-xs, 4px);
+}
+
+.stepRemove {
+  background: none;
+  border: none;
+  color: var(--danger, #b42318);
+  cursor: pointer;
+  padding: var(--spacing-xs, 4px);
+  border-radius: var(--radius-sm, 6px);
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===== Add Step / AI Generate ===== */
+.actionBar {
+  display: flex;
+  gap: var(--spacing-sm, 8px);
+  margin-top: var(--spacing-md, 16px);
+}
+
+.addStepButton {
+  flex: 1;
+  padding: 12px var(--spacing-md, 16px);
+  background: var(--bg-primary, #fff);
+  border: 2px dashed var(--border-color, #e4e9ef);
+  border-radius: var(--radius-lg, 12px);
+  color: var(--text-secondary, #4e6078);
+  font-size: var(--font-size-sm, 0.875rem);
+  font-weight: var(--font-weight-medium, 500);
+  cursor: pointer;
+  min-height: 44px;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.addStepButton:hover {
+  border-color: var(--primary, #1f5fbf);
+  color: var(--primary, #1f5fbf);
+}
+
+.aiGenerateButton {
+  padding: 12px 20px;
+  background: linear-gradient(135deg, var(--primary, #1f5fbf), var(--accent, #4f8ad9));
+  color: var(--white, #fff);
+  border: none;
+  border-radius: var(--radius-lg, 12px);
+  font-size: var(--font-size-sm, 0.875rem);
+  font-weight: var(--font-weight-semibold, 600);
+  cursor: pointer;
+  min-height: 44px;
+  transition: opacity 0.2s ease;
+}
+
+.aiGenerateButton:hover {
+  opacity: 0.9;
+}
+
+/* ===== Product Search Modal ===== */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: var(--z-modal, 500);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.modalContent {
+  background: var(--bg-primary, #fff);
+  border-radius: var(--radius-xl, 16px) var(--radius-xl, 16px) 0 0;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: var(--spacing-lg, 24px) var(--spacing-md, 16px);
+}
+
+.searchInput {
+  width: 100%;
+  padding: 12px var(--spacing-md, 16px);
+  border: 1.5px solid var(--border-color, #e4e9ef);
+  border-radius: var(--radius-md, 8px);
+  font-size: var(--font-size-base, 1rem);
+  min-height: 44px;
+  margin-bottom: var(--spacing-md, 16px);
+  background: var(--bg-secondary, #f6f8fb);
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: var(--primary, #1f5fbf);
+  box-shadow: 0 0 0 3px var(--primary-light, #e8f0fd);
+}
+
+.searchResultItem {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md, 16px);
+  padding: var(--spacing-sm, 8px) 0;
+  border-bottom: 1px solid var(--border-color, #e4e9ef);
+  cursor: pointer;
+  min-height: 44px;
+}
+
+.searchResultItem:hover {
+  background: var(--bg-secondary, #f6f8fb);
+}
+
+/* ===== Responsive: Tablet ===== */
+@media (min-width: 768px) {
+  .header {
+    padding: var(--spacing-xl, 32px) var(--spacing-lg, 24px) var(--spacing-md, 16px);
+  }
+
+  .headerTitle {
+    font-size: var(--font-size-3xl, 1.875rem);
+  }
+
+  .content {
+    padding: 0 var(--spacing-lg, 24px);
+  }
+
+  .modalContent {
+    max-width: 560px;
+    border-radius: var(--radius-xl, 16px);
+    margin-bottom: var(--spacing-xl, 32px);
+  }
+}
+
+/* ===== Responsive: Desktop ===== */
+@media (min-width: 1024px) {
+  .content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--spacing-xl, 32px);
+    align-items: start;
+  }
+
+  .stepCard {
+    padding: var(--spacing-md, 16px) var(--spacing-lg, 24px);
+  }
+}
+
+/* ===== Dark Mode ===== */
+@media (prefers-color-scheme: dark) {
+  .page {
+    background: var(--gray-950, #0a0a0a);
+  }
+
+  .headerTitle, .stepProductName {
+    color: var(--gray-50, #f9fbfd);
+  }
+
+  .headerSubtitle, .stepLabel {
+    color: var(--gray-400, #97a6ba);
+  }
+
+  .stepCard {
+    background: var(--gray-900, #162133);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .stepNumber {
+    background: rgba(31, 95, 191, 0.15);
+  }
+
+  .addStepButton {
+    background: var(--gray-900, #162133);
+    border-color: var(--gray-700, #36485f);
+    color: var(--gray-400, #97a6ba);
+  }
+
+  .modalContent {
+    background: var(--gray-900, #162133);
+  }
+
+  .searchInput {
+    background: var(--gray-800, #27364c);
+    border-color: var(--gray-700, #36485f);
+    color: var(--gray-50, #f9fbfd);
+  }
+}
+
+/* ===== Reduced Motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  .stepCard,
+  .addStepButton,
+  .aiGenerateButton {
+    transition: none;
+  }
+
+  .stepCard:active {
+    transform: none;
+  }
+}

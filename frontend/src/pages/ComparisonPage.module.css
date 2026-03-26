@@ -1,0 +1,290 @@
+/* ComparisonPage — CSS Module (Sprint 4 Track D) */
+
+/* ===== Page Container ===== */
+.page {
+  min-height: 100vh;
+  background: var(--bg-secondary, #f6f8fb);
+  padding-bottom: max(80px, env(safe-area-inset-bottom));
+}
+
+/* ===== Header ===== */
+.header {
+  padding: var(--spacing-lg, 24px) var(--spacing-md, 16px) var(--spacing-md, 16px);
+}
+
+.headerTitle {
+  font-size: var(--font-size-2xl, 1.5rem);
+  font-weight: var(--font-weight-bold, 700);
+  color: var(--text-primary, #162133);
+  margin: 0 0 var(--spacing-xs, 4px);
+}
+
+.headerSubtitle {
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--text-secondary, #4e6078);
+  margin: 0;
+}
+
+/* ===== Content ===== */
+.content {
+  padding: 0 var(--spacing-md, 16px);
+  max-width: var(--max-width-xl, 1280px);
+  margin: 0 auto;
+}
+
+/* ===== Side-by-Side Slider ===== */
+.sliderSection {
+  background: var(--bg-primary, #fff);
+  border-radius: var(--radius-xl, 16px);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  margin-bottom: var(--spacing-md, 16px);
+  position: relative;
+}
+
+.sliderContainer {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  touch-action: none;
+}
+
+.sliderImageLeft,
+.sliderImageRight {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.sliderImageLeft {
+  clip-path: inset(0 50% 0 0);
+}
+
+.sliderDivider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 3px;
+  background: var(--white, #fff);
+  transform: translateX(-50%);
+  z-index: 2;
+  cursor: ew-resize;
+}
+
+.sliderHandle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--white, #fff);
+  box-shadow: var(--shadow-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  cursor: ew-resize;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.sliderLabels {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--spacing-sm, 8px) var(--spacing-md, 16px);
+}
+
+.sliderLabel {
+  font-size: var(--font-size-sm, 0.875rem);
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--text-secondary, #4e6078);
+}
+
+/* ===== Metric Diff Table ===== */
+.diffTable {
+  background: var(--bg-primary, #fff);
+  border-radius: var(--radius-xl, 16px);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+.diffTableHeader {
+  display: grid;
+  grid-template-columns: 1fr 80px 80px 80px;
+  padding: var(--spacing-sm, 8px) var(--spacing-md, 16px);
+  background: var(--bg-secondary, #f6f8fb);
+  font-size: var(--font-size-xs, 0.75rem);
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--text-muted, #6c7d93);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide, 0.025em);
+}
+
+.diffRow {
+  display: grid;
+  grid-template-columns: 1fr 80px 80px 80px;
+  padding: var(--spacing-sm, 8px) var(--spacing-md, 16px);
+  border-bottom: 1px solid var(--border-color, #e4e9ef);
+  align-items: center;
+  min-height: 44px;
+}
+
+.diffRow:last-child {
+  border-bottom: none;
+}
+
+.diffMetricName {
+  font-size: var(--font-size-sm, 0.875rem);
+  font-weight: var(--font-weight-medium, 500);
+  color: var(--text-primary, #162133);
+}
+
+.diffValue {
+  font-size: var(--font-size-sm, 0.875rem);
+  font-weight: var(--font-weight-semibold, 600);
+  text-align: center;
+}
+
+.diffChange {
+  font-size: var(--font-size-sm, 0.875rem);
+  font-weight: var(--font-weight-bold, 700);
+  text-align: center;
+}
+
+.diffImproved {
+  color: var(--success, #1b7f53);
+  background: var(--success-100, #dcfce7);
+  padding: 2px 8px;
+  border-radius: var(--radius-full, 9999px);
+}
+
+.diffWorsened {
+  color: var(--danger, #b42318);
+  background: var(--danger-100, #fee2e2);
+  padding: 2px 8px;
+  border-radius: var(--radius-full, 9999px);
+}
+
+.diffNeutral {
+  color: var(--text-muted, #6c7d93);
+}
+
+/* ===== Summary Cards ===== */
+.summaryGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-sm, 8px);
+  margin-top: var(--spacing-md, 16px);
+}
+
+.summaryCard {
+  background: var(--bg-primary, #fff);
+  border-radius: var(--radius-lg, 12px);
+  padding: var(--spacing-md, 16px);
+  box-shadow: var(--shadow-card);
+  text-align: center;
+}
+
+.summaryValue {
+  font-size: var(--font-size-2xl, 1.5rem);
+  font-weight: var(--font-weight-extrabold, 800);
+  color: var(--primary, #1f5fbf);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.summaryLabel {
+  font-size: var(--font-size-xs, 0.75rem);
+  color: var(--text-secondary, #4e6078);
+}
+
+/* ===== Responsive: Tablet ===== */
+@media (min-width: 768px) {
+  .header {
+    padding: var(--spacing-xl, 32px) var(--spacing-lg, 24px) var(--spacing-md, 16px);
+  }
+
+  .headerTitle {
+    font-size: var(--font-size-3xl, 1.875rem);
+  }
+
+  .content {
+    padding: 0 var(--spacing-lg, 24px);
+  }
+
+  .diffTableHeader,
+  .diffRow {
+    grid-template-columns: 1fr 100px 100px 100px;
+  }
+
+  .summaryGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ===== Responsive: Desktop ===== */
+@media (min-width: 1024px) {
+  .content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-lg, 24px);
+    align-items: start;
+  }
+
+  .diffTable {
+    grid-column: 1 / -1;
+  }
+
+  .summaryGrid {
+    grid-column: 1 / -1;
+  }
+
+  .sliderContainer {
+    aspect-ratio: 4 / 3;
+  }
+}
+
+/* ===== Dark Mode ===== */
+@media (prefers-color-scheme: dark) {
+  .page {
+    background: var(--gray-950, #0a0a0a);
+  }
+
+  .headerTitle, .diffMetricName {
+    color: var(--gray-50, #f9fbfd);
+  }
+
+  .headerSubtitle, .sliderLabel, .summaryLabel {
+    color: var(--gray-400, #97a6ba);
+  }
+
+  .sliderSection, .diffTable, .summaryCard {
+    background: var(--gray-900, #162133);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .diffTableHeader {
+    background: var(--gray-800, #27364c);
+  }
+
+  .diffRow {
+    border-color: var(--gray-800, #27364c);
+  }
+
+  .sliderHandle {
+    background: var(--gray-200, #e4e9ef);
+  }
+}
+
+/* ===== Reduced Motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  .sliderDivider,
+  .sliderHandle {
+    transition: none;
+  }
+}

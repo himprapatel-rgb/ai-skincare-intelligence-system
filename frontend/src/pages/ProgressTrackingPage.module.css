@@ -1,0 +1,302 @@
+/* ProgressTrackingPage — CSS Module (Sprint 4 Track D) */
+
+/* ===== Page Container ===== */
+.page {
+  min-height: 100vh;
+  background: var(--bg-secondary, #f6f8fb);
+  padding-bottom: max(80px, env(safe-area-inset-bottom));
+}
+
+/* ===== Header ===== */
+.header {
+  padding: var(--spacing-lg, 24px) var(--spacing-md, 16px) var(--spacing-md, 16px);
+}
+
+.headerTitle {
+  font-size: var(--font-size-2xl, 1.5rem);
+  font-weight: var(--font-weight-bold, 700);
+  color: var(--text-primary, #162133);
+  margin: 0 0 var(--spacing-xs, 4px);
+}
+
+.headerSubtitle {
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--text-secondary, #4e6078);
+  margin: 0;
+}
+
+/* ===== Content ===== */
+.content {
+  padding: 0 var(--spacing-md, 16px);
+  max-width: var(--max-width-xl, 1280px);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md, 16px);
+}
+
+/* ===== Date Range Selector ===== */
+.dateRangeBar {
+  display: flex;
+  gap: var(--spacing-xs, 4px);
+  background: var(--bg-primary, #fff);
+  border-radius: var(--radius-lg, 12px);
+  padding: 4px;
+  box-shadow: var(--shadow-card);
+}
+
+.dateRangeButton {
+  flex: 1;
+  padding: 8px 12px;
+  background: none;
+  border: none;
+  border-radius: var(--radius-md, 8px);
+  font-size: var(--font-size-sm, 0.875rem);
+  font-weight: var(--font-weight-medium, 500);
+  color: var(--text-muted, #6c7d93);
+  cursor: pointer;
+  min-height: 44px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.dateRangeButton:hover {
+  color: var(--text-primary, #162133);
+}
+
+.dateRangeActive {
+  background: var(--primary, #1f5fbf);
+  color: var(--white, #fff);
+  font-weight: var(--font-weight-semibold, 600);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ===== Chart Area ===== */
+.chartCard {
+  background: var(--bg-primary, #fff);
+  border-radius: var(--radius-xl, 16px);
+  box-shadow: var(--shadow-card);
+  padding: var(--spacing-md, 16px);
+  overflow: hidden;
+}
+
+.chartHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-md, 16px);
+}
+
+.chartTitle {
+  font-size: var(--font-size-base, 1rem);
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--text-primary, #162133);
+  margin: 0;
+}
+
+.chartLegend {
+  display: flex;
+  gap: var(--spacing-md, 16px);
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs, 4px);
+  font-size: var(--font-size-xs, 0.75rem);
+  color: var(--text-secondary, #4e6078);
+}
+
+.legendDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.chartContainer {
+  width: 100%;
+  min-height: 200px;
+  position: relative;
+}
+
+/* ===== Metric Cards ===== */
+.metricGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-sm, 8px);
+}
+
+.metricCard {
+  background: var(--bg-primary, #fff);
+  border-radius: var(--radius-lg, 12px);
+  padding: var(--spacing-md, 16px);
+  box-shadow: var(--shadow-card);
+}
+
+.metricLabel {
+  font-size: var(--font-size-xs, 0.75rem);
+  color: var(--text-muted, #6c7d93);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide, 0.025em);
+  margin: 0 0 var(--spacing-xs, 4px);
+}
+
+.metricValue {
+  font-size: var(--font-size-2xl, 1.5rem);
+  font-weight: var(--font-weight-extrabold, 800);
+  color: var(--primary, #1f5fbf);
+  line-height: 1;
+  margin: 0 0 2px;
+}
+
+.metricDelta {
+  font-size: var(--font-size-xs, 0.75rem);
+  font-weight: var(--font-weight-semibold, 600);
+}
+
+.metricDeltaPositive {
+  color: var(--success, #1b7f53);
+}
+
+.metricDeltaNegative {
+  color: var(--danger, #b42318);
+}
+
+/* ===== Milestone Markers ===== */
+.milestoneSection {
+  background: var(--bg-primary, #fff);
+  border-radius: var(--radius-xl, 16px);
+  padding: var(--spacing-md, 16px);
+  box-shadow: var(--shadow-card);
+}
+
+.milestoneTitle {
+  font-size: var(--font-size-base, 1rem);
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--text-primary, #162133);
+  margin: 0 0 var(--spacing-sm, 8px);
+}
+
+.milestoneItem {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md, 16px);
+  padding: var(--spacing-sm, 8px) 0;
+  border-bottom: 1px solid var(--border-color, #e4e9ef);
+  min-height: 44px;
+}
+
+.milestoneItem:last-child {
+  border-bottom: none;
+}
+
+.milestoneIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--primary-light, #e8f0fd);
+  color: var(--primary, #1f5fbf);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.milestoneBody {
+  flex: 1;
+  min-width: 0;
+}
+
+.milestoneName {
+  font-size: var(--font-size-sm, 0.875rem);
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--text-primary, #162133);
+  margin: 0;
+}
+
+.milestoneDate {
+  font-size: var(--font-size-xs, 0.75rem);
+  color: var(--text-muted, #6c7d93);
+  margin: 0;
+}
+
+/* ===== Responsive: Tablet ===== */
+@media (min-width: 768px) {
+  .header {
+    padding: var(--spacing-xl, 32px) var(--spacing-lg, 24px) var(--spacing-md, 16px);
+  }
+
+  .headerTitle {
+    font-size: var(--font-size-3xl, 1.875rem);
+  }
+
+  .content {
+    padding: 0 var(--spacing-lg, 24px);
+  }
+
+  .metricGrid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-md, 16px);
+  }
+
+  .chartContainer {
+    min-height: 300px;
+  }
+}
+
+/* ===== Responsive: Desktop ===== */
+@media (min-width: 1024px) {
+  .metricGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--spacing-lg, 24px);
+  }
+
+  .dateRangeBar,
+  .chartCard {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ===== Dark Mode ===== */
+@media (prefers-color-scheme: dark) {
+  .page {
+    background: var(--gray-950, #0a0a0a);
+  }
+
+  .headerTitle, .chartTitle, .milestoneTitle, .milestoneName {
+    color: var(--gray-50, #f9fbfd);
+  }
+
+  .headerSubtitle, .milestoneDate, .metricLabel {
+    color: var(--gray-400, #97a6ba);
+  }
+
+  .dateRangeBar, .chartCard, .metricCard, .milestoneSection {
+    background: var(--gray-900, #162133);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .dateRangeButton {
+    color: var(--gray-400, #97a6ba);
+  }
+
+  .milestoneItem {
+    border-color: var(--gray-800, #27364c);
+  }
+
+  .milestoneIcon {
+    background: rgba(31, 95, 191, 0.15);
+  }
+}
+
+/* ===== Reduced Motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  .dateRangeButton {
+    transition: none;
+  }
+}

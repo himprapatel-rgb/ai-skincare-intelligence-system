@@ -1,0 +1,332 @@
+/* ProfileSettingsPage — CSS Module (Sprint 4 Track D) */
+
+/* ===== Page Container ===== */
+.page {
+  min-height: 100vh;
+  background: var(--bg-secondary, #f6f8fb);
+  padding-bottom: max(80px, env(safe-area-inset-bottom));
+}
+
+/* ===== Header ===== */
+.header {
+  padding: var(--spacing-lg, 24px) var(--spacing-md, 16px) var(--spacing-md, 16px);
+}
+
+.headerTitle {
+  font-size: var(--font-size-2xl, 1.5rem);
+  font-weight: var(--font-weight-bold, 700);
+  color: var(--text-primary, #162133);
+  margin: 0;
+}
+
+/* ===== Content ===== */
+.content {
+  padding: 0 var(--spacing-md, 16px);
+  max-width: var(--max-width-lg, 960px);
+  margin: 0 auto;
+}
+
+/* ===== Tab Navigation ===== */
+.tabNav {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--border-color, #e4e9ef);
+  margin-bottom: var(--spacing-lg, 24px);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tabNav::-webkit-scrollbar {
+  display: none;
+}
+
+.tabButton {
+  padding: var(--spacing-sm, 8px) var(--spacing-md, 16px);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  font-size: var(--font-size-sm, 0.875rem);
+  font-weight: var(--font-weight-medium, 500);
+  color: var(--text-muted, #6c7d93);
+  cursor: pointer;
+  white-space: nowrap;
+  min-height: 44px;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.tabButton:hover {
+  color: var(--text-primary, #162133);
+}
+
+.tabButtonActive {
+  color: var(--primary, #1f5fbf);
+  border-bottom-color: var(--primary, #1f5fbf);
+  font-weight: var(--font-weight-semibold, 600);
+}
+
+/* ===== Photo Upload ===== */
+.photoSection {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md, 16px);
+  margin-bottom: var(--spacing-lg, 24px);
+}
+
+.photoPreview {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--gray-100, #f2f5f8);
+  flex-shrink: 0;
+}
+
+.photoPlaceholder {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--primary-light, #e8f0fd);
+  color: var(--primary, #1f5fbf);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.photoActions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs, 4px);
+}
+
+.photoUploadButton {
+  padding: 8px 16px;
+  background: var(--primary, #1f5fbf);
+  color: var(--white, #fff);
+  border: none;
+  border-radius: var(--radius-md, 8px);
+  font-size: var(--font-size-sm, 0.875rem);
+  font-weight: var(--font-weight-semibold, 600);
+  cursor: pointer;
+  min-height: 44px;
+  transition: background 0.2s ease;
+}
+
+.photoUploadButton:hover {
+  background: var(--primary-hover, #174a95);
+}
+
+.photoRemoveButton {
+  padding: 8px 16px;
+  background: none;
+  border: none;
+  color: var(--danger, #b42318);
+  font-size: var(--font-size-sm, 0.875rem);
+  cursor: pointer;
+  min-height: 44px;
+}
+
+/* ===== Form Section ===== */
+.formSection {
+  background: var(--bg-primary, #fff);
+  border-radius: var(--radius-xl, 16px);
+  padding: var(--spacing-lg, 24px) var(--spacing-md, 16px);
+  box-shadow: var(--shadow-card);
+  margin-bottom: var(--spacing-md, 16px);
+}
+
+.formSectionTitle {
+  font-size: var(--font-size-base, 1rem);
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--text-primary, #162133);
+  margin: 0 0 var(--spacing-md, 16px);
+}
+
+.formField {
+  margin-bottom: var(--spacing-md, 16px);
+}
+
+.formField:last-child {
+  margin-bottom: 0;
+}
+
+.formLabel {
+  display: block;
+  font-size: var(--font-size-sm, 0.875rem);
+  font-weight: var(--font-weight-medium, 500);
+  color: var(--text-primary, #162133);
+  margin-bottom: var(--spacing-xs, 4px);
+}
+
+.formInput {
+  width: 100%;
+  padding: 10px var(--spacing-md, 16px);
+  border: 1.5px solid var(--border-color, #e4e9ef);
+  border-radius: var(--radius-md, 8px);
+  font-size: var(--font-size-base, 1rem);
+  color: var(--text-primary, #162133);
+  background: var(--bg-primary, #fff);
+  min-height: 44px;
+  transition: border-color 0.2s ease;
+}
+
+.formInput:focus {
+  outline: none;
+  border-color: var(--primary, #1f5fbf);
+  box-shadow: 0 0 0 3px var(--primary-light, #e8f0fd);
+}
+
+.formHint {
+  font-size: var(--font-size-xs, 0.75rem);
+  color: var(--text-muted, #6c7d93);
+  margin-top: 2px;
+}
+
+/* ===== Toggle Row ===== */
+.toggleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-sm, 8px) 0;
+  border-bottom: 1px solid var(--border-color, #e4e9ef);
+  min-height: 44px;
+}
+
+.toggleRow:last-child {
+  border-bottom: none;
+}
+
+.toggleLabel {
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--text-primary, #162133);
+}
+
+.toggleDescription {
+  font-size: var(--font-size-xs, 0.75rem);
+  color: var(--text-muted, #6c7d93);
+  margin-top: 2px;
+}
+
+/* ===== Save Button ===== */
+.saveButton {
+  width: 100%;
+  padding: 14px;
+  background: var(--primary, #1f5fbf);
+  color: var(--white, #fff);
+  border: none;
+  border-radius: var(--radius-md, 8px);
+  font-size: var(--font-size-base, 1rem);
+  font-weight: var(--font-weight-semibold, 600);
+  cursor: pointer;
+  min-height: 44px;
+  margin-top: var(--spacing-lg, 24px);
+  transition: background 0.2s ease;
+}
+
+.saveButton:hover {
+  background: var(--primary-hover, #174a95);
+}
+
+/* ===== Responsive: Tablet ===== */
+@media (min-width: 768px) {
+  .header {
+    padding: var(--spacing-xl, 32px) var(--spacing-lg, 24px) var(--spacing-md, 16px);
+  }
+
+  .headerTitle {
+    font-size: var(--font-size-3xl, 1.875rem);
+  }
+
+  .content {
+    padding: 0 var(--spacing-lg, 24px);
+  }
+
+  .formSection {
+    padding: var(--spacing-lg, 24px);
+  }
+
+  .saveButton {
+    width: auto;
+    padding: 14px 48px;
+  }
+}
+
+/* ===== Responsive: Desktop ===== */
+@media (min-width: 1024px) {
+  .content {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: var(--spacing-xl, 32px);
+  }
+
+  .tabNav {
+    flex-direction: column;
+    border-bottom: none;
+    border-right: 2px solid var(--border-color, #e4e9ef);
+    padding-right: var(--spacing-md, 16px);
+    margin-bottom: 0;
+  }
+
+  .tabButton {
+    border-bottom: none;
+    border-right: 2px solid transparent;
+    margin-bottom: 0;
+    margin-right: -2px;
+    text-align: left;
+  }
+
+  .tabButtonActive {
+    border-right-color: var(--primary, #1f5fbf);
+    border-bottom-color: transparent;
+  }
+}
+
+/* ===== Dark Mode ===== */
+@media (prefers-color-scheme: dark) {
+  .page {
+    background: var(--gray-950, #0a0a0a);
+  }
+
+  .headerTitle, .formSectionTitle, .formLabel, .toggleLabel {
+    color: var(--gray-50, #f9fbfd);
+  }
+
+  .tabButton {
+    color: var(--gray-400, #97a6ba);
+  }
+
+  .tabNav {
+    border-color: var(--gray-700, #36485f);
+  }
+
+  .formSection {
+    background: var(--gray-900, #162133);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .formInput {
+    background: var(--gray-800, #27364c);
+    border-color: var(--gray-700, #36485f);
+    color: var(--gray-50, #f9fbfd);
+  }
+
+  .toggleRow {
+    border-color: var(--gray-800, #27364c);
+  }
+
+  .photoPlaceholder {
+    background: rgba(31, 95, 191, 0.15);
+  }
+}
+
+/* ===== Reduced Motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  .tabButton,
+  .formInput,
+  .saveButton,
+  .photoUploadButton {
+    transition: none;
+  }
+}

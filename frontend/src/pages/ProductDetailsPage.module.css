@@ -1,0 +1,315 @@
+/* ProductDetailsPage — CSS Module (Sprint 4 Track D) */
+
+/* ===== Page Container ===== */
+.page {
+  min-height: 100vh;
+  background: var(--bg-secondary, #f6f8fb);
+  padding-bottom: max(80px, env(safe-area-inset-bottom));
+}
+
+/* ===== Hero Image ===== */
+.heroImage {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background: var(--gray-100, #f2f5f8);
+  display: block;
+}
+
+.heroPlaceholder {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: var(--gray-100, #f2f5f8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gray-400, #97a6ba);
+  font-size: 3rem;
+}
+
+/* ===== Product Info ===== */
+.infoSection {
+  background: var(--bg-primary, #fff);
+  padding: var(--spacing-lg, 24px) var(--spacing-md, 16px);
+  border-radius: var(--radius-xl, 16px) var(--radius-xl, 16px) 0 0;
+  margin-top: calc(-1 * var(--spacing-md, 16px));
+  position: relative;
+  z-index: 1;
+}
+
+.brandName {
+  font-size: var(--font-size-xs, 0.75rem);
+  color: var(--text-muted, #6c7d93);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide, 0.025em);
+  margin: 0 0 var(--spacing-xs, 4px);
+}
+
+.productName {
+  font-size: var(--font-size-xl, 1.25rem);
+  font-weight: var(--font-weight-bold, 700);
+  color: var(--text-primary, #162133);
+  margin: 0 0 var(--spacing-sm, 8px);
+  line-height: var(--line-height-tight, 1.2);
+}
+
+.ratingRow {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm, 8px);
+  margin-bottom: var(--spacing-md, 16px);
+}
+
+.ratingStars {
+  color: var(--warning, #b97710);
+  font-size: var(--font-size-base, 1rem);
+}
+
+.ratingCount {
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--text-secondary, #4e6078);
+}
+
+/* ===== Safety Badges ===== */
+.badgeRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs, 4px);
+  margin-bottom: var(--spacing-md, 16px);
+}
+
+.badge {
+  padding: 4px 10px;
+  border-radius: var(--radius-full, 9999px);
+  font-size: var(--font-size-xs, 0.75rem);
+  font-weight: var(--font-weight-semibold, 600);
+}
+
+.badgeSafe {
+  background: var(--success-100, #dcfce7);
+  color: var(--success, #1b7f53);
+}
+
+.badgeCaution {
+  background: var(--warning-100, #fef3c7);
+  color: var(--warning, #b97710);
+}
+
+.badgeWarning {
+  background: var(--danger-100, #fee2e2);
+  color: var(--danger, #b42318);
+}
+
+/* ===== Content Sections ===== */
+.content {
+  padding: var(--spacing-md, 16px);
+  max-width: var(--max-width-xl, 1280px);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md, 16px);
+}
+
+.section {
+  background: var(--bg-primary, #fff);
+  border-radius: var(--radius-xl, 16px);
+  padding: var(--spacing-md, 16px);
+  box-shadow: var(--shadow-card);
+}
+
+.sectionTitle {
+  font-size: var(--font-size-base, 1rem);
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--text-primary, #162133);
+  margin: 0 0 var(--spacing-sm, 8px);
+}
+
+/* ===== Ingredient List ===== */
+.ingredientList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ingredientItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-sm, 8px) 0;
+  border-bottom: 1px solid var(--border-color, #e4e9ef);
+  min-height: 44px;
+}
+
+.ingredientItem:last-child {
+  border-bottom: none;
+}
+
+.ingredientName {
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--text-primary, #162133);
+}
+
+/* ===== Review Cards ===== */
+.reviewCard {
+  padding: var(--spacing-md, 16px) 0;
+  border-bottom: 1px solid var(--border-color, #e4e9ef);
+}
+
+.reviewCard:last-child {
+  border-bottom: none;
+}
+
+.reviewHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm, 8px);
+  margin-bottom: var(--spacing-xs, 4px);
+}
+
+.reviewAuthor {
+  font-size: var(--font-size-sm, 0.875rem);
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--text-primary, #162133);
+}
+
+.reviewDate {
+  font-size: var(--font-size-xs, 0.75rem);
+  color: var(--text-muted, #6c7d93);
+}
+
+.reviewText {
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--text-secondary, #4e6078);
+  line-height: var(--line-height-relaxed, 1.65);
+  margin: 0;
+}
+
+/* ===== Similar Products Carousel ===== */
+.carousel {
+  display: flex;
+  gap: var(--spacing-sm, 8px);
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: var(--spacing-xs, 4px);
+}
+
+.carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.carouselCard {
+  flex-shrink: 0;
+  width: 140px;
+  background: var(--bg-secondary, #f6f8fb);
+  border-radius: var(--radius-lg, 12px);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.carouselCard:hover {
+  transform: translateY(-2px);
+}
+
+.carouselImage {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+.carouselName {
+  padding: var(--spacing-xs, 4px) var(--spacing-sm, 8px) var(--spacing-sm, 8px);
+  font-size: var(--font-size-xs, 0.75rem);
+  font-weight: var(--font-weight-medium, 500);
+  color: var(--text-primary, #162133);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ===== Responsive: Tablet ===== */
+@media (min-width: 768px) {
+  .heroImage, .heroPlaceholder {
+    aspect-ratio: 16 / 9;
+    max-height: 400px;
+  }
+
+  .infoSection {
+    padding: var(--spacing-xl, 32px) var(--spacing-lg, 24px);
+  }
+
+  .productName {
+    font-size: var(--font-size-2xl, 1.5rem);
+  }
+
+  .content {
+    padding: var(--spacing-lg, 24px);
+  }
+
+  .carouselCard {
+    width: 180px;
+  }
+}
+
+/* ===== Responsive: Desktop ===== */
+@media (min-width: 1024px) {
+  .content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--spacing-lg, 24px);
+  }
+
+  .infoSection {
+    max-width: var(--max-width-xl, 1280px);
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* ===== Dark Mode ===== */
+@media (prefers-color-scheme: dark) {
+  .page {
+    background: var(--gray-950, #0a0a0a);
+  }
+
+  .heroPlaceholder {
+    background: var(--gray-800, #27364c);
+  }
+
+  .infoSection, .section {
+    background: var(--gray-900, #162133);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .productName, .ingredientName, .reviewAuthor, .carouselName {
+    color: var(--gray-50, #f9fbfd);
+  }
+
+  .brandName, .ratingCount, .reviewDate {
+    color: var(--gray-400, #97a6ba);
+  }
+
+  .reviewText {
+    color: var(--gray-300, #d1d9e4);
+  }
+
+  .ingredientItem {
+    border-color: var(--gray-800, #27364c);
+  }
+
+  .carouselCard {
+    background: var(--gray-800, #27364c);
+  }
+}
+
+/* ===== Reduced Motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  .carouselCard {
+    transition: none;
+  }
+
+  .carouselCard:hover {
+    transform: none;
+  }
+}

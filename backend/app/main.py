@@ -73,10 +73,12 @@ from app.models.twin_models import (  # noqa: F401 — Digital Twin models
     SkinStateSnapshot,
 )
 from app.models.ai_chat import AIChatMessage, AIChatSession, AIUsageLog  # noqa: F401
+from app.models.clinical import DermReport, IngredientInteraction, SkinAlert  # noqa: F401 — Clinical Intelligence
 from app.models.user import PolicyVersion, User, UserAccessLog, UserConsent, UserProfile
 from app.product_database import check_product_database_health, create_product_tables
 from app.core.exceptions import AppException, app_exception_handler
 from app.routers import ai_chat as ai_chat_router_module
+from app.routers import clinical as clinical_router_module
 from app.routers import (  # GDPR & User Management
     admin,
     catalog,
@@ -549,6 +551,9 @@ app.include_router(ai_router_module.router)  # Router already includes /api/v1/a
 
 # Sprint 2: AI Chat Assistant (SSE streaming)
 app.include_router(ai_chat_router_module.router, prefix="/api/v1", tags=["ai_chat"])
+
+# Sprint 5: Clinical Intelligence Engine
+app.include_router(clinical_router_module.router, prefix="/api/v1", tags=["clinical"])
 
 # Sprint 2: Standardized exception handler
 app.add_exception_handler(AppException, app_exception_handler)

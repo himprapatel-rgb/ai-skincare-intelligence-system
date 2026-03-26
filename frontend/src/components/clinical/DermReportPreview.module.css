@@ -1,0 +1,165 @@
+/* DermReportPreview — CSS Module */
+
+.preview {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-md, 16px);
+  margin-bottom: var(--spacing-lg, 24px);
+  flex-wrap: wrap;
+}
+
+.title {
+  font-size: var(--font-size-2xl, 1.5rem);
+  font-weight: var(--font-weight-bold, 700);
+  color: var(--text-primary, #162133);
+  margin: 0;
+}
+
+.date {
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--text-tertiary, #94a3b8);
+  margin: 4px 0 0;
+}
+
+.actions {
+  display: flex;
+  gap: var(--spacing-sm, 8px);
+  flex-shrink: 0;
+}
+
+.shareBtn,
+.downloadBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  font-size: var(--font-size-sm, 0.875rem);
+  font-weight: var(--font-weight-medium, 500);
+  border-radius: var(--border-radius-lg, 12px);
+  cursor: pointer;
+  transition: background 0.15s ease, box-shadow 0.15s ease;
+  border: none;
+  min-height: 40px;
+}
+
+.shareBtn {
+  background: var(--bg-secondary, #f6f8fb);
+  color: var(--text-primary, #162133);
+  border: 1px solid var(--border-color, #e4e9ef);
+}
+.shareBtn:hover {
+  background: var(--bg-tertiary, #eef1f5);
+}
+
+.downloadBtn {
+  background: var(--primary, #1f5fbf);
+  color: #fff;
+}
+.downloadBtn:hover {
+  background: var(--primary-dark, #174ea0);
+  box-shadow: var(--shadow-md, 0 4px 12px rgba(31, 95, 191, 0.25));
+}
+
+/* Sections */
+.sections {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md, 16px);
+}
+
+.sectionCard {
+  background: var(--bg-primary, #fff);
+  border: 1px solid var(--border-color, #e4e9ef);
+  border-radius: var(--border-radius-xl, 16px);
+  padding: var(--spacing-lg, 24px);
+  box-shadow: var(--shadow-sm, 0 1px 3px rgba(0, 0, 0, 0.04));
+  transition: box-shadow 0.2s ease;
+}
+.sectionCard:hover {
+  box-shadow: var(--shadow-md, 0 4px 12px rgba(0, 0, 0, 0.08));
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm, 8px);
+  margin-bottom: var(--spacing-sm, 12px);
+}
+
+.sectionIcon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--border-radius-md, 8px);
+  background: linear-gradient(135deg, rgba(31, 95, 191, 0.1) 0%, rgba(79, 138, 217, 0.08) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary, #1f5fbf);
+}
+
+.sectionTitle {
+  font-size: var(--font-size-lg, 1.125rem);
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--text-primary, #162133);
+  margin: 0;
+}
+
+.sectionContent {
+  font-size: var(--font-size-base, 1rem);
+  line-height: var(--line-height-relaxed, 1.65);
+  color: var(--text-secondary, #64748b);
+  white-space: pre-wrap;
+}
+
+/* Dark mode */
+:global(.dark-mode) .title {
+  color: var(--color-gray-100, #f1f5f9);
+}
+:global(.dark-mode) .date {
+  color: var(--color-gray-500, #64748b);
+}
+:global(.dark-mode) .shareBtn {
+  background: var(--color-gray-800, #1e293b);
+  border-color: var(--color-gray-700, #334155);
+  color: var(--color-gray-200, #e2e8f0);
+}
+:global(.dark-mode) .shareBtn:hover {
+  background: var(--color-gray-700, #334155);
+}
+:global(.dark-mode) .sectionCard {
+  background: var(--color-gray-800, #1e293b);
+  border-color: var(--color-gray-700, #334155);
+}
+:global(.dark-mode) .sectionTitle {
+  color: var(--color-gray-100, #f1f5f9);
+}
+:global(.dark-mode) .sectionContent {
+  color: var(--color-gray-400, #94a3b8);
+}
+:global(.dark-mode) .sectionIcon {
+  background: rgba(79, 138, 217, 0.15);
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+  }
+  .actions {
+    width: 100%;
+  }
+  .shareBtn,
+  .downloadBtn {
+    flex: 1;
+    justify-content: center;
+  }
+  .sectionCard {
+    padding: var(--spacing-md, 16px);
+  }
+}

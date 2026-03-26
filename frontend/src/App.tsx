@@ -66,6 +66,8 @@ const SkinTypeGuidePage = React.lazy(() => import("./pages/SkinTypeGuidePage"));
 const VideoTutorialsPage = React.lazy(() => import("./pages/VideoTutorialsPage"));
 const DeviceContextPage = React.lazy(() => import("./pages/DeviceContextPage"));
 const AIChatPage = React.lazy(() => import("./pages/AIChatPage"));
+const ClinicalDashboardPage = React.lazy(() => import("./pages/ClinicalDashboardPage"));
+const AdminAnalyticsPage = React.lazy(() => import("./pages/AdminAnalyticsPage"));
 const SearchPage = React.lazy(() => import("./pages/SearchPage"));
 const NotFoundPage = React.lazy(() => import("./pages/NotFoundPage"));
 const AuthDebug = React.lazy(() => import("./pages/AuthDebug").then(m => ({ default: m.AuthDebug })));
@@ -124,6 +126,8 @@ function AppRoutes() {
           <Route path="/skin-type-guide" element={<SkinTypeGuidePage />} />
           <Route path="/tutorials" element={<VideoTutorialsPage />} />
           <Route path="/device-context" element={<DeviceContextPage />} />
+          <Route path="/clinical" element={<ClinicalDashboardPage />} />
+          <Route path="/admin/analytics" element={<AdminAnalyticsPage />} />
           <Route path="/chat" element={<AIChatPage />} />
           <Route path="/search" element={<SearchPage />} />
           <Route path="/auth-debug" element={<AuthDebug />} />

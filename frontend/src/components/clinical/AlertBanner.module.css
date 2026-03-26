@@ -1,0 +1,90 @@
+/* AlertBanner — CSS Module */
+
+.banner {
+  width: 100%;
+  background: linear-gradient(135deg, #ef4444 0%, #f97316 100%);
+  color: #fff;
+  padding: var(--spacing-sm, 8px) var(--spacing-md, 16px);
+  position: relative;
+  z-index: 50;
+}
+
+.inner {
+  max-width: var(--max-width-xl, 1280px);
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-sm, 8px);
+}
+
+.icon {
+  flex-shrink: 0;
+  margin-top: 2px;
+  opacity: 0.9;
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+}
+
+.title {
+  font-weight: var(--font-weight-bold, 700);
+  font-size: var(--font-size-sm, 0.875rem);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm, 8px);
+  font-size: var(--font-size-sm, 0.875rem);
+  line-height: var(--line-height-normal, 1.5);
+}
+
+.itemText {
+  flex: 1;
+  opacity: 0.95;
+}
+.itemText strong {
+  font-weight: var(--font-weight-semibold, 600);
+}
+
+.dismissBtn {
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: var(--border-radius-sm, 6px);
+  color: #fff;
+  transition: background 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.dismissBtn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+@media (max-width: 768px) {
+  .banner {
+    padding: var(--spacing-sm, 8px) var(--spacing-sm, 8px);
+  }
+  .title {
+    font-size: var(--font-size-xs, 0.75rem);
+  }
+  .item {
+    font-size: var(--font-size-xs, 0.75rem);
+  }
+}

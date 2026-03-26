@@ -13,6 +13,7 @@ from fastapi import (
     Depends,
     File,
     HTTPException,
+    Query,
     Request,
     Response,
     UploadFile,
@@ -505,28 +506,51 @@ def get_scan_image(
 @router.get(
     "/history",
     status_code=status.HTTP_200_OK,
-    summary="Get Scan History"
+    summary="Get Scan History (cursor-based pagination)"
 )
 def get_scan_history(
     request: Request,
     response: Response,
+    cursor: Optional[str] = Query(None, description="Cursor (ISO datetime) to fetch scans before"),
+    limit: int = Query(20, ge=1, le=100),
     db: Session = Depends(get_db),
     current_user: Optional[User] = Depends(get_current_user_optional)
 ):
-    """Get user's scan history."""
+    """Get user's scan history with cursor-based pagination.
+
+    Returns: {"data": [...], "next_cursor": "...", "has_more": bool}
+    """
     response.headers["Cache-Control"] = "private, max-age=30"
     if not current_user:
-        return {"scans": []}
+        return {"data": [], "next_cursor": None, "has_more": False}
     user_id = current_user.id
     base_url = str(request.base_url).rstrip("/")
-    scans = (
+
+    query = (
         db.query(ScanSession)
         .options(defer(ScanSession.image_data))
         .filter(ScanSession.user_id == user_id)
+    )
+
+    # Apply cursor (fetch items older than cursor)
+    if cursor:
+        from datetime import datetime, timezone
+        try:
+            cursor_dt = datetime.fromisoformat(cursor)
+        except ValueError:
+            raise HTTPException(status_code=400, detail="Invalid cursor format")
+        query = query.filter(ScanSession.created_at < cursor_dt)
+
+    scans = (
+        query
         .order_by(ScanSession.created_at.desc())
+        .limit(limit + 1)  # +1 to detect has_more
         .all()
     )
-    
+
+    has_more = len(scans) > limit
+    scans = scans[:limit]
+
     items = []
     for scan in scans:
         summary = None
@@ -548,7 +572,8 @@ def get_scan_history(
             }
         )
 
-    return {"scans": items}
+    next_cursor = items[-1]["created_at"] if has_more and items else None
+    return {"data": items, "next_cursor": next_cursor, "has_more": has_more}
 
 
 @router.delete(

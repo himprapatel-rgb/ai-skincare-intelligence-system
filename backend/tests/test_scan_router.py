@@ -125,5 +125,7 @@ class TestScanRouter:
         
         assert response.status_code == status.HTTP_200_OK
         data = response.json()
-        assert "scans" in data
-        assert isinstance(data["scans"], list)
+        assert "data" in data
+        assert isinstance(data["data"], list)
+        assert "has_more" in data
+        assert "next_cursor" in data

@@ -80,6 +80,12 @@ class ScanSession(Base):
     completed_at = Column(DateTime, nullable=True)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
     
+    # Client & processing metadata
+    device_type = Column(String(50), nullable=True)
+    client_version = Column(String(20), nullable=True)
+    processing_duration_ms = Column(Integer, nullable=True)
+    storage_key = Column(String(500), nullable=True)
+
     # Error tracking
     error_message = Column(Text, nullable=True)
     retry_count = Column(Integer, default=0, nullable=False)

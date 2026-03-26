@@ -1,0 +1,90 @@
+/* EmailVerificationPage — CSS Module (Sprint 3 Track D) */
+.container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-lg, 24px);
+  background: var(--surface, #f8f9fa);
+}
+
+.card {
+  max-width: 440px;
+  width: 100%;
+  background: var(--bg-primary, #fff);
+  border-radius: var(--radius-xl, 16px);
+  box-shadow: var(--shadow-lg, 0 8px 32px rgba(0,0,0,0.08));
+  padding: var(--spacing-xl, 32px);
+  text-align: center;
+}
+
+.icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--spacing-md, 16px);
+  font-size: 2rem;
+}
+
+.iconSuccess {
+  composes: icon;
+  background: var(--color-success-light, #d4edda);
+  color: var(--color-success, #28a745);
+}
+
+.iconError {
+  composes: icon;
+  background: var(--color-error-light, #f8d7da);
+  color: var(--color-error, #dc3545);
+}
+
+.iconLoading {
+  composes: icon;
+  background: var(--primary-light, rgba(108, 99, 255, 0.1));
+  color: var(--primary, #6C63FF);
+}
+
+.title {
+  font-size: var(--font-size-xl, 1.375rem);
+  font-weight: 700;
+  color: var(--text-primary, #1a1a2e);
+  margin-bottom: var(--spacing-xs, 4px);
+}
+
+.message {
+  color: var(--text-secondary, #6b7280);
+  font-size: var(--font-size-sm, 0.875rem);
+  margin-bottom: var(--spacing-lg, 24px);
+  line-height: 1.5;
+}
+
+.resendButton {
+  display: inline-block;
+  margin-top: var(--spacing-md, 16px);
+  color: var(--primary, #6C63FF);
+  font-size: var(--font-size-sm, 0.875rem);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.resendButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.redirectTimer {
+  font-size: var(--font-size-xs, 0.75rem);
+  color: var(--text-tertiary, #9ca3af);
+  margin-top: var(--spacing-sm, 8px);
+}
+
+@media (prefers-color-scheme: dark) {
+  .container { background: var(--surface-dark, #0f0f1a); }
+  .card { background: var(--bg-primary-dark, #1a1a2e); }
+  .title { color: var(--text-primary-dark, #f0f0f5); }
+}

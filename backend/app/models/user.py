@@ -31,7 +31,7 @@ class User(Base):
         String, unique=True, index=True, default=lambda: str(uuid.uuid4())
     )
     email = Column(String, unique=True, index=True, nullable=False)
-    hashed_password = Column(String, nullable=False)
+    hashed_password = Column(String, nullable=True)
     full_name = Column(String, nullable=True)
     is_active = Column(Boolean, default=True)
     is_verified = Column(Boolean, default=False)
@@ -41,6 +41,22 @@ class User(Base):
     email_verification_sent_at = Column(DateTime(timezone=True), nullable=True)  # Rate limit tracking
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+
+    # Password reset
+    password_reset_token = Column(String(255), nullable=True, index=True)
+    password_reset_expires_at = Column(DateTime(timezone=True), nullable=True)
+
+    # Login tracking
+    login_count = Column(Integer, default=0)
+    failed_login_count = Column(Integer, default=0)
+    locked_until = Column(DateTime(timezone=True), nullable=True)
+
+    # JWT refresh token (rotated on each use)
+    refresh_token = Column(String(512), nullable=True, index=True)
+
+    # Soft delete & preferences
+    deleted_at = Column(DateTime(timezone=True), nullable=True)
+    language = Column(String(10), default='en')
 
     # Last known IP & geolocation (updated on each authenticated request)
     last_ip_address = Column(String(45), nullable=True)
@@ -182,6 +198,11 @@ class UserProfile(Base):
     share_progress = Column(Boolean, default=False)
     allow_data_analysis = Column(Boolean, default=True)
     
+    # ===== EXTENDED SKIN PROFILE =====
+    fitzpatrick_type = Column(Integer, nullable=True)
+    pregnancy_status = Column(String(20), nullable=True)
+    avatar_storage_key = Column(String(500), nullable=True)
+
     # ===== METADATA =====
     profile_complete = Column(Boolean, default=False)
     completion_percentage = Column(Integer, default=0)

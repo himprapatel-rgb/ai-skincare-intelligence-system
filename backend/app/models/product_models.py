@@ -7,7 +7,7 @@ Created: December 8, 2025
 import uuid
 from datetime import datetime
 
-from sqlalchemy import Column, DateTime, Float, ForeignKey, Index, Integer, String, Text
+from sqlalchemy import Boolean, Column, DateTime, Float, ForeignKey, Index, Integer, String, Text
 from sqlalchemy.dialects.postgresql import ARRAY, JSONB, UUID
 from sqlalchemy.orm import relationship
 
@@ -53,6 +53,10 @@ class Product(Base):
     average_rating = Column(Float, nullable=True)
     price_usd = Column(Float, nullable=True)
     product_image_url = Column(String(500), nullable=True)
+    description = Column(Text, nullable=True)
+    ingredients_text = Column(Text, nullable=True)
+    country_of_origin = Column(String(100), nullable=True)
+    discontinued = Column(Boolean, default=False)
     created_at = Column(DateTime(timezone=True), default=datetime.utcnow, nullable=False)
     updated_at = Column(DateTime(timezone=True), default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
     product_ingredients = relationship("ProductIngredient", back_populates="product", cascade="all, delete-orphan")

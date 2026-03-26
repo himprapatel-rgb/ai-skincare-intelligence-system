@@ -1,0 +1,316 @@
+/* SkinTypeGuidePage — CSS Module (Sprint 4 Track E) */
+
+/* ===== Page Container ===== */
+.page {
+  min-height: 100vh;
+  background: var(--bg-secondary, #f6f8fb);
+  padding-bottom: max(80px, env(safe-area-inset-bottom));
+}
+
+/* ===== Header ===== */
+.header {
+  background: linear-gradient(135deg, var(--primary, #1f5fbf) 0%, var(--accent, #4f8ad9) 100%);
+  padding: var(--spacing-xl, 32px) var(--spacing-md, 16px);
+  color: var(--white, #fff);
+  text-align: center;
+}
+
+.headerTitle {
+  font-size: var(--font-size-2xl, 1.5rem);
+  font-weight: var(--font-weight-bold, 700);
+  margin: 0 0 var(--spacing-xs, 4px);
+}
+
+.headerSubtitle {
+  font-size: var(--font-size-sm, 0.875rem);
+  opacity: 0.85;
+  margin: 0;
+}
+
+/* ===== Content ===== */
+.content {
+  padding: var(--spacing-md, 16px);
+  max-width: var(--max-width-md, 720px);
+  margin: 0 auto;
+}
+
+/* ===== Quiz Stepper ===== */
+.stepper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs, 4px);
+  margin-bottom: var(--spacing-lg, 24px);
+}
+
+.stepDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--gray-200, #e4e9ef);
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.stepDotActive {
+  background: var(--primary, #1f5fbf);
+  transform: scale(1.3);
+}
+
+.stepDotCompleted {
+  background: var(--success, #1b7f53);
+}
+
+.stepConnector {
+  width: 24px;
+  height: 2px;
+  background: var(--gray-200, #e4e9ef);
+}
+
+.stepConnectorCompleted {
+  background: var(--success, #1b7f53);
+}
+
+/* ===== Question Card ===== */
+.questionCard {
+  background: var(--bg-primary, #fff);
+  border-radius: var(--radius-xl, 16px);
+  padding: var(--spacing-lg, 24px) var(--spacing-md, 16px);
+  box-shadow: var(--shadow-card);
+  margin-bottom: var(--spacing-md, 16px);
+}
+
+.questionText {
+  font-size: var(--font-size-lg, 1.125rem);
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--text-primary, #162133);
+  margin: 0 0 var(--spacing-md, 16px);
+  text-align: center;
+}
+
+/* ===== Option Cards ===== */
+.optionGrid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm, 8px);
+}
+
+.optionCard {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md, 16px);
+  padding: var(--spacing-md, 16px);
+  background: var(--bg-secondary, #f6f8fb);
+  border: 2px solid transparent;
+  border-radius: var(--radius-lg, 12px);
+  cursor: pointer;
+  min-height: 44px;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.optionCard:hover {
+  border-color: var(--primary-light, #e8f0fd);
+  background: var(--primary-light, #e8f0fd);
+}
+
+.optionCardSelected {
+  border-color: var(--primary, #1f5fbf);
+  background: var(--primary-light, #e8f0fd);
+}
+
+.optionIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md, 8px);
+  background: var(--bg-primary, #fff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.optionText {
+  font-size: var(--font-size-sm, 0.875rem);
+  font-weight: var(--font-weight-medium, 500);
+  color: var(--text-primary, #162133);
+}
+
+/* ===== Navigation ===== */
+.quizNav {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--spacing-sm, 8px);
+}
+
+.navButton {
+  padding: 12px 24px;
+  border-radius: var(--radius-md, 8px);
+  font-size: var(--font-size-sm, 0.875rem);
+  font-weight: var(--font-weight-semibold, 600);
+  cursor: pointer;
+  min-height: 44px;
+  transition: background 0.2s ease;
+}
+
+.navButtonBack {
+  background: var(--bg-primary, #fff);
+  border: 1.5px solid var(--border-color, #e4e9ef);
+  color: var(--text-secondary, #4e6078);
+}
+
+.navButtonNext {
+  background: var(--primary, #1f5fbf);
+  border: none;
+  color: var(--white, #fff);
+  flex: 1;
+}
+
+.navButtonNext:hover {
+  background: var(--primary-hover, #174a95);
+}
+
+/* ===== Result Display ===== */
+.resultCard {
+  background: var(--bg-primary, #fff);
+  border-radius: var(--radius-xl, 16px);
+  padding: var(--spacing-xl, 32px) var(--spacing-md, 16px);
+  box-shadow: var(--shadow-card);
+  text-align: center;
+}
+
+.resultIcon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--primary-light, #e8f0fd);
+  color: var(--primary, #1f5fbf);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  margin: 0 auto var(--spacing-md, 16px);
+}
+
+.resultTitle {
+  font-size: var(--font-size-xl, 1.25rem);
+  font-weight: var(--font-weight-bold, 700);
+  color: var(--text-primary, #162133);
+  margin: 0 0 var(--spacing-sm, 8px);
+}
+
+.resultDescription {
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--text-secondary, #4e6078);
+  line-height: var(--line-height-relaxed, 1.65);
+  margin: 0 0 var(--spacing-lg, 24px);
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.resultAction {
+  padding: 14px 32px;
+  background: var(--primary, #1f5fbf);
+  color: var(--white, #fff);
+  border: none;
+  border-radius: var(--radius-md, 8px);
+  font-size: var(--font-size-base, 1rem);
+  font-weight: var(--font-weight-semibold, 600);
+  cursor: pointer;
+  min-height: 44px;
+  transition: background 0.2s ease;
+}
+
+.resultAction:hover {
+  background: var(--primary-hover, #174a95);
+}
+
+/* ===== Responsive: Tablet ===== */
+@media (min-width: 768px) {
+  .header {
+    padding: var(--spacing-2xl, 48px) var(--spacing-lg, 24px);
+  }
+
+  .headerTitle {
+    font-size: var(--font-size-3xl, 1.875rem);
+  }
+
+  .optionGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .questionCard {
+    padding: var(--spacing-xl, 32px);
+  }
+}
+
+/* ===== Responsive: Desktop ===== */
+@media (min-width: 1024px) {
+  .content {
+    max-width: var(--max-width-md, 720px);
+  }
+}
+
+/* ===== Dark Mode ===== */
+@media (prefers-color-scheme: dark) {
+  .page {
+    background: var(--gray-950, #0a0a0a);
+  }
+
+  .header {
+    background: linear-gradient(135deg, #0d2d5e 0%, #1a4080 100%);
+  }
+
+  .questionCard, .resultCard {
+    background: var(--gray-900, #162133);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .questionText, .resultTitle, .optionText {
+    color: var(--gray-50, #f9fbfd);
+  }
+
+  .resultDescription {
+    color: var(--gray-300, #d1d9e4);
+  }
+
+  .optionCard {
+    background: var(--gray-800, #27364c);
+  }
+
+  .optionCard:hover, .optionCardSelected {
+    background: rgba(31, 95, 191, 0.15);
+    border-color: var(--primary, #1f5fbf);
+  }
+
+  .optionIcon {
+    background: var(--gray-700, #36485f);
+  }
+
+  .stepDot {
+    background: var(--gray-700, #36485f);
+  }
+
+  .stepConnector {
+    background: var(--gray-700, #36485f);
+  }
+
+  .resultIcon {
+    background: rgba(31, 95, 191, 0.15);
+  }
+}
+
+/* ===== Reduced Motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  .stepDot,
+  .optionCard,
+  .navButton,
+  .resultAction {
+    transition: none;
+  }
+
+  .stepDotActive {
+    transform: none;
+  }
+}

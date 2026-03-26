@@ -334,6 +334,170 @@ async def delete_goal(
     return None
 
 
+# ===== Sprint 3 Endpoints =====
+
+
+class SuggestedGoal(BaseModel):
+    """Schema for an AI-suggested goal."""
+    goal_type: str
+    title: str
+    description: str
+    reason: str
+
+
+@router.get("/suggested", response_model=List[SuggestedGoal])
+async def get_suggested_goals(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """
+    Return AI-suggested goals based on user's profile and latest scan.
+
+    Uses simple heuristic logic:
+    - skin_type=oily  -> hydration + oil_control
+    - concerns include acne -> acne_control
+    - concerns include wrinkles/aging -> anti_aging
+    - concerns include dark spots -> dark_spots + brightening
+    - Default fallback suggestions if profile is sparse.
+
+    Sprint: 3 — Suggested goals
+    """
+    from app.core.security import decrypt_sensitive_data
+    from app.models.user import UserProfile
+
+    profile = db.query(UserProfile).filter(UserProfile.user_id == current_user.id).first()
+
+    skin_type = "unknown"
+    concerns: list = []
+    if profile:
+        try:
+            raw = decrypt_sensitive_data(profile.skin_type)
+            if raw:
+                skin_type = raw.lower() if isinstance(raw, str) else "unknown"
+        except Exception:
+            pass
+        try:
+            raw = decrypt_sensitive_data(profile.secondary_concerns)
+            if raw:
+                import json
+                concerns = json.loads(raw) if isinstance(raw, str) else (raw if isinstance(raw, list) else [])
+        except Exception:
+            pass
+
+    concerns_lower = [c.lower() if isinstance(c, str) else "" for c in concerns]
+
+    # Collect existing goal types so we don't re-suggest them
+    existing_types = set(
+        row[0]
+        for row in db.query(SkinGoal.goal_type)
+        .filter(SkinGoal.user_id == current_user.id, SkinGoal.is_active == True)
+        .all()
+    )
+
+    suggestions: list[SuggestedGoal] = []
+
+    def _add(goal_type: str, title: str, description: str, reason: str):
+        if goal_type not in existing_types:
+            suggestions.append(SuggestedGoal(
+                goal_type=goal_type, title=title, description=description, reason=reason,
+            ))
+
+    # Skin-type based suggestions
+    if skin_type in ("oily", "combination"):
+        _add("oil_control", "Oil Control", "Balance sebum production", "Your skin type is oily/combination — managing oil can reduce breakouts and shine.")
+        _add("hydration", "Deep Hydration", "Improve skin moisture levels", "Even oily skin needs hydration to keep the barrier healthy.")
+    elif skin_type == "dry":
+        _add("hydration", "Intense Hydration", "Restore and maintain moisture", "Dry skin benefits most from a hydration-focused routine.")
+    elif skin_type == "sensitive":
+        _add("sensitivity", "Barrier Repair", "Calm and strengthen skin barrier", "Sensitive skin needs a strong barrier to reduce irritation.")
+
+    # Concern-based suggestions
+    for c in concerns_lower:
+        if "acne" in c or "breakout" in c:
+            _add("acne_control", "Clear Skin", "Clear breakouts and prevent new ones", f"You listed '{c}' as a concern — targeted acne control can help.")
+        if "wrinkle" in c or "aging" in c or "fine line" in c:
+            _add("anti_aging", "Anti-Aging", "Reduce fine lines and wrinkles", f"Addressing '{c}' early delivers the best long-term results.")
+        if "dark spot" in c or "hyperpigmentation" in c:
+            _add("dark_spots", "Fade Dark Spots", "Reduce hyperpigmentation", f"Consistent treatment can visibly fade '{c}'.")
+            _add("brightening", "Brighten & Even Tone", "Even skin tone and add radiance", "Brightening pairs well with dark-spot treatment.")
+        if "pore" in c:
+            _add("pore_minimizing", "Minimize Pores", "Reduce appearance of pores", f"Targeting '{c}' with the right actives can make a visible difference.")
+        if "texture" in c or "rough" in c:
+            _add("texture", "Smoother Texture", "Smoother, more refined skin", f"Exfoliation and hydration can improve '{c}'.")
+
+    # Fallback: if nothing matched, suggest general goals
+    if not suggestions:
+        _add("hydration", "Hydration Boost", "Improve skin moisture levels", "Hydration is the foundation of healthy skin.")
+        _add("brightening", "Glow Up", "Even skin tone and add radiance", "A brightening routine gives your skin a healthy glow.")
+
+    return suggestions
+
+
+class GoalDataPoint(BaseModel):
+    date: str
+    value: float
+
+
+class GoalTimelineEntry(BaseModel):
+    goal_id: int
+    goal_type: str
+    data_points: List[GoalDataPoint]
+
+
+@router.get("/timeline", response_model=List[GoalTimelineEntry])
+async def get_goals_timeline(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """
+    Return goal progress data points for chart visualisation.
+
+    Each goal returns its creation date (baseline) and current progress.
+    Completed goals also include the completion date.
+
+    Sprint: 3 — Goals timeline
+    """
+    goals = (
+        db.query(SkinGoal)
+        .filter(SkinGoal.user_id == current_user.id, SkinGoal.is_active == True)
+        .order_by(SkinGoal.priority.asc(), SkinGoal.created_at.desc())
+        .all()
+    )
+
+    entries = []
+    for g in goals:
+        data_points = []
+
+        # Starting point
+        if g.created_at:
+            data_points.append(GoalDataPoint(
+                date=g.created_at.isoformat(),
+                value=g.baseline_value if g.baseline_value is not None else 0.0,
+            ))
+
+        # Current point
+        if g.updated_at and g.updated_at != g.created_at:
+            data_points.append(GoalDataPoint(
+                date=g.updated_at.isoformat(),
+                value=g.current_value if g.current_value is not None else g.progress_percentage or 0.0,
+            ))
+
+        # Completion point
+        if g.is_completed and g.completed_at:
+            data_points.append(GoalDataPoint(
+                date=g.completed_at.isoformat(),
+                value=g.target_value if g.target_value is not None else 100.0,
+            ))
+
+        entries.append(GoalTimelineEntry(
+            goal_id=g.id,
+            goal_type=g.goal_type,
+            data_points=data_points,
+        ))
+
+    return entries
+
+
 @router.post("/{goal_id}/progress")
 async def update_progress(
     goal_id: int,

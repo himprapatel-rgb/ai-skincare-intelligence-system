@@ -1,0 +1,281 @@
+/* IngredientDictionaryPage — CSS Module (Sprint 4 Track E) */
+
+/* ===== Page Container ===== */
+.page {
+  min-height: 100vh;
+  background: var(--bg-secondary, #f6f8fb);
+  padding-bottom: max(80px, env(safe-area-inset-bottom));
+}
+
+/* ===== Header ===== */
+.header {
+  padding: var(--spacing-lg, 24px) var(--spacing-md, 16px) var(--spacing-md, 16px);
+}
+
+.headerTitle {
+  font-size: var(--font-size-2xl, 1.5rem);
+  font-weight: var(--font-weight-bold, 700);
+  color: var(--text-primary, #162133);
+  margin: 0 0 var(--spacing-sm, 8px);
+}
+
+/* ===== Search Bar ===== */
+.searchBar {
+  padding: 0 var(--spacing-md, 16px) var(--spacing-md, 16px);
+}
+
+.searchInput {
+  width: 100%;
+  padding: 12px var(--spacing-md, 16px) 12px 44px;
+  border: 1.5px solid var(--border-color, #e4e9ef);
+  border-radius: var(--radius-lg, 12px);
+  font-size: var(--font-size-base, 1rem);
+  background: var(--bg-primary, #fff);
+  min-height: 44px;
+  transition: border-color 0.2s ease;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: var(--primary, #1f5fbf);
+  box-shadow: 0 0 0 3px var(--primary-light, #e8f0fd);
+}
+
+.searchWrapper {
+  position: relative;
+}
+
+.searchIcon {
+  position: absolute;
+  left: var(--spacing-md, 16px);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted, #6c7d93);
+  font-size: 1.125rem;
+  pointer-events: none;
+}
+
+/* ===== Content Layout ===== */
+.content {
+  padding: 0 var(--spacing-md, 16px);
+  max-width: var(--max-width-xl, 1280px);
+  margin: 0 auto;
+}
+
+/* ===== A-Z Index Sidebar ===== */
+.indexSidebar {
+  display: flex;
+  gap: 2px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: var(--spacing-md, 16px);
+}
+
+.indexSidebar::-webkit-scrollbar {
+  display: none;
+}
+
+.indexLetter {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm, 6px);
+  font-size: var(--font-size-sm, 0.875rem);
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--text-secondary, #4e6078);
+  background: none;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+  min-width: 44px;
+  min-height: 44px;
+  transition: background 0.2s ease;
+}
+
+.indexLetter:hover {
+  background: var(--gray-100, #f2f5f8);
+}
+
+.indexLetterActive {
+  background: var(--primary, #1f5fbf);
+  color: var(--white, #fff);
+}
+
+/* ===== Letter Group ===== */
+.letterGroup {
+  margin-bottom: var(--spacing-lg, 24px);
+}
+
+.letterHeading {
+  font-size: var(--font-size-lg, 1.125rem);
+  font-weight: var(--font-weight-bold, 700);
+  color: var(--primary, #1f5fbf);
+  margin: 0 0 var(--spacing-sm, 8px);
+  padding-bottom: var(--spacing-xs, 4px);
+  border-bottom: 2px solid var(--primary-light, #e8f0fd);
+}
+
+/* ===== Ingredient Card ===== */
+.ingredientGrid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm, 8px);
+}
+
+.ingredientCard {
+  background: var(--bg-primary, #fff);
+  border-radius: var(--radius-lg, 12px);
+  padding: var(--spacing-md, 16px);
+  box-shadow: var(--shadow-card);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  min-height: 44px;
+}
+
+.ingredientCard:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.ingredientCardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-xs, 4px);
+}
+
+.ingredientName {
+  font-size: var(--font-size-base, 1rem);
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--text-primary, #162133);
+  margin: 0;
+}
+
+.safetyBadge {
+  padding: 3px 10px;
+  border-radius: var(--radius-full, 9999px);
+  font-size: var(--font-size-xs, 0.75rem);
+  font-weight: var(--font-weight-semibold, 600);
+}
+
+.badgeSafe {
+  background: var(--success-100, #dcfce7);
+  color: var(--success, #1b7f53);
+}
+
+.badgeCaution {
+  background: var(--warning-100, #fef3c7);
+  color: var(--warning, #b97710);
+}
+
+.badgeAvoid {
+  background: var(--danger-100, #fee2e2);
+  color: var(--danger, #b42318);
+}
+
+.ingredientDescription {
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--text-secondary, #4e6078);
+  line-height: var(--line-height-relaxed, 1.65);
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ===== Responsive: Tablet ===== */
+@media (min-width: 768px) {
+  .header {
+    padding: var(--spacing-xl, 32px) var(--spacing-lg, 24px) var(--spacing-md, 16px);
+  }
+
+  .headerTitle {
+    font-size: var(--font-size-3xl, 1.875rem);
+  }
+
+  .searchBar, .content {
+    padding-left: var(--spacing-lg, 24px);
+    padding-right: var(--spacing-lg, 24px);
+  }
+
+  .ingredientGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ===== Responsive: Desktop ===== */
+@media (min-width: 1024px) {
+  .content {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: var(--spacing-lg, 24px);
+  }
+
+  .indexSidebar {
+    flex-direction: column;
+    position: sticky;
+    top: var(--spacing-lg, 24px);
+    overflow-x: visible;
+    padding-bottom: 0;
+  }
+
+  .ingredientGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ===== Dark Mode ===== */
+@media (prefers-color-scheme: dark) {
+  .page {
+    background: var(--gray-950, #0a0a0a);
+  }
+
+  .headerTitle, .ingredientName {
+    color: var(--gray-50, #f9fbfd);
+  }
+
+  .searchInput {
+    background: var(--gray-900, #162133);
+    border-color: var(--gray-700, #36485f);
+    color: var(--gray-50, #f9fbfd);
+  }
+
+  .ingredientCard {
+    background: var(--gray-900, #162133);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .ingredientDescription {
+    color: var(--gray-300, #d1d9e4);
+  }
+
+  .indexLetter {
+    color: var(--gray-400, #97a6ba);
+  }
+
+  .indexLetter:hover {
+    background: var(--gray-800, #27364c);
+  }
+
+  .letterHeading {
+    border-color: rgba(31, 95, 191, 0.3);
+  }
+}
+
+/* ===== Reduced Motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  .ingredientCard,
+  .searchInput,
+  .indexLetter {
+    transition: none;
+  }
+
+  .ingredientCard:hover {
+    transform: none;
+  }
+}

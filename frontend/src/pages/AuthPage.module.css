@@ -1,0 +1,475 @@
+/* AuthPage — CSS Module (Sprint 3 Track B Redesign) */
+
+/* ===== Split Layout ===== */
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-secondary, #f6f8fb);
+}
+
+/* ===== Illustration Panel (Left) ===== */
+.illustrationPanel {
+  display: none;
+  background: linear-gradient(135deg, var(--primary, #1f5fbf) 0%, var(--accent, #4f8ad9) 100%);
+  color: var(--white, #fff);
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--spacing-3xl, 64px) var(--spacing-xl, 32px);
+  position: relative;
+  overflow: hidden;
+}
+
+.illustrationPanel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 20% 80%, rgba(255,255,255,0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.brandHeading {
+  font-size: var(--font-size-3xl, 1.875rem);
+  font-weight: var(--font-weight-bold, 700);
+  margin: 0 0 var(--spacing-md, 16px);
+  letter-spacing: var(--letter-spacing-tight, -0.025em);
+  line-height: var(--line-height-tight, 1.2);
+  position: relative;
+}
+
+.brandDescription {
+  font-size: var(--font-size-lg, 1.125rem);
+  line-height: var(--line-height-relaxed, 1.65);
+  margin: 0 0 var(--spacing-xl, 32px);
+  max-width: 420px;
+  opacity: 0.9;
+  position: relative;
+}
+
+.featureList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md, 16px);
+  position: relative;
+}
+
+.featureItem {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md, 16px);
+  padding: var(--spacing-md, 16px);
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg, 12px);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.featureItem:hover {
+  background: rgba(255, 255, 255, 0.16);
+  transform: translateX(4px);
+}
+
+.featureItemIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md, 8px);
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--primary, #1f5fbf);
+  font-size: 1.25rem;
+}
+
+.featureItemText {
+  font-size: var(--font-size-sm, 0.875rem);
+  line-height: var(--line-height-normal, 1.5);
+  color: rgba(255, 255, 255, 0.95);
+}
+
+/* ===== Form Panel (Right) ===== */
+.formPanel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-lg, 24px);
+  min-height: 100vh;
+}
+
+.formContainer {
+  width: 100%;
+  max-width: 440px;
+}
+
+.formCard {
+  background: var(--bg-primary, #fff);
+  border-radius: var(--radius-xl, 16px);
+  box-shadow: var(--shadow-lg, 0 8px 20px rgba(16,24,40,0.08));
+  padding: var(--spacing-xl, 32px);
+}
+
+.formTitle {
+  font-size: var(--font-size-2xl, 1.5rem);
+  font-weight: var(--font-weight-bold, 700);
+  color: var(--text-primary, #162133);
+  margin: 0 0 var(--spacing-xs, 4px);
+  text-align: center;
+}
+
+.formSubtitle {
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--text-secondary, #4e6078);
+  margin: 0 0 var(--spacing-lg, 24px);
+  text-align: center;
+}
+
+/* ===== Tabs (Login / Register Toggle) ===== */
+.tabs {
+  display: flex;
+  background: var(--gray-100, #f2f5f8);
+  border-radius: var(--radius-md, 8px);
+  padding: 3px;
+  margin-bottom: var(--spacing-lg, 24px);
+  position: relative;
+}
+
+.tab {
+  flex: 1;
+  padding: 10px 0;
+  text-align: center;
+  font-size: var(--font-size-sm, 0.875rem);
+  font-weight: var(--font-weight-medium, 500);
+  color: var(--text-secondary, #4e6078);
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-radius: var(--radius-sm, 6px);
+  transition: color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+  min-height: 44px;
+  position: relative;
+  z-index: 1;
+}
+
+.tabActive {
+  color: var(--text-primary, #162133);
+  background: var(--bg-primary, #fff);
+  box-shadow: var(--shadow-sm, 0 1px 2px rgba(16,24,40,0.04));
+  font-weight: var(--font-weight-semibold, 600);
+}
+
+/* ===== Form Fields ===== */
+.fieldGroup {
+  margin-bottom: var(--spacing-md, 16px);
+}
+
+.label {
+  display: block;
+  font-size: var(--font-size-sm, 0.875rem);
+  font-weight: var(--font-weight-medium, 500);
+  color: var(--text-primary, #162133);
+  margin-bottom: var(--spacing-xs, 4px);
+}
+
+.input {
+  width: 100%;
+  padding: 12px var(--spacing-md, 16px);
+  border: 1.5px solid var(--border-color, #e4e9ef);
+  border-radius: var(--radius-md, 8px);
+  font-size: var(--font-size-base, 1rem);
+  color: var(--text-primary, #162133);
+  background: var(--bg-primary, #fff);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  min-height: 48px;
+  box-sizing: border-box;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--primary, #1f5fbf);
+  box-shadow: 0 0 0 3px rgba(var(--primary-rgb, 31,95,191), 0.12);
+}
+
+.input::placeholder {
+  color: var(--placeholder-color, #97a6ba);
+}
+
+.inputError {
+  border-color: var(--danger, #b42318);
+}
+
+.errorText {
+  font-size: var(--font-size-xs, 0.75rem);
+  color: var(--danger, #b42318);
+  margin-top: var(--spacing-xs, 4px);
+}
+
+/* ===== Password Strength Meter ===== */
+.strengthMeter {
+  display: flex;
+  gap: 4px;
+  margin-top: var(--spacing-sm, 8px);
+}
+
+.strengthBar {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--gray-200, #e4e9ef);
+  transition: background 0.3s ease;
+}
+
+.strengthWeak {
+  background: var(--danger, #b42318);
+}
+
+.strengthFair {
+  background: var(--warning, #b97710);
+}
+
+.strengthGood {
+  background: var(--success, #1b7f53);
+}
+
+.strengthStrong {
+  background: #059669;
+}
+
+.strengthLabel {
+  font-size: var(--font-size-xs, 0.75rem);
+  color: var(--text-muted, #6c7d93);
+  margin-top: 4px;
+}
+
+/* ===== Submit Button ===== */
+.submitButton {
+  width: 100%;
+  padding: 14px;
+  background: var(--primary, #1f5fbf);
+  color: var(--white, #fff);
+  font-size: var(--font-size-base, 1rem);
+  font-weight: var(--font-weight-semibold, 600);
+  border: none;
+  border-radius: var(--radius-md, 8px);
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+  min-height: 48px;
+  margin-top: var(--spacing-sm, 8px);
+}
+
+.submitButton:hover {
+  background: var(--primary-hover, #174a95);
+}
+
+.submitButton:active {
+  transform: scale(0.98);
+}
+
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ===== Social Login ===== */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm, 8px);
+  margin: var(--spacing-lg, 24px) 0;
+  color: var(--text-muted, #6c7d93);
+  font-size: var(--font-size-xs, 0.75rem);
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border-color, #e4e9ef);
+}
+
+.socialRow {
+  display: flex;
+  gap: var(--spacing-sm, 8px);
+}
+
+.socialButton {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm, 8px);
+  padding: 12px;
+  border: 1.5px solid var(--border-color, #e4e9ef);
+  border-radius: var(--radius-md, 8px);
+  background: var(--bg-primary, #fff);
+  font-size: var(--font-size-sm, 0.875rem);
+  font-weight: var(--font-weight-medium, 500);
+  color: var(--text-primary, #162133);
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+  min-height: 48px;
+}
+
+.socialButton:hover {
+  border-color: var(--gray-300, #d1d9e4);
+  background: var(--gray-50, #f9fbfd);
+}
+
+.socialIcon {
+  width: 20px;
+  height: 20px;
+}
+
+/* ===== Footer Links ===== */
+.formFooter {
+  text-align: center;
+  margin-top: var(--spacing-md, 16px);
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--text-secondary, #4e6078);
+}
+
+.formFooterLink {
+  color: var(--primary, #1f5fbf);
+  font-weight: var(--font-weight-semibold, 600);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.formFooterLink:hover {
+  text-decoration: underline;
+}
+
+/* ===== Responsive: Tablet / Desktop ===== */
+@media (min-width: 768px) {
+  .page {
+    flex-direction: row;
+    max-width: 960px;
+    margin: 0 auto;
+    min-height: 100vh;
+    border-radius: 0;
+  }
+
+  .illustrationPanel {
+    display: flex;
+    flex: 1;
+    max-width: 50%;
+  }
+
+  .formPanel {
+    flex: 1;
+    max-width: 50%;
+    min-height: auto;
+  }
+}
+
+@media (min-width: 1024px) {
+  .page {
+    max-width: 960px;
+  }
+
+  .brandHeading {
+    font-size: var(--font-size-4xl, 2.25rem);
+  }
+
+  .formCard {
+    padding: var(--spacing-2xl, 48px);
+  }
+}
+
+/* ===== Dark Mode ===== */
+@media (prefers-color-scheme: dark) {
+  .page {
+    background: var(--gray-950, #0a0a0a);
+  }
+
+  .illustrationPanel {
+    background: linear-gradient(135deg, #0d2d5e 0%, #1a4080 100%);
+  }
+
+  .formCard {
+    background: var(--gray-900, #162133);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  }
+
+  .formTitle {
+    color: var(--gray-50, #f9fbfd);
+  }
+
+  .formSubtitle,
+  .formFooter {
+    color: var(--gray-400, #97a6ba);
+  }
+
+  .tabs {
+    background: var(--gray-800, #27364c);
+  }
+
+  .tabActive {
+    background: var(--gray-700, #36485f);
+    color: var(--gray-50, #f9fbfd);
+  }
+
+  .tab {
+    color: var(--gray-400, #97a6ba);
+  }
+
+  .input {
+    background: var(--gray-800, #27364c);
+    border-color: var(--gray-700, #36485f);
+    color: var(--gray-50, #f9fbfd);
+  }
+
+  .input:focus {
+    border-color: var(--accent, #4f8ad9);
+  }
+
+  .label {
+    color: var(--gray-200, #e4e9ef);
+  }
+
+  .socialButton {
+    background: var(--gray-800, #27364c);
+    border-color: var(--gray-700, #36485f);
+    color: var(--gray-100, #f2f5f8);
+  }
+
+  .socialButton:hover {
+    background: var(--gray-700, #36485f);
+  }
+
+  .divider {
+    color: var(--gray-500, #6c7d93);
+  }
+
+  .divider::before,
+  .divider::after {
+    background: var(--gray-700, #36485f);
+  }
+
+  .strengthBar {
+    background: var(--gray-700, #36485f);
+  }
+}
+
+/* ===== Reduced Motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  .tab,
+  .input,
+  .submitButton,
+  .socialButton,
+  .featureItem,
+  .strengthBar {
+    transition: none;
+  }
+
+  .featureItem:hover {
+    transform: none;
+  }
+
+  .submitButton:active {
+    transform: none;
+  }
+}

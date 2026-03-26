@@ -72,8 +72,13 @@ from app.models.twin_models import (  # noqa: F401 — Digital Twin models
     SkinRegionState,
     SkinStateSnapshot,
 )
+from app.models.ai_chat import AIChatMessage, AIChatSession, AIUsageLog  # noqa: F401
+from app.models.clinical import DermReport, IngredientInteraction, SkinAlert  # noqa: F401 — Clinical Intelligence
 from app.models.user import PolicyVersion, User, UserAccessLog, UserConsent, UserProfile
 from app.product_database import check_product_database_health, create_product_tables
+from app.core.exceptions import AppException, app_exception_handler
+from app.routers import ai_chat as ai_chat_router_module
+from app.routers import clinical as clinical_router_module
 from app.routers import (  # GDPR & User Management
     admin,
     catalog,
@@ -85,14 +90,31 @@ from app.routers import (  # GDPR & User Management
     notifications,
     products,
     profile,
+    search,
     shelf,
 )
+from app.core.websocket import manager as ws_manager  # noqa: F401 — WebSocket manager singleton
 from app.services.auth_service import auth_service
 from middleware.ip_geo_logging import IPGeoLoggingMiddleware
 from middleware.request_tracing import RequestTracingMiddleware
 from middleware.slow_query_logger import setup_slow_query_logging
 
 logger = logging.getLogger(__name__)
+
+# Sentry error tracking (optional — only init if SENTRY_DSN is set)
+if settings.SENTRY_DSN:
+    try:
+        import sentry_sdk
+        sentry_sdk.init(
+            dsn=settings.SENTRY_DSN,
+            traces_sample_rate=0.1,  # 10% of requests
+            profiles_sample_rate=0.05,
+            environment=settings.ENV,
+            release=settings.APP_VERSION,
+        )
+        logger.info("Sentry initialized for %s", settings.ENV)
+    except Exception as exc:
+        logger.warning("Sentry init failed: %s", exc)
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -143,6 +165,15 @@ async def add_security_headers(request, call_next):
         response.headers["Cross-Origin-Resource-Policy"] = "cross-origin"
     else:
         response.headers["Cross-Origin-Resource-Policy"] = "same-site"
+    response.headers["Content-Security-Policy"] = (
+        "default-src 'self'; "
+        "script-src 'self'; "
+        "style-src 'self' 'unsafe-inline'; "
+        "img-src 'self' data: https://images.unsplash.com https://*.pellicura.com; "
+        "connect-src 'self' https://api.openai.com wss://*.pellicura.com; "
+        "font-src 'self'; "
+        "frame-ancestors 'none'"
+    )
     if not settings.DEBUG:
         response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
     return response
@@ -216,57 +247,8 @@ def ensure_test_user() -> None:
         # Product DB is optional for API liveness; keep service up and report via /api/health
         logger.warning("Product DB bootstrap skipped: %s", exc)
 
-    if db_bootstrap_available and engine.dialect.name != "sqlite":
-        try:
-            with engine.begin() as conn:
-                # Ensure admin flag exists on users table (production safety)
-                try:
-                    conn.execute(
-                        text(
-                            "ALTER TABLE users ADD COLUMN IF NOT EXISTS is_admin BOOLEAN DEFAULT FALSE"
-                        )
-                    )
-                except (ProgrammingError, OperationalError):
-                    pass
-                try:
-                    conn.execute(
-                        text("ALTER TABLE user_profiles ALTER COLUMN skin_type TYPE TEXT")
-                    )
-                except (ProgrammingError, OperationalError):
-                    pass
-                # Allow NULL user_id for guest scans
-                try:
-                    conn.execute(
-                        text("ALTER TABLE scan_sessions ALTER COLUMN user_id DROP NOT NULL")
-                    )
-                except (ProgrammingError, OperationalError):
-                    pass  # Column might already be nullable
-                # Ensure scan image storage columns exist (Railway/Postgres)
-                try:
-                    conn.execute(
-                        text("ALTER TABLE scan_sessions ADD COLUMN IF NOT EXISTS image_data BYTEA")
-                    )
-                    conn.execute(
-                        text(
-                            "ALTER TABLE scan_sessions ADD COLUMN IF NOT EXISTS image_content_type VARCHAR(100)"
-                        )
-                    )
-                    conn.execute(
-                        text(
-                            "ALTER TABLE scan_sessions ADD COLUMN IF NOT EXISTS image_filename VARCHAR(255)"
-                        )
-                    )
-                except (ProgrammingError, OperationalError):
-                    pass
-                # IP & geolocation tracking
-                try:
-                    conn.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS last_ip_address VARCHAR(45)"))
-                    conn.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS last_geolocation JSONB"))
-                    conn.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS last_seen_at TIMESTAMP WITH TIME ZONE"))
-                except (ProgrammingError, OperationalError):
-                    pass
-        except Exception as exc:
-            logger.warning("Startup schema safety updates skipped: %s", exc)
+    # Schema migrations are now managed by Alembic (see alembic/versions/).
+    # Run: alembic upgrade head
 
     if not db_bootstrap_available:
         return
@@ -570,10 +552,20 @@ app.include_router(shelf.router, prefix="/api/v1", tags=["shelf"])  # Product Sh
 app.include_router(goals.router, prefix="/api/v1", tags=["goals"])  # Skin Goals API
 app.include_router(catalog.router, prefix="/api/v1", tags=["catalog"])  # Product Catalog Database
 app.include_router(content.router, prefix="/api/v1", tags=["content"])  # Public blogs, videos, news
+app.include_router(search.router, prefix="/api/v1", tags=["search"])  # Unified search
 
 # AI Intelligence Engine — all AI-powered features
 from app.routers import ai as ai_router_module
 app.include_router(ai_router_module.router)  # Router already includes /api/v1/ai prefix
+
+# Sprint 2: AI Chat Assistant (SSE streaming)
+app.include_router(ai_chat_router_module.router, prefix="/api/v1", tags=["ai_chat"])
+
+# Sprint 5: Clinical Intelligence Engine
+app.include_router(clinical_router_module.router, prefix="/api/v1", tags=["clinical"])
+
+# Sprint 2: Standardized exception handler
+app.add_exception_handler(AppException, app_exception_handler)
 
 # Admin image uploads (blog covers, video thumbnails)
 _uploads_dir = Path(__file__).resolve().parent.parent / "uploads"

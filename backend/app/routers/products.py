@@ -40,20 +40,23 @@ router = APIRouter(
 )
 
 
-@router.get("", response_model=List[ProductResponse])
+@router.get("")
 async def search_products(
     response: Response,
     search: Optional[str] = Query(None),
     brand: Optional[str] = Query(None),
     category: Optional[str] = Query(None),
-    limit: int = Query(10, ge=1, le=100),
-    offset: int = Query(0, ge=0),
+    sort_by: Optional[str] = Query(None, description="Sort by: price, rating, name, newest"),
+    min_price: Optional[float] = Query(None, ge=0),
+    max_price: Optional[float] = Query(None, ge=0),
+    page: int = Query(1, ge=1),
+    per_page: int = Query(10, ge=1, le=100),
     db: Session = Depends(get_db)
 ):
-    """Search and filter products"""
+    """Search and filter products with pagination envelope."""
     response.headers["Cache-Control"] = "public, max-age=60"
     query = db.query(Product)
-    
+
     if search:
         query = query.filter(
             (Product.name.ilike(f"%{search}%")) |
@@ -63,9 +66,34 @@ async def search_products(
         query = query.filter(Product.brand.ilike(f"%{brand}%"))
     if category:
         query = query.filter(Product.category == category)
-    
-    products = query.offset(offset).limit(limit).all()
-    return products
+    if min_price is not None and hasattr(Product, "price"):
+        query = query.filter(Product.price >= min_price)
+    if max_price is not None and hasattr(Product, "price"):
+        query = query.filter(Product.price <= max_price)
+
+    # Sorting
+    if sort_by == "name":
+        query = query.order_by(Product.name.asc())
+    elif sort_by == "newest":
+        query = query.order_by(Product.created_at.desc())
+    elif sort_by == "rating" and hasattr(Product, "average_rating"):
+        query = query.order_by(Product.average_rating.desc())
+    elif sort_by == "price" and hasattr(Product, "price"):
+        query = query.order_by(Product.price.asc())
+    else:
+        query = query.order_by(Product.created_at.desc())
+
+    total = query.count()
+    offset = (page - 1) * per_page
+    products = query.offset(offset).limit(per_page).all()
+
+    return {
+        "data": [ProductResponse.model_validate(p) for p in products],
+        "total": total,
+        "page": page,
+        "per_page": per_page,
+        "has_more": (page * per_page) < total,
+    }
 
 
 @router.get("/{barcode}", response_model=ProductResponse)

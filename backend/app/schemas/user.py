@@ -93,6 +93,8 @@ class UserLogin(BaseModel):
 class AuthResponse(BaseModel):
     """Authentication response with token and user."""
     token: str
+    token_type: str = "bearer"
+    refresh_token: Optional[str] = None
     user: UserResponse
     message: Optional[str] = None
     verification_required: bool = False

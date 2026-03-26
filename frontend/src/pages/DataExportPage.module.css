@@ -1,0 +1,300 @@
+/* DataExportPage — CSS Module, mobile-first, dark mode support */
+
+.page {
+  min-height: 100vh;
+  background: var(--bg-secondary, #f6f8fb);
+  padding-bottom: max(80px, env(safe-area-inset-bottom));
+}
+
+/* ===== Header ===== */
+.header {
+  background: linear-gradient(135deg, var(--primary, #1f5fbf) 0%, var(--accent, #4f8ad9) 100%);
+  padding: var(--spacing-lg, 24px) var(--spacing-md, 16px);
+  color: var(--white, #fff);
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  color: rgba(255, 255, 255, 0.95);
+  border-radius: var(--border-radius-md, 8px);
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+.backLink:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--white, #fff);
+}
+
+.headerText {
+  flex: 1;
+  min-width: 0;
+}
+
+.headerTitle {
+  font-size: var(--font-size-2xl, 1.5rem);
+  font-weight: var(--font-weight-bold, 700);
+  margin: 0 0 var(--spacing-xs, 4px);
+  line-height: var(--line-height-tight, 1.2);
+  color: var(--white, #fff);
+}
+
+.headerIcon {
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+.headerSubtitle {
+  font-size: var(--font-size-sm, 0.875rem);
+  opacity: 0.85;
+  margin: 0;
+}
+
+/* ===== Content ===== */
+.content {
+  padding: 20px var(--spacing-md, 16px);
+  max-width: var(--max-width-xl, 1280px);
+  margin: 0 auto;
+}
+
+/* ===== Card ===== */
+.card {
+  background: var(--bg-primary, #fff);
+  border: 1px solid var(--border-color, #e2e8f0);
+  border-radius: var(--radius-lg, 12px);
+  box-shadow: var(--shadow-sm, 0 2px 4px rgba(0,0,0,0.06));
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.cardTitle {
+  margin: 0 0 16px 0;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0 4px;
+  color: var(--text-primary, #0f172a);
+}
+
+/* ===== Export Complete ===== */
+.exportComplete {
+  composes: card;
+  text-align: center;
+  padding: 32px 24px;
+}
+
+.completeIcon {
+  font-size: 5rem;
+  margin-bottom: 24px;
+  color: var(--color-success, #10b981);
+}
+
+.completeText {
+  color: var(--color-gray-500, #64748b);
+  font-size: 1rem;
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+
+.completeActions {
+  margin-top: 24px;
+}
+
+/* ===== Category ===== */
+.category {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  margin-bottom: 8px;
+  background: var(--color-gray-50, #f8fafc);
+  border-radius: var(--radius-md, 8px);
+  border: 1px solid var(--border-color, #e2e8f0);
+}
+
+.categoryCheck {
+  width: 20px;
+  height: 20px;
+  margin-right: 16px;
+  accent-color: var(--color-primary, #1f6feb);
+  cursor: pointer;
+}
+
+.categoryInfo {
+  flex: 1;
+}
+
+.categoryLabel {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--text-primary, #0f172a);
+  margin-bottom: 4px;
+}
+
+.categoryDesc {
+  font-size: 0.875rem;
+  color: var(--color-gray-500, #64748b);
+  line-height: 1.5;
+}
+
+.categorySize {
+  font-size: 0.875rem;
+  color: var(--color-gray-500, #64748b);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* ===== Format Selection ===== */
+.formatGrid {
+  display: flex;
+  gap: var(--space-4, 16px);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-6, 24px);
+}
+
+.formatCard {
+  flex: 1;
+  min-width: 200px;
+  padding: 24px;
+  background: var(--color-gray-50, #f8fafc);
+  border: 2px solid var(--border-color, #e2e8f0);
+  border-radius: var(--radius-lg, 12px);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+  color: var(--text-primary, #0f172a);
+}
+
+.formatCard:hover {
+  border-color: var(--color-primary, #1f6feb);
+  transform: translateY(-2px);
+}
+
+.formatCardActive {
+  composes: formatCard;
+  background: var(--color-primary, #1f6feb);
+  border-color: var(--color-primary, #1f6feb);
+  color: var(--color-white, #fff);
+}
+
+.formatIcon {
+  font-size: 2rem;
+  margin-bottom: 12px;
+}
+
+.formatTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.formatSubtitle {
+  font-size: 0.875rem;
+  opacity: 0.8;
+}
+
+.formatExplanation {
+  margin-top: 12px;
+  font-size: 0.875rem;
+  color: var(--color-gray-500, #64748b);
+  line-height: 1.5;
+}
+
+.formatEta {
+  margin-top: 12px;
+  font-size: 0.875rem;
+  color: var(--color-gray-500, #64748b);
+}
+
+/* ===== Actions ===== */
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 32px;
+  margin-bottom: 32px;
+}
+
+/* ===== Note ===== */
+.note {
+  composes: card;
+  background: color-mix(in srgb, var(--color-primary, #1f6feb) 8%, transparent);
+  border-color: var(--color-primary-light, #e8f0fd);
+}
+
+.noteContent {
+  margin: 0;
+  font-size: 0.9375rem;
+  color: var(--text-primary, #0f172a);
+  line-height: 1.5;
+}
+
+/* ===== Dark Mode ===== */
+:global([data-theme="dark"]) .card {
+  background: var(--bg-primary, #1e293b);
+  border-color: var(--border-color, #334155);
+}
+
+:global([data-theme="dark"]) .category {
+  background: var(--color-gray-800, #1e293b);
+  border-color: var(--border-color, #334155);
+}
+
+:global([data-theme="dark"]) .formatCard {
+  background: var(--color-gray-800, #1e293b);
+  border-color: var(--border-color, #334155);
+  color: var(--text-primary, #f1f5f9);
+}
+
+:global([data-theme="dark"]) .note {
+  background: color-mix(in srgb, var(--color-primary, #1f6feb) 12%, var(--bg-primary, #1e293b));
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .formatGrid {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .formatCard,
+  .formatCardActive {
+    min-width: 0;
+    width: 100%;
+    min-height: 80px;
+    padding: 20px;
+  }
+
+  .actions {
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .actions .btn {
+    width: 100%;
+    min-height: 48px;
+  }
+}
+
+@media (max-width: 480px) {
+  .content {
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+
+  .exportComplete {
+    padding: 24px 16px;
+  }
+
+  .formatCard,
+  .formatCardActive {
+    padding: 16px;
+    min-height: 72px;
+  }
+}

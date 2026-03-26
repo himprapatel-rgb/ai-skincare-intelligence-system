@@ -1,0 +1,104 @@
+/* OnboardingPage — CSS Module polish (Sprint 3 Track D) */
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-lg, 24px);
+  background: var(--surface, #f8f9fa);
+}
+
+.card {
+  max-width: 520px;
+  width: 100%;
+  background: var(--bg-primary, #fff);
+  border-radius: var(--radius-xl, 16px);
+  box-shadow: var(--shadow-lg, 0 8px 32px rgba(0,0,0,0.08));
+  padding: var(--spacing-xl, 32px);
+  position: relative;
+  overflow: hidden;
+}
+
+.progressBar {
+  display: flex;
+  gap: var(--spacing-xs, 4px);
+  margin-bottom: var(--spacing-lg, 24px);
+}
+
+.progressStep {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--border, #e0e0e0);
+  transition: background 0.3s ease;
+}
+
+.progressStep.active {
+  background: var(--primary, #6C63FF);
+}
+
+.stepTitle {
+  font-size: var(--font-size-xl, 1.375rem);
+  font-weight: 700;
+  color: var(--text-primary, #1a1a2e);
+  margin-bottom: var(--spacing-sm, 8px);
+}
+
+.stepDescription {
+  color: var(--text-secondary, #6b7280);
+  font-size: var(--font-size-sm, 0.875rem);
+  margin-bottom: var(--spacing-lg, 24px);
+  line-height: 1.5;
+}
+
+.optionGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: var(--spacing-sm, 8px);
+  margin-bottom: var(--spacing-lg, 24px);
+}
+
+.optionChip {
+  padding: var(--spacing-sm, 8px) var(--spacing-md, 16px);
+  border: 2px solid var(--border, #e0e0e0);
+  border-radius: var(--radius-lg, 12px);
+  background: transparent;
+  cursor: pointer;
+  font-size: var(--font-size-sm, 0.875rem);
+  transition: all 0.2s ease;
+  text-align: center;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.optionChip:hover {
+  border-color: var(--primary, #6C63FF);
+}
+
+.optionChip.selected {
+  border-color: var(--primary, #6C63FF);
+  background: var(--primary-light, rgba(108, 99, 255, 0.08));
+  color: var(--primary, #6C63FF);
+  font-weight: 600;
+}
+
+.actions {
+  display: flex;
+  gap: var(--spacing-sm, 8px);
+  justify-content: space-between;
+  margin-top: var(--spacing-lg, 24px);
+}
+
+@media (prefers-color-scheme: dark) {
+  .container { background: var(--surface-dark, #0f0f1a); }
+  .card { background: var(--bg-primary-dark, #1a1a2e); box-shadow: var(--shadow-lg, 0 8px 32px rgba(0,0,0,0.3)); }
+  .stepTitle { color: var(--text-primary-dark, #f0f0f5); }
+}
+
+@media (max-width: 480px) {
+  .card { padding: var(--spacing-md, 16px); border-radius: var(--radius-lg, 12px); }
+  .optionGrid { grid-template-columns: repeat(2, 1fr); }
+}

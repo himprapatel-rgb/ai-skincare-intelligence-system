@@ -1,6 +1,7 @@
 // src/App.tsx - Premium GUI v3 - Complete Frontend
 import React, { Suspense } from "react";
 import { BrowserRouter, Routes, Route, useNavigate, Navigate } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from "./context/AuthContext";
 import { ScanProvider } from "./context/ScanContext";
 import { ToastProvider } from "./context/ToastContext";
@@ -14,6 +15,7 @@ import LoadingScreen from "./components/LoadingScreen";
 import { ToastContainer } from "./components/Toast";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import NetworkStatus from "./components/NetworkStatus";
+import ChatWidget from "./components/chat/ChatWidget";
 
 // Page Imports - Lazy loaded for faster initial load
 const HomePage = React.lazy(() => import("./pages/HomePage"));
@@ -63,6 +65,10 @@ const IngredientDictionaryPage = React.lazy(() => import("./pages/IngredientDict
 const SkinTypeGuidePage = React.lazy(() => import("./pages/SkinTypeGuidePage"));
 const VideoTutorialsPage = React.lazy(() => import("./pages/VideoTutorialsPage"));
 const DeviceContextPage = React.lazy(() => import("./pages/DeviceContextPage"));
+const AIChatPage = React.lazy(() => import("./pages/AIChatPage"));
+const ClinicalDashboardPage = React.lazy(() => import("./pages/ClinicalDashboardPage"));
+const AdminAnalyticsPage = React.lazy(() => import("./pages/AdminAnalyticsPage"));
+const SearchPage = React.lazy(() => import("./pages/SearchPage"));
 const NotFoundPage = React.lazy(() => import("./pages/NotFoundPage"));
 const AuthDebug = React.lazy(() => import("./pages/AuthDebug").then(m => ({ default: m.AuthDebug })));
 
@@ -120,6 +126,10 @@ function AppRoutes() {
           <Route path="/skin-type-guide" element={<SkinTypeGuidePage />} />
           <Route path="/tutorials" element={<VideoTutorialsPage />} />
           <Route path="/device-context" element={<DeviceContextPage />} />
+          <Route path="/clinical" element={<ClinicalDashboardPage />} />
+          <Route path="/admin/analytics" element={<AdminAnalyticsPage />} />
+          <Route path="/chat" element={<AIChatPage />} />
+          <Route path="/search" element={<SearchPage />} />
           <Route path="/auth-debug" element={<AuthDebug />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
@@ -128,11 +138,22 @@ function AppRoutes() {
   );
 }
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000,
+      gcTime: 10 * 60 * 1000,
+      retry: 1,
+    },
+  },
+});
+
 export default function App() {
   const routerBase = import.meta.env.BASE_URL || "/";
   return (
     <ErrorBoundary onRetry={() => window.location.reload()}>
       <AuthProvider>
+        <QueryClientProvider client={queryClient}>
         <ThemeProvider>
           <ShelfProvider>
             <ScanProvider>
@@ -144,6 +165,7 @@ export default function App() {
                 <AppLayout>
                   <AppRoutes />
                 </AppLayout>
+                <ChatWidget />
               </NotificationProvider>
             </BrowserRouter>
             <ToastContainer />
@@ -151,6 +173,7 @@ export default function App() {
             </ScanProvider>
           </ShelfProvider>
         </ThemeProvider>
+        </QueryClientProvider>
       </AuthProvider>
     </ErrorBoundary>
   );

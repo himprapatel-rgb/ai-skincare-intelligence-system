@@ -8,12 +8,14 @@ import logging
 from datetime import datetime
 from typing import List, Optional
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, WebSocket, WebSocketDisconnect, status
+from jose import JWTError, jwt
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
-from app.core.security import get_current_user
-from app.database import Base, engine
+from app.core.security import get_current_user, SECRET_KEY, ALGORITHM
+from app.core.websocket import manager
+from app.database import Base, engine, SessionLocal
 from app.dependencies import get_db
 from app.models.notifications import Notification, NotificationSettings
 from app.models.user import User
@@ -346,7 +348,7 @@ async def check_reminders(
     
     service = NotificationService(db)
     created = service.check_and_create_routine_reminders(current_user.id)
-    
+
     return {
         "reminders_created": len(created),
         "notifications": [
@@ -359,3 +361,129 @@ async def check_reminders(
             for n in created
         ],
     }
+
+
+# ===== WebSocket Real-Time Notifications =====
+
+@router.websocket("/live")
+async def websocket_notifications(websocket: WebSocket, token: str = ""):
+    """
+    WebSocket endpoint for real-time notifications.
+
+    Connect via: ws://host/api/v1/notifications/live?token=<JWT>
+
+    On connect, all unread notifications are sent.  The connection is kept
+    alive with periodic pings from the ConnectionManager heartbeat.
+    """
+    # Authenticate via JWT query parameter
+    if not token:
+        await websocket.close(code=4001, reason="Missing token")
+        return
+
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        subject: str | None = payload.get("sub")
+        if subject is None:
+            await websocket.close(code=4001, reason="Invalid token")
+            return
+    except JWTError:
+        await websocket.close(code=4001, reason="Invalid token")
+        return
+
+    # Resolve user
+    db = SessionLocal()
+    try:
+        if subject.isdigit():
+            user = db.query(User).filter(User.id == int(subject)).first()
+        else:
+            user = db.query(User).filter(User.email == subject).first()
+
+        if not user or user.deleted_at is not None:
+            await websocket.close(code=4001, reason="User not found")
+            return
+
+        user_id = user.id
+
+        # Fetch unread notifications to send on connect
+        unread = (
+            db.query(Notification)
+            .filter(Notification.user_id == user_id, Notification.read == False)
+            .order_by(Notification.created_at.desc())
+            .limit(50)
+            .all()
+        )
+        unread_payload = [
+            {
+                "id": n.id,
+                "type": n.type,
+                "title": n.title,
+                "message": n.message,
+                "action_url": n.action_url,
+                "created_at": n.created_at.isoformat() if n.created_at else "",
+            }
+            for n in unread
+        ]
+    finally:
+        db.close()
+
+    # Register connection
+    await manager.connect(websocket, user_id)
+
+    # Send unread notifications immediately after connect
+    try:
+        await websocket.send_json({
+            "type": "unread_notifications",
+            "notifications": unread_payload,
+            "count": len(unread_payload),
+        })
+    except Exception:
+        manager.disconnect(websocket, user_id)
+        return
+
+    # Keep connection alive until client disconnects
+    try:
+        while True:
+            data = await websocket.receive_text()
+            # Handle pong responses (or any client message) — keep loop alive
+            if data == "pong":
+                continue
+    except WebSocketDisconnect:
+        manager.disconnect(websocket, user_id)
+        logger.info("WebSocket client disconnected for user %d", user_id)
+    except Exception:
+        manager.disconnect(websocket, user_id)
+
+
+# ===== Additional REST Endpoints =====
+
+@router.get("/unread-count")
+async def get_unread_count(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """
+    Lightweight endpoint returning the count of unread notifications.
+    """
+    count = db.query(Notification).filter(
+        Notification.user_id == current_user.id,
+        Notification.read == False,
+    ).count()
+    return {"count": count}
+
+
+@router.delete("/read", status_code=status.HTTP_200_OK)
+async def bulk_delete_read_notifications(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """
+    Bulk delete all read notifications for the current user.
+    """
+    deleted = db.query(Notification).filter(
+        Notification.user_id == current_user.id,
+        Notification.read == True,
+    ).delete(synchronize_session="fetch")
+    db.commit()
+
+    logger.info("User %d bulk-deleted %d read notifications", current_user.id, deleted)
+    return {"message": f"Deleted {deleted} read notifications", "count": deleted}

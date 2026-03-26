@@ -1,0 +1,447 @@
+/* MePage — CSS Module (Sprint 3 Track B Redesign) */
+
+/* ===== Page Container ===== */
+.page {
+  min-height: 100vh;
+  background: var(--bg-secondary, #f6f8fb);
+  padding-bottom: max(80px, env(safe-area-inset-bottom));
+}
+
+/* ===== Profile Header ===== */
+.profileHeader {
+  background: var(--bg-primary, #fff);
+  padding: var(--spacing-lg, 24px) var(--spacing-md, 16px);
+  text-align: center;
+  border-bottom: 1px solid var(--border-color, #e4e9ef);
+}
+
+.avatarWrapper {
+  position: relative;
+  display: inline-block;
+  margin-bottom: var(--spacing-md, 16px);
+}
+
+.avatar {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--primary-light, #e8f0fd);
+  background: var(--gray-100, #f2f5f8);
+}
+
+.avatarPlaceholder {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  background: var(--primary-light, #e8f0fd);
+  color: var(--primary, #1f5fbf);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-3xl, 1.875rem);
+  font-weight: var(--font-weight-bold, 700);
+}
+
+.avatarBadge {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--primary, #1f5fbf);
+  color: var(--white, #fff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  border: 2px solid var(--bg-primary, #fff);
+}
+
+.userName {
+  font-size: var(--font-size-xl, 1.25rem);
+  font-weight: var(--font-weight-bold, 700);
+  color: var(--text-primary, #162133);
+  margin: 0 0 var(--spacing-xs, 4px);
+}
+
+.userEmail {
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--text-secondary, #4e6078);
+  margin: 0 0 var(--spacing-md, 16px);
+}
+
+.editProfileButton {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm, 8px);
+  padding: 8px 20px;
+  border: 1.5px solid var(--border-color, #e4e9ef);
+  border-radius: var(--radius-full, 9999px);
+  background: var(--bg-primary, #fff);
+  font-size: var(--font-size-sm, 0.875rem);
+  font-weight: var(--font-weight-medium, 500);
+  color: var(--text-primary, #162133);
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+  min-height: 44px;
+}
+
+.editProfileButton:hover {
+  border-color: var(--primary, #1f5fbf);
+  background: var(--primary-light, #e8f0fd);
+  color: var(--primary, #1f5fbf);
+}
+
+/* ===== Stats Row ===== */
+.statsRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  background: var(--bg-primary, #fff);
+  border-bottom: 1px solid var(--border-color, #e4e9ef);
+}
+
+.statItem {
+  text-align: center;
+  padding: var(--spacing-md, 16px) var(--spacing-sm, 8px);
+  position: relative;
+}
+
+.statItem:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 25%;
+  height: 50%;
+  width: 1px;
+  background: var(--border-color, #e4e9ef);
+}
+
+.statValue {
+  font-size: var(--font-size-2xl, 1.5rem);
+  font-weight: var(--font-weight-extrabold, 800);
+  color: var(--primary, #1f5fbf);
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+.statLabel {
+  font-size: var(--font-size-xs, 0.75rem);
+  color: var(--text-secondary, #4e6078);
+  font-weight: var(--font-weight-medium, 500);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide, 0.025em);
+}
+
+/* ===== Profile Completion ===== */
+.completionCard {
+  margin: var(--spacing-md, 16px);
+  background: var(--bg-primary, #fff);
+  border-radius: var(--radius-xl, 16px);
+  padding: var(--spacing-md, 16px);
+  box-shadow: var(--shadow-card);
+}
+
+.completionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-sm, 8px);
+}
+
+.completionTitle {
+  font-size: var(--font-size-sm, 0.875rem);
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--text-primary, #162133);
+  margin: 0;
+}
+
+.completionPercent {
+  font-size: var(--font-size-sm, 0.875rem);
+  font-weight: var(--font-weight-bold, 700);
+  color: var(--primary, #1f5fbf);
+}
+
+.progressBarTrack {
+  width: 100%;
+  height: 8px;
+  background: var(--gray-100, #f2f5f8);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progressBarFill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary, #1f5fbf), var(--accent, #4f8ad9));
+  border-radius: 4px;
+  transition: width 0.6s ease;
+}
+
+.completionHint {
+  font-size: var(--font-size-xs, 0.75rem);
+  color: var(--text-muted, #6c7d93);
+  margin: var(--spacing-sm, 8px) 0 0;
+}
+
+/* ===== Clinical Summary ===== */
+.clinicalSummary {
+  margin: 0 var(--spacing-md, 16px) var(--spacing-md, 16px);
+  background: var(--bg-primary, #fff);
+  border-radius: var(--radius-xl, 16px);
+  padding: var(--spacing-md, 16px);
+  box-shadow: var(--shadow-card);
+  border-left: 4px solid var(--primary, #1f5fbf);
+}
+
+.clinicalTitle {
+  font-size: var(--font-size-base, 1rem);
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--text-primary, #162133);
+  margin: 0 0 var(--spacing-sm, 8px);
+}
+
+.clinicalText {
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--text-secondary, #4e6078);
+  line-height: var(--line-height-relaxed, 1.65);
+  margin: 0;
+}
+
+/* ===== Settings Sections ===== */
+.settingsSection {
+  margin: 0 var(--spacing-md, 16px) var(--spacing-md, 16px);
+}
+
+.settingsSectionTitle {
+  font-size: var(--font-size-xs, 0.75rem);
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--text-muted, #6c7d93);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide, 0.025em);
+  margin: 0 0 var(--spacing-sm, 8px);
+  padding-left: var(--spacing-md, 16px);
+}
+
+.settingsList {
+  background: var(--bg-primary, #fff);
+  border-radius: var(--radius-xl, 16px);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+.settingsItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-md, 16px);
+  cursor: pointer;
+  transition: background 0.15s ease;
+  min-height: 52px;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+}
+
+.settingsItem:hover {
+  background: var(--gray-50, #f9fbfd);
+}
+
+.settingsItem:not(:last-child) {
+  border-bottom: 1px solid var(--border-color, #e4e9ef);
+}
+
+.settingsItemLeft {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md, 16px);
+}
+
+.settingsIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md, 8px);
+  background: var(--primary-light, #e8f0fd);
+  color: var(--primary, #1f5fbf);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.settingsItemLabel {
+  font-size: var(--font-size-base, 1rem);
+  font-weight: var(--font-weight-medium, 500);
+  color: var(--text-primary, #162133);
+}
+
+.settingsItemDescription {
+  font-size: var(--font-size-xs, 0.75rem);
+  color: var(--text-muted, #6c7d93);
+  margin-top: 1px;
+}
+
+.settingsChevron {
+  color: var(--gray-400, #97a6ba);
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+/* ===== Responsive: Tablet ===== */
+@media (min-width: 768px) {
+  .profileHeader {
+    padding: var(--spacing-xl, 32px);
+  }
+
+  .avatar,
+  .avatarPlaceholder {
+    width: 104px;
+    height: 104px;
+  }
+
+  .userName {
+    font-size: var(--font-size-2xl, 1.5rem);
+  }
+
+  .settingsSection,
+  .clinicalSummary,
+  .completionCard {
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* ===== Responsive: Desktop ===== */
+@media (min-width: 1024px) {
+  .profileHeader {
+    padding: var(--spacing-2xl, 48px);
+  }
+
+  .statsRow {
+    max-width: 480px;
+    margin: 0 auto;
+    border-radius: var(--radius-lg, 12px);
+    border: 1px solid var(--border-color, #e4e9ef);
+    border-bottom: 1px solid var(--border-color, #e4e9ef);
+    transform: translateY(-24px);
+    box-shadow: var(--shadow-card);
+  }
+
+  .settingsSection,
+  .clinicalSummary,
+  .completionCard {
+    max-width: 720px;
+  }
+}
+
+/* ===== Dark Mode ===== */
+@media (prefers-color-scheme: dark) {
+  .page {
+    background: var(--gray-950, #0a0a0a);
+  }
+
+  .profileHeader {
+    background: var(--gray-900, #162133);
+    border-color: var(--gray-800, #27364c);
+  }
+
+  .avatar {
+    border-color: var(--gray-700, #36485f);
+  }
+
+  .avatarPlaceholder {
+    background: rgba(31, 95, 191, 0.15);
+  }
+
+  .avatarBadge {
+    border-color: var(--gray-900, #162133);
+  }
+
+  .userName {
+    color: var(--gray-50, #f9fbfd);
+  }
+
+  .userEmail {
+    color: var(--gray-400, #97a6ba);
+  }
+
+  .editProfileButton {
+    background: var(--gray-800, #27364c);
+    border-color: var(--gray-700, #36485f);
+    color: var(--gray-100, #f2f5f8);
+  }
+
+  .editProfileButton:hover {
+    background: rgba(31, 95, 191, 0.15);
+    border-color: var(--accent, #4f8ad9);
+    color: var(--accent, #4f8ad9);
+  }
+
+  .statsRow {
+    background: var(--gray-900, #162133);
+    border-color: var(--gray-800, #27364c);
+  }
+
+  .statItem:not(:last-child)::after {
+    background: var(--gray-700, #36485f);
+  }
+
+  .statLabel {
+    color: var(--gray-400, #97a6ba);
+  }
+
+  .completionCard,
+  .clinicalSummary,
+  .settingsList {
+    background: var(--gray-900, #162133);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .completionTitle,
+  .clinicalTitle,
+  .settingsItemLabel {
+    color: var(--gray-50, #f9fbfd);
+  }
+
+  .clinicalSummary {
+    border-left-color: var(--accent, #4f8ad9);
+  }
+
+  .progressBarTrack {
+    background: var(--gray-800, #27364c);
+  }
+
+  .settingsItem:hover {
+    background: var(--gray-800, #27364c);
+  }
+
+  .settingsItem:not(:last-child) {
+    border-color: var(--gray-800, #27364c);
+  }
+
+  .settingsIcon {
+    background: rgba(31, 95, 191, 0.15);
+  }
+
+  .settingsSectionTitle {
+    color: var(--gray-500, #6c7d93);
+  }
+
+  .settingsItemDescription,
+  .completionHint {
+    color: var(--gray-500, #6c7d93);
+  }
+}
+
+/* ===== Reduced Motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  .editProfileButton,
+  .settingsItem,
+  .progressBarFill {
+    transition: none;
+  }
+}

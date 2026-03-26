@@ -1,0 +1,543 @@
+/* ScanPage — CSS Module (Sprint 3 Track B Redesign) */
+
+/* ===== Page Container ===== */
+.page {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  background: #000;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== Camera View ===== */
+.cameraView {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.cameraVideo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cameraCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* ===== Face Guide Overlay ===== */
+.faceGuide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.faceOval {
+  width: 240px;
+  height: 320px;
+  border: 3px dashed rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  position: relative;
+}
+
+.faceOvalAligned {
+  border-color: var(--success, #1b7f53);
+  border-style: solid;
+}
+
+.guideText {
+  position: absolute;
+  bottom: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: var(--font-size-sm, 0.875rem);
+  font-weight: var(--font-weight-medium, 500);
+  white-space: nowrap;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+
+/* ===== Quality Meter (Top Overlay) ===== */
+.qualityMeter {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  padding: max(var(--spacing-md, 16px), env(safe-area-inset-top)) var(--spacing-md, 16px) var(--spacing-sm, 8px);
+  background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, transparent 100%);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm, 8px);
+}
+
+.qualityLabel {
+  font-size: var(--font-size-xs, 0.75rem);
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: var(--font-weight-medium, 500);
+  flex-shrink: 0;
+}
+
+.qualityTrack {
+  flex: 1;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.qualityFill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.3s ease, background 0.3s ease;
+}
+
+.qualityLow {
+  background: var(--danger, #b42318);
+}
+
+.qualityMedium {
+  background: var(--warning, #b97710);
+}
+
+.qualityGood {
+  background: var(--success, #1b7f53);
+}
+
+.qualityValue {
+  font-size: var(--font-size-xs, 0.75rem);
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: var(--font-weight-semibold, 600);
+  min-width: 32px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.backButton {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(8px);
+  border: none;
+  color: var(--white, #fff);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+/* ===== Controls (Bottom Overlay) ===== */
+.controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  padding: var(--spacing-lg, 24px) var(--spacing-md, 16px);
+  padding-bottom: max(var(--spacing-lg, 24px), env(safe-area-inset-bottom));
+  background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, transparent 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xl, 32px);
+}
+
+.scanButton {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--white, #fff);
+  border: 4px solid rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.15s ease;
+  flex-shrink: 0;
+}
+
+.scanButton:hover {
+  transform: scale(1.05);
+}
+
+.scanButton:active {
+  transform: scale(0.95);
+}
+
+.scanButtonInner {
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  background: var(--white, #fff);
+  transition: background 0.2s ease;
+}
+
+.scanButtonCapturing .scanButtonInner {
+  background: var(--danger, #b42318);
+}
+
+.controlButton {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  border: none;
+  color: var(--white, #fff);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  transition: background 0.2s ease;
+  flex-shrink: 0;
+}
+
+.controlButton:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.controlLabel {
+  font-size: 0.625rem;
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+  margin-top: 4px;
+}
+
+/* ===== Progress Indicator (Centered Overlay) ===== */
+.progressOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+}
+
+.progressSpinner {
+  width: 56px;
+  height: 56px;
+  border: 4px solid rgba(255, 255, 255, 0.2);
+  border-top-color: var(--white, #fff);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: var(--spacing-md, 16px);
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.progressText {
+  font-size: var(--font-size-base, 1rem);
+  color: var(--white, #fff);
+  font-weight: var(--font-weight-semibold, 600);
+  margin-bottom: var(--spacing-xs, 4px);
+}
+
+.progressSubtext {
+  font-size: var(--font-size-sm, 0.875rem);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.progressBar {
+  width: 200px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  margin-top: var(--spacing-md, 16px);
+  overflow: hidden;
+}
+
+.progressBarFill {
+  height: 100%;
+  background: var(--white, #fff);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+/* ===== Results Preview (Slide-up Panel) ===== */
+.resultsPanel {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 30;
+  background: var(--bg-primary, #fff);
+  border-radius: var(--radius-xl, 16px) var(--radius-xl, 16px) 0 0;
+  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.2);
+  transform: translateY(100%);
+  transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.resultsPanelOpen {
+  transform: translateY(0);
+}
+
+.resultsPanelHandle {
+  width: 40px;
+  height: 4px;
+  background: var(--gray-300, #d1d9e4);
+  border-radius: 2px;
+  margin: var(--spacing-sm, 8px) auto var(--spacing-md, 16px);
+}
+
+.resultsPanelContent {
+  padding: 0 var(--spacing-md, 16px) var(--spacing-lg, 24px);
+  padding-bottom: max(var(--spacing-lg, 24px), env(safe-area-inset-bottom));
+}
+
+.resultsScore {
+  text-align: center;
+  margin-bottom: var(--spacing-md, 16px);
+}
+
+.resultsScoreNumber {
+  font-size: var(--font-size-4xl, 2.25rem);
+  font-weight: var(--font-weight-extrabold, 800);
+  color: var(--primary, #1f5fbf);
+  line-height: 1;
+}
+
+.resultsScoreLabel {
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--text-secondary, #4e6078);
+  margin-top: 4px;
+}
+
+.resultsActions {
+  display: flex;
+  gap: var(--spacing-sm, 8px);
+  margin-top: var(--spacing-md, 16px);
+}
+
+.resultsActionPrimary {
+  flex: 1;
+  padding: 14px;
+  background: var(--primary, #1f5fbf);
+  color: var(--white, #fff);
+  font-size: var(--font-size-base, 1rem);
+  font-weight: var(--font-weight-semibold, 600);
+  border: none;
+  border-radius: var(--radius-md, 8px);
+  cursor: pointer;
+  min-height: 48px;
+  transition: background 0.2s ease;
+}
+
+.resultsActionPrimary:hover {
+  background: var(--primary-hover, #174a95);
+}
+
+.resultsActionSecondary {
+  padding: 14px 20px;
+  background: none;
+  border: 1.5px solid var(--border-color, #e4e9ef);
+  border-radius: var(--radius-md, 8px);
+  color: var(--text-primary, #162133);
+  font-size: var(--font-size-base, 1rem);
+  font-weight: var(--font-weight-medium, 500);
+  cursor: pointer;
+  min-height: 48px;
+  transition: border-color 0.2s ease;
+}
+
+.resultsActionSecondary:hover {
+  border-color: var(--primary, #1f5fbf);
+}
+
+/* ===== Permission Prompt ===== */
+.permissionOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.85);
+  padding: var(--spacing-md, 16px);
+}
+
+.permissionCard {
+  background: var(--bg-primary, #fff);
+  border-radius: var(--radius-xl, 16px);
+  padding: var(--spacing-xl, 32px);
+  max-width: 360px;
+  width: 100%;
+  text-align: center;
+  box-shadow: var(--shadow-xl);
+}
+
+.permissionIcon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--primary-light, #e8f0fd);
+  color: var(--primary, #1f5fbf);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin: 0 auto var(--spacing-md, 16px);
+}
+
+.permissionTitle {
+  font-size: var(--font-size-lg, 1.125rem);
+  font-weight: var(--font-weight-bold, 700);
+  color: var(--text-primary, #162133);
+  margin: 0 0 var(--spacing-sm, 8px);
+}
+
+.permissionText {
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--text-secondary, #4e6078);
+  line-height: var(--line-height-relaxed, 1.65);
+  margin: 0 0 var(--spacing-lg, 24px);
+}
+
+.permissionButton {
+  width: 100%;
+  padding: 14px;
+  background: var(--primary, #1f5fbf);
+  color: var(--white, #fff);
+  font-size: var(--font-size-base, 1rem);
+  font-weight: var(--font-weight-semibold, 600);
+  border: none;
+  border-radius: var(--radius-md, 8px);
+  cursor: pointer;
+  min-height: 48px;
+  transition: background 0.2s ease;
+  margin-bottom: var(--spacing-sm, 8px);
+}
+
+.permissionButton:hover {
+  background: var(--primary-hover, #174a95);
+}
+
+.permissionSkip {
+  background: none;
+  border: none;
+  color: var(--text-muted, #6c7d93);
+  font-size: var(--font-size-sm, 0.875rem);
+  cursor: pointer;
+  padding: 8px;
+  min-height: 44px;
+}
+
+/* ===== Responsive: Tablet ===== */
+@media (min-width: 768px) {
+  .faceOval {
+    width: 280px;
+    height: 380px;
+  }
+
+  .scanButton {
+    width: 80px;
+    height: 80px;
+  }
+
+  .resultsPanel {
+    max-width: 480px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100%);
+    border-radius: var(--radius-xl, 16px) var(--radius-xl, 16px) 0 0;
+  }
+
+  .resultsPanelOpen {
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* ===== Responsive: Desktop ===== */
+@media (min-width: 1024px) {
+  .controls {
+    padding-bottom: var(--spacing-xl, 32px);
+  }
+
+  .permissionCard {
+    padding: var(--spacing-2xl, 48px);
+  }
+}
+
+/* ===== Dark Mode ===== */
+@media (prefers-color-scheme: dark) {
+  .resultsPanel {
+    background: var(--gray-900, #162133);
+  }
+
+  .resultsPanelHandle {
+    background: var(--gray-700, #36485f);
+  }
+
+  .resultsScoreLabel {
+    color: var(--gray-400, #97a6ba);
+  }
+
+  .resultsActionSecondary {
+    border-color: var(--gray-700, #36485f);
+    color: var(--gray-100, #f2f5f8);
+  }
+
+  .permissionCard {
+    background: var(--gray-900, #162133);
+  }
+
+  .permissionIcon {
+    background: rgba(31, 95, 191, 0.15);
+  }
+
+  .permissionTitle {
+    color: var(--gray-50, #f9fbfd);
+  }
+
+  .permissionText {
+    color: var(--gray-400, #97a6ba);
+  }
+}
+
+/* ===== Reduced Motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  .progressSpinner {
+    animation: none;
+    border-top-color: var(--white, #fff);
+    opacity: 0.6;
+  }
+
+  .resultsPanel {
+    transition: none;
+  }
+
+  .scanButton,
+  .controlButton,
+  .qualityFill,
+  .progressBarFill,
+  .resultsActionPrimary,
+  .resultsActionSecondary,
+  .permissionButton,
+  .scanButtonInner {
+    transition: none;
+  }
+
+  .scanButton:hover,
+  .scanButton:active {
+    transform: none;
+  }
+}

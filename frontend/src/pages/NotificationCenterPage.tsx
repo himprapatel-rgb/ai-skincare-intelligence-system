@@ -4,7 +4,7 @@ import { IconBell, IconCheck, IconX, IconSettings, IconClock, IconTrendingUp, Ic
 import { useNotifications } from '../context/NotificationContext';
 import type { NotificationRecord } from '../services/notificationService';
 import { getNotificationPrefs, setNotificationPrefs, type NotificationPrefs } from '../utils/notificationPreferences';
-import './NotificationCenterPage.css';
+import styles from './NotificationCenterPage.module.css';
 
 type FilterType = 'all' | 'unread' | 'reminder' | 'progress' | 'alert';
 
@@ -72,140 +72,128 @@ const NotificationCenterPage: React.FC = () => {
     return n.type === filter;
   });
 
+  const filterButtons: { key: FilterType; label: string }[] = [
+    { key: 'all', label: 'All' },
+    { key: 'unread', label: `Unread (${unreadCount})` },
+    { key: 'reminder', label: 'Reminders' },
+    { key: 'progress', label: 'Progress' },
+    { key: 'alert', label: 'Alerts' },
+  ];
+
   return (
-    <div className="notification-center-page app-page">
-      <header className="app-header-card notif-header">
-        <Link to="/me" className="notif-back" aria-label="Back to profile">
+    <div className={styles.page}>
+      <header className={styles.header}>
+        <Link to="/me" className={styles.backLink} aria-label="Back to profile">
           <IconArrowLeft size={24} strokeWidth={2} />
         </Link>
-        <div className="notif-header-text">
-        <h1>
-          <IconBell size={24} strokeWidth={2} className="notif-header-icon" aria-hidden />
-          Notifications
-        </h1>
-        <p className="app-header-subtitle">
-          {unreadCount > 0 ? `${unreadCount} unread` : 'All caught up'}
-        </p>
-        <div className="notif-header-actions">
-          {unreadCount > 0 && (
-            <button type="button" onClick={markAllAsRead} className="btn-mark-all">
-              Mark all read
+        <div className={styles.headerText}>
+          <h1 className={styles.headerTitle}>
+            <IconBell size={24} strokeWidth={2} className={styles.headerIcon} aria-hidden />
+            Notifications
+          </h1>
+          <p className={styles.headerSubtitle}>
+            {unreadCount > 0 ? `${unreadCount} unread` : 'All caught up'}
+          </p>
+          <div className={styles.headerActions}>
+            {unreadCount > 0 && (
+              <button type="button" onClick={markAllAsRead} className={styles.btnMarkAll}>
+                Mark all read
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={() => setShowSettings(!showSettings)}
+              className={styles.btnSettings}
+              aria-label={showSettings ? 'Close settings' : 'Notification settings'}
+            >
+              <IconSettings size={20} strokeWidth={2} />
             </button>
-          )}
-          <button
-            type="button"
-            onClick={() => setShowSettings(!showSettings)}
-            className="btn-settings"
-            aria-label={showSettings ? 'Close settings' : 'Notification settings'}
-          >
-            <IconSettings size={20} strokeWidth={2} />
-          </button>
-        </div>
+          </div>
         </div>
       </header>
-      <div className="app-page-content">
+
+      <div className={styles.content}>
         {showSettings && (
-          <div className="app-card settings-card">
-            <h2 className="settings-card-title">Notification preferences</h2>
-            <p className="settings-card-desc">Choose when you want reminders. Times are used when we send push notifications.</p>
-            <div className="settings-card-body">
-              <div className="setting-item setting-item-with-time">
-                <label className="setting-toggle">
+          <div className={styles.settingsCard}>
+            <h2 className={styles.settingsTitle}>Notification preferences</h2>
+            <p className={styles.settingsDesc}>Choose when you want reminders. Times are used when we send push notifications.</p>
+            <div>
+              <div className={styles.settingItemWithTime}>
+                <label className={styles.settingToggle}>
                   <input
                     type="checkbox"
                     checked={prefs.morningRoutine}
                     onChange={(e) => updatePref('morningRoutine', e.target.checked)}
                   />
-                  <span className="setting-label">Morning routine reminder</span>
+                  <span className={styles.settingLabel}>Morning routine reminder</span>
                 </label>
                 <input
                   type="time"
-                  className="setting-time"
+                  className={styles.settingTime}
                   value={prefs.morningTime}
                   onChange={(e) => updatePref('morningTime', e.target.value)}
                   disabled={!prefs.morningRoutine}
                   aria-label="Morning reminder time"
                 />
               </div>
-              <div className="setting-item setting-item-with-time">
-                <label className="setting-toggle">
+              <div className={styles.settingItemWithTime}>
+                <label className={styles.settingToggle}>
                   <input
                     type="checkbox"
                     checked={prefs.eveningRoutine}
                     onChange={(e) => updatePref('eveningRoutine', e.target.checked)}
                   />
-                  <span className="setting-label">Evening routine reminder</span>
+                  <span className={styles.settingLabel}>Evening routine reminder</span>
                 </label>
                 <input
                   type="time"
-                  className="setting-time"
+                  className={styles.settingTime}
                   value={prefs.eveningTime}
                   onChange={(e) => updatePref('eveningTime', e.target.value)}
                   disabled={!prefs.eveningRoutine}
                   aria-label="Evening reminder time"
                 />
               </div>
-              <div className="setting-item">
-                <label className="setting-toggle">
+              <div className={styles.settingItem}>
+                <label className={styles.settingToggle}>
                   <input
                     type="checkbox"
                     checked={prefs.weeklyReport}
                     onChange={(e) => updatePref('weeklyReport', e.target.checked)}
                   />
-                  <span className="setting-label">Weekly skin report</span>
+                  <span className={styles.settingLabel}>Weekly skin report</span>
                 </label>
               </div>
-              <div className="setting-item">
-                <label className="setting-toggle">
+              <div className={styles.settingItem}>
+                <label className={styles.settingToggle}>
                   <input
                     type="checkbox"
                     checked={prefs.productExpiry}
                     onChange={(e) => updatePref('productExpiry', e.target.checked)}
                   />
-                  <span className="setting-label">Product expiry alerts</span>
+                  <span className={styles.settingLabel}>Product expiry alerts</span>
                 </label>
               </div>
             </div>
           </div>
         )}
 
-        <div className="notification-filters">
-          <button 
-            className={`filter-btn ${filter === 'all' ? 'active' : ''}`}
-            onClick={() => setFilter('all')}
-          >
-            All
-          </button>
-          <button 
-            className={`filter-btn ${filter === 'unread' ? 'active' : ''}`}
-            onClick={() => setFilter('unread')}
-          >
-            Unread ({unreadCount})
-          </button>
-          <button 
-            className={`filter-btn ${filter === 'reminder' ? 'active' : ''}`}
-            onClick={() => setFilter('reminder')}
-          >
-            Reminders
-          </button>
-          <button 
-            className={`filter-btn ${filter === 'progress' ? 'active' : ''}`}
-            onClick={() => setFilter('progress')}
-          >
-            Progress
-          </button>
-          <button 
-            className={`filter-btn ${filter === 'alert' ? 'active' : ''}`}
-            onClick={() => setFilter('alert')}
-          >
-            Alerts
-          </button>
+        <div className={styles.filters}>
+          {filterButtons.map((fb) => (
+            <button
+              key={fb.key}
+              className={filter === fb.key ? styles.filterBtnActive : styles.filterBtn}
+              onClick={() => setFilter(fb.key)}
+            >
+              {fb.label}
+            </button>
+          ))}
         </div>
 
-        <div className="notifications-list">
+        <div className={styles.list}>
           {filteredNotifications.length === 0 ? (
-            <div className="app-card app-empty-state" role="status">
-              <div className="app-empty-state-icon"><IconBell size={32} strokeWidth={2} aria-hidden /></div>
+            <div className={styles.emptyState} role="status">
+              <div className={styles.emptyIcon}><IconBell size={32} strokeWidth={2} aria-hidden /></div>
               <h3>No notifications yet</h3>
               <p>Reminders, progress updates, and tips will appear here.</p>
             </div>
@@ -213,20 +201,20 @@ const NotificationCenterPage: React.FC = () => {
             filteredNotifications.map(notification => (
               <div
                 key={notification.id}
-                className={`notification-item ${notification.read ? 'read' : 'unread'}`}
+                className={notification.read ? styles.notifItem : styles.notifItemUnread}
                 style={
                   {
                     '--notification-color': getNotificationColor(notification.type),
                   } as React.CSSProperties
                 }
               >
-                <div className="notification-icon">
+                <div className={styles.notifIcon}>
                   {getNotificationIcon(notification.type)}
                 </div>
-                <div className="notification-content">
-                  <div className="notification-header">
+                <div className={styles.notifContent}>
+                  <div className={styles.notifHeader}>
                     <h3>{notification.title}</h3>
-                    <span className="notification-time">
+                    <span className={styles.notifTime}>
                       {new Date(notification.created_at).toLocaleDateString('en', {
                         month: 'short',
                         day: 'numeric',
@@ -235,18 +223,18 @@ const NotificationCenterPage: React.FC = () => {
                       })}
                     </span>
                   </div>
-                  <p className="notification-message">{notification.message}</p>
+                  <p className={styles.notifMessage}>{notification.message}</p>
                   {notification.action_url && (
-                    <Link to={notification.action_url} className="notification-action">
-                      View details <IconChevronRight size={16} strokeWidth={2} className="icon-inline-right" />
+                    <Link to={notification.action_url} className={styles.notifAction}>
+                      View details <IconChevronRight size={16} strokeWidth={2} className={styles.iconInlineRight} />
                     </Link>
                   )}
                 </div>
-                <div className="notification-actions">
+                <div className={styles.notifActions}>
                   {!notification.read && (
                     <button
                       onClick={() => markAsRead(notification.id)}
-                      className="btn-action"
+                      className={styles.btnAction}
                       title="Mark as read"
                     >
                       <IconCheck size={18} strokeWidth={2} />
@@ -254,7 +242,7 @@ const NotificationCenterPage: React.FC = () => {
                   )}
                   <button
                     onClick={() => deleteNotification(notification.id)}
-                    className="btn-action btn-delete"
+                    className={`${styles.btnAction} ${styles.btnDelete}`}
                     title="Delete"
                   >
                     <IconX size={18} strokeWidth={2} />

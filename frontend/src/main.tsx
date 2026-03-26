@@ -1,7 +1,22 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import * as Sentry from '@sentry/react'
+import './i18n/config'
 import App from './App.tsx'
 import './index.css'  // index.css imports design-system, responsive-*, mobile-redesign, etc. via @import
+
+// Sentry error tracking (only init if DSN is configured)
+const SENTRY_DSN = import.meta.env.VITE_SENTRY_DSN
+if (SENTRY_DSN) {
+  Sentry.init({
+    dsn: SENTRY_DSN,
+    integrations: [Sentry.browserTracingIntegration(), Sentry.replayIntegration()],
+    tracesSampleRate: 0.1,
+    replaysSessionSampleRate: 0.0,
+    replaysOnErrorSampleRate: 1.0,
+    environment: import.meta.env.MODE,
+  })
+}
 
 // Register service worker for PWA support
 import { unregisterServiceWorker } from './utils/registerServiceWorker'
@@ -60,4 +75,10 @@ if (splash) {
   requestAnimationFrame(() => requestAnimationFrame(hide))
   // Failsafe: never leave users permanently blocked on splash.
   setTimeout(hide, 3500)
+}
+
+// Performance monitoring via Web Vitals
+import { reportWebVitals } from './utils/webVitals';
+if (import.meta.env.PROD) {
+  reportWebVitals(console.log);
 }

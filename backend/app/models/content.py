@@ -4,7 +4,7 @@ Managed by admin; displayed on public pages.
 """
 from datetime import datetime
 
-from sqlalchemy import Boolean, Column, DateTime, Integer, String, Text
+from sqlalchemy import JSON, Boolean, Column, DateTime, Integer, String, Text
 from sqlalchemy.sql import func
 
 from app.database import Base
@@ -22,6 +22,9 @@ class Blog(Base):
     content = Column(Text, nullable=True)
     cover_image_url = Column(String(500), nullable=True)
     read_time_min = Column(Integer, default=5)
+    category = Column(String(100), nullable=True)
+    tags = Column(JSON, default=list)
+    view_count = Column(Integer, default=0)
     published = Column(Boolean, default=True)
     published_at = Column(DateTime(timezone=True), nullable=True)
     sort_order = Column(Integer, default=0)

@@ -20,14 +20,16 @@ def list_blogs(
 ):
     """Public list of published blogs (cached for 5 min)."""
     response.headers["Cache-Control"] = "public, max-age=300"
+    query = db.query(Blog).filter(Blog.published == True)
+    total = query.count()
     items = (
-        db.query(Blog)
-        .filter(Blog.published == True)
+        query
         .order_by(Blog.sort_order.asc(), Blog.published_at.desc().nullslast(), Blog.created_at.desc())
         .offset(offset)
         .limit(limit)
         .all()
     )
+    response.headers["X-Total-Count"] = str(total)
     return items
 
 
@@ -50,14 +52,16 @@ def list_videos(
 ):
     """Public list of published videos (cached for 5 min)."""
     response.headers["Cache-Control"] = "public, max-age=300"
+    query = db.query(Video).filter(Video.published == True)
+    total = query.count()
     items = (
-        db.query(Video)
-        .filter(Video.published == True)
+        query
         .order_by(Video.sort_order.asc(), Video.created_at.desc())
         .offset(offset)
         .limit(limit)
         .all()
     )
+    response.headers["X-Total-Count"] = str(total)
     return items
 
 
@@ -74,10 +78,36 @@ def list_news(
     query = db.query(NewsItem).filter(NewsItem.published == True)
     if featured_only:
         query = query.filter(NewsItem.is_featured == True)
+    total = query.count()
     items = (
         query.order_by(NewsItem.sort_order.asc(), NewsItem.published_at.desc().nullslast(), NewsItem.created_at.desc())
         .offset(offset)
         .limit(limit)
         .all()
     )
+    response.headers["X-Total-Count"] = str(total)
     return items
+
+
+# ===== Sprint 3 Endpoints =====
+
+
+@router.get("/blogs/by-slug/{slug}", response_model=BlogResponse)
+def get_blog_by_slug(slug: str, response: Response, db: Session = Depends(get_db)):
+    """Get a published blog by its slug."""
+    response.headers["Cache-Control"] = "public, max-age=300"
+    blog = db.query(Blog).filter(Blog.slug == slug, Blog.published == True).first()
+    if not blog:
+        raise HTTPException(status_code=404, detail="Blog not found")
+    return blog
+
+
+@router.post("/blogs/{blog_id}/view")
+def increment_blog_view(blog_id: int, db: Session = Depends(get_db)):
+    """Increment the view count of a blog post."""
+    blog = db.query(Blog).filter(Blog.id == blog_id, Blog.published == True).first()
+    if not blog:
+        raise HTTPException(status_code=404, detail="Blog not found")
+    blog.view_count = (blog.view_count or 0) + 1
+    db.commit()
+    return {"blog_id": blog_id, "view_count": blog.view_count}

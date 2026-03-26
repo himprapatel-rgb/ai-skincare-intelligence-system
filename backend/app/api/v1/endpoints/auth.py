@@ -15,7 +15,13 @@ from sqlalchemy.orm import Session
 from app.config import settings
 from app.core.geo import fetch_geolocation, get_client_ip
 from app.core.rate_limit import check_login_rate_limit, record_login_attempt
-from app.core.security import create_access_token, get_current_user
+from app.core.security import (
+    blacklist_token,
+    create_access_token,
+    create_refresh_token,
+    decode_refresh_token,
+    get_current_user,
+)
 from app.database import get_db
 from app.models.user import User, UserAccessLog
 from app.schemas.user import (
@@ -164,8 +170,21 @@ def login(
             detail="Invalid email or password",
         )
 
+    # Account lockout check (5 failed attempts → 15 min lock)
+    if user.locked_until and user.locked_until > datetime.now(timezone.utc):
+        raise HTTPException(
+            status_code=status.HTTP_423_LOCKED,
+            detail="Account temporarily locked due to too many failed attempts. Try again later.",
+        )
+
     if not auth_service.verify_password(user.hashed_password, password):
         record_login_attempt(request)
+        # Increment failed count and possibly lock
+        user.failed_login_count = (user.failed_login_count or 0) + 1
+        if user.failed_login_count >= 5:
+            user.locked_until = datetime.now(timezone.utc) + timedelta(minutes=15)
+        db.add(user)
+        db.commit()
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid email or password",
@@ -176,15 +195,28 @@ def login(
             detail="Email not verified. Please verify your email to login. Check your inbox for the verification link or contact support.",
         )
 
+    # Successful login — reset lockout counters
+    user.failed_login_count = 0
+    user.locked_until = None
+    user.login_count = (user.login_count or 0) + 1
+    db.add(user)
+    db.commit()
+
     # Return token immediately; record IP/geo in background (was blocking login by up to ~2s for geo API)
     ip = get_client_ip(request)
     background_tasks.add_task(_login_record_ip_geo, user.id, ip)
 
     token = create_access_token(
-        data={"sub": user.email},
+        data={"sub": str(user.id)},
         expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
     )
-    return AuthResponse(token=token, user=UserResponse.model_validate(user))
+    refresh = create_refresh_token(data={"sub": str(user.id)})
+    # Persist refresh token for rotation check
+    user.refresh_token = refresh
+    db.add(user)
+    db.commit()
+
+    return AuthResponse(token=token, token_type="bearer", user=UserResponse.model_validate(user), refresh_token=refresh)
 
 
 @router.post(
@@ -612,4 +644,106 @@ async def google_auth(
         token_type="bearer",
         user=UserResponse.model_validate(user),
         verification_required=False,
+    )
+
+
+# ── Sprint 2: New Auth Endpoints ─────────────────────────────────────────────
+
+
+class RefreshRequest(BaseModel):
+    refresh_token: str
+
+
+class TokenPairResponse(BaseModel):
+    token: str
+    refresh_token: str
+    token_type: str = "bearer"
+
+
+@router.post(
+    "/refresh",
+    response_model=TokenPairResponse,
+    summary="Refresh access token",
+    description="Exchange a valid refresh token for a new access + refresh token pair",
+)
+def refresh_token(body: RefreshRequest, db: Session = Depends(get_db)):
+    """Token refresh with rotation — each refresh token is single-use."""
+    payload = decode_refresh_token(body.refresh_token)
+    if not payload:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token")
+
+    subject = payload.get("sub")
+    user = db.query(User).filter(User.id == int(subject)).first() if subject else None
+    if not user or user.deleted_at is not None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found")
+
+    # Rotation check: only accept the token currently stored
+    if user.refresh_token != body.refresh_token:
+        # Potential token reuse attack — revoke
+        user.refresh_token = None
+        db.add(user)
+        db.commit()
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Refresh token revoked")
+
+    # Issue new pair
+    new_access = create_access_token(
+        data={"sub": str(user.id)},
+        expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
+    )
+    new_refresh = create_refresh_token(data={"sub": str(user.id)})
+    user.refresh_token = new_refresh
+    db.add(user)
+    db.commit()
+
+    return TokenPairResponse(token=new_access, refresh_token=new_refresh)
+
+
+@router.post(
+    "/logout",
+    status_code=status.HTTP_204_NO_CONTENT,
+    summary="Logout (server-side)",
+    description="Blacklist the current access token and revoke the refresh token",
+)
+async def logout(
+    request: Request,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """Invalidate both access and refresh tokens."""
+    # Blacklist access token
+    auth_header = request.headers.get("authorization", "")
+    if auth_header.startswith("Bearer "):
+        blacklist_token(auth_header[7:])
+
+    # Revoke refresh token
+    current_user.refresh_token = None
+    db.add(current_user)
+    db.commit()
+
+
+class AccountDeleteResponse(BaseModel):
+    message: str
+    grace_period_days: int = 30
+
+
+@router.delete(
+    "/account",
+    response_model=AccountDeleteResponse,
+    summary="GDPR: Request account deletion",
+    description="Soft-delete user account with 30-day grace period",
+)
+async def delete_account(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """GDPR-compliant account deletion. Sets deleted_at, 30-day grace before hard delete."""
+    current_user.deleted_at = datetime.now(timezone.utc)
+    current_user.is_active = False
+    current_user.refresh_token = None
+    db.add(current_user)
+    db.commit()
+
+    return AccountDeleteResponse(
+        message="Account scheduled for deletion. You have 30 days to reactivate by logging in.",
+        grace_period_days=30,
     )

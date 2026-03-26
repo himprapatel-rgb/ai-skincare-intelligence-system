@@ -1,0 +1,101 @@
+.wrapper {
+  position: relative;
+  display: inline-flex;
+}
+
+.tooltip {
+  position: absolute;
+  z-index: 1100;
+  padding: 6px 12px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.4;
+  color: #fff;
+  background: var(--color-text-primary, #0b1220);
+  border-radius: var(--radius-sm, 6px);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1),
+              transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.visible {
+  opacity: 1;
+}
+
+/* Placements */
+.top {
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+}
+.top.visible {
+  transform: translateX(-50%) translateY(0);
+}
+
+.bottom {
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-4px);
+}
+.bottom.visible {
+  transform: translateX(-50%) translateY(0);
+}
+
+.left {
+  right: calc(100% + 8px);
+  top: 50%;
+  transform: translateY(-50%) translateX(4px);
+}
+.left.visible {
+  transform: translateY(-50%) translateX(0);
+}
+
+.right {
+  left: calc(100% + 8px);
+  top: 50%;
+  transform: translateY(-50%) translateX(-4px);
+}
+.right.visible {
+  transform: translateY(-50%) translateX(0);
+}
+
+/* Arrow */
+.arrow {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: var(--color-text-primary, #0b1220);
+  transform: rotate(45deg);
+}
+
+.top .arrow {
+  bottom: -4px;
+  left: 50%;
+  margin-left: -4px;
+}
+
+.bottom .arrow {
+  top: -4px;
+  left: 50%;
+  margin-left: -4px;
+}
+
+.left .arrow {
+  right: -4px;
+  top: 50%;
+  margin-top: -4px;
+}
+
+.right .arrow {
+  left: -4px;
+  top: 50%;
+  margin-top: -4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tooltip {
+    transition: none;
+  }
+}

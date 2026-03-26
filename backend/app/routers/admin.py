@@ -21,14 +21,16 @@ from pydantic import BaseModel
 from sqlalchemy import func as sqlfunc, text
 from sqlalchemy.orm import Session
 
+from app.config import settings
 from app.core.security import get_current_admin
-from app.database import get_db
+from app.database import get_db, engine
 from app.models.content import Blog, NewsItem, Video
 from app.models.product_models import Product
 from app.models.saved_routine import SavedRoutine
 from app.models.scan import ScanSession
 from app.models.twin_models import SkinStateSnapshot
-from app.models.user import User
+from app.models.ai_chat import AIUsageLog
+from app.models.user import User, UserAccessLog
 from app.schemas.content_schemas import (
     BlogCreate,
     BlogResponse,
@@ -809,3 +811,228 @@ def admin_delete_news(
     db.delete(news)
     db.commit()
     return None
+
+
+# --- Audit Log ---
+
+class AuditLogEntry(BaseModel):
+    id: int
+    user_id: int
+    ip_address: str
+    geolocation: Optional[dict] = None
+    created_at: Optional[datetime] = None
+
+
+@router.get("/audit-log", response_model=list[AuditLogEntry])
+async def get_audit_log(
+    limit: int = Query(50, ge=1, le=500),
+    offset: int = Query(0, ge=0),
+    user_id: Optional[int] = Query(None),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_admin),
+):
+    """Return paginated user access log entries (audit trail)."""
+    query = db.query(UserAccessLog)
+    if user_id is not None:
+        query = query.filter(UserAccessLog.user_id == user_id)
+    logs = (
+        query.order_by(UserAccessLog.created_at.desc())
+        .offset(offset)
+        .limit(limit)
+        .all()
+    )
+    return [
+        AuditLogEntry(
+            id=log.id,
+            user_id=log.user_id,
+            ip_address=log.ip_address,
+            geolocation=log.geolocation,
+            created_at=log.created_at,
+        )
+        for log in logs
+    ]
+
+
+# --- System Health (detailed) ---
+
+@router.get("/system/health")
+async def system_health(
+    current_user: User = Depends(get_current_admin),
+):
+    """
+    Detailed system health: DB pool stats, Redis connectivity, OpenAI key check.
+    """
+    import time
+
+    health: dict = {"status": "ok", "checks": {}}
+
+    # DB pool stats
+    try:
+        pool = engine.pool
+        health["checks"]["database"] = {
+            "status": "ok",
+            "pool_size": pool.size(),
+            "checked_in": pool.checkedin(),
+            "checked_out": pool.checkedout(),
+            "overflow": pool.overflow(),
+        }
+    except Exception as exc:
+        health["checks"]["database"] = {"status": "error", "detail": str(exc)[:200]}
+        health["status"] = "degraded"
+
+    # Redis connectivity
+    redis_url = settings.REDIS_URL
+    if redis_url:
+        try:
+            import redis
+            start = time.time()
+            r = redis.from_url(redis_url, socket_connect_timeout=3)
+            r.ping()
+            latency = int((time.time() - start) * 1000)
+            health["checks"]["redis"] = {"status": "ok", "latency_ms": latency}
+        except Exception as exc:
+            health["checks"]["redis"] = {"status": "error", "detail": str(exc)[:200]}
+            health["status"] = "degraded"
+    else:
+        health["checks"]["redis"] = {"status": "not_configured"}
+
+    # OpenAI key check (non-empty, starts with sk-)
+    openai_key = settings.OPENAI_API_KEY
+    if openai_key and openai_key.startswith("sk-"):
+        health["checks"]["openai"] = {"status": "ok", "key_prefix": openai_key[:7] + "..."}
+    elif openai_key:
+        health["checks"]["openai"] = {"status": "warning", "detail": "Key present but unexpected format"}
+    else:
+        health["checks"]["openai"] = {"status": "not_configured"}
+
+    return health
+
+
+# ── Analytics Endpoints ──────────────────────────────────────────────────────
+
+
+@router.get("/analytics/overview")
+async def analytics_overview(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_admin),
+):
+    """Platform overview: DAU, MAU, total scans, total users, AI cost (30d)."""
+    row = db.execute(text("""
+        SELECT
+            (SELECT count(*) FROM users) AS total_users,
+            (SELECT count(*) FROM users WHERE is_active = true) AS active_users,
+            (SELECT count(*) FROM scan_sessions) AS total_scans,
+            (SELECT count(DISTINCT user_id) FROM user_access_logs
+                WHERE created_at >= now() - interval '1 day') AS dau,
+            (SELECT count(DISTINCT user_id) FROM user_access_logs
+                WHERE created_at >= now() - interval '30 days') AS mau,
+            (SELECT coalesce(sum(cost_usd), 0) FROM ai_usage_logs
+                WHERE created_at >= now() - interval '30 days') AS ai_cost_30d
+    """)).fetchone()
+    return {
+        "total_users": row[0],
+        "active_users": row[1],
+        "total_scans": row[2],
+        "dau": row[3],
+        "mau": row[4],
+        "ai_cost_30d": float(row[5]),
+    }
+
+
+@router.get("/analytics/scans")
+async def analytics_scans(
+    days: int = Query(30, ge=1, le=365),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_admin),
+):
+    """Scan counts by day for the last N days."""
+    rows = db.execute(text("""
+        SELECT date(created_at) AS day, count(*) AS scan_count
+        FROM scan_sessions
+        WHERE created_at >= now() - make_interval(days => :days)
+        GROUP BY day
+        ORDER BY day
+    """), {"days": days}).fetchall()
+    return {
+        "period_days": days,
+        "data": [{"date": str(r[0]), "count": r[1]} for r in rows],
+    }
+
+
+@router.get("/analytics/ai-usage")
+async def analytics_ai_usage(
+    days: int = Query(30, ge=1, le=365),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_admin),
+):
+    """AI token usage and cost breakdown for the last N days."""
+    rows = db.execute(text("""
+        SELECT
+            date(created_at) AS day,
+            count(*) AS call_count,
+            coalesce(sum(input_tokens), 0) AS total_input_tokens,
+            coalesce(sum(output_tokens), 0) AS total_output_tokens,
+            coalesce(sum(cost_usd), 0) AS total_cost
+        FROM ai_usage_logs
+        WHERE created_at >= now() - make_interval(days => :days)
+        GROUP BY day
+        ORDER BY day
+    """), {"days": days}).fetchall()
+    return {
+        "period_days": days,
+        "data": [
+            {
+                "date": str(r[0]),
+                "call_count": r[1],
+                "input_tokens": r[2],
+                "output_tokens": r[3],
+                "cost_usd": float(r[4]),
+            }
+            for r in rows
+        ],
+    }
+
+
+@router.get("/analytics/users")
+async def analytics_users(
+    days: int = Query(30, ge=1, le=365),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_admin),
+):
+    """User registration by day and retention stats for the last N days."""
+    # Registrations by day
+    reg_rows = db.execute(text("""
+        SELECT date(created_at) AS day, count(*) AS registrations
+        FROM users
+        WHERE created_at >= now() - make_interval(days => :days)
+        GROUP BY day
+        ORDER BY day
+    """), {"days": days}).fetchall()
+
+    # Retention: users who registered in the period and have access logs in last 7 days
+    retention_row = db.execute(text("""
+        SELECT
+            count(DISTINCT u.id) AS registered_in_period,
+            count(DISTINCT CASE
+                WHEN ual.created_at >= now() - interval '7 days' THEN u.id
+            END) AS active_last_7d
+        FROM users u
+        LEFT JOIN user_access_logs ual ON ual.user_id = u.id
+        WHERE u.created_at >= now() - make_interval(days => :days)
+    """), {"days": days}).fetchone()
+
+    registered = retention_row[0] if retention_row[0] else 0
+    active_7d = retention_row[1] if retention_row[1] else 0
+    retention_rate = round((active_7d / registered) * 100, 1) if registered > 0 else 0.0
+
+    return {
+        "period_days": days,
+        "registrations_by_day": [
+            {"date": str(r[0]), "count": r[1]} for r in reg_rows
+        ],
+        "retention": {
+            "registered_in_period": registered,
+            "active_last_7d": active_7d,
+            "retention_rate_pct": retention_rate,
+        },
+    }

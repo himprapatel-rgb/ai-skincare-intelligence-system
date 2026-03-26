@@ -1,0 +1,43 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--spacing-xl, 48px) var(--spacing-lg, 24px);
+  gap: var(--spacing-sm, 8px);
+}
+
+.icon {
+  font-size: 2.5rem;
+  color: var(--text-muted, #94a3b8);
+  margin-bottom: var(--spacing-xs, 4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon svg {
+  width: 48px;
+  height: 48px;
+}
+
+.title {
+  font-size: var(--font-lg, 1.125rem);
+  font-weight: 600;
+  color: var(--text-primary, #0b1220);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.description {
+  font-size: var(--font-sm, 0.875rem);
+  color: var(--text-muted, #94a3b8);
+  margin: 0;
+  max-width: 320px;
+  line-height: 1.5;
+}
+
+.action {
+  margin-top: var(--spacing-md, 16px);
+}

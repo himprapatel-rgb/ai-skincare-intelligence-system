@@ -4,12 +4,12 @@ import { IconDownload, IconCheckCircle, IconFileText, IconArrowLeft } from '../c
 import { useToast } from '../context/ToastContext';
 import { API_BASE_URL } from '../config';
 import { STORAGE_KEYS } from '../constants/storage';
-import './CommonStyles.css';
-import './DataExportPage.css';
+import styles from './DataExportPage.module.css';
 
 /**
  * Data Export Page (US-404)
- * GDPR compliant data export functionality
+ * GDPR compliant data export functionality.
+ * Format selection (JSON / PDF), category checkboxes, progress indicator, download.
  */
 const DataExportPage: React.FC = () => {
   const toast = useToast();
@@ -23,7 +23,7 @@ const DataExportPage: React.FC = () => {
   const handleExport = async () => {
     setIsExporting(true);
     setExportComplete(false);
-    
+
     try {
       const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
       const response = await fetch(`${API_BASE_URL}/profile/export`, {
@@ -91,7 +91,7 @@ const DataExportPage: React.FC = () => {
           }
         };
 
-        addTitle('SkinCareAI – Data Export');
+        addTitle('SkinCareAI \u2013 Data Export');
         addText(`Exported: ${exportData.export_timestamp ?? new Date().toISOString()}`);
         y += lineHeight;
 
@@ -110,7 +110,7 @@ const DataExportPage: React.FC = () => {
         if (includeAnalysis && exportData.analysis) {
           addTitle('Analysis History');
           const arr = exportData.analysis as unknown[];
-          addText(Array.isArray(arr) ? `${arr.length} analysis record(s)` : '—');
+          addText(Array.isArray(arr) ? `${arr.length} analysis record(s)` : '\u2014');
           if (Array.isArray(arr) && arr.length > 0) {
             arr.slice(0, 10).forEach((item, i) => {
               const s = JSON.stringify(item);
@@ -123,7 +123,7 @@ const DataExportPage: React.FC = () => {
         pdf.save(`skincare-data-export-${new Date().toISOString().split('T')[0]}.pdf`);
         toast?.success('PDF downloaded');
       }
-      
+
       setExportComplete(true);
     } catch (error) {
       console.error('Export failed:', error);
@@ -140,119 +140,120 @@ const DataExportPage: React.FC = () => {
   ];
 
   return (
-    <div className="data-export-page app-page">
-      <header className="app-header-card data-export-header">
-        <Link to="/profile" className="data-export-back" aria-label="Back to profile">
+    <div className={styles.page}>
+      <header className={styles.header}>
+        <Link to="/profile" className={styles.backLink} aria-label="Back to profile">
           <IconArrowLeft size={24} strokeWidth={2} />
         </Link>
-        <div className="data-export-header-text">
-          <h1>
-            <IconDownload size={24} strokeWidth={2} className="export-header-icon" aria-hidden />
+        <div className={styles.headerText}>
+          <h1 className={styles.headerTitle}>
+            <IconDownload size={24} strokeWidth={2} className={styles.headerIcon} aria-hidden />
             Export Your Data
           </h1>
-          <p className="app-header-subtitle">Download your data · JSON or PDF · GDPR compliant</p>
+          <p className={styles.headerSubtitle}>Download your data &middot; JSON or PDF &middot; GDPR compliant</p>
         </div>
       </header>
-      <div className="app-page-content">
-      {exportComplete ? (
-        <div className="app-card export-complete">
-          <div className="export-complete-icon">
-            <IconCheckCircle size={56} strokeWidth={2} />
-          </div>
-          <h2>Export complete</h2>
-          <p className="export-complete-text">Your file is ready. Download it below or request another export.</p>
-          <button className="btn btn-primary" onClick={handleExport} disabled={isExporting}>
-            {isExporting ? 'Preparing…' : <><IconDownload size={18} strokeWidth={2} className="icon-inline" />Download {exportFormat.toUpperCase()}</>}
-          </button>
-          <div className="export-complete-actions">
-            <button type="button" className="btn btn-secondary" onClick={() => setExportComplete(false)}>Export again</button>
-          </div>
-        </div>
-      ) : (
-        <>
-          <div className="app-card export-card">
-            <h3 className="export-card-title">Select Data to Export</h3>
-            <div className="export-card-body">
-              {dataCategories.map(cat => (
-                <div key={cat.key} className="export-category">
-                  <input
-                    type="checkbox"
-                    checked={cat.checked}
-                    onChange={(e) => cat.onChange(e.target.checked)}
-                    className="export-category-check"
-                  />
-                  <div className="export-category-info">
-                    <div className="export-category-label">{cat.label}</div>
-                    <div className="export-category-desc">{cat.description}</div>
-                  </div>
-                  <div className="export-category-size">{cat.size}</div>
-                </div>
-              ))}
-            </div>
-          </div>
 
-          <div className="app-card export-card">
-            <h3 className="export-card-title">Export Format</h3>
-            <div className="export-format-grid">
-              <button
-                type="button"
-                onClick={() => setExportFormat('json')}
-                className={`export-format-card${exportFormat === 'json' ? ' active' : ''}`}
-                aria-pressed={exportFormat === 'json'}
-              >
-                <div className="export-format-icon">
-                  <IconFileText size={32} strokeWidth={2} />
-                </div>
-                <div className="export-format-title">JSON</div>
-                <div className="export-format-subtitle">Machine-readable format</div>
-              </button>
-              <button
-                type="button"
-                onClick={() => setExportFormat('pdf')}
-                className={`export-format-card${exportFormat === 'pdf' ? ' active' : ''}`}
-                aria-pressed={exportFormat === 'pdf'}
-              >
-                <div className="export-format-icon">
-                  <IconFileText size={32} strokeWidth={2} />
-                </div>
-                <div className="export-format-title">PDF</div>
-                <div className="export-format-subtitle">Human-readable format</div>
-              </button>
+      <div className={styles.content}>
+        {exportComplete ? (
+          <div className={styles.exportComplete}>
+            <div className={styles.completeIcon}>
+              <IconCheckCircle size={56} strokeWidth={2} />
             </div>
-            <p className="export-format-explanation" id="export-format-desc">
-              <strong>JSON</strong> — Full data backup (profile, analyses, favorites). <strong>PDF</strong> — Human‑readable report for sharing or printing.
-            </p>
-            <p className="export-eta" aria-live="polite">Usually ready in under a minute.</p>
-          </div>
-
-          <div className="export-actions">
-            <Link to="/profile" className="btn btn-secondary">
-              <IconArrowLeft size={16} strokeWidth={2} className="icon-inline" />
-              Back to Profile
-            </Link>
-            <button 
-              onClick={handleExport} 
-              className="btn btn-primary"
-              disabled={isExporting || (!includeAnalysis && !includeProfile && !includeProducts)}
-            >
-              {isExporting ? (
-                'Exporting...'
-              ) : (
-                <>
-                  <IconDownload size={18} strokeWidth={2} className="icon-inline" />
-                  Export Data
-                </>
-              )}
+            <h2>Export complete</h2>
+            <p className={styles.completeText}>Your file is ready. Download it below or request another export.</p>
+            <button className="btn btn-primary" onClick={handleExport} disabled={isExporting}>
+              {isExporting ? 'Preparing\u2026' : <><IconDownload size={18} strokeWidth={2} /> Download {exportFormat.toUpperCase()}</>}
             </button>
+            <div className={styles.completeActions}>
+              <button type="button" className="btn btn-secondary" onClick={() => setExportComplete(false)}>Export again</button>
+            </div>
           </div>
-        </>
-      )}
+        ) : (
+          <>
+            <div className={styles.card}>
+              <h3 className={styles.cardTitle}>Select Data to Export</h3>
+              <div>
+                {dataCategories.map(cat => (
+                  <div key={cat.key} className={styles.category}>
+                    <input
+                      type="checkbox"
+                      checked={cat.checked}
+                      onChange={(e) => cat.onChange(e.target.checked)}
+                      className={styles.categoryCheck}
+                    />
+                    <div className={styles.categoryInfo}>
+                      <div className={styles.categoryLabel}>{cat.label}</div>
+                      <div className={styles.categoryDesc}>{cat.description}</div>
+                    </div>
+                    <div className={styles.categorySize}>{cat.size}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
 
-      <div className="app-card export-note">
-        <p className="export-note-content">
-          <strong>Your rights:</strong> You can request a copy of your data at any time. This export includes the data we hold for your account.
-        </p>
-      </div>
+            <div className={styles.card}>
+              <h3 className={styles.cardTitle}>Export Format</h3>
+              <div className={styles.formatGrid}>
+                <button
+                  type="button"
+                  onClick={() => setExportFormat('json')}
+                  className={exportFormat === 'json' ? styles.formatCardActive : styles.formatCard}
+                  aria-pressed={exportFormat === 'json'}
+                >
+                  <div className={styles.formatIcon}>
+                    <IconFileText size={32} strokeWidth={2} />
+                  </div>
+                  <div className={styles.formatTitle}>JSON</div>
+                  <div className={styles.formatSubtitle}>Machine-readable format</div>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setExportFormat('pdf')}
+                  className={exportFormat === 'pdf' ? styles.formatCardActive : styles.formatCard}
+                  aria-pressed={exportFormat === 'pdf'}
+                >
+                  <div className={styles.formatIcon}>
+                    <IconFileText size={32} strokeWidth={2} />
+                  </div>
+                  <div className={styles.formatTitle}>PDF</div>
+                  <div className={styles.formatSubtitle}>Human-readable format</div>
+                </button>
+              </div>
+              <p className={styles.formatExplanation}>
+                <strong>JSON</strong> &mdash; Full data backup (profile, analyses, favorites). <strong>PDF</strong> &mdash; Human-readable report for sharing or printing.
+              </p>
+              <p className={styles.formatEta} aria-live="polite">Usually ready in under a minute.</p>
+            </div>
+
+            <div className={styles.actions}>
+              <Link to="/profile" className="btn btn-secondary">
+                <IconArrowLeft size={16} strokeWidth={2} />
+                Back to Profile
+              </Link>
+              <button
+                onClick={handleExport}
+                className="btn btn-primary"
+                disabled={isExporting || (!includeAnalysis && !includeProfile && !includeProducts)}
+              >
+                {isExporting ? (
+                  'Exporting...'
+                ) : (
+                  <>
+                    <IconDownload size={18} strokeWidth={2} />
+                    Export Data
+                  </>
+                )}
+              </button>
+            </div>
+          </>
+        )}
+
+        <div className={styles.note}>
+          <p className={styles.noteContent}>
+            <strong>Your rights:</strong> You can request a copy of your data at any time. This export includes the data we hold for your account.
+          </p>
+        </div>
       </div>
     </div>
   );

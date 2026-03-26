@@ -430,7 +430,7 @@ const HomePage: React.FC = () => {
             </div>
             <div className="testimonial-stars">
               {Array.from({ length: 5 }).map((_, index) => (
-                <IconStar key={index} size={16} strokeWidth={2} />
+                <IconStar key={index} size={16} strokeWidth={2} fill="#f59e0b" stroke="#f59e0b" />
               ))}
             </div>
             <p>
@@ -450,7 +450,7 @@ const HomePage: React.FC = () => {
             </div>
             <div className="testimonial-stars">
               {Array.from({ length: 5 }).map((_, index) => (
-                <IconStar key={index} size={16} strokeWidth={2} />
+                <IconStar key={index} size={16} strokeWidth={2} fill="#f59e0b" stroke="#f59e0b" />
               ))}
             </div>
             <p>
@@ -470,7 +470,7 @@ const HomePage: React.FC = () => {
             </div>
             <div className="testimonial-stars">
               {Array.from({ length: 5 }).map((_, index) => (
-                <IconStar key={index} size={16} strokeWidth={2} />
+                <IconStar key={index} size={16} strokeWidth={2} fill="#f59e0b" stroke="#f59e0b" />
               ))}
             </div>
             <p>

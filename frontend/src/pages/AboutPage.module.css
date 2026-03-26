@@ -1,0 +1,272 @@
+/* AboutPage — CSS Module (Sprint 4 Track E) */
+
+/* ===== Page Container ===== */
+.page {
+  min-height: 100vh;
+  background: var(--bg-secondary, #f6f8fb);
+  padding-bottom: max(80px, env(safe-area-inset-bottom));
+}
+
+/* ===== Mission Section ===== */
+.missionSection {
+  background: linear-gradient(135deg, var(--primary, #1f5fbf) 0%, var(--accent, #4f8ad9) 100%);
+  padding: var(--spacing-2xl, 48px) var(--spacing-md, 16px);
+  color: var(--white, #fff);
+  text-align: center;
+}
+
+.missionTitle {
+  font-size: var(--font-size-2xl, 1.5rem);
+  font-weight: var(--font-weight-bold, 700);
+  margin: 0 0 var(--spacing-sm, 8px);
+  line-height: var(--line-height-tight, 1.2);
+}
+
+.missionText {
+  font-size: var(--font-size-base, 1rem);
+  opacity: 0.9;
+  margin: 0 auto;
+  max-width: 600px;
+  line-height: var(--line-height-relaxed, 1.65);
+}
+
+/* ===== Content ===== */
+.content {
+  padding: var(--spacing-lg, 24px) var(--spacing-md, 16px);
+  max-width: var(--max-width-xl, 1280px);
+  margin: 0 auto;
+}
+
+/* ===== Section Title ===== */
+.sectionTitle {
+  font-size: var(--font-size-xl, 1.25rem);
+  font-weight: var(--font-weight-bold, 700);
+  color: var(--text-primary, #162133);
+  margin: 0 0 var(--spacing-md, 16px);
+  text-align: center;
+}
+
+/* ===== Team Grid ===== */
+.teamGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-md, 16px);
+  margin-bottom: var(--spacing-2xl, 48px);
+}
+
+.teamCard {
+  background: var(--bg-primary, #fff);
+  border-radius: var(--radius-xl, 16px);
+  padding: var(--spacing-lg, 24px) var(--spacing-md, 16px);
+  box-shadow: var(--shadow-card);
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.teamCard:hover {
+  transform: translateY(-2px);
+}
+
+.teamAvatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--gray-100, #f2f5f8);
+  margin: 0 auto var(--spacing-sm, 8px);
+  display: block;
+}
+
+.teamAvatarPlaceholder {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--primary-light, #e8f0fd);
+  color: var(--primary, #1f5fbf);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: var(--font-weight-bold, 700);
+  margin: 0 auto var(--spacing-sm, 8px);
+}
+
+.teamName {
+  font-size: var(--font-size-base, 1rem);
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--text-primary, #162133);
+  margin: 0 0 2px;
+}
+
+.teamRole {
+  font-size: var(--font-size-xs, 0.75rem);
+  color: var(--text-muted, #6c7d93);
+  margin: 0;
+}
+
+/* ===== Company Timeline ===== */
+.timeline {
+  position: relative;
+  padding-left: var(--spacing-xl, 32px);
+  margin-bottom: var(--spacing-2xl, 48px);
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--primary-light, #e8f0fd);
+}
+
+.timelineItem {
+  position: relative;
+  margin-bottom: var(--spacing-lg, 24px);
+}
+
+.timelineItem:last-child {
+  margin-bottom: 0;
+}
+
+.timelineDot {
+  position: absolute;
+  left: calc(-1 * var(--spacing-xl, 32px) + 3px);
+  top: 4px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--primary, #1f5fbf);
+  border: 2px solid var(--bg-secondary, #f6f8fb);
+}
+
+.timelineYear {
+  font-size: var(--font-size-sm, 0.875rem);
+  font-weight: var(--font-weight-bold, 700);
+  color: var(--primary, #1f5fbf);
+  margin: 0 0 2px;
+}
+
+.timelineText {
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--text-secondary, #4e6078);
+  line-height: var(--line-height-relaxed, 1.65);
+  margin: 0;
+}
+
+/* ===== Stats Row ===== */
+.statsRow {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-sm, 8px);
+  margin-bottom: var(--spacing-2xl, 48px);
+}
+
+.statCard {
+  background: var(--bg-primary, #fff);
+  border-radius: var(--radius-lg, 12px);
+  padding: var(--spacing-md, 16px);
+  box-shadow: var(--shadow-card);
+  text-align: center;
+}
+
+.statNumber {
+  font-size: var(--font-size-2xl, 1.5rem);
+  font-weight: var(--font-weight-extrabold, 800);
+  color: var(--primary, #1f5fbf);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.statLabel {
+  font-size: var(--font-size-xs, 0.75rem);
+  color: var(--text-secondary, #4e6078);
+}
+
+/* ===== Responsive: Tablet ===== */
+@media (min-width: 768px) {
+  .missionSection {
+    padding: var(--spacing-3xl, 64px) var(--spacing-lg, 24px);
+  }
+
+  .missionTitle {
+    font-size: var(--font-size-3xl, 1.875rem);
+  }
+
+  .teamGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .statsRow {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .content {
+    padding: var(--spacing-xl, 32px) var(--spacing-lg, 24px);
+  }
+}
+
+/* ===== Responsive: Desktop ===== */
+@media (min-width: 1024px) {
+  .teamGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .timeline {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* ===== Dark Mode ===== */
+@media (prefers-color-scheme: dark) {
+  .page {
+    background: var(--gray-950, #0a0a0a);
+  }
+
+  .missionSection {
+    background: linear-gradient(135deg, #0d2d5e 0%, #1a4080 100%);
+  }
+
+  .sectionTitle, .teamName {
+    color: var(--gray-50, #f9fbfd);
+  }
+
+  .teamCard, .statCard {
+    background: var(--gray-900, #162133);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .teamRole, .statLabel {
+    color: var(--gray-400, #97a6ba);
+  }
+
+  .teamAvatarPlaceholder {
+    background: rgba(31, 95, 191, 0.15);
+  }
+
+  .timeline::before {
+    background: var(--gray-700, #36485f);
+  }
+
+  .timelineDot {
+    border-color: var(--gray-950, #0a0a0a);
+  }
+
+  .timelineText {
+    color: var(--gray-300, #d1d9e4);
+  }
+}
+
+/* ===== Reduced Motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  .teamCard {
+    transition: none;
+  }
+
+  .teamCard:hover {
+    transform: none;
+  }
+}

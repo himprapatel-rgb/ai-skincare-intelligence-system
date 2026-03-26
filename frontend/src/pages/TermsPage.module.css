@@ -1,0 +1,235 @@
+/* TermsPage — CSS Module (Sprint 4 Track E) */
+
+/* ===== Page Container ===== */
+.page {
+  min-height: 100vh;
+  background: var(--bg-secondary, #f6f8fb);
+  padding-bottom: max(80px, env(safe-area-inset-bottom));
+}
+
+/* ===== Header ===== */
+.header {
+  padding: var(--spacing-lg, 24px) var(--spacing-md, 16px) var(--spacing-md, 16px);
+}
+
+.headerTitle {
+  font-size: var(--font-size-2xl, 1.5rem);
+  font-weight: var(--font-weight-bold, 700);
+  color: var(--text-primary, #162133);
+  margin: 0 0 var(--spacing-xs, 4px);
+}
+
+.lastUpdated {
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--text-muted, #6c7d93);
+  margin: 0;
+}
+
+/* ===== Content Layout ===== */
+.content {
+  padding: 0 var(--spacing-md, 16px);
+  max-width: var(--max-width-xl, 1280px);
+  margin: 0 auto;
+}
+
+/* ===== Table of Contents Sidebar ===== */
+.tocSidebar {
+  display: none;
+}
+
+.tocTitle {
+  font-size: var(--font-size-sm, 0.875rem);
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--text-primary, #162133);
+  margin: 0 0 var(--spacing-sm, 8px);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide, 0.025em);
+}
+
+.tocList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tocItem {
+  margin-bottom: var(--spacing-xs, 4px);
+}
+
+.tocLink {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-xs, 4px) var(--spacing-sm, 8px);
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--text-secondary, #4e6078);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  border-radius: 0 var(--radius-sm, 6px) var(--radius-sm, 6px) 0;
+  min-height: 44px;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.tocLink:hover {
+  color: var(--primary, #1f5fbf);
+}
+
+.tocLinkActive {
+  color: var(--primary, #1f5fbf);
+  border-left-color: var(--primary, #1f5fbf);
+  font-weight: var(--font-weight-semibold, 600);
+  background: var(--primary-light, #e8f0fd);
+}
+
+/* ===== Legal Sections ===== */
+.legalContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md, 16px);
+}
+
+.legalSection {
+  background: var(--bg-primary, #fff);
+  border-radius: var(--radius-xl, 16px);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-md, 16px);
+  cursor: pointer;
+  min-height: 44px;
+  transition: background 0.2s ease;
+}
+
+.sectionHeader:hover {
+  background: var(--bg-secondary, #f6f8fb);
+}
+
+.sectionTitle {
+  font-size: var(--font-size-base, 1rem);
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--text-primary, #162133);
+  margin: 0;
+}
+
+.sectionToggle {
+  color: var(--text-muted, #6c7d93);
+  font-size: 1.25rem;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.sectionToggleOpen {
+  transform: rotate(180deg);
+}
+
+.sectionBody {
+  padding: 0 var(--spacing-md, 16px) var(--spacing-md, 16px);
+}
+
+.legalText {
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--text-secondary, #4e6078);
+  line-height: var(--line-height-relaxed, 1.65);
+  margin: 0 0 var(--spacing-sm, 8px);
+}
+
+.legalText:last-child {
+  margin-bottom: 0;
+}
+
+.legalList {
+  padding-left: var(--spacing-lg, 24px);
+  margin: var(--spacing-sm, 8px) 0;
+}
+
+.legalList li {
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--text-secondary, #4e6078);
+  line-height: var(--line-height-relaxed, 1.65);
+  margin-bottom: var(--spacing-xs, 4px);
+}
+
+/* ===== Responsive: Tablet ===== */
+@media (min-width: 768px) {
+  .header {
+    padding: var(--spacing-xl, 32px) var(--spacing-lg, 24px) var(--spacing-md, 16px);
+  }
+
+  .headerTitle {
+    font-size: var(--font-size-3xl, 1.875rem);
+  }
+
+  .content {
+    padding: 0 var(--spacing-lg, 24px);
+  }
+
+  .sectionBody {
+    padding: 0 var(--spacing-lg, 24px) var(--spacing-lg, 24px);
+  }
+}
+
+/* ===== Responsive: Desktop ===== */
+@media (min-width: 1024px) {
+  .content {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: var(--spacing-xl, 32px);
+    align-items: start;
+  }
+
+  .tocSidebar {
+    display: block;
+    position: sticky;
+    top: var(--spacing-lg, 24px);
+  }
+}
+
+/* ===== Dark Mode ===== */
+@media (prefers-color-scheme: dark) {
+  .page {
+    background: var(--gray-950, #0a0a0a);
+  }
+
+  .headerTitle, .sectionTitle, .tocTitle {
+    color: var(--gray-50, #f9fbfd);
+  }
+
+  .lastUpdated {
+    color: var(--gray-500, #6c7d93);
+  }
+
+  .legalSection {
+    background: var(--gray-900, #162133);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .sectionHeader:hover {
+    background: var(--gray-800, #27364c);
+  }
+
+  .legalText, .legalList li {
+    color: var(--gray-300, #d1d9e4);
+  }
+
+  .tocLink {
+    color: var(--gray-400, #97a6ba);
+  }
+
+  .tocLinkActive {
+    color: var(--primary, #1f5fbf);
+    background: rgba(31, 95, 191, 0.1);
+  }
+}
+
+/* ===== Reduced Motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  .sectionToggle,
+  .sectionHeader,
+  .tocLink {
+    transition: none;
+  }
+}

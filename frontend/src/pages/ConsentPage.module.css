@@ -1,0 +1,250 @@
+/* ConsentPage — CSS Module (Sprint 4 Track E) */
+
+/* ===== Page Container ===== */
+.page {
+  min-height: 100vh;
+  background: var(--bg-secondary, #f6f8fb);
+  padding-bottom: max(80px, env(safe-area-inset-bottom));
+}
+
+/* ===== Header ===== */
+.header {
+  padding: var(--spacing-lg, 24px) var(--spacing-md, 16px) var(--spacing-md, 16px);
+  text-align: center;
+}
+
+.headerTitle {
+  font-size: var(--font-size-2xl, 1.5rem);
+  font-weight: var(--font-weight-bold, 700);
+  color: var(--text-primary, #162133);
+  margin: 0 0 var(--spacing-xs, 4px);
+}
+
+.headerSubtitle {
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--text-secondary, #4e6078);
+  margin: 0;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: var(--line-height-relaxed, 1.65);
+}
+
+/* ===== Content ===== */
+.content {
+  padding: 0 var(--spacing-md, 16px);
+  max-width: var(--max-width-md, 720px);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md, 16px);
+}
+
+/* ===== Section Cards ===== */
+.sectionCard {
+  background: var(--bg-primary, #fff);
+  border-radius: var(--radius-xl, 16px);
+  padding: var(--spacing-lg, 24px) var(--spacing-md, 16px);
+  box-shadow: var(--shadow-card);
+}
+
+.sectionTitle {
+  font-size: var(--font-size-base, 1rem);
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--text-primary, #162133);
+  margin: 0 0 var(--spacing-xs, 4px);
+}
+
+.sectionDescription {
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--text-secondary, #4e6078);
+  line-height: var(--line-height-relaxed, 1.65);
+  margin: 0 0 var(--spacing-md, 16px);
+}
+
+/* ===== Consent Checkboxes ===== */
+.consentList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm, 8px);
+}
+
+.consentItem {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-md, 16px);
+  padding: var(--spacing-sm, 8px) 0;
+  min-height: 44px;
+}
+
+.consentCheckbox {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--border-color, #e4e9ef);
+  border-radius: var(--radius-sm, 6px);
+  background: var(--bg-primary, #fff);
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-top: 2px;
+  accent-color: var(--primary, #1f5fbf);
+}
+
+.consentLabel {
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--text-primary, #162133);
+  line-height: var(--line-height-relaxed, 1.65);
+  cursor: pointer;
+}
+
+.consentRequired {
+  color: var(--danger, #b42318);
+  font-weight: var(--font-weight-semibold, 600);
+  font-size: var(--font-size-xs, 0.75rem);
+  margin-left: var(--spacing-xs, 4px);
+}
+
+/* ===== Status Indicator ===== */
+.statusBadge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: var(--radius-full, 9999px);
+  font-size: var(--font-size-xs, 0.75rem);
+  font-weight: var(--font-weight-semibold, 600);
+}
+
+.statusGranted {
+  background: var(--success-100, #dcfce7);
+  color: var(--success, #1b7f53);
+}
+
+.statusPending {
+  background: var(--warning-100, #fef3c7);
+  color: var(--warning, #b97710);
+}
+
+.statusRevoked {
+  background: var(--danger-100, #fee2e2);
+  color: var(--danger, #b42318);
+}
+
+/* ===== Action Buttons ===== */
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm, 8px);
+  margin-top: var(--spacing-md, 16px);
+}
+
+.acceptButton {
+  width: 100%;
+  padding: 14px;
+  background: var(--primary, #1f5fbf);
+  color: var(--white, #fff);
+  border: none;
+  border-radius: var(--radius-md, 8px);
+  font-size: var(--font-size-base, 1rem);
+  font-weight: var(--font-weight-semibold, 600);
+  cursor: pointer;
+  min-height: 44px;
+  transition: background 0.2s ease;
+}
+
+.acceptButton:hover {
+  background: var(--primary-hover, #174a95);
+}
+
+.acceptButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.declineButton {
+  width: 100%;
+  padding: 14px;
+  background: none;
+  border: 1.5px solid var(--border-color, #e4e9ef);
+  border-radius: var(--radius-md, 8px);
+  color: var(--text-secondary, #4e6078);
+  font-size: var(--font-size-sm, 0.875rem);
+  font-weight: var(--font-weight-medium, 500);
+  cursor: pointer;
+  min-height: 44px;
+  transition: border-color 0.2s ease;
+}
+
+.declineButton:hover {
+  border-color: var(--danger, #b42318);
+  color: var(--danger, #b42318);
+}
+
+/* ===== Responsive: Tablet ===== */
+@media (min-width: 768px) {
+  .header {
+    padding: var(--spacing-xl, 32px) var(--spacing-lg, 24px) var(--spacing-md, 16px);
+  }
+
+  .headerTitle {
+    font-size: var(--font-size-3xl, 1.875rem);
+  }
+
+  .content {
+    padding: 0 var(--spacing-lg, 24px);
+  }
+
+  .sectionCard {
+    padding: var(--spacing-xl, 32px);
+  }
+
+  .actions {
+    flex-direction: row;
+  }
+
+  .acceptButton, .declineButton {
+    flex: 1;
+  }
+}
+
+/* ===== Responsive: Desktop ===== */
+@media (min-width: 1024px) {
+  .content {
+    max-width: var(--max-width-md, 720px);
+  }
+}
+
+/* ===== Dark Mode ===== */
+@media (prefers-color-scheme: dark) {
+  .page {
+    background: var(--gray-950, #0a0a0a);
+  }
+
+  .headerTitle, .sectionTitle, .consentLabel {
+    color: var(--gray-50, #f9fbfd);
+  }
+
+  .headerSubtitle, .sectionDescription {
+    color: var(--gray-400, #97a6ba);
+  }
+
+  .sectionCard {
+    background: var(--gray-900, #162133);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .consentCheckbox {
+    border-color: var(--gray-600, #4e6078);
+    background: var(--gray-800, #27364c);
+  }
+
+  .declineButton {
+    border-color: var(--gray-700, #36485f);
+    color: var(--gray-300, #d1d9e4);
+  }
+}
+
+/* ===== Reduced Motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  .acceptButton,
+  .declineButton {
+    transition: none;
+  }
+}

@@ -102,8 +102,10 @@
   border-bottom: none;
 }
 
-.app-list-item:hover {
-  background: var(--gray-50);
+@media (hover: hover) {
+  .app-list-item:hover {
+    background: var(--gray-50);
+  }
 }
 
 .app-list-item:active {

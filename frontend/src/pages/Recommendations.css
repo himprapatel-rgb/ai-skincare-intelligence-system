@@ -720,3 +720,26 @@
     padding: 28px 20px;
   }
 }
+
+/* ========== TABLET (769px–1024px) ========== */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .recommendations-page {
+    padding-bottom: var(--spacing-xl, 32px);
+  }
+
+  .recommendations-container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-lg, 24px);
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .recommendations-filters {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+}

@@ -1,0 +1,894 @@
+/**
+ * Mobile Core — consolidated from app-mobile-global, best-apps-mobile, mobile-redesign.
+ * All rules apply at ≤768px. Overlapping selectors resolved (last definition wins).
+ */
+
+@media (max-width: 768px) {
+  /* ==================================================================
+     LAYOUT CONTAINMENT (from app-mobile-global + mobile-redesign)
+     ================================================================== */
+
+  /* Shell: prevent horizontal overflow */
+  .app-layout {
+    width: 100%;
+    max-width: 100vw;
+    min-width: 0;
+    overflow-x: hidden;
+    background: var(--bg-secondary);
+  }
+
+  .app-layout .app-main,
+  .app-layout main {
+    width: 100%;
+    min-width: 0;
+    overflow-x: hidden;
+  }
+
+  .app-layout.app-shell-mode .app-main,
+  .app-layout.app-shell-mode main {
+    padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px));
+  }
+
+  body,
+  .app-layout,
+  .app-layout main {
+    overflow-x: hidden;
+  }
+
+  /* Page container: safe areas + background */
+  .app-page,
+  .today-page,
+  .me-page,
+  .scan-page,
+  .auth-page,
+  .dashboard-page,
+  .history-page,
+  .favorites-page,
+  .myshelf-page,
+  .routine-builder-page,
+  .recommendations-page,
+  .dt-page,
+  .notification-center-page,
+  .profile-settings-page,
+  .onboarding-page,
+  .progress-tracking-page,
+  .comparison-page,
+  .product-details-page,
+  .analysis-results,
+  .consent-page,
+  .data-export-page,
+  .skin-goals-page,
+  .device-context-page {
+    min-height: 100%;
+    background: var(--bg-secondary);
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+    padding-bottom: max(24px, env(safe-area-inset-bottom));
+    width: 100%;
+    max-width: 100vw;
+    min-width: 0;
+    overflow-x: hidden;
+    box-sizing: border-box;
+  }
+
+  /* Long words and URLs break instead of overflowing */
+  .app-page,
+  .app-page-content,
+  .app-card,
+  .app-header-card {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+  }
+
+  /* Keep checkbox labels on one line */
+  .app-page .checkbox-label,
+  .app-page .remember-me-label {
+    word-break: normal;
+    overflow-wrap: normal;
+    white-space: nowrap;
+  }
+
+  /* Media never wider than container */
+  .app-page img,
+  .app-page video,
+  .app-page-content img,
+  .app-page-content video,
+  .app-card img,
+  .app-card video {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+
+  /* Content wrapper: centered, readable line length */
+  .app-page-content,
+  .today-content,
+  .me-content,
+  .scan-content,
+  .page-container {
+    max-width: 520px;
+    margin: 0 auto;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* Prevent overscroll bounce on iOS */
+  html {
+    overscroll-behavior-y: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  body {
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+
+  #root {
+    min-height: 100%;
+  }
+
+  /* Clearance for bottom nav */
+  .app-layout main,
+  .app-layout .app-main {
+    padding-bottom: max(96px, calc(96px + env(safe-area-inset-bottom)));
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .today-page,
+  .me-page,
+  .scan-page {
+    padding-bottom: max(100px, calc(88px + env(safe-area-inset-bottom)));
+  }
+
+  /* Cards: consistent radius */
+  .app-card,
+  .app-list-group,
+  .app-header-card {
+    border-radius: var(--card-radius, var(--radius-lg, 12px));
+  }
+
+  /* ==================================================================
+     TYPOGRAPHY (from mobile-redesign)
+     ================================================================== */
+  .app-page h1,
+  .today-page h1,
+  .me-page h1,
+  .scan-page h1 {
+    font-size: clamp(1.35rem, 4vw + 1rem, 1.6rem);
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+    margin: 0 0 0.5em 0;
+  }
+
+  .app-page h2,
+  .today-page h2,
+  .me-page h2 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 1.25em 0 0.5em 0;
+  }
+
+  .app-page .page-subtitle,
+  .today-page .page-subtitle,
+  .me-page .page-subtitle {
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
+    margin: 0 0 1em 0;
+  }
+
+  /* Subtitle contrast: WCAG AA */
+  .app-page .subtitle,
+  .app-layout .page-header .page-subtitle,
+  .app-layout .page-header p,
+  .app-layout .subtitle,
+  .page-header .subtitle,
+  .dashboard-header .subtitle,
+  .consent-header .subtitle,
+  .email-verification-card .subtitle {
+    color: var(--gray-600, #475569);
+  }
+
+  /* ==================================================================
+     CARDS (from mobile-redesign + best-apps-mobile)
+     ================================================================== */
+  .app-page .app-card,
+  .today-card,
+  .me-profile-card,
+  .me-card,
+  .scan-card,
+  .dashboard-card,
+  .stat-card,
+  .product-card,
+  .info-card,
+  .app-page .card {
+    background: var(--bg-white);
+    border-radius: 16px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .app-header-card,
+  .app-card {
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .app-page .app-card:active,
+  .today-card:active,
+  .me-card:active {
+    opacity: 0.97;
+  }
+
+  /* ==================================================================
+     LIST ROWS (from mobile-redesign)
+     ================================================================== */
+  .app-page .app-list-item,
+  .me-list-item,
+  .me-list a,
+  .settings-item,
+  .routine-step-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 52px;
+    padding: 12px 0;
+    color: var(--text-primary);
+    text-decoration: none;
+    border-bottom: 1px solid var(--gray-100);
+    gap: 12px;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .app-page .app-list-item:last-child,
+  .me-list-item:last-child,
+  .me-list a:last-child {
+    border-bottom: none;
+  }
+
+  /* ==================================================================
+     BUTTONS (from mobile-redesign)
+     ================================================================== */
+  .app-page .btn-primary,
+  .today-page .btn-primary,
+  .me-page .btn-primary,
+  .scan-page .btn-primary,
+  .auth-page .btn-primary {
+    min-height: 48px;
+    padding: 14px 24px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 14px;
+    background: var(--gradient-primary);
+    border: none;
+    color: var(--white);
+    box-shadow: var(--shadow-primary);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .app-page .btn-secondary,
+  .today-page .btn-secondary,
+  .me-page .btn-secondary {
+    min-height: 48px;
+    padding: 12px 20px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    border-radius: 14px;
+    background: var(--bg-white);
+    border: 2px solid var(--primary);
+    color: var(--primary);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* ==================================================================
+     TOUCH TARGETS (from app-mobile-global)
+     ================================================================== */
+  button:not(.btn-icon-small):not(.btn-action),
+  .app-page .btn,
+  .app-page a.btn,
+  a.app-list-item,
+  .app-nav-mobile-link,
+  .filter-tabs-scroll button,
+  .myshelf-pills button,
+  .app-nav-user-trigger,
+  .app-nav-mobile-expand,
+  .myshelf-sort-select,
+  .myshelf-onboarding-toggle,
+  .btn-ghost,
+  .btn-outline,
+  .hero-cta-secondary,
+  .scan-btn-secondary,
+  .dashboard-empty-link {
+    min-height: 44px;
+  }
+
+  .myshelf-search-clear,
+  .favorites-search-clear,
+  .history-search-clear {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .filter-select,
+  .filters-reset,
+  .empty-reset-filters {
+    min-height: 44px;
+  }
+
+  .profile-settings-page .settings-item {
+    min-height: 44px;
+  }
+
+  .app-page .btn-link,
+  .change-email-btn,
+  .me-profile-edit {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 12px;
+    margin: -2px -12px;
+    box-sizing: border-box;
+  }
+
+  .star-button,
+  .repurchase-btn {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .product-card-rating .star-button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  /* Bottom nav touch targets */
+  .app-page button:not(.btn-icon-small):not(.btn-action),
+  .today-page .btn,
+  .me-page .btn,
+  .scan-page .scan-btn-primary,
+  .scan-page .scan-btn-secondary,
+  .bottom-nav-item {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Checkbox/radio: 24px min for touch */
+  input[type="checkbox"],
+  input[type="radio"] {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+    accent-color: var(--primary, #2563eb);
+  }
+
+  /* Prevent iOS zoom on input focus */
+  input[type="text"],
+  input[type="email"],
+  input[type="search"],
+  input[type="password"],
+  input[type="number"],
+  input[type="time"],
+  input[type="tel"],
+  input[type="url"],
+  input:not([type]),
+  select,
+  textarea {
+    font-size: 16px; /* Prevents iOS zoom on focus */
+  }
+
+  /* ==================================================================
+     TAP FEEDBACK (from best-apps-mobile)
+     ================================================================== */
+  .btn-primary:active:not(:disabled),
+  .btn-secondary:active:not(:disabled),
+  .btn-outline:active:not(:disabled),
+  .btn-ghost:active:not(:disabled),
+  .app-nav-cta:active,
+  .app-nav-mobile-cta:active,
+  .app-nav-mobile-link:active,
+  .app-nav-mobile-expand:active,
+  .bottom-nav-item:active,
+  .bottom-nav-item-center:active,
+  .app-card[role="button"]:active,
+  a.app-list-item:active,
+  .myshelf-pills button:active,
+  .filter-tabs button:active,
+  .product-card-menu-btn:active,
+  .favorites-search-clear:active,
+  .history-search-clear:active,
+  .myshelf-search-clear:active,
+  .scan-page .mode-btn:active,
+  .scan-type-tab:active,
+  .product-details-page .product-image-zoom-trigger:active,
+  .product-details-page .product-details-actions-row .compare-link:active,
+  .product-details-page .action-buttons button:active,
+  .product-details-page .tabs-header button:active,
+  .product-details-page .product-image-zoom-close:active,
+  .product-details-page .link-button:active,
+  .today-page .today-skin-btn:active,
+  .today-page .today-routine-step:active,
+  .today-page .today-product-card-buy:active,
+  .today-page .today-foryou-tile:active,
+  .today-page .today-ingredients-cta:active,
+  .today-page .today-toppick-buy:active,
+  .today-page .today-routine-tab:active,
+  .today-page .today-card-link:active,
+  .today-page .today-prediction-link:active,
+  .today-page .today-see-all:active,
+  .today-page .today-settings-btn:active {
+    transform: scale(0.98);
+    opacity: 0.92;
+  }
+
+  /* Primary CTA: stronger feedback */
+  .btn-primary:active:not(:disabled),
+  .app-nav-cta:active,
+  .app-nav-mobile-cta:active {
+    transform: scale(0.97);
+  }
+
+  .app-page .btn-primary:active,
+  .today-page .btn-primary:active,
+  .me-page .btn-primary:active {
+    transform: scale(0.98);
+  }
+
+  /* Center Scan pill: subtle press */
+  .bottom-nav-item-center:active .bottom-nav-center-pill {
+    transform: scale(0.96);
+    box-shadow: 0 2px 12px rgba(37, 99, 235, 0.35);
+  }
+
+  /* Cards that navigate: light feedback */
+  .myshelf-page a[class*="product-card"]:active,
+  .recommendations-page a[class*="card"]:active,
+  .favorites-page a[class*="card"]:active,
+  .app-card a:active {
+    opacity: 0.9;
+  }
+
+  /* Tap feedback on nav links */
+  .me-list a[href],
+  .app-page a.app-list-item {
+    transition: background 0.15s;
+  }
+
+  .me-list a[href]:active,
+  .app-page a.app-list-item:active {
+    background: var(--gray-50);
+  }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .btn-primary:active:not(:disabled),
+    .btn-secondary:active:not(:disabled),
+    .btn-outline:active:not(:disabled),
+    .btn-ghost:active:not(:disabled),
+    .app-nav-cta:active,
+    .app-nav-mobile-cta:active,
+    .app-nav-mobile-link:active,
+    .app-nav-mobile-expand:active,
+    .bottom-nav-item:active,
+    .bottom-nav-item-center:active,
+    .bottom-nav-item-center:active .bottom-nav-center-pill,
+    .myshelf-pills button:active,
+    .filter-tabs button:active,
+    .product-card-menu-btn:active,
+    .favorites-search-clear:active,
+    .history-search-clear:active,
+    .myshelf-search-clear:active,
+    .scan-page .mode-btn:active,
+    .scan-type-tab:active,
+    .product-details-page .product-image-zoom-trigger:active,
+    .product-details-page .product-details-actions-row .compare-link:active,
+    .product-details-page .action-buttons button:active,
+    .product-details-page .tabs-header button:active,
+    .product-details-page .product-image-zoom-close:active,
+    .product-details-page .link-button:active,
+    .today-page .today-skin-btn:active,
+    .today-page .today-routine-step:active,
+    .today-page .today-product-card-buy:active,
+    .today-page .today-foryou-tile:active,
+    .today-page .today-ingredients-cta:active,
+    .today-page .today-toppick-buy:active,
+    .today-page .today-routine-tab:active,
+    .today-page .today-card-link:active,
+    .today-page .today-prediction-link:active,
+    .today-page .today-see-all:active,
+    .today-page .today-settings-btn:active,
+    .myshelf-page a[class*="product-card"]:active,
+    .recommendations-page a[class*="card"]:active,
+    .favorites-page a[class*="card"]:active,
+    .app-card a:active {
+      transform: none;
+    }
+  }
+
+  /* General tap feedback */
+  @media (prefers-reduced-motion: no-preference) {
+    .app-page button:active:not(:disabled),
+    .app-page .btn:active:not(:disabled),
+    .app-nav-mobile-link:active,
+    .bottom-nav-item:active {
+      opacity: 0.9;
+      transform: scale(0.98);
+    }
+  }
+
+  * {
+    -webkit-tap-highlight-color: rgba(79, 70, 229, 0.12);
+  }
+
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible,
+  [tabindex="0"]:focus-visible {
+    outline: 2px solid var(--primary, #2563eb);
+    outline-offset: 2px;
+  }
+
+  /* ==================================================================
+     THUMB ZONE (from best-apps-mobile)
+     ================================================================== */
+  .bottom-nav {
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+  }
+
+  .bottom-nav-item {
+    min-width: 56px;
+    padding: 8px 6px;
+  }
+
+  .bottom-nav-center-pill {
+    width: 56px;
+    height: 56px;
+  }
+
+  /* ==================================================================
+     SECTION LABELS (from mobile-redesign)
+     ================================================================== */
+  .today-section-title,
+  .me-section-title,
+  .section-label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin: 20px 0 10px 0;
+  }
+
+  /* ==================================================================
+     EMPTY STATES (from mobile-redesign)
+     ================================================================== */
+  .empty-state {
+    text-align: center;
+    padding: 32px 20px;
+    background: var(--bg-white);
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+  }
+
+  .empty-state h3 {
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    margin: 0 0 8px 0;
+  }
+
+  .empty-state p {
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
+    margin: 0 0 20px 0;
+  }
+
+  /* ==================================================================
+     HEADER BAR (from mobile-redesign)
+     ================================================================== */
+  .app-shell-mode .app-header {
+    background: rgba(255, 255, 255, 0.92);
+    border-bottom: 1px solid var(--border-color);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  .app-shell-mode .app-logo-text {
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .app-shell-mode .app-logo-ai {
+    color: var(--primary);
+  }
+
+  .app-nav-mobile-bell {
+    margin-right: 4px;
+  }
+
+  /* ==================================================================
+     HERO (from best-apps-mobile)
+     ================================================================== */
+  .hero .hero-cta {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .hero .btn-primary--hero,
+  .hero .hero-cta-secondary {
+    width: 100%;
+    max-width: 320px;
+    justify-content: center;
+  }
+
+  .hero .hero-reassurance {
+    margin-top: 12px;
+  }
+
+  /* ==================================================================
+     SCAN FLOW (from best-apps-mobile + mobile-redesign)
+     ================================================================== */
+  .scan-page .mode-btn {
+    min-height: 48px;
+    border-radius: 12px;
+    font-weight: 500;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .scan-page .mode-btn.active {
+    box-shadow: 0 2px 12px rgba(37, 99, 235, 0.2);
+    border: 1px solid rgba(37, 99, 235, 0.3);
+  }
+
+  .scan-page .scan-progress-section .progress-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary, #0f172a);
+    margin-bottom: 8px;
+  }
+
+  .scan-page .scan-progress-section .progress-message {
+    font-size: 1rem;
+    color: var(--gray-600, #475569);
+  }
+
+  .scan-page .scan-btn-primary:active:not(:disabled) {
+    transform: scale(0.98);
+    opacity: 0.95;
+  }
+
+  .scan-container {
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+    padding-bottom: max(100px, calc(88px + env(safe-area-inset-bottom)));
+  }
+
+  .camera-container {
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+  }
+
+  /* ==================================================================
+     MY SHELF (from best-apps-mobile)
+     ================================================================== */
+  .myshelf-page .product-card {
+    border-radius: var(--card-radius, 12px);
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  }
+
+  .myshelf-page .product-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  .myshelf-page .myshelf-empty {
+    border-radius: var(--card-radius, 12px);
+    padding: 32px 24px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+
+  .myshelf-page .myshelf-empty-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .myshelf-page .myshelf-empty-cta {
+    min-height: 48px;
+    padding: 14px 28px;
+    font-weight: 600;
+    border-radius: 12px;
+  }
+
+  /* ==================================================================
+     DASHBOARD (from best-apps-mobile)
+     ================================================================== */
+  .dashboard-page .stat-card {
+    border-radius: var(--card-radius, 12px);
+    padding: 20px 16px;
+    border: 1px solid var(--border-color, #e2e8f0);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  }
+
+  .dashboard-page .stat-card .stat-content h3 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.2;
+    margin: 0 0 4px 0;
+  }
+
+  .dashboard-page .stat-card .stat-content p {
+    font-size: 0.875rem;
+    color: var(--gray-600, #475569);
+    margin: 0;
+  }
+
+  .dashboard-page .stat-card.primary .stat-content h3 {
+    color: var(--white);
+  }
+
+  .dashboard-page .stat-card.primary .stat-content p {
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  /* ==================================================================
+     PRODUCT DETAILS (from best-apps-mobile)
+     ================================================================== */
+  .product-details-page .product-image-section,
+  .product-details-page .product-details-tabs {
+    border-radius: var(--card-radius, 12px);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    transition: box-shadow 0.2s ease;
+  }
+
+  .product-details-page .product-image-section:focus-within,
+  .product-details-page .product-details-tabs:focus-within {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  .product-details-page .tabs-header button.active {
+    border-radius: 10px;
+    box-shadow: 0 1px 2px rgba(37, 99, 235, 0.15);
+  }
+
+  /* ==================================================================
+     TODAY CARDS (from best-apps-mobile)
+     ================================================================== */
+  .today-page .today-card {
+    border-radius: var(--card-radius, 12px);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .today-page .today-toppick-card,
+  .today-page .today-product-card {
+    border-radius: var(--card-radius, 12px);
+  }
+
+  .today-page a.today-product-card:active,
+  .today-page a.today-toppick-card:active {
+    opacity: 0.92;
+  }
+
+  /* Product/recommendation cards */
+  .today-products-grid,
+  .recommendations-grid {
+    gap: 14px;
+  }
+
+  .today-product-card,
+  .product-card {
+    border-radius: 14px;
+    overflow: hidden;
+    background: var(--bg-white);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* ==================================================================
+     ME PAGE (from mobile-redesign)
+     ================================================================== */
+  .me-profile-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+  }
+
+  .me-profile-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    color: var(--white);
+    font-size: 1.35rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .me-profile-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* ==================================================================
+     FORMS (from mobile-redesign)
+     ================================================================== */
+  .auth-page .auth-right,
+  .login-form,
+  .register-form {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .auth-page input[type="email"],
+  .auth-page input[type="password"],
+  .auth-page input[type="text"] {
+    min-height: 52px;
+    padding: 14px 16px;
+    font-size: 1rem;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-white);
+  }
+
+  .auth-page input:focus {
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 0 3px var(--primary-light);
+  }
+}
+
+/* ==================================================================
+   REDUCED MOTION (from app-mobile-global)
+   ================================================================== */
+@media (max-width: 768px) {
+  @media (prefers-reduced-motion: reduce) {
+    .page-transition-wrap,
+    .onboarding-page .progress-step,
+    .scan-page *,
+    .btn-primary,
+    .btn-secondary,
+    [class*="animation"],
+    [class*="transition"] {
+      animation-duration: 0.01ms;
+      transition-duration: 0.01ms;
+    }
+  }
+}
+
+/* ==================================================================
+   PWA STANDALONE MODE (from app-mobile-global)
+   ================================================================== */
+@media (max-width: 768px) {
+  [data-standalone="true"] .app-page {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  [data-standalone="true"] .app-header-card,
+  [data-standalone="true"] .myshelf-hero,
+  [data-standalone="true"] .app-header {
+    padding-top: max(16px, env(safe-area-inset-top));
+  }
+}

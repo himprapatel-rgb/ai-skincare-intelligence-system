@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { IconBarChart, IconScan, IconUser } from './Icons';
+import { useKeyboardVisible } from '../hooks/useKeyboardVisible';
 import './BottomNav.css';
 
 /* Pro restructure: 3 tabs (Jobs-To-Be-Done) – TODAY | SCAN | ME */
@@ -10,6 +11,7 @@ const rightItem = { to: '/me', icon: IconUser, label: 'Me' };
 
 export const BottomNav: React.FC = React.memo(() => {
   const location = useLocation();
+  const keyboardVisible = useKeyboardVisible();
 
   const isActive = (to: string) =>
     to === '/' ? location.pathname === '/' || location.pathname === '/today' : (to === '/me' ? location.pathname === '/me' || location.pathname.startsWith('/profile') : location.pathname.startsWith(to));
@@ -19,7 +21,7 @@ export const BottomNav: React.FC = React.memo(() => {
   const RightIcon = rightItem.icon;
 
   return (
-    <nav className="bottom-nav" aria-label="Bottom navigation">
+    <nav className={`bottom-nav${keyboardVisible ? ' bottom-nav--hidden' : ''}`} aria-label="Bottom navigation">
       <Link
         to={leftItem.to}
         className={`bottom-nav-item${isActive(leftItem.to) ? ' active' : ''}`}

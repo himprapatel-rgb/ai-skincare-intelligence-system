@@ -904,3 +904,47 @@
     animation: none !important;
   }
 }
+
+/* ========== TABLET (769px–1024px) ========== */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .analysis-results {
+    padding-bottom: var(--spacing-xl, 32px);
+  }
+
+  .results-container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-lg, 24px);
+  }
+
+  .results-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .metric-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ========== DESKTOP (≥1025px) ========== */
+@media (min-width: 1025px) {
+  .analysis-results {
+    padding-bottom: var(--spacing-2xl, 48px);
+  }
+
+  .results-container {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-xl, 32px);
+  }
+
+  .results-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-lg, 24px);
+  }
+
+  .metric-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

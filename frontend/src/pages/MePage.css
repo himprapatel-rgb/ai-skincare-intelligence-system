@@ -253,3 +253,63 @@
   margin: 0 0 20px 0;
   color: var(--text-secondary);
 }
+
+/* ========== TABLET (769px–1024px) ========== */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .me-page {
+    padding-bottom: var(--spacing-xl, 32px);
+  }
+
+  .me-content {
+    max-width: 640px;
+    padding: 0 var(--spacing-lg, 24px) var(--spacing-xl, 32px);
+  }
+
+  .me-header {
+    padding-left: var(--spacing-lg, 24px);
+    padding-right: var(--spacing-lg, 24px);
+  }
+
+  .me-profile-card {
+    padding: 24px;
+    gap: 20px;
+  }
+
+  .me-profile-avatar {
+    width: 64px;
+    height: 64px;
+    font-size: 1.5rem;
+  }
+}
+
+/* ========== DESKTOP (≥1025px) ========== */
+@media (min-width: 1025px) {
+  .me-page {
+    padding-bottom: var(--spacing-2xl, 48px);
+  }
+
+  .me-content {
+    max-width: 720px;
+    padding: 0 var(--spacing-xl, 32px) var(--spacing-2xl, 48px);
+  }
+
+  .me-header {
+    padding-left: var(--spacing-xl, 32px);
+    padding-right: var(--spacing-xl, 32px);
+  }
+
+  .me-profile-card {
+    padding: 28px;
+    gap: 24px;
+  }
+
+  .me-profile-avatar {
+    width: 72px;
+    height: 72px;
+    font-size: 1.75rem;
+  }
+
+  .me-title {
+    font-size: 1.75rem;
+  }
+}

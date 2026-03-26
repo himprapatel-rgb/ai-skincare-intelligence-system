@@ -474,8 +474,8 @@ textarea:focus,
 .analysis-results .result-card,
 .auth-page .auth-feature,
 .profile-settings-page .profile-modal {
-  border-radius: var(--clinical-radius-lg) !important;
-  box-shadow: var(--shadow-sm) !important;
+  border-radius: var(--clinical-radius-lg);
+  box-shadow: var(--shadow-sm);
 }
 
 /* Keep mobile spacing readable and compact */

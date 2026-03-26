@@ -869,3 +869,52 @@
     padding: 40px 20px;
   }
 }
+
+/* ========== TABLET (769px–1024px) ========== */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .routine-builder-page {
+    padding-bottom: var(--spacing-xl, 32px);
+  }
+
+  .routine-builder-container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-lg, 24px);
+  }
+
+  .education-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .routine-suggestions {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ========== DESKTOP (≥1025px) ========== */
+@media (min-width: 1025px) {
+  .routine-builder-page {
+    padding-bottom: var(--spacing-2xl, 48px);
+  }
+
+  .routine-builder-container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-xl, 32px);
+  }
+
+  .routine-builder {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: var(--spacing-lg, 24px);
+    align-items: start;
+  }
+
+  .education-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .routine-suggestions {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

@@ -11,13 +11,15 @@
   --designer-shadow: 0 2px 10px rgba(16, 24, 40, 0.06);
 }
 
-/* Allow subtle hover interactions — don't kill them all */
-.card:hover,
-.result-card:hover,
-.step-card:hover,
-.testimonial-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(16, 24, 40, 0.1);
+/* Allow subtle hover interactions — guarded for touch devices */
+@media (hover: hover) {
+  .card:hover,
+  .result-card:hover,
+  .step-card:hover,
+  .testimonial-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(16, 24, 40, 0.1);
+  }
 }
 
 /* Normalize card language across pages — no !important to allow page-level overrides */
@@ -37,7 +39,7 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Stabilize button design */
+/* Stabilize button design — loaded last so cascade handles specificity */
 .btn,
 .btn-primary,
 .btn-secondary,
@@ -46,7 +48,7 @@
 .app-nav-cta,
 .app-nav-mobile-btn-primary,
 .app-nav-mobile-cta {
-  border-radius: 10px !important;
+  border-radius: 10px;
   min-height: 44px;
 }
 
@@ -54,16 +56,16 @@
 .app-nav-cta,
 .app-nav-mobile-btn-primary,
 .app-nav-mobile-cta {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%) !important;
-  box-shadow: 0 6px 16px rgba(31, 95, 191, 0.24) !important;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  box-shadow: 0 6px 16px rgba(31, 95, 191, 0.24);
 }
 
 .btn-secondary,
 .btn-ghost,
 .btn-outline {
-  background: var(--white) !important;
-  color: var(--designer-primary) !important;
-  border: 1px solid var(--designer-border) !important;
+  background: var(--white);
+  color: var(--designer-primary);
+  border: 1px solid var(--designer-border);
 }
 
 /* Global copy readability */
@@ -83,11 +85,11 @@
 
 /* Home page: preserve sections and remove over-aggressive effects */
 .homepage {
-  background: var(--designer-surface-soft) !important;
+  background: var(--designer-surface-soft);
 }
 
 .homepage .hero {
-  background: linear-gradient(180deg, #f7faff 0%, #ffffff 100%) !important;
+  background: linear-gradient(180deg, #f7faff 0%, #ffffff 100%);
 }
 
 .homepage .hero-title {
@@ -103,7 +105,7 @@
 }
 
 .homepage .sample-report-preview {
-  animation: none !important;
+  animation: none;
   max-width: 360px;
 }
 
@@ -126,16 +128,16 @@
   }
 
   .homepage section {
-    padding: 32px 16px !important;
+    padding: 32px 16px;
   }
 
   .homepage .hero {
-    min-height: auto !important;
-    padding: 24px 16px 20px !important;
+    min-height: auto;
+    padding: 24px 16px 20px;
   }
 
   .homepage .hero-content {
-    gap: 20px !important;
+    gap: 20px;
   }
 
   .homepage .hero-cta {

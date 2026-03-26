@@ -730,3 +730,38 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+/* ========== TABLET (769px–1024px) ========== */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .onboarding-page {
+    padding: var(--spacing-xl, 32px) var(--spacing-lg, 24px);
+  }
+
+  .step-content {
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .skin-type-grid,
+  .concern-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ========== DESKTOP (≥1025px) ========== */
+@media (min-width: 1025px) {
+  .onboarding-page {
+    padding: var(--spacing-2xl, 48px) var(--spacing-xl, 32px);
+  }
+
+  .step-content {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .skin-type-grid,
+  .concern-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--spacing-md, 16px);
+  }
+}

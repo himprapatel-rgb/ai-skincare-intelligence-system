@@ -183,7 +183,7 @@
 
 .auth-page .auth-feature {
   border-radius: 12px;
-  transform: none !important;
+  transform: none;
 }
 
 .auth-page .auth-card {
@@ -200,7 +200,7 @@
 .auth-page .btn-primary,
 .auth-page .btn-link {
   border-radius: 10px;
-  transform: none !important;
+  transform: none;
 }
 
 /* ------------------------------
@@ -234,7 +234,7 @@
 .profile-settings-page .btn-upload,
 .profile-settings-page .profile-floating-save-btn {
   border-radius: 10px;
-  transform: none !important;
+  transform: none;
 }
 
 /* ------------------------------
@@ -264,7 +264,7 @@
 .product-details-page .btn-outline,
 .product-details-page .view-btn {
   border-radius: 10px;
-  transform: none !important;
+  transform: none;
 }
 
 /* ------------------------------
@@ -388,7 +388,7 @@
 .product-scanner-page .btn-view-details,
 .product-scanner-page .btn-toggle-camera {
   border-radius: 10px;
-  transform: none !important;
+  transform: none;
 }
 
 .product-scanner-page .upload-label:hover,

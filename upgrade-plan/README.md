@@ -44,7 +44,7 @@ Transform Pellicura from a functional MVP into a **production-grade, scalable, d
 | **Frontend Core** | [03-frontend-core/PLAN.md](03-frontend-core/PLAN.md) | Design system, component library, accessibility, i18n setup |
 | **Frontend Pages** | [04-frontend-pages/PLAN.md](04-frontend-pages/PLAN.md) | Per-page visual redesign, features, responsive, dark mode |
 | **AI Integration** | [05-ai-integration/PLAN.md](05-ai-integration/PLAN.md) | AI Chat Assistant, GPT upgrades, streaming, caching, cost tracking |
-| **New Features** | [06-new-features/PLAN.md](06-new-features/PLAN.md) | Gamification, community/social, real-time notifications, search |
+| **New Features** | [06-new-features/PLAN.md](06-new-features/PLAN.md) | Clinical intelligence, real-time notifications, search, admin analytics |
 | **Testing & DevOps** | [07-testing-devops/PLAN.md](07-testing-devops/PLAN.md) | CI/CD, monitoring, error tracking, testing strategy |
 
 ---
@@ -64,7 +64,7 @@ Sprint 4:      ↓                               ↓
           [WebSocket + PWA] ──────────→ [Remaining Pages]
                 │                               │
 Sprint 5:      ↓                               ↓
-          [New Feature APIs] ─────────→ [Gamification + Community UI]
+          [New Feature APIs] ─────────→ [Clinical Insights + Analytics UI]
                 │                               │
 Sprint 6:      ↓                               ↓
           [Testing + DevOps] ─────────→ [Polish + Performance]
@@ -81,7 +81,7 @@ Sprint 6:      ↓                               ↓
 | API client | Auto-generated from OpenAPI spec (orval) | Type-safe, always in sync with backend |
 | Migrations | Alembic | Replace unsafe `ALTER TABLE` in startup, proper version control |
 | Real-time | WebSocket (FastAPI) + Redis Pub/Sub | Notifications, scan progress, chat streaming |
-| Background tasks | arq (async Redis queue) | Scan processing, email, achievement checks |
+| Background tasks | arq (async Redis queue) | Scan processing, email, skin alert checks |
 | Image storage | Cloudflare R2 | Move scan images out of BYTEA columns, CDN delivery |
 | Search | PostgreSQL full-text + pg_trgm | Good enough for current scale, avoid extra infra |
 | Error tracking | Sentry | Industry standard, supports both Python and React |

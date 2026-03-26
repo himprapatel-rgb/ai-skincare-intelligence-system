@@ -165,6 +165,15 @@ async def add_security_headers(request, call_next):
         response.headers["Cross-Origin-Resource-Policy"] = "cross-origin"
     else:
         response.headers["Cross-Origin-Resource-Policy"] = "same-site"
+    response.headers["Content-Security-Policy"] = (
+        "default-src 'self'; "
+        "script-src 'self'; "
+        "style-src 'self' 'unsafe-inline'; "
+        "img-src 'self' data: https://images.unsplash.com https://*.pellicura.com; "
+        "connect-src 'self' https://api.openai.com wss://*.pellicura.com; "
+        "font-src 'self'; "
+        "frame-ancestors 'none'"
+    )
     if not settings.DEBUG:
         response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
     return response

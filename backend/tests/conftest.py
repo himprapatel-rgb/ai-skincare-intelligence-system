@@ -115,15 +115,18 @@ def client(test_db):
 
 @pytest.fixture
 def test_user(test_db):
-    """Create a test user in the database"""
+    """Create a test user in the database (unique email per invocation)."""
+    import uuid
+
     from app.core.security import hash_password
     from app.models.user import User
-    
+
+    unique = uuid.uuid4().hex[:8]
     user = User(
-        email="testuser@example.com",
+        email=f"testuser-{unique}@example.com",
         hashed_password=hash_password("testpassword123"),
         is_active=True,
-        is_verified=True
+        is_verified=True,
     )
     test_db.add(user)
     test_db.commit()
@@ -143,3 +146,86 @@ def auth_headers(client, test_user):
         expires_delta=timedelta(minutes=30)
     )
     return {"Authorization": f"Bearer {access_token}"}
+
+
+@pytest.fixture
+def admin_user(test_db):
+    """Create an admin user in the database"""
+    from app.core.security import hash_password
+    from app.models.user import User
+
+    user = User(
+        email="admin@example.com",
+        hashed_password=hash_password("adminpassword123"),
+        is_active=True,
+        is_verified=True,
+        is_admin=True,
+    )
+    test_db.add(user)
+    test_db.commit()
+    test_db.refresh(user)
+    return user
+
+
+@pytest.fixture
+def admin_client(client, admin_user):
+    """Create a TestClient with admin auth headers"""
+    from datetime import timedelta
+
+    from app.core.security import create_access_token
+
+    access_token = create_access_token(
+        data={"sub": admin_user.email},
+        expires_delta=timedelta(minutes=30),
+    )
+    # Attach headers to the client via a thin wrapper
+    headers = {"Authorization": f"Bearer {access_token}"}
+
+    class _AuthClient:
+        """Wraps TestClient so every request includes admin auth headers."""
+
+        def __init__(self, tc, default_headers):
+            self._tc = tc
+            self._headers = default_headers
+
+        def _merge(self, kwargs):
+            h = dict(self._headers)
+            h.update(kwargs.pop("headers", {}))
+            kwargs["headers"] = h
+            return kwargs
+
+        def get(self, url, **kw):
+            return self._tc.get(url, **self._merge(kw))
+
+        def post(self, url, **kw):
+            return self._tc.post(url, **self._merge(kw))
+
+        def put(self, url, **kw):
+            return self._tc.put(url, **self._merge(kw))
+
+        def patch(self, url, **kw):
+            return self._tc.patch(url, **self._merge(kw))
+
+        def delete(self, url, **kw):
+            return self._tc.delete(url, **self._merge(kw))
+
+    return _AuthClient(client, headers)
+
+
+@pytest.fixture
+def mock_openai():
+    """Patch OpenAI API calls to return deterministic mock responses."""
+    from unittest.mock import AsyncMock, MagicMock, patch
+
+    mock_completion = MagicMock()
+    mock_completion.choices = [
+        MagicMock(message=MagicMock(content="Mock AI response for testing."))
+    ]
+    mock_completion.usage = MagicMock(prompt_tokens=10, completion_tokens=20, total_tokens=30)
+
+    mock_client = MagicMock()
+    mock_client.chat.completions.create = MagicMock(return_value=mock_completion)
+
+    with patch("openai.OpenAI", return_value=mock_client) as _mock_cls:
+        with patch("openai.AsyncOpenAI", return_value=mock_client) as _mock_async_cls:
+            yield mock_client

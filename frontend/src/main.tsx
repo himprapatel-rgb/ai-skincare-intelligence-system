@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import * as Sentry from '@sentry/react'
+import './i18n/config'
 import App from './App.tsx'
 import './index.css'  // index.css imports design-system, responsive-*, mobile-redesign, etc. via @import
 
@@ -74,4 +75,10 @@ if (splash) {
   requestAnimationFrame(() => requestAnimationFrame(hide))
   // Failsafe: never leave users permanently blocked on splash.
   setTimeout(hide, 3500)
+}
+
+// Performance monitoring via Web Vitals
+import { reportWebVitals } from './utils/webVitals';
+if (import.meta.env.PROD) {
+  reportWebVitals(console.log);
 }

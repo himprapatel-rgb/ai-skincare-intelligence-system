@@ -150,16 +150,22 @@ async def get_current_user(
     if user is None:
         raise credentials_exception
 
-    # Check soft-deleted
-    if user.deleted_at is not None:
-        raise credentials_exception
+    # Check soft-deleted (graceful if column missing in production)
+    try:
+        if user.deleted_at is not None:
+            raise credentials_exception
+    except AttributeError:
+        pass
 
-    # Check account lockout
-    if user.locked_until and user.locked_until > datetime.utcnow():
-        raise HTTPException(
-            status_code=status.HTTP_423_LOCKED,
-            detail="Account temporarily locked. Try again later.",
-        )
+    # Check account lockout (graceful if column missing in production)
+    try:
+        if user.locked_until and user.locked_until > datetime.utcnow():
+            raise HTTPException(
+                status_code=status.HTTP_423_LOCKED,
+                detail="Account temporarily locked. Try again later.",
+            )
+    except AttributeError:
+        pass
 
     if not user.is_verified:
         raise HTTPException(

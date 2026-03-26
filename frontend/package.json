@@ -5,6 +5,8 @@
   "private": true,
   "scripts": {
     "build": "vite build",
+    "build:tokens": "node src/tokens/build.js",
+    "prebuild": "node src/tokens/build.js",
     "dev": "vite",
     "dev:mobile": "node scripts/open-mobile-browser.js --with-dev",
     "open:mobile": "node scripts/open-mobile-browser.js",

@@ -1,9 +1,12 @@
 /**
  * Shelf Context - Global state for user's product shelf
  * Syncs shelf count and products across all components
+ * Powered by TanStack Query
  */
-import React, { createContext, useContext, useState, useEffect, useCallback, useMemo, ReactNode } from 'react';
+import React, { createContext, useContext, useCallback, useMemo, ReactNode } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from './AuthContext';
+import { queryKeys } from '../api/queryKeys';
 
 import { API_BASE_URL } from '../config';
 const API_BASE = API_BASE_URL;
@@ -92,29 +95,36 @@ interface ShelfContextType {
 
 const ShelfContext = createContext<ShelfContextType | undefined>(undefined);
 
+function mapProduct(p: Record<string, unknown>): ShelfProduct {
+  return {
+    id: String(p.id ?? ''),
+    product_id: p.product_id as string | undefined,
+    external_product_id: p.external_product_id as string | undefined,
+    product_name: String(p.product_name ?? ''),
+    product_brand: String(p.product_brand ?? ''),
+    product_category: String(p.product_category ?? ''),
+    product_image: p.product_image as string | undefined,
+    status: (p.status as 'active' | 'wishlist' | 'discontinued') || 'active',
+    rating: Number(p.rating ?? 0),
+    notes: String(p.notes ?? ''),
+    created_at: p.created_at as string | undefined,
+    expiry_date: p.expiry_date as string | undefined,
+    purchase_date: p.purchase_date as string | undefined,
+    purchase_price: p.purchase_price as number | undefined,
+    would_repurchase: p.would_repurchase as boolean | undefined,
+    ingredients_json: p.ingredients_json as IngredientsSnapshot | undefined,
+  };
+}
+
 export const ShelfProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const { token, user } = useAuth();
-  const [products, setProducts] = useState<ShelfProduct[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const queryClient = useQueryClient();
 
-  // Computed counts (memoized for performance)
-  const totalCount = useMemo(() => products.length, [products]);
-  const usingCount = useMemo(() => products.filter(p => p.status === 'active').length, [products]);
-  const wishlistCount = useMemo(() => products.filter(p => p.status === 'wishlist').length, [products]);
-  const discontinuedCount = useMemo(() => products.filter(p => p.status === 'discontinued').length, [products]);
+  const shelfQueryKey = queryKeys.shelf.list(user?.id ?? 0);
 
-  // Fetch shelf from API
-  const refreshShelf = useCallback(async () => {
-    if (!token) {
-      setProducts([]);
-      return;
-    }
-
-    setLoading(true);
-    setError(null);
-
-    try {
+  const { data, isLoading, error } = useQuery({
+    queryKey: shelfQueryKey,
+    queryFn: async (): Promise<ShelfProduct[]> => {
       const response = await fetch(`${API_BASE}/shelf`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -122,45 +132,29 @@ export const ShelfProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       if (response.ok) {
         const data = await response.json();
         if (data.products && Array.isArray(data.products)) {
-          setProducts(data.products.map((p: Record<string, unknown>) => ({
-            id: String(p.id ?? ''),
-            product_id: p.product_id as string | undefined,
-            external_product_id: p.external_product_id as string | undefined,
-            product_name: String(p.product_name ?? ''),
-            product_brand: String(p.product_brand ?? ''),
-            product_category: String(p.product_category ?? ''),
-            product_image: p.product_image as string | undefined,
-            status: (p.status as 'active' | 'wishlist' | 'discontinued') || 'active',
-            rating: Number(p.rating ?? 0),
-            notes: String(p.notes ?? ''),
-            created_at: p.created_at as string | undefined,
-            expiry_date: p.expiry_date as string | undefined,
-            purchase_date: p.purchase_date as string | undefined,
-            purchase_price: p.purchase_price as number | undefined,
-            would_repurchase: p.would_repurchase as boolean | undefined,
-            ingredients_json: p.ingredients_json as IngredientsSnapshot | undefined,
-          })));
+          return data.products.map((p: Record<string, unknown>) => mapProduct(p));
         }
       } else {
-        console.error('Failed to fetch shelf:', response.status);
-        setError('Failed to load shelf');
+        throw new Error('Failed to load shelf');
       }
-    } catch (err) {
-      console.error('Shelf fetch error:', err);
-      setError('Failed to load shelf');
-    } finally {
-      setLoading(false);
-    }
-  }, [token]);
+      return [];
+    },
+    enabled: !!token && !!user,
+  });
 
-  // Fetch shelf when user logs in
-  useEffect(() => {
-    if (token && user) {
-      refreshShelf();
-    } else {
-      setProducts([]);
-    }
-  }, [token, user, refreshShelf]);
+  const products = data ?? [];
+
+  // Computed counts (memoized for performance)
+  const totalCount = useMemo(() => products.length, [products]);
+  const usingCount = useMemo(() => products.filter(p => p.status === 'active').length, [products]);
+  const wishlistCount = useMemo(() => products.filter(p => p.status === 'wishlist').length, [products]);
+  const discontinuedCount = useMemo(() => products.filter(p => p.status === 'discontinued').length, [products]);
+
+  // Refresh shelf via query invalidation
+  const refreshShelf = useCallback(async () => {
+    if (!token || !user) return;
+    await queryClient.invalidateQueries({ queryKey: shelfQueryKey });
+  }, [token, user, queryClient, shelfQueryKey]);
 
   // Add product to shelf
   const addToShelf = useCallback(async (product: Omit<ShelfProduct, 'id'>): Promise<boolean> => {
@@ -188,8 +182,7 @@ export const ShelfProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       });
 
       if (response.ok) {
-        // Refresh shelf to get the new product with server-assigned ID
-        await refreshShelf();
+        await queryClient.invalidateQueries({ queryKey: shelfQueryKey });
         return true;
       } else {
         const errorData = await response.json().catch(() => ({}));
@@ -200,7 +193,7 @@ export const ShelfProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       console.error('Add to shelf error:', err);
       return false;
     }
-  }, [token, refreshShelf]);
+  }, [token, queryClient, shelfQueryKey]);
 
   // Remove product from shelf
   const removeFromShelf = useCallback(async (productId: string): Promise<boolean> => {
@@ -213,8 +206,10 @@ export const ShelfProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       });
 
       if (response.ok) {
-        // Update local state immediately for responsiveness
-        setProducts(prev => prev.filter(p => p.id !== productId));
+        // Optimistic update: remove from cache immediately
+        queryClient.setQueryData<ShelfProduct[]>(shelfQueryKey, (old) =>
+          old ? old.filter(p => p.id !== productId) : []
+        );
         return true;
       }
       return false;
@@ -222,11 +217,11 @@ export const ShelfProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       console.error('Remove from shelf error:', err);
       return false;
     }
-  }, [token]);
+  }, [token, queryClient, shelfQueryKey]);
 
   // Update product status
   const updateProductStatus = useCallback(async (
-    productId: string, 
+    productId: string,
     status: 'active' | 'wishlist' | 'discontinued'
   ): Promise<boolean> => {
     if (!token) return false;
@@ -242,10 +237,10 @@ export const ShelfProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       });
 
       if (response.ok) {
-        // Update local state immediately
-        setProducts(prev => prev.map(p => 
-          p.id === productId ? { ...p, status } : p
-        ));
+        // Optimistic update
+        queryClient.setQueryData<ShelfProduct[]>(shelfQueryKey, (old) =>
+          old ? old.map(p => p.id === productId ? { ...p, status } : p) : []
+        );
         return true;
       }
       return false;
@@ -253,7 +248,7 @@ export const ShelfProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       console.error('Update status error:', err);
       return false;
     }
-  }, [token]);
+  }, [token, queryClient, shelfQueryKey]);
 
   // Update product with any fields (rating, expiry, etc.)
   const updateProduct = useCallback(async (
@@ -273,10 +268,10 @@ export const ShelfProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       });
 
       if (response.ok) {
-        // Update local state immediately
-        setProducts(prev => prev.map(p => 
-          p.id === productId ? { ...p, ...updates } : p
-        ));
+        // Optimistic update
+        queryClient.setQueryData<ShelfProduct[]>(shelfQueryKey, (old) =>
+          old ? old.map(p => p.id === productId ? { ...p, ...updates } : p) : []
+        );
         return true;
       }
       return false;
@@ -284,13 +279,13 @@ export const ShelfProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       console.error('Update product error:', err);
       return false;
     }
-  }, [token]);
+  }, [token, queryClient, shelfQueryKey]);
 
   // Check if product is on shelf
   const isOnShelf = useCallback((productId: string): boolean => {
-    return products.some(p => 
-      p.id === productId || 
-      p.product_id === productId || 
+    return products.some(p =>
+      p.id === productId ||
+      p.product_id === productId ||
       p.external_product_id === productId
     );
   }, [products]);
@@ -309,8 +304,8 @@ export const ShelfProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   return (
     <ShelfContext.Provider value={{
       products,
-      loading,
-      error,
+      loading: isLoading,
+      error: error ? (error instanceof Error ? error.message : 'Failed to load shelf') : null,
       totalCount,
       usingCount,
       wishlistCount,

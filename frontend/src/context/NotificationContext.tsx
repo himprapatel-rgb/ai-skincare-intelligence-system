@@ -1,8 +1,11 @@
 /**
  * Global notification state for header bell and Notification Center page.
+ * Powered by TanStack Query.
  */
-import React, { createContext, useCallback, useContext, useState } from 'react';
+import React, { createContext, useCallback, useContext } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from './AuthContext';
+import { queryKeys } from '../api/queryKeys';
 import {
   getNotifications,
   markNotificationAsRead as apiMarkAsRead,
@@ -38,70 +41,87 @@ export function useNotificationsOptional(): NotificationContextValue | null {
 
 type Props = { children: React.ReactNode };
 
+interface NotificationsData {
+  notifications: NotificationRecord[];
+  unread_count: number;
+}
+
 export function NotificationProvider({ children }: Props) {
-  const { isAuthenticated } = useAuth();
-  const [notifications, setNotifications] = useState<NotificationRecord[]>([]);
-  const [unreadCount, setUnreadCount] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const { isAuthenticated, user } = useAuth();
+  const queryClient = useQueryClient();
+
+  const notifQueryKey = queryKeys.notifications.list(user?.id ?? 0);
+
+  const { data, isLoading } = useQuery<NotificationsData>({
+    queryKey: notifQueryKey,
+    queryFn: async () => {
+      const res = await getNotifications({ limit: 50 });
+      return res;
+    },
+    enabled: !!isAuthenticated && !!user,
+  });
+
+  const notifications = data?.notifications ?? [];
+  const unreadCount = data?.unread_count ?? 0;
 
   const fetchNotifications = useCallback(async () => {
-    if (!isAuthenticated) return;
-    setLoading(true);
-    try {
-      const res = await getNotifications({ limit: 50 });
-      setNotifications(res.notifications);
-      setUnreadCount(res.unread_count);
-    } catch {
-      setNotifications([]);
-      setUnreadCount(0);
-    } finally {
-      setLoading(false);
-    }
-  }, [isAuthenticated]);
+    if (!isAuthenticated || !user) return;
+    await queryClient.invalidateQueries({ queryKey: notifQueryKey });
+  }, [isAuthenticated, user, queryClient, notifQueryKey]);
 
   const markAsRead = useCallback(async (id: string) => {
+    // Optimistic update
+    queryClient.setQueryData<NotificationsData>(notifQueryKey, (old) => {
+      if (!old) return old;
+      return {
+        notifications: old.notifications.map((n) => (n.id === id ? { ...n, read: true } : n)),
+        unread_count: Math.max(0, old.unread_count - 1),
+      };
+    });
     try {
       await apiMarkAsRead(id);
-      setNotifications((prev) =>
-        prev.map((n) => (n.id === id ? { ...n, read: true } : n))
-      );
-      setUnreadCount((c) => Math.max(0, c - 1));
     } catch {
-      // Optimistic update
-      setNotifications((prev) =>
-        prev.map((n) => (n.id === id ? { ...n, read: true } : n))
-      );
-      setUnreadCount((c) => Math.max(0, c - 1));
+      // Already applied optimistically
     }
-  }, []);
+  }, [queryClient, notifQueryKey]);
 
   const markAllAsRead = useCallback(async () => {
+    // Optimistic update
+    queryClient.setQueryData<NotificationsData>(notifQueryKey, (old) => {
+      if (!old) return old;
+      return {
+        notifications: old.notifications.map((n) => ({ ...n, read: true })),
+        unread_count: 0,
+      };
+    });
     try {
       await apiMarkAllAsRead();
-      setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
-      setUnreadCount(0);
     } catch {
-      setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
-      setUnreadCount(0);
+      // Already applied optimistically
     }
-  }, []);
+  }, [queryClient, notifQueryKey]);
 
   const deleteNotification = useCallback(async (id: string) => {
-    const wasUnread = notifications.find((n) => n.id === id)?.read === false;
+    // Optimistic update
+    queryClient.setQueryData<NotificationsData>(notifQueryKey, (old) => {
+      if (!old) return old;
+      const wasUnread = old.notifications.find((n) => n.id === id)?.read === false;
+      return {
+        notifications: old.notifications.filter((n) => n.id !== id),
+        unread_count: wasUnread ? Math.max(0, old.unread_count - 1) : old.unread_count,
+      };
+    });
     try {
       await apiDeleteNotification(id);
-      setNotifications((prev) => prev.filter((n) => n.id !== id));
-      if (wasUnread) setUnreadCount((c) => Math.max(0, c - 1));
     } catch {
-      setNotifications((prev) => prev.filter((n) => n.id !== id));
-      if (wasUnread) setUnreadCount((c) => Math.max(0, c - 1));
+      // Already applied optimistically
     }
-  }, [notifications]);
+  }, [queryClient, notifQueryKey]);
 
   const value: NotificationContextValue = {
     notifications,
     unreadCount,
-    loading,
+    loading: isLoading,
     fetchNotifications,
     markAsRead,
     markAllAsRead,

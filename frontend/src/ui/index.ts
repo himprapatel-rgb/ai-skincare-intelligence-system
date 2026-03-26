@@ -12,3 +12,15 @@ export type { TabsProps, TabItem } from './Tabs/Tabs';
 
 export { Spinner } from './Spinner/Spinner';
 export type { SpinnerProps } from './Spinner/Spinner';
+
+export { Input } from './Input/Input';
+export type { InputProps } from './Input/Input';
+
+export { Card } from './Card/Card';
+export type { CardProps } from './Card/Card';
+
+export { Modal } from './Modal/Modal';
+export type { ModalProps } from './Modal/Modal';
+
+export { Skeleton } from './Skeleton/Skeleton';
+export type { SkeletonProps } from './Skeleton/Skeleton';

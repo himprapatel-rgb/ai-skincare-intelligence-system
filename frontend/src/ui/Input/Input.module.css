@@ -1,0 +1,150 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+
+.label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary, #0b1220);
+  margin-bottom: 2px;
+}
+
+.fieldWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 14px;
+  font-size: 16px; /* prevent iOS zoom */
+  font-family: inherit;
+  color: var(--text-primary, #0b1220);
+  background: var(--bg-white, #fff);
+  border: 1.5px solid var(--border-color, #e2e8f0);
+  border-radius: 10px;
+  outline: none;
+  transition: border-color 200ms cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.input::placeholder {
+  color: var(--text-tertiary, #94a3b8);
+}
+
+.input:focus {
+  border-color: var(--primary, #1f6feb);
+  box-shadow: 0 0 0 3px rgba(31, 111, 235, 0.15);
+}
+
+/* With leading icon */
+.hasIcon .input {
+  padding-left: 42px;
+}
+
+.icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  color: var(--text-tertiary, #94a3b8);
+  pointer-events: none;
+}
+.icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Trailing buttons (clear + toggle) */
+.hasClear .input,
+.hasToggle .input {
+  padding-right: 42px;
+}
+.hasClear.hasToggle .input {
+  padding-right: 72px;
+}
+
+.clearBtn,
+.toggleBtn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--text-tertiary, #94a3b8);
+  cursor: pointer;
+  border-radius: 6px;
+  transition: color 150ms, background 150ms;
+}
+.clearBtn:hover,
+.toggleBtn:hover {
+  color: var(--text-primary, #0b1220);
+  background: var(--gray-100, #f1f5f9);
+}
+.clearBtn svg,
+.toggleBtn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.clearBtn {
+  right: 8px;
+}
+.hasToggle .clearBtn {
+  right: 38px;
+}
+.toggleBtn {
+  right: 8px;
+}
+
+/* Error state */
+.error .input {
+  border-color: var(--danger, #ef4444);
+}
+.error .input:focus {
+  border-color: var(--danger, #ef4444);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+}
+
+.errorText {
+  font-size: 0.8125rem;
+  color: var(--danger, #ef4444);
+  margin-top: 2px;
+}
+
+.helperText {
+  font-size: 0.8125rem;
+  color: var(--text-tertiary, #94a3b8);
+  margin-top: 2px;
+}
+
+/* Disabled state */
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+.disabled .input {
+  cursor: not-allowed;
+  background: var(--gray-50, #f8fafc);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .input {
+    transition: none;
+  }
+}

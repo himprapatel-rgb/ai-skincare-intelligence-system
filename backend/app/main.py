@@ -219,6 +219,31 @@ async def handle_db_operational_error(request: Request, exc: OperationalError) -
         headers={"Retry-After": "5"},
     )
 
+def _add_missing_columns(eng) -> None:
+    """Add Sprint 2+ columns to existing production tables. Safe to run repeatedly."""
+    _cols = [
+        ("users", "refresh_token", "VARCHAR(512)"),
+        ("users", "failed_login_count", "INTEGER DEFAULT 0"),
+        ("users", "locked_until", "TIMESTAMPTZ"),
+        ("users", "login_count", "INTEGER DEFAULT 0"),
+        ("users", "deleted_at", "TIMESTAMPTZ"),
+        ("users", "language", "VARCHAR(10) DEFAULT 'en'"),
+        ("users", "password_reset_token", "VARCHAR(255)"),
+        ("users", "password_reset_expires_at", "TIMESTAMPTZ"),
+    ]
+    try:
+        with eng.connect() as conn:
+            for table, col, col_type in _cols:
+                try:
+                    conn.execute(text(f"ALTER TABLE {table} ADD COLUMN IF NOT EXISTS {col} {col_type}"))
+                except Exception:
+                    pass  # Column may already exist or DB doesn't support IF NOT EXISTS
+            conn.commit()
+        logger.info("✅ Missing columns check complete")
+    except Exception as exc:
+        logger.warning("Column migration skipped: %s", exc)
+
+
 @app.on_event("startup")
 def ensure_test_user() -> None:
     """Best-effort startup bootstrap. Never crash the API process."""
@@ -232,6 +257,9 @@ def ensure_test_user() -> None:
         logger.info("Creating database tables (if not exist)...")
         Base.metadata.create_all(bind=engine, checkfirst=True)
         logger.info("✅ Main database tables ensured")
+
+        # Sprint 2+: Add new columns to existing tables if missing (safe for production)
+        _add_missing_columns(engine)
     except (ProgrammingError, OperationalError) as exc:
         logger.warning("Main DB bootstrap unavailable; startup continues without seed: %s", exc)
         db_bootstrap_available = False

@@ -171,20 +171,28 @@ def login(
         )
 
     # Account lockout check (5 failed attempts → 15 min lock)
-    if user.locked_until and user.locked_until > datetime.now(timezone.utc):
-        raise HTTPException(
-            status_code=status.HTTP_423_LOCKED,
-            detail="Account temporarily locked due to too many failed attempts. Try again later.",
-        )
+    try:
+        if getattr(user, 'locked_until', None) and user.locked_until > datetime.now(timezone.utc):
+            raise HTTPException(
+                status_code=status.HTTP_423_LOCKED,
+                detail="Account temporarily locked due to too many failed attempts. Try again later.",
+            )
+    except HTTPException:
+        raise  # Re-raise the 423
+    except Exception:
+        pass  # Column may not exist in production yet
 
     if not auth_service.verify_password(user.hashed_password, password):
         record_login_attempt(request)
-        # Increment failed count and possibly lock
-        user.failed_login_count = (user.failed_login_count or 0) + 1
-        if user.failed_login_count >= 5:
-            user.locked_until = datetime.now(timezone.utc) + timedelta(minutes=15)
-        db.add(user)
-        db.commit()
+        # Increment failed count and possibly lock (graceful if columns missing)
+        try:
+            user.failed_login_count = (user.failed_login_count or 0) + 1
+            if user.failed_login_count >= 5:
+                user.locked_until = datetime.now(timezone.utc) + timedelta(minutes=15)
+            db.add(user)
+            db.commit()
+        except Exception:
+            db.rollback()
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid email or password",
@@ -195,12 +203,15 @@ def login(
             detail="Email not verified. Please verify your email to login. Check your inbox for the verification link or contact support.",
         )
 
-    # Successful login — reset lockout counters
-    user.failed_login_count = 0
-    user.locked_until = None
-    user.login_count = (user.login_count or 0) + 1
-    db.add(user)
-    db.commit()
+    # Successful login — reset lockout counters (graceful if columns missing)
+    try:
+        user.failed_login_count = 0
+        user.locked_until = None
+        user.login_count = (user.login_count or 0) + 1
+        db.add(user)
+        db.commit()
+    except Exception:
+        db.rollback()
 
     # Return token immediately; record IP/geo in background (was blocking login by up to ~2s for geo API)
     ip = get_client_ip(request)
@@ -210,11 +221,15 @@ def login(
         data={"sub": str(user.id)},
         expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
     )
-    refresh = create_refresh_token(data={"sub": str(user.id)})
-    # Persist refresh token for rotation check
-    user.refresh_token = refresh
-    db.add(user)
-    db.commit()
+    # Generate refresh token (graceful if column missing in DB)
+    refresh = None
+    try:
+        refresh = create_refresh_token(data={"sub": str(user.id)})
+        user.refresh_token = refresh
+        db.add(user)
+        db.commit()
+    except Exception:
+        db.rollback()
 
     return AuthResponse(token=token, token_type="bearer", user=UserResponse.model_validate(user), refresh_token=refresh)
 

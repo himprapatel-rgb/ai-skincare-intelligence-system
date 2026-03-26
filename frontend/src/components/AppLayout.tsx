@@ -209,6 +209,13 @@ const displayName = nameParts.length > 1
               <Link className={`app-nav-link${location.pathname.startsWith('/scan') ? ' active' : ''}`} to="/scan" title="Scan face or product" aria-current={location.pathname.startsWith('/scan') ? 'page' : undefined} onMouseEnter={() => void import('../pages/ScanPage')}>Scan</Link>
               <Link className={`app-nav-link${location.pathname.startsWith('/dashboard') ? ' active' : ''}`} to="/dashboard" title="View your dashboard and insights" aria-current={location.pathname.startsWith('/dashboard') ? 'page' : undefined} onMouseEnter={() => void import('../pages/DashboardPage')}>Dashboard</Link>
               <Link className={`app-nav-link${location.pathname.startsWith('/digital-twin') ? ' active' : ''}`} to="/digital-twin" aria-current={location.pathname.startsWith('/digital-twin') ? 'page' : undefined} onMouseEnter={() => { void import('../pages/DigitalTwinTimelinePage'); }}>Digital Twin</Link>
+              {isAuthenticated && (
+                <Link className={`app-nav-link${location.pathname.startsWith('/chat') ? ' active' : ''}`} to="/chat" title="AI Skincare Assistant" aria-current={location.pathname.startsWith('/chat') ? 'page' : undefined} onMouseEnter={() => { void import('../pages/AIChatPage'); }}>AI Chat</Link>
+              )}
+              {isAuthenticated && (
+                <Link className={`app-nav-link${location.pathname.startsWith('/clinical') ? ' active' : ''}`} to="/clinical" title="Clinical Intelligence Dashboard" aria-current={location.pathname.startsWith('/clinical') ? 'page' : undefined} onMouseEnter={() => { void import('../pages/ClinicalDashboardPage'); }}>Clinical</Link>
+              )}
+              <Link className={`app-nav-link${location.pathname.startsWith('/search') ? ' active' : ''}`} to="/search" title="Search products, ingredients, articles" aria-current={location.pathname.startsWith('/search') ? 'page' : undefined} onMouseEnter={() => { void import('../pages/SearchPage'); }}>Search</Link>
               <Link className={`app-nav-link${location.pathname.startsWith('/about') ? ' active' : ''}`} to="/about" aria-current={location.pathname.startsWith('/about') ? 'page' : undefined} onMouseEnter={() => { void import('../pages/AboutPage'); }}>About</Link>
               {isAuthenticated && user?.is_admin && (
                 <Link className={`app-nav-link${location.pathname.startsWith('/admin') ? ' active' : ''}`} to="/admin" aria-current={location.pathname.startsWith('/admin') ? 'page' : undefined} onMouseEnter={() => { void import('../pages/AdminDashboardPage'); }}>Admin</Link>
@@ -331,6 +338,13 @@ const displayName = nameParts.length > 1
               <Link className={`app-nav-mobile-link${location.pathname.startsWith('/scan') && !location.search.includes('mode=product') ? ' active' : ''}`} to="/scan" onTouchStart={() => { void import('../pages/ScanPage'); }}>Scan</Link>
               <Link className={`app-nav-mobile-link${location.pathname.startsWith('/dashboard') ? ' active' : ''}`} to="/dashboard" onTouchStart={() => { void import('../pages/DashboardPage'); }}>Dashboard</Link>
               <Link className={`app-nav-mobile-link${location.pathname.startsWith('/digital-twin') ? ' active' : ''}`} to="/digital-twin" onTouchStart={() => { void import('../pages/DigitalTwinTimelinePage'); }}>Digital Twin</Link>
+              {isAuthenticated && (
+                <Link className={`app-nav-mobile-link${location.pathname.startsWith('/chat') ? ' active' : ''}`} to="/chat" onTouchStart={() => { void import('../pages/AIChatPage'); }}>AI Chat</Link>
+              )}
+              {isAuthenticated && (
+                <Link className={`app-nav-mobile-link${location.pathname.startsWith('/clinical') ? ' active' : ''}`} to="/clinical" onTouchStart={() => { void import('../pages/ClinicalDashboardPage'); }}>Clinical</Link>
+              )}
+              <Link className={`app-nav-mobile-link${location.pathname.startsWith('/search') ? ' active' : ''}`} to="/search" onTouchStart={() => { void import('../pages/SearchPage'); }}>Search</Link>
               <Link className={`app-nav-mobile-link${location.pathname.startsWith('/about') ? ' active' : ''}`} to="/about" onTouchStart={() => { void import('../pages/AboutPage'); }}>About</Link>
               {isAuthenticated && user?.is_admin && (
                 <Link className={`app-nav-mobile-link${location.pathname.startsWith('/admin') ? ' active' : ''}`} to="/admin" onTouchStart={() => { void import('../pages/AdminDashboardPage'); }}>Admin</Link>

@@ -1,6 +1,6 @@
 # AI Integration — Chat Assistant, GPT Upgrades, Streaming
 
-**Sprint:** 2-4 (Weeks 3-8)
+**Sprint:** 2-3 (Backend Sprint 2, Frontend Sprint 3)
 **Team Size:** 15 engineers
 **Dependencies:** Database (chat tables), Backend (arq queue)
 

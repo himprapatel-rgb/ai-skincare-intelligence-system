@@ -92,7 +92,7 @@ Educational, legal, admin pages.
 | Area | Current | Upgrade |
 |------|---------|---------|
 | Greeting | Text | Personalized: "Good morning, {name}" with weather |
-| Stats | Cards | Widget-based: score trend, streak, goal progress, shelf count |
+| Stats | Cards | Widget-based: score trend, scan consistency, goal progress, shelf count |
 | Activity | Recent list | Timeline with icons for each activity type |
 | Reminders | Scan reminder | Add routine reminder, product expiry alert, UV alert |
 | Quick actions | CTAs | Prominent scan button, log routine, check ingredient |
@@ -106,9 +106,9 @@ Educational, legal, admin pages.
 
 | Area | Current | Upgrade |
 |------|---------|---------|
-| Profile card | Avatar + name | Add stats: scans, streak, shelf count, level |
+| Profile card | Avatar + name | Add stats: total scans, avg score, shelf count |
 | Quick links | List | Cards with icons: shelf, favorites, settings, goals |
-| Achievements | None | Achievement badge row (top 3 + "see all") |
+| Clinical summary | None | Last scan score + top concern + next scan reminder |
 | Completion | None | Profile completion progress bar |
 | **Responsive** | Single column | 2-col on tablet |
 | **Dark mode** | Verify | Avatar border, card backgrounds |

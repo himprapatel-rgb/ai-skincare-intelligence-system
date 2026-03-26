@@ -227,7 +227,7 @@ DELETE /ai/chat/sessions/{id}               — delete session
 
 ### Background Task Queue (Sprint 2)
 - Install `arq` (async Redis queue)
-- Tasks: scan processing, email sending, achievement checks, notification scheduling, data exports, nightly analytics
+- Tasks: scan processing, email sending, skin alert monitoring, notification scheduling, data exports, nightly analytics
 - File: `backend/app/tasks/` — new directory
 
 ### WebSocket Manager (Sprint 4)

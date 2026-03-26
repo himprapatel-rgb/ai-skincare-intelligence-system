@@ -260,7 +260,7 @@ const ProfileSettingsPage: React.FC = () => {
     const loadStats = async () => {
       try {
         const historyData = await getScanHistory();
-        const scans = (historyData as { scans?: Array<Record<string, unknown>> }).scans || [];
+        const scans = (historyData as Record<string, unknown>).data as Array<Record<string, unknown>> || (historyData as Record<string, unknown>).scans as Array<Record<string, unknown>> || [];
         const completedScans = scans.filter((scan) => String(scan.status || '') !== 'failed');
         const scores = completedScans
           .map((scan) => {

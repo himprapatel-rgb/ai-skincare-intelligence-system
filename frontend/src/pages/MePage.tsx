@@ -41,8 +41,8 @@ const MePage: React.FC = () => {
     if (!isAuthenticated) return;
     getScanHistory()
       .then((d) => {
-        const res = d as { scans?: Array<{ summary?: { overall_score?: number } }> };
-        const scans = res.scans ?? [];
+        const res = d as { data?: Array<{ summary?: { overall_score?: number } }>; scans?: Array<{ summary?: { overall_score?: number } }> };
+        const scans = res.data ?? res.scans ?? [];
         setScanCount(scans.length);
         const scores = scans
           .map((s) => (s.summary && typeof s.summary.overall_score === 'number' ? Math.round(s.summary.overall_score) : null))

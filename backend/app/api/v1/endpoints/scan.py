@@ -573,7 +573,7 @@ def get_scan_history(
         )
 
     next_cursor = items[-1]["created_at"] if has_more and items else None
-    return {"data": items, "next_cursor": next_cursor, "has_more": has_more}
+    return {"data": items, "scans": items, "next_cursor": next_cursor, "has_more": has_more}
 
 
 @router.delete(

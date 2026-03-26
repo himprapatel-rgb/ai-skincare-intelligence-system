@@ -48,7 +48,7 @@ const DataExportPage: React.FC = () => {
       const exportData = {
         user: data.user,
         profile: includeProfile ? data.profile : null,
-        analysis: includeAnalysis ? (data.scans || []) : null,
+        analysis: includeAnalysis ? (data.data || data.scans || []) : null,
         products: includeProducts ? { favorites: favoriteIds } : null,
         export_timestamp: data.export_timestamp,
       };

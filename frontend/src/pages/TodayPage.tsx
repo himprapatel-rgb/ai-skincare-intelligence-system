@@ -159,7 +159,7 @@ const TodayPage: React.FC = () => {
     const loadData = async () => {
       try {
         const historyData = await getScanHistory();
-        const scans = (historyData as { scans?: Array<Record<string, unknown>> }).scans || [];
+        const scans = (historyData as Record<string, unknown>).data as Array<Record<string, unknown>> || (historyData as Record<string, unknown>).scans as Array<Record<string, unknown>> || [];
         const statusStr = (s: Record<string, unknown>) => String(s.status ?? '').toLowerCase();
         const completed = scans.filter((s) => statusStr(s) === 'completed');
         const scores = completed

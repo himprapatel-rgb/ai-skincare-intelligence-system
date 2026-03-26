@@ -146,7 +146,7 @@ const AnalysisResults: React.FC = () => {
         setFailureMessage('No analysis data returned. Please retry the scan with a clear, front-facing selfie.');
       }
       setAnalysis(mapped);
-      const scans = (historyData as { scans?: ScanHistoryItem[] }).scans || [];
+      const scans = ((historyData as Record<string, unknown>).data || (historyData as Record<string, unknown>).scans || []) as ScanHistoryItem[];
       setPreviousScans(scans);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');

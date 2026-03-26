@@ -2,16 +2,16 @@ import React from 'react';
 import styles from './ChatSessionList.module.css';
 
 export interface ChatSessionItem {
-  id: string;
+  id: number;
   title: string;
   updated_at: string;
 }
 
 interface ChatSessionListProps {
   sessions: ChatSessionItem[];
-  activeSessionId: string | null;
-  onSelect: (sessionId: string) => void;
-  onDelete: (sessionId: string) => void;
+  activeSessionId: number | null;
+  onSelect: (sessionId: number) => void;
+  onDelete: (sessionId: number) => void;
   onCreate: () => void;
 }
 

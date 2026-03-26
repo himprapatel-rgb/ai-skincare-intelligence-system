@@ -17,7 +17,7 @@ import styles from './AIChatPage.module.css';
 
 const AIChatPage: React.FC = () => {
   const [sessions, setSessions] = useState<ChatSession[]>([]);
-  const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
+  const [activeSessionId, setActiveSessionId] = useState<number | null>(null);
   const [messages, setMessages] = useState<ChatMessageType[]>([]);
   const [streamingContent, setStreamingContent] = useState('');
   const [isStreaming, setIsStreaming] = useState(false);
@@ -99,14 +99,14 @@ const AIChatPage: React.FC = () => {
     }
   }, []);
 
-  const handleSelectSession = useCallback((sessionId: string) => {
+  const handleSelectSession = useCallback((sessionId: number) => {
     if (isStreaming) return; // Don't switch while streaming
     setActiveSessionId(sessionId);
     setStreamingContent('');
     setSidebarOpen(false);
   }, [isStreaming]);
 
-  const handleDeleteSession = useCallback(async (sessionId: string) => {
+  const handleDeleteSession = useCallback(async (sessionId: number) => {
     try {
       await deleteSession(sessionId);
       setSessions((prev) => prev.filter((s) => s.id !== sessionId));
@@ -138,8 +138,8 @@ const AIChatPage: React.FC = () => {
 
     // Add user message optimistically
     const userMsg: ChatMessageType = {
-      id: `temp-${Date.now()}`,
-      session_id: sessionId,
+      id: Date.now(),
+      session_id: sessionId as number,
       role: 'user',
       content,
       created_at: new Date().toISOString(),
@@ -154,8 +154,8 @@ const AIChatPage: React.FC = () => {
       },
       onDone: (fullContent) => {
         const assistantMsg: ChatMessageType = {
-          id: `resp-${Date.now()}`,
-          session_id: sessionId!,
+          id: Date.now() + 1,
+          session_id: sessionId as number,
           role: 'assistant',
           content: fullContent,
           created_at: new Date().toISOString(),

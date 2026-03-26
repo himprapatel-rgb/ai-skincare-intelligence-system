@@ -2,7 +2,7 @@ import { API_BASE_URL } from '../config';
 import { STORAGE_KEYS } from '../constants/storage';
 
 export interface ChatSession {
-  id: string;
+  id: number;
   title: string;
   created_at: string;
   updated_at: string;
@@ -10,8 +10,8 @@ export interface ChatSession {
 }
 
 export interface ChatMessage {
-  id: string;
-  session_id: string;
+  id: number;
+  session_id: number;
   role: 'user' | 'assistant';
   content: string;
   created_at: string;
@@ -53,7 +53,7 @@ export async function listSessions(): Promise<ChatSession[]> {
   return res.json();
 }
 
-export async function getMessages(sessionId: string): Promise<ChatMessage[]> {
+export async function getMessages(sessionId: number | string): Promise<ChatMessage[]> {
   const res = await fetch(`${API_BASE_URL}/ai/chat/sessions/${sessionId}/messages`, {
     method: 'GET',
     headers: getAuthHeaders(),
@@ -65,7 +65,7 @@ export async function getMessages(sessionId: string): Promise<ChatMessage[]> {
   return res.json();
 }
 
-export async function deleteSession(sessionId: string): Promise<void> {
+export async function deleteSession(sessionId: number | string): Promise<void> {
   const res = await fetch(`${API_BASE_URL}/ai/chat/sessions/${sessionId}`, {
     method: 'DELETE',
     headers: getAuthHeaders(),
@@ -84,7 +84,7 @@ export async function deleteSession(sessionId: string): Promise<void> {
  * Returns an AbortController so the caller can cancel the stream.
  */
 export function sendMessageSSE(
-  sessionId: string,
+  sessionId: number | string,
   content: string,
   callbacks: {
     onChunk: (chunk: string) => void;
@@ -96,15 +96,14 @@ export function sendMessageSSE(
 
   (async () => {
     try {
-      const res = await fetch(`${API_BASE_URL}/ai/chat/`, {
+      const res = await fetch(`${API_BASE_URL}/ai/chat/sessions/${sessionId}/messages`, {
         method: 'POST',
         headers: {
           ...getAuthHeaders(),
           Accept: 'text/event-stream',
         },
         body: JSON.stringify({
-          session_id: sessionId,
-          message: content,
+          content,
         }),
         signal: controller.signal,
       });

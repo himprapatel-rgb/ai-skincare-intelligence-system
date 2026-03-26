@@ -15,6 +15,7 @@ import LoadingScreen from "./components/LoadingScreen";
 import { ToastContainer } from "./components/Toast";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import NetworkStatus from "./components/NetworkStatus";
+import ChatWidget from "./components/chat/ChatWidget";
 
 // Page Imports - Lazy loaded for faster initial load
 const HomePage = React.lazy(() => import("./pages/HomePage"));
@@ -64,6 +65,7 @@ const IngredientDictionaryPage = React.lazy(() => import("./pages/IngredientDict
 const SkinTypeGuidePage = React.lazy(() => import("./pages/SkinTypeGuidePage"));
 const VideoTutorialsPage = React.lazy(() => import("./pages/VideoTutorialsPage"));
 const DeviceContextPage = React.lazy(() => import("./pages/DeviceContextPage"));
+const AIChatPage = React.lazy(() => import("./pages/AIChatPage"));
 const NotFoundPage = React.lazy(() => import("./pages/NotFoundPage"));
 const AuthDebug = React.lazy(() => import("./pages/AuthDebug").then(m => ({ default: m.AuthDebug })));
 
@@ -121,6 +123,7 @@ function AppRoutes() {
           <Route path="/skin-type-guide" element={<SkinTypeGuidePage />} />
           <Route path="/tutorials" element={<VideoTutorialsPage />} />
           <Route path="/device-context" element={<DeviceContextPage />} />
+          <Route path="/chat" element={<AIChatPage />} />
           <Route path="/auth-debug" element={<AuthDebug />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
@@ -156,6 +159,7 @@ export default function App() {
                 <AppLayout>
                   <AppRoutes />
                 </AppLayout>
+                <ChatWidget />
               </NotificationProvider>
             </BrowserRouter>
             <ToastContainer />

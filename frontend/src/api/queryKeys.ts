@@ -31,6 +31,7 @@ export const queryKeys = {
   ai: {
     chat: {
       sessions: ['ai', 'chat', 'sessions'] as const,
+      session: (id: string) => ['ai', 'chat', 'session', id] as const,
       messages: (sessionId: string) => ['ai', 'chat', 'messages', sessionId] as const,
     },
     recommendations: (userId: number) => ['ai', 'recommendations', userId] as const,

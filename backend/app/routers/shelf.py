@@ -367,6 +367,219 @@ async def remove_from_shelf(
     return None
 
 
+# ===== Sprint 3 Endpoints =====
+
+
+class ShelfBatchRequest(BaseModel):
+    """Schema for batch adding products."""
+    products: List[ShelfProductCreate]
+
+
+class ShelfStatsResponse(BaseModel):
+    """Schema for shelf statistics."""
+    total: int
+    by_status: dict
+    by_category: dict
+    expiring_soon: int
+
+
+@router.post("/batch", response_model=List[ShelfProductResponse], status_code=status.HTTP_201_CREATED)
+async def batch_add_to_shelf(
+    body: ShelfBatchRequest,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """
+    Add multiple products to shelf at once.
+
+    Sprint: 3 — Batch shelf add
+    """
+    if not body.products:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="products list cannot be empty",
+        )
+
+    created = []
+    for product_data in body.products:
+        product_uuid: Optional[uuid.UUID] = None
+        if product_data.product_id:
+            try:
+                product_uuid = uuid.UUID(str(product_data.product_id))
+            except (ValueError, TypeError):
+                raise HTTPException(
+                    status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                    detail=f"Invalid product_id '{product_data.product_id}' (must be a UUID)",
+                )
+
+        ingredients_data = copy.deepcopy(product_data.ingredients_json) if product_data.ingredients_json else None
+        if ingredients_data:
+            ingredients_data["captured_at"] = datetime.utcnow().isoformat()
+
+        product = ShelfProduct(
+            user_id=current_user.id,
+            product_id=product_uuid,
+            external_product_id=product_data.external_product_id,
+            product_name=product_data.product_name,
+            product_brand=product_data.product_brand,
+            product_category=product_data.product_category,
+            product_image=product_data.product_image,
+            status=product_data.status,
+            rating=product_data.rating,
+            notes=product_data.notes,
+            routine_type=product_data.routine_type,
+            routine_order=product_data.routine_order,
+            purchase_date=product_data.purchase_date,
+            expiry_date=product_data.expiry_date,
+            purchase_price=product_data.purchase_price,
+            ingredients_json=ingredients_data,
+        )
+        db.add(product)
+        created.append(product)
+
+    db.commit()
+    for p in created:
+        db.refresh(p)
+
+    logger.info(f"User {current_user.id} batch-added {len(created)} products to shelf")
+
+    return [
+        ShelfProductResponse(
+            id=p.id,
+            product_id=str(p.product_id) if p.product_id else None,
+            external_product_id=p.external_product_id,
+            product_name=p.product_name,
+            product_brand=p.product_brand,
+            product_category=p.product_category,
+            product_image=p.product_image,
+            status=p.status,
+            rating=p.rating,
+            notes=p.notes,
+            routine_type=p.routine_type,
+            routine_order=p.routine_order,
+            purchase_date=p.purchase_date.isoformat() if p.purchase_date else None,
+            expiry_date=p.expiry_date.isoformat() if p.expiry_date else None,
+            purchase_price=p.purchase_price,
+            would_repurchase=p.would_repurchase,
+            times_repurchased=p.times_repurchased or 0,
+            ingredients_json=p.ingredients_json,
+            created_at=p.created_at.isoformat() if p.created_at else "",
+            updated_at=p.updated_at.isoformat() if p.updated_at else None,
+        )
+        for p in created
+    ]
+
+
+@router.get("/expiring-soon", response_model=List[ShelfProductResponse])
+async def get_expiring_soon(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """
+    Get products expiring within the next 30 days.
+
+    Sprint: 3 — Expiring products
+    """
+    from datetime import timedelta
+
+    now = datetime.utcnow()
+    cutoff = now + timedelta(days=30)
+
+    products = (
+        db.query(ShelfProduct)
+        .filter(
+            ShelfProduct.user_id == current_user.id,
+            ShelfProduct.expiry_date != None,  # noqa: E711
+            ShelfProduct.expiry_date >= now,
+            ShelfProduct.expiry_date <= cutoff,
+        )
+        .order_by(ShelfProduct.expiry_date.asc())
+        .all()
+    )
+
+    return [
+        ShelfProductResponse(
+            id=p.id,
+            product_id=str(p.product_id) if p.product_id else None,
+            external_product_id=p.external_product_id,
+            product_name=p.product_name,
+            product_brand=p.product_brand,
+            product_category=p.product_category,
+            product_image=p.product_image,
+            status=p.status,
+            rating=p.rating,
+            notes=p.notes,
+            routine_type=p.routine_type,
+            routine_order=p.routine_order,
+            purchase_date=p.purchase_date.isoformat() if p.purchase_date else None,
+            expiry_date=p.expiry_date.isoformat() if p.expiry_date else None,
+            purchase_price=p.purchase_price,
+            would_repurchase=p.would_repurchase,
+            times_repurchased=p.times_repurchased or 0,
+            ingredients_json=p.ingredients_json,
+            created_at=p.created_at.isoformat() if p.created_at else "",
+            updated_at=p.updated_at.isoformat() if p.updated_at else None,
+        )
+        for p in products
+    ]
+
+
+@router.get("/stats", response_model=ShelfStatsResponse)
+async def get_shelf_stats(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """
+    Return aggregated shelf statistics.
+
+    Sprint: 3 — Shelf stats
+    """
+    from datetime import timedelta
+
+    base = db.query(ShelfProduct).filter(ShelfProduct.user_id == current_user.id)
+
+    total = base.count()
+
+    # By status
+    status_rows = (
+        db.query(ShelfProduct.status, sqlfunc.count(ShelfProduct.id))
+        .filter(ShelfProduct.user_id == current_user.id)
+        .group_by(ShelfProduct.status)
+        .all()
+    )
+    by_status = {row[0]: row[1] for row in status_rows}
+
+    # By category
+    category_rows = (
+        db.query(ShelfProduct.product_category, sqlfunc.count(ShelfProduct.id))
+        .filter(
+            ShelfProduct.user_id == current_user.id,
+            ShelfProduct.product_category != None,  # noqa: E711
+        )
+        .group_by(ShelfProduct.product_category)
+        .all()
+    )
+    by_category = {row[0]: row[1] for row in category_rows}
+
+    # Expiring soon
+    now = datetime.utcnow()
+    cutoff = now + timedelta(days=30)
+    expiring_soon = (
+        base.filter(
+            ShelfProduct.expiry_date != None,  # noqa: E711
+            ShelfProduct.expiry_date >= now,
+            ShelfProduct.expiry_date <= cutoff,
+        ).count()
+    )
+
+    return ShelfStatsResponse(
+        total=total,
+        by_status=by_status,
+        by_category=by_category,
+        expiring_soon=expiring_soon,
+    )
+
+
 @router.get("/routine/{routine_type}")
 async def get_routine_products(
     routine_type: str,

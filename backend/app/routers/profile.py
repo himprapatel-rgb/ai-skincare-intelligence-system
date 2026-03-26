@@ -15,6 +15,8 @@ from app.core.security import (
 from app.dependencies import get_db
 from app.models.scan import ScanSession
 from app.models.user import User, UserProfile
+from pydantic import BaseModel
+
 from app.schemas.profile import ProfileCreate, ProfileResponse, ProfileUpdate
 
 router = APIRouter(prefix="/profile", tags=["profile"])
@@ -492,3 +494,144 @@ async def delete_profile(
     return {
         "message": "Account deletion initiated. Data will be removed within 14 days."
     }
+
+
+# ===== Sprint 3 Endpoints =====
+
+
+class CompletionFieldItem(BaseModel):
+    field: str
+    label: str
+    hint: str
+    completed: bool
+
+
+PROFILE_FIELD_HINTS = {
+    "skin_type": {"label": "Skin Type", "hint": "Knowing your skin type helps us tailor every recommendation."},
+    "skin_tone": {"label": "Skin Tone", "hint": "Helps calibrate scan analysis for more accurate results."},
+    "primary_concern": {"label": "Primary Concern", "hint": "Tell us your top skin concern so we can prioritise it."},
+    "date_of_birth": {"label": "Date of Birth", "hint": "Age affects skin behaviour — this helps us personalise anti-aging advice."},
+    "location": {"label": "Location", "hint": "Local climate and UV index influence your skin health."},
+    "gender": {"label": "Gender", "hint": "Hormonal differences can affect skin — share if you're comfortable."},
+    "sun_exposure": {"label": "Sun Exposure", "hint": "UV is the #1 cause of premature aging."},
+    "water_intake": {"label": "Daily Water Intake", "hint": "Hydration from within matters just as much as topical products."},
+    "sleep_hours": {"label": "Average Sleep Hours", "hint": "Sleep is when your skin repairs itself."},
+    "routine_frequency": {"label": "Routine Frequency", "hint": "Lets us build a routine that fits your lifestyle."},
+    "goals": {"label": "Skincare Goals", "hint": "Define 1-3 goals so we can track your progress."},
+    "climate": {"label": "Climate", "hint": "Your environment shapes which products work best for you."},
+}
+
+
+@router.get("/completion-guide")
+async def get_completion_guide(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """
+    Return a list of profile fields with completion status and helpful hints.
+
+    Sprint: 3 — Profile completion guide
+    """
+    profile = (
+        db.query(UserProfile).filter(UserProfile.user_id == current_user.id).first()
+    )
+
+    items = []
+    for field, meta in PROFILE_FIELD_HINTS.items():
+        completed = False
+        if profile:
+            value = getattr(profile, field, None)
+            completed = value is not None and value != "" and value != []
+        items.append(
+            CompletionFieldItem(
+                field=field,
+                label=meta["label"],
+                hint=meta["hint"],
+                completed=completed,
+            )
+        )
+
+    total = len(items)
+    filled = sum(1 for i in items if i.completed)
+
+    return {
+        "fields": [i.model_dump() for i in items],
+        "total_fields": total,
+        "completed_fields": filled,
+        "completion_percentage": int((filled / total) * 100) if total else 0,
+    }
+
+
+class QuizOption(BaseModel):
+    value: str
+    label: str
+
+
+class QuizQuestion(BaseModel):
+    id: str
+    text: str
+    options: list[QuizOption]
+
+
+SKIN_TYPE_QUIZ = [
+    QuizQuestion(
+        id="wash_feel",
+        text="How does your skin feel 30 minutes after washing your face with a gentle cleanser?",
+        options=[
+            QuizOption(value="tight", label="Tight and dry"),
+            QuizOption(value="comfortable", label="Comfortable and balanced"),
+            QuizOption(value="oily_tzone", label="Oily in the T-zone only"),
+            QuizOption(value="oily_all", label="Oily all over"),
+        ],
+    ),
+    QuizQuestion(
+        id="pore_visibility",
+        text="How visible are your pores?",
+        options=[
+            QuizOption(value="barely", label="Barely visible"),
+            QuizOption(value="small", label="Small, only noticeable up close"),
+            QuizOption(value="medium_tzone", label="Medium — mostly in T-zone"),
+            QuizOption(value="large", label="Large and visible across cheeks too"),
+        ],
+    ),
+    QuizQuestion(
+        id="midday_shine",
+        text="By midday, does your face look shiny?",
+        options=[
+            QuizOption(value="never", label="Never — it actually feels dry"),
+            QuizOption(value="rarely", label="Rarely"),
+            QuizOption(value="tzone", label="Only on forehead and nose"),
+            QuizOption(value="everywhere", label="Yes, almost everywhere"),
+        ],
+    ),
+    QuizQuestion(
+        id="reaction",
+        text="How does your skin react to new products?",
+        options=[
+            QuizOption(value="often_irritated", label="Often gets red or irritated"),
+            QuizOption(value="sometimes", label="Sometimes sensitive"),
+            QuizOption(value="rarely", label="Rarely reacts"),
+            QuizOption(value="never", label="Never had a reaction"),
+        ],
+    ),
+    QuizQuestion(
+        id="hydration",
+        text="How often does your skin feel dehydrated or flaky?",
+        options=[
+            QuizOption(value="always", label="Almost always"),
+            QuizOption(value="winter", label="Mostly in winter or dry weather"),
+            QuizOption(value="rarely", label="Rarely"),
+            QuizOption(value="never", label="Never — it stays moisturised on its own"),
+        ],
+    ),
+]
+
+
+@router.get("/skin-type-quiz")
+async def get_skin_type_quiz():
+    """
+    Return a static skin-type quiz with 5 questions.
+
+    Sprint: 3 — Skin type quiz
+    """
+    return {"questions": [q.model_dump() for q in SKIN_TYPE_QUIZ]}

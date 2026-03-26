@@ -1,0 +1,41 @@
+.fab {
+  position: fixed;
+  bottom: 80px;
+  right: 16px;
+  z-index: 1000;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-full, 9999px);
+  border: none;
+  background: var(--color-primary, #1f6feb);
+  color: var(--color-white, #ffffff);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-lg, 0 12px 24px rgba(31, 111, 235, 0.12)),
+              var(--shadow-primary, 0 8px 24px rgba(31, 111, 235, 0.25));
+  transition: all var(--transition-base, 200ms);
+}
+
+.fab:hover {
+  transform: scale(1.08);
+  box-shadow: var(--shadow-xl, 0 20px 40px rgba(31, 111, 235, 0.15)),
+              var(--shadow-primary, 0 8px 24px rgba(31, 111, 235, 0.25));
+}
+
+.fab:active {
+  transform: scale(0.95);
+}
+
+/* Hide on the /chat page itself */
+:global(body[data-page="chat"]) .fab {
+  display: none;
+}
+
+@media (min-width: 769px) {
+  .fab {
+    bottom: 24px;
+    right: 24px;
+  }
+}

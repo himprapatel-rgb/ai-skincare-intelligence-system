@@ -1,0 +1,93 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3, 12px);
+  padding: var(--space-6, 24px) var(--space-4, 16px);
+}
+
+.label {
+  font-size: var(--font-size-sm, 0.875rem);
+  color: var(--text-secondary, #475569);
+  margin: 0;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2, 8px);
+  max-width: 600px;
+}
+
+@media (max-width: 768px) {
+  .chips {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    justify-content: flex-start;
+    max-width: 100%;
+    padding-bottom: var(--space-2, 8px);
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .chips::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-2, 8px) var(--space-4, 16px);
+  border-radius: var(--radius-full, 9999px);
+  border: 1px solid var(--border-color, #e2e8f0);
+  background: var(--bg-primary, #ffffff);
+  color: var(--text-primary, #0f172a);
+  font-size: var(--font-size-sm, 0.875rem);
+  font-family: var(--font-family, 'Inter', sans-serif);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--transition-fast, 150ms);
+}
+
+.chip:hover {
+  border-color: var(--color-primary, #1f6feb);
+  color: var(--color-primary, #1f6feb);
+  background: var(--color-primary-light, #e8f0fd);
+}
+
+.chip:active {
+  transform: scale(0.97);
+}
+
+@media (prefers-color-scheme: dark) {
+  .chip {
+    background: var(--color-gray-800, #1e293b);
+    border-color: var(--color-gray-600, #475569);
+    color: var(--color-gray-200, #e2e8f0);
+  }
+  .chip:hover {
+    background: var(--color-gray-700, #334155);
+    border-color: var(--color-primary, #1f6feb);
+    color: var(--color-primary, #1f6feb);
+  }
+  .label {
+    color: var(--color-gray-400, #94a3b8);
+  }
+}
+
+:global(.dark-mode) .chip {
+  background: var(--color-gray-800, #1e293b);
+  border-color: var(--color-gray-600, #475569);
+  color: var(--color-gray-200, #e2e8f0);
+}
+
+:global(.dark-mode) .chip:hover {
+  background: var(--color-gray-700, #334155);
+  border-color: var(--color-primary, #1f6feb);
+  color: var(--color-primary, #1f6feb);
+}
+
+:global(.dark-mode) .label {
+  color: var(--color-gray-400, #94a3b8);
+}

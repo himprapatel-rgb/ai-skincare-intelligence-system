@@ -2,7 +2,7 @@
 from datetime import datetime
 from typing import Any, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 # ── Session schemas ──────────────────────────────────────────────────────────
@@ -46,10 +46,10 @@ class ChatMessageResponse(BaseModel):
     output_tokens: Optional[int] = None
     cost_usd: Optional[float] = None
     duration_ms: Optional[int] = None
-    metadata: Optional[dict[str, Any]] = None
+    metadata: Optional[dict[str, Any]] = Field(None, validation_alias="meta_info")
     created_at: datetime
 
-    model_config = {"from_attributes": True}
+    model_config = ConfigDict(from_attributes=True, populate_by_name=True)
 
 
 class ChatMessagesResponse(BaseModel):

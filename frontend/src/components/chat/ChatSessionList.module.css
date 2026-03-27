@@ -1,29 +1,28 @@
+/* ===== Session List Container ===== */
 .container {
   display: flex;
   flex-direction: column;
   height: 100%;
   background: var(--bg-primary, #ffffff);
-  border-right: 1px solid var(--border-color, #e2e8f0);
 }
 
 @media (prefers-color-scheme: dark) {
   .container {
     background: var(--color-gray-900, #0f172a);
-    border-right-color: var(--color-gray-700, #334155);
   }
 }
 
 :global(.dark-mode) .container {
   background: var(--color-gray-900, #0f172a);
-  border-right-color: var(--color-gray-700, #334155);
 }
 
+/* ===== New Chat Button ===== */
 .newBtn {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: var(--space-2, 8px);
-  margin: var(--space-3, 12px);
+  margin: var(--space-4, 16px);
   padding: var(--space-3, 12px) var(--space-4, 16px);
   border-radius: var(--radius-lg, 12px);
   border: 1px dashed var(--border-color, #e2e8f0);
@@ -33,12 +32,13 @@
   font-family: var(--font-family, 'Inter', sans-serif);
   font-weight: 500;
   cursor: pointer;
-  transition: all var(--transition-fast, 150ms);
+  transition: all 200ms;
 }
 
 .newBtn:hover {
   background: var(--color-primary-light, #e8f0fd);
   border-color: var(--color-primary, #1f6feb);
+  border-style: solid;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -58,28 +58,45 @@
   background: var(--color-gray-800, #1e293b);
 }
 
+/* ===== Session List ===== */
 .list {
   flex: 1;
   overflow-y: auto;
-  padding: 0 var(--space-2, 8px);
+  padding: 0 var(--space-3, 12px);
 }
 
+.list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.list::-webkit-scrollbar-thumb {
+  background: var(--border-color, #e2e8f0);
+  border-radius: 2px;
+}
+
+/* ===== Empty State ===== */
 .empty {
   text-align: center;
   color: var(--text-muted, #94a3b8);
   font-size: var(--font-size-sm, 0.875rem);
-  padding: var(--space-8, 32px) var(--space-4, 16px);
+  padding: var(--space-10, 40px) var(--space-4, 16px);
+  line-height: 1.6;
 }
 
+/* ===== Session Item ===== */
 .item {
   display: flex;
   align-items: center;
-  gap: var(--space-2, 8px);
-  padding: var(--space-3, 12px);
-  border-radius: var(--radius-md, 8px);
+  gap: var(--space-3, 12px);
+  padding: var(--space-3, 12px) var(--space-3, 12px);
+  border-radius: var(--radius-lg, 12px);
   cursor: pointer;
-  transition: background var(--transition-fast, 150ms);
-  margin-bottom: 2px;
+  transition: background 150ms;
+  margin-bottom: var(--space-1, 4px);
 }
 
 .item:hover {
@@ -107,12 +124,13 @@
   background: var(--color-gray-800, #1e293b);
 }
 
+/* ===== Item Content ===== */
 .itemContent {
   flex: 1;
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
 }
 
 .itemTitle {
@@ -139,11 +157,12 @@
   color: var(--text-muted, #94a3b8);
 }
 
+/* ===== Delete Button ===== */
 .deleteBtn {
   flex-shrink: 0;
   width: 28px;
   height: 28px;
-  border-radius: var(--radius-sm, 6px);
+  border-radius: var(--radius-md, 8px);
   border: none;
   background: transparent;
   color: var(--text-muted, #94a3b8);
@@ -152,7 +171,7 @@
   align-items: center;
   justify-content: center;
   opacity: 0;
-  transition: all var(--transition-fast, 150ms);
+  transition: all 150ms;
 }
 
 .item:hover .deleteBtn {

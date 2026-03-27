@@ -37,8 +37,13 @@ async def create_session(
     db: Session = Depends(get_db),
 ):
     """Create a new AI chat session with context snapshot."""
-    session = ai_chat_service.create_session(user, db, title=body.title)
-    return session
+    try:
+        session = ai_chat_service.create_session(user, db, title=body.title)
+        return session
+    except Exception as exc:
+        logger.exception("Failed to create chat session: %s", exc)
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Failed to create session: {str(exc)}")
 
 
 @router.get("/sessions", response_model=ChatSessionListResponse)
@@ -89,18 +94,24 @@ async def send_message(
     Each line: `data: {"type": "chunk", "content": "..."}\n\n`
     Final line: `data: {"type": "done", "message_id": 123}\n\n`
     """
-    session = ai_chat_service.get_session(session_id, user.id, db)
-    if not session:
-        raise HTTPException(status_code=404, detail="Session not found")
+    try:
+        session = ai_chat_service.get_session(session_id, user.id, db)
+        if not session:
+            raise HTTPException(status_code=404, detail="Session not found")
 
-    return StreamingResponse(
-        ai_chat_service.stream_message(session_id, user, body.content, db),
-        media_type="text/event-stream",
-        headers={
-            "Cache-Control": "no-cache",
-            "X-Accel-Buffering": "no",  # Disable nginx buffering
-        },
-    )
+        return StreamingResponse(
+            ai_chat_service.stream_message(session_id, user, body.content, db),
+            media_type="text/event-stream",
+            headers={
+                "Cache-Control": "no-cache",
+                "X-Accel-Buffering": "no",
+            },
+        )
+    except HTTPException:
+        raise
+    except Exception as exc:
+        logger.exception("Failed to send chat message: %s", exc)
+        raise HTTPException(status_code=500, detail=f"Chat error: {str(exc)}")
 
 
 @router.delete("/sessions/{session_id}", status_code=status.HTTP_204_NO_CONTENT)

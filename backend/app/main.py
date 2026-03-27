@@ -269,6 +269,83 @@ def _add_missing_columns(eng) -> None:
         logger.warning("Column migration skipped: %s", exc)
 
 
+def _seed_blog_articles(eng) -> None:
+    """Seed initial blog articles if the blogs table is empty."""
+    _articles = [
+        {
+            "title": "Building a Simple Morning Skincare Routine",
+            "slug": "morning-skincare-routine",
+            "excerpt": "A step-by-step guide to creating an effective AM routine with cleansing, vitamin C, moisturizer, and SPF.",
+            "content": "<h2>Why Morning Routines Matter</h2><p>Your morning skincare routine sets the foundation for how your skin performs throughout the day. A consistent AM routine protects against UV damage, environmental pollutants, and helps maintain hydration levels.</p><h2>The 4-Step Morning Routine</h2><h3>1. Gentle Cleanser</h3><p>Start with a gentle, pH-balanced cleanser to remove overnight oil and product residue without stripping your barrier. Look for ingredients like glycerin or ceramides.</p><h3>2. Vitamin C Serum</h3><p>Apply a 10-20% L-ascorbic acid serum to brighten skin, fade dark spots, and provide antioxidant protection against free radicals.</p><h3>3. Moisturizer</h3><p>Lock in hydration with a lightweight moisturizer containing hyaluronic acid or niacinamide. Even oily skin types benefit from moisturizing.</p><h3>4. Broad-Spectrum SPF 30+</h3><p>Non-negotiable. Apply SPF as the last step of your routine, reapplying every 2 hours if exposed to direct sunlight.</p>",
+            "category": "Routines",
+            "tags": ["morning routine", "SPF", "vitamin C", "beginner"],
+            "read_time_min": 5,
+        },
+        {
+            "title": "Understanding Ingredient Interactions",
+            "slug": "ingredient-interactions",
+            "excerpt": "Learn which skincare ingredients work together and which combinations to avoid for healthier skin.",
+            "content": "<h2>Why Ingredient Pairing Matters</h2><p>Using the wrong combination of active ingredients can cause irritation, reduce effectiveness, or even damage your skin barrier. Understanding these interactions helps you build a safer, more effective routine.</p><h2>Combinations to Avoid</h2><h3>Retinol + AHA/BHA Acids</h3><p>Both are potent exfoliants. Using them together can cause excessive irritation, redness, and peeling. Use retinol at night and acids in the morning, or alternate nights.</p><h3>Vitamin C + Niacinamide (Myth!)</h3><p>Despite old advice, modern formulations of vitamin C and niacinamide work well together. This combination is actually complementary for brightening.</p><h3>Benzoyl Peroxide + Retinol</h3><p>Benzoyl peroxide can oxidize and deactivate retinol. If you use both, apply them at different times of day.</p><h2>Power Combinations</h2><ul><li><strong>Vitamin C + Vitamin E + Ferulic Acid</strong> — Enhanced antioxidant protection</li><li><strong>Hyaluronic Acid + Ceramides</strong> — Maximum hydration and barrier repair</li><li><strong>Niacinamide + Zinc</strong> — Oil control and anti-inflammatory benefits</li></ul>",
+            "category": "Ingredients",
+            "tags": ["ingredients", "retinol", "vitamin C", "acids"],
+            "read_time_min": 7,
+        },
+        {
+            "title": "How to Track Your Skin Progress with AI Scans",
+            "slug": "tracking-progress-scans",
+            "excerpt": "Consistent scanning reveals patterns your mirror can't. Learn how to get the most accurate results.",
+            "content": "<h2>Why Track Your Skin?</h2><p>Small daily changes are invisible to the naked eye. AI-powered skin analysis detects subtle shifts in hydration, texture, and pigmentation that accumulate over weeks. Tracking these changes helps you know what's working.</p><h2>Best Practices for Accurate Scans</h2><h3>Lighting</h3><p>Use consistent, diffused natural light. Avoid direct sunlight or harsh overhead lighting that creates shadows. A north-facing window provides ideal conditions.</p><h3>Timing</h3><p>Scan at the same time each session — ideally morning before applying products. Your skin's condition varies throughout the day.</p><h3>Positioning</h3><p>Keep your face centered, front-facing, at arm's length. Remove glasses, hair from face, and any makeup or sunscreen.</p><h2>How Often Should You Scan?</h2><p>Weekly scans provide the best balance of data density and meaningful change detection. Bi-weekly scans work for maintenance phases. Daily scanning adds noise without much signal.</p>",
+            "category": "Tips",
+            "tags": ["scanning", "progress", "AI", "tips"],
+            "read_time_min": 6,
+        },
+        {
+            "title": "Decoding Your Skin Type: A Complete Guide",
+            "slug": "skin-type-guide",
+            "excerpt": "Understanding whether you have oily, dry, combination, or sensitive skin is the foundation of effective skincare.",
+            "content": "<h2>The Four Main Skin Types</h2><h3>Oily Skin</h3><p>Characterized by excess sebum production, visible pores, and a shiny appearance. Oily skin is prone to breakouts but ages more slowly due to natural moisture. <strong>Key ingredients:</strong> Niacinamide, salicylic acid, lightweight moisturizers.</p><h3>Dry Skin</h3><p>Feels tight, may show flaking or rough patches. Dry skin lacks natural oils and needs rich, emollient products. <strong>Key ingredients:</strong> Ceramides, squalane, hyaluronic acid, heavy creams.</p><h3>Combination Skin</h3><p>Oily T-zone (forehead, nose, chin) with dry or normal cheeks. The most common skin type. <strong>Key ingredients:</strong> Balanced moisturizers, zone-specific treatments.</p><h3>Sensitive Skin</h3><p>Reacts easily to products, weather, and stress with redness, stinging, or irritation. <strong>Key ingredients:</strong> Centella asiatica, aloe vera, fragrance-free formulations.</p><h2>Take Our Quiz</h2><p>Not sure about your skin type? Take our <a href='/skin-quiz'>Skin Type Quiz</a> to get personalized results and product recommendations.</p>",
+            "category": "Education",
+            "tags": ["skin type", "oily", "dry", "combination", "sensitive"],
+            "read_time_min": 8,
+        },
+        {
+            "title": "The Science Behind Retinol: What You Need to Know",
+            "slug": "retinol-science",
+            "excerpt": "Retinol is the gold standard of anti-aging. Here's how it works, how to start, and what to expect.",
+            "content": "<h2>What Is Retinol?</h2><p>Retinol is a form of vitamin A that accelerates cell turnover, stimulates collagen production, and helps unclog pores. It's one of the most well-researched ingredients in dermatology with decades of clinical evidence.</p><h2>Benefits</h2><ul><li>Reduces fine lines and wrinkles</li><li>Fades hyperpigmentation and dark spots</li><li>Improves skin texture and tone</li><li>Helps prevent and treat acne</li><li>Increases collagen production</li></ul><h2>How to Start</h2><p>Begin with a low concentration (0.025-0.03%) applied 2-3 nights per week. Gradually increase frequency over 4-6 weeks as your skin builds tolerance. Always use SPF during the day when using retinol.</p><h2>Common Side Effects</h2><p>Initial purging (2-6 weeks), dryness, flaking, and sensitivity are normal. These typically resolve as your skin adjusts. If irritation persists beyond 6 weeks, reduce frequency or switch to a lower concentration.</p>",
+            "category": "Ingredients",
+            "tags": ["retinol", "anti-aging", "vitamin A", "science"],
+            "read_time_min": 6,
+        },
+    ]
+    try:
+        with eng.connect() as conn:
+            result = conn.execute(text("SELECT COUNT(*) FROM blogs"))
+            count = result.scalar() or 0
+            if count > 0:
+                return  # Already seeded
+            for article in _articles:
+                conn.execute(
+                    text(
+                        "INSERT INTO blogs (title, slug, excerpt, content, category, tags, read_time_min, published) "
+                        "VALUES (:title, :slug, :excerpt, :content, :category, :tags, :read_time_min, true)"
+                    ),
+                    {
+                        "title": article["title"],
+                        "slug": article["slug"],
+                        "excerpt": article["excerpt"],
+                        "content": article["content"],
+                        "category": article["category"],
+                        "tags": str(article["tags"]).replace("'", '"'),  # JSON format
+                        "read_time_min": article["read_time_min"],
+                    },
+                )
+            conn.commit()
+            logger.info("✅ Seeded %d blog articles", len(_articles))
+    except Exception as exc:
+        logger.warning("Blog seeding skipped: %s", exc)
+
+
 @app.on_event("startup")
 def ensure_test_user() -> None:
     """Best-effort startup bootstrap. Never crash the API process."""
@@ -285,6 +362,7 @@ def ensure_test_user() -> None:
 
         # Sprint 2+: Add new columns to existing tables if missing (safe for production)
         _add_missing_columns(engine)
+        _seed_blog_articles(engine)
     except (ProgrammingError, OperationalError) as exc:
         logger.warning("Main DB bootstrap unavailable; startup continues without seed: %s", exc)
         db_bootstrap_available = False

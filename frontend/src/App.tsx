@@ -64,6 +64,7 @@ const BlogPage = React.lazy(() => import("./pages/BlogPage"));
 const BlogPostPage = React.lazy(() => import("./pages/BlogPostPage"));
 const IngredientDictionaryPage = React.lazy(() => import("./pages/IngredientDictionaryPage"));
 const SkinTypeGuidePage = React.lazy(() => import("./pages/SkinTypeGuidePage"));
+const SkinTypeQuizPage = React.lazy(() => import("./pages/SkinTypeQuizPage"));
 const VideoTutorialsPage = React.lazy(() => import("./pages/VideoTutorialsPage"));
 const DeviceContextPage = React.lazy(() => import("./pages/DeviceContextPage"));
 const AIChatPage = React.lazy(() => import("./pages/AIChatPage"));
@@ -126,6 +127,7 @@ function AppRoutes() {
           <Route path="/blog/:id" element={<BlogPostPage />} />
           <Route path="/ingredients" element={<IngredientDictionaryPage />} />
           <Route path="/skin-type-guide" element={<SkinTypeGuidePage />} />
+          <Route path="/skin-quiz" element={<SkinTypeQuizPage />} />
           <Route path="/tutorials" element={<VideoTutorialsPage />} />
           <Route path="/device-context" element={<DeviceContextPage />} />
           <Route path="/clinical" element={<ClinicalDashboardPage />} />

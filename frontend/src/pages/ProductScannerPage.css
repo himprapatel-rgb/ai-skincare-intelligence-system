@@ -78,7 +78,7 @@
   display: flex;
   gap: 12px;
   justify-content: center;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
   flex-wrap: wrap;
 }
 
@@ -247,7 +247,7 @@
 }
 
 .photo-upload-area {
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 }
 
 .file-input {
@@ -262,7 +262,7 @@
   padding: 48px 32px;
   background: var(--bg-light);
   border: 2px dashed var(--border);
-  border-radius: var(--border-radius-xl);
+  border-radius: var(--radius-xl, 16px);
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -353,7 +353,7 @@
 .source-badge {
   display: inline-block;
   padding: 4px 12px;
-  border-radius: var(--border-radius-xl);
+  border-radius: var(--radius-xl, 16px);
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -461,7 +461,7 @@
   padding: 6px 14px;
   background: var(--bg-light);
   border: 1px solid var(--border);
-  border-radius: var(--border-radius-xl);
+  border-radius: var(--radius-xl, 16px);
   font-size: 0.875rem;
   color: var(--text-gray);
 }
@@ -606,7 +606,7 @@
 .scanner-guide {
   margin-top: 48px;
   background: var(--bg-white);
-  border-radius: var(--border-radius-xl);
+  border-radius: var(--radius-xl, 16px);
   padding: 24px;
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
@@ -696,7 +696,7 @@
 }
 
 .product-results {
-  margin-top: 32px;
+  margin-top: 24px;
 }
 
 .product-info-card {
@@ -918,7 +918,7 @@
 }
 .track-product-modal {
   background: var(--bg-white);
-  border-radius: var(--border-radius-xl);
+  border-radius: var(--radius-xl, 16px);
   padding: 24px;
   max-width: 360px;
   width: 100%;
@@ -993,7 +993,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 24px;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 }
 
 .rating-card {
@@ -1085,7 +1085,7 @@
 
 /* All Ingredients List */
 .ingredients-section {
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 }
 
 .ingredients-section h3 {
@@ -1105,7 +1105,7 @@
   padding: 6px 12px;
   background: var(--bg-light);
   border: 1px solid var(--border);
-  border-radius: var(--border-radius-xl);
+  border-radius: var(--radius-xl, 16px);
   font-size: 0.875rem;
   color: var(--text-dark);
 }
@@ -1299,7 +1299,7 @@
   font-size: 0.8rem;
   font-weight: 500;
   padding: 6px 12px;
-  border-radius: var(--border-radius-xl);
+  border-radius: var(--radius-xl, 16px);
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -1323,7 +1323,7 @@
   border: 1px solid var(--secondary);
   border-radius: var(--radius-xl, 16px);
   padding: 20px;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 }
 
 .warnings-section h3 {
@@ -1636,7 +1636,7 @@
 
 .scan-history-section .section-header {
   text-align: center;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 }
 
 .scan-history-section .section-header h2 {
@@ -1755,7 +1755,7 @@
   font-weight: 600;
   padding: 4px 12px;
   background: rgba(59, 130, 246, 0.1);
-  border-radius: var(--border-radius-xl);
+  border-radius: var(--radius-xl, 16px);
 }
 
 /* Scan zone overlay */
@@ -1842,7 +1842,7 @@
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
   background: rgba(0, 0, 0, 0.4);
   padding: 6px 16px;
-  border-radius: var(--border-radius-xl);
+  border-radius: var(--radius-xl, 16px);
 }
 
 /* Scanner quick controls */
@@ -1973,7 +1973,7 @@
   align-items: center;
   gap: 8px;
   padding: 8px 16px;
-  border-radius: var(--border-radius-xl);
+  border-radius: var(--radius-xl, 16px);
   font-size: 0.85rem;
   font-weight: 500;
 }

@@ -288,7 +288,7 @@
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-xl);
-  padding: 28px 24px;
+  padding: 24px;
   box-shadow: var(--shadow-xl);
   width: 100%;
   max-width: 340px;
@@ -1256,7 +1256,7 @@
 
 @media (max-width: 480px) {
   .hero {
-    padding: 28px 16px 24px;
+    padding: 24px 16px;
   }
 
   .hero-blob--1 { width: 300px; height: 300px; }

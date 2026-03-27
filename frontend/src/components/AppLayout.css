@@ -1022,7 +1022,7 @@
 /* Newsletter Section */
 .app-footer-newsletter {
   background: linear-gradient(135deg, var(--primary) 0%, #5a8bff 100%);
-  padding: 28px 24px;
+  padding: 24px;
 }
 
 .app-footer-newsletter-content {

@@ -210,7 +210,7 @@
 .dashboard-first-scan-cta-icon {
   width: 56px;
   height: 56px;
-  border-radius: var(--border-radius-xl);
+  border-radius: var(--radius-xl, 16px);
   background: var(--primary);
   color: var(--white);
   display: flex;
@@ -412,7 +412,7 @@
 .stat-icon {
   width: 64px;
   height: 64px;
-  border-radius: var(--border-radius-xl);
+  border-radius: var(--radius-xl, 16px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -471,7 +471,7 @@
 .trend {
   display: inline-block;
   padding: 4px 12px;
-  border-radius: var(--border-radius-xl);
+  border-radius: var(--radius-xl, 16px);
   font-size: 0.875rem;
   font-weight: 600;
   margin-top: 4px;

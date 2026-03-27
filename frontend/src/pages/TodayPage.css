@@ -71,7 +71,7 @@
 /* Design tokens – futuristic & simple */
 .today-card {
   background: var(--bg-white);
-  border-radius: var(--border-radius-xl);
+  border-radius: var(--radius-xl, 16px);
   padding: 20px;
   margin-bottom: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
@@ -483,7 +483,7 @@
   justify-content: center;
   min-width: 72px;
   height: 72px;
-  border-radius: var(--border-radius-xl);
+  border-radius: var(--radius-xl, 16px);
   background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(124, 58, 237, 0.08));
   border: 1px solid rgba(31, 95, 191, 0.25);
 }

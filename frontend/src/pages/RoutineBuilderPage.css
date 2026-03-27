@@ -105,10 +105,10 @@
 }
 
 .routine-education {
-  margin-top: 32px;
+  margin-top: 24px;
   padding: 24px;
   background: var(--bg-white);
-  border-radius: var(--border-radius-xl);
+  border-radius: var(--radius-xl, 16px);
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
 }
@@ -252,7 +252,7 @@
   cursor: pointer;
   transition: all 0.2s ease;
   box-shadow: 0 4px 12px rgba(31, 111, 235, 0.2);
-  margin-top: 32px;
+  margin-top: 24px;
 }
 
 .btn-save-routine:hover {
@@ -264,7 +264,7 @@
 /* Routine Header */
 .routine-header {
   text-align: center;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 }
 
 .routine-header h1 {
@@ -311,7 +311,7 @@
   display: flex;
   justify-content: center;
   gap: 16px;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 }
 
 .time-btn {
@@ -713,7 +713,7 @@
   display: flex;
   justify-content: center;
   gap: 16px;
-  margin-top: 32px;
+  margin-top: 24px;
 }
 
 .routine-actions .btn-primary,

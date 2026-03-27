@@ -81,7 +81,7 @@
 .sample-card {
   background: var(--bg-white);
   border: 1px solid var(--border);
-  border-radius: var(--border-radius-xl);
+  border-radius: var(--radius-xl, 16px);
   padding: 24px;
   box-shadow: var(--shadow);
   min-width: 0;
@@ -116,8 +116,8 @@
 .sample-report-cta {
   background: var(--bg-white);
   border: 1px solid var(--border);
-  border-radius: var(--border-radius-xl);
-  padding: 28px;
+  border-radius: var(--radius-xl, 16px);
+  padding: 24px;
   text-align: center;
   box-shadow: var(--shadow);
 }

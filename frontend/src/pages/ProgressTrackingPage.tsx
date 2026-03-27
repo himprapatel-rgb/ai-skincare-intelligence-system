@@ -282,7 +282,11 @@ const ProgressTrackingPage: React.FC = () => {
                 </rechartsModule.AreaChart>
               </rechartsModule.ResponsiveContainer>
             ) : (
-              <div className="chart-placeholder">Loading chart…</div>
+              <div className="chart-placeholder" style={{ display: 'flex', flexDirection: 'column', gap: 8, padding: 24 }}>
+                <div style={{ height: 14, width: '80%', background: 'var(--bg-tertiary, #eef2f6)', borderRadius: 4, animation: 'pulse 1.5s ease-in-out infinite' }} />
+                <div style={{ height: 14, width: '60%', background: 'var(--bg-tertiary, #eef2f6)', borderRadius: 4, animation: 'pulse 1.5s ease-in-out infinite' }} />
+                <div style={{ height: 14, width: '70%', background: 'var(--bg-tertiary, #eef2f6)', borderRadius: 4, animation: 'pulse 1.5s ease-in-out infinite' }} />
+              </div>
             )}
           </div>
           

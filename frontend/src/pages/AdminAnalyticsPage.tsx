@@ -197,7 +197,7 @@ const AdminAnalyticsPage: React.FC = () => {
           <div className={styles.tableCard}>
             <h3 className={styles.tableTitle}>Top Concerns</h3>
             {isLoading ? (
-              <div className={styles.tableLoading}>Loading...</div>
+              <div className={styles.tableLoading}><div className={styles.skeleton} style={{ height: 16, width: '60%', marginBottom: 8 }} /><div className={styles.skeleton} style={{ height: 16, width: '80%', marginBottom: 8 }} /><div className={styles.skeleton} style={{ height: 16, width: '45%' }} /></div>
             ) : topConcerns.length === 0 ? (
               <div className={styles.tableEmpty}>No data available</div>
             ) : (
@@ -233,7 +233,7 @@ const AdminAnalyticsPage: React.FC = () => {
           <div className={styles.tableCard}>
             <h3 className={styles.tableTitle}>Common Skin Types</h3>
             {isLoading ? (
-              <div className={styles.tableLoading}>Loading...</div>
+              <div className={styles.tableLoading}><div className={styles.skeleton} style={{ height: 16, width: '60%', marginBottom: 8 }} /><div className={styles.skeleton} style={{ height: 16, width: '80%', marginBottom: 8 }} /><div className={styles.skeleton} style={{ height: 16, width: '45%' }} /></div>
             ) : skinTypes.length === 0 ? (
               <div className={styles.tableEmpty}>No data available</div>
             ) : (

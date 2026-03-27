@@ -123,7 +123,7 @@
 
 .ingredient-card {
   background: var(--bg-white);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   padding: var(--spacing-lg);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-sm);

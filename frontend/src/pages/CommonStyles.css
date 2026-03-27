@@ -273,7 +273,7 @@
 
 .card {
   background: var(--bg-white);
-  border-radius: var(--card-radius, var(--border-radius-lg));
+  border-radius: var(--card-radius, var(--radius-xl, 16px));
   padding: var(--card-padding, var(--spacing-lg));
   border: 1px solid var(--border);
   box-shadow: var(--card-shadow, var(--shadow-sm));
@@ -296,7 +296,7 @@
   background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
   color: var(--white);
   padding: var(--spacing-lg);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   text-align: center;
   cursor: pointer;
   min-height: 44px;

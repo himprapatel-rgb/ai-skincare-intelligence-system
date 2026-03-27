@@ -57,7 +57,7 @@
 
 .twin-explainer-card {
   background: var(--bg-white);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   padding: var(--spacing-lg);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-sm);
@@ -83,7 +83,7 @@
 
 .summary-card {
   background: var(--bg-white);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   padding: 24px;
   box-shadow: var(--shadow);
   border: 1px solid var(--border);
@@ -106,7 +106,7 @@
   width: 56px;
   height: 56px;
   background: var(--primary-light, rgba(31, 111, 235, 0.1));
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   color: var(--primary);
   flex-shrink: 0;
 }
@@ -169,8 +169,8 @@
 
 .card {
   background: var(--bg-white);
-  border-radius: var(--border-radius-lg);
-  padding: 32px;
+  border-radius: var(--radius-xl, 16px);
+  padding: 24px;
   box-shadow: var(--shadow);
   border: 1px solid var(--border);
   margin-bottom: 32px;
@@ -244,7 +244,7 @@
 .snapshot-item {
   cursor: pointer;
   border: 2px solid var(--border);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   overflow: hidden;
   transition: all 0.3s ease;
   background: var(--bg-white);
@@ -323,14 +323,14 @@
 }
 
 .detail-image {
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   overflow: hidden;
 }
 
 .detail-image img {
   width: 100%;
   height: auto;
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   box-shadow: var(--shadow);
 }
 
@@ -411,7 +411,7 @@
   max-width: 400px;
   aspect-ratio: 4 / 5;
   object-fit: cover;
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   box-shadow: var(--shadow);
   margin: 16px 0;
 }
@@ -583,7 +583,7 @@
   text-align: center;
   padding: 24px;
   background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   color: var(--white);
 }
 

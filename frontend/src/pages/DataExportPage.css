@@ -129,7 +129,7 @@
   padding: 24px;
   background: var(--bg-light);
   border: 2px solid var(--border);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   cursor: pointer;
   transition: all 0.2s ease;
   text-align: center;

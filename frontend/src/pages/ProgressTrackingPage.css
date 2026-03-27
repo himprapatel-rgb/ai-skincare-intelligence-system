@@ -59,7 +59,7 @@
 
 .chart-section {
   background: var(--bg-white);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   padding: 20px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
   border: 1px solid var(--border-color);
@@ -132,7 +132,7 @@
 
 .chart-placeholder {
   min-height: 320px;
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   border: 1px dashed var(--border);
   background: var(--bg-light);
   color: var(--text-gray);

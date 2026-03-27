@@ -112,7 +112,7 @@
   width: 56px;
   height: 56px;
   background: rgba(255, 255, 255, 0.95);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -313,7 +313,7 @@
 .form-group-inline .checkbox-label {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   font-size: 0.9375rem;
   font-weight: 500;
   color: var(--text-secondary, #64748b);
@@ -626,7 +626,7 @@
   background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
   border: 1px solid var(--danger-200, #fecaca);
   border-left: 4px solid var(--danger);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   margin-bottom: 20px;
   animation: errorSlideIn 0.3s ease-out;
   box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.1);

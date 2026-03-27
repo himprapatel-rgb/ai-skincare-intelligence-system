@@ -83,7 +83,7 @@
 .admin-card {
   background: var(--bg-white);
   border: 1px solid var(--border-color, #e2e8f0);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   padding: 16px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
@@ -129,7 +129,7 @@
 .admin-form-card {
   background: var(--bg-white);
   border: 1px solid var(--border-color, #e2e8f0);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   padding: 24px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
@@ -255,7 +255,7 @@
   padding: 16px 20px;
   background: var(--bg-white);
   border: 1px solid var(--border-color, #e2e8f0);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 

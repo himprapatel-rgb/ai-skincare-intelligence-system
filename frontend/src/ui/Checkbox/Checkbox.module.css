@@ -1,7 +1,7 @@
 .wrapper {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   /* 44px minimum touch target */

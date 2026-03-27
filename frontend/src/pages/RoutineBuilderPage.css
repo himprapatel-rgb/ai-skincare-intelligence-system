@@ -91,7 +91,7 @@
 /* Main Routine Builder Card */
 .routine-builder {
   background: var(--bg-white);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   padding: var(--spacing-xl);
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--border);
@@ -290,7 +290,7 @@
   padding: 16px;
   background: linear-gradient(135deg, rgba(31, 95, 191, 0.08) 0%, rgba(124, 58, 237, 0.06) 100%);
   border: 1px solid rgba(31, 95, 191, 0.25);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
 }
 .routine-add-product-content {
   display: flex;
@@ -347,7 +347,7 @@
 .suggestion-card {
   background: var(--bg-white);
   border: 1px solid var(--border);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   padding: 20px;
   display: flex;
   align-items: center;
@@ -426,7 +426,7 @@
 .step-card {
   background: var(--bg-white);
   border: 2px solid var(--border);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   padding: 20px;
   display: grid;
   grid-template-columns: 36px 50px 1fr auto;
@@ -522,7 +522,7 @@
 /* Routine Tips */
 .routine-tips {
   background: var(--bg-white);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   padding: 24px;
   margin: 32px 0;
   border: 1px solid var(--border);
@@ -559,7 +559,7 @@
 /* Routine Reminders */
 .routine-reminders {
   background: var(--bg-white);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   padding: 24px;
   margin: 32px 0;
   border: 1px solid var(--border);
@@ -755,7 +755,7 @@
   text-align: center;
   padding: 48px 24px;
   background: var(--bg-white);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   border: 2px dashed var(--border);
 }
 

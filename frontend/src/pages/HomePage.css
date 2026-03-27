@@ -743,7 +743,7 @@
   margin: 0 0 24px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .skin-expert-features li {

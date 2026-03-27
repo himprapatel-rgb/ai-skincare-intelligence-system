@@ -36,7 +36,7 @@
 
 .location-section iframe {
   width: 100%;
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
 }
 
 .contact-page .app-page-content.contact-container {
@@ -61,7 +61,7 @@
 .info-card {
   background: var(--bg-white);
   padding: var(--spacing-xl);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--border);
   text-align: center;
@@ -146,7 +146,7 @@
 .contact-form {
   background: var(--bg-white);
   padding: 40px;
-  border-radius: var(--border-radius-lg); /* Brand guideline: 12px for cards */
+  border-radius: var(--radius-xl, 16px); /* Brand guideline: 12px for cards */
   box-shadow: var(--shadow);
   border: 1px solid var(--border);
 }
@@ -265,7 +265,7 @@
 .faq-accordion-item {
   background: var(--bg-white);
   border: 1px solid var(--border);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   overflow: hidden;
 }
 

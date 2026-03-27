@@ -43,7 +43,7 @@
   padding: var(--spacing-lg);
   background: var(--bg-white);
   border: 1px solid var(--border);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   transition: all 0.2s ease;
   box-shadow: var(--shadow-sm);
 }

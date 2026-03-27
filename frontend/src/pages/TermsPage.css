@@ -48,7 +48,7 @@
   margin: 0 auto var(--spacing-lg);
   padding: var(--spacing-lg) var(--spacing-lg);
   background: var(--bg-white);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-sm);
 }
@@ -85,7 +85,7 @@
 .terms-section {
   background: var(--bg-white);
   padding: 40px;
-  border-radius: var(--border-radius-lg); /* Brand guideline: 12px for cards */
+  border-radius: var(--radius-xl, 16px); /* Brand guideline: 12px for cards */
   box-shadow: var(--shadow);
   border: 1px solid var(--border);
   margin-bottom: 32px;

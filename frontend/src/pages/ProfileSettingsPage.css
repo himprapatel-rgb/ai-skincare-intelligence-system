@@ -563,7 +563,7 @@
   padding: 14px 20px;
   background: transparent;
   border: 1px solid var(--danger);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   color: var(--danger);
   font-size: 1rem;
   font-weight: 600;
@@ -583,7 +583,7 @@
   margin-top: 10px;
   background: transparent;
   border: none;
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   color: var(--text-muted);
   font-size: 0.9rem;
   text-align: center;
@@ -858,7 +858,7 @@
   justify-content: center;
   padding: 16px 12px;
   background: linear-gradient(145deg, #f8fafc 0%, #f1f5f9 100%);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   gap: 6px;
   text-align: center;
 }
@@ -919,7 +919,7 @@
   padding: 14px 18px;
   border: none;
   background: transparent;
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   cursor: pointer;
   font-size: 0.95rem;
   font-weight: 600;
@@ -1438,7 +1438,7 @@
 .privacy-info {
   margin-top: 16px;
   background: var(--bg-tertiary);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   padding: 16px;
 }
 
@@ -1457,7 +1457,7 @@
 .stats-grid .stat-card {
   background: var(--bg-white);
   border: 1px solid var(--border-color);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   padding: 20px;
   text-align: center;
   transition: box-shadow 0.2s ease;
@@ -1480,7 +1480,7 @@
 .comparison-placeholder {
   background: var(--bg-tertiary);
   border: 1px solid var(--border-color);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   padding: 16px;
 }
 
@@ -1690,7 +1690,7 @@
   }
 
   .settings-group {
-    border-radius: var(--border-radius-lg);
+    border-radius: var(--radius-xl, 16px);
   }
 
   .settings-item,
@@ -1781,7 +1781,7 @@
   }
   .quick-stat {
     padding: 12px;
-    border-radius: var(--border-radius-lg);
+    border-radius: var(--radius-xl, 16px);
   }
   .quick-stat-value {
     font-size: 1.25rem;
@@ -1839,7 +1839,7 @@
 
   .section-card {
     padding: 16px;
-    border-radius: var(--border-radius-lg);
+    border-radius: var(--radius-xl, 16px);
   }
   .section-card-header h2 {
     font-size: 1.125rem;

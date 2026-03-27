@@ -39,7 +39,7 @@
   border-collapse: collapse;
   background: var(--bg-white);
   border: 1px solid var(--border-color);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   overflow: hidden;
 }
 
@@ -192,7 +192,7 @@
   .admin-user-card {
     background: var(--bg-white);
     border: 1px solid var(--border-color);
-    border-radius: var(--border-radius-lg);
+    border-radius: var(--radius-xl, 16px);
     padding: var(--spacing-lg);
     box-shadow: var(--shadow-sm);
   }

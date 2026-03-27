@@ -28,7 +28,7 @@
   /* Appearance */
   background: var(--bg-secondary, rgba(0, 0, 0, 0.02));
   border: 1.5px solid transparent;
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   outline: none;
   color: var(--text-primary, #1a1a1a);
   

@@ -237,7 +237,7 @@
 
 .scan-content {
   background: var(--bg-white);
-  border-radius: var(--border-radius-lg); /* Brand guideline: 12px for cards */
+  border-radius: var(--radius-xl, 16px); /* Brand guideline: 12px for cards */
   padding: 32px 24px;
   min-height: min(560px, 58vh);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Brand guideline */
@@ -286,7 +286,7 @@
   margin-top: 16px;
   padding: 12px 16px;
   background: var(--bg-light);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   max-width: 520px;
   margin-left: auto;
   margin-right: auto;
@@ -393,7 +393,7 @@
   max-width: 650px;
   background: rgba(15, 23, 42, 0.06);
   border: 1px solid rgba(15, 23, 42, 0.12);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   padding: 10px 14px;
   font-weight: 600;
   color: var(--text-dark);
@@ -409,7 +409,7 @@
   width: 100%;
   max-width: 650px;
   margin: 0 auto 24px;
-  border-radius: var(--border-radius-lg); /* Brand guideline: 12px for cards */
+  border-radius: var(--radius-xl, 16px); /* Brand guideline: 12px for cards */
   overflow: hidden;
   background: #000;
   aspect-ratio: 4/3;
@@ -550,7 +550,7 @@
   position: absolute;
   inset: 14px;
   border: none;
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   box-shadow: inset 0 0 30px rgba(31, 95, 191, 0.12);
   z-index: 1;
 }
@@ -899,7 +899,7 @@
   line-height: 1.4;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .scan-tips ul {
@@ -1282,7 +1282,7 @@
   margin: 0 auto;
   background: var(--bg-white);
   padding: 48px;
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   border: 1px solid var(--border);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   animation: slideInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
@@ -1334,7 +1334,7 @@
   border-left: 4px solid var(--error-500, var(--danger));
   color: var(--error-600, var(--danger));
   padding: 20px 24px;
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   margin-top: 24px;
   display: flex;
   align-items: flex-start;
@@ -1371,7 +1371,7 @@
   border-left: 4px solid var(--primary);
   color: var(--primary-700, #1d4ed8);
   padding: 16px 20px;
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   margin-top: 20px;
   display: flex;
   align-items: flex-start;
@@ -2081,7 +2081,7 @@
 .trend-sparkline-meta {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .trend-sparkline-badge {

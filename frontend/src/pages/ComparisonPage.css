@@ -86,7 +86,7 @@
 
 .comparison-score-card {
   background: var(--bg-white);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   padding: 24px;
   text-align: center;
   box-shadow: var(--shadow);
@@ -130,7 +130,7 @@
   width: 100%;
   max-width: 400px;
   height: auto;
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   box-shadow: var(--shadow);
   border: 2px solid var(--border);
   object-fit: cover;
@@ -251,7 +251,7 @@
 
 .comparison-chart-placeholder {
   min-height: 260px;
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   border: 1px dashed var(--border);
   background: var(--bg-light);
   color: var(--text-gray);
@@ -299,7 +299,7 @@
 
 @media (max-width: 768px) {
   .comparison-page {
-    padding: 32px 20px;
+    padding: 24px 16px;
   }
 
   .comparison-header h1 {

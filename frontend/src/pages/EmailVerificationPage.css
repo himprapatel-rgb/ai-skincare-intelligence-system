@@ -11,7 +11,7 @@
   width: 100%;
   max-width: 480px;
   background: var(--bg-white);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   padding: var(--spacing-xl);
   box-shadow: var(--shadow-xl);
   border: 1px solid var(--border-color);
@@ -74,7 +74,7 @@
   text-align: center;
   padding: 16px;
   background: rgba(59, 130, 246, 0.05);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   border: 1px solid rgba(59, 130, 246, 0.2);
 }
 
@@ -94,7 +94,7 @@
   color: var(--accent-primary);
   border: 1px solid var(--accent-primary);
   padding: 12px 24px;
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -112,7 +112,7 @@
 .dev-token {
   padding: 12px;
   background: rgba(15, 23, 42, 0.04);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-xl, 16px);
   font-size: 0.85rem;
   display: flex;
   flex-direction: column;

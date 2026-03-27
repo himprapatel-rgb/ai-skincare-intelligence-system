@@ -305,7 +305,7 @@
 
 /* Dashboard Stats Grid */
 .dashboard-stats {
-  margin: 24px 0 32px;
+  margin: 24px 0 24px;
   padding: 0;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -483,7 +483,7 @@
 }
 
 .trend.stable {
-  background: #FEF3C7; /* Warm Cream */
+  background: var(--warning-100, #FEF3C7);
   color: var(--warning-800, #92400e);
 }
 
@@ -509,7 +509,7 @@
 
 .dashboard-section {
   background: var(--bg-white);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   padding: var(--spacing-lg);
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--border);
@@ -683,7 +683,7 @@
   display: flex;
   align-items: center;
   gap: 24px;
-  padding: 32px;
+  padding: var(--spacing-lg);
 }
 
 .reminder-icon {
@@ -855,7 +855,7 @@
 .recently-viewed-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px;
 }
 
 .recently-viewed-item {
@@ -1088,7 +1088,7 @@
   }
 
   .dashboard-content {
-    max-width: 1080px;
+    max-width: 1120px;
     margin: 0 auto;
     padding: 0 var(--spacing-xl, 32px);
   }

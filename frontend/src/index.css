@@ -4,22 +4,14 @@
 /* For production: download Inter woff2 from https://rsms.me/inter/ and place in public/fonts/ */
 /* For now: use system font stack as fallback; add Inter later */
 
-/* Import Unified Design System */
+/* Import Core Design System (consolidated — removed 6 legacy polish layers) */
 @import './styles/design-system.css';
 @import './styles/responsive-utilities.css';
 @import './styles/responsive-page-tweaks.css';
 @import './styles/app-style.css';
 @import './styles/mobile-core.css';
 @import './components/Skeleton.css';
-@import './styles/ui-polish-2026.css';
 @import './styles/clinical-clean.css';
-@import './styles/designer-hotfix.css';
-@import './styles/page-block-polish.css';
-@import './styles/mobile-ux-2026.css';
-@import './styles/creative-restructure.css';
-@import './styles/page-creative.css';
-@import './styles/creative-mobile.css';
-@import './styles/creative-tablet.css';
 
 /* CSS Variables */
 :root {

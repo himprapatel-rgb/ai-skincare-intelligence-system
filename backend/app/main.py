@@ -132,6 +132,27 @@ app.add_middleware(
 )
 app.add_middleware(GZipMiddleware, minimum_size=500)
 
+
+# Smart Cache-Control middleware for read-heavy GET endpoints
+@app.middleware("http")
+async def add_cache_headers(request, call_next):
+    response = await call_next(request)
+    if request.method == "GET" and "Cache-Control" not in response.headers:
+        path = request.url.path
+        # Public endpoints: cache aggressively
+        if any(path.startswith(p) for p in ["/api/v1/catalog/", "/api/v1/content/"]):
+            response.headers["Cache-Control"] = "public, max-age=300, stale-while-revalidate=600"
+        elif any(path.startswith(p) for p in ["/api/v1/search", "/api/v1/goals/types"]):
+            response.headers["Cache-Control"] = "public, max-age=120"
+        # Private endpoints: short cache
+        elif any(path.startswith(p) for p in [
+            "/api/v1/goals", "/api/v1/shelf", "/api/v1/notifications",
+            "/api/v1/profile", "/api/v1/clinical/", "/api/v1/reports/",
+            "/api/v1/routines/adherence", "/api/v1/routines/streak",
+        ]):
+            response.headers["Cache-Control"] = "private, max-age=30, stale-while-revalidate=60"
+    return response
+
 # Rate limit scan endpoints to prevent abuse (per-IP when unauthenticated)
 from middleware.rate_limiter import RateLimiterMiddleware
 

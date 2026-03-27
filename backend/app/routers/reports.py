@@ -1,5 +1,6 @@
 """Weekly progress summary report endpoint."""
 from datetime import date, datetime, timedelta
+from typing import Optional
 
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel
@@ -19,8 +20,8 @@ router = APIRouter(prefix="/reports", tags=["reports"])
 class WeeklySummaryResponse(BaseModel):
     scans_this_week: int
     scans_last_week: int
-    avg_score_this_week: float | None
-    avg_score_last_week: float | None
+    avg_score_this_week: Optional[float]
+    avg_score_last_week: Optional[float]
     score_trend: str  # "improving" | "stable" | "declining"
     routine_adherence_pct: float
     routine_days_completed: int

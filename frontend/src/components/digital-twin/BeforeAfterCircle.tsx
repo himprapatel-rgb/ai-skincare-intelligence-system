@@ -87,8 +87,8 @@ const BeforeAfterCircle: React.FC<BeforeAfterCircleProps> = ({
               <em>Score: {afterSnapshot.overallScore}</em>
             </div>
           </div>
-          <div className="dt-improvement">
-            {afterSnapshot.overallScore - beforeSnapshot.overallScore >= 0 ? '+' : ''}
+          <div className={`dt-improvement ${afterSnapshot.overallScore - beforeSnapshot.overallScore >= 0 ? 'dt-improvement--positive' : 'dt-improvement--negative'}`}>
+            {afterSnapshot.overallScore - beforeSnapshot.overallScore >= 0 ? '↑ +' : '↓ '}
             {afterSnapshot.overallScore - beforeSnapshot.overallScore} points
           </div>
         </div>

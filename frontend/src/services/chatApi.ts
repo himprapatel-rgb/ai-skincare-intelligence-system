@@ -50,7 +50,9 @@ export async function listSessions(): Promise<ChatSession[]> {
     const err = await res.json().catch(() => ({ detail: 'Failed to list sessions' }));
     throw new Error(err.detail || 'Failed to list sessions');
   }
-  return res.json();
+  const json = await res.json();
+  // Backend returns paginated envelope {data: [...]} or plain array
+  return Array.isArray(json) ? json : (json.data || []);
 }
 
 export async function getMessages(sessionId: number | string): Promise<ChatMessage[]> {
@@ -62,7 +64,8 @@ export async function getMessages(sessionId: number | string): Promise<ChatMessa
     const err = await res.json().catch(() => ({ detail: 'Failed to get messages' }));
     throw new Error(err.detail || 'Failed to get messages');
   }
-  return res.json();
+  const json = await res.json();
+  return Array.isArray(json) ? json : (json.data || []);
 }
 
 export async function deleteSession(sessionId: number | string): Promise<void> {

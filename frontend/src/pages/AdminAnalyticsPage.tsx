@@ -64,12 +64,13 @@ const AdminAnalyticsPage: React.FC = () => {
 
   return (
     <div className={styles.page}>
+      <header className="app-header-card">
+        <h1>Admin Analytics</h1>
+        <p className="app-header-subtitle">Platform performance and usage metrics</p>
+      </header>
       <div className={styles.container}>
         <header className={styles.header}>
-          <div>
-            <h1 className={styles.title}>Analytics</h1>
-            <p className={styles.subtitle}>Platform performance and usage metrics.</p>
-          </div>
+          <div></div>
           <div className={styles.rangeTabs}>
             {(['7d', '30d', '90d'] as DateRange[]).map((range) => (
               <button

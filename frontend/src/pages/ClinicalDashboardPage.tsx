@@ -80,16 +80,16 @@ const ClinicalDashboardPage: React.FC = () => {
 
   return (
     <div className={styles.page}>
+      <header className="app-header-card">
+        <h1>Clinical Dashboard</h1>
+        <p className="app-header-subtitle">Monitor your skin health metrics and clinical insights</p>
+      </header>
+
       <AlertBanner alerts={activeAlerts} onDismiss={handleDismiss} />
 
       <div className={styles.container}>
         <header className={styles.header}>
-          <div>
-            <h1 className={styles.title}>Clinical Dashboard</h1>
-            <p className={styles.subtitle}>
-              Monitor your skin health metrics and clinical insights.
-            </p>
-          </div>
+          <div></div>
           <button
             className={styles.generateBtn}
             onClick={handleGenerateReport}

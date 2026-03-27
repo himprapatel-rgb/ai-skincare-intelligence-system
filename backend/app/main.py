@@ -220,8 +220,9 @@ async def handle_db_operational_error(request: Request, exc: OperationalError) -
     )
 
 def _add_missing_columns(eng) -> None:
-    """Add Sprint 2+ columns to existing production tables. Safe to run repeatedly."""
+    """Add ALL Sprint 1-5 columns to existing production tables. Safe to run repeatedly."""
     _cols = [
+        # Users (Sprint 1-2)
         ("users", "refresh_token", "VARCHAR(512)"),
         ("users", "failed_login_count", "INTEGER DEFAULT 0"),
         ("users", "locked_until", "TIMESTAMPTZ"),
@@ -230,6 +231,30 @@ def _add_missing_columns(eng) -> None:
         ("users", "language", "VARCHAR(10) DEFAULT 'en'"),
         ("users", "password_reset_token", "VARCHAR(255)"),
         ("users", "password_reset_expires_at", "TIMESTAMPTZ"),
+        # Scan sessions (Sprint 1)
+        ("scan_sessions", "device_type", "VARCHAR(50)"),
+        ("scan_sessions", "client_version", "VARCHAR(50)"),
+        ("scan_sessions", "processing_duration_ms", "INTEGER"),
+        ("scan_sessions", "storage_key", "VARCHAR(500)"),
+        # Shelf products (Sprint 1)
+        ("shelf_products", "opened_date", "TIMESTAMPTZ"),
+        ("shelf_products", "pao_months", "INTEGER"),
+        # Notifications (Sprint 1)
+        ("notifications", "priority", "VARCHAR(20) DEFAULT 'normal'"),
+        ("notifications", "category", "VARCHAR(50)"),
+        # User profiles (Sprint 1)
+        ("user_profiles", "fitzpatrick_type", "VARCHAR(10)"),
+        ("user_profiles", "pregnancy_status", "VARCHAR(20)"),
+        ("user_profiles", "avatar_storage_key", "VARCHAR(500)"),
+        # Products (Sprint 1)
+        ("products", "description", "TEXT"),
+        ("products", "ingredients_text", "TEXT"),
+        ("products", "country_of_origin", "VARCHAR(100)"),
+        ("products", "discontinued", "BOOLEAN DEFAULT FALSE"),
+        # Content / Blog (Sprint 1)
+        ("blogs", "category", "VARCHAR(100)"),
+        ("blogs", "tags", "JSONB"),
+        ("blogs", "view_count", "INTEGER DEFAULT 0"),
     ]
     try:
         with eng.connect() as conn:
@@ -237,9 +262,9 @@ def _add_missing_columns(eng) -> None:
                 try:
                     conn.execute(text(f"ALTER TABLE {table} ADD COLUMN IF NOT EXISTS {col} {col_type}"))
                 except Exception:
-                    pass  # Column may already exist or DB doesn't support IF NOT EXISTS
+                    pass
             conn.commit()
-        logger.info("✅ Missing columns check complete")
+        logger.info("✅ Missing columns check complete (%d columns checked)", len(_cols))
     except Exception as exc:
         logger.warning("Column migration skipped: %s", exc)
 

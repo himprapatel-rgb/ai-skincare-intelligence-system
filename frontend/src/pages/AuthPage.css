@@ -49,7 +49,7 @@
 .auth-features {
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 20px;
   margin-top: 20px;
 }
 
@@ -57,7 +57,7 @@
   display: flex;
   align-items: center;
   gap: 20px;
-  padding: 20px;
+  padding: 24px;
   background: rgba(255, 255, 255, 0.1);
   border-radius: var(--border-radius-xl);
   backdrop-filter: blur(10px);
@@ -116,14 +116,14 @@
 
 .auth-container {
   width: 100%;
-  max-width: 420px;
+  max-width: 440px;
 }
 
 .auth-card {
   background: var(--bg-white);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   padding: var(--spacing-2xl);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-lg);
   border: 1px solid var(--border);
 }
 
@@ -136,7 +136,7 @@
   font-size: var(--font-size-3xl);
   font-weight: 600;
   color: var(--text-primary);
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
   line-height: var(--line-height-snug);
 }
 
@@ -156,7 +156,7 @@
 .form-group {
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px;
+  margin-bottom: var(--spacing-lg);
   gap: 6px;
 }
 
@@ -168,9 +168,9 @@
 
 .auth-form .form-group input {
   min-height: 44px;
-  padding: var(--spacing-sm) var(--spacing-md);
+  padding: 12px var(--spacing-md);
   border: 1px solid var(--border);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-lg, 12px);
   font-size: var(--font-size-base);
   transition: all 0.2s;
   background: var(--bg-tertiary);
@@ -371,7 +371,7 @@
   font-weight: 600; /* Brand guideline */
   cursor: pointer;
   transition: all 0.2s;
-  margin-top: 8px;
+  margin-top: var(--spacing-md);
   box-shadow: 0 4px 12px rgba(31, 111, 235, 0.2);
 }
 
@@ -520,7 +520,7 @@
   }
 
   .auth-card {
-    padding: 28px 20px;
+    padding: 24px;
   }
 
   .auth-header h2 {

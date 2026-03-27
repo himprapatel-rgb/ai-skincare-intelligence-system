@@ -58,7 +58,7 @@
 .section-header {
   display: block;
   text-align: center;
-  max-width: 1200px;
+  max-width: 1120px;
   margin: 0 auto var(--section-header-gap);
   padding: 0 var(--section-padding-x);
 }
@@ -103,7 +103,7 @@
   grid-template-columns: 1.1fr 0.9fr;
   align-items: center;
   gap: 48px;
-  max-width: 1200px;
+  max-width: 1120px;
   margin: 0 auto;
   padding: 48px var(--section-padding-x) 40px;
   min-height: auto;
@@ -394,7 +394,7 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
-  max-width: 1100px;
+  max-width: 1120px;
   margin: 0 auto;
 }
 
@@ -403,7 +403,7 @@
   flex-direction: column;
   align-items: center;
   gap: 12px;
-  padding: 24px 16px;
+  padding: 24px;
   background: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -501,7 +501,7 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: var(--spacing-xl);
-  max-width: 900px;
+  max-width: 1120px;
   margin: 0 auto;
   text-align: center;
 }
@@ -536,8 +536,8 @@
 .results-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
-  max-width: 1200px;
+  gap: 20px;
+  max-width: 1120px;
   margin: 0 auto;
 }
 
@@ -546,7 +546,7 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 32px 24px;
+  padding: 24px;
   background: rgba(255, 255, 255, 0.8);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-xl);
@@ -598,8 +598,8 @@
 .steps-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 28px;
-  max-width: 1100px;
+  gap: 20px;
+  max-width: 1120px;
   margin: 0 auto;
 }
 
@@ -609,7 +609,7 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 32px 24px;
+  padding: 24px;
   background: var(--bg-primary);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-xl, 16px);
@@ -717,7 +717,7 @@
   grid-template-columns: 1fr 1fr;
   gap: 48px;
   align-items: center;
-  max-width: 1100px;
+  max-width: 1120px;
   margin: 0 auto;
 }
 
@@ -860,8 +860,8 @@
 .testimonials-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  max-width: 1100px;
+  gap: 20px;
+  max-width: 1120px;
   margin: 0 auto;
 }
 
@@ -870,7 +870,7 @@
   background: var(--bg-primary);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-xl);
-  padding: 28px;
+  padding: 24px;
   overflow: hidden;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }

@@ -87,9 +87,9 @@
   --accent-rgb: 79, 138, 217;
 
   /* Section spacing — tightened to eliminate excessive whitespace */
-  --section-padding-y: 36px;
+  --section-padding-y: 56px;
   --section-padding-x: var(--spacing-lg, 24px);
-  --section-header-gap: 24px;
+  --section-header-gap: 32px;
 
   /* Background Colors */
   --bg-primary: var(--white);
@@ -245,7 +245,7 @@
   --font-lg: clamp(16px, 4vw, 20px);
   --font-xl: clamp(20px, 5vw, 28px);
   /* Card spacing (audit standardization) */
-  --card-padding: 16px;
+  --card-padding: 24px;
   --card-radius: 16px;
   --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   --card-margin-bottom: 16px;

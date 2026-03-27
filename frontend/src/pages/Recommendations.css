@@ -537,7 +537,7 @@
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius-xl);
   box-shadow: var(--shadow-md);
-  padding: 32px;
+  padding: 24px;
   text-align: center;
 }
 

@@ -351,33 +351,32 @@ const Recommendations: React.FC = () => {
     <div className="recommendations-page app-page">
       <header className="app-header-card recommendations-header">
         <div className="recommendations-header-text">
-          <h1>
-            Product <span className="gradient-text">Recommendations</span>
-          </h1>
+          <h1>Product Recommendations</h1>
           <p className="app-header-subtitle">
             {error && products.length > 0
               ? 'Sample picks — sign in for personalized recommendations.'
               : 'Personalized picks based on your latest skin analysis.'}
           </p>
         </div>
-        <Link to="/dashboard" className="btn-secondary back-button recommendations-back">
-          <IconArrowLeft size={18} strokeWidth={2} />
-          Back to Dashboard
-        </Link>
       </header>
       <div className="recommendations-container app-page-content">
         <div className="recommendations-geo-banner" role="region" aria-label="Product region and ingredients">
-          <p className="recommendations-geo-ingredients">
-            <span className="recommendations-geo-label">🧪 Finding products with:</span>
-            <span className="recommendations-geo-chips">
-              <span className="recommendations-geo-chip">💧 Hyaluronic</span>
-              <span className="recommendations-geo-chip">🍊 Vit C</span>
-              <span className="recommendations-geo-chip">☕ Caffeine</span>
-            </span>
-          </p>
+          <div className="recommendations-geo-ingredients">
+            <span className="recommendations-geo-label">Finding products with:</span>
+            <ul className="recommendations-geo-chips" role="list" aria-label="Target ingredients">
+              <li className="recommendations-geo-chip">Hyaluronic Acid</li>
+              <li className="recommendations-geo-chip">Vitamin C</li>
+              <li className="recommendations-geo-chip">Caffeine</li>
+            </ul>
+          </div>
           <p className="recommendations-geo-region">
-            📍 Showing: Ireland prices from Amazon.co.uk
+            Showing: Ireland prices from Amazon.co.uk
           </p>
+        </div>
+        <div className="recommendations-result-count">
+          {filteredProducts.length > 0
+            ? `${filteredProducts.length} product${filteredProducts.length !== 1 ? 's' : ''}`
+            : `${displayProducts.length} product${displayProducts.length !== 1 ? 's' : ''}`}
         </div>
         <div className="recommendations-layout">
           <div className={`recommendations-filters ${hasFilters ? 'has-active-filters' : ''}`}>
@@ -385,8 +384,9 @@ const Recommendations: React.FC = () => {
               <h2>Filters</h2>
               <button
                 onClick={() => setFilters({ category: 'all', priceRange: 'all', concern: 'all' })}
-                className="filters-reset"
+                className={`filters-reset ${hasFilters ? 'filters-reset--active' : ''}`}
                 type="button"
+                aria-disabled={!hasFilters}
               >
                 Clear all
               </button>
@@ -463,12 +463,16 @@ const Recommendations: React.FC = () => {
                 </div>
               ) : (
                 displayProducts.map((product, index) => (
-                  <div
+                  <article
                     key={product.id}
                     className={`product-card ${index === 0 ? 'product-card-best-match' : ''}`}
+                    aria-label={`${product.name} by ${product.brand}`}
                   >
                     {index === 0 && (
-                      <span className="product-card-best-badge">🏆 Best match</span>
+                      <span className="product-card-best-badge" role="status" aria-label="Best match">Best match</span>
+                    )}
+                    {index > 0 && product.rating && (
+                      <span className="product-card-match-badge">{Math.round((product.rating / 5) * 100)}% match</span>
                     )}
                     <div className="product-media">
                       <LazyImage
@@ -484,6 +488,7 @@ const Recommendations: React.FC = () => {
                         className={`favorite-button ${favorites.has(product.id) ? 'active' : ''}`}
                         title={favorites.has(product.id) ? 'Remove from favorites' : 'Add to favorites'}
                         aria-label={`${favorites.has(product.id) ? 'Remove' : 'Add'} ${product.name} ${favorites.has(product.id) ? 'from' : 'to'} favorites`}
+                        aria-pressed={favorites.has(product.id)}
                         type="button"
                       >
                         <IconHeart
@@ -498,8 +503,9 @@ const Recommendations: React.FC = () => {
                   <div className="product-meta">
                     <span className="product-category">{product.category}</span>
                     <div className="product-rating">
-                      <IconStar size={16} strokeWidth={2} />
+                      <IconStar size={16} strokeWidth={2} fill="#f59e0b" stroke="#f59e0b" />
                       <span>{product.rating ?? 'N/A'}</span>
+                      <span className="rating-max">/5</span>
                     </div>
                   </div>
 
@@ -507,11 +513,10 @@ const Recommendations: React.FC = () => {
                   <p className="product-brand">{product.brand}</p>
 
                   <div className="product-concerns">
-                    <p>Key concerns</p>
                     <div className="concern-tags">
                       {product.concerns.length > 0 ? (
-                        product.concerns.slice(0, 3).map((concern, index) => (
-                          <span key={index} className="concern-tag">
+                        product.concerns.slice(0, 3).map((concern, idx) => (
+                          <span key={idx} className="concern-tag">
                             {concern}
                           </span>
                         ))
@@ -568,7 +573,7 @@ const Recommendations: React.FC = () => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </article>
                 ))
               )}
             </div>

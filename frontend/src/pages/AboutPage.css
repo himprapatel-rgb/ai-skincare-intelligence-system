@@ -9,11 +9,11 @@
 .about-page .app-page-content.about-container {
   padding-top: 20px;
   padding-bottom: 80px;
-  max-width: 1200px;
+  max-width: 1120px;
 }
 
 .about-section {
-  max-width: 1200px;
+  max-width: 1120px;
   margin: 0 auto;
   padding: var(--spacing-2xl, 60px) var(--spacing-lg, 24px);
   margin-bottom: var(--spacing-2xl, 48px);

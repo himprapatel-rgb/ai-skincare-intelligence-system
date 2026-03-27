@@ -1569,3 +1569,7 @@ body[data-page="chat"] .app-main {
   padding: 0;
   min-height: 0;
 }
+
+body[data-page="chat"] .page-transition-wrap {
+  height: 100%;
+}

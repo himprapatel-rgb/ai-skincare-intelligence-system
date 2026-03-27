@@ -222,7 +222,7 @@
 
 .chart-controls select {
   border: 1px solid var(--border);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   padding: 8px 10px;
   font-size: 0.875rem;
   background: var(--bg-white);
@@ -352,7 +352,7 @@
   flex-direction: column;
   padding: 16px;
   background: var(--bg-light);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   min-width: 0;
 }
 
@@ -432,7 +432,7 @@
 
 .comparison-controls select {
   border: 1px solid var(--border);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   padding: 8px 10px;
   font-size: 0.875rem;
   background: var(--bg-white);

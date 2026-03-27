@@ -45,7 +45,7 @@
   min-width: 240px;
   min-height: 44px;
   padding: var(--spacing-md);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   border: 1px solid var(--border);
 }
 

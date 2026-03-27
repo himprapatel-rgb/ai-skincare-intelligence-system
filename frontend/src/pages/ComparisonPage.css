@@ -63,7 +63,7 @@
   width: 100%;
   min-height: 44px;
   padding: var(--spacing-md) var(--spacing-md);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   border: 1px solid var(--border);
   background: var(--bg-light);
   color: var(--text-dark);
@@ -159,7 +159,7 @@
 .btn-icon-small {
   background: transparent;
   border: 1px solid var(--border);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   padding: 8px;
   cursor: pointer;
   color: var(--text-gray);

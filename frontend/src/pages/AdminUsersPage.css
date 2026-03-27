@@ -23,7 +23,7 @@
   flex: 1;
   min-width: 240px;
   padding: 10px 14px;
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   border: 1px solid var(--border-color);
 }
 

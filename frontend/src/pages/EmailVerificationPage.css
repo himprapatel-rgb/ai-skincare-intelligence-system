@@ -37,7 +37,7 @@
 }
 
 .email-verification-card input {
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   border: 1px solid var(--border-color);
   padding: var(--spacing-md);
   min-height: 44px;
@@ -46,7 +46,7 @@
 
 .status-message {
   padding: var(--spacing-md);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   font-size: var(--font-size-base);
 }
 

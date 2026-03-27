@@ -21,7 +21,7 @@
 .admin-blogs-page .admin-form-card {
   background: var(--bg-white);
   border: 1px solid var(--border);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   padding: var(--spacing-lg);
   margin-bottom: var(--spacing-xl);
   box-shadow: var(--shadow-sm);
@@ -43,7 +43,7 @@
   width: 100%;
   padding: 10px 12px;
   border: 1px solid var(--border);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   font-size: 1rem;
 }
 
@@ -77,7 +77,7 @@
   padding: 16px 20px;
   background: var(--bg-white);
   border: 1px solid var(--border);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   box-shadow: var(--shadow-sm);
 }
 
@@ -103,7 +103,7 @@
   background: transparent;
   color: var(--text-gray);
   cursor: pointer;
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
 }
 
 .admin-blogs-page .btn-icon:hover {

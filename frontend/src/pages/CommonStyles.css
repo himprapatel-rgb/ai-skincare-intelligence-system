@@ -55,7 +55,7 @@
   background-color: var(--danger-light);
   color: var(--danger);
   padding: var(--spacing-md);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   margin: var(--spacing-md) 0;
 }
 
@@ -63,7 +63,7 @@
   background-color: var(--success-light);
   color: var(--success);
   padding: var(--spacing-md);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   margin: var(--spacing-md) 0;
 }
 
@@ -73,7 +73,7 @@
   padding: var(--spacing-md) var(--spacing-lg);
   min-height: 48px;
   border: none;
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   font-size: var(--font-size-base);
   font-weight: 600;
   cursor: pointer;
@@ -106,7 +106,7 @@
   padding: var(--spacing-md) var(--spacing-lg);
   min-height: 48px;
   border: 1px solid var(--border);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   font-size: var(--font-size-base);
   font-weight: 600;
   cursor: pointer;
@@ -127,7 +127,7 @@
   padding: var(--spacing-md) var(--spacing-lg);
   min-height: 48px;
   border: 2px solid var(--primary);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   font-size: var(--font-size-base);
   font-weight: 600;
   cursor: pointer;
@@ -148,7 +148,7 @@
   padding: var(--spacing-sm) var(--spacing-md);
   min-height: 44px;
   border: none;
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   font-size: var(--font-size-base);
   cursor: pointer;
   display: inline-flex;
@@ -247,7 +247,7 @@
   min-height: 44px;
   padding: var(--spacing-sm) var(--spacing-md);
   border: 1px solid var(--border);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   font-size: var(--font-size-base);
 }
 

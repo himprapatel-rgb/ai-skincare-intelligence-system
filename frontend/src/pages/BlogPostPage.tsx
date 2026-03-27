@@ -74,45 +74,29 @@ const BlogPostPage: React.FC = () => {
 
   return (
     <div className="blog-page app-page">
-      <div className="app-page-content" style={{ maxWidth: 720, margin: '0 auto', padding: '40px 24px' }}>
-        <Link to="/blog" style={{ fontSize: '0.85rem', color: 'var(--primary)', marginBottom: 24, display: 'inline-block' }}>
+      <div className="app-page-content blog-post-wrapper">
+        <Link to="/blog" className="blog-post-back">
           &larr; Back to Blog
         </Link>
 
         {post.category && (
-          <span style={{
-            display: 'inline-block', fontSize: '0.7rem', fontWeight: 600,
-            textTransform: 'uppercase', letterSpacing: '0.08em',
-            color: 'var(--primary)', background: 'rgba(var(--primary-rgb), 0.06)',
-            padding: '3px 10px', borderRadius: 4, marginBottom: 12,
-          }}>
-            {post.category}
-          </span>
+          <span className="blog-post-category">{post.category}</span>
         )}
 
-        <h1 style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 800, lineHeight: 1.2, margin: '0 0 12px', color: 'var(--text-primary)' }}>
-          {post.title}
-        </h1>
+        <h1 className="blog-post-title">{post.title}</h1>
 
-        <div style={{ display: 'flex', gap: 16, fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: 32 }}>
+        <div className="blog-post-meta">
           {post.author && <span>By {post.author}</span>}
           {post.created_at && <span>{new Date(post.created_at).toLocaleDateString('en', { month: 'long', day: 'numeric', year: 'numeric' })}</span>}
           {post.read_time && <span>{post.read_time}</span>}
         </div>
 
-        <div
-          className="blog-post-content"
-          style={{ fontSize: '1rem', lineHeight: 1.75, color: 'var(--text-secondary)' }}
-          dangerouslySetInnerHTML={{ __html: post.content }}
-        />
+        <div className="blog-post-content" dangerouslySetInnerHTML={{ __html: post.content }} />
 
         {post.tags && post.tags.length > 0 && (
-          <div style={{ marginTop: 32, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          <div className="blog-post-tags">
             {post.tags.map(tag => (
-              <span key={tag} style={{
-                fontSize: '0.7rem', fontWeight: 600, padding: '3px 10px',
-                background: 'var(--bg-tertiary)', borderRadius: 12, color: 'var(--text-muted)',
-              }}>
+              <span key={tag} className="blog-post-tag">
                 {tag}
               </span>
             ))}

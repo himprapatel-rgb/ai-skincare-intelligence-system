@@ -1038,3 +1038,10 @@
 [data-theme="dark"] .myshelf-fab {
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
 }
+
+/* ── Ingredient Conflicts Banner ── */
+.myshelf-conflicts { background: var(--danger-50, #fef2f2); border: 1px solid var(--danger-200, #fecaca); border-radius: var(--radius-lg, 12px); padding: var(--spacing-md, 16px) var(--spacing-lg, 20px); margin-bottom: var(--spacing-md, 16px); }
+.myshelf-conflicts-title { font-size: var(--font-size-sm, 0.9rem); font-weight: 700; color: var(--danger-800, #991b1b); margin: 0 0 var(--spacing-xs, 8px); display: flex; align-items: center; gap: 6px; }
+.myshelf-conflict-item { font-size: var(--font-size-sm, 0.825rem); color: var(--danger-800, #7f1d1d); margin-bottom: 6px; }
+.myshelf-conflicts-dismiss { font-size: var(--font-size-xs, 0.75rem); color: var(--danger-800, #991b1b); background: none; border: none; cursor: pointer; margin-top: 4px; }
+.myshelf-conflicts-dismiss:hover { text-decoration: underline; }

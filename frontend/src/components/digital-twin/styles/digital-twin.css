@@ -459,8 +459,19 @@
 
 .dt-after-layer {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  height: 100%;
   overflow: hidden;
+  border-right: 2px solid white;
+}
+
+.dt-after-layer img {
+  display: block;
+  width: min(320px, calc(100vw - 48px));
+  height: 100%;
+  object-fit: cover;
+  max-width: none;
 }
 
 .dt-before-after-meta {
@@ -485,9 +496,20 @@
 
 .dt-improvement {
   text-align: center;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 700;
-  color: var(--primary);
+  padding: 6px 16px;
+  border-radius: var(--radius-full, 999px);
+  display: inline-block;
+  margin: 0 auto;
+}
+.dt-improvement--positive {
+  color: #16a34a;
+  background: rgba(34, 197, 94, 0.08);
+}
+.dt-improvement--negative {
+  color: #dc2626;
+  background: rgba(239, 68, 68, 0.08);
 }
 
 /* Help Button (subtle icon) */

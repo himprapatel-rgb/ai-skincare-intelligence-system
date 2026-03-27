@@ -1,45 +1,43 @@
+/* ===== Suggestions Container ===== */
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-3, 12px);
-  padding: var(--space-6, 24px) var(--space-4, 16px);
+  gap: var(--space-4, 16px);
+  padding: var(--space-6, 24px) var(--space-4, 16px) 0;
+  width: 100%;
 }
 
 .label {
   font-size: var(--font-size-sm, 0.875rem);
   color: var(--text-secondary, #475569);
   margin: 0;
+  font-weight: 500;
 }
 
+/* ===== Chips Grid ===== */
 .chips {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: var(--space-2, 8px);
-  max-width: 600px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3, 12px);
+  max-width: 520px;
+  width: 100%;
 }
 
 @media (max-width: 768px) {
   .chips {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    justify-content: flex-start;
+    grid-template-columns: 1fr;
     max-width: 100%;
-    padding-bottom: var(--space-2, 8px);
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-  .chips::-webkit-scrollbar {
-    display: none;
+    gap: var(--space-2, 8px);
   }
 }
 
+/* ===== Individual Chip ===== */
 .chip {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  padding: var(--space-2, 8px) var(--space-4, 16px);
-  border-radius: var(--radius-full, 9999px);
+  padding: var(--space-3, 12px) var(--space-4, 16px);
+  border-radius: var(--radius-lg, 12px);
   border: 1px solid var(--border-color, #e2e8f0);
   background: var(--bg-primary, #ffffff);
   color: var(--text-primary, #0f172a);
@@ -47,17 +45,22 @@
   font-family: var(--font-family, 'Inter', sans-serif);
   cursor: pointer;
   white-space: nowrap;
-  transition: all var(--transition-fast, 150ms);
+  transition: all 200ms;
+  text-align: left;
+  line-height: 1.4;
 }
 
 .chip:hover {
   border-color: var(--color-primary, #1f6feb);
   color: var(--color-primary, #1f6feb);
   background: var(--color-primary-light, #e8f0fd);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(31, 111, 235, 0.1);
 }
 
 .chip:active {
-  transform: scale(0.97);
+  transform: translateY(0);
+  box-shadow: none;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -69,10 +72,7 @@
   .chip:hover {
     background: var(--color-gray-700, #334155);
     border-color: var(--color-primary, #1f6feb);
-    color: var(--color-primary, #1f6feb);
-  }
-  .label {
-    color: var(--color-gray-400, #94a3b8);
+    color: var(--color-primary-light, #93c5fd);
   }
 }
 
@@ -85,9 +85,5 @@
 :global(.dark-mode) .chip:hover {
   background: var(--color-gray-700, #334155);
   border-color: var(--color-primary, #1f6feb);
-  color: var(--color-primary, #1f6feb);
-}
-
-:global(.dark-mode) .label {
-  color: var(--color-gray-400, #94a3b8);
+  color: var(--color-primary-light, #93c5fd);
 }

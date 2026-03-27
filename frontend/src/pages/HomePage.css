@@ -57,7 +57,9 @@
 /* Shared section headers */
 .section-header {
   text-align: center;
-  margin-bottom: var(--section-header-gap);
+  max-width: 1200px;
+  margin: 0 auto var(--section-header-gap);
+  padding: 0 var(--section-padding-x);
 }
 
 .section-header h2 {

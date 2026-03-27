@@ -207,9 +207,11 @@ const displayName = nameParts.length > 1
             <div className="app-nav-links">
               <Link className={`app-nav-link${location.pathname === '/' ? ' active' : ''}`} to="/" aria-current={location.pathname === '/' ? 'page' : undefined} onMouseEnter={() => { void import('../pages/HomePage'); }}>Home</Link>
               <Link className={`app-nav-link${location.pathname.startsWith('/scan') ? ' active' : ''}`} to="/scan" title="Scan face or product" aria-current={location.pathname.startsWith('/scan') ? 'page' : undefined} onMouseEnter={() => void import('../pages/ScanPage')}>Scan</Link>
-              <Link className={`app-nav-link${location.pathname.startsWith('/dashboard') ? ' active' : ''}`} to="/dashboard" title="View your dashboard and insights" aria-current={location.pathname.startsWith('/dashboard') ? 'page' : undefined} onMouseEnter={() => void import('../pages/DashboardPage')}>Dashboard</Link>
               {isAuthenticated && (
-                <Link className={`app-nav-link${location.pathname.startsWith('/chat') ? ' active' : ''}`} to="/chat" title="Consult our Skin Expert" aria-current={location.pathname.startsWith('/chat') ? 'page' : undefined} onMouseEnter={() => { void import('../pages/AIChatPage'); }}>Skin Expert</Link>
+                <>
+                  <Link className={`app-nav-link${location.pathname.startsWith('/dashboard') ? ' active' : ''}`} to="/dashboard" title="View your dashboard and insights" aria-current={location.pathname.startsWith('/dashboard') ? 'page' : undefined} onMouseEnter={() => void import('../pages/DashboardPage')}>Dashboard</Link>
+                  <Link className={`app-nav-link${location.pathname.startsWith('/chat') ? ' active' : ''}`} to="/chat" title="Consult our Skin Expert" aria-current={location.pathname.startsWith('/chat') ? 'page' : undefined} onMouseEnter={() => { void import('../pages/AIChatPage'); }}>Skin Expert</Link>
+                </>
               )}
               <div className="app-nav-dropdown">
                 <button type="button" className={`app-nav-link app-nav-dropdown-trigger${['/clinical','/search','/progress','/skin-goals','/skin-quiz','/history'].some(p => location.pathname.startsWith(p)) ? ' active' : ''}`}>

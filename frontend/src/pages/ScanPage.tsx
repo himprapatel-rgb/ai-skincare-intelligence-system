@@ -712,7 +712,8 @@ export default function ScanPage() {
           setResult(scanResult);
           setProgress(100);
           setScanStep('complete');
-          
+          setStatusMessage("Analysis complete — preparing your report...");
+
           // Navigate to results page if analysis ID is available
           if (scanResult.analysis_id || scanResult.session_id) {
             setTimeout(() => {

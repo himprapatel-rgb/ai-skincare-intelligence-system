@@ -13,6 +13,7 @@ import {
   deleteNotification as apiDeleteNotification,
   type NotificationRecord,
 } from '../services/notificationService';
+import { useWebSocket, type WebSocketMessage } from '../hooks/useWebSocket';
 
 interface NotificationContextValue {
   notifications: NotificationRecord[];
@@ -58,6 +59,18 @@ export function NotificationProvider({ children }: Props) {
       const res = await getNotifications({ limit: 50 });
       return res;
     },
+    enabled: !!isAuthenticated && !!user,
+  });
+
+  // Real-time: when WebSocket delivers a notification event, refetch
+  const handleWsMessage = useCallback((msg: WebSocketMessage) => {
+    if (msg.type === 'notification' || msg.type === 'new_notification') {
+      queryClient.invalidateQueries({ queryKey: notifQueryKey });
+    }
+  }, [queryClient, notifQueryKey]);
+
+  useWebSocket({
+    onMessage: handleWsMessage,
     enabled: !!isAuthenticated && !!user,
   });
 

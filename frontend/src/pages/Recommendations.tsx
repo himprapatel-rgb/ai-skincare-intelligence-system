@@ -186,8 +186,12 @@ const Recommendations: React.FC = () => {
       setProducts(items.length > 0 ? items : fallbackProducts);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
-      setProducts(fallbackProducts);
-      toast.info('Showing sample recommendations. Sign in for personalized picks.');
+      const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
+      if (!token) {
+        setProducts([]);
+      } else {
+        setProducts(fallbackProducts);
+      }
     } finally {
       setLoading(false);
     }
@@ -308,6 +312,7 @@ const Recommendations: React.FC = () => {
   }
 
   if (error && products.length === 0) {
+    const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
     return (
       <div className="recommendations-page app-page">
         <div className="recommendations-container app-page-content">
@@ -316,15 +321,25 @@ const Recommendations: React.FC = () => {
               <div className="error-icon">
                 <IconAlertTriangle size={48} strokeWidth={2} />
               </div>
-              <h2>Error loading recommendations</h2>
-              <p>{error}</p>
-              <button
-                onClick={() => { setError(null); fetchRecommendations(); }}
-                className="btn-primary"
-                type="button"
-              >
-                Try Again
-              </button>
+              {!token ? (
+                <>
+                  <h2>Sign in for personalized recommendations</h2>
+                  <p>Get product picks tailored to your skin analysis results.</p>
+                  <Link to="/auth" className="btn-primary">Sign In</Link>
+                </>
+              ) : (
+                <>
+                  <h2>Error loading recommendations</h2>
+                  <p>{error}</p>
+                  <button
+                    onClick={() => { setError(null); fetchRecommendations(); }}
+                    className="btn-primary"
+                    type="button"
+                  >
+                    Try Again
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </div>

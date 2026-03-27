@@ -267,7 +267,7 @@ const AIChatPage: React.FC = () => {
           {isLoadingSessions || isLoadingMessages ? (
             <div className={styles.centerState}>
               <div className={styles.loadingSpinner} />
-              <p>Loading...</p>
+              <p>Loading conversations...</p>
             </div>
           ) : !hasMessages ? (
             <div className={styles.emptyState}>

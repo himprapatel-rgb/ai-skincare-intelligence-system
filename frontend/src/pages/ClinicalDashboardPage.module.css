@@ -155,7 +155,15 @@
   font-weight: var(--font-weight-semibold, 600);
 }
 
-/* ===== Chart Placeholder ===== */
+/* ===== Chart Area ===== */
+.chartArea {
+  min-height: 280px;
+  border-radius: var(--border-radius-lg, 12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .chartPlaceholder {
   min-height: 220px;
   border: 2px dashed var(--border-color, #e4e9ef);

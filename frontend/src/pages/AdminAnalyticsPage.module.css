@@ -203,6 +203,18 @@
   font-size: var(--font-size-sm, 0.875rem);
 }
 
+.skeleton {
+  background: linear-gradient(90deg, var(--bg-secondary, #f6f8fb) 25%, var(--bg-tertiary, #eef2f6) 50%, var(--bg-secondary, #f6f8fb) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
 .table {
   width: 100%;
   border-collapse: collapse;

@@ -225,12 +225,16 @@ const ProfileSettingsPage: React.FC = () => {
       if (photoUrl && !photoUrl.startsWith('http')) {
         photoUrl = getUploadFullUrl(photoUrl);
       }
-      const updates = {
+      const updates: Partial<typeof profile> = {
         name: fullName || user?.full_name || '',
         email: user?.email || '',
         profilePhoto: photoUrl,
-        phone: p.phone_number || ''
+        phone: p.phone_number || '',
       };
+      // Load skin profile fields if available
+      if (typeof p.skin_type === 'string' && p.skin_type) updates.skinType = p.skin_type;
+      if (Array.isArray(p.concerns) && p.concerns.length > 0) updates.skinConcerns = p.concerns as string[];
+      if (Array.isArray(p.allergies) && p.allergies.length > 0) updates.allergies = p.allergies as string[];
       setProfile((prev) => {
         const next = { ...prev, ...updates };
         initialProfileRef.current = next;
@@ -418,6 +422,9 @@ const ProfileSettingsPage: React.FC = () => {
         last_name,
         phone_number: profile.phone || undefined,
         profile_photo_url,
+        skin_type: profile.skinType || undefined,
+        concerns: profile.skinConcerns?.length > 0 ? profile.skinConcerns : undefined,
+        allergies: profile.allergies?.length > 0 ? profile.allergies : undefined,
       });
       setSuccess(true);
       toast.success('Profile updated successfully.');

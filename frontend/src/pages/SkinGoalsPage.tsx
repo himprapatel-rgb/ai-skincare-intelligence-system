@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   IconTarget, IconSparkles, IconDroplet, IconStar,
@@ -35,19 +35,68 @@ const iconMap: Record<string, React.ReactNode> = {
  * Set and prioritize personal skincare goals for personalized recommendations.
  * Card-based layout with progress indicators and status badges.
  */
+const defaultGoals: SkinGoal[] = [
+  { id: '1', name: 'Clear Acne', iconKey: 'acne', description: 'Reduce breakouts and blemishes', selected: false, priority: 0 },
+  { id: '2', name: 'Anti-Aging', iconKey: 'anti-aging', description: 'Reduce fine lines and wrinkles', selected: false, priority: 0 },
+  { id: '3', name: 'Hydration', iconKey: 'hydration', description: 'Improve skin moisture levels', selected: false, priority: 0 },
+  { id: '4', name: 'Even Skin Tone', iconKey: 'even-tone', description: 'Reduce dark spots and hyperpigmentation', selected: false, priority: 0 },
+  { id: '5', name: 'Oil Control', iconKey: 'oil-control', description: 'Manage excess sebum production', selected: false, priority: 0 },
+  { id: '6', name: 'Sensitive Skin Care', iconKey: 'sensitive', description: 'Gentle care for reactive skin', selected: false, priority: 0 },
+  { id: '7', name: 'Sun Protection', iconKey: 'sun-protection', description: 'Protect against UV damage', selected: false, priority: 0 },
+  { id: '8', name: 'Pore Minimizing', iconKey: 'pores', description: 'Reduce appearance of pores', selected: false, priority: 0 },
+];
+
+/** Map backend goal_type to our iconKey */
+const goalTypeToIconKey: Record<string, string> = {
+  acne_control: 'acne', acne: 'acne', clear_acne: 'acne',
+  anti_aging: 'anti-aging',
+  hydration: 'hydration',
+  even_tone: 'even-tone', dark_spots: 'even-tone', brightening: 'even-tone',
+  oil_control: 'oil-control',
+  sensitive: 'sensitive', sensitivity: 'sensitive',
+  sun_protection: 'sun-protection',
+  pore_minimizing: 'pores', pores: 'pores',
+};
+
 const SkinGoalsPage: React.FC = () => {
   const toast = useToast();
-  const [goals, setGoals] = useState<SkinGoal[]>([
-    { id: '1', name: 'Clear Acne', iconKey: 'acne', description: 'Reduce breakouts and blemishes', selected: true, priority: 1 },
-    { id: '2', name: 'Anti-Aging', iconKey: 'anti-aging', description: 'Reduce fine lines and wrinkles', selected: false, priority: 0 },
-    { id: '3', name: 'Hydration', iconKey: 'hydration', description: 'Improve skin moisture levels', selected: true, priority: 2 },
-    { id: '4', name: 'Even Skin Tone', iconKey: 'even-tone', description: 'Reduce dark spots and hyperpigmentation', selected: false, priority: 0 },
-    { id: '5', name: 'Oil Control', iconKey: 'oil-control', description: 'Manage excess sebum production', selected: false, priority: 0 },
-    { id: '6', name: 'Sensitive Skin Care', iconKey: 'sensitive', description: 'Gentle care for reactive skin', selected: false, priority: 0 },
-    { id: '7', name: 'Sun Protection', iconKey: 'sun-protection', description: 'Protect against UV damage', selected: true, priority: 3 },
-    { id: '8', name: 'Pore Minimizing', iconKey: 'pores', description: 'Reduce appearance of pores', selected: false, priority: 0 },
-  ]);
+  const [goals, setGoals] = useState<SkinGoal[]>(defaultGoals);
   const [isSaving, setIsSaving] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Load existing user goals on mount
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
+        if (!token) { setIsLoading(false); return; }
+        const res = await fetch(`${API_BASE_URL}/goals`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (!res.ok) { setIsLoading(false); return; }
+        const data = await res.json();
+        const savedGoals = data.goals || [];
+        if (cancelled || savedGoals.length === 0) { setIsLoading(false); return; }
+
+        // Merge saved goals into our default list
+        setGoals(prev => prev.map(g => {
+          const match = savedGoals.find((sg: { goal_type: string; title: string }) =>
+            goalTypeToIconKey[sg.goal_type] === g.iconKey || sg.title === g.name
+          );
+          if (match) {
+            return { ...g, selected: true, priority: match.priority || 1 };
+          }
+          return { ...g, selected: false, priority: 0 };
+        }));
+      } catch {
+        // Silently fail — user will see defaults
+      } finally {
+        if (!cancelled) setIsLoading(false);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, []);
 
   const toggleGoal = (id: string) => {
     setGoals(prev => prev.map(goal => {

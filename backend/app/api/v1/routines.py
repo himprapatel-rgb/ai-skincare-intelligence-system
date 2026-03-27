@@ -1,4 +1,5 @@
-from datetime import date, datetime, timedelta
+from datetime import date as date_type, datetime, timedelta
+from typing import Optional
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
@@ -23,7 +24,7 @@ class CheckinRequest(BaseModel):
     routine_type: str = Field(..., description="'morning' or 'evening'")
     steps_completed: int = Field(..., ge=0)
     steps_total: int = Field(..., ge=1)
-    date: date | None = None  # defaults to today
+    date: Optional[date_type] = None  # defaults to today
 
 
 class CheckinResponse(BaseModel):
@@ -166,7 +167,7 @@ def record_checkin(
     current_user: User = Depends(get_current_user),
 ):
     """Record a routine completion for today (or a specific date)."""
-    checkin_date = payload.date or date.today()
+    checkin_date = payload.date or date_type.today()
 
     # Upsert: update if already checked in for this type+date
     existing = (
@@ -219,7 +220,7 @@ def get_adherence(
     current_user: User = Depends(get_current_user),
 ):
     """Get routine adherence stats for the last N days."""
-    since = date.today() - timedelta(days=days)
+    since = date_type.today() - timedelta(days=days)
 
     checkins = (
         db.query(RoutineCheckin)
@@ -241,7 +242,7 @@ def get_adherence(
     current_streak = 0
     longest_streak = 0
     streak = 0
-    today = date.today()
+    today = date_type.today()
 
     # Check from today backwards
     for i in range(days):
@@ -297,7 +298,7 @@ def get_routine_streak(
 
     checked_dates = sorted({c.checked_in_at.date() for c in checkins}, reverse=True)
     streak = 0
-    today = date.today()
+    today = date_type.today()
 
     for i, d in enumerate(checked_dates):
         expected = today - timedelta(days=i)

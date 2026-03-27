@@ -5,7 +5,7 @@ import { usePageTitle } from "../hooks/usePageTitle";
 import { initScan, uploadScanImage, getScanStatus, getScanResult } from "../services/scanApi";
 import { cameraService } from "../services/cameraService";
 import type { ScanResultResponse } from "../services/scanApi";
-import { IconCamera, IconScan, IconUpload, IconSearch, IconCheckCircle, IconFileText, IconCheck, IconX } from '../components/Icons';
+import { IconCamera, IconScan, IconUpload, IconSearch, IconCheckCircle, IconFileText, IconCheck, IconX, IconPackage, IconShield } from '../components/Icons';
 import { ErrorCard } from '../components/ErrorCard';
 import type { FaceMesh3DHandle } from '../components/FaceMesh3D';
 import { validateAndCropFace } from '../utils/faceValidation';
@@ -767,9 +767,8 @@ export default function ScanPage() {
         <div className="scan-content">
           {/* Issue #12: Home/escape from deep screens */}
           <div className="scan-escape-row">
-            <Link to="/" className="scan-home-link">← Home</Link>
           </div>
-          {/* Unified Scan: Face vs Product toggle (Pro restructure) */}
+          {/* Unified Scan: Face vs Product toggle */}
           <div className="scan-type-toggle" role="tablist" aria-label="Scan type">
             <button
               type="button"
@@ -778,7 +777,7 @@ export default function ScanPage() {
               className={`scan-type-tab ${scanType === 'face' ? 'active' : ''}`}
               onClick={() => { setScanType('face'); setSearchParams((prev) => { const next = new URLSearchParams(prev); next.delete('mode'); return next; }); }}
             >
-              <span className="scan-type-emoji" aria-hidden>😊</span> Face
+              <IconScan size={16} strokeWidth={2} className="inline-icon" /> Face Scan
             </button>
             <button
               type="button"
@@ -787,7 +786,7 @@ export default function ScanPage() {
               className={`scan-type-tab ${scanType === 'product' ? 'active' : ''}`}
               onClick={() => { setScanType('product'); setSearchParams({ mode: 'product' }); }}
             >
-              <span className="scan-type-emoji" aria-hidden>📦</span> Product
+              <IconPackage size={16} strokeWidth={2} className="inline-icon" /> Product Scan
             </button>
           </div>
 
@@ -815,19 +814,19 @@ export default function ScanPage() {
             {/* Step titles and descriptions (Task 214) */}
             {scanStep === 'upload' && (
               <div className="scan-step-desc" role="status">
-                <h2 className="scan-step-title">Step 1: Add your photo</h2>
-                <p className="scan-step-text">Upload a clear selfie or use the camera. Face the light for best results.</p>
+                <p className="scan-step-title"><strong>Step 1:</strong> Add your photo</p>
+                <p className="scan-step-text">Upload a clear selfie or use the camera for best results.</p>
               </div>
             )}
             {scanStep === 'scanning' && (
               <div className="scan-step-desc" role="status">
-                <h2 className="scan-step-title">Step 2: Analyzing</h2>
+                <p className="scan-step-title"><strong>Step 2:</strong> Analyzing</p>
                 <p className="scan-step-text">Hold on — we&apos;re analyzing your skin. This usually takes 30–60 seconds.</p>
               </div>
             )}
             {scanStep === 'complete' && (
               <div className="scan-step-desc" role="status">
-                <h2 className="scan-step-title">Step 3: Results</h2>
+                <p className="scan-step-title"><strong>Step 3:</strong> Results</p>
                 <p className="scan-step-text">Your report is ready. Opening your results now.</p>
               </div>
             )}
@@ -851,14 +850,8 @@ export default function ScanPage() {
             </div>
           </div>
 
-          {/* Legal disclaimer (Tasks 245, 246) */}
-          <p className="scan-legal-disclaimer" role="note">
-            This tool is for informational use only and is not a medical device. It does not replace professional dermatological advice.
-          </p>
-
           {scanStep === 'upload' && (
             <div className="scan-upload-section">
-              <p className="scan-tip" role="note">Tip: Face the light for best results.</p>
               {/* Mode Toggle */}
               <div className="scan-mode-toggle">
                 <button
@@ -1081,6 +1074,15 @@ export default function ScanPage() {
                   </ul>
                 </div>
               )}
+
+              {/* Privacy + Disclaimer (below upload zone) */}
+              <div className="scan-privacy-note">
+                <IconShield size={14} strokeWidth={2} />
+                <span>Your photo is processed securely and not stored permanently. <Link to="/privacy">Learn more</Link></span>
+              </div>
+              <p className="scan-legal-disclaimer" role="note">
+                For informational use only — not a medical device or substitute for professional advice.
+              </p>
 
               {/* Action Buttons */}
               {file && (

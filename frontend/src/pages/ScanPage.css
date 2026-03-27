@@ -1,5 +1,33 @@
 /* Scan Page - Brand-Aligned Design */
 
+/* Hide newsletter on scan page */
+.scan-page ~ .app-footer .footer-newsletter { display: none; }
+
+/* Privacy note near upload zone */
+.scan-privacy-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 16px;
+  text-align: center;
+}
+.scan-privacy-note a {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+/* Step indicator inactive styling */
+.scan-step-indicator:not(.active):not(.completed) .scan-step-dot {
+  background: var(--bg-tertiary, #eef2f6);
+  color: var(--text-muted);
+}
+.scan-step-line:not(.filled) {
+  border-top-style: dashed;
+}
+
 /* Main page container */
 .scan-page {
   min-height: 100vh;

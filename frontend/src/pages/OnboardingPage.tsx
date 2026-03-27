@@ -224,12 +224,15 @@ const OnboardingPage: React.FC = () => {
                 </button>
               ))}
             </div>
+            <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textAlign: 'center', margin: '12px 0 0' }}>
+              Not sure? <a href="/skin-quiz" style={{ color: 'var(--primary)', fontWeight: 600 }}>Take our detailed Skin Type Quiz</a>
+            </p>
             <div className="button-group">
               <button type="button" onClick={handleBack} className="btn-secondary">Back</button>
               <button type="button" onClick={handleNext} className="btn-primary">Continue</button>
             </div>
             <button type="button" onClick={handleSkipToScan} className="btn-link onboarding-skip" disabled={loading}>
-              Not sure? Skip &amp; scan →
+              Skip &amp; scan →
             </button>
           </div>
         );

@@ -333,6 +333,63 @@ const ProgressTrackingPage: React.FC = () => {
         <div className="compare-section">
           <Link to="/comparison" className="btn btn-secondary">Compare analyses</Link>
         </div>
+
+        {/* Shareable Progress Report */}
+        <div style={{ marginTop: 24, padding: 24, background: 'var(--bg-secondary)', borderRadius: 16, border: '1px solid var(--border-color)', textAlign: 'center' }}>
+          <h3 style={{ fontSize: '1rem', fontWeight: 700, margin: '0 0 8px' }}>Share with your dermatologist</h3>
+          <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', margin: '0 0 16px' }}>
+            Generate a comprehensive progress report with all your scan data, trends, and routine adherence.
+          </p>
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={async () => {
+              try {
+                const { default: jsPDF } = await import('jspdf');
+                const doc = new jsPDF();
+                doc.setFontSize(20);
+                doc.text('Pellicura Skin Progress Report', 20, 25);
+                doc.setFontSize(10);
+                doc.setTextColor(120);
+                doc.text(`Generated: ${new Date().toLocaleDateString()}`, 20, 33);
+                doc.setTextColor(0);
+                doc.setFontSize(14);
+                doc.text('Summary', 20, 48);
+                doc.setFontSize(11);
+                const latest = progressData[0];
+                const oldest = progressData[progressData.length - 1];
+                if (latest && oldest) {
+                  const scoreDiff = latest.overallScore - oldest.overallScore;
+                  doc.text(`Period: ${oldest.date} to ${latest.date}`, 20, 58);
+                  doc.text(`Total scans: ${progressData.length}`, 20, 66);
+                  doc.text(`Current score: ${latest.overallScore}`, 20, 74);
+                  doc.text(`Score change: ${scoreDiff >= 0 ? '+' : ''}${scoreDiff}`, 20, 82);
+                  doc.text(`Trend: ${computedTrends[0]?.direction || 'stable'}`, 20, 90);
+
+                  doc.setFontSize(14);
+                  doc.text('Detailed Metrics', 20, 108);
+                  doc.setFontSize(11);
+                  doc.text(`Acne: ${latest.acne}% (was ${oldest.acne}%)`, 20, 118);
+                  doc.text(`Hydration: ${latest.hydration}% (was ${oldest.hydration}%)`, 20, 126);
+                  doc.text(`Dark Spots: ${latest.darkSpots}% (was ${oldest.darkSpots}%)`, 20, 134);
+                  doc.text(`Wrinkles: ${latest.wrinkles}% (was ${oldest.wrinkles}%)`, 20, 142);
+                }
+
+                doc.setFontSize(8);
+                doc.setTextColor(150);
+                doc.text('This report is for informational purposes only and does not constitute medical advice.', 20, 280);
+
+                doc.save(`pellicura-progress-report-${new Date().toISOString().slice(0, 10)}.pdf`);
+              } catch (err) {
+                console.error('PDF generation failed:', err);
+                alert('Could not generate PDF. Please try again.');
+              }
+            }}
+          >
+            <IconDownload size={16} strokeWidth={2} style={{ marginRight: 6 }} />
+            Generate PDF Report
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -68,72 +68,85 @@ class AIChatService:
     # ── Context gathering ────────────────────────────────────────────────────
 
     def gather_context(self, user: User, db: Session) -> dict:
-        """Build a JSON-serialisable context dict for the system prompt."""
+        """Build a JSON-serialisable context dict for the system prompt.
+
+        Each section is wrapped in try/except so a missing column
+        in production won't crash the entire chat service.
+        """
         context: dict = {}
 
         # Profile
-        profile: Optional[UserProfile] = (
-            db.query(UserProfile).filter(UserProfile.user_id == user.id).first()
-        )
-        if profile:
-            context["profile"] = {
-                "skin_type": profile.skin_type,
-                "skin_tone": profile.skin_tone,
-                "skin_concerns": profile.skin_concerns,
-                "fitzpatrick_type": getattr(profile, "fitzpatrick_type", None),
-                "location": profile.location,
-            }
+        try:
+            profile: Optional[UserProfile] = (
+                db.query(UserProfile).filter(UserProfile.user_id == user.id).first()
+            )
+            if profile:
+                context["profile"] = {
+                    "skin_type": getattr(profile, "skin_type", None),
+                    "skin_tone": getattr(profile, "skin_tone", None),
+                    "skin_concerns": getattr(profile, "skin_concerns", None),
+                    "fitzpatrick_type": getattr(profile, "fitzpatrick_type", None),
+                    "location": getattr(profile, "location", None),
+                }
+        except Exception as exc:
+            logger.warning("Chat context: profile query failed: %s", exc)
 
         # Last 5 completed scans
-        scans = (
-            db.query(ScanSession)
-            .filter(
-                ScanSession.user_id == user.id,
-                ScanSession.status == "COMPLETED",
+        try:
+            scans = (
+                db.query(ScanSession)
+                .filter(ScanSession.user_id == user.id)
+                .order_by(ScanSession.created_at.desc())
+                .limit(5)
+                .all()
             )
-            .order_by(ScanSession.created_at.desc())
-            .limit(5)
-            .all()
-        )
-        if scans:
-            context["recent_scans"] = [
-                {
-                    "date": s.created_at.isoformat() if s.created_at else None,
-                    "overall_score": getattr(s, "overall_score", None),
-                }
-                for s in scans
-            ]
+            if scans:
+                context["recent_scans"] = [
+                    {
+                        "date": s.created_at.isoformat() if s.created_at else None,
+                        "overall_score": getattr(s, "overall_score", None),
+                    }
+                    for s in scans
+                ]
+        except Exception as exc:
+            logger.warning("Chat context: scans query failed: %s", exc)
 
         # Active shelf products (max 20)
-        shelf = (
-            db.query(ShelfProduct)
-            .filter(
-                ShelfProduct.user_id == user.id,
-                ShelfProduct.status == "active",
+        try:
+            shelf = (
+                db.query(ShelfProduct)
+                .filter(
+                    ShelfProduct.user_id == user.id,
+                    ShelfProduct.status == "active",
+                )
+                .limit(20)
+                .all()
             )
-            .limit(20)
-            .all()
-        )
-        if shelf:
-            context["shelf"] = [
-                {
-                    "name": p.product_name,
-                    "brand": p.product_brand,
-                    "category": p.product_category,
-                    "routine_type": p.routine_type,
-                }
-                for p in shelf
-            ]
+            if shelf:
+                context["shelf"] = [
+                    {
+                        "name": getattr(p, "product_name", None),
+                        "brand": getattr(p, "product_brand", None),
+                        "category": getattr(p, "product_category", None),
+                        "routine_type": getattr(p, "routine_type", None),
+                    }
+                    for p in shelf
+                ]
+        except Exception as exc:
+            logger.warning("Chat context: shelf query failed: %s", exc)
 
         # Active skin goals
-        goals = (
-            db.query(SkinGoal)
-            .filter(SkinGoal.user_id == user.id, SkinGoal.status == "active")
-            .limit(5)
-            .all()
-        )
-        if goals:
-            context["goals"] = [g.goal_type for g in goals]
+        try:
+            goals = (
+                db.query(SkinGoal)
+                .filter(SkinGoal.user_id == user.id, SkinGoal.is_active == True)
+                .limit(5)
+                .all()
+            )
+            if goals:
+                context["goals"] = [g.goal_type for g in goals]
+        except Exception:
+            pass  # goals table may not have expected columns
 
         return context
 

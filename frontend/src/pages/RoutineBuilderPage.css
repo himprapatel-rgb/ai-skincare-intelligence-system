@@ -51,7 +51,7 @@
   margin-bottom: var(--spacing-xl);
   background: var(--bg-white);
   padding: var(--spacing-xs);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--border);
   width: fit-content;
@@ -64,7 +64,7 @@
   padding: var(--spacing-md) var(--spacing-lg);
   min-height: 44px;
   border: none;
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-medium);
   cursor: pointer;
@@ -134,7 +134,7 @@
 /* Individual Step Card */
 .routine-step {
   background: var(--bg-light);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   padding: var(--spacing-lg) var(--spacing-xl);
   border: 2px solid var(--border);
   transition: all 0.3s ease;
@@ -192,7 +192,7 @@
 .btn-step {
   padding: 8px 16px;
   border: none;
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   font-weight: 500;
   font-size: 0.875rem;
   cursor: pointer;
@@ -224,7 +224,7 @@
   padding: 16px;
   background: var(--bg-light);
   border: 2px dashed var(--border);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   color: var(--primary);
   font-weight: 600;
   font-size: 1rem;
@@ -246,7 +246,7 @@
   background: var(--primary);
   color: var(--white);
   border: none;
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
@@ -317,7 +317,7 @@
 .time-btn {
   padding: 12px 24px;
   border: 2px solid var(--border);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   background: var(--bg-white);
   color: var(--text-gray);
   font-size: 1rem;
@@ -386,7 +386,7 @@
   background: var(--primary);
   color: var(--white);
   border: none;
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -408,7 +408,7 @@
   color: var(--text-muted);
   background: var(--gray-100, #f1f5f9);
   border: 1px dashed var(--border-color);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   cursor: grab;
   flex-shrink: 0;
 }
@@ -455,7 +455,7 @@
 .step-field select {
   padding: 8px 12px;
   border: 1px solid var(--border);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   background: var(--bg-light);
   color: var(--text-dark);
   font-size: 1rem;
@@ -473,7 +473,7 @@
   justify-content: space-between;
   padding: 8px 12px;
   background: var(--bg-light);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
 }
 
 .btn-link {
@@ -593,7 +593,7 @@
   padding: 8px 16px;
   background: var(--bg-light);
   border: 1px solid var(--border);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   color: var(--text-dark);
   font-weight: 500;
   cursor: pointer;
@@ -650,7 +650,7 @@
 .time-setting input[type="time"] {
   padding: 8px 12px;
   border: 1px solid var(--border);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   background: var(--bg-light);
   color: var(--text-dark);
   font-size: 1rem;
@@ -685,7 +685,7 @@
   justify-content: center;
   padding: 8px;
   border: 1px solid var(--border);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   background: var(--bg-light);
   cursor: pointer;
   transition: all 0.2s ease;
@@ -719,7 +719,7 @@
 .routine-actions .btn-primary,
 .routine-actions .btn-secondary {
   padding: 12px 24px;
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;

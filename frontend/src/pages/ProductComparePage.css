@@ -179,7 +179,7 @@
 .btn-secondary {
   display: inline-block;
   padding: 10px 20px;
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;

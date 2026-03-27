@@ -130,7 +130,7 @@
   flex: 1;
   padding: 10px 12px;
   border: 1px solid var(--border, #e2e8f0);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   font-size: 0.9375rem;
   background: var(--bg-light, #f8fafc);
 }
@@ -174,7 +174,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   color: var(--text-muted);
   background: transparent;
   border: none;

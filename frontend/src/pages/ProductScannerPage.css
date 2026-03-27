@@ -122,7 +122,7 @@
 @media (max-width: 380px) {
   .mode-selector {
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
     margin-bottom: 24px;
   }
 
@@ -218,7 +218,7 @@
   padding: 16px;
   margin-top: 16px;
   background: rgba(31, 111, 235, 0.1);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   color: var(--primary);
   font-weight: 500;
 }
@@ -380,7 +380,7 @@
   background: var(--success);
   color: var(--white);
   border: none;
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   font-weight: 600;
   font-size: 1rem;
   display: flex;
@@ -409,7 +409,7 @@
   font-size: 0.95rem;
   text-decoration: none;
   border: 2px solid var(--primary);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   transition: all 0.2s ease;
 }
 
@@ -499,7 +499,7 @@
   background: var(--primary);
   color: var(--white);
   border: none;
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -555,7 +555,7 @@
   text-align: center;
   background: rgba(0, 0, 0, 0.7);
   padding: 8px 16px;
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
 }
 
 .camera-placeholder {
@@ -583,7 +583,7 @@
   background: var(--primary);
   color: var(--white);
   border: none;
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   font-size: 1.125rem;
   font-weight: 600;
   cursor: pointer;
@@ -733,7 +733,7 @@
 .btn-icon-small {
   background: transparent;
   border: 1px solid var(--border);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   padding: 8px;
   cursor: pointer;
   color: var(--text-gray);
@@ -773,14 +773,14 @@
   display: block;
   object-fit: contain;
   background: var(--bg-white);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
 }
 
 .product-image-placeholder {
   width: 120px;
   height: 120px;
   background: var(--bg-white);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -881,7 +881,7 @@
 .product-actions-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: 12px;
 }
 .product-action-btn { justify-content: center; }
 .product-action-routine { grid-column: span 1; }
@@ -941,13 +941,13 @@
   width: 100%;
   padding: 10px 12px;
   border: 1px solid var(--border-color);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   font-size: 1rem;
 }
 .track-product-actions {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   margin-top: 20px;
 }
 .track-product-actions .btn-ghost { margin-top: 4px; }
@@ -1036,7 +1036,7 @@
   margin-bottom: var(--spacing-lg);
   background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(139, 92, 246, 0.05));
   border: 1px solid rgba(59, 130, 246, 0.2);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   padding: var(--spacing-lg);
 }
 
@@ -1064,7 +1064,7 @@
   gap: var(--spacing-sm);
   background: var(--bg-white);
   padding: var(--spacing-sm) var(--spacing-md);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   border: 1px solid var(--border);
 }
 
@@ -1114,7 +1114,7 @@
 .flagged-ingredients-section {
   background: linear-gradient(135deg, rgba(239, 68, 68, 0.05), rgba(249, 115, 22, 0.05));
   border: 2px solid var(--danger);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   padding: var(--spacing-lg);
   margin-bottom: var(--spacing-xl);
 }
@@ -1137,7 +1137,7 @@
 
 .flagged-item {
   background: var(--bg-white);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   padding: var(--spacing-md);
   border-left: 4px solid var(--text-muted);
 }
@@ -1228,7 +1228,7 @@
   margin-top: var(--spacing-sm);
   padding: var(--spacing-sm);
   background: var(--bg-tertiary);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
 }
 
 .flagged-alternatives strong,
@@ -1265,7 +1265,7 @@
   margin-top: var(--spacing-lg);
   padding: var(--spacing-md);
   background: var(--warning-light);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   border: 1px solid var(--warning);
 }
 
@@ -1291,7 +1291,7 @@
 .safety-badges {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px;
   margin-top: 16px;
 }
 
@@ -1363,7 +1363,7 @@
 .product-actions .btn-secondary {
   min-height: 48px;
   padding: var(--spacing-sm) var(--spacing-lg);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   font-weight: 600;
   font-size: var(--font-size-base);
   cursor: pointer;
@@ -1463,7 +1463,7 @@
   .camera-container {
     max-width: 100%;
     min-height: 200px;
-    border-radius: var(--border-radius-md);
+    border-radius: var(--radius-xl, 16px);
   }
 
   .scanner-frame {
@@ -1597,7 +1597,7 @@
 .confidence-display {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   margin-top: 8px;
 }
 
@@ -1710,7 +1710,7 @@
   display: inline-block;
   font-size: 0.7rem;
   padding: 3px 8px;
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   font-weight: 500;
 }
 
@@ -1852,7 +1852,7 @@
   gap: 12px;
   padding: 12px;
   background: var(--bg-light);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   margin-top: 12px;
 }
 
@@ -1906,14 +1906,14 @@
   margin-top: 12px;
   padding: 16px;
   background: var(--bg-light);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
 }
 
 .manual-entry-form .barcode-input {
   flex: 1;
   padding: 12px 16px;
   border: 2px solid var(--border-color);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   font-size: 1rem;
   font-family: 'Courier New', monospace;
   letter-spacing: 2px;
@@ -2195,7 +2195,7 @@
   text-align: center;
   padding: 16px;
   background: rgba(234, 179, 8, 0.1);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   margin-top: 16px;
 }
 
@@ -2210,7 +2210,7 @@
   color: var(--warning-900, #78350f);
   border: none;
   padding: 10px 20px;
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   font-weight: 600;
   cursor: pointer;
 }

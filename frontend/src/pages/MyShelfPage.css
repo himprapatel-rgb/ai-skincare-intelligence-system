@@ -156,7 +156,7 @@
   width: 56px;
   height: 56px;
   object-fit: contain;
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   background: var(--bg-secondary);
 }
 
@@ -175,7 +175,7 @@
   font-size: 0.7rem;
   font-weight: 600;
   padding: 4px 8px;
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
 }
 
 .myshelf-expiring-badge.warning {
@@ -429,7 +429,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   margin-bottom: 20px;
 }
 
@@ -650,7 +650,7 @@
   text-transform: uppercase;
   letter-spacing: 0.03em;
   padding: 4px 10px;
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   align-self: flex-start;
   background: var(--gray-100);
   color: var(--text-muted);
@@ -734,11 +734,11 @@
   text-align: left;
   font-size: 0.9375rem;
   color: var(--text-primary);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   transition: background 0.15s;
 }
 
@@ -755,7 +755,7 @@
 
 .product-card-actions-desk {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   margin-top: auto;
   padding-top: 12px;
 }
@@ -856,7 +856,7 @@
   display: inline-block;
   font-size: 0.75rem;
   padding: 4px 10px;
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   background: var(--gray-100);
   color: var(--text-muted);
 }

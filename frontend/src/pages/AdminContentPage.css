@@ -48,7 +48,7 @@
   padding: 10px 18px;
   border: none;
   background: transparent;
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   font-size: 0.95rem;
   font-weight: 500;
   color: var(--text-gray);
@@ -156,7 +156,7 @@
   width: 100%;
   padding: 10px 12px;
   border: 1px solid var(--border-color, #e2e8f0);
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   font-size: 1rem;
 }
 
@@ -231,7 +231,7 @@
 .admin-image-preview img {
   max-width: 100%;
   height: auto;
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
   border: 1px solid var(--border-color, #e2e8f0);
 }
 
@@ -291,7 +291,7 @@
   background: transparent;
   color: var(--text-gray);
   cursor: pointer;
-  border-radius: var(--border-radius-md);
+  border-radius: var(--radius-xl, 16px);
 }
 
 .admin-list-actions .btn-icon:hover {

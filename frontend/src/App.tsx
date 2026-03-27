@@ -14,6 +14,7 @@ import DevBanner from "./components/DevBanner";
 import LoadingScreen from "./components/LoadingScreen";
 import { ToastContainer } from "./components/Toast";
 import { ErrorBoundary } from "./components/ErrorBoundary";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 import NetworkStatus from "./components/NetworkStatus";
 import ChatWidget from "./components/chat/ChatWidget";
 
@@ -80,6 +81,7 @@ function AppRoutes() {
     <ErrorBoundary onRetry={() => navigate("/", { replace: true })}>
       <Suspense fallback={<LoadingScreen message="Loading page..." fullscreen={false} />}>
         <Routes>
+          {/* ── PUBLIC ROUTES ── */}
           <Route path="/" element={<HomeRoute />} />
           <Route path="/home" element={<HomePage />} />
           <Route path="/auth" element={<AuthPage />} />
@@ -90,35 +92,11 @@ function AppRoutes() {
           <Route path="/scan" element={<ScanPage />} />
           <Route path="/analysis/:analysisId" element={<AnalysisResults />} />
           <Route path="/analysis/demo" element={<SampleReportPage />} />
-          <Route path="/history" element={<HistoryPage />} />
-          <Route path="/comparison" element={<ComparisonPage />} />
-          <Route path="/digital-twin" element={<DigitalTwinTimelinePage />} />
           <Route path="/recommendations" element={<Recommendations />} />
           <Route path="/discover" element={<Recommendations />} />
           <Route path="/product/:id" element={<ProductDetailsPage />} />
           <Route path="/product/compare" element={<ProductComparePage />} />
-          <Route path="/routine-builder" element={<RoutineBuilderPage />} />
-          <Route path="/routines" element={<RoutineBuilderPage />} />
-          <Route path="/favorites" element={<FavoritesPage />} />
-          <Route path="/myshelf" element={<MyShelfPage />} />
-          <Route path="/scanner" element={<Navigate to="/scan?mode=product" replace />} />
-          <Route path="/onboarding" element={<OnboardingPage />} />
-          <Route path="/profile" element={<ProfileSettingsPage />} />
-          <Route path="/consent" element={<ConsentPage />} />
-          <Route path="/skin-goals" element={<SkinGoalsPage />} />
-          <Route path="/progress" element={<ProgressTrackingPage />} />
-          <Route path="/export" element={<DataExportPage />} />
-          <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/me" element={<MePage />} />
-          <Route path="/notifications" element={<NotificationCenterPage />} />
-          <Route path="/admin" element={<AdminDashboardPage />} />
-          <Route path="/admin/users" element={<AdminUsersPage />} />
-          <Route path="/admin/products" element={<AdminProductsPage />} />
-          <Route path="/admin/catalog" element={<AdminCatalogPage />} />
-          <Route path="/admin/content" element={<AdminContentPage />} />
-          <Route path="/admin/blogs" element={<AdminBlogsPage />} />
-          <Route path="/admin/videos" element={<AdminVideosPage />} />
-          <Route path="/admin/news" element={<AdminNewsPage />} />
+          <Route path="/search" element={<SearchPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/privacy" element={<PrivacyPage />} />
@@ -129,11 +107,41 @@ function AppRoutes() {
           <Route path="/skin-type-guide" element={<SkinTypeGuidePage />} />
           <Route path="/skin-quiz" element={<SkinTypeQuizPage />} />
           <Route path="/tutorials" element={<VideoTutorialsPage />} />
-          <Route path="/device-context" element={<DeviceContextPage />} />
-          <Route path="/clinical" element={<ClinicalDashboardPage />} />
-          <Route path="/admin/analytics" element={<AdminAnalyticsPage />} />
-          <Route path="/chat" element={<AIChatPage />} />
-          <Route path="/search" element={<SearchPage />} />
+          <Route path="/scanner" element={<Navigate to="/scan?mode=product" replace />} />
+
+          {/* ── AUTHENTICATED ROUTES ── */}
+          <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+          <Route path="/history" element={<ProtectedRoute><HistoryPage /></ProtectedRoute>} />
+          <Route path="/comparison" element={<ProtectedRoute><ComparisonPage /></ProtectedRoute>} />
+          <Route path="/digital-twin" element={<ProtectedRoute><DigitalTwinTimelinePage /></ProtectedRoute>} />
+          <Route path="/progress" element={<ProtectedRoute><ProgressTrackingPage /></ProtectedRoute>} />
+          <Route path="/chat" element={<ProtectedRoute><AIChatPage /></ProtectedRoute>} />
+          <Route path="/clinical" element={<ProtectedRoute><ClinicalDashboardPage /></ProtectedRoute>} />
+          <Route path="/routine-builder" element={<ProtectedRoute><RoutineBuilderPage /></ProtectedRoute>} />
+          <Route path="/routines" element={<ProtectedRoute><RoutineBuilderPage /></ProtectedRoute>} />
+          <Route path="/favorites" element={<ProtectedRoute><FavoritesPage /></ProtectedRoute>} />
+          <Route path="/myshelf" element={<ProtectedRoute><MyShelfPage /></ProtectedRoute>} />
+          <Route path="/skin-goals" element={<ProtectedRoute><SkinGoalsPage /></ProtectedRoute>} />
+          <Route path="/notifications" element={<ProtectedRoute><NotificationCenterPage /></ProtectedRoute>} />
+          <Route path="/profile" element={<ProtectedRoute><ProfileSettingsPage /></ProtectedRoute>} />
+          <Route path="/me" element={<ProtectedRoute><MePage /></ProtectedRoute>} />
+          <Route path="/onboarding" element={<ProtectedRoute><OnboardingPage /></ProtectedRoute>} />
+          <Route path="/consent" element={<ProtectedRoute><ConsentPage /></ProtectedRoute>} />
+          <Route path="/export" element={<ProtectedRoute><DataExportPage /></ProtectedRoute>} />
+          <Route path="/device-context" element={<ProtectedRoute><DeviceContextPage /></ProtectedRoute>} />
+
+          {/* ── ADMIN ROUTES ── */}
+          <Route path="/admin" element={<ProtectedRoute><AdminDashboardPage /></ProtectedRoute>} />
+          <Route path="/admin/users" element={<ProtectedRoute><AdminUsersPage /></ProtectedRoute>} />
+          <Route path="/admin/products" element={<ProtectedRoute><AdminProductsPage /></ProtectedRoute>} />
+          <Route path="/admin/catalog" element={<ProtectedRoute><AdminCatalogPage /></ProtectedRoute>} />
+          <Route path="/admin/content" element={<ProtectedRoute><AdminContentPage /></ProtectedRoute>} />
+          <Route path="/admin/blogs" element={<ProtectedRoute><AdminBlogsPage /></ProtectedRoute>} />
+          <Route path="/admin/videos" element={<ProtectedRoute><AdminVideosPage /></ProtectedRoute>} />
+          <Route path="/admin/news" element={<ProtectedRoute><AdminNewsPage /></ProtectedRoute>} />
+          <Route path="/admin/analytics" element={<ProtectedRoute><AdminAnalyticsPage /></ProtectedRoute>} />
+
+          {/* ── DEV/FALLBACK ── */}
           <Route path="/auth-debug" element={<AuthDebug />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

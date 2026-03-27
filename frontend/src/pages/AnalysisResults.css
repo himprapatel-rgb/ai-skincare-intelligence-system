@@ -1,3 +1,6 @@
+/* Hide newsletter on this page */
+.analysis-results ~ .app-footer .footer-newsletter { display: none; }
+
 /* Analysis Results - Brand-Aligned Design */
 /* Uses global CSS variables from index.css */
 
@@ -414,7 +417,7 @@
   background: var(--warning-light);
   color: var(--warning-text);
   padding: 6px 12px;
-  border-radius: var(--border-radius-xl);
+  border-radius: var(--radius-xl, 16px);
   font-size: 0.875rem; /* Brand guideline: 14px Body Small */
   font-weight: 600;
 }
@@ -487,7 +490,7 @@
   font-size: 0.75rem;
   font-weight: 700;
   padding: 4px 12px;
-  border-radius: var(--border-radius-xl);
+  border-radius: var(--radius-xl, 16px);
   color: var(--white);
 }
 
@@ -609,7 +612,7 @@
   display: flex;
   gap: 16px;
   flex-wrap: wrap;
-  margin-top: 32px;
+  margin-top: 24px;
 }
 
 .results-actions .btn {

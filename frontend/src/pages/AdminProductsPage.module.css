@@ -210,7 +210,7 @@
 }
 
 .actionBtnDanger:hover {
-  color: #dc2626;
+  color: var(--danger-700, #dc2626);
 }
 
 /* Checkbox */

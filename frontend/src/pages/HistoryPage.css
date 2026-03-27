@@ -375,7 +375,7 @@
   gap: 8px;
   padding: 6px 14px;
   background: var(--success);
-  border-radius: var(--border-radius-xl);
+  border-radius: var(--radius-xl, 16px);
   font-size: 0.875rem;
   font-weight: 600;
   color: var(--success-800, #065f46);
@@ -402,7 +402,7 @@
 .concern-tag {
   padding: 4px 12px;
   background: var(--bg-light);
-  border-radius: var(--border-radius-xl);
+  border-radius: var(--radius-xl, 16px);
   font-size: 0.875rem;
   color: var(--text-gray);
   font-weight: 500;

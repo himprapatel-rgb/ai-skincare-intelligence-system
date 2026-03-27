@@ -30,7 +30,7 @@
 .myshelf-hero-icon {
   width: 52px;
   height: 52px;
-  border-radius: var(--border-radius-xl);
+  border-radius: var(--radius-xl, 16px);
   background: rgba(255, 255, 255, 0.2);
   display: flex;
   align-items: center;
@@ -102,7 +102,7 @@
 .myshelf-expiring-soon {
   background: linear-gradient(135deg, var(--warning-100, #fef3c7) 0%, var(--warning-100, #fef9c3) 100%);
   border: 1px solid var(--warning-400, rgba(245, 158, 11, 0.3));
-  border-radius: var(--border-radius-xl);
+  border-radius: var(--radius-xl, 16px);
   padding: 16px;
   margin-bottom: 20px;
 }
@@ -191,7 +191,7 @@
 /* ----- Onboarding (collapsible tips) ----- */
 .myshelf-onboarding {
   background: var(--bg-white);
-  border-radius: var(--border-radius-xl);
+  border-radius: var(--radius-xl, 16px);
   border: 1px solid var(--border-color, #e2e8f0);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   margin-bottom: 20px;
@@ -460,7 +460,7 @@
 /* ----- Empty state ----- */
 .myshelf-empty {
   background: var(--bg-white);
-  border-radius: var(--border-radius-xl);
+  border-radius: var(--radius-xl, 16px);
   border: 1px solid var(--border-color);
   padding: 48px 24px;
   text-align: center;
@@ -562,7 +562,7 @@
 
 .product-card {
   background: var(--bg-white);
-  border-radius: var(--border-radius-xl);
+  border-radius: var(--radius-xl, 16px);
   padding: 0;
   border: 1px solid var(--border-color);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);

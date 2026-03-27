@@ -12,7 +12,7 @@
   max-width: var(--max-width-xl);
   margin: 0 auto;
   background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-  border-radius: 0 0 var(--border-radius-xl) var(--border-radius-xl);
+  border-radius: 0 0 var(--radius-xl, 16px) var(--radius-xl, 16px);
 }
 
 .terms-hero h1 {
@@ -88,7 +88,7 @@
   border-radius: var(--radius-xl, 16px); /* Brand guideline: 12px for cards */
   box-shadow: var(--shadow);
   border: 1px solid var(--border);
-  margin-bottom: 32px;
+  margin-bottom: 24px;
   transition: all 0.3s ease;
 }
 
@@ -139,7 +139,7 @@
   }
 
   .terms-section {
-    padding: 28px 20px;
+    padding: 24px 16px;
   }
 
   .terms-section h2 {

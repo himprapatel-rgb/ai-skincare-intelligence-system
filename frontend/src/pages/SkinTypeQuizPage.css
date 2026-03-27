@@ -46,3 +46,15 @@
 .quiz-result-actions .btn { min-width: 220px; }
 .quiz-retake { font-size: 0.8rem; color: var(--text-muted); background: none; border: none; cursor: pointer; margin-top: 4px; }
 .quiz-retake:hover { color: var(--primary); }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .quiz-container { padding: 0 16px; }
+  .quiz-question-card { padding: 24px 20px; }
+  .quiz-result-card { padding: 24px 20px; }
+  .quiz-result-actions .btn { min-width: 100%; }
+}
+@media (max-width: 480px) {
+  .quiz-question-card { padding: 20px 16px; }
+  .quiz-option { padding: 12px 14px; font-size: 0.85rem; }
+}

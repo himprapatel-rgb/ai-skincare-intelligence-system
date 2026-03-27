@@ -221,7 +221,7 @@
 
 .profile-modal {
   background: var(--bg-white);
-  border-radius: var(--border-radius-xl);
+  border-radius: var(--radius-xl, 16px);
   padding: 24px;
   max-width: 400px;
   width: 100%;
@@ -615,7 +615,7 @@
 
 .profile-delete-modal {
   background: var(--bg-white);
-  border-radius: var(--border-radius-xl);
+  border-radius: var(--radius-xl, 16px);
   padding: 24px;
   max-width: 400px;
   width: 100%;
@@ -737,7 +737,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 }
 
 .profile-container h1 {
@@ -791,7 +791,7 @@
 .profile-card {
   background: linear-gradient(145deg, #f8fafc 0%, #f1f5f9 100%);
   border: 1px solid rgba(226, 232, 240, 0.8);
-  border-radius: var(--border-radius-xl);
+  border-radius: var(--radius-xl, 16px);
   padding: 24px;
   text-align: center;
   display: flex;
@@ -843,7 +843,7 @@
 .profile-quick-stats {
   background: var(--bg-white);
   border: 1px solid rgba(226, 232, 240, 0.8);
-  border-radius: var(--border-radius-xl);
+  border-radius: var(--radius-xl, 16px);
   padding: 20px;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -910,7 +910,7 @@
   gap: 6px;
   background: var(--bg-white);
   border: 1px solid rgba(226, 232, 240, 0.8);
-  border-radius: var(--border-radius-xl);
+  border-radius: var(--radius-xl, 16px);
   padding: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
 }
@@ -1010,7 +1010,7 @@
 .profile-content {
   background: var(--bg-white);
   border: 1px solid rgba(226, 232, 240, 0.8);
-  border-radius: var(--border-radius-xl);
+  border-radius: var(--radius-xl, 16px);
   padding: var(--spacing-lg);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
 }
@@ -1329,7 +1329,7 @@
   padding: 6px 12px;
   background: var(--bg-tertiary);
   border: 1px solid var(--border-color);
-  border-radius: var(--border-radius-xl);
+  border-radius: var(--radius-xl, 16px);
   font-size: 0.8rem;
   color: var(--gray-600, #475569);
   margin: 4px;
@@ -1518,7 +1518,7 @@
 
 /* Account actions - Sign Out & Delete */
 .profile-account-actions {
-  margin-top: 32px;
+  margin-top: 24px;
   padding-top: 24px;
   border-top: 1px solid var(--border-color);
   display: flex;
@@ -1731,7 +1731,7 @@
   /* Legacy: profile card (when used) */
   .profile-card {
     padding: 24px 16px;
-    border-radius: var(--border-radius-xl);
+    border-radius: var(--radius-xl, 16px);
     background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
     border: none;
   }
@@ -1811,7 +1811,7 @@
     padding: 8px 16px;
     font-size: 14px;
     white-space: nowrap;
-    border-radius: var(--border-radius-xl);
+    border-radius: var(--radius-xl, 16px);
     background: var(--gray-100);
     color: var(--text-secondary);
   }
@@ -1831,7 +1831,7 @@
     padding: 16px;
     padding-left: max(16px, env(safe-area-inset-left));
     padding-right: max(16px, env(safe-area-inset-right));
-    border-radius: var(--border-radius-xl);
+    border-radius: var(--radius-xl, 16px);
     border: none;
     box-shadow: none;
     background: transparent;

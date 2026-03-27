@@ -78,7 +78,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 24px;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 }
 
 .summary-card {
@@ -173,7 +173,7 @@
   padding: 24px;
   box-shadow: var(--shadow);
   border: 1px solid var(--border);
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 }
 
 .card-header {
@@ -451,7 +451,7 @@
   max-width: 520px;
   margin: 0 auto;
   aspect-ratio: 4 / 5;
-  border-radius: var(--border-radius-xl);
+  border-radius: var(--radius-xl, 16px);
   overflow: hidden;
   box-shadow: var(--shadow);
   background: var(--bg-light);

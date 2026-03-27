@@ -347,3 +347,9 @@
     min-height: 44px;
   }
 }
+
+/* ── Missing hover states ── */
+.btn-ghost:hover { background: var(--bg-tertiary, #eef2f6); }
+.btn-ghost:active { background: var(--bg-secondary); }
+.btn-sm:hover { opacity: 0.85; }
+.btn-inline:hover { text-decoration: underline; color: var(--primary); }

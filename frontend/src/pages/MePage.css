@@ -29,7 +29,7 @@
   gap: 16px;
   padding: 20px;
   background: var(--bg-white);
-  border-radius: var(--border-radius-xl);
+  border-radius: var(--radius-xl, 16px);
   margin-bottom: 24px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
   border: 1px solid var(--border-color);
@@ -115,7 +115,7 @@
   padding: 20px;
   background: linear-gradient(135deg, rgba(31, 95, 191, 0.08) 0%, rgba(124, 58, 237, 0.06) 100%);
   border: 1px solid rgba(31, 95, 191, 0.2);
-  border-radius: var(--border-radius-xl);
+  border-radius: var(--radius-xl, 16px);
   text-decoration: none;
   color: var(--text-primary);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
@@ -299,7 +299,7 @@
   }
 
   .me-profile-card {
-    padding: 28px;
+    padding: 24px;
     gap: 24px;
   }
 

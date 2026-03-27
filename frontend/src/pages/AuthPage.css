@@ -97,7 +97,7 @@
   gap: 20px;
   padding: 24px;
   background: rgba(255, 255, 255, 0.1);
-  border-radius: var(--border-radius-xl);
+  border-radius: var(--radius-xl, 16px);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.15);
   transition: all 0.3s ease;
@@ -444,7 +444,7 @@
 /* Modern Register Button Section */
 .auth-toggle {
   text-align: center;
-  margin-top: 32px;
+  margin-top: 24px;
   padding-top: 28px;
   border-top: 1px solid var(--gray-200, #e2e8f0);
 }
@@ -585,7 +585,7 @@
 /* Modern Register Button - switch-form and btn-link styles */
 .switch-form {
   text-align: center;
-  margin-top: 32px;
+  margin-top: 24px;
   padding-top: 28px;
   border-top: 1px solid var(--gray-200, #e2e8f0);
   color: var(--text-secondary);

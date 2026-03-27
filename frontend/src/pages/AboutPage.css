@@ -71,7 +71,7 @@
   border-radius: var(--radius-xl, 16px);
   border: 1px solid var(--border);
   box-shadow: var(--shadow);
-  padding: 28px;
+  padding: 24px;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -286,7 +286,7 @@
   .tech-card,
   .value-card,
   .story-card {
-    padding: 28px 20px;
+    padding: 24px 16px;
   }
 }
 
@@ -312,7 +312,7 @@
   }
 
   .mission-content {
-    padding: 28px 20px;
+    padding: 24px 16px;
   }
 
   .tech-card,

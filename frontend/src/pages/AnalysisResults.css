@@ -440,8 +440,8 @@
 
 .severity-card {
   border: 1px solid var(--border);
-  border-radius: var(--border-radius-lg);
-  padding: 20px;
+  border-radius: var(--radius-xl, 16px);
+  padding: 24px;
   background: var(--bg-light);
   transition: all 0.2s ease;
 }
@@ -471,7 +471,7 @@
   width: 36px;
   height: 36px;
   border-radius: var(--radius-xl, 16px);
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+  background: linear-gradient(135deg, rgba(var(--primary-rgb, 31,95,191), 0.1) 0%, rgba(var(--accent-rgb, 79,138,217), 0.1) 100%);
   color: var(--primary);
   flex-shrink: 0;
 }
@@ -746,8 +746,8 @@
 }
 
 .analysis-ingredient-card {
-  padding: 16px;
-  border-radius: var(--border-radius-lg);
+  padding: 20px;
+  border-radius: var(--radius-xl, 16px);
   border: 1px solid var(--border);
   background: var(--bg-light);
 }
@@ -934,7 +934,7 @@
   }
 
   .results-container {
-    max-width: 1080px;
+    max-width: 1120px;
     margin: 0 auto;
     padding: 0 var(--spacing-xl, 32px);
   }

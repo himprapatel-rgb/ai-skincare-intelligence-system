@@ -761,7 +761,7 @@
   border-radius: 999px;
   font-size: 0.9rem;
   font-weight: 600;
-  border: 1px solid rgba(146, 64, 14, 0.15);
+  border: 1px solid var(--warning-400, rgba(146, 64, 14, 0.15));
 }
 
 /* Tabs */
@@ -1018,9 +1018,9 @@
 .section-card {
   background: var(--bg-white);
   border: 1px solid var(--border-color);
-  border-radius: var(--border-radius-xl);
-  padding: 20px;
-  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
+  border-radius: var(--radius-xl, 16px);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
 }
 
 .section-card + .section-card {
@@ -1507,9 +1507,13 @@
 }
 
 .form-actions-bar {
-  margin-top: 20px;
-  padding-top: 16px;
+  margin-top: 24px;
+  padding-top: 20px;
   border-top: 1px solid var(--border-color);
+  position: sticky;
+  bottom: 0;
+  background: var(--bg-white, #fff);
+  z-index: 10;
 }
 
 /* Account actions - Sign Out & Delete */

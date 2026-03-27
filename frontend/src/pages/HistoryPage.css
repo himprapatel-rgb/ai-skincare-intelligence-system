@@ -219,8 +219,8 @@
 
 .stat-card {
   background: var(--bg-white);
-  border-radius: var(--border-radius-lg); /* Brand guideline: 12px for cards */
-  padding: 32px 24px;
+  border-radius: var(--radius-xl, 16px);
+  padding: 24px;
   text-align: center;
   box-shadow: var(--shadow);
   border: 1px solid var(--border);
@@ -445,7 +445,7 @@
   text-align: center;
   padding: 80px 40px;
   background: var(--bg-white);
-  border-radius: var(--border-radius-lg); /* Brand guideline: 12px for cards */
+  border-radius: var(--radius-xl, 16px);
   box-shadow: var(--shadow);
   border: 1px solid var(--border);
 }
@@ -491,7 +491,7 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .history-page {
-    padding: 32px 20px;
+    padding: 24px 16px;
   }
 
   .history-header h1 {

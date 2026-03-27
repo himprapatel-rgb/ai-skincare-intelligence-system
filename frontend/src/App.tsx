@@ -145,9 +145,11 @@ function AppRoutes() {
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 5 * 60 * 1000,
-      gcTime: 10 * 60 * 1000,
+      staleTime: 5 * 60 * 1000,       // 5 min — don't refetch fresh data
+      gcTime: 30 * 60 * 1000,          // 30 min — keep in memory longer
       retry: 1,
+      refetchOnWindowFocus: false,      // Don't refetch every tab switch
+      refetchOnReconnect: 'always',     // Refetch after network recovery
     },
   },
 });

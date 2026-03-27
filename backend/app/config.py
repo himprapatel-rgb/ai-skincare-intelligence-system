@@ -82,8 +82,8 @@ class Settings(BaseSettings):
     )
 
     # Database connection pool settings (main DB)
-    DB_POOL_SIZE: int = Field(default=3, description="SQLAlchemy pool size for main DB (per worker)")
-    DB_MAX_OVERFLOW: int = Field(default=7, description="SQLAlchemy max overflow for main DB (per worker)")
+    DB_POOL_SIZE: int = Field(default=10, description="SQLAlchemy pool size for main DB (per worker)")
+    DB_MAX_OVERFLOW: int = Field(default=20, description="SQLAlchemy max overflow for main DB (per worker)")
     DB_POOL_TIMEOUT: int = Field(
         default=5,
         description="Seconds to wait for a DB connection before failing",

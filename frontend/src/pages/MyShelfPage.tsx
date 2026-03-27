@@ -1,12 +1,15 @@
-import React, { useState, useMemo, useRef, useEffect } from 'react';
+import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { usePageTitle } from '../hooks/usePageTitle';
-import { IconStar, IconPackage, IconMoreVertical, IconChevronDown, IconTrash2, IconSearch, IconX, IconPlus, IconRefresh } from '../components/Icons';
+import { IconStar, IconPackage, IconMoreVertical, IconChevronDown, IconTrash2, IconSearch, IconX, IconPlus, IconRefresh, IconAlertTriangle } from '../components/Icons';
 import { Illustrations } from '../components/Illustrations';
 import { ConfirmModal } from '../components/ConfirmModal';
 import { SkeletonCardGrid } from '../components/Skeleton';
 import LazyImage from '../components/LazyImage';
 import { useShelf } from '../context/ShelfContext';
+import { useToast } from '../context/ToastContext';
+import { API_BASE_URL } from '../config';
+import { STORAGE_KEYS } from '../constants/storage';
 import './MyShelfPage.css';
 
 interface DisplayProduct {
@@ -78,6 +81,40 @@ const MyShelfPage: React.FC = () => {
   const [sortBy, setSortBy] = useState<'recent' | 'name' | 'brand' | 'rating'>('recent');
   // Task 278: Category filter
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
+  // Ingredient conflict checking
+  const toast = useToast();
+  const [conflicts, setConflicts] = useState<Array<{ products: string[]; warning: string }>>([]);
+  const [checkingConflicts, setCheckingConflicts] = useState(false);
+
+  const handleCheckConflicts = useCallback(async () => {
+    const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
+    if (!token) { toast.info('Sign in to check ingredient interactions'); return; }
+    setCheckingConflicts(true);
+    try {
+      const productNames = shelfProducts
+        .filter(p => (p.status as string) === 'active' || (p.status as string) === 'using')
+        .map(p => p.product_name || '');
+      const res = await fetch(`${API_BASE_URL}/ai/ingredient-conflicts`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ product_names: productNames }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        const items = data.conflicts || data.interactions || [];
+        setConflicts(items);
+        if (items.length === 0) {
+          toast.success('No ingredient conflicts found in your shelf!');
+        }
+      } else {
+        toast.error('Could not check conflicts. Try again later.');
+      }
+    } catch {
+      toast.error('Could not check conflicts. Try again later.');
+    } finally {
+      setCheckingConflicts(false);
+    }
+  }, [shelfProducts, toast]);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -229,6 +266,17 @@ const MyShelfPage: React.FC = () => {
           <button
             type="button"
             className="myshelf-refresh-btn"
+            onClick={handleCheckConflicts}
+            disabled={checkingConflicts || loading}
+            aria-label="Check ingredient interactions"
+            title="Check ingredient interactions"
+            style={{ marginRight: 4 }}
+          >
+            <IconAlertTriangle size={18} strokeWidth={2} />
+          </button>
+          <button
+            type="button"
+            className="myshelf-refresh-btn"
             onClick={() => refreshShelf()}
             disabled={loading}
             aria-label="Refresh shelf"
@@ -240,6 +288,19 @@ const MyShelfPage: React.FC = () => {
       </header>
 
       <div className="app-page-content myshelf-content">
+      {conflicts.length > 0 && (
+        <section className="myshelf-conflicts" aria-label="Ingredient conflicts" style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 12, padding: '16px 20px', marginBottom: 16 }}>
+          <h3 style={{ fontSize: '0.9rem', fontWeight: 700, color: '#991b1b', margin: '0 0 8px', display: 'flex', alignItems: 'center', gap: 6 }}>
+            <IconAlertTriangle size={16} /> Ingredient Interactions Found
+          </h3>
+          {conflicts.map((c, i) => (
+            <div key={i} style={{ fontSize: '0.825rem', color: '#7f1d1d', marginBottom: 6 }}>
+              <strong>{c.products?.join(' + ') || 'Products'}:</strong> {c.warning}
+            </div>
+          ))}
+          <button type="button" onClick={() => setConflicts([])} style={{ fontSize: '0.75rem', color: '#991b1b', background: 'none', border: 'none', cursor: 'pointer', marginTop: 4 }}>Dismiss</button>
+        </section>
+      )}
       {expiringSoonProducts.length > 0 && (
         <section className="myshelf-expiring-soon" aria-label="Expiring soon">
           <h2 className="myshelf-expiring-heading">

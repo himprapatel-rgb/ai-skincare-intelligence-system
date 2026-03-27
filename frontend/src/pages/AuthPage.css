@@ -1,5 +1,43 @@
 /* Auth Page - Brand-Aligned Design */
 
+/* Hide newsletter, breadcrumb, and footer on auth page */
+.auth-page ~ .app-footer .footer-newsletter,
+.auth-page .breadcrumb-nav { display: none; }
+
+/* Full-width submit button */
+.auth-submit-full { width: 100%; }
+
+/* Forgot password as text link (not button) */
+.forgot-password-link {
+  font-size: var(--font-size-sm);
+  color: var(--primary);
+  text-decoration: none;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+.forgot-password-link:hover { text-decoration: underline; }
+
+/* Trust signal below submit */
+.auth-trust-signal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 12px;
+}
+
+/* Inline disclaimer on left panel */
+.auth-disclaimer-inline {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 16px;
+  line-height: 1.4;
+}
+
 .auth-page {
   min-height: 100vh;
   display: flex;

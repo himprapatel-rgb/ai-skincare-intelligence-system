@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { ErrorMessage } from './ErrorMessage';
 import { LoadingSpinner } from './LoadingSpinner';
 import { GoogleSignInButton } from './GoogleSignInButton';
-import { IconEye, IconEyeOff } from './Icons';
+import { IconEye, IconEyeOff, IconShield } from './Icons';
 import { API_BASE_URL } from '../config';
 import { STORAGE_KEYS } from '../constants/storage';
 
@@ -128,7 +128,6 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegis
 
   return (
     <div className="login-form">
-      <h2>Sign In</h2>
       {error && (
         <div id="login-error" role="alert" aria-live="assertive">
           <ErrorMessage 
@@ -136,14 +135,6 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegis
             onDismiss={() => setError('')}
           />
         </div>
-      )}
-      {import.meta.env.DEV && error && (
-        <details style={{ marginTop: '8px', fontSize: '0.875rem', color: 'var(--text-gray)' }}>
-          <summary style={{ cursor: 'pointer' }}>Debug Info</summary>
-          <pre style={{ marginTop: '8px', padding: '8px', background: 'var(--bg-light)', borderRadius: '4px', overflow: 'auto' }}>
-            {JSON.stringify({ error, email: email ? '***' : 'empty' }, null, 2)}
-          </pre>
-        </details>
       )}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
@@ -199,11 +190,11 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegis
             />
             <span>Remember me</span>
           </label>
-          <Link to="/password-reset" className="btn-link forgot-password">
+          <Link to="/password-reset" className="forgot-password-link">
             Forgot password?
           </Link>
         </div>
-        <button type="submit" disabled={loading} className="btn-primary" title={loading ? 'Signing in…' : undefined} aria-busy={loading}>
+        <button type="submit" disabled={loading} className="btn-primary auth-submit-full" title={loading ? 'Signing in…' : undefined} aria-busy={loading}>
           {loading ? (
             <>
               <LoadingSpinner size="small" />
@@ -213,6 +204,10 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegis
             'Sign In'
           )}
         </button>
+        <div className="auth-trust-signal">
+          <IconShield size={14} strokeWidth={2} />
+          <span>Your data is encrypted and protected under GDPR</span>
+        </div>
       </form>
       
       <div className="auth-divider">
@@ -220,30 +215,6 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegis
       </div>
       
       <GoogleSignInButton disabled={loading} />
-      {googleBackendReachable === false && (
-        <p className="auth-google-hint" style={{ marginTop: '8px', fontSize: '0.875rem', color: 'var(--text-gray)' }}>
-          Backend not reachable. Google sign-in may fail. Check that the API is running (Railway) and that this site&apos;s URL is in CORS.
-        </p>
-      )}
-      {googleRedirectUri && (
-        <details className="auth-google-hint" style={{ marginTop: '8px', fontSize: '0.875rem', textAlign: 'left' }}>
-          <summary style={{ cursor: 'pointer', color: 'var(--text-gray)' }}>Google sign-in not working? Add this redirect URI</summary>
-          <p style={{ marginTop: '6px', marginBottom: '4px', color: 'var(--text-gray)' }}>
-            In Google Cloud Console → APIs &amp; Services → Credentials → your OAuth client → Authorized redirect URIs, add:
-          </p>
-          <code style={{ display: 'block', padding: '8px', background: 'var(--bg-light)', borderRadius: '4px', wordBreak: 'break-all', fontSize: '0.8rem' }}>
-            {googleRedirectUri}
-          </code>
-          <button
-            type="button"
-            className="btn-secondary"
-            style={{ marginTop: '6px', fontSize: '0.8rem' }}
-            onClick={() => navigator.clipboard?.writeText(googleRedirectUri)}
-          >
-            Copy URL
-          </button>
-        </details>
-      )}
       {showVerifyLink && (
         <button
           type="button"
@@ -256,7 +227,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSuccess, onSwitchToRegis
       <p className="switch-form">
         Don't have an account?{' '}
         <button onClick={onSwitchToRegister} className="btn-link">
-          Register
+          Create Account
         </button>
       </p>
     </div>

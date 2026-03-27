@@ -97,6 +97,7 @@ export const AuthPage: React.FC = () => {
         <div className="auth-brand">
           <h1>AI Skincare Intelligence</h1>
           <p>Analyze your skin and get personalized recommendations powered by advanced AI technology</p>
+          <p className="auth-disclaimer-inline">For informational purposes only — not a substitute for professional medical advice.</p>
         </div>
         <div className="auth-features">
           <div className="auth-feature">
@@ -134,8 +135,8 @@ export const AuthPage: React.FC = () => {
         <div className="auth-container">
           <div ref={authCardRef} className="auth-card app-card" role="form" aria-label={mode === 'login' ? 'Sign in form' : 'Create account form'}>
             <div className="auth-header">
-              <h2>{mode === 'login' ? 'Welcome Back' : 'Create Account'}</h2>
-              <p>{mode === 'login' ? 'Sign in to continue your skincare journey' : 'Start your personalized skincare experience'}</p>
+              <h2>{mode === 'login' ? 'Sign In' : 'Create Account'}</h2>
+              <p>{mode === 'login' ? 'Welcome back to your skincare journey' : 'Start your personalized skincare experience'}</p>
             </div>
             <div className="auth-content">
               {mode === 'login' ? (

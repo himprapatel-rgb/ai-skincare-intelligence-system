@@ -1,9 +1,10 @@
 .page {
   display: flex;
-  height: 100vh;
-  height: 100dvh;
+  height: calc(100vh - 64px);
   overflow: hidden;
   background: var(--bg-primary, #ffffff);
+  margin: 0 calc(-1 * var(--spacing-lg, 24px));
+  width: calc(100% + 2 * var(--spacing-lg, 24px));
 }
 
 @media (prefers-color-scheme: dark) {

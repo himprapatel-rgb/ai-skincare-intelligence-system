@@ -1,15 +1,19 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import styles from './ChatWidget.module.css';
 
 const ChatWidget: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Hide when already on chat page
+  if (location.pathname === '/chat') return null;
 
   return (
     <button
       className={styles.fab}
       onClick={() => navigate('/chat')}
-      aria-label="Open AI Chat"
+      aria-label="Talk to Skin Expert"
       type="button"
     >
       <svg

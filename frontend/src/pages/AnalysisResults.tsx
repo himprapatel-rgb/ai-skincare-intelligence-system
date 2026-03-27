@@ -838,31 +838,22 @@ const AnalysisResults: React.FC = () => {
 
         {/* Product Recommendations for Detected Concerns */}
         {recProducts.length > 0 && (
-          <div className="results-section" style={{ marginTop: 24 }}>
+          <div className="results-section results-recs-section">
             <h2 className="results-section-title">
               <IconShoppingCart size={20} strokeWidth={2} className="icon-inline" />
               Recommended for Your Concerns
             </h2>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 12 }}>
+            <div className="results-recs-grid">
               {recProducts.map(p => (
-                <Link
-                  key={p.id}
-                  to={`/product/${encodeURIComponent(p.id)}`}
-                  style={{
-                    display: 'flex', flexDirection: 'column', padding: 16,
-                    background: 'var(--bg-secondary, #f6f8fb)', borderRadius: 12,
-                    border: '1px solid var(--border-color, #e4e9ef)',
-                    textDecoration: 'none', color: 'inherit', transition: 'box-shadow 0.2s',
-                  }}
-                >
-                  <span style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{p.category}</span>
-                  <span style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--text-primary)', margin: '4px 0 2px' }}>{p.name}</span>
-                  <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{p.brand}</span>
-                  {p.rating && <span style={{ fontSize: '0.75rem', color: 'var(--primary)', marginTop: 6 }}>Rating: {p.rating}/5</span>}
+                <Link key={p.id} to={`/product/${encodeURIComponent(p.id)}`} className="results-rec-card">
+                  <span className="results-rec-category">{p.category}</span>
+                  <span className="results-rec-name">{p.name}</span>
+                  <span className="results-rec-brand">{p.brand}</span>
+                  {p.rating && <span className="results-rec-rating">Rating: {p.rating}/5</span>}
                 </Link>
               ))}
             </div>
-            <Link to="/recommendations" style={{ display: 'inline-block', marginTop: 12, fontSize: '0.85rem', color: 'var(--primary)', fontWeight: 600 }}>
+            <Link to="/recommendations" className="results-recs-link">
               View all recommendations &rarr;
             </Link>
           </div>

@@ -1098,3 +1098,31 @@
     gap: var(--spacing-lg, 24px);
   }
 }
+
+/* ── Dashboard Widgets (replacing inline styles) ── */
+.dash-widget { padding: var(--spacing-lg, 20px); }
+.dash-widget-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-sm, 12px); margin-bottom: var(--spacing-sm, 12px); }
+.dash-widget-metric { text-align: center; }
+.dash-metric-value { font-size: var(--font-size-xl, 1.25rem); font-weight: 700; color: var(--primary); display: block; }
+.dash-metric-label { font-size: var(--font-size-xs, 0.7rem); color: var(--text-muted); display: block; }
+.dash-trend-improving { color: var(--success, #16a34a); }
+.dash-trend-declining { color: var(--danger, #dc2626); }
+.dash-trend-stable { color: var(--text-primary); }
+.dash-widget-insight { font-size: var(--font-size-sm, 0.825rem); color: var(--text-secondary); line-height: 1.5; margin: 0; }
+
+/* Adherence */
+.dash-adherence-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-sm, 12px); }
+.dash-adherence-period { font-size: var(--font-size-sm, 0.85rem); color: var(--text-secondary); }
+.dash-adherence-bars { display: flex; gap: 4px; }
+.dash-adherence-day { flex: 1; text-align: center; }
+.dash-adherence-bar { width: 100%; height: 28px; border-radius: var(--radius-sm, 6px); background: var(--bg-tertiary, #eef2f6); }
+.dash-adherence-bar--done { background: var(--primary); }
+.dash-adherence-label { font-size: 0.65rem; color: var(--text-muted); margin-top: 4px; display: block; }
+.dash-streak-text { font-size: var(--font-size-sm, 0.8rem); color: var(--text-muted); margin-top: var(--spacing-xs, 8px); }
+
+/* Prediction */
+.dash-prediction-score { display: flex; align-items: baseline; gap: 8px; margin-bottom: 8px; }
+.dash-prediction-num { font-size: 1.5rem; font-weight: 800; color: var(--primary); }
+.dash-prediction-label { font-size: var(--font-size-sm, 0.8rem); color: var(--text-muted); }
+.dash-prediction-tags { margin-top: 10px; display: flex; gap: 6px; flex-wrap: wrap; }
+.dash-prediction-tag { font-size: var(--font-size-xs, 0.7rem); font-weight: 600; padding: 3px 10px; background: rgba(var(--primary-rgb), 0.06); color: var(--primary); border-radius: var(--radius-full, 12px); }

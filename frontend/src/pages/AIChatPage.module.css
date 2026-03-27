@@ -32,7 +32,7 @@
     z-index: 1100;
     width: 300px;
     transform: translateX(-100%);
-    transition: transform var(--transition-slow, 300ms);
+    transition: transform 200ms ease-out;
     box-shadow: var(--shadow-xl, 0 20px 40px rgba(31, 111, 235, 0.15));
   }
   .sidebarOpen {

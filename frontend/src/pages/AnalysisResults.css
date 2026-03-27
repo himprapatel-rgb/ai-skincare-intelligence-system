@@ -948,3 +948,56 @@
     grid-template-columns: repeat(3, 1fr);
   }
 }
+
+/* ── Product Recommendations Section ── */
+.results-recs-section { margin-top: var(--spacing-lg, 24px); }
+.results-recs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--spacing-sm, 12px);
+}
+.results-rec-card {
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-md, 16px);
+  background: var(--bg-secondary, #f6f8fb);
+  border-radius: var(--radius-lg, 12px);
+  border: 1px solid var(--border-color, #e4e9ef);
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+.results-rec-card:hover {
+  box-shadow: var(--shadow-md, 0 4px 12px rgba(0,0,0,0.06));
+  transform: translateY(-2px);
+}
+.results-rec-category {
+  font-size: var(--font-size-xs, 0.7rem);
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.results-rec-name {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 4px 0 2px;
+}
+.results-rec-brand {
+  font-size: var(--font-size-sm, 0.8rem);
+  color: var(--text-secondary);
+}
+.results-rec-rating {
+  font-size: 0.75rem;
+  color: var(--primary);
+  margin-top: 6px;
+}
+.results-recs-link {
+  display: inline-block;
+  margin-top: var(--spacing-sm, 12px);
+  font-size: var(--font-size-sm, 0.85rem);
+  color: var(--primary);
+  font-weight: 600;
+}
+.results-recs-link:hover { text-decoration: underline; }

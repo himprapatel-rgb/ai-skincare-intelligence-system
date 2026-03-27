@@ -437,24 +437,24 @@ const DashboardPage: React.FC = () => {
         {weeklySummary && (
           <div className="app-section dashboard-section">
             <h2 className="app-section-title">This Week</h2>
-            <div className="app-card" style={{ padding: 20 }}>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginBottom: 12 }}>
-                <div style={{ textAlign: 'center' }}>
-                  <span style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--primary)' }}>{weeklySummary.scans_this_week}</span>
-                  <span style={{ display: 'block', fontSize: '0.7rem', color: 'var(--text-muted)' }}>Scans</span>
+            <div className="app-card dash-widget">
+              <div className="dash-widget-grid-3">
+                <div className="dash-widget-metric">
+                  <span className="dash-metric-value">{weeklySummary.scans_this_week}</span>
+                  <span className="dash-metric-label">Scans</span>
                 </div>
-                <div style={{ textAlign: 'center' }}>
-                  <span style={{ fontSize: '1.25rem', fontWeight: 700, color: weeklySummary.score_trend === 'improving' ? '#16a34a' : weeklySummary.score_trend === 'declining' ? '#dc2626' : 'var(--text-primary)' }}>
+                <div className="dash-widget-metric">
+                  <span className={`dash-metric-value dash-trend-${weeklySummary.score_trend}`}>
                     {weeklySummary.score_trend === 'improving' ? '↑' : weeklySummary.score_trend === 'declining' ? '↓' : '→'}
                   </span>
-                  <span style={{ display: 'block', fontSize: '0.7rem', color: 'var(--text-muted)' }}>Score Trend</span>
+                  <span className="dash-metric-label">Score Trend</span>
                 </div>
-                <div style={{ textAlign: 'center' }}>
-                  <span style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--primary)' }}>{weeklySummary.routine_adherence_pct}%</span>
-                  <span style={{ display: 'block', fontSize: '0.7rem', color: 'var(--text-muted)' }}>Adherence</span>
+                <div className="dash-widget-metric">
+                  <span className="dash-metric-value">{weeklySummary.routine_adherence_pct}%</span>
+                  <span className="dash-metric-label">Adherence</span>
                 </div>
               </div>
-              <p style={{ fontSize: '0.825rem', color: 'var(--text-secondary)', lineHeight: 1.5, margin: 0 }}>{weeklySummary.insight}</p>
+              <p className="dash-widget-insight">{weeklySummary.insight}</p>
             </div>
           </div>
         )}
@@ -463,24 +463,21 @@ const DashboardPage: React.FC = () => {
         {routineAdherence && routineAdherence.completion_rate > 0 && (
           <div className="app-section dashboard-section">
             <h2 className="app-section-title">Routine Adherence</h2>
-            <div className="app-card" style={{ padding: 20 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-                <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Last 30 days</span>
-                <span style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--primary)' }}>{routineAdherence.completion_rate}%</span>
+            <div className="app-card dash-widget">
+              <div className="dash-adherence-header">
+                <span className="dash-adherence-period">Last 30 days</span>
+                <span className="dash-metric-value">{routineAdherence.completion_rate}%</span>
               </div>
-              <div style={{ display: 'flex', gap: 4 }}>
+              <div className="dash-adherence-bars">
                 {routineAdherence.this_week.map((d, i) => (
-                  <div key={i} style={{ flex: 1, textAlign: 'center' }}>
-                    <div style={{
-                      width: '100%', height: 28, borderRadius: 6,
-                      background: d.completed ? 'var(--primary)' : 'var(--bg-tertiary, #eef2f6)',
-                    }} />
-                    <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', marginTop: 4, display: 'block' }}>{d.day}</span>
+                  <div key={i} className="dash-adherence-day">
+                    <div className={`dash-adherence-bar ${d.completed ? 'dash-adherence-bar--done' : ''}`} />
+                    <span className="dash-adherence-label">{d.day}</span>
                   </div>
                 ))}
               </div>
               {routineAdherence.current_streak > 0 && (
-                <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: 8 }}>
+                <p className="dash-streak-text">
                   Current streak: {routineAdherence.current_streak} day{routineAdherence.current_streak !== 1 ? 's' : ''}
                 </p>
               )}
@@ -492,24 +489,20 @@ const DashboardPage: React.FC = () => {
         {prediction && (prediction.projected_score || prediction.summary) && (
           <div className="app-section dashboard-section">
             <h2 className="app-section-title">4-Week Outlook</h2>
-            <div className="app-card" style={{ padding: 20 }}>
+            <div className="app-card dash-widget">
               {prediction.projected_score && (
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 8 }}>
-                  <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--primary)' }}>{prediction.projected_score}</span>
-                  <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>projected score</span>
+                <div className="dash-prediction-score">
+                  <span className="dash-prediction-num">{prediction.projected_score}</span>
+                  <span className="dash-prediction-label">projected score</span>
                 </div>
               )}
               {prediction.summary && (
-                <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: 1.6, margin: 0 }}>{prediction.summary}</p>
+                <p className="dash-widget-insight">{prediction.summary}</p>
               )}
               {prediction.improvements && prediction.improvements.length > 0 && (
-                <div style={{ marginTop: 10, display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                <div className="dash-prediction-tags">
                   {prediction.improvements.map((imp, i) => (
-                    <span key={i} style={{
-                      fontSize: '0.7rem', fontWeight: 600, padding: '3px 10px',
-                      background: 'rgba(var(--primary-rgb), 0.06)', color: 'var(--primary)',
-                      borderRadius: 12,
-                    }}>{imp}</span>
+                    <span key={i} className="dash-prediction-tag">{imp}</span>
                   ))}
                 </div>
               )}

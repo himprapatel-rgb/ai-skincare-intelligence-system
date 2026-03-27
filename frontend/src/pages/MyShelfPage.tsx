@@ -289,16 +289,16 @@ const MyShelfPage: React.FC = () => {
 
       <div className="app-page-content myshelf-content">
       {conflicts.length > 0 && (
-        <section className="myshelf-conflicts" aria-label="Ingredient conflicts" style={{ background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 12, padding: '16px 20px', marginBottom: 16 }}>
-          <h3 style={{ fontSize: '0.9rem', fontWeight: 700, color: '#991b1b', margin: '0 0 8px', display: 'flex', alignItems: 'center', gap: 6 }}>
+        <section className="myshelf-conflicts" aria-label="Ingredient conflicts">
+          <h3 className="myshelf-conflicts-title">
             <IconAlertTriangle size={16} /> Ingredient Interactions Found
           </h3>
           {conflicts.map((c, i) => (
-            <div key={i} style={{ fontSize: '0.825rem', color: '#7f1d1d', marginBottom: 6 }}>
+            <div key={i} className="myshelf-conflict-item">
               <strong>{c.products?.join(' + ') || 'Products'}:</strong> {c.warning}
             </div>
           ))}
-          <button type="button" onClick={() => setConflicts([])} style={{ fontSize: '0.75rem', color: '#991b1b', background: 'none', border: 'none', cursor: 'pointer', marginTop: 4 }}>Dismiss</button>
+          <button type="button" onClick={() => setConflicts([])} className="myshelf-conflicts-dismiss">Dismiss</button>
         </section>
       )}
       {expiringSoonProducts.length > 0 && (

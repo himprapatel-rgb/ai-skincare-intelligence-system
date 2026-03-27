@@ -84,3 +84,20 @@
   color: var(--text-muted);
   margin-top: var(--spacing-md);
 }
+
+/* ── Blog Post Page ── */
+.blog-post-wrapper { max-width: 720px; margin: 0 auto; padding: 40px var(--spacing-lg, 24px); }
+.blog-post-back { font-size: var(--font-size-sm); color: var(--primary); margin-bottom: var(--spacing-lg, 24px); display: inline-block; }
+.blog-post-back:hover { text-decoration: underline; }
+.blog-post-category { display: inline-block; font-size: var(--font-size-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--primary); background: rgba(var(--primary-rgb), 0.06); padding: 3px 10px; border-radius: var(--radius-sm, 4px); margin-bottom: var(--spacing-sm, 12px); }
+.blog-post-title { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 800; line-height: 1.2; margin: 0 0 var(--spacing-sm, 12px); color: var(--text-primary); }
+.blog-post-meta { display: flex; gap: var(--spacing-md, 16px); font-size: var(--font-size-sm); color: var(--text-muted); margin-bottom: var(--spacing-xl, 32px); }
+.blog-post-content { font-size: var(--font-size-base, 1rem); line-height: 1.75; color: var(--text-secondary); }
+.blog-post-content h2 { font-size: var(--font-size-xl); font-weight: 700; color: var(--text-primary); margin: var(--spacing-xl, 32px) 0 var(--spacing-sm, 12px); }
+.blog-post-content h3 { font-size: var(--font-size-lg); font-weight: 600; color: var(--text-primary); margin: var(--spacing-lg, 24px) 0 var(--spacing-xs, 8px); }
+.blog-post-content p { margin: 0 0 var(--spacing-md, 16px); }
+.blog-post-content ul, .blog-post-content ol { padding-left: var(--spacing-lg, 24px); margin: 0 0 var(--spacing-md, 16px); }
+.blog-post-content li { margin-bottom: var(--spacing-xs, 8px); }
+.blog-post-content a { color: var(--primary); text-decoration: underline; }
+.blog-post-tags { margin-top: var(--spacing-xl, 32px); display: flex; gap: var(--spacing-xs, 8px); flex-wrap: wrap; }
+.blog-post-tag { font-size: var(--font-size-xs); font-weight: 600; padding: 3px 10px; background: var(--bg-tertiary); border-radius: var(--radius-full, 12px); color: var(--text-muted); }

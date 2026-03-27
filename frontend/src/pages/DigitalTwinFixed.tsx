@@ -12,6 +12,7 @@ import { api } from '../services/api';
 import { IconSparkles, IconCalendar } from '../components/Icons';
 import DigitalTwinTimelinePage from './DigitalTwinTimelinePage';
 import '../components/digital-twin/styles/digital-twin.css';
+import './DigitalTwinFixed.css';
 
 const DigitalTwinFixed: React.FC = () => {
   usePageTitle('Digital Twin');
@@ -67,16 +68,9 @@ const DigitalTwinFixed: React.FC = () => {
       <div className="app-page digital-twin-page">
         <div className="app-page-content">
           <BackButton />
-          <div style={{ 
-            display: 'flex', 
-            flexDirection: 'column', 
-            alignItems: 'center', 
-            justifyContent: 'center',
-            minHeight: '50vh',
-            gap: '20px'
-          }}>
+          <div className="dt-loading">
             <div className="spinner-large" />
-            <p style={{ color: '#64748b', fontSize: '16px' }}>Loading your Digital Twin...</p>
+            <p className="dt-loading-text">Loading your Digital Twin...</p>
           </div>
         </div>
       </div>
@@ -93,118 +87,34 @@ const DigitalTwinFixed: React.FC = () => {
         </header>
 
         <div className="app-page-content">
-          <div className="empty-state" style={{
-            padding: '60px 24px',
-            textAlign: 'center',
-            background: 'white',
-            borderRadius: '24px',
-            margin: '24px',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.08)'
-          }}>
-            <div style={{
-              width: '80px',
-              height: '80px',
-              margin: '0 auto 24px',
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              borderRadius: '20px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: 'white'
-            }}>
+          <div className="empty-state dt-empty">
+            <div className="dt-empty-icon">
               <IconSparkles size={40} strokeWidth={2} />
             </div>
-
-            <h2 style={{ fontSize: '24px', fontWeight: '700', marginBottom: '12px', color: '#1a1a1a' }}>
+            <h2 className="dt-empty-title">
               {hasError ? 'Unable to Load' : 'No Scan Data Yet'}
             </h2>
-
-            <p style={{ 
-              fontSize: '16px', 
-              color: '#64748b', 
-              marginBottom: '24px',
-              lineHeight: '1.6',
-              maxWidth: '400px',
-              margin: '0 auto 32px'
-            }}>
+            <p className="dt-empty-desc">
               {errorMessage || 'Complete your first face scan to start tracking your skin journey with Digital Twin.'}
             </p>
-
-            <button
-              onClick={() => navigate('/scan')}
-              style={{
-                padding: '14px 32px',
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                color: 'white',
-                border: 'none',
-                borderRadius: '16px',
-                fontSize: '16px',
-                fontWeight: '600',
-                cursor: 'pointer',
-                boxShadow: '0 4px 12px rgba(102, 126, 234, 0.3)',
-                transition: 'all 0.3s',
-              }}
-              onMouseDown={(e) => {
-                e.currentTarget.style.transform = 'scale(0.97)';
-              }}
-              onMouseUp={(e) => {
-                e.currentTarget.style.transform = 'scale(1)';
-              }}
-            >
+            <button onClick={() => navigate('/scan')} className="btn btn-primary dt-empty-btn">
               Start Face Scan
             </button>
-
             {hasError && (
-              <button
-                onClick={fetchData}
-                style={{
-                  marginTop: '16px',
-                  padding: '12px 24px',
-                  background: 'transparent',
-                  color: '#667eea',
-                  border: '2px solid #667eea',
-                  borderRadius: '16px',
-                  fontSize: '15px',
-                  fontWeight: '600',
-                  cursor: 'pointer',
-                  display: 'block',
-                  margin: '16px auto 0'
-                }}
-              >
+              <button onClick={fetchData} className="btn btn-secondary dt-retry-btn">
                 Retry
               </button>
             )}
           </div>
 
-          <div style={{
-            margin: '24px',
-            padding: '20px',
-            background: 'rgba(102, 126, 234, 0.05)',
-            borderRadius: '16px',
-            border: '1px solid rgba(102, 126, 234, 0.2)'
-          }}>
-            <h3 style={{ 
-              fontSize: '16px', 
-              fontWeight: '600', 
-              marginBottom: '12px',
-              color: '#1a1a1a',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px'
-            }}>
-              <IconCalendar size={20} />
+          <div className="dt-info-card">
+            <h3 className="dt-info-title">
               What is Digital Twin?
             </h3>
-            <p style={{ fontSize: '14px', color: '#64748b', lineHeight: '1.6', marginBottom: '12px' }}>
+            <p className="dt-info-text">
               Your Digital Twin tracks your skin's health over time by analyzing multiple face scans.
             </p>
-            <ul style={{ 
-              fontSize: '14px', 
-              color: '#64748b', 
-              lineHeight: '1.8',
-              paddingLeft: '24px',
-              margin: 0
-            }}>
+            <ul className="dt-info-list">
               <li>📊 View timeline of your skin's evolution</li>
               <li>📈 Track improvements in specific areas</li>
               <li>🔍 Compare before & after photos</li>

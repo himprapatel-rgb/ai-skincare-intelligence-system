@@ -1,9 +1,36 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, lazy, Suspense } from 'react';
 import SkinAlertCard, { SkinAlert } from '../components/clinical/SkinAlertCard';
 import AlertBanner from '../components/clinical/AlertBanner';
 import DermReportPreview, { DermReport } from '../components/clinical/DermReportPreview';
 import { api } from '../services/api';
 import styles from './ClinicalDashboardPage.module.css';
+
+const LazyLineChart = lazy(() =>
+  import('recharts').then(mod => ({ default: mod.LineChart }))
+);
+const LazyLine = lazy(() =>
+  import('recharts').then(mod => ({ default: mod.Line }))
+);
+const LazyXAxis = lazy(() =>
+  import('recharts').then(mod => ({ default: mod.XAxis }))
+);
+const LazyYAxis = lazy(() =>
+  import('recharts').then(mod => ({ default: mod.YAxis }))
+);
+const LazyTooltip = lazy(() =>
+  import('recharts').then(mod => ({ default: mod.Tooltip }))
+);
+const LazyResponsiveContainer = lazy(() =>
+  import('recharts').then(mod => ({ default: mod.ResponsiveContainer }))
+);
+const LazyCartesianGrid = lazy(() =>
+  import('recharts').then(mod => ({ default: mod.CartesianGrid }))
+);
+
+interface TrendDataPoint {
+  date: string;
+  score: number;
+}
 
 type TrendRange = '30d' | '60d' | '90d';
 
@@ -15,6 +42,38 @@ const ClinicalDashboardPage: React.FC = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [showReport, setShowReport] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [trendData, setTrendData] = useState<TrendDataPoint[]>([]);
+  const [isLoadingTrends, setIsLoadingTrends] = useState(true);
+
+  // Fetch trend data when range changes
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        setIsLoadingTrends(true);
+        const days = parseInt(trendRange);
+        const { data } = await api.get(`/api/v1/clinical/trends?days=${days}`);
+        if (cancelled) return;
+        // Normalize response — backend may return { data_points, insights } or { scores }
+        const points: TrendDataPoint[] = [];
+        if (data.data_points && Array.isArray(data.data_points)) {
+          data.data_points.forEach((p: { date?: string; overall_score?: number; score?: number }) => {
+            if (p.date) points.push({ date: p.date, score: p.overall_score ?? p.score ?? 0 });
+          });
+        } else if (data.scores && Array.isArray(data.scores)) {
+          data.scores.forEach((p: { date?: string; score?: number }) => {
+            if (p.date) points.push({ date: p.date, score: p.score ?? 0 });
+          });
+        }
+        setTrendData(points);
+      } catch {
+        if (!cancelled) setTrendData([]);
+      } finally {
+        if (!cancelled) setIsLoadingTrends(false);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [trendRange]);
 
   useEffect(() => {
     let cancelled = false;
@@ -73,8 +132,17 @@ const ClinicalDashboardPage: React.FC = () => {
   }, [report]);
 
   const handleDownloadReport = useCallback(() => {
-    // Placeholder for PDF download
-  }, []);
+    if (!report) return;
+    const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `derm-report-${report.id}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }, [report]);
 
   const activeAlerts = alerts.filter((a) => !a.is_dismissed);
 
@@ -169,13 +237,32 @@ const ClinicalDashboardPage: React.FC = () => {
               ))}
             </div>
           </div>
-          <div className={styles.chartPlaceholder}>
-            <div className={styles.placeholderContent}>
-              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.3">
-                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
-              </svg>
-              <p>Health score trend chart ({trendRange})</p>
-            </div>
+          <div className={styles.chartArea}>
+            {isLoadingTrends ? (
+              <div className={styles.loadingState}>
+                <div className={styles.spinner} />
+                <p>Loading trends...</p>
+              </div>
+            ) : trendData.length < 2 ? (
+              <div className={styles.placeholderContent}>
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.3">
+                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                </svg>
+                <p>Need at least 2 scans to show trends. Complete more scans to see your progress.</p>
+              </div>
+            ) : (
+              <Suspense fallback={<div className={styles.loadingState}><div className={styles.spinner} /><p>Loading chart...</p></div>}>
+                <LazyResponsiveContainer width="100%" height={280}>
+                  <LazyLineChart data={trendData} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
+                    <LazyCartesianGrid strokeDasharray="3 3" stroke="var(--border-color, #e4e9ef)" />
+                    <LazyXAxis dataKey="date" tick={{ fontSize: 11 }} stroke="var(--text-muted, #7a8ca0)" />
+                    <LazyYAxis domain={[0, 100]} tick={{ fontSize: 11 }} stroke="var(--text-muted, #7a8ca0)" />
+                    <LazyTooltip />
+                    <LazyLine type="monotone" dataKey="score" stroke="var(--primary, #1f5fbf)" strokeWidth={2} dot={{ r: 4 }} activeDot={{ r: 6 }} name="Skin Score" />
+                  </LazyLineChart>
+                </LazyResponsiveContainer>
+              </Suspense>
+            )}
           </div>
         </section>
 

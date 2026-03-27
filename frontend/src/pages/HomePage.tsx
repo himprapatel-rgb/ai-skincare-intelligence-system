@@ -411,6 +411,38 @@ const HomePage: React.FC = () => {
         </div>
       </FadeInSection>
 
+      {/* Skin Expert CTA */}
+      <FadeInSection className="skin-expert-section">
+        <div className="skin-expert-container">
+          <div className="skin-expert-text">
+            <span className="section-tag">Ask an Expert</span>
+            <h2>Talk to Our Skin Expert</h2>
+            <p>Get personalized skincare guidance from our AI-powered skin consultant — trained on dermatology research, ingredient science, and your unique skin profile.</p>
+            <ul className="skin-expert-features">
+              <li><IconCheck size={16} strokeWidth={2} className="inline-icon" /> Personalized routine recommendations</li>
+              <li><IconCheck size={16} strokeWidth={2} className="inline-icon" /> Ingredient analysis &amp; conflict detection</li>
+              <li><IconCheck size={16} strokeWidth={2} className="inline-icon" /> Progress interpretation from your scans</li>
+              <li><IconCheck size={16} strokeWidth={2} className="inline-icon" /> Available 24/7, instant responses</li>
+            </ul>
+            <button type="button" className="btn btn-primary btn-primary--hero" onClick={() => navigate('/chat')}>
+              <IconSparkles size={18} strokeWidth={2} />
+              Ask Skin Expert
+            </button>
+          </div>
+          <div className="skin-expert-preview">
+            <div className="skin-expert-chat-preview">
+              <div className="chat-bubble chat-bubble--user">
+                My skin feels dry after using retinol. What should I do?
+              </div>
+              <div className="chat-bubble chat-bubble--expert">
+                <span className="expert-label"><span className="expert-dot" /> Skin Expert</span>
+                That's a common response when starting retinol. I'd recommend reducing frequency to every other night and adding a ceramide-rich moisturizer...
+              </div>
+            </div>
+          </div>
+        </div>
+      </FadeInSection>
+
       {/* Testimonials */}
       <FadeInSection className="testimonials-section">
         <div className="section-header">

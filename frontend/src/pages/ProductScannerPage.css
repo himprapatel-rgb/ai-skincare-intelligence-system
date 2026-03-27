@@ -1,3 +1,6 @@
+/* Hide newsletter on this page */
+.scanner-page ~ .app-footer .footer-newsletter { display: none; }
+
 /* Product Scanner Page - Brand-Aligned Design */
 
 .product-scanner-page {

@@ -1,3 +1,6 @@
+/* Hide newsletter on this page */
+.progress-tracking-page ~ .app-footer .footer-newsletter { display: none; }
+
 /* Progress Tracking Page - App-style, mobile-first */
 
 .progress-tracking-page.app-page {

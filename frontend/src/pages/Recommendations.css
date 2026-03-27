@@ -63,7 +63,7 @@
 .favorite-button.active {
   background: var(--danger-50, #fef2f2);
   border-color: var(--danger-200, #fecaca);
-  color: #ef4444;
+  color: var(--danger, #ef4444);
 }
 
 .recommendations-page {

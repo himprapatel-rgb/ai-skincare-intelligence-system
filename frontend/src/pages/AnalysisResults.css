@@ -1,3 +1,6 @@
+/* Hide newsletter on this page */
+.analysis-results ~ .app-footer .footer-newsletter { display: none; }
+
 /* Analysis Results - Brand-Aligned Design */
 /* Uses global CSS variables from index.css */
 

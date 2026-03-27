@@ -95,8 +95,8 @@ class Settings(BaseSettings):
     )
 
     # Product database connection pool settings
-    PRODUCT_DB_POOL_SIZE: int = Field(default=2, description="Pool size for product DB (per worker)")
-    PRODUCT_DB_MAX_OVERFLOW: int = Field(default=5, description="Max overflow for product DB (per worker)")
+    PRODUCT_DB_POOL_SIZE: int = Field(default=5, description="Pool size for product DB (per worker)")
+    PRODUCT_DB_MAX_OVERFLOW: int = Field(default=10, description="Max overflow for product DB (per worker)")
     PRODUCT_DB_POOL_TIMEOUT: int = Field(default=5, description="Pool timeout for product DB")
     PRODUCT_DB_POOL_RECYCLE: int = Field(default=1800, description="Recycle seconds for product DB")
     PRODUCT_DB_STATEMENT_TIMEOUT_MS: int = Field(

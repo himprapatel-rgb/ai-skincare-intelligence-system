@@ -164,25 +164,19 @@ const DashboardPage: React.FC = () => {
       };
       setData(dashboardData);
 
-      // Fetch skin prediction (non-blocking)
+      // Single aggregated call for dashboard widgets (replaces 4 separate calls)
+      api.get('/api/v1/reports/dashboard-aggregate').then(res => {
+        const d = res.data;
+        if (d.weekly_summary) setWeeklySummary({ ...d.weekly_summary, score_trend: 'stable', insight: '' });
+        if (d.adherence) setRoutineAdherence(d.adherence);
+        if (typeof d.active_routines === 'number') {
+          setData(prev => prev ? { ...prev, activeRoutines: d.active_routines } : prev);
+        }
+      }).catch(() => {});
+
+      // AI prediction is slow (OpenAI call) — keep separate and non-blocking
       api.post('/api/v1/ai/predict', {}).then(res => {
         setPrediction(res.data);
-      }).catch(() => {});
-
-      // Fetch routine adherence (non-blocking)
-      api.get('/api/v1/routines/adherence?days=30').then(res => {
-        setRoutineAdherence(res.data);
-      }).catch(() => {});
-
-      // Fetch weekly summary (non-blocking)
-      api.get('/api/v1/reports/weekly-summary').then(res => {
-        setWeeklySummary(res.data);
-      }).catch(() => {});
-
-      // Fetch active routines count (non-blocking)
-      api.get('/api/v1/routines').then(res => {
-        const routines = Array.isArray(res.data) ? res.data : [];
-        setData(prev => prev ? { ...prev, activeRoutines: routines.length } : prev);
       }).catch(() => {});
 
     } catch (error) {

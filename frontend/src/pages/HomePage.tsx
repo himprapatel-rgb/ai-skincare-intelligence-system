@@ -4,7 +4,7 @@ import { usePageTitle } from '../hooks/usePageTitle';
 import {
   IconZap, IconScan, IconClock, IconShield, IconBookOpen,
   IconBarChart, IconSearch, IconSparkles, IconTrendingUp,
-  IconCheck, IconStar, IconLock, IconTrash2
+  IconCheck, IconStar
 } from '../components/Icons';
 import './HomePage.css';
 
@@ -58,19 +58,21 @@ const FadeInSection: React.FC<FadeInSectionProps> = ({ children, className = '',
 const AnimatedCounter: React.FC<{
   end: number; suffix?: string; prefix?: string; duration?: number; decimal?: boolean;
 }> = ({ end, suffix = '', prefix = '', duration = 1200, decimal = false }) => {
+  // Start at final value so the page never shows 0 or bad numbers
   const [count, setCount] = useState(end);
   const [hasAnimated, setHasAnimated] = useState(false);
   const ref = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReduced) return;
+    if (prefersReduced) return; // Already showing end value
     const el = ref.current;
     if (!el) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && !hasAnimated) {
           setHasAnimated(true);
+          // Animate from 80% of the target to 100% — subtle, never shows bad numbers
           const start = Math.round(end * 0.8);
           setCount(start);
           const startTime = performance.now();
@@ -98,46 +100,6 @@ const AnimatedCounter: React.FC<{
     <span ref={ref} className="stat-number stat-number--animated">
       {prefix}{displayValue}{suffix}
     </span>
-  );
-};
-
-/** Animated score ring for the hero card */
-const ScoreRing: React.FC<{ score: number; label: string; color: string; delay?: number }> = ({ score, label, color, delay = 0 }) => {
-  const [animated, setAnimated] = useState(false);
-  const ref = useRef<SVGCircleElement>(null);
-  const circumference = 2 * Math.PI * 26;
-  const offset = circumference - (score / 100) * circumference;
-
-  useEffect(() => {
-    const timer = setTimeout(() => setAnimated(true), delay + 300);
-    return () => clearTimeout(timer);
-  }, [delay]);
-
-  return (
-    <div className="score-ring-item">
-      <svg width="68" height="68" viewBox="0 0 60 60">
-        <circle cx="30" cy="30" r="26" fill="none" stroke="rgba(0,0,0,0.06)" strokeWidth="5" />
-        <circle
-          ref={ref}
-          cx="30" cy="30" r="26"
-          fill="none"
-          stroke={color}
-          strokeWidth="5"
-          strokeLinecap="round"
-          strokeDasharray={circumference}
-          strokeDashoffset={animated ? offset : circumference}
-          style={{
-            transition: 'stroke-dashoffset 1.2s cubic-bezier(0.4, 0, 0.2, 1)',
-            transform: 'rotate(-90deg)',
-            transformOrigin: 'center',
-          }}
-        />
-        <text x="30" y="33" textAnchor="middle" fontSize="15" fontWeight="800" fill={color}>
-          {score}
-        </text>
-      </svg>
-      <span className="score-ring-label">{label}</span>
-    </div>
   );
 };
 
@@ -208,311 +170,340 @@ const FaqAccordion: React.FC = () => {
 const HomePage: React.FC = () => {
   usePageTitle(null);
   const navigate = useNavigate();
+  const avatarBase = (initials: string, color: string) =>
+    `data:image/svg+xml;utf8,${encodeURIComponent(
+      `<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96">
+        <defs>
+          <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="${color}" stop-opacity="0.15"/>
+            <stop offset="100%" stop-color="${color}" stop-opacity="0.35"/>
+          </linearGradient>
+        </defs>
+        <rect width="96" height="96" rx="48" fill="url(#g)"/>
+        <text x="50%" y="54%" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="28" fill="${color}" font-weight="700">
+          ${initials}
+        </text>
+      </svg>`
+    )}`;
 
   return (
     <div className="homepage">
-      {/* ===================== HERO SECTION ===================== */}
-      <section className="hero-2026">
-        <div className="hero-mesh-bg" aria-hidden="true" />
-        <div className="hero-inner">
-          <div className="hero-text-col">
-            <div className="hero-badge-2026">
-              <span className="hero-badge-dot" />
-              AI-Powered Skin Analysis
+      {/* Hero Section - Updated with safer claims */}
+      <FadeInSection className="hero">
+        <div className="hero-decoration" aria-hidden="true">
+          <span className="hero-blob hero-blob--1" />
+          <span className="hero-blob hero-blob--2" />
+          <span className="hero-blob hero-blob--3" />
+        </div>
+        <div className="hero-content">
+          <div className="hero-text">
+            <div className="hero-badge">
+              <span className="badge-icon">
+                <IconZap size={20} strokeWidth={2} />
+              </span>
+              Clinical Skin Insights
             </div>
-            <h1 className="hero-title-2026">
-              Understand Your Skin<br />
-              <span className="hero-gradient-text">In Under 60 Seconds</span>
+            <h1 className="hero-title">
+              AI Skin Assessment<br />
+              <span className="gradient-text">From a Single Photo</span>
             </h1>
-            <p className="hero-subtitle-2026">
-              Upload a photo and receive a detailed skin health assessment with
-              personalized care recommendations — powered by clinical-grade AI.
+            <p className="hero-subtitle">
+              Receive clear skin-quality insights and practical care recommendations in under a minute.
             </p>
-            <div className="hero-actions">
-              <button type="button" className="hero-btn-primary" onClick={() => navigate('/scan')}>
-                <IconScan size={20} strokeWidth={2} />
-                Start Free Analysis
+            <div className="hero-cta">
+              <button type="button" className="btn btn-primary btn-primary--hero" onClick={() => navigate('/scan')}>
+                <span className="btn-icon">
+                  <IconScan size={20} strokeWidth={2} />
+                </span>
+                Start Free Skin Scan
               </button>
-              <button type="button" className="hero-btn-secondary" onClick={() => navigate('/analysis/demo')}>
-                View Sample Report
+              <button type="button" className="btn btn-ghost hero-cta-secondary" onClick={() => navigate('/analysis/demo')}>
+                See Sample Report
               </button>
             </div>
-            <div className="hero-trust-row">
-              <span><IconClock size={14} /> ~30 sec analysis</span>
-              <span className="hero-trust-sep" aria-hidden="true" />
-              <span><IconShield size={14} /> No signup required</span>
-              <span className="hero-trust-sep" aria-hidden="true" />
-              <span><IconTrash2 size={14} /> Delete anytime</span>
-            </div>
+            <p className="hero-reassurance">
+              <IconClock size={16} strokeWidth={2} className="inline-icon" />
+              Takes ~30 seconds &bull; No signup required &bull; Delete your photo anytime
+            </p>
+            {/* Learn more link removed — all sections now visible on mobile */}
           </div>
-
-          <div className="hero-visual-col">
-            <div className="hero-card-glass">
-              <div className="hero-card-header">
-                <span className="hero-card-dot hero-card-dot--live" />
-                Live Analysis Preview
+        </div>
+        <div className="hero-visual">
+          <div className="sample-report-preview">
+            <div className="preview-header">Sample Analysis Result</div>
+            <div className="preview-scores">
+              <div className="score-item">
+                <div className="score-circle good">85</div>
+                <span>Overall</span>
               </div>
-              <div className="hero-card-scores">
-                <ScoreRing score={85} label="Overall" color="#22c55e" delay={0} />
-                <ScoreRing score={72} label="Texture" color="#f59e0b" delay={200} />
-                <ScoreRing score={88} label="Hydration" color="#3b82f6" delay={400} />
+              <div className="score-item">
+                <div className="score-circle medium">72</div>
+                <span>Texture</span>
               </div>
-              <div className="hero-card-concerns">
-                <span className="hero-concern-pill">Mild Acne</span>
-                <span className="hero-concern-pill">Slight Redness</span>
-                <span className="hero-concern-pill hero-concern-pill--good">Good Elasticity</span>
-              </div>
-              <div className="hero-card-footer">
-                AI confidence: High &middot; Based on visible features
+              <div className="score-item">
+                <div className="score-circle good">88</div>
+                <span>Hydration</span>
               </div>
             </div>
+            <div className="preview-concerns">
+              <span className="concern-badge">Mild Acne</span>
+              <span className="concern-badge">Slight Redness</span>
+            </div>
+              <p className="preview-disclaimer">Results are estimates based on visible features and image quality.</p>
           </div>
         </div>
         <ScrollIndicator />
-      </section>
+      </FadeInSection>
 
-      {/* ===================== TRUST BAR ===================== */}
-      <FadeInSection className="trust-bar-section">
-        <div className="trust-bar">
-          <div className="trust-bar-item">
-            <div className="trust-bar-icon trust-bar-icon--green">
-              <IconShield size={22} strokeWidth={2.5} />
-            </div>
-            <div className="trust-bar-content">
-              <span className="trust-bar-title">GDPR Compliant</span>
-              <span className="trust-bar-desc">Your data is protected under EU privacy law</span>
-            </div>
+      {/* Trust Badges - Privacy first, then Encrypted, Research, Delete */}
+      <FadeInSection className="trust-badges-section">
+        <div className="trust-badges-grid">
+          <div className="trust-badge-card trust-badge-privacy">
+            <span className="trust-badge-icon">
+              <IconShield size={28} strokeWidth={2.5} fill="currentColor" />
+            </span>
+            <span className="trust-badge-text">Privacy-First Processing</span>
           </div>
-          <div className="trust-bar-item">
-            <div className="trust-bar-icon trust-bar-icon--blue">
-              <IconLock size={22} strokeWidth={2.5} />
-            </div>
-            <div className="trust-bar-content">
-              <span className="trust-bar-title">AES-256 Encrypted</span>
-              <span className="trust-bar-desc">Bank-grade encryption for all uploads</span>
-            </div>
+          <div className="trust-badge-card trust-badge-security">
+            <span className="trust-badge-icon">
+              <IconShield size={28} strokeWidth={2.5} fill="currentColor" />
+            </span>
+            <span className="trust-badge-text">Encrypted Uploads</span>
           </div>
-          <div className="trust-bar-item">
-            <div className="trust-bar-icon trust-bar-icon--purple">
-              <IconZap size={22} strokeWidth={2.5} />
-            </div>
-            <div className="trust-bar-content">
-              <span className="trust-bar-title">AI-Powered</span>
-              <span className="trust-bar-desc">GPT-4 Vision + dermatology models</span>
-            </div>
+          <div className="trust-badge-card trust-badge-research">
+            <span className="trust-badge-icon">
+              <IconBookOpen size={28} strokeWidth={2.5} fill="currentColor" />
+            </span>
+            <span className="trust-badge-text">Dermatology Research</span>
           </div>
-          <div className="trust-bar-item">
-            <div className="trust-bar-icon trust-bar-icon--teal">
-              <IconBookOpen size={22} strokeWidth={2.5} />
-            </div>
-            <div className="trust-bar-content">
-              <span className="trust-bar-title">Research-Backed</span>
-              <span className="trust-bar-desc">Based on peer-reviewed dermatology</span>
-            </div>
+          <div className="trust-badge-card trust-badge-delete">
+            <span className="trust-badge-icon">
+              <IconShield size={28} strokeWidth={2.5} fill="currentColor" />
+            </span>
+            <span className="trust-badge-text">Delete Data Anytime</span>
           </div>
         </div>
       </FadeInSection>
 
-      {/* ===================== STATS ===================== */}
-      <FadeInSection className="stats-section-2026">
-        <div className="stats-inner">
-          <div className="stat-card">
+      {/* Trust / Compliance badges (replacing unverifiable press mentions) */}
+      <FadeInSection className="as-featured-section" aria-label="Built with trust">
+        <p className="as-featured-label">Built with clinical standards</p>
+        <div className="as-featured-logos" role="list">
+          <span className="as-featured-badge" role="listitem">GDPR Compliant</span>
+          <span className="as-featured-badge" role="listitem">AI-Powered Analysis</span>
+          <span className="as-featured-badge" role="listitem">Dermatology Research</span>
+          <span className="as-featured-badge" role="listitem">AES-256 Encrypted</span>
+        </div>
+      </FadeInSection>
+
+      {/* Community Stats */}
+      <FadeInSection className="stats-section">
+        <div className="section-header">
+          <span className="section-tag">Trusted Platform</span>
+          <h2>Join Thousands of Skincare Enthusiasts</h2>
+          <p>Real results from real users improving their skin health</p>
+        </div>
+        <div className="stats-grid">
+          <div className="stat-item">
             <AnimatedCounter end={50000} suffix="+" />
             <span className="stat-label">Scans Completed</span>
           </div>
-          <div className="stat-divider" />
-          <div className="stat-card">
+          <div className="stat-item">
             <AnimatedCounter end={12000} suffix="+" />
             <span className="stat-label">Active Users</span>
           </div>
-          <div className="stat-divider" />
-          <div className="stat-card">
+          <div className="stat-item">
             <AnimatedCounter end={48} suffix="/5" decimal />
             <span className="stat-label">User Rating</span>
           </div>
-          <div className="stat-divider" />
-          <div className="stat-card">
+          <div className="stat-item">
             <AnimatedCounter end={95} suffix="%" />
-            <span className="stat-label">Satisfaction</span>
+            <span className="stat-label">Satisfaction Rate</span>
           </div>
         </div>
       </FadeInSection>
 
-      {/* ===================== BENTO FEATURES ===================== */}
-      <FadeInSection className="bento-section">
+      {/* What You'll Get Section - NEW */}
+      <FadeInSection className="results-preview">
         <div className="section-header">
-          <span className="section-tag">What You Get</span>
-          <h2>Comprehensive Skin Intelligence</h2>
-          <p>Everything you need to understand and improve your skin health</p>
+          <span className="section-tag">Your Results</span>
+          <h2>What You'll Get</h2>
+          <p>Comprehensive skin analysis with actionable insights</p>
         </div>
-        <div className="bento-grid">
-          <div className="bento-card bento-card--large bento-card--scores">
-            <div className="bento-card-icon">
-              <IconBarChart size={32} strokeWidth={1.5} />
+        <div className="results-grid">
+          <div className="result-card">
+            <div className="result-icon">
+              <IconBarChart size={48} strokeWidth={2} />
             </div>
-            <h3>Detailed Skin Scores</h3>
-            <p>Overall health, texture, hydration, and clarity rated 0-100 with trend tracking over time</p>
-            <div className="bento-mini-scores">
-              <div className="bento-mini-bar"><span style={{ width: '85%', background: '#22c55e' }} /><label>Overall 85</label></div>
-              <div className="bento-mini-bar"><span style={{ width: '72%', background: '#f59e0b' }} /><label>Texture 72</label></div>
-              <div className="bento-mini-bar"><span style={{ width: '88%', background: '#3b82f6' }} /><label>Hydration 88</label></div>
-            </div>
+            <h3>Skin Scores</h3>
+            <p>Overall health, texture, hydration, and clarity scores from 0-100</p>
           </div>
-          <div className="bento-card bento-card--concern">
-            <div className="bento-card-icon">
-              <IconSearch size={28} strokeWidth={1.5} />
+          <div className="result-card">
+            <div className="result-icon">
+              <IconSearch size={48} strokeWidth={2} />
             </div>
             <h3>Concern Detection</h3>
             <p>Identifies visible signs of acne, redness, pigmentation, and fine lines</p>
           </div>
-          <div className="bento-card bento-card--routine">
-            <div className="bento-card-icon">
-              <IconSparkles size={28} strokeWidth={1.5} />
+          <div className="result-card">
+            <div className="result-icon">
+              <IconSparkles size={48} strokeWidth={2} />
             </div>
-            <h3>Smart Routines</h3>
-            <p>Personalized AM/PM routines with product recommendations</p>
+            <h3>Routine Suggestions</h3>
+            <p>Personalized AM/PM skincare routine recommendations</p>
           </div>
-          <div className="bento-card bento-card--tracking">
-            <div className="bento-card-icon">
-              <IconTrendingUp size={28} strokeWidth={1.5} />
+          <div className="result-card">
+            <div className="result-icon">
+              <IconTrendingUp size={48} strokeWidth={2} />
             </div>
             <h3>Progress Tracking</h3>
-            <p>Compare scans over time and see your skin improve</p>
-            <span className="bento-badge-free">Free account</span>
+                        <p>Track improvements over time with scan history comparisons <span className="account-note">(Optional – requires account)</span></p>
           </div>
         </div>
       </FadeInSection>
 
-      {/* ===================== HOW IT WORKS ===================== */}
-      <FadeInSection className="how-it-works-2026">
+      {/* How It Works - Updated with guidance */}
+      <FadeInSection className="how-it-works">
         <div className="section-header">
-          <span className="section-tag">3 Simple Steps</span>
+          <span className="section-tag">Simple Process</span>
           <h2>How It Works</h2>
-          <p>From photo to personalized insights in under a minute</p>
+          <p>Get your personalized skin analysis in three easy steps</p>
         </div>
-        <div className="steps-timeline">
-          <div className="step-2026">
-            <div className="step-number-2026">1</div>
-            <div className="step-connector" aria-hidden="true" />
-            <div className="step-content-2026">
-              <div className="step-visual-2026">
-                <div className="step-icon-box step-icon-box--blue">
-                  <IconScan size={36} strokeWidth={1.5} />
-                </div>
-              </div>
-              <h3>Upload Your Photo</h3>
-              <p>Take a clear selfie or upload an existing photo</p>
-              <div className="step-tips-2026">
-                <span><IconCheck size={14} /> Good lighting</span>
-                <span><IconCheck size={14} /> No makeup</span>
-                <span><IconCheck size={14} /> Front-facing</span>
-              </div>
+        <div className="steps-container">
+          <div className="step-card">
+            <div className="step-number">1</div>
+            <div className="step-illustration step-illustration--primary" aria-hidden="true">
+              <img src="/how-it-works-upload.svg" alt="Upload your photo for skin analysis" loading="lazy" width="200" height="160" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+            </div>
+            <h3>Upload Photo</h3>
+            <p>Take or upload a clear selfie</p>
+            <div className="step-tips">
+              <span>
+                <IconCheck size={16} strokeWidth={2} className="inline-icon" />
+                Good lighting
+              </span>
+              <span>
+                <IconCheck size={16} strokeWidth={2} className="inline-icon" />
+                No makeup
+              </span>
+              <span>
+                <IconCheck size={16} strokeWidth={2} className="inline-icon" />
+                Front-facing
+              </span>
             </div>
           </div>
-          <div className="step-2026">
-            <div className="step-number-2026">2</div>
-            <div className="step-connector" aria-hidden="true" />
-            <div className="step-content-2026">
-              <div className="step-visual-2026">
-                <div className="step-icon-box step-icon-box--purple">
-                  <IconZap size={36} strokeWidth={1.5} />
-                </div>
-              </div>
-              <h3>AI Analysis</h3>
-              <p>Our model detects visible signs of acne, redness, pigmentation, and texture patterns</p>
+          <div className="step-card">
+            <div className="step-number">2</div>
+            <div className="step-illustration step-illustration--accent" aria-hidden="true">
+              <img src="/how-it-works-analysis.svg" alt="AI analyzes your skin" loading="lazy" width="200" height="160" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
             </div>
+            <h3>AI Analysis</h3>
+            <p>Our model detects visible signs of acne, redness, pigmentation, and texture patterns</p>
           </div>
-          <div className="step-2026">
-            <div className="step-number-2026">3</div>
-            <div className="step-content-2026">
-              <div className="step-visual-2026">
-                <div className="step-icon-box step-icon-box--green">
-                  <IconSparkles size={36} strokeWidth={1.5} />
-                </div>
-              </div>
-              <h3>Get Your Report</h3>
-              <p>Receive scores, concern breakdowns, and personalized routine suggestions</p>
+          <div className="step-card">
+            <div className="step-number">3</div>
+            <div className="step-illustration step-illustration--soft" aria-hidden="true">
+              <img src="/how-it-works-results.svg" alt="View your personalized results" loading="lazy" width="200" height="160" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
             </div>
+            <h3>Get Results</h3>
+            <p>Receive a skin summary, concern scores, and personalized routine suggestions</p>
           </div>
         </div>
       </FadeInSection>
 
-      {/* ===================== TESTIMONIALS ===================== */}
-      <FadeInSection className="testimonials-section-2026">
+      {/* Testimonials */}
+      <FadeInSection className="testimonials-section">
         <div className="section-header">
           <span className="section-tag">Real Results</span>
-          <h2>What Our Users Say</h2>
-          <p>See how people improved their routines with Pellicura</p>
+          <h2>Stories from Our Users</h2>
+          <p>See how people improved their routines with SkinCareAI</p>
         </div>
-        <div className="testimonials-scroll">
-          {[
-            {
-              name: 'Ananya P.',
-              initials: 'AP',
-              color: '#1f6feb',
-              tag: 'Redness control',
-              text: '"The weekly scans helped me spot patterns and adjust my routine. In six weeks, my redness score dropped and my skin felt calmer."',
-            },
-            {
-              name: 'James R.',
-              initials: 'JR',
-              color: '#0f766e',
-              tag: 'Texture improvement',
-              text: '"I finally understood which products were working. The AI flagged irritation early, and my texture score improved fast."',
-            },
-            {
-              name: 'Sarah K.',
-              initials: 'SK',
-              color: '#f97316',
-              tag: 'Hydration + glow',
-              text: '"The routine suggestions were spot on. My hydration went from low to balanced, and the before/after view kept me motivated."',
-            },
-          ].map((t, i) => (
-            <div className="testimonial-card-2026" key={i}>
-              <div className="testimonial-top">
-                <div className="testimonial-avatar-2026" style={{ background: `${t.color}15`, color: t.color }}>
-                  {t.initials}
-                </div>
-                <div>
-                  <h4>{t.name}</h4>
-                  <span className="testimonial-tag">{t.tag}</span>
-                </div>
+        <div className="testimonials-grid">
+          <div className="testimonial-card">
+            <div className="testimonial-header">
+              <div className="testimonial-avatar">
+                <img src={avatarBase('AP', '#1f6feb')} alt="Ananya P." />
               </div>
-              <div className="testimonial-stars-2026">
-                {Array.from({ length: 5 }).map((_, j) => (
-                  <IconStar key={j} size={15} strokeWidth={2} fill="#f59e0b" stroke="#f59e0b" />
-                ))}
+              <div>
+                <h3>Ananya P.</h3>
+                <span>Before/After: Redness control</span>
               </div>
-              <p>{t.text}</p>
             </div>
-          ))}
+            <div className="testimonial-stars">
+              {Array.from({ length: 5 }).map((_, index) => (
+                <IconStar key={index} size={16} strokeWidth={2} fill="#f59e0b" stroke="#f59e0b" />
+              ))}
+            </div>
+            <p>
+              “The weekly scans helped me spot patterns and adjust my routine.
+              In six weeks, my redness score dropped and my skin felt calmer.”
+            </p>
+          </div>
+          <div className="testimonial-card">
+            <div className="testimonial-header">
+              <div className="testimonial-avatar">
+                <img src={avatarBase('JR', '#0f766e')} alt="James R." />
+              </div>
+              <div>
+                <h3>James R.</h3>
+                <span>Before/After: Texture improvements</span>
+              </div>
+            </div>
+            <div className="testimonial-stars">
+              {Array.from({ length: 5 }).map((_, index) => (
+                <IconStar key={index} size={16} strokeWidth={2} fill="#f59e0b" stroke="#f59e0b" />
+              ))}
+            </div>
+            <p>
+              “I finally understood which products were working. The AI
+              flagged irritation early, and my texture score improved fast.”
+            </p>
+          </div>
+          <div className="testimonial-card">
+            <div className="testimonial-header">
+              <div className="testimonial-avatar">
+                <img src={avatarBase('SK', '#f97316')} alt="Sarah K." />
+              </div>
+              <div>
+                <h3>Sarah K.</h3>
+                <span>Before/After: Hydration + glow</span>
+              </div>
+            </div>
+            <div className="testimonial-stars">
+              {Array.from({ length: 5 }).map((_, index) => (
+                <IconStar key={index} size={16} strokeWidth={2} fill="#f59e0b" stroke="#f59e0b" />
+              ))}
+            </div>
+            <p>
+              “The routine suggestions were spot on. My hydration went from
+              low to balanced, and the before/after view kept me motivated.”
+            </p>
+          </div>
         </div>
       </FadeInSection>
 
-      {/* ===================== FAQ ===================== */}
-      <FadeInSection className="faq-section-2026">
-        <div className="section-header">
-          <span className="section-tag">Common Questions</span>
-          <h2>Frequently Asked Questions</h2>
-        </div>
-        <FaqAccordion />
-      </FadeInSection>
+        {/* FAQ Section */}
+        <FadeInSection className="faq-section">
+          <div className="section-header">
+            <span className="section-tag">Common Questions</span>
+            <h2>FAQ</h2>
+          </div>
+          <FaqAccordion />
+        </FadeInSection>
 
-      {/* ===================== FINAL CTA ===================== */}
-      <FadeInSection className="cta-section-2026">
-        <div className="cta-inner-2026">
+      {/* CTA Section - single link to avoid duplicate primary CTA (Phase 1 fix) */}
+      <FadeInSection className="cta-section">
+        <div className="cta-content">
           <h2>Ready to Understand Your Skin?</h2>
           <p>Get instant AI-powered insights from a single photo</p>
-          <button type="button" className="cta-btn-2026" onClick={() => navigate('/scan')}>
-            <IconScan size={20} strokeWidth={2} />
-            Start Free Skin Scan
-          </button>
-          <span className="cta-reassurance-2026">
-            <IconShield size={14} />
+          <button type="button" className="btn btn-cta-hero" onClick={() => navigate('/scan')}>Start Free Skin Scan</button>
+          <p className="cta-reassurance">
+            <IconShield size={16} strokeWidth={2} className="icon-inline" />
             Your photo is processed securely and never shared
-          </span>
+          </p>
         </div>
       </FadeInSection>
+      {/* Single CTA on home: hero button only (no floating CTA to avoid duplicate) */}
     </div>
   );
 };

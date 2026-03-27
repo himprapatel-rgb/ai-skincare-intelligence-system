@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { useShelf } from '../context/ShelfContext';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { getScanHistory } from '../services/scanApi';
+import { api } from '../services/api';
 import { 
   IconTrendingUp, 
   IconCamera, 
@@ -59,6 +60,8 @@ const DashboardPage: React.FC = () => {
   const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
   const [scanDates, setScanDates] = useState<string[]>([]);
+  const [prediction, setPrediction] = useState<{ projected_score?: number; improvements?: string[]; summary?: string } | null>(null);
+  const [routineAdherence, setRoutineAdherence] = useState<{ completion_rate: number; current_streak: number; this_week: Array<{ day: string; completed: boolean }> } | null>(null);
   const [scanReminder, setScanReminder] = useState<ScanReminder>(() => {
     try {
       const raw = localStorage.getItem(SCAN_REMINDER_KEY);
@@ -159,6 +162,17 @@ const DashboardPage: React.FC = () => {
         skinTrend: avgScore >= 70 ? 'improving' : avgScore >= 40 ? 'stable' : 'declining',
       };
       setData(dashboardData);
+
+      // Fetch skin prediction (non-blocking)
+      api.post('/api/v1/ai/predict', {}).then(res => {
+        setPrediction(res.data);
+      }).catch(() => {});
+
+      // Fetch routine adherence (non-blocking)
+      api.get('/api/v1/routines/adherence?days=30').then(res => {
+        setRoutineAdherence(res.data);
+      }).catch(() => {});
+
     } catch (error) {
       console.error('Failed to fetch dashboard data:', error);
       setData({
@@ -413,6 +427,64 @@ const DashboardPage: React.FC = () => {
             </button>
           </div>
         )}
+        {/* Routine Adherence Widget */}
+        {routineAdherence && routineAdherence.completion_rate > 0 && (
+          <div className="app-section dashboard-section">
+            <h2 className="app-section-title">Routine Adherence</h2>
+            <div className="app-card" style={{ padding: 20 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Last 30 days</span>
+                <span style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--primary)' }}>{routineAdherence.completion_rate}%</span>
+              </div>
+              <div style={{ display: 'flex', gap: 4 }}>
+                {routineAdherence.this_week.map((d, i) => (
+                  <div key={i} style={{ flex: 1, textAlign: 'center' }}>
+                    <div style={{
+                      width: '100%', height: 28, borderRadius: 6,
+                      background: d.completed ? 'var(--primary)' : 'var(--bg-tertiary, #eef2f6)',
+                    }} />
+                    <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', marginTop: 4, display: 'block' }}>{d.day}</span>
+                  </div>
+                ))}
+              </div>
+              {routineAdherence.current_streak > 0 && (
+                <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: 8 }}>
+                  Current streak: {routineAdherence.current_streak} day{routineAdherence.current_streak !== 1 ? 's' : ''}
+                </p>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* 4-Week Skin Prediction */}
+        {prediction && (prediction.projected_score || prediction.summary) && (
+          <div className="app-section dashboard-section">
+            <h2 className="app-section-title">4-Week Outlook</h2>
+            <div className="app-card" style={{ padding: 20 }}>
+              {prediction.projected_score && (
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 8 }}>
+                  <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--primary)' }}>{prediction.projected_score}</span>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>projected score</span>
+                </div>
+              )}
+              {prediction.summary && (
+                <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: 1.6, margin: 0 }}>{prediction.summary}</p>
+              )}
+              {prediction.improvements && prediction.improvements.length > 0 && (
+                <div style={{ marginTop: 10, display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                  {prediction.improvements.map((imp, i) => (
+                    <span key={i} style={{
+                      fontSize: '0.7rem', fontWeight: 600, padding: '3px 10px',
+                      background: 'rgba(var(--primary-rgb), 0.06)', color: 'var(--primary)',
+                      borderRadius: 12,
+                    }}>{imp}</span>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
         <div className="app-section dashboard-section">
           <h2 className="app-section-title">Quick Actions</h2>
           <div className="app-list-group">

@@ -4,6 +4,7 @@ import { IconDownload, IconShare2, IconTrendingUp, IconTrendingDown } from '../c
 import LazyImage from '../components/LazyImage';
 import { ComparisonSlider } from '../components/ComparisonSlider';
 import { getScanHistory } from '../services/scanApi';
+import { api } from '../services/api';
 import { usePageTitle } from '../hooks/usePageTitle';
 import './CommonStyles.css';
 import './ComparisonPage.css';
@@ -32,7 +33,8 @@ const ComparisonPage: React.FC = () => {
   usePageTitle('Compare Analyses');
   const [analyses, setAnalyses] = useState<Analysis[]>([]);
   const [selectedAnalyses, setSelectedAnalyses] = useState<[string | null, string | null]>([null, null]);
-  // Loading state reserved for future API integration.
+  const [aiInsight, setAiInsight] = useState<string | null>(null);
+  const [loadingInsight, setLoadingInsight] = useState(false);
 
   const [allAnalysesForChart, setAllAnalysesForChart] = useState<Analysis[]>([]);
   const [rechartsModule, setRechartsModule] = useState<typeof import('recharts') | null>(null);
@@ -145,6 +147,29 @@ const ComparisonPage: React.FC = () => {
       })),
     [allAnalysesForChart]
   );
+
+  // Fetch AI-generated comparison insight when both scans are selected
+  useEffect(() => {
+    if (!analysis1 || !analysis2) { setAiInsight(null); return; }
+    let cancelled = false;
+    (async () => {
+      try {
+        setLoadingInsight(true);
+        const { data } = await api.post('/api/v1/ai/compare', {
+          scan_id_1: analysis1.id,
+          scan_id_2: analysis2.id,
+        });
+        if (!cancelled) {
+          setAiInsight(data.summary || data.insight || data.comparison_text || JSON.stringify(data));
+        }
+      } catch {
+        if (!cancelled) setAiInsight(null);
+      } finally {
+        if (!cancelled) setLoadingInsight(false);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [analysis1, analysis2]);
 
   const handleExportComparison = async () => {
     const el = comparisonCardRef.current;
@@ -363,6 +388,20 @@ const ComparisonPage: React.FC = () => {
                   <div className="comparison-chart-placeholder">
                     Loading chart…
                   </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* AI Insight */}
+          {(aiInsight || loadingInsight) && (
+            <div className="card comparison-card">
+              <div className="card-header"><h3>AI Analysis</h3></div>
+              <div className="card-content">
+                {loadingInsight ? (
+                  <p style={{ color: 'var(--text-muted)', fontStyle: 'italic' }}>Analyzing changes between your scans...</p>
+                ) : (
+                  <p style={{ lineHeight: 1.65, color: 'var(--text-secondary)', whiteSpace: 'pre-line' }}>{aiInsight}</p>
                 )}
               </div>
             </div>

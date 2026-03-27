@@ -44,6 +44,7 @@ const AnalysisResults: React.FC = () => {
   const [previousScans, setPreviousScans] = useState<ScanHistoryItem[]>([]);
   const [imageError, setImageError] = useState(false);
   const [savedToFavorites, setSavedToFavorites] = useState(false);
+  const [recProducts, setRecProducts] = useState<Array<{ id: string; name: string; brand: string; category: string; rating?: number; image_url?: string }>>([]);
   const [exporting, setExporting] = useState<'pdf' | 'image' | null>(null);
   const exportContainerRef = useRef<HTMLDivElement>(null);
   const apiBase = API_BASE_URL;
@@ -169,6 +170,37 @@ const AnalysisResults: React.FC = () => {
       setSavedToFavorites(false);
     }
   }, [analysisId]);
+
+  // Fetch product recommendations based on detected concerns
+  useEffect(() => {
+    if (!analysis || analysis.concerns.length === 0) return;
+    let cancelled = false;
+    const token = localStorage.getItem('auth_token');
+    (async () => {
+      try {
+        const url = new URL(`${API_BASE_URL}/recommendations`);
+        url.searchParams.set('concerns', analysis.concerns.join(','));
+        url.searchParams.set('limit', '3');
+        const res = await fetch(url.toString(), {
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+        });
+        if (!res.ok || cancelled) return;
+        const data = await res.json();
+        const items = (data.recommendations || []).slice(0, 3).map((p: Record<string, unknown>) => ({
+          id: String(p.id || ''),
+          name: String(p.name || ''),
+          brand: String(p.brand || ''),
+          category: String(p.category || ''),
+          rating: typeof p.rating === 'number' ? p.rating : (typeof p.average_rating === 'number' ? p.average_rating : undefined),
+          image_url: typeof p.image_url === 'string' ? p.image_url : undefined,
+        }));
+        if (!cancelled) setRecProducts(items);
+      } catch {
+        // Non-critical
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [analysis]);
 
   const toggleSaveAnalysis = () => {
     if (!analysisId) return;
@@ -801,6 +833,38 @@ const AnalysisResults: React.FC = () => {
               </div>
             );
             })()}
+          </div>
+        )}
+
+        {/* Product Recommendations for Detected Concerns */}
+        {recProducts.length > 0 && (
+          <div className="results-section" style={{ marginTop: 24 }}>
+            <h2 className="results-section-title">
+              <IconShoppingCart size={20} strokeWidth={2} className="icon-inline" />
+              Recommended for Your Concerns
+            </h2>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 12 }}>
+              {recProducts.map(p => (
+                <Link
+                  key={p.id}
+                  to={`/product/${encodeURIComponent(p.id)}`}
+                  style={{
+                    display: 'flex', flexDirection: 'column', padding: 16,
+                    background: 'var(--bg-secondary, #f6f8fb)', borderRadius: 12,
+                    border: '1px solid var(--border-color, #e4e9ef)',
+                    textDecoration: 'none', color: 'inherit', transition: 'box-shadow 0.2s',
+                  }}
+                >
+                  <span style={{ fontSize: '0.7rem', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{p.category}</span>
+                  <span style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--text-primary)', margin: '4px 0 2px' }}>{p.name}</span>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{p.brand}</span>
+                  {p.rating && <span style={{ fontSize: '0.75rem', color: 'var(--primary)', marginTop: 6 }}>Rating: {p.rating}/5</span>}
+                </Link>
+              ))}
+            </div>
+            <Link to="/recommendations" style={{ display: 'inline-block', marginTop: 12, fontSize: '0.85rem', color: 'var(--primary)', fontWeight: 600 }}>
+              View all recommendations &rarr;
+            </Link>
           </div>
         )}
 

@@ -253,6 +253,22 @@ const TodayPage: React.FC = () => {
     } else {
       setCompletedEvening(next);
     }
+
+    // Sync to backend (non-blocking)
+    const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
+    if (token) {
+      const steps = routineType === 'morning' ? morningSteps : eveningSteps;
+      const completed = routineType === 'morning' ? next : next;
+      fetch(`${API_BASE_URL}/routines/checkin`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          routine_type: routineType,
+          steps_completed: completed.size,
+          steps_total: steps.length,
+        }),
+      }).catch(() => {}); // Silent — localStorage is the source of truth
+    }
   };
 
   const firstName = user?.full_name?.split(' ')[0] || user?.email?.split('@')[0] || 'there';

@@ -1567,6 +1567,7 @@ body[data-page="chat"] .app-main {
   flex: 1;
   overflow: hidden;
   padding: 0;
+     height: 100%;
   min-height: 0;
 }
 

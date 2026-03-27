@@ -54,32 +54,33 @@ const FadeInSection: React.FC<FadeInSectionProps> = ({ children, className = '',
   );
 };
 
-/** Animated number counter that counts up when scrolled into view */
+/** Animated number counter — shows final value immediately, then does a subtle count-up from ~80% when scrolled into view. Never shows low/zero numbers. */
 const AnimatedCounter: React.FC<{
   end: number; suffix?: string; prefix?: string; duration?: number; decimal?: boolean;
-}> = ({ end, suffix = '', prefix = '', duration = 1800, decimal = false }) => {
-  const [count, setCount] = useState(0);
+}> = ({ end, suffix = '', prefix = '', duration = 1200, decimal = false }) => {
+  // Start at final value so the page never shows 0 or bad numbers
+  const [count, setCount] = useState(end);
   const [hasAnimated, setHasAnimated] = useState(false);
   const ref = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReduced) {
-      setCount(end);
-      return;
-    }
+    if (prefersReduced) return; // Already showing end value
     const el = ref.current;
     if (!el) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && !hasAnimated) {
           setHasAnimated(true);
+          // Animate from 80% of the target to 100% — subtle, never shows bad numbers
+          const start = Math.round(end * 0.8);
+          setCount(start);
           const startTime = performance.now();
           const animate = (now: number) => {
             const elapsed = now - startTime;
             const progress = Math.min(elapsed / duration, 1);
-            const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
-            setCount(Math.round(eased * end));
+            const eased = 1 - Math.pow(1 - progress, 3);
+            setCount(Math.round(start + eased * (end - start)));
             if (progress < 1) requestAnimationFrame(animate);
           };
           requestAnimationFrame(animate);
@@ -284,14 +285,14 @@ const HomePage: React.FC = () => {
         </div>
       </FadeInSection>
 
-      {/* As featured / Social proof (Task 213, issue #63: badge-style for credibility) */}
-      <FadeInSection className="as-featured-section" aria-label="As featured in">
-        <p className="as-featured-label">As featured in</p>
+      {/* Trust / Compliance badges (replacing unverifiable press mentions) */}
+      <FadeInSection className="as-featured-section" aria-label="Built with trust">
+        <p className="as-featured-label">Built with clinical standards</p>
         <div className="as-featured-logos" role="list">
-          <span className="as-featured-badge" role="listitem">Allure</span>
-          <span className="as-featured-badge" role="listitem">Derm Review</span>
-          <span className="as-featured-badge" role="listitem">TechCrunch</span>
-          <span className="as-featured-badge" role="listitem">Skincare.com</span>
+          <span className="as-featured-badge" role="listitem">GDPR Compliant</span>
+          <span className="as-featured-badge" role="listitem">AI-Powered Analysis</span>
+          <span className="as-featured-badge" role="listitem">Dermatology Research</span>
+          <span className="as-featured-badge" role="listitem">AES-256 Encrypted</span>
         </div>
       </FadeInSection>
 

@@ -62,6 +62,7 @@ const DashboardPage: React.FC = () => {
   const [scanDates, setScanDates] = useState<string[]>([]);
   const [prediction, setPrediction] = useState<{ projected_score?: number; improvements?: string[]; summary?: string } | null>(null);
   const [routineAdherence, setRoutineAdherence] = useState<{ completion_rate: number; current_streak: number; this_week: Array<{ day: string; completed: boolean }> } | null>(null);
+  const [weeklySummary, setWeeklySummary] = useState<{ scans_this_week: number; score_trend: string; routine_adherence_pct: number; insight: string; active_goals: number } | null>(null);
   const [scanReminder, setScanReminder] = useState<ScanReminder>(() => {
     try {
       const raw = localStorage.getItem(SCAN_REMINDER_KEY);
@@ -171,6 +172,17 @@ const DashboardPage: React.FC = () => {
       // Fetch routine adherence (non-blocking)
       api.get('/api/v1/routines/adherence?days=30').then(res => {
         setRoutineAdherence(res.data);
+      }).catch(() => {});
+
+      // Fetch weekly summary (non-blocking)
+      api.get('/api/v1/reports/weekly-summary').then(res => {
+        setWeeklySummary(res.data);
+      }).catch(() => {});
+
+      // Fetch active routines count (non-blocking)
+      api.get('/api/v1/routines').then(res => {
+        const routines = Array.isArray(res.data) ? res.data : [];
+        setData(prev => prev ? { ...prev, activeRoutines: routines.length } : prev);
       }).catch(() => {});
 
     } catch (error) {
@@ -427,6 +439,32 @@ const DashboardPage: React.FC = () => {
             </button>
           </div>
         )}
+        {/* Weekly Summary Widget */}
+        {weeklySummary && (
+          <div className="app-section dashboard-section">
+            <h2 className="app-section-title">This Week</h2>
+            <div className="app-card" style={{ padding: 20 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginBottom: 12 }}>
+                <div style={{ textAlign: 'center' }}>
+                  <span style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--primary)' }}>{weeklySummary.scans_this_week}</span>
+                  <span style={{ display: 'block', fontSize: '0.7rem', color: 'var(--text-muted)' }}>Scans</span>
+                </div>
+                <div style={{ textAlign: 'center' }}>
+                  <span style={{ fontSize: '1.25rem', fontWeight: 700, color: weeklySummary.score_trend === 'improving' ? '#16a34a' : weeklySummary.score_trend === 'declining' ? '#dc2626' : 'var(--text-primary)' }}>
+                    {weeklySummary.score_trend === 'improving' ? '↑' : weeklySummary.score_trend === 'declining' ? '↓' : '→'}
+                  </span>
+                  <span style={{ display: 'block', fontSize: '0.7rem', color: 'var(--text-muted)' }}>Score Trend</span>
+                </div>
+                <div style={{ textAlign: 'center' }}>
+                  <span style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--primary)' }}>{weeklySummary.routine_adherence_pct}%</span>
+                  <span style={{ display: 'block', fontSize: '0.7rem', color: 'var(--text-muted)' }}>Adherence</span>
+                </div>
+              </div>
+              <p style={{ fontSize: '0.825rem', color: 'var(--text-secondary)', lineHeight: 1.5, margin: 0 }}>{weeklySummary.insight}</p>
+            </div>
+          </div>
+        )}
+
         {/* Routine Adherence Widget */}
         {routineAdherence && routineAdherence.completion_rate > 0 && (
           <div className="app-section dashboard-section">

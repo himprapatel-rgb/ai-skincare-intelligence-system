@@ -696,6 +696,10 @@ app.include_router(ai_chat_router_module.router, prefix="/api/v1", tags=["ai_cha
 # Sprint 5: Clinical Intelligence Engine
 app.include_router(clinical_router_module.router, prefix="/api/v1", tags=["clinical"])
 
+# Phase 3: Weekly Reports
+from app.routers import reports as reports_module
+app.include_router(reports_module.router, prefix="/api/v1", tags=["reports"])
+
 # Sprint 2: Standardized exception handler
 app.add_exception_handler(AppException, app_exception_handler)
 

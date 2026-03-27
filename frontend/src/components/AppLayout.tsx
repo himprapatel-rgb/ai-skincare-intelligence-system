@@ -211,6 +211,21 @@ const displayName = nameParts.length > 1
               {isAuthenticated && (
                 <Link className={`app-nav-link${location.pathname.startsWith('/chat') ? ' active' : ''}`} to="/chat" title="AI Skincare Assistant" aria-current={location.pathname.startsWith('/chat') ? 'page' : undefined} onMouseEnter={() => { void import('../pages/AIChatPage'); }}>AI Chat</Link>
               )}
+              <div className="app-nav-dropdown">
+                <button type="button" className={`app-nav-link app-nav-dropdown-trigger${['/clinical','/search','/progress','/skin-goals','/skin-quiz','/history'].some(p => location.pathname.startsWith(p)) ? ' active' : ''}`}>
+                  Features <span className="app-nav-chevron" aria-hidden="true">▾</span>
+                </button>
+                <div className="app-nav-dropdown-menu">
+                  <Link to="/search" className="app-nav-dropdown-item">Search</Link>
+                  <Link to="/progress" className="app-nav-dropdown-item">Progress Tracking</Link>
+                  <Link to="/skin-goals" className="app-nav-dropdown-item">Skin Goals</Link>
+                  <Link to="/skin-quiz" className="app-nav-dropdown-item">Skin Type Quiz</Link>
+                  <Link to="/history" className="app-nav-dropdown-item">Scan History</Link>
+                  {isAuthenticated && <Link to="/clinical" className="app-nav-dropdown-item">Clinical Dashboard</Link>}
+                  <Link to="/ingredients" className="app-nav-dropdown-item">Ingredient Dictionary</Link>
+                  <Link to="/blog" className="app-nav-dropdown-item">Blog</Link>
+                </div>
+              </div>
               <Link className={`app-nav-link${location.pathname.startsWith('/about') ? ' active' : ''}`} to="/about" aria-current={location.pathname.startsWith('/about') ? 'page' : undefined} onMouseEnter={() => { void import('../pages/AboutPage'); }}>About</Link>
               {isAuthenticated && user?.is_admin && (
                 <Link className={`app-nav-link${location.pathname.startsWith('/admin') ? ' active' : ''}`} to="/admin" aria-current={location.pathname.startsWith('/admin') ? 'page' : undefined} onMouseEnter={() => { void import('../pages/AdminDashboardPage'); }}>Admin</Link>

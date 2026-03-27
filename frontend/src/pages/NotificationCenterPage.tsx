@@ -4,6 +4,7 @@ import { IconBell, IconCheck, IconX, IconSettings, IconClock, IconTrendingUp, Ic
 import { useNotifications } from '../context/NotificationContext';
 import type { NotificationRecord } from '../services/notificationService';
 import { getNotificationPrefs, setNotificationPrefs, type NotificationPrefs } from '../utils/notificationPreferences';
+import { isPushSupported, isPushEnabled, subscribeToPush, unsubscribeFromPush, getPushPermission } from '../utils/pushSubscription';
 import styles from './NotificationCenterPage.module.css';
 
 type FilterType = 'all' | 'unread' | 'reminder' | 'progress' | 'alert';
@@ -25,6 +26,23 @@ const NotificationCenterPage: React.FC = () => {
   const [filter, setFilter] = useState<FilterType>('all');
   const [showSettings, setShowSettings] = useState(false);
   const [prefs, setPrefs] = useState<NotificationPrefs>(getNotificationPrefs);
+  const [pushEnabled, setPushEnabled] = useState(isPushEnabled());
+  const [pushToggling, setPushToggling] = useState(false);
+
+  const handlePushToggle = async () => {
+    setPushToggling(true);
+    try {
+      if (pushEnabled) {
+        await unsubscribeFromPush();
+        setPushEnabled(false);
+      } else {
+        const ok = await subscribeToPush();
+        setPushEnabled(ok);
+      }
+    } finally {
+      setPushToggling(false);
+    }
+  };
 
   useEffect(() => {
     fetchNotifications();
@@ -116,7 +134,29 @@ const NotificationCenterPage: React.FC = () => {
         {showSettings && (
           <div className={styles.settingsCard}>
             <h2 className={styles.settingsTitle}>Notification preferences</h2>
-            <p className={styles.settingsDesc}>Choose when you want reminders. Times are used when we send push notifications.</p>
+            <p className={styles.settingsDesc}>Choose when you want reminders. Enable push to receive them even when the app is closed.</p>
+
+            {isPushSupported() && (
+              <div className={styles.settingItem} style={{ marginBottom: 16, paddingBottom: 16, borderBottom: '1px solid var(--border-color, #e4e9ef)' }}>
+                <label className={styles.settingToggle}>
+                  <input
+                    type="checkbox"
+                    checked={pushEnabled}
+                    onChange={handlePushToggle}
+                    disabled={pushToggling || getPushPermission() === 'denied'}
+                  />
+                  <span className={styles.settingLabel}>
+                    Push Notifications
+                    {getPushPermission() === 'denied' && (
+                      <span style={{ fontSize: '0.7rem', color: 'var(--danger, #b42318)', display: 'block' }}>
+                        Blocked by browser — enable in site settings
+                      </span>
+                    )}
+                  </span>
+                </label>
+              </div>
+            )}
+
             <div>
               <div className={styles.settingItemWithTime}>
                 <label className={styles.settingToggle}>

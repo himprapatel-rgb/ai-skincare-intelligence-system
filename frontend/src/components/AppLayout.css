@@ -1543,3 +1543,29 @@
   justify-content: center;
   flex-wrap: wrap;
 }
+
+/* =============================================
+   CHAT PAGE OVERRIDES
+   When body has data-page="chat", hide breadcrumbs,
+   footer, and newsletter for a full-screen chat UI
+============================================= */
+body[data-page="chat"] .app-breadcrumbs {
+  display: none;
+}
+
+body[data-page="chat"] .app-footer {
+  display: none;
+}
+
+body[data-page="chat"] .app-layout {
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+body[data-page="chat"] .app-main {
+  flex: 1;
+  overflow: hidden;
+  padding: 0;
+  min-height: 0;
+}

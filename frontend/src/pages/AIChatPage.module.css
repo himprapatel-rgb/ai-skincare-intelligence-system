@@ -124,9 +124,34 @@
 .headerTitle {
   flex: 1;
   font-size: var(--font-size-lg, 1.125rem);
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-primary, #0f172a);
   margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.expertDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
+  animation: expertPulse 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes expertPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.expertDisclosure {
+  font-size: 0.7rem;
+  color: var(--text-muted, #94a3b8);
+  margin: 8px 0 16px;
+  text-align: center;
 }
 
 @media (prefers-color-scheme: dark) {

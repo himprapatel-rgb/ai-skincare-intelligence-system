@@ -236,7 +236,10 @@ const AIChatPage: React.FC = () => {
               <line x1="3" y1="18" x2="21" y2="18" />
             </svg>
           </button>
-          <h1 className={styles.headerTitle}>AI Skin Advisor</h1>
+          <h1 className={styles.headerTitle}>
+            <span className={styles.expertDot} />
+            Skin Expert
+          </h1>
           <button
             className={styles.newChatBtn}
             onClick={handleCreateSession}
@@ -276,9 +279,12 @@ const AIChatPage: React.FC = () => {
                   <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                 </svg>
               </div>
-              <h2 className={styles.emptyTitle}>Ask Pellicura AI</h2>
+              <h2 className={styles.emptyTitle}>Ask Our Skin Expert</h2>
               <p className={styles.emptyText}>
-                Get personalized skincare advice based on your skin profile and scan history.
+                Get expert skincare guidance based on dermatology research, your skin profile, and scan history.
+              </p>
+              <p className={styles.expertDisclosure}>
+                Powered by AI &middot; Not a substitute for medical advice
               </p>
               <ChatSuggestions onSelect={handleSend} />
             </div>

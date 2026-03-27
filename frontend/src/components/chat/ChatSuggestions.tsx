@@ -73,7 +73,7 @@ const ChatSuggestions: React.FC<ChatSuggestionsProps> = ({ onSelect }) => {
 
   return (
     <div className={styles.container}>
-      <p className={styles.label}>Try asking</p>
+      <p className={styles.label}>Ask our skin expert</p>
       <div className={styles.chips}>
         {suggestions.map((q) => (
           <button

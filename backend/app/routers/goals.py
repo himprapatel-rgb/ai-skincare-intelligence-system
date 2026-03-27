@@ -8,7 +8,7 @@ import logging
 from datetime import datetime
 from typing import List, Optional
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Response, status
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
@@ -91,10 +91,11 @@ class GoalTypeInfo(BaseModel):
 # ===== Endpoints =====
 
 @router.get("/types", response_model=List[GoalTypeInfo])
-async def get_goal_types():
+async def get_goal_types(response: Response):
     """
     Get available goal types.
     """
+    response.headers["Cache-Control"] = "public, max-age=600"
     return [GoalTypeInfo(**gt) for gt in GOAL_TYPES]
 
 

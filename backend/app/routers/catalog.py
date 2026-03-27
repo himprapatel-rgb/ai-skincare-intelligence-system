@@ -12,7 +12,7 @@ Updated: January 27, 2026 - Uses separate product database
 import logging
 from typing import List, Optional
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
@@ -166,6 +166,7 @@ async def lookup_by_name_brand(
 
 @router.get("/search", response_model=CatalogSearchResponse)
 async def search_products(
+    response: Response,
     q: str = Query(..., description="Search query"),
     category: Optional[str] = Query(None, description="Filter by category"),
     brand: Optional[str] = Query(None, description="Filter by brand"),
@@ -188,6 +189,7 @@ async def search_products(
         offset=offset
     )
     
+    response.headers["Cache-Control"] = "public, max-age=120"
     return CatalogSearchResponse(
         products=[CatalogProductResponse(**p) for p in products],
         total=len(products),
@@ -491,6 +493,7 @@ async def list_import_jobs(
 
 @router.get("/brands", response_model=List[BrandResponse])
 async def list_brands(
+    response: Response,
     limit: int = Query(50, ge=1, le=200),
     offset: int = Query(0, ge=0),
     db: Session = Depends(get_product_db)
@@ -502,6 +505,7 @@ async def list_brands(
 
     from app.models.catalog_models import CatalogBrand
     
+    response.headers["Cache-Control"] = "public, max-age=300"
     brands = db.query(CatalogBrand).order_by(
         CatalogBrand.product_count.desc().nullslast()
     ).offset(offset).limit(limit).all()
@@ -522,6 +526,7 @@ async def list_brands(
 
 @router.get("/ingredients", response_model=List[IngredientResponse])
 async def list_ingredients(
+    response: Response,
     search: Optional[str] = Query(None, description="Search by name"),
     harmful_only: bool = Query(False, description="Only show harmful ingredients"),
     limit: int = Query(50, ge=1, le=200),
@@ -533,8 +538,9 @@ async def list_ingredients(
     """
     from sqlalchemy import func
 
+    response.headers["Cache-Control"] = "public, max-age=300"
     from app.models.catalog_models import CatalogIngredient
-    
+
     query = db.query(CatalogIngredient)
     
     if search:

@@ -100,8 +100,8 @@
 
 /* ----- Expiring soon ----- */
 .myshelf-expiring-soon {
-  background: linear-gradient(135deg, #fef3c7 0%, #fef9c3 100%);
-  border: 1px solid rgba(245, 158, 11, 0.3);
+  background: linear-gradient(135deg, var(--warning-100, #fef3c7) 0%, var(--warning-100, #fef9c3) 100%);
+  border: 1px solid var(--warning-400, rgba(245, 158, 11, 0.3));
   border-radius: var(--border-radius-xl);
   padding: 16px;
   margin-bottom: 20px;
@@ -462,7 +462,7 @@
   background: var(--bg-white);
   border-radius: var(--border-radius-xl);
   border: 1px solid var(--border-color);
-  padding: 48px 28px;
+  padding: 48px 24px;
   text-align: center;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
@@ -557,7 +557,7 @@
 .products-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 16px;
+  gap: 20px;
 }
 
 .product-card {
@@ -604,7 +604,7 @@
 
 .product-info {
   flex: 1;
-  padding: 16px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 8px;

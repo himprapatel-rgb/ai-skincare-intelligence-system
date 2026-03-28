@@ -215,15 +215,22 @@
   --max-width-lg: 1024px;
   --max-width-xl: 1280px;
 
-  /* Responsive breakpoints (match constants/viewport.ts and styles/responsive.css) */
+  /* Responsive breakpoints — 4 device targets
+     Mobile:  < 768px  (phones, portrait)
+     Tablet:  768px - 1024px  (iPad, landscape phones)
+     Laptop:  1025px - 1440px (13"-15" laptops)
+     Desktop: > 1440px (external monitors, large screens)
+  */
   --breakpoint-mobile: 768px;
   --breakpoint-tablet: 1024px;
-  --breakpoint-desktop: 1280px;
+  --breakpoint-laptop: 1440px;
+  --breakpoint-desktop: 1441px;
   --bp-xs: 480px;
-  --bp-sm: 600px;
+  --bp-sm: 640px;
   --bp-md: 768px;
   --bp-lg: 1024px;
-  --bp-xl: 1280px;
+  --bp-xl: 1440px;
+  --bp-2xl: 1920px;
 
   /* Focus & Accessibility */
   --focus-ring: 2px solid var(--primary);

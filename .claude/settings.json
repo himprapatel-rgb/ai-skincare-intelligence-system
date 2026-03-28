@@ -14,7 +14,9 @@
       "Bash(git status*)",
       "Bash(git diff*)",
       "Bash(git log*)",
-      "Bash(uvicorn *)"
+      "Bash(uvicorn *)",
+      "Bash(npx playwright *)",
+      "Skill"
     ],
     "deny": [
       "Bash(rm -rf /)",

@@ -336,7 +336,15 @@ async def upload_scan(
         scan_session.scan_metadata = {"error": "Analysis failed"}
     
     db.commit()
-    
+
+    # Auto-track product effectiveness — builds our proprietary dataset
+    if scan_session.status == ScanStatus.COMPLETED and current_user:
+        try:
+            from app.services.smart_recommendation_engine import auto_track_effectiveness
+            auto_track_effectiveness(db, current_user.id, scan_session)
+        except Exception as track_err:
+            logger.warning("Auto-track effectiveness failed (non-blocking): %s", track_err)
+
     return {
         "scan_id": str(scan_session.id),
         "session_id": str(scan_session.id),

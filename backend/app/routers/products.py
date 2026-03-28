@@ -15,6 +15,7 @@ from sqlalchemy.orm import Session, joinedload
 from app.core.security import get_current_user
 from app.database import get_db
 from app.models.product_models import Ingredient, Product, ProductReview
+from app.models.shelf import ShelfProduct
 from app.models.user import User
 from app.product_database import ProductSessionLocal, get_product_db
 from app.schemas.product_schemas import (
@@ -308,7 +309,10 @@ async def create_product_review(
         comment=review_data.comment,
         skin_type=review_data.skin_type,
         would_recommend=1 if review_data.would_recommend else 0,
-        verified_purchase=0  # TODO: Check if product is in user's shelf
+        verified_purchase=1 if db.query(ShelfProduct).filter(
+            ShelfProduct.user_id == current_user.id,
+            ShelfProduct.product_id == product_uuid,
+        ).first() else 0
     )
     
     db.add(review)

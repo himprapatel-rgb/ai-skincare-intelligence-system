@@ -39,8 +39,8 @@ from app.services.ai_intelligence_service import (
     ai_rerank_search,
     ai_shelf_conflicts,
     ai_skin_age_report,
-    AIServiceError,
 )
+from app.services.smart_recommendation_engine import SmartRecommendationEngine
 
 logger = logging.getLogger(__name__)
 
@@ -921,3 +921,103 @@ async def get_product_match_score(
 
     result = await ai_product_match_score(product_data, user_profile, latest_scan)
     return result
+
+
+@router.get("/smart-recommendations")
+async def get_smart_recommendations(
+    budget: Optional[str] = Query(None, description="budget, mid-range, or premium"),
+    limit: int = Query(10, ge=1, le=30),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """
+    Smart product recommendations using multi-signal scoring.
+    Combines: AI analysis + effectiveness data + community reviews +
+    shelf compatibility + scan correlations.
+
+    This gets smarter with every user scan — each scan auto-tracks
+    product effectiveness, building our proprietary dataset.
+    """
+    from app.models.product_models import Product
+
+    # Get user profile
+    skin_type = "normal"
+    concerns = []
+    try:
+        profile = db.query(UserProfile).filter(UserProfile.user_id == current_user.id).first()
+        if profile:
+            skin_type = getattr(profile, "skin_type", None) or "normal"
+            concerns = getattr(profile, "skin_concerns", None) or []
+    except Exception:
+        pass
+
+    # If no concerns from profile, get from latest scan
+    if not concerns:
+        try:
+            scan = (
+                db.query(ScanSession)
+                .filter(ScanSession.user_id == current_user.id)
+                .order_by(ScanSession.created_at.desc())
+                .first()
+            )
+            if scan and scan.analysis_result and isinstance(scan.analysis_result, dict):
+                concerns = scan.analysis_result.get("summary", {}).get("concerns", [])
+        except Exception:
+            pass
+
+    # Get products from catalog
+    products = []
+    try:
+        query = db.query(Product).filter(Product.discontinued != True)
+        if budget == "budget":
+            query = query.filter(Product.price_usd <= 20)
+        elif budget == "mid-range":
+            query = query.filter(Product.price_usd > 20, Product.price_usd <= 60)
+        elif budget == "premium":
+            query = query.filter(Product.price_usd > 60)
+
+        db_products = query.limit(30).all()
+        for p in db_products:
+            products.append({
+                "id": str(p.id),
+                "name": p.name,
+                "brand": p.brand or "",
+                "category": p.category or "",
+                "price_usd": p.price_usd,
+                "average_rating": p.average_rating,
+                "key_ingredients": getattr(p, "ingredients_list", []) or [],
+                "skin_types": p.skin_types or [],
+                "primary_concerns": p.primary_concerns or [],
+                "product_image_url": getattr(p, "product_image_url", None),
+            })
+    except Exception as e:
+        logger.warning("Failed to fetch products: %s", e)
+        raise HTTPException(status_code=500, detail="Failed to load products")
+
+    if not products:
+        return {"recommendations": [], "scoring_method": "smart", "data_points": 0}
+
+    # Run smart recommendation engine
+    engine = SmartRecommendationEngine(db)
+    recommendations = await engine.recommend(
+        user_id=current_user.id,
+        skin_type=skin_type,
+        concerns=concerns,
+        products=products,
+        budget=budget,
+        max_results=limit,
+    )
+
+    # Count effectiveness data points for transparency
+    from app.models.product_models import ProductEffectiveness
+    from sqlalchemy import func
+    data_points = db.query(func.count(ProductEffectiveness.id)).scalar() or 0
+
+    return {
+        "recommendations": recommendations,
+        "scoring_method": "smart_multi_signal",
+        "signals": ["ai_analysis", "effectiveness_data", "community_reviews", "shelf_compatibility", "scan_correlation"],
+        "data_points": data_points,
+        "user_skin_type": skin_type,
+        "user_concerns": concerns,
+    }

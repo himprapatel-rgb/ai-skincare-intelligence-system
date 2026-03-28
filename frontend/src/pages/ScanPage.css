@@ -42,7 +42,7 @@
   display: flex;
   gap: 0;
   margin-bottom: 20px;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   background: var(--bg-secondary, #f1f5f9);
   padding: 4px;
   border: 1px solid var(--border-color);
@@ -62,7 +62,7 @@
   color: var(--text-secondary, #64748b);
   background: transparent;
   border: none;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   cursor: pointer;
   transition: color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease, transform 0.15s ease;
   min-height: 44px;
@@ -101,7 +101,7 @@
   background: var(--bg-white);
   border-radius: var(--radius-xl, 16px);
   border: 1px solid var(--border-color);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  box-shadow: var(--shadow-sm);
 }
 
 .scan-product-icon {
@@ -221,7 +221,7 @@
 /* Scan button hover effect */
 .btn-scan:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(31, 111, 235, 0.3);
+  box-shadow: var(--shadow-primary);
 }
 
 .btn-scan:active:not(:disabled) {
@@ -240,7 +240,7 @@
   border-radius: var(--radius-xl, 16px); /* Brand guideline: 12px for cards */
   padding: 32px 24px;
   min-height: min(560px, 58vh);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Brand guideline */
+  box-shadow: var(--shadow-sm); /* Brand guideline */
   border: 1px solid var(--border);
 }
 
@@ -369,7 +369,7 @@
 .mode-btn.active {
   background: var(--bg-white);
   color: var(--primary);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  box-shadow: var(--shadow-md);
   font-weight: 600;
 }
 
@@ -411,10 +411,10 @@
   margin: 0 auto 24px;
   border-radius: var(--radius-xl, 16px); /* Brand guideline: 12px for cards */
   overflow: hidden;
-  background: #000;
+  background: var(--gray-900, #000);
   aspect-ratio: 4/3;
   border: 2px solid var(--border);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Brand guideline */
+  box-shadow: var(--shadow-sm); /* Brand guideline */
 }
 
 .camera-video {
@@ -627,7 +627,7 @@
   background: rgba(2, 6, 23, 0.6);
   border: 1px solid rgba(169, 199, 255, 0.4);
   padding: 6px 12px;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   font-size: 0.85rem;
   letter-spacing: 0.2px;
   text-transform: uppercase;
@@ -670,7 +670,7 @@
   border-radius: var(--radius-xl, 16px);
   font-size: 0.95rem;
   font-weight: 600;
-  box-shadow: 0 4px 16px rgba(31, 111, 235, 0.3);
+  box-shadow: var(--shadow-primary);
   z-index: 4;
 }
 
@@ -741,7 +741,7 @@
 .scan-upload-label:hover {
   border-color: var(--primary-500, var(--primary));
   transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(31, 95, 191, 0.12);
+  box-shadow: var(--shadow-primary);
 }
 
 .scan-upload-label:hover::before {
@@ -786,7 +786,7 @@
   max-height: 450px;
   border-radius: var(--radius-xl, 16px);
   object-fit: contain;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-lg);
   display: block;
   margin: 0 auto;
   border: 1px solid var(--border);
@@ -816,7 +816,7 @@
   justify-content: center;
   transition: all 0.2s ease;
   z-index: 20;
-  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+  box-shadow: var(--shadow-primary);
 }
 
 .preview-remove:hover {
@@ -836,7 +836,7 @@
   height: 88px;
   margin-bottom: 24px;
   background: linear-gradient(135deg, rgba(59, 130, 246, 0.12) 0%, rgba(139, 92, 246, 0.08) 100%);
-  border-radius: 22px;
+  border-radius: var(--radius-xl);
   color: var(--primary);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   position: relative;
@@ -845,7 +845,7 @@
 
 .scan-upload-label:hover .scan-upload-icon {
   transform: scale(1.1);
-  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.2);
+  box-shadow: var(--shadow-primary);
 }
 
 .scan-upload-icon svg {
@@ -1016,13 +1016,13 @@
   font-weight: 600; /* Brand guideline */
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(31, 111, 235, 0.2);
+  box-shadow: var(--shadow-primary);
 }
 
 .scan-btn-primary:hover:not(:disabled) {
   background: var(--primary-dark);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(31, 111, 235, 0.3);
+  box-shadow: var(--shadow-primary);
 }
 
 .scan-btn-primary:disabled {
@@ -1146,7 +1146,7 @@
   background-size: 200% 100%;
   border-radius: var(--radius-xl, 16px);
   transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 2px 8px rgba(31, 95, 191, 0.3);
+  box-shadow: var(--shadow-primary);
   width: var(--progress-width, 0%);
   animation: progressShimmer 2s ease-in-out infinite;
   position: relative;
@@ -1220,7 +1220,7 @@
   border-color: var(--primary-500, var(--primary));
   background: var(--primary-500, var(--primary));
   color: var(--white);
-  box-shadow: 0 0 0 4px rgba(31, 95, 191, 0.15);
+  box-shadow: var(--focus-shadow);
 }
 
 .scan-step-indicator.completed .scan-step-dot {
@@ -1284,7 +1284,7 @@
   padding: 48px;
   border-radius: var(--radius-xl, 16px);
   border: 1px solid var(--border);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-sm);
   animation: slideInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
 }
 
@@ -1340,7 +1340,7 @@
   align-items: flex-start;
   gap: 16px;
   animation: slideInUp 0.35s ease-out;
-  box-shadow: 0 4px 16px rgba(239, 68, 68, 0.08);
+  box-shadow: var(--shadow-sm);
 }
 
 /* Also enhance ErrorCard within scan page context */
@@ -1689,7 +1689,7 @@
   max-width: 380px;
   width: 100%;
   position: relative;
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-xl);
   animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -1711,7 +1711,7 @@
   font-size: 0.8rem;
   cursor: pointer;
   padding: 6px 8px;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   transition: color 0.2s ease, background 0.2s ease;
 }
 
@@ -1879,7 +1879,7 @@
 .scan-coach-icon-badge {
   width: 48px;
   height: 48px;
-  border-radius: 14px;
+  border-radius: var(--radius-lg);
   background: linear-gradient(135deg, rgba(31, 95, 191, 0.1), rgba(79, 138, 217, 0.05));
   display: flex;
   align-items: center;
@@ -1920,7 +1920,7 @@
   padding: 10px 20px;
   background: none;
   border: 1.5px solid var(--border-color);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   font-size: 0.9rem;
   font-weight: 600;
   color: var(--text-secondary);
@@ -1936,7 +1936,7 @@
   padding: 10px 24px;
   background: linear-gradient(135deg, var(--primary), var(--accent));
   border: none;
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   font-size: 0.9rem;
   font-weight: 600;
   color: var(--white);
@@ -1945,12 +1945,12 @@
   align-items: center;
   gap: 6px;
   transition: transform 0.15s ease, box-shadow 0.2s ease;
-  box-shadow: 0 2px 8px rgba(31, 95, 191, 0.25);
+  box-shadow: var(--shadow-primary);
 }
 
 .scan-coach-next:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(31, 95, 191, 0.35);
+  box-shadow: var(--shadow-primary);
 }
 
 .scan-coach-step-label {
@@ -1966,7 +1966,7 @@
 .scan-preview-modal {
   position: fixed;
   inset: 0;
-  z-index: 90;
+  z-index: var(--z-dropdown);
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
@@ -1983,7 +1983,7 @@
   padding: 24px;
   max-width: 360px;
   width: 100%;
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-xl);
   animation: slideUp 0.3s ease;
 }
 
@@ -1998,7 +1998,7 @@
   width: 100%;
   max-height: 300px;
   object-fit: contain;
-  border-radius: 16px;
+  border-radius: var(--radius-xl);
   margin-bottom: 16px;
   background: var(--gray-50);
 }
@@ -2038,7 +2038,7 @@
   padding: 12px;
   background: none;
   border: 1.5px solid var(--border-color);
-  border-radius: 14px;
+  border-radius: var(--radius-lg);
   font-weight: 600;
   color: var(--text-secondary);
   cursor: pointer;
@@ -2054,11 +2054,11 @@
   padding: 12px;
   background: linear-gradient(135deg, var(--primary), var(--accent));
   border: none;
-  border-radius: 14px;
+  border-radius: var(--radius-lg);
   font-weight: 600;
   color: var(--white);
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(31, 95, 191, 0.25);
+  box-shadow: var(--shadow-primary);
   transition: transform 0.15s ease;
 }
 
@@ -2091,12 +2091,12 @@
   font-size: 0.75rem;
   font-weight: 600;
   padding: 3px 8px;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
 }
 
 .trend-sparkline-badge--up {
   background: rgba(34, 197, 94, 0.12);
-  color: #15803d;
+  color: var(--success-700);
 }
 
 .trend-sparkline-badge--down {
@@ -2106,7 +2106,7 @@
 
 .trend-sparkline-badge--stable {
   background: rgba(99, 102, 241, 0.1);
-  color: #4f46e5;
+  color: var(--primary);
 }
 
 .trend-sparkline-link {

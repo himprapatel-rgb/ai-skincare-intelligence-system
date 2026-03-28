@@ -76,12 +76,12 @@
 .loading-logo {
   width: 48px;
   height: 48px;
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   background: var(--gradient-primary);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #ffffff;
+  color: var(--white, #fff);
   animation: logoPulse 1.5s ease-in-out infinite;
   box-shadow: 0 4px 20px rgba(31, 111, 235, 0.3);
 }

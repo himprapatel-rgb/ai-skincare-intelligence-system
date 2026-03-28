@@ -15,7 +15,7 @@ interface CameraProps {
  * Camera Component
  * Handles webcam initialization, preview, and image capture
  */
-export const Camera: React.FC<CameraProps> = ({ onCapture, onError, isProcessing }) => {
+export const Camera: React.FC<CameraProps> = React.memo(({ onCapture, onError, isProcessing }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isCameraReady, setIsCameraReady] = useState(false);
   const [isCapturing, setIsCapturing] = useState(false);
@@ -108,4 +108,4 @@ export const Camera: React.FC<CameraProps> = ({ onCapture, onError, isProcessing
       </div>
     </div>
   );
-};
+});

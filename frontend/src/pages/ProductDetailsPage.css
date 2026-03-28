@@ -925,7 +925,7 @@
 .ingredient-search:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  box-shadow: var(--focus-shadow);
 }
 
 .ingredient-count {
@@ -1021,14 +1021,14 @@
 }
 .match-for-you-bar-wrap {
   height: 10px;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   background: rgba(0,0,0,0.08);
   overflow: hidden;
   margin-bottom: 14px;
 }
 .match-for-you-bar {
   height: 100%;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   background: var(--primary);
   transition: width 0.4s ease;
 }
@@ -1155,7 +1155,7 @@
   background: rgba(239, 68, 68, 0.15);
   color: var(--danger);
   padding: 2px 8px;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   font-size: 0.75rem;
 }
 
@@ -1163,7 +1163,7 @@
   background: rgba(245, 158, 11, 0.15);
   color: var(--warning-700, #b45309);
   padding: 2px 8px;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   font-size: 0.75rem;
 }
 
@@ -1171,7 +1171,7 @@
   background: rgba(59, 130, 246, 0.15);
   color: var(--primary);
   padding: 2px 8px;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   font-size: 0.75rem;
 }
 
@@ -1299,7 +1299,7 @@
   gap: 16px;
 }
 
-@media (min-width: 600px) {
+@media (min-width: 640px) {
   .usage-grid {
     grid-template-columns: repeat(4, 1fr);
   }

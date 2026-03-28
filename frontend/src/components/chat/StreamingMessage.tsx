@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import DOMPurify from 'dompurify';
 import styles from './StreamingMessage.module.css';
 
 interface StreamingMessageProps {
@@ -51,7 +52,7 @@ const StreamingMessage: React.FC<StreamingMessageProps> = ({ content, isStreamin
             </div>
           ) : (
             <div className={styles.content}>
-              <span dangerouslySetInnerHTML={{ __html: renderedContent }} />
+              <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(renderedContent) }} />
               {isStreaming && <span className={styles.cursor} />}
             </div>
           )}

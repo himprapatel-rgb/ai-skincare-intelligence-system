@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useMemo } from 'react';
+import DOMPurify from 'dompurify';
 import styles from './ChatMessage.module.css';
 
 interface ChatMessageProps {
@@ -89,7 +90,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ role, content, timestamp, onC
           {role === 'assistant' ? (
             <div
               className={styles.content}
-              dangerouslySetInnerHTML={{ __html: renderedContent }}
+              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(renderedContent) }}
             />
           ) : (
             <div className={styles.content}>{content}</div>

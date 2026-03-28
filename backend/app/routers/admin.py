@@ -1036,3 +1036,30 @@ async def analytics_users(
             "retention_rate_pct": retention_rate,
         },
     }
+
+
+# =============================================================================
+# BLOG AGENT — Auto-generate articles
+# =============================================================================
+
+
+@router.post("/generate-articles")
+async def generate_blog_articles(
+    count: int = Query(3, ge=1, le=5),
+    background_tasks: BackgroundTasks = BackgroundTasks(),
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_admin),
+):
+    """
+    Generate AI blog articles from scan data trends.
+    Admin-only. Creates data-driven skincare articles.
+    """
+
+    from app.services.blog_agent import auto_generate_articles
+
+    articles = await auto_generate_articles(db, count=count)
+    return {
+        "generated": len(articles),
+        "articles": articles,
+        "message": f"Generated {len(articles)} articles from scan data trends",
+    }

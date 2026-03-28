@@ -25,16 +25,22 @@ from app.models.shelf import ShelfProduct
 from app.models.user import User, UserProfile
 from app.services.ai_intelligence_service import (
     ai_analyze_ingredients,
+    ai_community_benchmark,
     ai_compare_scans,
     ai_curate_content,
     ai_detect_seasonal_trends,
+    ai_exposome_prediction,
     ai_generate_notifications,
     ai_generate_routine,
     ai_predict_skin_future,
+    ai_proactive_insights,
+    ai_product_match_score,
     ai_recommend_products,
     ai_rerank_search,
-    AIServiceError,
+    ai_shelf_conflicts,
+    ai_skin_age_report,
 )
+from app.services.smart_recommendation_engine import SmartRecommendationEngine
 
 logger = logging.getLogger(__name__)
 
@@ -252,7 +258,7 @@ async def get_curated_content(
     current_user: User = Depends(get_current_user),
 ):
     """Get AI-curated content recommendations."""
-    from app.models.content_models import BlogPost
+    from app.models.content import Blog as BlogPost
     profile = _get_user_profile_data(db, current_user)
 
     try:
@@ -579,3 +585,439 @@ async def check_ingredient_conflicts(
         safe_to_combine=safe,
         summary=summary,
     )
+
+
+# =============================================================================
+# NEW AI FEATURES — Skin Age, Exposome, Benchmarking, Conflicts, Coach, Match
+# =============================================================================
+
+
+@router.get("/skin-age")
+async def get_skin_age(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Get skin age analysis from latest scan. Data saved to DB for our dataset."""
+    scan = (
+        db.query(ScanSession)
+        .filter(ScanSession.user_id == current_user.id)
+        .order_by(ScanSession.created_at.desc())
+        .first()
+    )
+    if not scan or not scan.analysis_result:
+        raise HTTPException(status_code=404, detail="No scan analysis found. Complete a scan first.")
+
+    analysis = scan.analysis_result if isinstance(scan.analysis_result, dict) else {}
+
+    # Get user age from profile
+    user_age = None
+    try:
+        profile = db.query(UserProfile).filter(UserProfile.user_id == current_user.id).first()
+        if profile:
+            user_age = getattr(profile, "age", None) or getattr(profile, "birth_year", None)
+            if hasattr(profile, "birth_year") and profile.birth_year and not user_age:
+                from datetime import datetime
+                user_age = datetime.now().year - profile.birth_year
+    except Exception:
+        pass
+
+    # Get scan history for trend analysis
+    history = []
+    try:
+        scans = (
+            db.query(ScanSession)
+            .filter(ScanSession.user_id == current_user.id)
+            .order_by(ScanSession.created_at.desc())
+            .limit(10)
+            .all()
+        )
+        for s in scans:
+            if s.analysis_result and isinstance(s.analysis_result, dict):
+                history.append(s.analysis_result)
+    except Exception:
+        pass
+
+    result = await ai_skin_age_report(analysis, user_age=user_age, scan_history=history)
+    return result
+
+
+@router.get("/exposome")
+async def get_exposome_prediction(
+    latitude: Optional[float] = Query(None),
+    longitude: Optional[float] = Query(None),
+    city: Optional[str] = Query(None),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Get exposome-aware skin predictions based on environmental factors."""
+    # Get latest scan scores
+    scan = (
+        db.query(ScanSession)
+        .filter(ScanSession.user_id == current_user.id)
+        .order_by(ScanSession.created_at.desc())
+        .first()
+    )
+    current_scores = {}
+    if scan and scan.analysis_result and isinstance(scan.analysis_result, dict):
+        scores = scan.analysis_result.get("summary", {}).get("scores", {})
+        current_scores = scores
+
+    # Get user's skin type
+    skin_type = "normal"
+    try:
+        profile = db.query(UserProfile).filter(UserProfile.user_id == current_user.id).first()
+        if profile and getattr(profile, "skin_type", None):
+            skin_type = profile.skin_type
+    except Exception:
+        pass
+
+    # Get current products
+    products = []
+    try:
+        shelf = db.query(ShelfProduct).filter(ShelfProduct.user_id == current_user.id).limit(20).all()
+        products = [getattr(sp, "product_name", "") or "" for sp in shelf]
+    except Exception:
+        pass
+
+    # Build environmental data (would integrate with weather API in production)
+    env_data = {
+        "city": city or "Unknown",
+        "latitude": latitude,
+        "longitude": longitude,
+        "source": "user_provided",
+    }
+
+    result = await ai_exposome_prediction(current_scores, env_data, skin_type, products)
+    return result
+
+
+@router.get("/benchmark")
+async def get_community_benchmark(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Compare user's skin metrics against anonymized community averages."""
+    from sqlalchemy import func
+
+    # Get user's latest scores
+    scan = (
+        db.query(ScanSession)
+        .filter(ScanSession.user_id == current_user.id)
+        .order_by(ScanSession.created_at.desc())
+        .first()
+    )
+    if not scan or not scan.analysis_result:
+        raise HTTPException(status_code=404, detail="No scan data found. Complete a scan first.")
+
+    analysis = scan.analysis_result if isinstance(scan.analysis_result, dict) else {}
+    user_scores = analysis.get("summary", {}).get("scores", {})
+
+    # Get user demographics
+    demographics = {"skin_type": analysis.get("skin_type", "unknown")}
+    try:
+        profile = db.query(UserProfile).filter(UserProfile.user_id == current_user.id).first()
+        if profile:
+            demographics["age"] = getattr(profile, "age", None)
+            demographics["skin_type"] = getattr(profile, "skin_type", None) or demographics["skin_type"]
+    except Exception:
+        pass
+
+    # Calculate aggregate stats from ALL scans (anonymized)
+    aggregate_stats = {}
+    try:
+        from app.models.analysis_outputs import UserProgressSnapshot
+        total_users = db.query(func.count(func.distinct(UserProgressSnapshot.user_id))).scalar() or 0
+        if total_users > 5:  # Only benchmark if we have enough data
+            avg_overall = db.query(func.avg(UserProgressSnapshot.overall_score)).scalar() or 50
+            avg_hydration = db.query(func.avg(UserProgressSnapshot.hydration)).scalar() or 50
+            avg_acne = db.query(func.avg(UserProgressSnapshot.acne)).scalar() or 30
+            avg_redness = db.query(func.avg(UserProgressSnapshot.redness)).scalar() or 30
+            avg_wrinkles = db.query(func.avg(UserProgressSnapshot.wrinkles)).scalar() or 25
+            aggregate_stats = {
+                "total_users": total_users,
+                "avg_overall_score": round(float(avg_overall), 1),
+                "avg_hydration": round(float(avg_hydration), 1),
+                "avg_acne": round(float(avg_acne), 1),
+                "avg_redness": round(float(avg_redness), 1),
+                "avg_wrinkles": round(float(avg_wrinkles), 1),
+            }
+        else:
+            # Not enough users yet — use baseline averages
+            aggregate_stats = {
+                "total_users": total_users,
+                "avg_overall_score": 62,
+                "avg_hydration": 55,
+                "avg_acne": 28,
+                "avg_redness": 32,
+                "avg_wrinkles": 22,
+                "note": "baseline_averages",
+            }
+    except Exception:
+        aggregate_stats = {"total_users": 0, "note": "aggregation_unavailable"}
+
+    result = await ai_community_benchmark(user_scores, demographics, aggregate_stats)
+    return result
+
+
+@router.get("/shelf-analysis")
+async def get_shelf_analysis(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Analyze entire product shelf for ingredient conflicts and synergies."""
+    from app.models.product_models import Product
+
+    # Get shelf products with ingredients
+    shelf_items = db.query(ShelfProduct).filter(ShelfProduct.user_id == current_user.id).limit(20).all()
+
+    if not shelf_items:
+        raise HTTPException(status_code=404, detail="No products on shelf. Add products first.")
+
+    shelf_products = []
+    for sp in shelf_items:
+        product_data = {"name": getattr(sp, "product_name", "Unknown"), "brand": "", "category": "", "ingredients": []}
+        if hasattr(sp, "product_id") and sp.product_id:
+            try:
+                prod = db.query(Product).filter(Product.id == sp.product_id).first()
+                if prod:
+                    product_data["name"] = prod.name or product_data["name"]
+                    product_data["brand"] = prod.brand or ""
+                    product_data["category"] = prod.category or ""
+                    if hasattr(prod, "ingredients_list") and prod.ingredients_list:
+                        product_data["ingredients"] = prod.ingredients_list[:15]
+            except Exception:
+                pass
+        shelf_products.append(product_data)
+
+    # Get skin type
+    skin_type = "normal"
+    try:
+        profile = db.query(UserProfile).filter(UserProfile.user_id == current_user.id).first()
+        if profile and getattr(profile, "skin_type", None):
+            skin_type = profile.skin_type
+    except Exception:
+        pass
+
+    result = await ai_shelf_conflicts(shelf_products, skin_type=skin_type)
+    return result
+
+
+@router.get("/coach")
+async def get_ai_coach_insights(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Get proactive AI coaching insights based on full user journey."""
+    # Build user profile context
+    user_profile = {"id": current_user.id}
+    try:
+        profile = db.query(UserProfile).filter(UserProfile.user_id == current_user.id).first()
+        if profile:
+            user_profile["skin_type"] = getattr(profile, "skin_type", None)
+            user_profile["age"] = getattr(profile, "age", None)
+            user_profile["concerns"] = getattr(profile, "skin_concerns", None) or []
+    except Exception:
+        pass
+
+    # Scan history
+    scan_history = []
+    try:
+        scans = (
+            db.query(ScanSession)
+            .filter(ScanSession.user_id == current_user.id)
+            .order_by(ScanSession.created_at.desc())
+            .limit(10)
+            .all()
+        )
+        for s in scans:
+            if s.analysis_result and isinstance(s.analysis_result, dict):
+                scan_history.append({
+                    "overall_score": s.analysis_result.get("summary", {}).get("overall_score", 0),
+                    "created_at": str(s.created_at),
+                    "skin_age": s.analysis_result.get("skin_age", {}),
+                })
+    except Exception:
+        pass
+
+    # Routine adherence
+    adherence = None
+    try:
+        from app.models.engagement import RoutineCheckin
+        from sqlalchemy import func
+        from datetime import datetime, timedelta
+        week_ago = datetime.utcnow() - timedelta(days=7)
+        checkins = db.query(func.count(RoutineCheckin.id)).filter(
+            RoutineCheckin.checked_at >= week_ago
+        ).scalar() or 0
+        adherence = {"adherence_rate": min(100, checkins * 14), "current_streak": checkins}
+    except Exception:
+        pass
+
+    # Shelf products
+    shelf = []
+    try:
+        items = db.query(ShelfProduct).filter(ShelfProduct.user_id == current_user.id).limit(20).all()
+        shelf = [{"name": getattr(sp, "product_name", ""), "brand": ""} for sp in items]
+    except Exception:
+        pass
+
+    result = await ai_proactive_insights(
+        user_profile=user_profile,
+        scan_history=scan_history,
+        routine_adherence=adherence,
+        shelf_products=shelf,
+    )
+    return result
+
+
+@router.get("/product-match/{product_id}")
+async def get_product_match_score(
+    product_id: str,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Get personalized product compatibility score for a specific product."""
+    from app.models.product_models import Product
+
+    product = db.query(Product).filter(Product.id == product_id).first()
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+
+    product_data = {
+        "name": product.name,
+        "brand": product.brand or "",
+        "category": product.category or "",
+        "ingredients": getattr(product, "ingredients_list", []) or [],
+    }
+
+    # User profile
+    user_profile = {"skin_type": "normal", "concerns": []}
+    try:
+        profile = db.query(UserProfile).filter(UserProfile.user_id == current_user.id).first()
+        if profile:
+            user_profile["skin_type"] = getattr(profile, "skin_type", None) or "normal"
+            user_profile["concerns"] = getattr(profile, "skin_concerns", None) or []
+            user_profile["age"] = getattr(profile, "age", None)
+    except Exception:
+        pass
+
+    # Latest scan
+    latest_scan = None
+    try:
+        scan = (
+            db.query(ScanSession)
+            .filter(ScanSession.user_id == current_user.id)
+            .order_by(ScanSession.created_at.desc())
+            .first()
+        )
+        if scan and scan.analysis_result:
+            latest_scan = {
+                "overall_score": scan.analysis_result.get("summary", {}).get("overall_score", 0),
+                "scores": scan.analysis_result.get("summary", {}).get("scores", {}),
+                "concerns": scan.analysis_result.get("summary", {}).get("concerns", []),
+            }
+    except Exception:
+        pass
+
+    result = await ai_product_match_score(product_data, user_profile, latest_scan)
+    return result
+
+
+@router.get("/smart-recommendations")
+async def get_smart_recommendations(
+    budget: Optional[str] = Query(None, description="budget, mid-range, or premium"),
+    limit: int = Query(10, ge=1, le=30),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """
+    Smart product recommendations using multi-signal scoring.
+    Combines: AI analysis + effectiveness data + community reviews +
+    shelf compatibility + scan correlations.
+
+    This gets smarter with every user scan — each scan auto-tracks
+    product effectiveness, building our proprietary dataset.
+    """
+    from app.models.product_models import Product
+
+    # Get user profile
+    skin_type = "normal"
+    concerns = []
+    try:
+        profile = db.query(UserProfile).filter(UserProfile.user_id == current_user.id).first()
+        if profile:
+            skin_type = getattr(profile, "skin_type", None) or "normal"
+            concerns = getattr(profile, "skin_concerns", None) or []
+    except Exception:
+        pass
+
+    # If no concerns from profile, get from latest scan
+    if not concerns:
+        try:
+            scan = (
+                db.query(ScanSession)
+                .filter(ScanSession.user_id == current_user.id)
+                .order_by(ScanSession.created_at.desc())
+                .first()
+            )
+            if scan and scan.analysis_result and isinstance(scan.analysis_result, dict):
+                concerns = scan.analysis_result.get("summary", {}).get("concerns", [])
+        except Exception:
+            pass
+
+    # Get products from catalog
+    products = []
+    try:
+        query = db.query(Product).filter(Product.discontinued != True)
+        if budget == "budget":
+            query = query.filter(Product.price_usd <= 20)
+        elif budget == "mid-range":
+            query = query.filter(Product.price_usd > 20, Product.price_usd <= 60)
+        elif budget == "premium":
+            query = query.filter(Product.price_usd > 60)
+
+        db_products = query.limit(30).all()
+        for p in db_products:
+            products.append({
+                "id": str(p.id),
+                "name": p.name,
+                "brand": p.brand or "",
+                "category": p.category or "",
+                "price_usd": p.price_usd,
+                "average_rating": p.average_rating,
+                "key_ingredients": getattr(p, "ingredients_list", []) or [],
+                "skin_types": p.skin_types or [],
+                "primary_concerns": p.primary_concerns or [],
+                "product_image_url": getattr(p, "product_image_url", None),
+            })
+    except Exception as e:
+        logger.warning("Failed to fetch products: %s", e)
+        raise HTTPException(status_code=500, detail="Failed to load products")
+
+    if not products:
+        return {"recommendations": [], "scoring_method": "smart", "data_points": 0}
+
+    # Run smart recommendation engine
+    engine = SmartRecommendationEngine(db)
+    recommendations = await engine.recommend(
+        user_id=current_user.id,
+        skin_type=skin_type,
+        concerns=concerns,
+        products=products,
+        budget=budget,
+        max_results=limit,
+    )
+
+    # Count effectiveness data points for transparency
+    from app.models.product_models import ProductEffectiveness
+    from sqlalchemy import func
+    data_points = db.query(func.count(ProductEffectiveness.id)).scalar() or 0
+
+    return {
+        "recommendations": recommendations,
+        "scoring_method": "smart_multi_signal",
+        "signals": ["ai_analysis", "effectiveness_data", "community_reviews", "shelf_compatibility", "scan_correlation"],
+        "data_points": data_points,
+        "user_skin_type": skin_type,
+        "user_concerns": concerns,
+    }

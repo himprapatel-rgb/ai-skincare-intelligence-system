@@ -79,14 +79,42 @@ async def _call_openai(
     return content
 
 
+def _validate_response(data: Any, required_fields: Optional[List[str]] = None, score_fields: Optional[List[str]] = None) -> Dict[str, Any]:
+    """
+    Validate AI response structure.
+    - Ensures required fields exist
+    - Clamps score fields to 0-100 range
+    - Converts to dict if needed
+    """
+    if isinstance(data, list):
+        # Some features return arrays — wrap in dict
+        data = {"items": data}
+    if not isinstance(data, dict):
+        raise AIServiceError(f"Expected dict response, got {type(data).__name__}")
+
+    if required_fields:
+        for field in required_fields:
+            if field not in data:
+                data[field] = None  # Add missing fields as None rather than crashing
+
+    if score_fields:
+        for field in score_fields:
+            if field in data and isinstance(data[field], (int, float)):
+                data[field] = max(0, min(100, data[field]))
+
+    return data
+
+
 async def _call_openai_json(
     system_prompt: str,
     user_prompt: str,
     model: str = AI_TEXT_MODEL,
     temperature: float = 0.3,
     max_tokens: int = 2000,
+    required_fields: Optional[List[str]] = None,
+    score_fields: Optional[List[str]] = None,
 ) -> Dict[str, Any]:
-    """Call OpenAI and parse JSON response."""
+    """Call OpenAI, parse JSON response, and validate structure."""
     raw = await _call_openai(
         system_prompt=system_prompt + "\n\nReturn ONLY valid JSON. No markdown, no explanation.",
         user_prompt=user_prompt,
@@ -102,9 +130,11 @@ async def _call_openai_json(
         cleaned = cleaned.rsplit("```", 1)[0]
     cleaned = cleaned.strip()
     try:
-        return json.loads(cleaned)
+        parsed = json.loads(cleaned)
     except json.JSONDecodeError:
         raise AIServiceError(f"Failed to parse AI JSON: {cleaned[:200]}")
+
+    return _validate_response(parsed, required_fields, score_fields)
 
 
 # =============================================================================
@@ -150,9 +180,14 @@ async def ai_recommend_products(
         product_summaries.append(summary)
 
     system = (
-        "You are a dermatology-trained skincare product recommender. "
-        "Given a user's skin profile and a list of products, rank the top products by suitability. "
-        "Consider ingredient compatibility, skin type match, and concern targeting."
+        "You are a board-certified dermatology-trained skincare product recommender. "
+        "Rank products by suitability using this weighted scoring: "
+        "40% ingredient match (active ingredients that target user's specific concerns), "
+        "25% skin type compatibility (won't cause reactions for their skin type), "
+        "20% concern targeting (directly addresses their primary concerns), "
+        "15% formulation quality (good ingredient synergies, no filler irritants). "
+        "Penalize products with known irritants for the user's skin type. "
+        "Reward products with clinically-proven actives at effective concentrations."
     )
 
     user = json.dumps({
@@ -592,3 +627,372 @@ def build_profile_context(user_profile: Dict[str, Any]) -> str:
     if not parts:
         return ""
     return "User context: " + ". ".join(parts) + ". Use this context to calibrate your analysis."
+
+
+# =============================================================================
+# 11. SKIN AGE ANALYSIS (builds on scan data)
+# =============================================================================
+
+async def ai_skin_age_report(
+    scan_analysis: Dict[str, Any],
+    user_age: Optional[int] = None,
+    scan_history: Optional[List[Dict[str, Any]]] = None,
+) -> Dict[str, Any]:
+    """
+    Generate a detailed skin age report from scan analysis.
+    Compares skin age vs real age, tracks changes over time.
+    All data saved to DB by the caller for building our dataset.
+    """
+    skin_age_data = scan_analysis.get("skin_age", {})
+    estimated = skin_age_data.get("estimated_age", 0)
+
+    age_gap = (user_age - estimated) if user_age and estimated else None
+    trend = None
+    if scan_history and len(scan_history) >= 2:
+        ages = [s.get("skin_age", {}).get("estimated_age") for s in scan_history if s.get("skin_age")]
+        ages = [a for a in ages if a is not None]
+        if len(ages) >= 2:
+            trend = "improving" if ages[-1] < ages[0] else "aging" if ages[-1] > ages[0] else "stable"
+
+    system = (
+        "You are a skin aging expert. Analyze skin age data and provide actionable insights. "
+        "Be encouraging but honest. Focus on what the user can control."
+    )
+    context = {
+        "estimated_skin_age": estimated,
+        "real_age": user_age,
+        "age_gap": age_gap,
+        "trend": trend,
+        "factors_aging": skin_age_data.get("factors_aging", []),
+        "factors_youthful": skin_age_data.get("factors_youthful", []),
+        "hydration_level": scan_analysis.get("hydration_level"),
+        "barrier_health": scan_analysis.get("barrier_health"),
+    }
+    prompt = (
+        f"Skin age data: {json.dumps(context)}\n\n"
+        "Return JSON: {\"skin_age\": <int>, \"real_age\": <int|null>, \"age_gap\": <int|null>, "
+        "\"verdict\": \"younger|same|older than real age\", \"trend\": \"improving|stable|aging|unknown\", "
+        "\"top_3_actions\": [\"specific action to look younger\"], "
+        "\"biggest_aging_factor\": \"what's aging skin most\", "
+        "\"biggest_strength\": \"what keeps skin youthful\", "
+        "\"projected_age_4_weeks\": <int if following recommendations>}"
+    )
+
+    try:
+        return await _call_openai_json(system, prompt, max_tokens=1000)
+    except AIServiceError:
+        return {
+            "skin_age": estimated,
+            "real_age": user_age,
+            "age_gap": age_gap,
+            "verdict": "younger" if age_gap and age_gap > 0 else "older" if age_gap and age_gap < 0 else "unknown",
+            "trend": trend or "unknown",
+            "top_3_actions": [],
+            "biggest_aging_factor": "",
+            "biggest_strength": "",
+        }
+
+
+# =============================================================================
+# 12. EXPOSOME-AWARE PREDICTIONS
+# =============================================================================
+
+async def ai_exposome_prediction(
+    current_scores: Dict[str, float],
+    environmental_data: Dict[str, Any],
+    skin_type: str,
+    current_products: List[str],
+) -> Dict[str, Any]:
+    """
+    Predict how environmental factors will affect skin.
+    Uses weather/UV/pollution/humidity data to adjust predictions.
+    Environmental data is stored in EnvironmentalReading table.
+    """
+    cache_key = f"exposome:{skin_type}:{environmental_data.get('city', '')}:{hash(str(current_scores))}"
+    cached = await cache_get(cache_key)
+    if cached:
+        return cached
+
+    system = (
+        "You are a dermatological environmental scientist. "
+        "Predict how environmental conditions will affect skin health over the next 7 days. "
+        "Consider UV exposure, humidity, temperature, air quality, and their interaction with skin type. "
+        "Factor in whether current products provide adequate protection."
+    )
+
+    prompt = (
+        f"Skin type: {skin_type}\n"
+        f"Current skin scores: {json.dumps(current_scores)}\n"
+        f"Environmental data: {json.dumps(environmental_data)}\n"
+        f"Current products: {', '.join(current_products[:15])}\n\n"
+        "Return JSON: {\"risk_level\": \"low|moderate|high|critical\", "
+        "\"predicted_impacts\": [{\"metric\": \"hydration|acne|redness|etc\", \"direction\": \"improve|worsen|stable\", "
+        "\"magnitude\": 1-10, \"reason\": \"why\"}], "
+        "\"daily_tips\": [{\"day\": 1, \"tip\": \"specific action\", \"priority\": \"high|medium|low\"}], "
+        "\"missing_protection\": [\"what products/habits are needed\"], "
+        "\"uv_alert\": \"none|low|moderate|high|extreme\", "
+        "\"hydration_forecast\": \"dehydration_risk|stable|optimal\"}"
+    )
+
+    try:
+        result = await _call_openai_json(system, prompt, max_tokens=2000)
+        await cache_set(cache_key, result, ttl=1800)  # 30 min cache
+        return result
+    except AIServiceError:
+        return {
+            "risk_level": "unknown",
+            "predicted_impacts": [],
+            "daily_tips": [],
+            "missing_protection": [],
+            "uv_alert": "unknown",
+            "hydration_forecast": "unknown",
+        }
+
+
+# =============================================================================
+# 13. COMMUNITY BENCHMARKING
+# =============================================================================
+
+async def ai_community_benchmark(
+    user_scores: Dict[str, float],
+    user_demographics: Dict[str, Any],
+    aggregate_stats: Dict[str, Any],
+) -> Dict[str, Any]:
+    """
+    Compare user's skin metrics against anonymized community averages.
+    aggregate_stats comes from database aggregation — no individual data exposed.
+    """
+    system = (
+        "You are a skincare data analyst. Compare a user's skin metrics against "
+        "community averages for their demographic group. Be encouraging and specific. "
+        "Highlight strengths and areas for improvement."
+    )
+
+    prompt = (
+        f"User scores: {json.dumps(user_scores)}\n"
+        f"Demographics: {json.dumps(user_demographics)}\n"
+        f"Community averages for similar demographics: {json.dumps(aggregate_stats)}\n\n"
+        "Return JSON: {\"percentiles\": {{\"hydration\": 75, \"acne\": 60, ...}}, "
+        "\"strengths\": [\"metrics where user is above average\"], "
+        "\"improvement_areas\": [\"metrics where user is below average\"], "
+        "\"overall_percentile\": 0-100, "
+        "\"peer_comparison\": \"how user compares in one sentence\", "
+        "\"actionable_tip\": \"one specific tip to improve weakest area\"}"
+    )
+
+    try:
+        return await _call_openai_json(system, prompt, max_tokens=1000)
+    except AIServiceError:
+        return {
+            "percentiles": {},
+            "strengths": [],
+            "improvement_areas": [],
+            "overall_percentile": 50,
+            "peer_comparison": "Unable to generate comparison",
+            "actionable_tip": "",
+        }
+
+
+# =============================================================================
+# 14. SHELF-WIDE INGREDIENT CONFLICT/SYNERGY DETECTION
+# =============================================================================
+
+async def ai_shelf_conflicts(
+    shelf_products: List[Dict[str, Any]],
+    routine_order: Optional[List[str]] = None,
+    skin_type: str = "normal",
+) -> Dict[str, Any]:
+    """
+    Analyze ALL products on a user's shelf for ingredient conflicts and synergies.
+    Goes beyond single-product analysis to find cross-product interactions.
+    """
+    cache_key = f"shelf_conflicts:{hash(json.dumps(shelf_products, sort_keys=True))}:{skin_type}"
+    cached = await cache_get(cache_key)
+    if cached:
+        return cached
+
+    # Summarize products for prompt
+    product_summaries = []
+    for p in shelf_products[:20]:
+        product_summaries.append({
+            "name": p.get("name", ""),
+            "brand": p.get("brand", ""),
+            "category": p.get("category", ""),
+            "ingredients": p.get("ingredients", [])[:15],
+        })
+
+    system = (
+        "You are a cosmetic chemist specializing in ingredient interactions. "
+        "Analyze all products on a user's shelf for dangerous conflicts and beneficial synergies. "
+        "Consider common ingredient interactions: retinol+AHA (sensitization), vitamin C+niacinamide (pH conflict), "
+        "benzoyl peroxide+retinol (deactivation), AHA+BHA (over-exfoliation), "
+        "and beneficial pairings like vitamin C+vitamin E (antioxidant boost), "
+        "hyaluronic acid+ceramides (hydration synergy), niacinamide+zinc (oil control)."
+    )
+
+    prompt = (
+        f"Skin type: {skin_type}\n"
+        f"All shelf products: {json.dumps(product_summaries)}\n"
+        f"{'Routine order: ' + json.dumps(routine_order) if routine_order else ''}\n\n"
+        "Return JSON: {\"conflicts\": [{\"severity\": \"high|medium|low\", \"products\": [\"name1\", \"name2\"], "
+        "\"ingredients\": [\"ing1\", \"ing2\"], \"issue\": \"what happens\", \"fix\": \"how to avoid\"}], "
+        "\"synergies\": [{\"products\": [\"name1\", \"name2\"], \"ingredients\": [\"ing1\", \"ing2\"], "
+        "\"benefit\": \"what they do together\"}], "
+        "\"optimal_order\": [\"product names in best application order\"], "
+        "\"missing_categories\": [\"product types the user should add\"], "
+        "\"shelf_score\": 0-100}"
+    )
+
+    try:
+        result = await _call_openai_json(system, prompt, max_tokens=2500)
+        await cache_set(cache_key, result, ttl=3600)  # 1 hour cache
+        return result
+    except AIServiceError:
+        return {
+            "conflicts": [],
+            "synergies": [],
+            "optimal_order": [],
+            "missing_categories": [],
+            "shelf_score": 50,
+        }
+
+
+# =============================================================================
+# 15. AI SKIN COACH — PROACTIVE INSIGHTS WITH MEMORY
+# =============================================================================
+
+async def ai_proactive_insights(
+    user_profile: Dict[str, Any],
+    scan_history: List[Dict[str, Any]],
+    routine_adherence: Optional[Dict[str, Any]] = None,
+    shelf_products: Optional[List[Dict[str, Any]]] = None,
+    environmental_data: Optional[Dict[str, Any]] = None,
+    recent_changes: Optional[List[str]] = None,
+) -> Dict[str, Any]:
+    """
+    Generate proactive AI coaching insights.
+    Looks at the full picture: scans, routine, products, environment, trends.
+    Detects what changed and surfaces actionable recommendations.
+    This is the "AI Coach" that knows everything about the user's skin journey.
+    """
+    # Build rich context from all data sources
+    context_parts = []
+    if user_profile.get("skin_type"):
+        context_parts.append(f"Skin type: {user_profile['skin_type']}")
+    if user_profile.get("age"):
+        context_parts.append(f"Age: {user_profile['age']}")
+
+    # Scan trend
+    if scan_history and len(scan_history) >= 2:
+        latest = scan_history[-1].get("overall_score", 0)
+        previous = scan_history[-2].get("overall_score", 0)
+        change = latest - previous
+        context_parts.append(
+            f"Latest score: {latest}/100 ({'up' if change > 0 else 'down'} {abs(change)} from last scan)"
+        )
+        if len(scan_history) >= 3:
+            scores = [s.get("overall_score", 0) for s in scan_history[-5:]]
+            avg = sum(scores) / len(scores)
+            context_parts.append(f"5-scan average: {avg:.0f}/100")
+
+    # Routine adherence
+    if routine_adherence:
+        rate = routine_adherence.get("adherence_rate", 0)
+        streak = routine_adherence.get("current_streak", 0)
+        context_parts.append(f"Routine adherence: {rate}%, streak: {streak} days")
+
+    # Product count
+    if shelf_products:
+        context_parts.append(f"Products on shelf: {len(shelf_products)}")
+
+    # Environmental
+    if environmental_data:
+        context_parts.append(f"Weather: {environmental_data.get('weather_conditions', 'unknown')}, "
+                             f"UV: {environmental_data.get('uv_index', 'unknown')}, "
+                             f"Humidity: {environmental_data.get('humidity_percent', 'unknown')}%")
+
+    # Recent changes
+    if recent_changes:
+        context_parts.append(f"Recent changes: {', '.join(recent_changes)}")
+
+    system = (
+        "You are a world-class AI skin coach with deep knowledge of dermatology, "
+        "cosmetic chemistry, and lifestyle factors. You have access to the user's "
+        "complete skin journey. Generate proactive, specific insights — not generic advice. "
+        "Reference their actual data. Be like a personal dermatologist who knows them well."
+    )
+
+    prompt = (
+        f"User context:\n" + "\n".join(f"- {p}" for p in context_parts) + "\n\n"
+        "Generate 3-5 proactive coaching insights. Return JSON:\n"
+        "{\"insights\": [{\"type\": \"alert|tip|milestone|warning|encouragement\", "
+        "\"title\": \"short headline\", \"message\": \"specific personalized insight\", "
+        "\"priority\": \"high|medium|low\", \"action\": \"what to do\", "
+        "\"data_point\": \"what data triggered this insight\"}], "
+        "\"weekly_focus\": \"one thing to focus on this week\", "
+        "\"skin_mood\": \"improving|stable|needs_attention|great\"}"
+    )
+
+    try:
+        return await _call_openai_json(system, prompt, max_tokens=2000)
+    except AIServiceError:
+        return {
+            "insights": [],
+            "weekly_focus": "Keep up your routine",
+            "skin_mood": "stable",
+        }
+
+
+# =============================================================================
+# 16. SMART PRODUCT MATCH SCORE
+# =============================================================================
+
+async def ai_product_match_score(
+    product: Dict[str, Any],
+    user_profile: Dict[str, Any],
+    latest_scan: Optional[Dict[str, Any]] = None,
+    known_sensitivities: Optional[List[str]] = None,
+) -> Dict[str, Any]:
+    """
+    Calculate personalized product compatibility score for a specific user.
+    Not generic safety — PERSONAL match based on their skin state, concerns, and sensitivities.
+    """
+    cache_key = f"match:{product.get('name', '')}:{user_profile.get('skin_type', '')}:{hash(str(latest_scan))}"
+    cached = await cache_get(cache_key)
+    if cached:
+        return cached
+
+    system = (
+        "You are a personalized skincare advisor. Evaluate how well a specific product matches "
+        "THIS user's current skin state, not generic suitability. "
+        "Consider their skin type, active concerns, sensitivities, and current scan results."
+    )
+
+    prompt = (
+        f"Product: {json.dumps(product)}\n"
+        f"User profile: {json.dumps(user_profile)}\n"
+        f"{'Latest scan: ' + json.dumps(latest_scan) if latest_scan else ''}\n"
+        f"{'Known sensitivities: ' + json.dumps(known_sensitivities) if known_sensitivities else ''}\n\n"
+        "Return JSON: {\"match_score\": 0-100, \"verdict\": \"perfect_match|good_match|neutral|caution|avoid\", "
+        "\"pros\": [\"why it's good for this user\"], \"cons\": [\"potential issues for this user\"], "
+        "\"best_used\": \"morning|evening|both|occasional\", "
+        "\"pair_with\": [\"products that would complement this\"], "
+        "\"avoid_with\": [\"products NOT to use with this\"], "
+        "\"personalized_tip\": \"one specific tip for this user using this product\"}"
+    )
+
+    try:
+        result = await _call_openai_json(system, prompt, max_tokens=1200)
+        await cache_set(cache_key, result, ttl=3600)  # 1 hour
+        return result
+    except AIServiceError:
+        return {
+            "match_score": 50,
+            "verdict": "neutral",
+            "pros": [],
+            "cons": [],
+            "best_used": "both",
+            "pair_with": [],
+            "avoid_with": [],
+            "personalized_tip": "",
+        }

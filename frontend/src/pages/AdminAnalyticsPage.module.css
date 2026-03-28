@@ -61,7 +61,7 @@
 }
 .rangeTabActive {
   background: var(--primary, #1f5fbf);
-  color: #fff;
+  color: var(--white, #fff);
   font-weight: var(--font-weight-semibold, 600);
 }
 
@@ -207,7 +207,7 @@
   background: linear-gradient(90deg, var(--bg-secondary, #f6f8fb) 25%, var(--bg-tertiary, #eef2f6) 50%, var(--bg-secondary, #f6f8fb) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
-  border-radius: 4px;
+  border-radius: var(--border-radius-sm);
 }
 
 @keyframes shimmer {
@@ -254,7 +254,7 @@
 .bar {
   height: 6px;
   background: var(--primary, #1f5fbf);
-  border-radius: 3px;
+  border-radius: var(--border-radius-sm);
   min-width: 4px;
   transition: width 0.3s ease;
 }

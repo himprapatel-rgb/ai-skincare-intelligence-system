@@ -3,4 +3,4 @@ User-agent: *
 Allow: /
 
 # Sitemap (update base URL when deployed)
-Sitemap: https://frontend-production-0415.up.railway.app/sitemap.xml
+Sitemap: https://pellicura.com/sitemap.xml

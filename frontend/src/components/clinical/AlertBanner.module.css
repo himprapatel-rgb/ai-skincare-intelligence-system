@@ -3,10 +3,10 @@
 .banner {
   width: 100%;
   background: linear-gradient(135deg, #ef4444 0%, #f97316 100%);
-  color: #fff;
+  color: var(--white, #fff);
   padding: var(--spacing-sm, 8px) var(--spacing-md, 16px);
   position: relative;
-  z-index: 50;
+  z-index: var(--z-dropdown);
 }
 
 .inner {
@@ -67,7 +67,7 @@
   cursor: pointer;
   padding: 4px;
   border-radius: var(--border-radius-sm, 6px);
-  color: #fff;
+  color: var(--white, #fff);
   transition: background 0.15s ease;
   display: flex;
   align-items: center;

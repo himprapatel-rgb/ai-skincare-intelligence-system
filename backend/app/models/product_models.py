@@ -106,3 +106,62 @@ class ProductReview(Base):
         Index('ix_product_reviews_created_at', 'created_at'),
         Index('ix_product_reviews_product_created', 'product_id', 'created_at'),
     )
+
+
+class ProductEffectiveness(Base):
+    """
+    Tracks how products affect skin scores over time.
+    Core dataset for building Pellicura's proprietary recommendation intelligence.
+
+    Created automatically when:
+    1. User adds a product to shelf
+    2. User completes a scan while using the product
+    3. System calculates score delta (before → after)
+
+    This data powers:
+    - "Users like you improved X% with this product"
+    - Effectiveness-weighted recommendation ranking
+    - Product comparison with real outcome data
+    """
+
+    __tablename__ = "product_effectiveness"
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    product_id = Column(UUID(as_uuid=True), ForeignKey("products.id"), nullable=False, index=True)
+
+    # User context at measurement time
+    skin_type = Column(String(50), nullable=True)
+    age_group = Column(String(20), nullable=True)  # "20s", "30s", "40s"
+    primary_concerns = Column(JSONB, nullable=True)  # ["acne", "oiliness"]
+    climate = Column(String(50), nullable=True)
+
+    # Score snapshots
+    score_before = Column(JSONB, nullable=True)  # {"overall": 55, "acne": 70, "hydration": 40, ...}
+    score_after = Column(JSONB, nullable=True)   # {"overall": 62, "acne": 58, "hydration": 55, ...}
+    score_delta = Column(JSONB, nullable=True)   # {"overall": +7, "acne": -12, "hydration": +15, ...}
+
+    # Usage context
+    days_used = Column(Integer, nullable=True)  # How long user used the product
+    usage_frequency = Column(String(20), nullable=True)  # "daily", "2x_daily", "weekly"
+    used_with_products = Column(JSONB, nullable=True)  # Other products used simultaneously
+
+    # Scan references
+    scan_before_id = Column(UUID(as_uuid=True), ForeignKey("scan_sessions.id"), nullable=True)
+    scan_after_id = Column(UUID(as_uuid=True), ForeignKey("scan_sessions.id"), nullable=True)
+
+    # Outcome signals
+    overall_improvement = Column(Float, nullable=True)  # -100 to +100 (negative = worse)
+    would_repurchase = Column(Boolean, nullable=True)
+    user_rating = Column(Integer, nullable=True)  # 1-5
+
+    # Metadata
+    measurement_type = Column(String(20), default="auto")  # "auto" (system) or "manual" (user)
+    confidence = Column(Float, default=0.5)  # How reliable is this measurement (0-1)
+    created_at = Column(DateTime(timezone=True), default=datetime.utcnow, nullable=False)
+
+    __table_args__ = (
+        Index('ix_product_effectiveness_product', 'product_id'),
+        Index('ix_product_effectiveness_skin_type', 'skin_type'),
+        Index('ix_product_effectiveness_created', 'created_at'),
+    )

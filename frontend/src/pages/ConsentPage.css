@@ -101,7 +101,7 @@
 .save-button:hover {
   background: var(--primary-dark);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(31, 111, 235, 0.3);
+  box-shadow: var(--shadow-primary);
 }
 
 .consent-summary {

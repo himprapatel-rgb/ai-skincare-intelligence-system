@@ -5,7 +5,7 @@
 
 .tooltip {
   position: absolute;
-  z-index: 1100;
+  z-index: var(--z-toast);
   padding: 6px 12px;
   font-size: 0.8125rem;
   font-weight: 500;

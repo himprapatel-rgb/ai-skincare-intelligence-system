@@ -31,7 +31,7 @@
   background: var(--bg-white);
   border-radius: var(--radius-xl, 16px);
   margin-bottom: 24px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  box-shadow: var(--shadow-sm);
   border: 1px solid var(--border-color);
 }
 
@@ -118,12 +118,12 @@
   border-radius: var(--radius-xl, 16px);
   text-decoration: none;
   color: var(--text-primary);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-md);
   transition: box-shadow 0.2s, border-color 0.2s;
 }
 
 .me-twin-card:hover {
-  box-shadow: 0 6px 16px rgba(31, 95, 191, 0.15);
+  box-shadow: var(--shadow-primary);
   border-color: rgba(31, 95, 191, 0.35);
 }
 

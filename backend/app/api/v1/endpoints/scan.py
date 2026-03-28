@@ -4,6 +4,7 @@ import logging
 import pathlib
 import re
 import sys
+import uuid as uuid_module
 from typing import Optional
 from uuid import UUID
 
@@ -46,6 +47,31 @@ router = APIRouter()
 logger = logging.getLogger(__name__)
 ALLOWED_IMAGE_TYPES = {"image/jpeg", "image/jpg", "image/png", "image/webp"}
 MAX_IMAGE_SIZE = 5 * 1024 * 1024  # 5 MB
+
+# Magic-byte signatures for image validation
+IMAGE_SIGNATURES = {
+    b'\xff\xd8\xff': "image/jpeg",
+    b'\x89PNG\r\n\x1a\n': "image/png",
+    b'RIFF': "image/webp",  # WebP starts with RIFF....WEBP
+}
+
+
+def _validate_image_bytes(data: bytes) -> bool:
+    """Validate that file content matches an allowed image format via magic bytes."""
+    for sig in IMAGE_SIGNATURES:
+        if data[:len(sig)] == sig:
+            return True
+    return False
+
+
+def _safe_filename(original: Optional[str], scan_id: UUID) -> str:
+    """Generate a safe filename using UUID to prevent path traversal."""
+    ext = ".jpg"
+    if original:
+        _, dot_ext = pathlib.PurePosixPath(original).stem, pathlib.PurePosixPath(original).suffix
+        if dot_ext.lower() in (".jpg", ".jpeg", ".png", ".webp"):
+            ext = dot_ext.lower()
+    return f"{scan_id}{ext}"
 
 
 def _status_value(status_field: ScanStatus | str) -> str:
@@ -195,11 +221,18 @@ async def upload_scan(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail=f"Image too large. Maximum size is {MAX_IMAGE_SIZE // (1024 * 1024)} MB.",
         )
-    
-    # Persist raw image data and metadata in DB
+
+    # Validate magic bytes to prevent spoofed Content-Type
+    if not _validate_image_bytes(image_data):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="File content does not match a valid image format.",
+        )
+
+    # Persist raw image data and metadata in DB (use safe filename)
     scan_session.image_data = image_data
     scan_session.image_content_type = file.content_type
-    scan_session.image_filename = file.filename
+    scan_session.image_filename = _safe_filename(file.filename, uuid_obj)
     scan_session.image_hash = hashlib.sha256(image_data).hexdigest()
 
     # Get skin analysis service and perform analysis
@@ -303,7 +336,15 @@ async def upload_scan(
         scan_session.scan_metadata = {"error": "Analysis failed"}
     
     db.commit()
-    
+
+    # Auto-track product effectiveness — builds our proprietary dataset
+    if scan_session.status == ScanStatus.COMPLETED and current_user:
+        try:
+            from app.services.smart_recommendation_engine import auto_track_effectiveness
+            auto_track_effectiveness(db, current_user.id, scan_session)
+        except Exception as track_err:
+            logger.warning("Auto-track effectiveness failed (non-blocking): %s", track_err)
+
     return {
         "scan_id": str(scan_session.id),
         "session_id": str(scan_session.id),

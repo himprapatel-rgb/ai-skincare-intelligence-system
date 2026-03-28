@@ -11,8 +11,8 @@ from sqlalchemy.orm import Session
 from app.core import skin_analysis as models
 from app.database import get_db
 from app.schemas import analysis_schemas as schemas
-from services import recommendation as rec_service
-from services.ml_engine import analyze_skin_image
+from app.services import recommendation as rec_service
+from app.services.ml_engine import analyze_skin_image
 
 router = APIRouter(prefix="/analysis", tags=["Skin Analysis"])
 logger = logging.getLogger(__name__)

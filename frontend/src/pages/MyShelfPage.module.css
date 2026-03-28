@@ -306,7 +306,7 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--spacing-sm, 8px);
-  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
+  box-shadow: var(--shadow-md);
   z-index: var(--z-sticky, 200);
   transform: translateY(100%);
   transition: transform 0.3s ease;
@@ -442,11 +442,11 @@
   .productCard,
   .productListItem {
     background: var(--gray-900, #162133);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow-sm);
   }
 
   .productCard:hover {
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    box-shadow: var(--shadow-lg);
   }
 
   .productImage,
@@ -470,7 +470,7 @@
   .bulkToolbar {
     background: var(--gray-900, #162133);
     border-color: var(--gray-800, #27364c);
-    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow-lg);
   }
 
   .bulkCount {

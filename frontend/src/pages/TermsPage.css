@@ -72,7 +72,7 @@
   font-size: 0.9375rem;
 }
 .terms-toc a:hover { text-decoration: underline; }
-@media (max-width: 600px) {
+@media (max-width: 640px) {
   .terms-toc ul { column-count: 1; }
 }
 
@@ -94,7 +94,7 @@
 
 .terms-section:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(31, 111, 235, 0.15);
+  box-shadow: var(--shadow-primary);
   border-color: var(--primary);
 }
 

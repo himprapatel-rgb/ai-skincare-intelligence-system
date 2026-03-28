@@ -215,28 +215,34 @@
   --max-width-lg: 1024px;
   --max-width-xl: 1280px;
 
-  /* Responsive breakpoints (match constants/viewport.ts and styles/responsive.css) */
+  /* Responsive breakpoints — 4 device targets
+     Mobile:  < 768px  (phones, portrait)
+     Tablet:  768px - 1024px  (iPad, landscape phones)
+     Laptop:  1025px - 1440px (13"-15" laptops)
+     Desktop: > 1440px (external monitors, large screens)
+  */
   --breakpoint-mobile: 768px;
   --breakpoint-tablet: 1024px;
-  --breakpoint-desktop: 1280px;
+  --breakpoint-laptop: 1440px;
+  --breakpoint-desktop: 1441px;
   --bp-xs: 480px;
-  --bp-sm: 600px;
+  --bp-sm: 640px;
   --bp-md: 768px;
   --bp-lg: 1024px;
-  --bp-xl: 1280px;
+  --bp-xl: 1440px;
+  --bp-2xl: 1920px;
 
   /* Focus & Accessibility */
   --focus-ring: 2px solid var(--primary);
   --focus-ring-offset: 2px;
   --focus-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
 
-  /* Z-index scale (Tasks 541–550) */
-  --z-index-dropdown: 1000;
-  --z-index-sticky: 100;
-  --z-index-modal: 2000;
-  --z-index-toast: 3000;
-  /* Select/dropdown menus should stack above cards */
-  --z-index-select: 1050;
+  /* Z-index scale (legacy aliases → new tokens) */
+  --z-index-dropdown: var(--z-modal);
+  --z-index-sticky: var(--z-sticky);
+  --z-index-modal: var(--z-modal);
+  --z-index-toast: var(--z-toast);
+  --z-index-select: var(--z-toast);
 
   /* Responsive font sizing (Mobile Redesign FIX 6 + Audit) */
   --font-xs: clamp(10px, 2.5vw, 12px);

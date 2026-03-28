@@ -7,7 +7,7 @@
   background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
   color: var(--white);
   padding: 12px 20px;
-  border-radius: 50px;
+  border-radius: var(--radius-full);
   box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
   display: flex;
   align-items: center;
@@ -32,7 +32,7 @@
 .dev-badge {
   background: rgba(255, 255, 255, 0.25);
   padding: 4px 10px;
-  border-radius: 20px;
+  border-radius: var(--radius-xl);
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.5px;
@@ -51,7 +51,7 @@
 .dev-pulse {
   width: 8px;
   height: 8px;
-  background: #4ade80;
+  background: var(--success, #4ade80);
   border-radius: 50%;
   animation: pulse 2s ease-in-out infinite;
   box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7);

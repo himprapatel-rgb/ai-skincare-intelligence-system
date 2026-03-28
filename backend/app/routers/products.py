@@ -15,6 +15,7 @@ from sqlalchemy.orm import Session, joinedload
 from app.core.security import get_current_user
 from app.database import get_db
 from app.models.product_models import Ingredient, Product, ProductReview
+from app.models.shelf import ShelfProduct
 from app.models.user import User
 from app.product_database import ProductSessionLocal, get_product_db
 from app.schemas.product_schemas import (
@@ -66,10 +67,10 @@ async def search_products(
         query = query.filter(Product.brand.ilike(f"%{brand}%"))
     if category:
         query = query.filter(Product.category == category)
-    if min_price is not None and hasattr(Product, "price"):
-        query = query.filter(Product.price >= min_price)
-    if max_price is not None and hasattr(Product, "price"):
-        query = query.filter(Product.price <= max_price)
+    if min_price is not None and hasattr(Product, "price_usd"):
+        query = query.filter(Product.price_usd >= min_price)
+    if max_price is not None and hasattr(Product, "price_usd"):
+        query = query.filter(Product.price_usd <= max_price)
 
     # Sorting
     if sort_by == "name":
@@ -78,8 +79,8 @@ async def search_products(
         query = query.order_by(Product.created_at.desc())
     elif sort_by == "rating" and hasattr(Product, "average_rating"):
         query = query.order_by(Product.average_rating.desc())
-    elif sort_by == "price" and hasattr(Product, "price"):
-        query = query.order_by(Product.price.asc())
+    elif sort_by == "price" and hasattr(Product, "price_usd"):
+        query = query.order_by(Product.price_usd.asc())
     else:
         query = query.order_by(Product.created_at.desc())
 
@@ -308,7 +309,10 @@ async def create_product_review(
         comment=review_data.comment,
         skin_type=review_data.skin_type,
         would_recommend=1 if review_data.would_recommend else 0,
-        verified_purchase=0  # TODO: Check if product is in user's shelf
+        verified_purchase=1 if db.query(ShelfProduct).filter(
+            ShelfProduct.user_id == current_user.id,
+            ShelfProduct.product_id == product_uuid,
+        ).first() else 0
     )
     
     db.add(review)

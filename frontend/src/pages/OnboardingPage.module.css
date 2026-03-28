@@ -29,7 +29,7 @@
 .progressStep {
   flex: 1;
   height: 4px;
-  border-radius: 2px;
+  border-radius: var(--border-radius-sm);
   background: var(--border, #e0e0e0);
   transition: background 0.3s ease;
 }

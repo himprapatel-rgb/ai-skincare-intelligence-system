@@ -519,7 +519,7 @@
   margin: 0 auto;
   border-radius: var(--radius-xl, 16px);
   overflow: hidden;
-  background: #000;
+  background: var(--gray-900, #000);
 }
 
 .scanner-webcam {
@@ -593,7 +593,7 @@
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
-  box-shadow: 0 4px 12px rgba(31, 111, 235, 0.2);
+  box-shadow: var(--shadow-primary);
 }
 
 .btn-scan:hover:not(:disabled) {
@@ -838,14 +838,14 @@
 
 .skin-match-bar-wrap {
   height: 8px;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   background: rgba(0,0,0,0.08);
   overflow: hidden;
   margin: 10px 0 14px 0;
 }
 .skin-match-bar {
   height: 100%;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   background: var(--primary);
   transition: width 0.4s ease;
 }
@@ -916,7 +916,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: var(--z-modal);
   padding: 16px;
 }
 .track-product-modal {
@@ -925,7 +925,7 @@
   padding: 24px;
   max-width: 360px;
   width: 100%;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  box-shadow: var(--shadow-lg);
 }
 .track-product-modal h3 { margin: 0 0 8px 0; font-size: 1.15rem; color: var(--text-primary); }
 .track-product-desc { margin: 0 0 20px 0; font-size: 0.9rem; color: var(--text-secondary); }
@@ -1613,14 +1613,14 @@
   flex: 1;
   height: 6px;
   background: var(--gray-200, #e5e7eb);
-  border-radius: 3px;
+  border-radius: var(--border-radius-sm);
   overflow: hidden;
   max-width: 100px;
 }
 
 .confidence-bar-fill {
   height: 100%;
-  border-radius: 3px;
+  border-radius: var(--border-radius-sm);
   transition: width 0.5s ease;
 }
 
@@ -1671,7 +1671,7 @@
 
 .history-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-lg);
 }
 
 .history-image {
@@ -1727,7 +1727,7 @@
   color: var(--accent);
 }
 
-@media (max-width: 600px) {
+@media (max-width: 640px) {
   .history-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
@@ -2071,12 +2071,12 @@
   background: linear-gradient(135deg, var(--primary), var(--primary-dark, var(--primary)));
   color: var(--white);
   border: none;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  box-shadow: var(--shadow-primary);
 }
 
 .capture-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+  box-shadow: var(--shadow-primary);
 }
 
 .upload-btn {

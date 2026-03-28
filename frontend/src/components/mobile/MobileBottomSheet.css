@@ -10,7 +10,7 @@
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 999;
+  z-index: var(--z-overlay);
   animation: fadeIn 0.3s ease-out;
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
@@ -79,7 +79,7 @@
   width: 40px;
   height: 5px;
   background: rgba(0, 0, 0, 0.2);
-  border-radius: 3px;
+  border-radius: var(--border-radius-sm);
   transition: background 0.2s;
 }
 
@@ -115,7 +115,7 @@
 
 .mobile-bottom-sheet-content::-webkit-scrollbar-thumb {
   background: rgba(0, 0, 0, 0.2);
-  border-radius: 2px;
+  border-radius: var(--border-radius-sm);
 }
 
 /* Dark mode */
@@ -138,7 +138,7 @@
   }
   
   .mobile-bottom-sheet-title {
-    color: #ffffff;
+    color: var(--white, #fff);
   }
 }
 

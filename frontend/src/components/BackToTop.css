@@ -4,7 +4,7 @@
   bottom: 96px; /* Above bottom nav + Bumble-style raised center button */
   right: 16px;
   left: auto;
-  z-index: 50;
+  z-index: var(--z-dropdown);
   width: 48px;
   height: 48px;
   border-radius: 50%;

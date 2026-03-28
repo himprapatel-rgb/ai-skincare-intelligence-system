@@ -98,7 +98,7 @@
   appearance: none;
   width: 40px;
   height: 22px;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   background: var(--gray-200);
   position: relative;
   cursor: pointer;

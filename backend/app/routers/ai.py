@@ -252,7 +252,7 @@ async def get_curated_content(
     current_user: User = Depends(get_current_user),
 ):
     """Get AI-curated content recommendations."""
-    from app.models.content_models import BlogPost
+    from app.models.content import Blog as BlogPost
     profile = _get_user_profile_data(db, current_user)
 
     try:

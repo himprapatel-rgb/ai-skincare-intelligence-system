@@ -6,7 +6,7 @@
   width: 100%;
   height: 100vh;
   height: 100dvh;
-  background: #000;
+  background: var(--gray-900, #000);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -94,13 +94,13 @@
   flex: 1;
   height: 4px;
   background: rgba(255, 255, 255, 0.2);
-  border-radius: 2px;
+  border-radius: var(--border-radius-sm);
   overflow: hidden;
 }
 
 .qualityFill {
   height: 100%;
-  border-radius: 2px;
+  border-radius: var(--border-radius-sm);
   transition: width 0.3s ease, background 0.3s ease;
 }
 
@@ -260,7 +260,7 @@
   width: 200px;
   height: 4px;
   background: rgba(255, 255, 255, 0.2);
-  border-radius: 2px;
+  border-radius: var(--border-radius-sm);
   margin-top: var(--spacing-md, 16px);
   overflow: hidden;
 }
@@ -268,7 +268,7 @@
 .progressBarFill {
   height: 100%;
   background: var(--white, #fff);
-  border-radius: 2px;
+  border-radius: var(--border-radius-sm);
   transition: width 0.3s ease;
 }
 
@@ -281,7 +281,7 @@
   z-index: 30;
   background: var(--bg-primary, #fff);
   border-radius: var(--radius-xl, 16px) var(--radius-xl, 16px) 0 0;
-  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-xl);
   transform: translateY(100%);
   transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
   max-height: 70vh;
@@ -296,7 +296,7 @@
   width: 40px;
   height: 4px;
   background: var(--gray-300, #d1d9e4);
-  border-radius: 2px;
+  border-radius: var(--border-radius-sm);
   margin: var(--spacing-sm, 8px) auto var(--spacing-md, 16px);
 }
 

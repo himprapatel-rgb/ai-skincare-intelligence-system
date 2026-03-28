@@ -81,12 +81,12 @@
 
 .mobile-input--error.mobile-input--focused .mobile-input__label,
 .mobile-input--error.mobile-input--has-value .mobile-input__label {
-  color: #ef4444;
+  color: var(--danger);
 }
 
 /* Required asterisk */
 .mobile-input__required {
-  color: #ef4444;
+  color: var(--danger);
   margin-left: 2px;
 }
 
@@ -132,7 +132,7 @@
   height: 2px;
   background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
   transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  border-radius: 2px;
+  border-radius: var(--border-radius-sm);
 }
 
 .mobile-input--focused .mobile-input__border {
@@ -144,7 +144,7 @@
   margin-top: 6px;
   padding-left: 16px;
   font-size: 13px;
-  color: #ef4444;
+  color: var(--danger);
   display: flex;
   align-items: center;
   gap: 4px;
@@ -173,7 +173,7 @@
 }
 
 .mobile-input--error .mobile-input__counter {
-  color: #ef4444;
+  color: var(--danger);
 }
 
 /* Textarea variant */
@@ -210,7 +210,7 @@
 @media (prefers-color-scheme: dark) {
   .mobile-input__input {
     background: rgba(255, 255, 255, 0.05);
-    color: #ffffff;
+    color: var(--white, #fff);
   }
   
   .mobile-input__input:focus {

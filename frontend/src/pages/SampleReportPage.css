@@ -128,7 +128,7 @@
   background: linear-gradient(135deg, var(--primary) 0%, #5a8bff 100%);
   color: var(--white);
   padding: 12px 22px;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   text-decoration: none;
   font-weight: 600;
 }

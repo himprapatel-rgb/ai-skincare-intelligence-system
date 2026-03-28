@@ -216,7 +216,7 @@
 .strengthBar {
   flex: 1;
   height: 4px;
-  border-radius: 2px;
+  border-radius: var(--border-radius-sm);
   background: var(--gray-200, #e4e9ef);
   transition: background 0.3s ease;
 }
@@ -234,7 +234,7 @@
 }
 
 .strengthStrong {
-  background: #059669;
+  background: var(--success-600);
 }
 
 .strengthLabel {
@@ -391,7 +391,7 @@
 
   .formCard {
     background: var(--gray-900, #162133);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow-xl);
   }
 
   .formTitle {

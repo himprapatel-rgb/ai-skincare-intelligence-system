@@ -59,7 +59,7 @@
 
 .downloadBtn {
   background: var(--primary, #1f5fbf);
-  color: #fff;
+  color: var(--white, #fff);
 }
 .downloadBtn:hover {
   background: var(--primary-dark, #174ea0);

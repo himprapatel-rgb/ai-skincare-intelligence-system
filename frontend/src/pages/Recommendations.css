@@ -185,7 +185,7 @@
 .recommendations-geo-chip {
   display: inline-block;
   padding: 6px 12px;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   background: var(--bg-white);
   border: 1px solid var(--border-color);
   font-size: 0.8rem;
@@ -219,13 +219,13 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.03em;
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
+  box-shadow: var(--shadow-primary);
 }
 
 .product-card-best-match {
   position: relative;
   border-color: rgba(37, 99, 235, 0.35);
-  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.12);
+  box-shadow: var(--shadow-primary);
 }
 
 .product-card-best-match .product-media {
@@ -313,7 +313,7 @@
 .filter-select:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(31, 111, 235, 0.12);
+  box-shadow: var(--focus-shadow);
   background: var(--white);
 }
 
@@ -422,7 +422,7 @@
 
 .concern-tag {
   padding: 4px 10px;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   background: var(--primary-light);
   color: var(--primary);
   font-size: 0.75rem;

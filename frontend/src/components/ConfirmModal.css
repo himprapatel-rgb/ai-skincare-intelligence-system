@@ -110,7 +110,7 @@
 }
 
 .confirm-modal-confirm:hover {
-  background: #dc2626;
+  background: var(--danger, #dc2626);
 }
 
 .confirm-modal--warning .confirm-modal-confirm {
@@ -118,7 +118,7 @@
 }
 
 .confirm-modal--warning .confirm-modal-confirm:hover {
-  background: #d97706;
+  background: var(--warning-600);
 }
 
 .confirm-modal--neutral .confirm-modal-confirm {

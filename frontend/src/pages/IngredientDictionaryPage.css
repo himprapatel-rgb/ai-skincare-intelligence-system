@@ -58,7 +58,7 @@
 
 .ingredient-filters .filter-btn {
   padding: 8px 14px;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   border: 1px solid var(--border);
   background: var(--bg-white);
   color: var(--text-secondary);
@@ -148,7 +148,7 @@
   background: var(--primary-light, #dbeafe);
   color: var(--primary);
   padding: 0 2px;
-  border-radius: 2px;
+  border-radius: var(--border-radius-sm);
 }
 .ingredient-empty {
   text-align: center;

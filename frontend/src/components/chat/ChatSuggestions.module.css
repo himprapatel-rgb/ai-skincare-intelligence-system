@@ -54,7 +54,7 @@
   color: var(--color-primary, #1f6feb);
   background: var(--color-primary-light, #e8f0fd);
   transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(31, 111, 235, 0.1);
+  box-shadow: var(--shadow-primary);
 }
 
 .chip:active {

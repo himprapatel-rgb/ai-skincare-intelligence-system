@@ -94,7 +94,7 @@
   background: var(--color-primary, #1f6feb);
   color: var(--color-white, #fff);
   border-color: var(--color-primary, #1f6feb);
-  box-shadow: 0 2px 8px rgba(31, 111, 235, 0.3);
+  box-shadow: var(--shadow-primary);
 }
 
 .goalIcon {

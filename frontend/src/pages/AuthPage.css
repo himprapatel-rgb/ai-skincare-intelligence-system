@@ -117,7 +117,7 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-md);
   color: var(--primary);
 }
 
@@ -219,7 +219,7 @@
   outline: none;
   border-color: var(--primary);
   background: var(--bg-white);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  box-shadow: var(--focus-shadow);
 }
 
 .form-group.has-error input {
@@ -229,7 +229,7 @@
 
 .form-group.has-error input:focus {
   border-color: var(--danger);
-  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+  box-shadow: 0 0 0 3px rgba(var(--danger-rgb, 239, 68, 68), 0.15);
 }
 
 .form-group input::placeholder {
@@ -367,13 +367,13 @@
   height: 4px;
   margin-top: 8px;
   background: var(--gray-200, #e5e7eb);
-  border-radius: 2px;
+  border-radius: var(--border-radius-sm);
   overflow: hidden;
 }
 
 .password-field .strength-bar {
   height: 100%;
-  border-radius: 2px;
+  border-radius: var(--border-radius-sm);
   transition: width 0.3s ease, background-color 0.3s ease;
 }
 
@@ -410,13 +410,13 @@
   cursor: pointer;
   transition: all 0.2s;
   margin-top: var(--spacing-md);
-  box-shadow: 0 4px 12px rgba(31, 111, 235, 0.2);
+  box-shadow: var(--shadow-primary);
 }
 
 .auth-submit:hover {
   background: var(--primary-hover);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(31, 111, 235, 0.3);
+  box-shadow: var(--shadow-primary);
 }
 
 .auth-submit:disabled {
@@ -493,7 +493,7 @@
   color: var(--white);
   border-color: var(--primary);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(31, 111, 235, 0.3);
+  box-shadow: var(--shadow-primary);
 }
 
 .auth-toggle a:hover::before,
@@ -611,7 +611,7 @@
   background: var(--primary);
   color: var(--white);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(31, 111, 235, 0.3);
+  box-shadow: var(--shadow-primary);
 }
 
 
@@ -629,7 +629,7 @@
   border-radius: var(--radius-xl, 16px);
   margin-bottom: 20px;
   animation: errorSlideIn 0.3s ease-out;
-  box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.1);
+  box-shadow: var(--shadow-sm);
 }
 
 .error-message__content {
@@ -721,7 +721,7 @@
   border-radius: var(--radius-xl, 16px); /* Brand guideline: 8px */
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(31, 111, 235, 0.2);
+  box-shadow: var(--shadow-primary);
   min-width: 120px;
   min-height: 44px;
 }
@@ -729,7 +729,7 @@
 .btn-primary:hover:not(:disabled) {
   background: var(--primary-hover);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(31, 111, 235, 0.3);
+  box-shadow: var(--shadow-primary);
 }
 
 .btn-primary:active:not(:disabled) {

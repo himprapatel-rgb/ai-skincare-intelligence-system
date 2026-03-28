@@ -84,11 +84,11 @@
 }
 .badge_high {
   background: rgba(249, 115, 22, 0.12);
-  color: #c2410c;
+  color: var(--warning-600);
 }
 .badge_critical {
   background: rgba(239, 68, 68, 0.15);
-  color: #dc2626;
+  color: var(--danger);
 }
 
 /* Dismiss button */

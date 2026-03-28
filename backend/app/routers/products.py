@@ -66,10 +66,10 @@ async def search_products(
         query = query.filter(Product.brand.ilike(f"%{brand}%"))
     if category:
         query = query.filter(Product.category == category)
-    if min_price is not None and hasattr(Product, "price"):
-        query = query.filter(Product.price >= min_price)
-    if max_price is not None and hasattr(Product, "price"):
-        query = query.filter(Product.price <= max_price)
+    if min_price is not None and hasattr(Product, "price_usd"):
+        query = query.filter(Product.price_usd >= min_price)
+    if max_price is not None and hasattr(Product, "price_usd"):
+        query = query.filter(Product.price_usd <= max_price)
 
     # Sorting
     if sort_by == "name":
@@ -78,8 +78,8 @@ async def search_products(
         query = query.order_by(Product.created_at.desc())
     elif sort_by == "rating" and hasattr(Product, "average_rating"):
         query = query.order_by(Product.average_rating.desc())
-    elif sort_by == "price" and hasattr(Product, "price"):
-        query = query.order_by(Product.price.asc())
+    elif sort_by == "price" and hasattr(Product, "price_usd"):
+        query = query.order_by(Product.price_usd.asc())
     else:
         query = query.order_by(Product.created_at.desc())
 

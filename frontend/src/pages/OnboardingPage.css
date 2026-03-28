@@ -90,7 +90,7 @@
   width: 28px;
   height: 3px;
   background: var(--ds-gray-200);
-  border-radius: 2px;
+  border-radius: var(--border-radius-sm);
   transform: translateY(-50%);
   transition: all var(--ds-transition-base);
 }
@@ -107,7 +107,7 @@
   background: var(--ds-success);
   border-color: transparent;
   color: var(--ds-white);
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  box-shadow: var(--shadow-primary);
 }
 
 .progress-step.completed::after,
@@ -393,7 +393,7 @@
 
 .btn-primary:hover:not(:disabled) {
   transform: translateY(-3px);
-  box-shadow: 0 12px 32px rgba(37, 99, 235, 0.4);
+  box-shadow: var(--shadow-primary);
 }
 
 .btn-primary:disabled {
@@ -464,7 +464,7 @@
   outline: none;
   border-color: var(--ds-primary);
   background: var(--ds-white);
-  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+  box-shadow: var(--focus-shadow);
 }
 
 .form-group input::placeholder {

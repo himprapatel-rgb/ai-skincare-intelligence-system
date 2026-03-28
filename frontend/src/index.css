@@ -230,13 +230,12 @@
   --focus-ring-offset: 2px;
   --focus-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
 
-  /* Z-index scale (Tasks 541–550) */
-  --z-index-dropdown: 1000;
-  --z-index-sticky: 100;
-  --z-index-modal: 2000;
-  --z-index-toast: 3000;
-  /* Select/dropdown menus should stack above cards */
-  --z-index-select: 1050;
+  /* Z-index scale (legacy aliases → new tokens) */
+  --z-index-dropdown: var(--z-modal);
+  --z-index-sticky: var(--z-sticky);
+  --z-index-modal: var(--z-modal);
+  --z-index-toast: var(--z-toast);
+  --z-index-select: var(--z-toast);
 
   /* Responsive font sizing (Mobile Redesign FIX 6 + Audit) */
   --font-xs: clamp(10px, 2.5vw, 12px);

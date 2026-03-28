@@ -188,7 +188,7 @@
 
 /* Dark mode */
 [data-theme="dark"] .callback-container {
-  background: #1a1a2e;
+  background: var(--gray-900, #1a1a2e);
 }
 
 [data-theme="dark"] .callback-container h2 {
@@ -196,7 +196,7 @@
 }
 
 [data-theme="dark"] .callback-container p {
-  color: #a0a0a0;
+  color: var(--text-muted);
 }
 
 @media (max-width: 480px) {

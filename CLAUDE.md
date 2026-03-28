@@ -129,3 +129,99 @@ All under `/api/v1/`. Key prefixes:
 - Bottom navigation bar for mobile
 - Capacitor planned for App Store deployment
 - Apple Sign-In needed for iOS App Store submission
+
+## Project Map — All Files
+
+### Backend Routers (18 routers)
+- `routers/admin.py` → `/admin` — Admin operations, user/content management
+- `routers/ai.py` → `/api/v1/ai` — AI recommendations, routine generation, ingredient analysis
+- `routers/ai_chat.py` → `/ai/chat` — AI chat with SSE streaming, session management
+- `routers/analysis.py` → `/analysis` — Skin analysis image processing
+- `routers/catalog.py` → `/catalog` — Product catalog lookups (separate DB)
+- `routers/clinical.py` → `/clinical` — Clinical reports, skin alerts, benchmarking
+- `routers/consent.py` → `/consent` — GDPR consent tracking
+- `routers/content.py` → `/content` — Public blogs, videos, news
+- `routers/digital_twin.py` → `/digital-twin` — Skin state snapshots, simulation
+- `routers/favorites.py` → `/favorites` — User favorite products
+- `routers/goals.py` → `/goals` — Skin goals CRUD and tracking
+- `routers/notifications.py` → `/notifications` — Notifications + WebSocket
+- `routers/products.py` → `/api/v1/products` — Product search, reviews (price_usd column)
+- `routers/profile.py` → `/profile` — User profile, skin type, preferences
+- `routers/reports.py` → `/reports` — Weekly summary reports
+- `routers/scan.py` → `/api/v1/scan` — Face scan upload + analysis
+- `routers/search.py` → `/search` — Cross-entity search
+- `routers/shelf.py` → `/shelf` — Product inventory management
+
+### Backend Models (22 model files)
+- `models/user.py` — User, UserAccessLog, UserConsent, PolicyVersion, UserProfile
+- `models/scan.py` — ScanSession (id, user_id, status, image_data), SkinAnalysis, ConfidenceMetrics
+- `models/analysis_outputs.py` — ScanOutput, SkinCondition, ScanCondition, ScanRecommendation, ProductRecommendation
+- `models/product_models.py` — Ingredient, Product (price_usd!), ProductIngredient, ProductReview
+- `models/digital_twin.py` — SkinStateSnapshot, SkinRegionState, EnvironmentSnapshot, RoutineInstance
+- `models/clinical.py` — SkinAlert, DermReport, IngredientInteraction
+- `models/ai_chat.py` — AIChatSession, AIChatMessage, AIUsageLog
+- `models/shelf.py` — ShelfProduct
+- `models/goals.py` — SkinGoal (is_active, NOT status!)
+- `models/favorites.py` — UserFavorite
+- `models/notifications.py` — Notification, NotificationSettings
+- `models/content.py` — Blog (NOT BlogPost!), Video, NewsItem
+- `models/engagement.py` — ProductScanSession, RoutineRecommendation, RoutineCheckin
+- `models/saved_routine.py` — SavedRoutine
+- `models/routine_product.py` — RoutineProduct
+
+### Backend Services (21 services)
+- `services/ai_chat_service.py` — GPT-4o-mini streaming chat with user context
+- `services/ai_intelligence_service.py` — Central AI engine for recommendations/routines
+- `services/auth_service.py` — Argon2id password hashing, user auth
+- `services/openai_vision_service.py` — GPT-4V skin image analysis
+- `services/digital_twin_service.py` — Skin state snapshots and simulation
+- `services/clinical_insights_service.py` — Dermatologist-ready reports
+- `services/notification_service.py` — Notification creation + WebSocket
+- `services/email_service.py` — Verification and password reset emails
+- `services/google_auth_service.py` — Google OAuth integration
+- `services/product_catalog.py` — Product catalog lookups (separate DB)
+- `services/ingredient_safety.py` — Safety scoring, interaction detection
+
+### Frontend Pages (55 pages)
+- `pages/HomePage.tsx` — Marketing homepage
+- `pages/AuthPage.tsx` — Login/register
+- `pages/ScanPage.tsx` — Face scan with camera/upload
+- `pages/AnalysisResults.tsx` — Scan results + product recommendations
+- `pages/DashboardPage.tsx` — User dashboard, scores, widgets
+- `pages/TodayPage.tsx` — Daily routine checklist
+- `pages/HistoryPage.tsx` — Past scan timeline
+- `pages/ProgressTrackingPage.tsx` — Progress charts over time
+- `pages/ProfileSettingsPage.tsx` — User profile + settings
+- `pages/MyShelfPage.tsx` — Product inventory
+- `pages/RoutineBuilderPage.tsx` — Custom routine creation
+- `pages/ProductScannerPage.tsx` — Barcode/QR scanner
+- `pages/ProductDetailsPage.tsx` — Product info, reviews
+- `pages/ComparisonPage.tsx` — Before/after comparison
+- `pages/AIChatPage.tsx` — AI chat assistant
+- `pages/SkinTypeQuizPage.tsx` — Skin type quiz
+- `pages/IngredientDictionaryPage.tsx` — Ingredient lookup
+- `pages/Recommendations.tsx` — AI product recommendations
+- `pages/ClinicalDashboardPage.tsx` — Clinical reports
+- `pages/DigitalTwinTimelinePage.tsx` — Digital twin timeline
+- `pages/BlogPage.tsx` — Blog articles
+- `pages/SearchPage.tsx` — Global search
+- `pages/Admin*.tsx` — 8 admin pages (dashboard, users, products, catalog, content, blogs, news, videos, analytics)
+
+### Frontend Context Providers (6)
+- `context/AuthContext.tsx` — Auth state, login/register/logout, token management
+- `context/ShelfContext.tsx` — Product shelf state and product count
+- `context/ScanContext.tsx` — Current scan session and results
+- `context/ThemeContext.tsx` — Dark/light theme preference
+- `context/ToastContext.tsx` — Toast notification display
+- `context/NotificationContext.tsx` — Notifications + WebSocket
+
+### Frontend Hooks (14)
+- `usePageTitle` — Document title + meta tags
+- `useIsMobile` — Mobile viewport detection (<768px)
+- `useIsMobileOrTablet` — Tablet detection (<1024px)
+- `useViewport` — Viewport dimensions + breakpoints
+- `useDebounce` — Input debouncing for search
+- `useKeyboardVisible` — Mobile keyboard detection
+- `usePullToRefresh` — Pull-to-refresh gesture
+- `useWebSocket` — WebSocket with auto-reconnect
+- `useOptimizedApi` — API calls with loading/error states

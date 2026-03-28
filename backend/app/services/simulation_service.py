@@ -35,6 +35,49 @@ INGREDIENT_EFFECTS = {
     "snail_mucin": {"hydration": 0.04, "texture": -0.02},
     "sunscreen": {"dark_spots": -0.02, "wrinkles": -0.01},
     "spf": {"dark_spots": -0.02, "wrinkles": -0.01},
+    "bakuchiol": {"wrinkles": -0.04, "firmness": 0.03},
+    "tranexamic_acid": {"dark_spots": -0.06, "redness": -0.02},
+    "arbutin": {"dark_spots": -0.04},
+    "kojic_acid": {"dark_spots": -0.05},
+    "ferulic_acid": {"dark_spots": -0.03, "wrinkles": -0.02},
+    "madecassoside": {"redness": -0.03, "barrier": 0.03},
+    "panthenol": {"hydration": 0.04, "barrier": 0.03},
+    "allantoin": {"redness": -0.02, "hydration": 0.02},
+    "urea": {"hydration": 0.05, "texture": -0.03},
+    "bentonite": {"oiliness": -0.05},
+    "kaolin": {"oiliness": -0.04},
+    "sulfur": {"acne": -0.06, "oiliness": -0.03},
+}
+
+# Ingredient SYNERGIES — pairs that work better together
+INGREDIENT_SYNERGIES = {
+    ("vitamin_c", "vitamin_e"): {"dark_spots": -0.03, "wrinkles": -0.02},  # antioxidant boost
+    ("vitamin_c", "ferulic_acid"): {"dark_spots": -0.04},  # stabilized C
+    ("niacinamide", "zinc"): {"oiliness": -0.03, "acne": -0.03},  # oil control
+    ("hyaluronic_acid", "ceramide"): {"hydration": 0.04, "barrier": 0.03},  # hydration lock
+    ("retinol", "peptide"): {"wrinkles": -0.04, "firmness": 0.03},  # anti-aging
+    ("centella", "panthenol"): {"redness": -0.03, "barrier": 0.03},  # soothing
+    ("salicylic_acid", "niacinamide"): {"acne": -0.04, "pores": -0.03},  # acne + pores
+}
+
+# Ingredient CONFLICTS — pairs that cancel or irritate
+INGREDIENT_CONFLICTS = {
+    ("retinol", "glycolic_acid"): "sensitization",
+    ("retinol", "salicylic_acid"): "irritation_risk",
+    ("retinol", "benzoyl_peroxide"): "deactivation",
+    ("vitamin_c", "benzoyl_peroxide"): "oxidation",
+    ("glycolic_acid", "lactic_acid"): "over_exfoliation",
+    ("azelaic_acid", "glycolic_acid"): "pH_conflict",
+}
+
+# Environmental impact factors on skin metrics (per day of exposure)
+ENVIRONMENTAL_EFFECTS = {
+    "high_uv": {"dark_spots": 0.01, "wrinkles": 0.005, "redness": 0.008},
+    "low_humidity": {"hydration": -0.02, "barrier": -0.01},
+    "high_humidity": {"oiliness": 0.01, "acne": 0.005},
+    "cold_temp": {"redness": 0.008, "hydration": -0.015},
+    "hot_temp": {"oiliness": 0.01, "redness": 0.005},
+    "high_pollution": {"dark_spots": 0.008, "acne": 0.005, "texture": 0.005},
 }
 
 
@@ -248,3 +291,125 @@ class SimulationService:
             "concerns": concerns,
             "product_effects_detected": list(effects.keys()),
         }
+
+    def get_synergy_effects(
+        self,
+        product_ingredients: List[str],
+    ) -> Dict[str, float]:
+        """Calculate bonus effects from ingredient synergies across products."""
+        effects = {}
+        normalized = [i.lower().replace(" ", "_").replace("-", "_") for i in product_ingredients]
+
+        for (ing1, ing2), synergy_effects in INGREDIENT_SYNERGIES.items():
+            found1 = any(ing1 in n or n in ing1 for n in normalized)
+            found2 = any(ing2 in n or n in ing2 for n in normalized)
+            if found1 and found2:
+                for metric, effect in synergy_effects.items():
+                    effects[metric] = effects.get(metric, 0.0) + effect
+        return effects
+
+    def detect_conflicts(
+        self,
+        product_ingredients: List[str],
+    ) -> List[Dict[str, str]]:
+        """Detect ingredient conflicts across all products."""
+        conflicts = []
+        normalized = [i.lower().replace(" ", "_").replace("-", "_") for i in product_ingredients]
+
+        for (ing1, ing2), conflict_type in INGREDIENT_CONFLICTS.items():
+            found1 = any(ing1 in n or n in ing1 for n in normalized)
+            found2 = any(ing2 in n or n in ing2 for n in normalized)
+            if found1 and found2:
+                conflicts.append({
+                    "ingredient_1": ing1,
+                    "ingredient_2": ing2,
+                    "conflict_type": conflict_type,
+                })
+        return conflicts
+
+    def apply_environmental_effects(
+        self,
+        current_scores: Dict[str, float],
+        env_conditions: Dict[str, Any],
+        days: int = 7,
+    ) -> Dict[str, float]:
+        """Apply environmental impact factors to skin predictions."""
+        env_effects = {}
+        uv = env_conditions.get("uv_index", 0)
+        humidity = env_conditions.get("humidity_percent", 50)
+        temp = env_conditions.get("temperature_celsius", 20)
+        aqi = env_conditions.get("air_quality_index", 50)
+
+        if uv and uv > 5:
+            for metric, effect in ENVIRONMENTAL_EFFECTS["high_uv"].items():
+                env_effects[metric] = env_effects.get(metric, 0.0) + effect * days * (uv / 10)
+        if humidity and humidity < 30:
+            for metric, effect in ENVIRONMENTAL_EFFECTS["low_humidity"].items():
+                env_effects[metric] = env_effects.get(metric, 0.0) + effect * days
+        if humidity and humidity > 70:
+            for metric, effect in ENVIRONMENTAL_EFFECTS["high_humidity"].items():
+                env_effects[metric] = env_effects.get(metric, 0.0) + effect * days
+        if temp and temp < 5:
+            for metric, effect in ENVIRONMENTAL_EFFECTS["cold_temp"].items():
+                env_effects[metric] = env_effects.get(metric, 0.0) + effect * days
+        if temp and temp > 30:
+            for metric, effect in ENVIRONMENTAL_EFFECTS["hot_temp"].items():
+                env_effects[metric] = env_effects.get(metric, 0.0) + effect * days
+        if aqi and aqi > 100:
+            for metric, effect in ENVIRONMENTAL_EFFECTS["high_pollution"].items():
+                env_effects[metric] = env_effects.get(metric, 0.0) + effect * days * (aqi / 200)
+
+        adjusted = {}
+        for metric, current in current_scores.items():
+            env_impact = env_effects.get(metric, 0.0) * 100
+            adjusted[metric] = max(0, min(100, current + env_impact))
+        return adjusted
+
+    def simulate_advanced(
+        self,
+        user_id: int,
+        product_ingredients: List[str],
+        simulation_weeks: int = 4,
+        environmental_data: Optional[Dict[str, Any]] = None,
+    ) -> Dict[str, Any]:
+        """
+        Advanced simulation with synergies, conflicts, and environmental factors.
+        This builds our proprietary prediction dataset.
+        """
+        base_result = self.simulate(user_id, product_ingredients, simulation_weeks)
+
+        # Add synergy effects
+        synergy_effects = self.get_synergy_effects(product_ingredients)
+        if synergy_effects:
+            for metric, effect in synergy_effects.items():
+                if metric in base_result["projected_scores"]:
+                    base_result["projected_scores"][metric] = max(0, min(100,
+                        base_result["projected_scores"][metric] + effect * 100 * simulation_weeks * 0.5))
+            base_result["synergy_effects"] = synergy_effects
+
+        # Detect conflicts
+        conflicts = self.detect_conflicts(product_ingredients)
+        if conflicts:
+            base_result["conflicts"] = conflicts
+            base_result["conflict_warning"] = True
+
+        # Apply environmental factors
+        if environmental_data:
+            env_adjusted = self.apply_environmental_effects(
+                base_result["projected_scores"],
+                environmental_data,
+                days=simulation_weeks * 7,
+            )
+            base_result["projected_scores_with_environment"] = env_adjusted
+            base_result["environmental_impact"] = {
+                metric: round(env_adjusted.get(metric, 0) - base_result["projected_scores"].get(metric, 0), 1)
+                for metric in base_result["projected_scores"]
+            }
+
+        # Recalculate changes
+        base_result["changes"] = {
+            metric: round(base_result["projected_scores"][metric] - base_result["current_scores"].get(metric, 50), 1)
+            for metric in base_result["projected_scores"]
+        }
+
+        return base_result

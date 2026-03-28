@@ -175,6 +175,31 @@ class OpenAIVisionClient:
                         },
                     },
                     "notes": {"type": "string"},
+                    "skin_age": {
+                        "type": "object",
+                        "additionalProperties": False,
+                        "properties": {
+                            "estimated_age": {"type": "integer", "minimum": 10, "maximum": 90},
+                            "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+                            "factors_aging": {
+                                "type": "array",
+                                "items": {"type": "string"},
+                            },
+                            "factors_youthful": {
+                                "type": "array",
+                                "items": {"type": "string"},
+                            },
+                        },
+                        "required": ["estimated_age", "confidence", "factors_aging", "factors_youthful"],
+                    },
+                    "hydration_level": {
+                        "type": "string",
+                        "enum": ["severely_dehydrated", "dehydrated", "slightly_dry", "balanced", "well_hydrated"],
+                    },
+                    "barrier_health": {
+                        "type": "string",
+                        "enum": ["compromised", "weakened", "moderate", "healthy", "strong"],
+                    },
                 },
                 "required": [
                     "summary",
@@ -186,6 +211,9 @@ class OpenAIVisionClient:
                     "zone_analysis",
                     "actionable_recommendations",
                     "notes",
+                    "skin_age",
+                    "hydration_level",
+                    "barrier_health",
                 ],
             },
             "strict": True,
@@ -222,6 +250,10 @@ class OpenAIVisionClient:
                         "ACTIONABLE RECOMMENDATIONS: Provide 2-5 specific ingredient + product type recommendations "
                         "mapped to specific concerns, with priority (high/medium/low) and explanation of why it helps. "
                         "Recommendations should be specific actionable skincare tips, not generic advice. "
+                        "SKIN AGE: Estimate the visible skin age (may differ from real age). List factors that make the skin "
+                        "look older (sun damage, wrinkles, sagging) and younger (even tone, firmness, glow). "
+                        "HYDRATION LEVEL: Assess overall hydration from texture, sheen, and fine lines. "
+                        "BARRIER HEALTH: Assess skin barrier from redness patterns, sensitivity indicators, and texture. "
                         "Notes: one sentence on image quality or limitation if relevant, otherwise brief summary."
                         + (f"\n\n{user_context}" if user_context else "")
                     ),

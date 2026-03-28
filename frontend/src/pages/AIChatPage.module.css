@@ -404,3 +404,23 @@
 .errorClose:hover {
   background: rgba(220, 38, 38, 0.1);
 }
+
+/* Tablet (769-1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .page { padding: 0; }
+  .sidebar { width: 280px; }
+  .main { flex: 1; }
+  .messagesArea { padding: 20px; }
+}
+
+/* Laptop (1025-1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .sidebar { width: 320px; }
+  .main { max-width: calc(1120px - 320px); }
+}
+
+/* Desktop (1441px+) */
+@media (min-width: 1441px) {
+  .page { max-width: 1440px; margin: 0 auto; }
+  .sidebar { width: 360px; }
+}

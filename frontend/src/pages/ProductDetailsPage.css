@@ -1409,3 +1409,23 @@
   margin-bottom: 8px;
   line-height: 1.5;
 }
+
+/* Tablet (769-1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .product-details-page { padding: 24px 20px; }
+  .product-details-layout { grid-template-columns: 1fr 1fr; gap: 24px; }
+  .product-gallery { max-height: 400px; }
+  .reviews-grid { grid-template-columns: 1fr; }
+}
+
+/* Laptop (1025-1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .product-details-page { max-width: 1120px; margin: 0 auto; padding: 32px 24px; }
+  .product-details-layout { grid-template-columns: 1fr 1.2fr; gap: 32px; }
+  .reviews-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Desktop (1441px+) */
+@media (min-width: 1441px) {
+  .product-details-page { max-width: 1120px; margin: 0 auto; }
+}

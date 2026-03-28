@@ -2217,3 +2217,24 @@
   font-weight: 600;
   cursor: pointer;
 }
+
+/* Tablet (769-1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .scanner-page { padding: 24px 20px; }
+  .scanner-container { max-width: 600px; margin: 0 auto; }
+  .scan-results-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .manual-entry-form { max-width: 500px; margin: 0 auto; }
+}
+
+/* Laptop (1025-1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .scanner-page { max-width: 1120px; margin: 0 auto; }
+  .scanner-container { max-width: 640px; }
+  .scan-results-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Desktop (1441px+) */
+@media (min-width: 1441px) {
+  .scanner-page { max-width: 1120px; margin: 0 auto; }
+  .scanner-container { max-width: 720px; }
+}

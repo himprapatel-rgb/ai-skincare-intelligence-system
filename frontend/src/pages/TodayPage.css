@@ -1384,3 +1384,18 @@
     max-width: 640px;
   }
 }
+
+/* Mobile (≤768px) */
+@media (max-width: 768px) {
+  .today-page { padding: 16px; }
+  .today-greeting h1 { font-size: 1.35rem; }
+  .today-products-grid { grid-template-columns: 1fr; gap: 12px; }
+  .today-routine-steps { gap: 12px; }
+  .today-stats-row { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .today-card { padding: 16px; }
+}
+
+/* Laptop (1025-1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .today-page { max-width: 1120px; margin: 0 auto; }
+}

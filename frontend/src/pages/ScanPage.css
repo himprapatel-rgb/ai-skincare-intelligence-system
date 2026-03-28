@@ -2119,3 +2119,14 @@
   text-decoration: underline;
   text-underline-offset: 2px;
 }
+
+/* Laptop (1025-1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .scan-page { max-width: 1120px; margin: 0 auto; }
+  .scan-container { max-width: 720px; margin: 0 auto; }
+}
+
+/* Desktop (1441px+) */
+@media (min-width: 1441px) {
+  .scan-page { max-width: 1120px; margin: 0 auto; }
+}

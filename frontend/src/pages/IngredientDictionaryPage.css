@@ -178,3 +178,23 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Mobile (≤768px) */
+@media (max-width: 768px) {
+  .ingredient-dictionary-page { padding: 16px; }
+  .ingredient-grid { grid-template-columns: 1fr; }
+  .alphabet-nav { flex-wrap: wrap; gap: 4px; }
+  .alphabet-nav button { min-width: 32px; min-height: 32px; font-size: 0.75rem; }
+  .ingredient-search { width: 100%; }
+}
+
+/* Laptop (1025-1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .ingredient-dictionary-page { max-width: 1120px; margin: 0 auto; }
+  .ingredient-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Desktop (1441px+) */
+@media (min-width: 1441px) {
+  .ingredient-dictionary-page { max-width: 1120px; margin: 0 auto; }
+}

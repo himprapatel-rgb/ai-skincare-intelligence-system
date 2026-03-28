@@ -1913,3 +1913,22 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Tablet (769-1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .profile-settings-page { padding: 24px 20px; }
+  .settings-layout { grid-template-columns: 1fr; max-width: 680px; margin: 0 auto; }
+  .settings-tabs { flex-direction: row; overflow-x: auto; }
+  .form-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Laptop (1025-1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .profile-settings-page { max-width: 1120px; margin: 0 auto; }
+  .settings-layout { grid-template-columns: 240px 1fr; gap: 32px; }
+}
+
+/* Desktop (1441px+) */
+@media (min-width: 1441px) {
+  .profile-settings-page { max-width: 1120px; margin: 0 auto; }
+}

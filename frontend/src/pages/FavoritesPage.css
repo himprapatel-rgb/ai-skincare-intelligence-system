@@ -226,3 +226,22 @@
     padding: 12px;
   }
 }
+
+/* Tablet (769-1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .favorites-page { padding: 24px 20px; }
+  .favorites-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .favorites-toolbar { flex-direction: row; align-items: center; }
+}
+
+/* Laptop (1025-1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .favorites-page { max-width: 1120px; margin: 0 auto; }
+  .favorites-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Desktop (1441px+) */
+@media (min-width: 1441px) {
+  .favorites-page { max-width: 1120px; margin: 0 auto; }
+  .favorites-grid { grid-template-columns: repeat(3, 1fr); }
+}

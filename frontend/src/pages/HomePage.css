@@ -1336,3 +1336,23 @@
     transition: none;
   }
 }
+
+/* Tablet (769-1024px) — dedicated */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .hero-grid { grid-template-columns: 1fr; text-align: center; }
+  .hero-grid .hero-image { max-width: 500px; margin: 0 auto; }
+  .results-grid { grid-template-columns: repeat(2, 1fr); }
+  .steps-grid { grid-template-columns: repeat(2, 1fr); }
+  .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
+  .expert-container { grid-template-columns: 1fr; }
+  .trust-badges { grid-template-columns: repeat(2, 1fr); }
+  .skin-concerns-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Laptop (1025-1440px) — dedicated */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .hero-grid { grid-template-columns: 1fr 1fr; }
+  .results-grid { grid-template-columns: repeat(3, 1fr); }
+  .steps-grid { grid-template-columns: repeat(3, 1fr); }
+  .expert-container { grid-template-columns: 1fr 1fr; }
+}

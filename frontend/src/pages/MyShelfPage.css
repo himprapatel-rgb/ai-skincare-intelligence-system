@@ -1045,3 +1045,17 @@
 .myshelf-conflict-item { font-size: var(--font-size-sm, 0.825rem); color: var(--danger-800, #7f1d1d); margin-bottom: 6px; }
 .myshelf-conflicts-dismiss { font-size: var(--font-size-xs, 0.75rem); color: var(--danger-800, #991b1b); background: none; border: none; cursor: pointer; margin-top: 4px; }
 .myshelf-conflicts-dismiss:hover { text-decoration: underline; }
+
+/* Tablet (769-1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .myshelf-page { padding: 24px 20px; }
+  .product-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .myshelf-toolbar { flex-direction: row; align-items: center; }
+  .myshelf-stats-row { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Laptop (1025-1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .myshelf-page { max-width: 1120px; margin: 0 auto; }
+  .product-grid { grid-template-columns: repeat(3, 1fr); }
+}

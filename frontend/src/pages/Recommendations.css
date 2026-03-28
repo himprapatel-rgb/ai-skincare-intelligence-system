@@ -813,3 +813,15 @@
     gap: 12px;
   }
 }
+
+/* Laptop (1025-1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .recommendations-page { max-width: 1120px; margin: 0 auto; }
+  .recommendations-grid { grid-template-columns: repeat(3, 1fr); }
+  .recommendations-filters { position: sticky; top: 80px; }
+}
+
+/* Desktop (1441px+) */
+@media (min-width: 1441px) {
+  .recommendations-page { max-width: 1120px; margin: 0 auto; }
+}

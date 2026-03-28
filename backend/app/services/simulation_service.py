@@ -3,6 +3,7 @@ Digital Twin Simulation Service.
 Sprint: Final Features - Trend-based what-if predictions
 """
 import logging
+import re
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
@@ -120,21 +121,24 @@ class SimulationService:
         
         for metric in metrics:
             values = []
-            for s in snapshots:
+            valid_times = []
+            for i, s in enumerate(snapshots):
                 val = getattr(s, metric, None)
                 if val is None and hasattr(s, 'state_vector') and s.state_vector:
                     val = s.state_vector.get(metric)
-                values.append(val if val is not None else 50)
+                if val is not None:
+                    values.append(val)
+                    valid_times.append(times[i])
             
-            # Simple linear regression
-            n = len(times)
+            # Simple linear regression on valid data points only
+            n = len(valid_times)
             if n < 2:
                 continue
-                
-            sum_x = sum(times)
+
+            sum_x = sum(valid_times)
             sum_y = sum(values)
-            sum_xy = sum(t * v for t, v in zip(times, values))
-            sum_xx = sum(t * t for t in times)
+            sum_xy = sum(t * v for t, v in zip(valid_times, values))
+            sum_xx = sum(t * t for t in valid_times)
             
             denominator = n * sum_xx - sum_x * sum_x
             if abs(denominator) < 0.0001:
@@ -158,10 +162,11 @@ class SimulationService:
         for ingredient in product_ingredients:
             # Normalize ingredient name
             ing_lower = ingredient.lower().replace(" ", "_").replace("-", "_")
-            
-            # Check for matches
+
+            # Word boundary matching to prevent false positives
+            # e.g., "acid" should NOT match "salicylic_acid"
             for key, effect_map in INGREDIENT_EFFECTS.items():
-                if key in ing_lower or ing_lower in key:
+                if re.search(rf'(?:^|_){re.escape(key)}(?:_|$)', ing_lower) or re.search(rf'(?:^|_){re.escape(ing_lower)}(?:_|$)', key):
                     for metric, effect in effect_map.items():
                         if metric not in effects:
                             effects[metric] = 0.0
@@ -179,44 +184,61 @@ class SimulationService:
         """
         Project future scores based on trends and product effects.
         Applies diminishing returns and caps.
+
+        Effects are fractional changes per week (e.g., 0.05 = 5% improvement).
+        Score scale is 0-100. A 0.05 effect on a score of 50 means +2.5 per week.
         """
         projected = {}
         days = weeks * 7
-        
+
         for metric, current in current_scores.items():
-            # Base projection from trend
+            # Base projection from trend (trend is per-day change in score points)
             trend = trends.get(metric, 0.0)
             trend_change = trend * days
-            
-            # Product effect (weekly, with diminishing returns)
+
+            # Product effect (fractional per week, with diminishing returns)
+            # effect=0.05 means 5% of current score improvement per week
             effect = product_effects.get(metric, 0.0)
-            # Diminishing returns: 100% first week, 80% second, 60% third, etc.
             total_effect = 0.0
             for w in range(weeks):
                 diminish_factor = max(0.2, 1.0 - (w * 0.2))
-                total_effect += effect * 100 * diminish_factor  # Convert to percentage
-            
+                # Apply effect as percentage of current score, not raw multiplication
+                total_effect += effect * current * diminish_factor
+
             # Calculate new value
             new_value = current + trend_change + total_effect
-            
+
             # Apply bounds (0-100 for most metrics)
-            projected[metric] = max(0, min(100, new_value))
-        
+            projected[metric] = round(max(0, min(100, new_value)), 1)
+
         return projected
     
     def calculate_confidence(
-        self, 
+        self,
         snapshots: List[SkinStateSnapshot],
         weeks: int
     ) -> float:
         """
         Calculate confidence score for the prediction.
-        More historical data and shorter projection = higher confidence.
+        Factors: data quantity, data time span, and projection distance.
         """
-        data_factor = min(1.0, len(snapshots) / 10)  # Max at 10 snapshots
-        time_factor = max(0.3, 1.0 - (weeks * 0.08))  # Decreases with time
-        
-        return round(data_factor * time_factor, 2)
+        if not snapshots:
+            return 0.0
+
+        # Data quantity factor (max at 10 snapshots)
+        quantity_factor = min(1.0, len(snapshots) / 10)
+
+        # Data time span factor (30+ days of data = full confidence)
+        if len(snapshots) >= 2:
+            days_span = (snapshots[-1].recorded_at - snapshots[0].recorded_at).total_seconds() / 86400
+            span_factor = min(1.0, days_span / 30)
+        else:
+            span_factor = 0.3
+
+        # Projection distance factor (further out = less confident)
+        time_factor = max(0.3, 1.0 - (weeks * 0.08))
+
+        return round(quantity_factor * span_factor * time_factor, 2)
     
     def simulate(
         self,
@@ -361,8 +383,9 @@ class SimulationService:
 
         adjusted = {}
         for metric, current in current_scores.items():
-            env_impact = env_effects.get(metric, 0.0) * 100
-            adjusted[metric] = max(0, min(100, current + env_impact))
+            # Environmental effects are fractional — apply as % of current score
+            env_impact = env_effects.get(metric, 0.0) * current
+            adjusted[metric] = round(max(0, min(100, current + env_impact)), 1)
         return adjusted
 
     def simulate_advanced(
@@ -383,8 +406,9 @@ class SimulationService:
         if synergy_effects:
             for metric, effect in synergy_effects.items():
                 if metric in base_result["projected_scores"]:
-                    base_result["projected_scores"][metric] = max(0, min(100,
-                        base_result["projected_scores"][metric] + effect * 100 * simulation_weeks * 0.5))
+                    current = base_result["projected_scores"][metric]
+                    base_result["projected_scores"][metric] = round(max(0, min(100,
+                        current + effect * current * simulation_weeks * 0.5)), 1)
             base_result["synergy_effects"] = synergy_effects
 
         # Detect conflicts

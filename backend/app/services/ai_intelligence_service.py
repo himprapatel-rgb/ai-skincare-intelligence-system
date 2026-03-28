@@ -79,14 +79,42 @@ async def _call_openai(
     return content
 
 
+def _validate_response(data: Any, required_fields: Optional[List[str]] = None, score_fields: Optional[List[str]] = None) -> Dict[str, Any]:
+    """
+    Validate AI response structure.
+    - Ensures required fields exist
+    - Clamps score fields to 0-100 range
+    - Converts to dict if needed
+    """
+    if isinstance(data, list):
+        # Some features return arrays — wrap in dict
+        data = {"items": data}
+    if not isinstance(data, dict):
+        raise AIServiceError(f"Expected dict response, got {type(data).__name__}")
+
+    if required_fields:
+        for field in required_fields:
+            if field not in data:
+                data[field] = None  # Add missing fields as None rather than crashing
+
+    if score_fields:
+        for field in score_fields:
+            if field in data and isinstance(data[field], (int, float)):
+                data[field] = max(0, min(100, data[field]))
+
+    return data
+
+
 async def _call_openai_json(
     system_prompt: str,
     user_prompt: str,
     model: str = AI_TEXT_MODEL,
     temperature: float = 0.3,
     max_tokens: int = 2000,
+    required_fields: Optional[List[str]] = None,
+    score_fields: Optional[List[str]] = None,
 ) -> Dict[str, Any]:
-    """Call OpenAI and parse JSON response."""
+    """Call OpenAI, parse JSON response, and validate structure."""
     raw = await _call_openai(
         system_prompt=system_prompt + "\n\nReturn ONLY valid JSON. No markdown, no explanation.",
         user_prompt=user_prompt,
@@ -102,9 +130,11 @@ async def _call_openai_json(
         cleaned = cleaned.rsplit("```", 1)[0]
     cleaned = cleaned.strip()
     try:
-        return json.loads(cleaned)
+        parsed = json.loads(cleaned)
     except json.JSONDecodeError:
         raise AIServiceError(f"Failed to parse AI JSON: {cleaned[:200]}")
+
+    return _validate_response(parsed, required_fields, score_fields)
 
 
 # =============================================================================
@@ -150,9 +180,14 @@ async def ai_recommend_products(
         product_summaries.append(summary)
 
     system = (
-        "You are a dermatology-trained skincare product recommender. "
-        "Given a user's skin profile and a list of products, rank the top products by suitability. "
-        "Consider ingredient compatibility, skin type match, and concern targeting."
+        "You are a board-certified dermatology-trained skincare product recommender. "
+        "Rank products by suitability using this weighted scoring: "
+        "40% ingredient match (active ingredients that target user's specific concerns), "
+        "25% skin type compatibility (won't cause reactions for their skin type), "
+        "20% concern targeting (directly addresses their primary concerns), "
+        "15% formulation quality (good ingredient synergies, no filler irritants). "
+        "Penalize products with known irritants for the user's skin type. "
+        "Reward products with clinically-proven actives at effective concentrations."
     )
 
     user = json.dumps({

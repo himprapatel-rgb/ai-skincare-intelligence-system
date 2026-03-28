@@ -91,7 +91,7 @@ class AIChatService:
         except Exception as exc:
             logger.warning("Chat context: profile query failed: %s", exc)
 
-        # Last 5 completed scans
+        # Last 5 completed scans with detailed metrics
         try:
             scans = (
                 db.query(ScanSession)
@@ -101,15 +101,45 @@ class AIChatService:
                 .all()
             )
             if scans:
-                context["recent_scans"] = [
-                    {
+                scan_list = []
+                for s in scans:
+                    scan_data = {
                         "date": s.created_at.isoformat() if s.created_at else None,
                         "overall_score": getattr(s, "overall_score", None),
                     }
-                    for s in scans
-                ]
+                    # Include detailed scores and concerns from analysis result
+                    if hasattr(s, "analysis_result") and isinstance(s.analysis_result, dict):
+                        summary = s.analysis_result.get("summary", {})
+                        scan_data["scores"] = summary.get("scores", {})
+                        scan_data["concerns"] = summary.get("concerns", [])[:5]
+                        scan_data["skin_age"] = s.analysis_result.get("skin_age", {}).get("estimated_age")
+                        scan_data["hydration_level"] = s.analysis_result.get("hydration_level")
+                    scan_list.append(scan_data)
+                context["recent_scans"] = scan_list
+
+                # Add scan trend
+                scores = [s.get("overall_score") for s in scan_list if s.get("overall_score")]
+                if len(scores) >= 2:
+                    context["skin_trend"] = "improving" if scores[0] > scores[-1] else "declining" if scores[0] < scores[-1] else "stable"
         except Exception as exc:
             logger.warning("Chat context: scans query failed: %s", exc)
+
+        # Routine adherence data
+        try:
+            from app.models.engagement import RoutineCheckin
+            from sqlalchemy import func
+            from datetime import timedelta
+            week_ago = datetime.utcnow() - timedelta(days=7)
+            checkins_7d = db.query(func.count(RoutineCheckin.id)).filter(
+                RoutineCheckin.checked_at >= week_ago
+            ).scalar() or 0
+            if checkins_7d > 0:
+                context["routine_adherence"] = {
+                    "checkins_last_7_days": checkins_7d,
+                    "estimated_adherence": f"{min(100, checkins_7d * 14)}%",
+                }
+        except Exception:
+            pass
 
         # Active shelf products (max 20)
         try:

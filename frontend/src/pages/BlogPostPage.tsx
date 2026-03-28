@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import DOMPurify from 'dompurify';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { API_BASE_URL } from '../config';
 import './BlogPage.css';
@@ -91,7 +92,7 @@ const BlogPostPage: React.FC = () => {
           {post.read_time && <span>{post.read_time}</span>}
         </div>
 
-        <div className="blog-post-content" dangerouslySetInnerHTML={{ __html: post.content }} />
+        <div className="blog-post-content" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }} />
 
         {post.tags && post.tags.length > 0 && (
           <div className="blog-post-tags">

@@ -21,7 +21,7 @@ interface LazyImageProps {
 // Task 381: Simple blur placeholder
 const DEFAULT_PLACEHOLDER = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjFmNWY5Ii8+PC9zdmc+';
 
-export const LazyImage: React.FC<LazyImageProps> = ({
+export const LazyImage: React.FC<LazyImageProps> = React.memo(({
   src,
   alt,
   className = '',
@@ -189,6 +189,6 @@ export const LazyImage: React.FC<LazyImageProps> = ({
       `}</style>
     </div>
   );
-};
+});
 
 export default LazyImage;

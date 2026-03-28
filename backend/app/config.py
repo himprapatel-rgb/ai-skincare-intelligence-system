@@ -249,6 +249,11 @@ class Settings(BaseSettings):
     @model_validator(mode="after")
     def _warn_insecure_defaults(self) -> "Settings":
         if self.SECRET_KEY == "dev-secret-key-change-in-production":
+            if self.ENV in ("production", "staging"):
+                raise ValueError(
+                    "SECRET_KEY must be set to a strong random value in production/staging. "
+                    "Generate one with: python -c \"import secrets; print(secrets.token_urlsafe(64))\""
+                )
             logger.warning(
                 "SECRET_KEY is using the default development value — "
                 "set a strong SECRET_KEY env var before deploying to production"

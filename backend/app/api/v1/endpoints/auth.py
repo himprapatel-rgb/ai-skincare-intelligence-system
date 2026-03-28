@@ -6,8 +6,9 @@ Handles user registration, login, email verification, and password reset.
 import re
 import uuid
 from datetime import datetime, timedelta, timezone
+from typing import Optional
 
-from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Request, status
+from fastapi import APIRouter, BackgroundTasks, Cookie, Depends, HTTPException, Request, Response, status
 from pydantic import BaseModel, Field, field_validator
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
@@ -37,6 +38,34 @@ from app.services.auth_service import auth_service
 from app.services.email_service import send_verification_email
 
 router = APIRouter()
+
+REFRESH_COOKIE_NAME = "refresh_token"
+REFRESH_COOKIE_MAX_AGE = 7 * 24 * 3600  # 7 days
+
+
+def _set_refresh_cookie(response: Response, token: str) -> None:
+    """Set refresh token as httpOnly, Secure, SameSite cookie."""
+    response.set_cookie(
+        key=REFRESH_COOKIE_NAME,
+        value=token,
+        max_age=REFRESH_COOKIE_MAX_AGE,
+        httponly=True,
+        secure=settings.ENV != "development",
+        samesite="lax",
+        path="/api/v1/auth",
+    )
+
+
+def _clear_refresh_cookie(response: Response) -> None:
+    """Clear the refresh token cookie."""
+    response.delete_cookie(
+        key=REFRESH_COOKIE_NAME,
+        httponly=True,
+        secure=settings.ENV != "development",
+        samesite="lax",
+        path="/api/v1/auth",
+    )
+
 
 @router.post(
     "/register",
@@ -151,6 +180,7 @@ def _login_record_ip_geo(user_id: int, ip: str) -> None:
 )
 def login(
     request: Request,
+    response: Response,
     user_data: UserLogin,
     background_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
@@ -231,6 +261,8 @@ def login(
     except Exception:
         db.rollback()
 
+    if refresh:
+        _set_refresh_cookie(response, refresh)
     return AuthResponse(token=token, token_type="bearer", user=UserResponse.model_validate(user), refresh_token=refresh)
 
 
@@ -666,12 +698,12 @@ async def google_auth(
 
 
 class RefreshRequest(BaseModel):
-    refresh_token: str
+    refresh_token: Optional[str] = None
 
 
 class TokenPairResponse(BaseModel):
     token: str
-    refresh_token: str
+    refresh_token: Optional[str] = None
     token_type: str = "bearer"
 
 
@@ -681,9 +713,18 @@ class TokenPairResponse(BaseModel):
     summary="Refresh access token",
     description="Exchange a valid refresh token for a new access + refresh token pair",
 )
-def refresh_token(body: RefreshRequest, db: Session = Depends(get_db)):
+def refresh_token(
+    request: Request,
+    response: Response,
+    body: RefreshRequest,
+    db: Session = Depends(get_db),
+):
     """Token refresh with rotation — each refresh token is single-use."""
-    payload = decode_refresh_token(body.refresh_token)
+    # Accept refresh token from body OR httpOnly cookie
+    token_value = body.refresh_token or request.cookies.get(REFRESH_COOKIE_NAME)
+    if not token_value:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="No refresh token provided")
+    payload = decode_refresh_token(token_value)
     if not payload:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token")
 
@@ -693,7 +734,7 @@ def refresh_token(body: RefreshRequest, db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found")
 
     # Rotation check: only accept the token currently stored
-    if user.refresh_token != body.refresh_token:
+    if user.refresh_token != token_value:
         # Potential token reuse attack — revoke
         user.refresh_token = None
         db.add(user)
@@ -710,6 +751,7 @@ def refresh_token(body: RefreshRequest, db: Session = Depends(get_db)):
     db.add(user)
     db.commit()
 
+    _set_refresh_cookie(response, new_refresh)
     return TokenPairResponse(token=new_access, refresh_token=new_refresh)
 
 
@@ -721,6 +763,7 @@ def refresh_token(body: RefreshRequest, db: Session = Depends(get_db)):
 )
 async def logout(
     request: Request,
+    response: Response,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
@@ -734,6 +777,7 @@ async def logout(
     current_user.refresh_token = None
     db.add(current_user)
     db.commit()
+    _clear_refresh_cookie(response)
 
 
 class AccountDeleteResponse(BaseModel):

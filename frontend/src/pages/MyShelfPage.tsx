@@ -318,7 +318,7 @@ const MyShelfPage: React.FC = () => {
                 <LazyImage
                   src={product.imageUrl || PLACEHOLDER_IMAGE}
                   fallbackSrc={PLACEHOLDER_IMAGE}
-                  alt=""
+                  alt={product.name || 'Product image'}
                   className="myshelf-expiring-thumb"
                   width={56}
                   height={56}
@@ -447,7 +447,7 @@ const MyShelfPage: React.FC = () => {
                       <LazyImage
                         src={product.imageUrl || PLACEHOLDER_IMAGE}
                         fallbackSrc={PLACEHOLDER_IMAGE}
-                        alt=""
+                        alt={product.name || 'Product image'}
                         width="100%"
                         height="100%"
                         objectFit="contain"

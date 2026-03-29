@@ -129,7 +129,7 @@
 @keyframes cardAppear {
   from {
     opacity: 0;
-    transform: translateY(24px) scale(0.98);
+    transform: translateY(24px) scale(var(--button-press-scale, 0.97));
   }
   to {
     opacity: 1;
@@ -182,7 +182,7 @@
 .step-content > p {
   font-size: var(--ds-text-lg);
   color: var(--ds-gray-500);
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
   margin-bottom: var(--ds-space-10);
 }
 
@@ -247,7 +247,7 @@
   font-weight: 600;
   color: var(--ds-gray-800);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
 }
 .routine-level-btn:hover {
   border-color: var(--ds-primary, var(--primary));
@@ -494,7 +494,7 @@
 .skin-type-btn:hover {
   border-color: var(--ds-primary);
   color: var(--ds-primary);
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
   box-shadow: var(--ds-shadow-md);
 }
 
@@ -502,7 +502,7 @@
   background: var(--ds-gradient-primary);
   border-color: transparent;
   color: var(--ds-white);
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
   box-shadow: var(--ds-shadow-primary);
 }
 
@@ -544,7 +544,7 @@
 .checkbox-card:hover .checkbox-label {
   border-color: var(--ds-primary);
   color: var(--ds-primary);
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
   box-shadow: var(--ds-shadow-md);
 }
 
@@ -552,7 +552,7 @@
   background: var(--ds-gradient-primary);
   border-color: transparent;
   color: var(--ds-white);
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
   box-shadow: var(--ds-shadow-primary);
 }
 
@@ -587,7 +587,7 @@
   color: var(--ds-gray-600);
   margin-bottom: var(--ds-space-6);
   font-size: var(--ds-text-base);
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
 }
 
 /* Permission List */

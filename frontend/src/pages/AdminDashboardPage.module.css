@@ -50,7 +50,7 @@
   font-size: 1.6rem;
   font-weight: var(--font-weight-bold, 700);
   color: var(--text-primary, #162133);
-  line-height: 1.2;
+  line-height: var(--line-height-tight);
 }
 
 .kpiLabel {
@@ -249,7 +249,7 @@
     padding: var(--spacing-md, 16px);
   }
   .kpiValue {
-    font-size: 1.3rem;
+    font-size: var(--font-size-xl, 1.25rem);
   }
   .linksGrid {
     flex-direction: column;

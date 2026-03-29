@@ -88,7 +88,7 @@
 }
 
 .scan-type-emoji {
-  font-size: 1.1rem;
+  font-size: var(--font-size-lg, 1.125rem);
 }
 
 .scan-product-panel {
@@ -111,7 +111,7 @@
 
 .scan-product-title {
   margin: 0 0 8px 0;
-  font-size: 1.2rem;
+  font-size: var(--font-size-lg, 1.125rem);
   font-weight: 700;
   color: var(--text-primary);
 }
@@ -220,7 +220,7 @@
 
 /* Scan button hover effect */
 .btn-scan:hover:not(:disabled) {
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
   box-shadow: var(--shadow-primary);
 }
 
@@ -251,12 +251,12 @@
 }
 
 .scan-title {
-  font-size: 2rem; /* Brand guideline: 48px / 3rem for H1 */
+  font-size: var(--font-size-3xl, 1.875rem); /* Brand guideline: 48px / 3rem for H1 */
   font-weight: 700; /* Brand guideline: Bold */
   color: var(--text-dark); /* Deep Navy */
   margin-bottom: 16px;
   letter-spacing: -0.5px;
-  line-height: 1.2; /* Brand guideline */
+  line-height: var(--line-height-tight); /* Brand guideline */
 }
 
 .scan-title .gradient-text {
@@ -276,7 +276,7 @@
 .scan-subtitle {
   color: var(--text-gray);
   font-size: 1.125rem; /* Brand guideline: 18px Body Large */
-  line-height: 1.6; /* Brand guideline: 28px / 1.6 */
+  line-height: var(--line-height-relaxed); /* Brand guideline: 28px / 1.6 */
   max-width: 600px;
   margin: 0 auto;
 }
@@ -301,7 +301,7 @@
   font-size: 0.9375rem;
   color: var(--text-gray);
   margin: 0;
-  line-height: 1.4;
+  line-height: var(--line-height-normal);
 }
 
 /* Legal disclaimer (Tasks 245, 246) */
@@ -318,7 +318,7 @@
   max-width: 560px;
   margin: 12px auto 0;
   text-align: center;
-  line-height: 1.4;
+  line-height: var(--line-height-normal);
 }
 
 /* Mode Toggle */
@@ -358,7 +358,7 @@
   font-weight: 500; /* Brand guideline: Medium */
   color: var(--text-gray);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
 }
 
 .mode-btn:hover {
@@ -376,7 +376,7 @@
 /* Issue #20: Clear pressed/active state for camera/upload buttons */
 .mode-btn:active {
   opacity: 0.9;
-  transform: scale(0.98);
+  transform: scale(var(--button-press-scale, 0.97));
 }
 
 /* Camera Section */
@@ -628,7 +628,7 @@
   border: 1px solid rgba(169, 199, 255, 0.4);
   padding: 6px 12px;
   border-radius: var(--radius-full);
-  font-size: 0.85rem;
+  font-size: var(--font-size-sm, 0.875rem);
   letter-spacing: 0.2px;
   text-transform: uppercase;
   z-index: 4;
@@ -740,7 +740,7 @@
 
 .scan-upload-label:hover {
   border-color: var(--primary-500, var(--primary));
-  transform: translateY(-4px);
+  transform: translateY(var(--card-hover-lift, -4px));
   box-shadow: var(--shadow-primary);
 }
 
@@ -814,7 +814,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   z-index: 20;
   box-shadow: var(--shadow-primary);
 }
@@ -896,7 +896,7 @@
   font-weight: 700;
   color: var(--text-dark);
   margin-bottom: 20px;
-  line-height: 1.4;
+  line-height: var(--line-height-normal);
   display: flex;
   align-items: center;
   gap: 12px;
@@ -914,10 +914,10 @@
   padding: 14px 16px;
   color: var(--text-gray);
   font-size: 0.95rem;
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
   display: flex;
   align-items: center;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   background: rgba(255, 255, 255, 0.7);
   border-radius: var(--radius-xl, 16px);
   border: 1px solid transparent;
@@ -1015,13 +1015,13 @@
   font-size: 1rem;
   font-weight: 600; /* Brand guideline */
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   box-shadow: var(--shadow-primary);
 }
 
 .scan-btn-primary:hover:not(:disabled) {
   background: var(--primary-dark);
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
   box-shadow: var(--shadow-primary);
 }
 
@@ -1041,12 +1041,12 @@
   font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
 }
 
 .scan-btn-secondary:hover:not(:disabled) {
   background: rgba(31, 111, 235, 0.05);
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
 }
 
 .scan-btn-secondary:disabled {
@@ -1108,16 +1108,16 @@
 }
 
 .progress-title {
-  font-size: 2rem; /* Brand guideline: 32px / 2rem for H2 */
+  font-size: var(--font-size-3xl, 1.875rem); /* Brand guideline: 32px / 2rem for H2 */
   font-weight: 600; /* Brand guideline: Semibold */
   color: var(--text-dark); /* Deep Navy */
   margin-bottom: 16px;
-  line-height: 1.3; /* Brand guideline */
+  line-height: var(--line-height-snug); /* Brand guideline */
 }
 
 .progress-message {
   color: var(--text-gray);
-  font-size: 1.1rem;
+  font-size: var(--font-size-lg, 1.125rem);
   margin-bottom: 8px;
   min-height: 28px;
 }
@@ -1176,7 +1176,7 @@
 }
 
 .progress-percentage {
-  font-size: 1.2rem;
+  font-size: var(--font-size-lg, 1.125rem);
   font-weight: 600;
   color: var(--primary);
 }
@@ -1207,7 +1207,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.8rem;
+  font-size: var(--font-size-xs, 0.75rem);
   font-weight: 700;
   border: 2px solid var(--border-color, #e2e8f0);
   background: var(--bg-white, #fff);
@@ -1230,7 +1230,7 @@
 }
 
 .scan-step-label {
-  font-size: 0.8rem;
+  font-size: var(--font-size-xs, 0.75rem);
   font-weight: 600;
   color: var(--text-secondary, #64748b);
   white-space: nowrap;
@@ -1314,17 +1314,17 @@
 }
 
 .results-success h2 {
-  font-size: 2rem; /* Brand guideline: 32px / 2rem for H2 */
+  font-size: var(--font-size-3xl, 1.875rem); /* Brand guideline: 32px / 2rem for H2 */
   font-weight: 600; /* Brand guideline: Semibold */
   color: var(--text-dark); /* Deep Navy */
   margin-bottom: 16px;
-  line-height: 1.3; /* Brand guideline */
+  line-height: var(--line-height-snug); /* Brand guideline */
 }
 
 .results-success p {
   color: var(--text-gray);
   font-size: 1.125rem; /* Brand guideline: 18px Body Large */
-  line-height: 1.6; /* Brand guideline: 28px / 1.6 */
+  line-height: var(--line-height-relaxed); /* Brand guideline: 28px / 1.6 */
 }
 
 /* Error message — enhanced visual distinction */
@@ -1391,7 +1391,7 @@
 .error-content {
   flex: 1;
   font-size: 1rem;
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
 }
 
 .error-content strong {
@@ -1411,7 +1411,7 @@
   }
   
   .scan-title {
-    font-size: 2rem;
+    font-size: var(--font-size-3xl, 1.875rem);
   }
 
   .scan-subtitle {
@@ -1461,7 +1461,7 @@
   }
 
   .scan-tips h3 {
-    font-size: 1.2rem;
+    font-size: var(--font-size-lg, 1.125rem);
   }
 
   .scan-tips li {
@@ -1481,7 +1481,7 @@
 
   .scan-title {
     font-size: 1.75rem;
-    line-height: 1.2;
+    line-height: var(--line-height-tight);
   }
 
   .scan-subtitle {
@@ -1509,7 +1509,7 @@
   }
 
   .face-guide-text {
-    font-size: 0.85rem;
+    font-size: var(--font-size-sm, 0.875rem);
     padding: 8px 16px;
     bottom: 16px;
   }
@@ -1536,7 +1536,7 @@
   }
 
   .scan-upload-hint {
-    font-size: 0.85rem;
+    font-size: var(--font-size-sm, 0.875rem);
   }
 
   .scan-tips {
@@ -1544,11 +1544,11 @@
   }
 
   .scan-tips h3 {
-    font-size: 1.1rem;
+    font-size: var(--font-size-lg, 1.125rem);
   }
 
   .scan-tips li {
-    font-size: 0.85rem;
+    font-size: var(--font-size-sm, 0.875rem);
   }
 
   .progress-title {
@@ -1708,7 +1708,7 @@
   background: none;
   border: none;
   color: var(--text-tertiary);
-  font-size: 0.8rem;
+  font-size: var(--font-size-xs, 0.75rem);
   cursor: pointer;
   padding: 6px 8px;
   border-radius: var(--radius-md);
@@ -1889,7 +1889,7 @@
 }
 
 .scan-coach-title {
-  font-size: 1.2rem;
+  font-size: var(--font-size-lg, 1.125rem);
   font-weight: 700;
   color: var(--text-primary);
   margin: 0 0 8px;
@@ -1898,7 +1898,7 @@
 .scan-coach-desc {
   font-size: 0.9375rem;
   color: var(--text-secondary);
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
   margin: 0 0 8px;
 }
 
@@ -1988,7 +1988,7 @@
 }
 
 .scan-preview-card h3 {
-  font-size: 1.1rem;
+  font-size: var(--font-size-lg, 1.125rem);
   font-weight: 700;
   text-align: center;
   margin: 0 0 16px;
@@ -2014,7 +2014,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.8rem;
+  font-size: var(--font-size-xs, 0.75rem);
   color: var(--text-secondary);
 }
 

@@ -264,7 +264,7 @@
 }
 
 .submitButton:active {
-  transform: scale(0.98);
+  transform: scale(var(--button-press-scale, 0.97));
 }
 
 .submitButton:disabled {

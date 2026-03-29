@@ -26,7 +26,7 @@
   align-items: center;
   justify-content: center;
   margin: 0 auto var(--spacing-md, 16px);
-  font-size: 2rem;
+  font-size: var(--font-size-3xl, 1.875rem);
 }
 
 .iconSuccess {
@@ -58,7 +58,7 @@
   color: var(--text-secondary, #6b7280);
   font-size: var(--font-size-sm, 0.875rem);
   margin-bottom: var(--spacing-lg, 24px);
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
 }
 
 .resendButton {

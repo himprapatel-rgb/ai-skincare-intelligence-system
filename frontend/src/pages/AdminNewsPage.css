@@ -78,7 +78,7 @@
 
 .admin-news-page .admin-list-body h3 {
   margin: 0 0 4px;
-  font-size: 1.1rem;
+  font-size: var(--font-size-lg, 1.125rem);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -94,7 +94,7 @@
 
 .admin-news-page .admin-meta {
   margin: 0;
-  font-size: 0.85rem;
+  font-size: var(--font-size-sm, 0.875rem);
   color: var(--text-gray);
 }
 

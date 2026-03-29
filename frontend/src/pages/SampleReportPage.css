@@ -58,14 +58,14 @@
   font-weight: var(--font-weight-bold);
   color: var(--text-dark);
   margin-bottom: var(--spacing-md);
-  line-height: 1.2;
+  line-height: var(--line-height-tight);
   letter-spacing: -0.5px;
 }
 
 .sample-report-hero p {
   color: var(--text-gray);
   font-size: 1.125rem; /* Brand guideline: 18px Body Large */
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
 }
 
 .sample-report-grid {
@@ -110,7 +110,7 @@
 .sample-card ul {
   padding-left: 18px;
   color: var(--text-gray);
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
 }
 
 .sample-report-cta {
@@ -139,7 +139,7 @@
   }
 
   .sample-report-hero h1 {
-    font-size: 2rem; /* Responsive: 32px / 2rem for H2 */
+    font-size: var(--font-size-3xl, 1.875rem); /* Responsive: 32px / 2rem for H2 */
   }
 }
 

@@ -61,7 +61,7 @@
   margin: 12px 0 0;
   padding-left: 24px;
   color: var(--text-gray);
-  line-height: 1.8;
+  line-height: var(--line-height-loose);
 }
 .skin-type-tips .skin-type-steps li {
   margin-bottom: 8px;
@@ -74,7 +74,7 @@
 
 .skin-type-card p {
   color: var(--text-gray);
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
   margin: 0;
 }
 
@@ -92,7 +92,7 @@
   margin: 12px 0 0;
   padding-left: 20px;
   color: var(--text-gray);
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
 }
 
 /* Result summary (Task 228) */
@@ -111,7 +111,7 @@
 .skin-type-summary-text {
   margin: 0;
   color: var(--text-gray);
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
 }
 
 @media (max-width: 480px) {

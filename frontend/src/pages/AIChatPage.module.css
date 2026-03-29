@@ -311,7 +311,7 @@
   color: var(--text-secondary, #475569);
   max-width: 420px;
   margin: 0 0 var(--space-2, 8px);
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
 }
 
 @media (prefers-color-scheme: dark) {

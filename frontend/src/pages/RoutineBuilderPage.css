@@ -71,7 +71,7 @@
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-medium);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
@@ -131,7 +131,7 @@
 .education-grid p {
   margin: 0;
   color: var(--text-gray);
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
 }
 
 /* Individual Step Card */
@@ -140,7 +140,7 @@
   border-radius: var(--radius-xl, 16px);
   padding: var(--spacing-lg) var(--spacing-xl);
   border: 2px solid var(--border);
-  transition: all 0.3s ease;
+  transition: transform var(--transition-slow), box-shadow var(--transition-slow), background-color var(--transition-slow);
   display: grid;
   grid-template-columns: 50px 1fr auto;
   align-items: center;
@@ -199,7 +199,7 @@
   font-weight: 500;
   font-size: 0.875rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
 }
 
 .btn-step-primary {
@@ -232,14 +232,14 @@
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   margin-top: 16px;
 }
 
 .btn-add-step:hover {
   background: rgba(31, 111, 235, 0.05);
   border-color: var(--primary);
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
 }
 
 /* Save Button */
@@ -250,17 +250,17 @@
   color: var(--white);
   border: none;
   border-radius: var(--radius-xl, 16px);
-  font-size: 1.1rem;
+  font-size: var(--font-size-lg, 1.125rem);
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   box-shadow: var(--shadow-primary);
   margin-top: 24px;
 }
 
 .btn-save-routine:hover {
   background: var(--primary-dark);
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
   box-shadow: var(--shadow-primary);
 }
 
@@ -271,7 +271,7 @@
 }
 
 .routine-header h1 {
-  font-size: 2rem;
+  font-size: var(--font-size-3xl, 1.875rem);
   font-weight: 700;
   color: var(--text-dark);
   margin-bottom: 12px;
@@ -326,7 +326,7 @@
   font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   display: flex;
   align-items: center;
 }
@@ -392,7 +392,7 @@
   border-radius: var(--radius-xl, 16px);
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
 }
 
 .btn-suggest:hover {
@@ -435,7 +435,7 @@
   grid-template-columns: 36px 50px 1fr auto;
   gap: 16px;
   align-items: center;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
 }
 
 .step-card:hover {
@@ -499,7 +499,7 @@
   padding: 6px;
   cursor: pointer;
   color: var(--text-gray);
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -600,7 +600,7 @@
   color: var(--text-dark);
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
 }
 
 .btn-toggle:hover {
@@ -691,7 +691,7 @@
   border-radius: var(--radius-xl, 16px);
   background: var(--bg-light);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   font-size: 0.875rem;
   font-weight: 500;
 }
@@ -726,7 +726,7 @@
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   display: flex;
   align-items: center;
 }
@@ -739,7 +739,7 @@
 
 .routine-actions .btn-primary:hover {
   background: var(--primary-dark);
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
 }
 
 .routine-actions .btn-secondary {
@@ -795,7 +795,7 @@
   .step-number {
     width: 40px;
     height: 40px;
-    font-size: 1.1rem;
+    font-size: var(--font-size-lg, 1.125rem);
   }
 
   .time-selector {
@@ -849,7 +849,7 @@
   }
 
   .step-time {
-    font-size: 0.85rem;
+    font-size: var(--font-size-sm, 0.875rem);
   }
 
   .product-item {

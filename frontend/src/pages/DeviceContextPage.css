@@ -55,7 +55,7 @@
   margin: 0;
   font-size: 0.9rem;
   color: var(--text-secondary);
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
 }
 
 .device-ctx-actions {
@@ -117,14 +117,14 @@
 
 .device-ctx-dt {
   margin: 0;
-  font-size: 0.8rem;
+  font-size: var(--font-size-xs, 0.75rem);
   color: var(--text-secondary);
   font-weight: 500;
 }
 
 .device-ctx-dd {
   margin: 0;
-  font-size: 0.85rem;
+  font-size: var(--font-size-sm, 0.875rem);
   color: var(--text-primary);
   word-break: break-all;
 }

@@ -48,7 +48,7 @@
   border-bottom-left-radius: var(--radius-xs, 4px);
   background: var(--color-gray-100, #f1f5f9);
   color: var(--text-primary, #0f172a);
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
   font-size: var(--font-size-sm, 0.875rem);
   word-wrap: break-word;
   overflow-wrap: break-word;

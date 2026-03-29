@@ -83,7 +83,7 @@
   font-size: 0.9375rem;
   color: var(--text-secondary);
   margin: 0 0 20px 0;
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
 }
 
 .overlay-cta .btn {
@@ -116,7 +116,7 @@
   margin: 0;
   padding-left: 20px;
   color: var(--text-secondary);
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
 }
 
 .dashboard-guest-preview li {
@@ -232,7 +232,7 @@
   font-size: 0.9375rem;
   color: var(--text-secondary);
   margin: 0;
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
 }
 
 /* Secondary action in empty state: link style (single primary CTA is in first-scan card) */
@@ -392,7 +392,7 @@
 }
 
 .stat-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(var(--card-hover-lift, -4px));
   box-shadow: var(--shadow-card-hover);
   border-color: var(--primary);
 }
@@ -449,7 +449,7 @@
 }
 
 .stat-content h3 {
-  font-size: 2rem; /* Brand guideline: Large numbers */
+  font-size: var(--font-size-3xl, 1.875rem); /* Brand guideline: Large numbers */
   font-weight: 700;
   color: var(--text-dark);
   line-height: 1;
@@ -555,7 +555,7 @@
   padding: var(--spacing-lg);
   border: 2px solid transparent;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   text-align: left;
   display: flex;
   flex-direction: column;
@@ -570,7 +570,7 @@
 .action-card:hover {
   background: var(--primary-light);
   border-color: var(--primary);
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
 }
 
 .action-card:focus-visible {
@@ -609,7 +609,7 @@
   font-size: 0.875rem; /* Brand guideline: 14px Body Small */
   color: var(--text-gray);
   margin: 0;
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
 }
 
 /* Recent Activity */
@@ -627,7 +627,7 @@
   background: var(--bg-white);
   border-radius: var(--radius-xl, 16px);
   border: 1px solid var(--border);
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
 }
 
 .activity-item:hover {
@@ -711,14 +711,14 @@
   font-weight: 600; /* Brand guideline: Semibold */
   color: var(--text-dark);
   margin: 0 0 8px 0;
-  line-height: 1.4;
+  line-height: var(--line-height-normal);
 }
 
 .reminder-content p {
   font-size: 1rem; /* Brand guideline: 16px Body */
   color: var(--text-gray);
   margin: 0 0 12px 0;
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
 }
 
 .reminder-controls {
@@ -901,13 +901,13 @@
   font-size: 1rem; /* Brand guideline: 16px Body */
   font-weight: 600; /* Brand guideline */
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   box-shadow: var(--shadow-primary);
 }
 
 .btn-primary:hover {
   background: var(--primary-dark);
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
   box-shadow: var(--shadow-primary);
 }
 
@@ -938,7 +938,7 @@
   }
 
   .dashboard-header h1 {
-    font-size: 2rem; /* Responsive: 32px / 2rem for H2 */
+    font-size: var(--font-size-3xl, 1.875rem); /* Responsive: 32px / 2rem for H2 */
   }
 
   .dashboard-header .subtitle {
@@ -956,7 +956,7 @@
   }
 
   .stat-content h3 {
-    font-size: 2rem;
+    font-size: var(--font-size-3xl, 1.875rem);
   }
 
   .stat-icon {
@@ -1008,7 +1008,7 @@
   }
 
   .reminder-icon {
-    font-size: 2rem;
+    font-size: var(--font-size-3xl, 1.875rem);
   }
 
   .dashboard-first-scan-cta {
@@ -1116,7 +1116,7 @@
 .dash-trend-improving { color: var(--success, #16a34a); }
 .dash-trend-declining { color: var(--danger, #dc2626); }
 .dash-trend-stable { color: var(--text-primary); }
-.dash-widget-insight { font-size: var(--font-size-sm, 0.825rem); color: var(--text-secondary); line-height: 1.5; margin: 0; }
+.dash-widget-insight { font-size: var(--font-size-sm, 0.825rem); color: var(--text-secondary); line-height: var(--line-height-normal); margin: 0; }
 
 /* Adherence */
 .dash-adherence-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-sm, 12px); }

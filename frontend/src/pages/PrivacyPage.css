@@ -84,11 +84,11 @@
   box-shadow: var(--shadow);
   border: 1px solid var(--border);
   margin-bottom: 24px;
-  transition: all 0.3s ease;
+  transition: transform var(--transition-slow), box-shadow var(--transition-slow), background-color var(--transition-slow);
 }
 
 .privacy-section:hover {
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
   box-shadow: var(--shadow-primary);
   border-color: var(--primary);
 }
@@ -98,13 +98,13 @@
   font-weight: 600; /* Brand guideline: Semibold */
   color: var(--text-dark);
   margin-bottom: 20px;
-  line-height: 1.4;
+  line-height: var(--line-height-normal);
 }
 
 .privacy-section p {
   font-size: 1rem; /* Brand guideline: 16px Body */
   color: var(--text-gray);
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
   margin-bottom: 16px;
 }
 
@@ -116,7 +116,7 @@
 .privacy-section li {
   font-size: 1rem;
   color: var(--text-gray);
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
   margin-bottom: 8px;
 }
 
@@ -138,7 +138,7 @@
   }
 
   .privacy-section h2 {
-    font-size: 1.3rem;
+    font-size: var(--font-size-xl, 1.25rem);
   }
 }
 
@@ -164,7 +164,7 @@
   }
 
   .privacy-section h2 {
-    font-size: 1.2rem;
+    font-size: var(--font-size-lg, 1.125rem);
   }
 
   .privacy-section p,

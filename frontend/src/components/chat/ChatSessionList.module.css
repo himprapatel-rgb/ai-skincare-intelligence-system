@@ -84,7 +84,7 @@
   color: var(--text-muted, #94a3b8);
   font-size: var(--font-size-sm, 0.875rem);
   padding: var(--space-10, 40px) var(--space-4, 16px);
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
 }
 
 /* ===== Session Item ===== */

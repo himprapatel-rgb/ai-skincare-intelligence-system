@@ -61,7 +61,7 @@
 }
 
 .heroCta:hover {
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
   box-shadow: var(--shadow-lg);
 }
 
@@ -116,7 +116,7 @@
 }
 
 .featureCard:hover {
-  transform: translateY(-4px);
+  transform: translateY(var(--card-hover-lift, -4px));
   box-shadow: var(--shadow-card-hover, 0 4px 14px rgba(16,24,40,0.08));
 }
 

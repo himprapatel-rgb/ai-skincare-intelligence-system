@@ -203,7 +203,7 @@
   display: inline-flex;
   align-items: center;
   border-radius: var(--border-radius-md);
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   white-space: nowrap;
 }
 
@@ -303,7 +303,7 @@
   color: var(--text-secondary);
   background: transparent;
   border: 1px solid transparent;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
 }
 
 .app-nav-icon-btn:hover {
@@ -327,7 +327,7 @@
   background: rgba(31, 111, 235, 0.06);
   border: 1px solid rgba(31, 111, 235, 0.1);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   font-family: inherit;
 }
 
@@ -477,7 +477,7 @@
   background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(168, 85, 247, 0.08));
   border: 1px solid rgba(99, 102, 241, 0.15);
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
 }
 
 .app-nav-cta-secondary:hover {
@@ -501,7 +501,7 @@
   position: relative;
   overflow: hidden;
   box-shadow: var(--shadow-primary);
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   white-space: nowrap;
 }
 
@@ -517,7 +517,7 @@
 }
 
 .app-nav-cta:hover {
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
   box-shadow: var(--shadow-primary);
   color: var(--white);
 }
@@ -549,7 +549,7 @@
   border: 1px solid var(--border-color);
   color: var(--text-primary);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
 }
 
 .app-nav-mobile-toggle:hover {
@@ -717,7 +717,7 @@
   font-weight: 500;
   font-size: var(--font-size-base);
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   border: none;
   background: transparent;
   cursor: pointer;
@@ -788,7 +788,7 @@
   color: var(--primary);
   background: rgba(31, 111, 235, 0.08);
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
 }
 
 .app-nav-mobile-btn-primary {
@@ -1084,7 +1084,7 @@
   background: var(--gray-900);
   color: var(--white, #fff);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   white-space: nowrap;
 }
 
@@ -1161,7 +1161,7 @@
 .app-footer-tagline {
   color: var(--text-secondary);
   font-size: 0.95rem;
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
   margin: 0 0 24px 0;
 }
 
@@ -1180,14 +1180,14 @@
   justify-content: center;
   color: var(--text-secondary);
   background: var(--bg-primary);
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
 }
 
 .app-footer-socials a:hover {
   color: var(--primary);
   background: rgba(31, 111, 235, 0.06);
   border-color: rgba(31, 111, 235, 0.3);
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
 }
 
 /* Links Section */
@@ -1509,7 +1509,7 @@
 
 .app-layout .btn-primary:hover,
 .app-layout .btn-secondary:hover {
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
 }
 
 .app-layout .btn-icon {

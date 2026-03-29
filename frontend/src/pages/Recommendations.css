@@ -110,7 +110,7 @@
 .recommendations-header p {
   color: var(--text-secondary);
   font-size: 1.125rem; /* Brand guideline: 18px Body Large */
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
 }
 
 .recommendations-header-actions {
@@ -188,14 +188,14 @@
   border-radius: var(--radius-full);
   background: var(--bg-white);
   border: 1px solid var(--border-color);
-  font-size: 0.8rem;
+  font-size: var(--font-size-xs, 0.75rem);
   font-weight: 500;
   color: var(--text-primary);
 }
 
 .recommendations-geo-region {
   margin: 0;
-  font-size: 0.85rem;
+  font-size: var(--font-size-sm, 0.875rem);
   color: var(--text-secondary);
 }
 
@@ -270,7 +270,7 @@
   padding: 8px 16px;
   border-radius: var(--radius-xl, 16px);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
 }
 .filters-reset:hover {
   background: var(--primary-light, #dbeafe);
@@ -336,7 +336,7 @@
 }
 
 .product-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(var(--card-hover-lift, -4px));
   box-shadow: var(--shadow-lg);
 }
 
@@ -409,7 +409,7 @@
 }
 
 .product-concerns p {
-  font-size: 0.85rem;
+  font-size: var(--font-size-sm, 0.875rem);
   color: var(--text-secondary);
   margin-bottom: 6px;
 }
@@ -464,7 +464,7 @@
   font-weight: 500;
   font-size: 0.875rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
 }
 .btn-add-to-shelf:hover:not(:disabled) {
   background: var(--primary);
@@ -492,13 +492,13 @@
   font-weight: 600;
   font-size: 0.95rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   box-shadow: var(--shadow-sm);
 }
 
 .btn-add:hover {
   background: var(--primary-hover);
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
   box-shadow: var(--shadow-md);
 }
 
@@ -654,13 +654,13 @@
   font-size: 1.5rem; /* Brand guideline: 24px / 1.5rem for H3 */
   font-weight: 600;
   margin-bottom: 12px;
-  line-height: 1.4;
+  line-height: var(--line-height-normal);
 }
 
 .empty-recommendations p {
   color: var(--text-secondary);
   font-size: 1rem;
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
 }
 
 .empty-recommendations .empty-reset-filters {

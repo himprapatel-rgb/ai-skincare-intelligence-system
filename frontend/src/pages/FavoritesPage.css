@@ -84,7 +84,7 @@
   margin: 0;
   font-size: 0.9375rem;
   color: var(--text-secondary);
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
 }
 
 .favorites-card-content {

@@ -76,7 +76,7 @@
   color: var(--text-gray);
   font-size: 1rem;
   margin-bottom: 24px;
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
 }
 
 .export-complete-actions {
@@ -114,7 +114,7 @@
 .export-category-desc {
   font-size: 0.875rem;
   color: var(--text-gray);
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
 }
 
 .export-category-size {
@@ -131,13 +131,13 @@
   border: 2px solid var(--border);
   border-radius: var(--radius-xl, 16px);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   text-align: center;
 }
 
 .export-format-card:hover {
   border-color: var(--primary);
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
 }
 
 .export-format-card.active {
@@ -147,7 +147,7 @@
 }
 
 .export-format-icon {
-  font-size: 2rem;
+  font-size: var(--font-size-3xl, 1.875rem);
   margin-bottom: 12px;
 }
 
@@ -180,14 +180,14 @@
   margin: 0;
   font-size: 0.9375rem;
   color: var(--text-primary);
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
 }
 
 .export-format-explanation {
   margin-top: 12px;
   font-size: 0.875rem;
   color: var(--text-gray, #6b7280);
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
 }
 
 .export-eta {

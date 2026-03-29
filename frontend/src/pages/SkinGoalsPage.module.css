@@ -78,14 +78,14 @@
   cursor: pointer;
   color: var(--text-primary, #0f172a);
   text-align: left;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   min-height: 56px;
   margin-bottom: 8px;
 }
 
 .goalItem:hover {
   border-color: var(--color-primary, #1f6feb);
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
   box-shadow: var(--shadow-md, 0 4px 12px rgba(0,0,0,0.08));
 }
 
@@ -124,7 +124,7 @@
 .goalDesc {
   font-size: 0.875rem;
   opacity: 0.8;
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
 }
 
 .goalToggle {

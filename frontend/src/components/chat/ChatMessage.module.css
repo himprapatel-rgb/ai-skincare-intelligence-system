@@ -43,7 +43,7 @@
   position: relative;
   padding: var(--space-3, 12px) var(--space-4, 16px);
   border-radius: var(--radius-xl, 16px);
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
   font-size: 0.9375rem;
   word-wrap: break-word;
   overflow-wrap: break-word;

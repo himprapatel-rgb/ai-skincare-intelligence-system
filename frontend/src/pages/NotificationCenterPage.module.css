@@ -200,7 +200,7 @@
   color: var(--text-secondary, #64748b);
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
 }
 
 .filterBtn:hover {
@@ -259,12 +259,12 @@
   grid-template-columns: 48px 1fr auto;
   gap: var(--spacing-md, 16px);
   align-items: start;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   position: relative;
 }
 
 .notifItem:hover {
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
   box-shadow: var(--shadow-md, 0 4px 12px rgba(0,0,0,0.08));
 }
 
@@ -314,7 +314,7 @@
 
 .notifMessage {
   color: var(--text-secondary, #64748b);
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
   margin: 0 0 8px 0;
 }
 
@@ -352,7 +352,7 @@
   padding: 6px;
   cursor: pointer;
   color: var(--text-secondary, #64748b);
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -396,7 +396,7 @@
   .filterBtn,
   .filterBtnActive {
     padding: 8px 14px;
-    font-size: 0.85rem;
+    font-size: var(--font-size-sm, 0.875rem);
     min-height: 40px;
   }
 

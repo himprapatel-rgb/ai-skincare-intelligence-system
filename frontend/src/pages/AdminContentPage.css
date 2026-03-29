@@ -95,7 +95,7 @@
 }
 
 .admin-label {
-  font-size: 0.85rem;
+  font-size: var(--font-size-sm, 0.875rem);
   color: var(--text-gray);
   margin-top: 4px;
 }
@@ -123,7 +123,7 @@
 
 .admin-tab-header h2 {
   margin: 0;
-  font-size: 1.2rem;
+  font-size: var(--font-size-lg, 1.125rem);
 }
 
 .admin-form-card {
@@ -136,7 +136,7 @@
 
 .admin-form-card h3 {
   margin: 0 0 20px;
-  font-size: 1.1rem;
+  font-size: var(--font-size-lg, 1.125rem);
 }
 
 .admin-form-card .form-group {
@@ -198,7 +198,7 @@
 .admin-image-spec {
   font-weight: 400;
   color: var(--text-gray);
-  font-size: 0.85rem;
+  font-size: var(--font-size-sm, 0.875rem);
 }
 
 .admin-image-upload-row {
@@ -237,7 +237,7 @@
 
 .admin-image-error {
   margin: 8px 0 0;
-  font-size: 0.85rem;
+  font-size: var(--font-size-sm, 0.875rem);
   color: var(--danger, var(--danger));
 }
 
@@ -266,7 +266,7 @@
 
 .admin-list-body .admin-meta {
   margin: 0;
-  font-size: 0.85rem;
+  font-size: var(--font-size-sm, 0.875rem);
   color: var(--text-gray);
 }
 

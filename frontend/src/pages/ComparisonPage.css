@@ -68,7 +68,7 @@
   background: var(--bg-light);
   color: var(--text-dark);
   font-size: var(--font-size-base);
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
 }
 
 .comparison-input:focus {
@@ -91,11 +91,11 @@
   text-align: center;
   box-shadow: var(--shadow);
   border: 1px solid var(--border);
-  transition: all 0.3s ease;
+  transition: transform var(--transition-slow), box-shadow var(--transition-slow), background-color var(--transition-slow);
 }
 
 .comparison-score-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(var(--card-hover-lift, -4px));
   border-color: var(--primary);
   box-shadow: var(--shadow-primary);
 }
@@ -163,7 +163,7 @@
   padding: 8px;
   cursor: pointer;
   color: var(--text-gray);
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -380,7 +380,7 @@
   }
 
   .comparison-table {
-    font-size: 0.85rem;
+    font-size: var(--font-size-sm, 0.875rem);
   }
 
   .comparison-th,

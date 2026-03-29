@@ -214,7 +214,7 @@
 }
 
 .snapshotCard:hover {
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
 }
 
 .snapshotCardActive {

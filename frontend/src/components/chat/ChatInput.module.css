@@ -65,7 +65,7 @@
   outline: none;
   font-family: var(--font-family, 'Inter', sans-serif);
   font-size: var(--font-size-base, 1rem);
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
   color: var(--text-primary, #0f172a);
   min-height: 28px;
   max-height: 180px;

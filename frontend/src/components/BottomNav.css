@@ -102,7 +102,7 @@
 
 .bottom-nav-item:hover {
   color: var(--primary);
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
 }
 
 .bottom-nav-item.active {

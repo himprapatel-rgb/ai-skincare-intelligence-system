@@ -103,14 +103,14 @@
   font-weight: var(--font-weight-medium);
   font-size: var(--font-size-base);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   box-shadow: var(--shadow-sm);
 }
 
 .filter-btn:hover {
   border-color: var(--primary);
   color: var(--primary);
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
   box-shadow: var(--shadow-card-hover);
 }
 
@@ -224,11 +224,11 @@
   text-align: center;
   box-shadow: var(--shadow);
   border: 1px solid var(--border);
-  transition: all 0.3s ease;
+  transition: transform var(--transition-slow), box-shadow var(--transition-slow), background-color var(--transition-slow);
 }
 
 .stat-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(var(--card-hover-lift, -4px));
   box-shadow: var(--shadow-primary);
   border-color: var(--primary);
 }
@@ -242,11 +242,11 @@
   align-items: center;
   justify-content: center;
   margin: 0 auto 16px;
-  font-size: 2rem;
+  font-size: var(--font-size-3xl, 1.875rem);
 }
 
 .stat-card .stat-value {
-  font-size: 2rem;
+  font-size: var(--font-size-3xl, 1.875rem);
   font-weight: 700;
   color: var(--primary);
   margin-bottom: 8px;
@@ -425,13 +425,13 @@
   font-weight: 600;
   font-size: 0.95rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   box-shadow: var(--shadow-primary);
 }
 
 .view-btn:hover {
   background: var(--primary-dark);
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
   box-shadow: var(--shadow-primary);
 }
 
@@ -468,20 +468,20 @@
   font-size: 1.5rem; /* Brand guideline: 24px / 1.5rem for H3 */
   font-weight: 600;
   margin-bottom: 12px;
-  line-height: 1.4;
+  line-height: var(--line-height-normal);
 }
 
 .empty-state p {
   color: var(--text-gray);
   font-size: 1rem;
   margin-bottom: 24px;
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
 }
 
 .empty-state-guidance {
   margin-bottom: 20px;
   color: var(--text-gray);
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
 }
 
 .empty-state-guidance p {
@@ -572,7 +572,7 @@
   }
 
   .stat-card .stat-value {
-    font-size: 2rem;
+    font-size: var(--font-size-3xl, 1.875rem);
   }
 
   .history-item {

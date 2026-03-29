@@ -429,7 +429,7 @@
   .today-page .today-prediction-link:active,
   .today-page .today-see-all:active,
   .today-page .today-settings-btn:active {
-    transform: scale(0.98);
+    transform: scale(var(--button-press-scale, 0.97));
     opacity: 0.92;
   }
 
@@ -443,7 +443,7 @@
   .app-page .btn-primary:active,
   .today-page .btn-primary:active,
   .me-page .btn-primary:active {
-    transform: scale(0.98);
+    transform: scale(var(--button-press-scale, 0.97));
   }
 
   /* Center Scan pill: subtle press */
@@ -524,7 +524,7 @@
     .app-nav-mobile-link:active,
     .bottom-nav-item:active {
       opacity: 0.9;
-      transform: scale(0.98);
+      transform: scale(var(--button-press-scale, 0.97));
     }
   }
 
@@ -669,7 +669,7 @@
   }
 
   .scan-page .scan-btn-primary:active:not(:disabled) {
-    transform: scale(0.98);
+    transform: scale(var(--button-press-scale, 0.97));
     opacity: 0.95;
   }
 
@@ -732,7 +732,7 @@
     font-size: 1.75rem;
     font-weight: 700;
     color: var(--text-primary);
-    line-height: 1.2;
+    line-height: var(--line-height-tight);
     margin: 0 0 4px 0;
   }
 

@@ -36,7 +36,7 @@
 .error-content > p:first-of-type {
   font-size: 1rem;
   color: var(--text-secondary);
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
   margin: 0 0 24px;
 }
 

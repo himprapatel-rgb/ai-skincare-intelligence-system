@@ -182,7 +182,7 @@
 .notification-item-icon {
   flex-shrink: 0;
   font-size: 0.95rem;
-  line-height: 1.2;
+  line-height: var(--line-height-tight);
 }
 
 .notification-item-body {

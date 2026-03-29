@@ -61,7 +61,7 @@
   font-size: 1rem;
   font-weight: 600;
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   border: 2px solid transparent;
   font-family: inherit;
   cursor: pointer;

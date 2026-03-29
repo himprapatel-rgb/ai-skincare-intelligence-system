@@ -60,13 +60,13 @@
   cursor: pointer;
   color: var(--text-primary);
   text-align: left;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   min-height: 56px;
 }
 
 .skin-goals-item:hover {
   border-color: var(--primary);
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
   box-shadow: var(--shadow-card-hover);
 }
 
@@ -105,7 +105,7 @@
 .skin-goals-desc {
   font-size: 0.875rem; /* Brand guideline: 14px Body Small */
   opacity: 0.8;
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
 }
 
 .skin-goals-toggle {

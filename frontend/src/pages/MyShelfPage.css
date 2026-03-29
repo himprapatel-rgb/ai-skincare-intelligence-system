@@ -44,7 +44,7 @@
   font-size: 1.5rem;
   font-weight: 700;
   letter-spacing: -0.02em;
-  line-height: 1.2;
+  line-height: var(--line-height-tight);
 }
 
 .myshelf-hero-subtitle {
@@ -118,7 +118,7 @@
 }
 
 .myshelf-expiring-icon {
-  font-size: 1.2rem;
+  font-size: var(--font-size-lg, 1.125rem);
 }
 
 .myshelf-expiring-scroll {
@@ -161,10 +161,10 @@
 }
 
 .myshelf-expiring-name {
-  font-size: 0.8rem;
+  font-size: var(--font-size-xs, 0.75rem);
   font-weight: 600;
   color: var(--text-primary);
-  line-height: 1.2;
+  line-height: var(--line-height-tight);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -221,7 +221,7 @@
 .myshelf-onboarding-headline {
   flex: 1;
   font-size: 0.9375rem;
-  line-height: 1.4;
+  line-height: var(--line-height-normal);
 }
 
 .myshelf-onboarding-chevron {
@@ -245,7 +245,7 @@
 .myshelf-tip {
   font-size: 0.875rem;
   color: var(--text-secondary);
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
   padding: 12px;
   background: var(--gray-50);
   border-radius: var(--radius-xl, 16px);
@@ -381,7 +381,7 @@
   font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
   white-space: nowrap;
 }
 
@@ -490,7 +490,7 @@
   margin: 0 0 24px 0;
   font-size: 0.9375rem;
   color: var(--text-secondary);
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
   max-width: 320px;
   margin-left: auto;
   margin-right: auto;
@@ -620,7 +620,7 @@
   color: var(--text-primary);
   cursor: pointer;
   text-align: left;
-  line-height: 1.3;
+  line-height: var(--line-height-snug);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -787,7 +787,7 @@
   font-weight: 600;
   font-size: 0.875rem;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
 }
 
 .btn-remove:hover {
@@ -836,7 +836,7 @@
   font-size: 0.8125rem;
   cursor: pointer;
   color: var(--text-muted);
-  transition: all 0.2s;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
 }
 
 @media (max-width: 768px) {
@@ -876,7 +876,7 @@
   margin: 0;
   font-size: 0.8125rem;
   color: var(--text-secondary);
-  line-height: 1.4;
+  line-height: var(--line-height-normal);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;

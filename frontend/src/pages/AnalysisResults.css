@@ -112,17 +112,17 @@
 }
 
 .results-header h1 {
-  font-size: 2rem; /* Brand guideline: 32px / 2rem for H2 */
+  font-size: var(--font-size-3xl, 1.875rem); /* Brand guideline: 32px / 2rem for H2 */
   font-weight: 600; /* Brand guideline: Semibold */
   color: var(--text-dark); /* Deep Navy */
   margin-bottom: 8px;
-  line-height: 1.3; /* Brand guideline */
+  line-height: var(--line-height-snug); /* Brand guideline */
 }
 
 .results-header p {
   color: var(--text-gray);
   font-size: 1rem; /* Brand guideline: 16px Body */
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
 }
 
 .results-header-actions {
@@ -168,7 +168,7 @@
   font-weight: 500;
   text-decoration: none;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
 }
 .results-share-social:hover,
 .results-share-native:hover {
@@ -188,13 +188,13 @@
   font-size: 0.9375rem;
   color: var(--text-gray);
   margin: 0 0 12px;
-  line-height: 1.4;
+  line-height: var(--line-height-normal);
 }
 .analysis-legal-disclaimer {
   font-size: 0.875rem;
   color: var(--gray-600, #4b5563);
   margin: 8px 0 0;
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
   width: 100%;
 }
 
@@ -210,7 +210,7 @@
   font-size: 0.9375rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
 }
 
 .results-copy-link:hover {
@@ -228,13 +228,13 @@
   font-weight: 600;
   font-size: 0.95rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
 }
 
 .results-back:hover {
   background: var(--primary);
   color: var(--white);
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
 }
 
 .confidence-row {
@@ -272,7 +272,7 @@
 .confidence-value {
   font-weight: 600;
   color: var(--primary);
-  font-size: 1.1rem;
+  font-size: var(--font-size-lg, 1.125rem);
 }
 
 .results-grid {
@@ -310,11 +310,11 @@
   border-radius: var(--radius-xl, 16px);
   padding: 24px;
   box-shadow: var(--shadow);
-  transition: all 0.3s ease;
+  transition: transform var(--transition-slow), box-shadow var(--transition-slow), background-color var(--transition-slow);
 }
 
 .result-card:hover {
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
   box-shadow: var(--shadow-primary);
   border-color: var(--primary);
 }
@@ -324,7 +324,7 @@
   font-weight: 600; /* Brand guideline: Semibold */
   color: var(--text-dark);
   margin-bottom: 20px;
-  line-height: 1.4;
+  line-height: var(--line-height-normal);
 }
 
 .metric-explanations h2 {
@@ -335,7 +335,7 @@
   margin: 0 0 16px;
   font-size: 0.9375rem;
   color: var(--text-gray);
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
 }
 
 .metric-grid {
@@ -353,7 +353,7 @@
 .metric-grid p {
   margin: 0;
   color: var(--text-gray);
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
 }
 
 .analysis-image img {
@@ -382,7 +382,7 @@
 
 .analysis-image-fallback span {
   display: block;
-  font-size: 0.85rem;
+  font-size: var(--font-size-sm, 0.875rem);
   color: var(--text-secondary);
 }
 
@@ -446,7 +446,7 @@
   border-radius: var(--radius-xl, 16px);
   padding: 24px;
   background: var(--bg-light);
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
 }
 
 .severity-card:hover {
@@ -552,7 +552,7 @@
   border-left: 4px solid var(--primary);
   color: var(--text-dark);
   font-size: 1rem;
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
 }
 
 .history-table-wrapper {
@@ -599,13 +599,13 @@
   font-weight: 600;
   font-size: 0.875rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
 }
 
 .link-button:hover {
   background: var(--primary);
   color: var(--white);
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
 }
 
 .results-actions {
@@ -621,7 +621,7 @@
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
 }
 
 .results-actions .btn-primary {
@@ -633,7 +633,7 @@
 
 .results-actions .btn-primary:hover {
   background: var(--primary-dark);
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
   box-shadow: var(--shadow-primary);
 }
 
@@ -645,7 +645,7 @@
 
 .results-actions .btn-secondary:hover {
   background: rgba(31, 111, 235, 0.05);
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
 }
 
 @media (max-width: 768px) {
@@ -720,7 +720,7 @@
   }
 
   .historical-table {
-    font-size: 0.85rem;
+    font-size: var(--font-size-sm, 0.875rem);
   }
 
   .historical-table th,
@@ -738,7 +738,7 @@
   margin: 0 0 20px;
   font-size: 0.95rem;
   color: var(--text-gray);
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
 }
 
 .analysis-ingredient-cards {
@@ -765,12 +765,12 @@
 .analysis-ingredient-why {
   font-size: 0.9rem;
   color: var(--text-gray);
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
   margin: 0 0 8px;
 }
 
 .analysis-ingredient-targets {
-  font-size: 0.85rem;
+  font-size: var(--font-size-sm, 0.875rem);
   color: var(--primary);
   font-weight: 500;
   margin: 0 0 10px;
@@ -972,7 +972,7 @@
 }
 .results-rec-card:hover {
   box-shadow: var(--shadow-md, 0 4px 12px rgba(0,0,0,0.06));
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
 }
 .results-rec-category {
   font-size: var(--font-size-xs, 0.7rem);

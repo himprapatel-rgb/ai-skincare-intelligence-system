@@ -23,7 +23,7 @@
 }
 
 .page-header h1 {
-  font-size: 2rem;
+  font-size: var(--font-size-3xl, 1.875rem);
   color: var(--text-dark);
   margin-bottom: 12px;
 }
@@ -131,7 +131,7 @@
 .video-card p {
   margin: 0;
   color: var(--text-gray);
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
 }
 
 @media (max-width: 480px) {

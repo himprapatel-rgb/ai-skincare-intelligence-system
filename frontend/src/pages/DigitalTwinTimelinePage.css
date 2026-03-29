@@ -70,7 +70,7 @@
 
 .twin-explainer-card p {
   color: var(--text-gray);
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
   margin: 0;
 }
 
@@ -90,11 +90,11 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  transition: all 0.3s ease;
+  transition: transform var(--transition-slow), box-shadow var(--transition-slow), background-color var(--transition-slow);
 }
 
 .summary-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(var(--card-hover-lift, -4px));
   box-shadow: var(--shadow-primary);
   border-color: var(--primary);
 }
@@ -116,7 +116,7 @@
 }
 
 .summary-value {
-  font-size: 2rem;
+  font-size: var(--font-size-3xl, 1.875rem);
   font-weight: 700;
   color: var(--text-dark);
   line-height: 1;
@@ -132,7 +132,7 @@
 
 .summary-value--concerns {
   font-size: 1.05rem;
-  line-height: 1.4;
+  line-height: var(--line-height-normal);
   white-space: normal;
   word-break: break-word;
 }
@@ -246,12 +246,12 @@
   border: 2px solid var(--border);
   border-radius: var(--radius-xl, 16px);
   overflow: hidden;
-  transition: all 0.3s ease;
+  transition: transform var(--transition-slow), box-shadow var(--transition-slow), background-color var(--transition-slow);
   background: var(--bg-white);
 }
 
 .snapshot-item:hover {
-  transform: translateY(-4px);
+  transform: translateY(var(--card-hover-lift, -4px));
   box-shadow: var(--shadow-md, 0 4px 12px rgba(0, 0, 0, 0.08));
   border-color: var(--primary);
 }
@@ -588,7 +588,7 @@
 }
 
 .improvement-value {
-  font-size: 2rem;
+  font-size: var(--font-size-3xl, 1.875rem);
   font-weight: 700;
   margin-bottom: 8px;
 }
@@ -695,7 +695,7 @@
   }
 
   .card-header h2 {
-    font-size: 1.2rem;
+    font-size: var(--font-size-lg, 1.125rem);
   }
 
   .timeline-snapshots {
@@ -716,6 +716,6 @@
   }
 
   .improvement-value {
-    font-size: 2rem;
+    font-size: var(--font-size-3xl, 1.875rem);
   }
 }

@@ -82,7 +82,7 @@
   color: var(--text-secondary, #4e6078);
   cursor: pointer;
   white-space: nowrap;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   min-height: 44px;
   flex-shrink: 0;
 }
@@ -120,7 +120,7 @@
 }
 
 .card:hover {
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
   box-shadow: var(--shadow-card-hover);
 }
 
@@ -139,7 +139,7 @@
   align-items: center;
   justify-content: center;
   color: var(--gray-400, #97a6ba);
-  font-size: 2rem;
+  font-size: var(--font-size-3xl, 1.875rem);
 }
 
 .cardBody {
@@ -177,7 +177,7 @@
   border-radius: var(--radius-full, 9999px);
   font-size: 0.6875rem;
   font-weight: var(--font-weight-semibold, 600);
-  line-height: 1.3;
+  line-height: var(--line-height-snug);
 }
 
 .reasonIcon {
@@ -261,7 +261,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
+  font-size: var(--font-size-3xl, 1.875rem);
   margin-bottom: var(--spacing-md, 16px);
 }
 

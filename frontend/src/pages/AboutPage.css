@@ -35,12 +35,12 @@
 }
 
 .about-section h2 {
-  font-size: 2rem; /* Brand guideline: 32px / 2rem for H2 */
+  font-size: var(--font-size-3xl, 1.875rem); /* Brand guideline: 32px / 2rem for H2 */
   font-weight: 600; /* Brand guideline: Semibold */
   color: var(--text-dark);
   margin-bottom: 48px;
   text-align: center;
-  line-height: 1.3;
+  line-height: var(--line-height-snug);
 }
 
 .mission-content {
@@ -57,7 +57,7 @@
 .mission-content p {
   font-size: 1rem; /* Brand guideline: 16px Body */
   color: var(--text-gray);
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
 }
 
 .story-grid {
@@ -78,14 +78,14 @@
 }
 
 .story-card h3 {
-  font-size: 1.2rem;
+  font-size: var(--font-size-lg, 1.125rem);
   font-weight: 600;
   color: var(--text-dark);
 }
 
 .story-card p {
   color: var(--text-gray);
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
   margin: 0;
 }
 
@@ -119,7 +119,7 @@
 }
 
 .stat-value {
-  font-size: 2rem;
+  font-size: var(--font-size-3xl, 1.875rem);
   font-weight: 700;
   color: var(--text-dark);
   margin-bottom: 6px;
@@ -128,7 +128,7 @@
 .stat-label {
   color: var(--text-gray);
   font-size: 0.95rem;
-  line-height: 1.4;
+  line-height: var(--line-height-normal);
 }
 
 .tech-grid {
@@ -193,7 +193,7 @@
 
 .value-card p {
   color: var(--text-gray);
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
   margin: 0;
 }
 
@@ -232,7 +232,7 @@
   margin: 0;
   padding-left: 20px;
   color: var(--text-gray);
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
 }
 .changelog-list li {
   margin-bottom: 6px;
@@ -244,7 +244,7 @@
 }
 
 .about-cta h2 {
-  font-size: 2rem;
+  font-size: var(--font-size-3xl, 1.875rem);
   margin-bottom: 12px;
   color: var(--text-dark);
 }

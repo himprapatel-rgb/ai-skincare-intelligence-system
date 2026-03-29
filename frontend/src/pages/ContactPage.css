@@ -20,7 +20,7 @@
 }
 
 .response-time-icon {
-  font-size: 1.1rem;
+  font-size: var(--font-size-lg, 1.125rem);
 }
 
 .location-section {
@@ -65,11 +65,11 @@
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--border);
   text-align: center;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
 }
 
 .info-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(var(--card-hover-lift, -4px));
   box-shadow: var(--shadow-card-hover);
   border-color: var(--primary);
 }
@@ -90,7 +90,7 @@
   align-items: center;
   justify-content: center;
   color: var(--text-gray);
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
 }
 
 .social-card .social-links a:hover {
@@ -123,7 +123,7 @@
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   text-decoration: none;
   border: 2px solid var(--primary);
   background: var(--primary);
@@ -156,7 +156,7 @@
   font-weight: 600;
   color: var(--text-dark);
   margin-bottom: 24px;
-  line-height: 1.4;
+  line-height: var(--line-height-normal);
 }
 
 .form-group {
@@ -179,7 +179,7 @@
   border-radius: var(--radius-xl, 16px); /* Brand guideline: 8px */
   font-size: 1rem; /* Brand guideline: 16px Body */
   background: var(--bg-light);
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   font-family: inherit;
 }
 
@@ -217,14 +217,14 @@
   font-size: 1rem; /* Brand guideline: 16px Body */
   font-weight: 600; /* Brand guideline */
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   box-shadow: var(--shadow-primary);
 }
 
 .btn-submit:hover,
 .submit-button:hover {
   background: var(--primary-dark);
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
   box-shadow: var(--shadow-primary);
 }
 
@@ -238,7 +238,7 @@
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   box-shadow: var(--shadow-primary);
 }
 
@@ -316,7 +316,7 @@
   margin: 0;
   font-size: 0.95rem;
   color: var(--text-gray);
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
 }
 
 @media (max-width: 1024px) {
@@ -382,7 +382,7 @@
   }
 
   .contact-form h2 {
-    font-size: 1.3rem;
+    font-size: var(--font-size-xl, 1.25rem);
   }
 
   .form-group input,

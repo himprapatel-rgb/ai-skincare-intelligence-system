@@ -169,7 +169,7 @@
 }
 
 .profile-floating-save-btn:hover:not(:disabled) {
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
   box-shadow: var(--shadow-primary);
 }
 
@@ -251,7 +251,7 @@
   margin: 0 0 12px 0;
   font-size: 0.95rem;
   color: var(--text-secondary);
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
 }
 
 .profile-modal-text:last-of-type {
@@ -377,7 +377,7 @@
 }
 
 .profile-header-email {
-  font-size: 0.8rem;
+  font-size: var(--font-size-xs, 0.75rem);
   opacity: 0.95;
   margin: 0 0 12px 0;
   color: rgba(255, 255, 255, 0.95);
@@ -632,7 +632,7 @@
   margin: 0 0 12px 0;
   font-size: 0.9375rem;
   color: var(--text-secondary);
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
 }
 
 .profile-delete-modal-instruction {
@@ -741,11 +741,11 @@
 }
 
 .profile-container h1 {
-  font-size: 2rem;
+  font-size: var(--font-size-3xl, 1.875rem);
   font-weight: 700; /* Brand guideline: Bold */
   color: var(--text-primary); /* Deep Navy */
   margin-bottom: 6px;
-  line-height: 1.2;
+  line-height: var(--line-height-tight);
   letter-spacing: -0.5px;
 }
 
@@ -830,7 +830,7 @@
 }
 
 .profile-name {
-  font-size: 1.1rem;
+  font-size: var(--font-size-lg, 1.125rem);
   font-weight: 700;
   color: var(--text-primary);
 }
@@ -877,7 +877,7 @@
 }
 
 .quick-stat-label {
-  font-size: 0.8rem;
+  font-size: var(--font-size-xs, 0.75rem);
   font-weight: 500;
   color: var(--text-secondary);
   text-transform: uppercase;
@@ -965,7 +965,7 @@
 }
 
 .profile-settings-links-title {
-  font-size: 0.8rem;
+  font-size: var(--font-size-xs, 0.75rem);
   font-weight: 600;
   color: var(--text-muted);
   text-transform: uppercase;
@@ -1062,7 +1062,7 @@
   font-weight: 600; /* Brand guideline: Semibold */
   color: var(--text-primary);
   margin-bottom: 20px;
-  line-height: 1.4;
+  line-height: var(--line-height-normal);
 }
 
 .tab-content h3 {
@@ -1166,13 +1166,13 @@
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   box-shadow: var(--shadow-sm);
 }
 
 .btn-upload:hover {
   background: var(--primary-hover);
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
   box-shadow: var(--shadow-md);
 }
 
@@ -1186,7 +1186,7 @@
   font-size: 0.9rem;
   color: var(--white);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   box-shadow: var(--shadow-primary);
 }
 
@@ -1204,7 +1204,7 @@
   font-size: 0.9rem;
   color: var(--text-secondary);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
 }
 
 .btn-secondary:hover {
@@ -1218,10 +1218,10 @@
   border: none;
   border-radius: var(--radius-xl, 16px);
   padding: 10px 20px;
-  font-size: 0.85rem;
+  font-size: var(--font-size-sm, 0.875rem);
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
 }
 
 .btn-danger:hover {
@@ -1230,7 +1230,7 @@
 
 .btn-inline {
   padding: 8px 14px;
-  font-size: 0.85rem;
+  font-size: var(--font-size-sm, 0.875rem);
 }
 
 .tabs button::after {
@@ -1330,7 +1330,7 @@
   background: var(--bg-tertiary);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-xl, 16px);
-  font-size: 0.8rem;
+  font-size: var(--font-size-xs, 0.75rem);
   color: var(--gray-600, #475569);
   margin: 4px;
   gap: 6px;
@@ -1360,7 +1360,7 @@
   display: block;
   margin-top: 6px;
   color: var(--danger);
-  font-size: 0.85rem;
+  font-size: var(--font-size-sm, 0.875rem);
 }
 
 .inline-action {
@@ -1641,7 +1641,7 @@
   }
   .profile-hero-banner .profile-subtitle {
     font-size: 0.875rem;
-    line-height: 1.4;
+    line-height: var(--line-height-normal);
     display: block;
     word-wrap: break-word;
     overflow-wrap: break-word;
@@ -1845,7 +1845,7 @@
     font-size: 1.125rem;
   }
   .section-subtitle {
-    font-size: 0.85rem;
+    font-size: var(--font-size-sm, 0.875rem);
   }
 
   .form-row {
@@ -1868,7 +1868,7 @@
     padding: 16px 12px 24px;
   }
   .profile-hero-banner h1 {
-    font-size: 1.2rem;
+    font-size: var(--font-size-lg, 1.125rem);
   }
   .profile-container-inner {
     padding: 12px;
@@ -1884,7 +1884,7 @@
   }
   .profile-nav button {
     padding: 8px 12px;
-    font-size: 0.8rem;
+    font-size: var(--font-size-xs, 0.75rem);
   }
   .profile-content {
     padding: 12px;

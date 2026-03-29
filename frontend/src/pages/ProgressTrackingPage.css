@@ -38,11 +38,11 @@
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--border);
   text-align: center;
-  transition: all 0.3s ease;
+  transition: transform var(--transition-slow), box-shadow var(--transition-slow), background-color var(--transition-slow);
 }
 
 .summary-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(var(--card-hover-lift, -4px));
   box-shadow: var(--shadow-card-hover);
   border-color: var(--primary);
 }
@@ -110,7 +110,7 @@
   font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   display: flex;
   align-items: center;
   gap: 6px;
@@ -291,6 +291,6 @@
   }
 
   .chart-header h2 {
-    font-size: 1.3rem;
+    font-size: var(--font-size-xl, 1.25rem);
   }
 }

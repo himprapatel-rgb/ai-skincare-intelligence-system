@@ -99,7 +99,7 @@
   color: var(--color-gray-500, #64748b);
   font-size: 1rem;
   margin-bottom: 24px;
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
 }
 
 .completeActions {
@@ -139,7 +139,7 @@
 .categoryDesc {
   font-size: 0.875rem;
   color: var(--color-gray-500, #64748b);
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
 }
 
 .categorySize {
@@ -165,14 +165,14 @@
   border: 2px solid var(--border-color, #e2e8f0);
   border-radius: var(--radius-lg, 12px);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   text-align: center;
   color: var(--text-primary, #0f172a);
 }
 
 .formatCard:hover {
   border-color: var(--color-primary, #1f6feb);
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
 }
 
 .formatCardActive {
@@ -183,7 +183,7 @@
 }
 
 .formatIcon {
-  font-size: 2rem;
+  font-size: var(--font-size-3xl, 1.875rem);
   margin-bottom: 12px;
 }
 
@@ -202,7 +202,7 @@
   margin-top: 12px;
   font-size: 0.875rem;
   color: var(--color-gray-500, #64748b);
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
 }
 
 .formatEta {
@@ -231,7 +231,7 @@
   margin: 0;
   font-size: 0.9375rem;
   color: var(--text-primary, #0f172a);
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
 }
 
 /* ===== Dark Mode ===== */

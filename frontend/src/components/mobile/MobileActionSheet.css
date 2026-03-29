@@ -24,7 +24,7 @@
   margin: 0;
   font-size: 14px;
   color: var(--text-muted);
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
 }
 
 .action-sheet-options {
@@ -51,7 +51,7 @@
 
 .action-sheet-option:active {
   background: rgba(0, 0, 0, 0.04);
-  transform: scale(0.98);
+  transform: scale(var(--button-press-scale, 0.97));
 }
 
 .action-sheet-option:disabled {
@@ -107,7 +107,7 @@
 
 .action-sheet-cancel:active {
   background: rgba(0, 0, 0, 0.04);
-  transform: scale(0.98);
+  transform: scale(var(--button-press-scale, 0.97));
 }
 
 /* Dark mode */

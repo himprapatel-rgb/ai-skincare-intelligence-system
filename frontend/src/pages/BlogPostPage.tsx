@@ -7,6 +7,7 @@ import './BlogPage.css';
 
 interface BlogPost {
   id: string | number;
+  slug?: string;
   title: string;
   content: string;
   excerpt?: string;
@@ -35,14 +36,27 @@ const BlogPostPage: React.FC = () => {
 
     (async () => {
       try {
-        // Fetch the blog post
-        const res = await fetch(`${API_BASE_URL}/content/blogs/${id}`);
+        // Try slug-based lookup first, then numeric ID
+        const isNumeric = /^\d+$/.test(id);
+        let res: Response;
+        if (isNumeric) {
+          res = await fetch(`${API_BASE_URL}/content/blogs/${id}`);
+        } else {
+          // Try by slug
+          res = await fetch(`${API_BASE_URL}/content/blogs/by-slug/${encodeURIComponent(id)}`);
+          // If slug fails, try as numeric ID anyway
+          if (!res.ok) {
+            res = await fetch(`${API_BASE_URL}/content/blogs/${id}`);
+          }
+        }
+
         if (!res.ok) throw new Error('Not found');
         const data = await res.json();
+        const blogId = data.id; // Always use numeric ID from response
 
         if (!cancelled) {
           setPost({
-            id: data.id,
+            id: blogId,
             title: data.title || 'Untitled',
             content: data.content || '',
             excerpt: data.excerpt || '',
@@ -55,8 +69,8 @@ const BlogPostPage: React.FC = () => {
           });
         }
 
-        // Track view
-        fetch(`${API_BASE_URL}/content/blogs/${id}/view`, { method: 'POST' }).catch(() => {});
+        // Track view using numeric ID
+        fetch(`${API_BASE_URL}/content/blogs/${blogId}/view`, { method: 'POST' }).catch(() => {});
 
         // Fetch related posts
         try {
@@ -67,10 +81,11 @@ const BlogPostPage: React.FC = () => {
             if (!cancelled) {
               setRelatedPosts(
                 items
-                  .filter((p: any) => String(p.id) !== String(id))
+                  .filter((p: any) => String(p.id) !== String(blogId))
                   .slice(0, 3)
                   .map((p: any) => ({
                     id: p.id,
+                    slug: p.slug,
                     title: p.title,
                     content: '',
                     excerpt: p.excerpt || '',
@@ -190,7 +205,7 @@ const BlogPostPage: React.FC = () => {
           <h3 className="blog-section-title">More Articles</h3>
           <div className="blog-grid">
             {relatedPosts.map((rp) => (
-              <Link key={rp.id} to={`/blog/${rp.id}`} className="blog-card">
+              <Link key={rp.id} to={`/blog/${rp.slug || rp.id}`} className="blog-card">
                 <div className="blog-card-image">
                   {rp.cover_image_url ? (
                     <img src={rp.cover_image_url} alt={rp.title} loading="lazy" />

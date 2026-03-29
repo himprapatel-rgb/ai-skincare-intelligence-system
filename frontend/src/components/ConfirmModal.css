@@ -63,7 +63,7 @@
 
 .confirm-modal-title {
   font-size: var(--font-size-xl);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-primary, #0f172a);
   margin-bottom: var(--spacing-sm);
 }
@@ -71,7 +71,7 @@
 .confirm-modal-message {
   font-size: var(--font-size-base);
   color: var(--text-secondary, #64748b);
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
   margin-bottom: var(--spacing-lg);
 }
 
@@ -83,14 +83,14 @@
 }
 
 .confirm-modal-cancel {
-  padding: 10px 20px;
+  padding: 12px 20px;
   border-radius: var(--border-radius-md);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   background: var(--gray-100, #f1f5f9);
   color: var(--text-secondary, #64748b);
   border: 1px solid var(--gray-200, #e2e8f0);
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
+  transition: background var(--transition-base), color var(--transition-base);
 }
 
 .confirm-modal-cancel:hover {
@@ -99,14 +99,14 @@
 }
 
 .confirm-modal-confirm {
-  padding: 10px 20px;
+  padding: 12px 20px;
   border-radius: var(--border-radius-md);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   background: var(--danger, #ef4444);
   color: var(--white);
   border: none;
   cursor: pointer;
-  transition: background 0.2s, transform 0.1s;
+  transition: background var(--transition-base), transform var(--transition-fast);
 }
 
 .confirm-modal-confirm:hover {

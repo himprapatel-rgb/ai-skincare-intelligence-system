@@ -66,7 +66,7 @@
   border-left: 2px solid transparent;
   border-radius: 0 var(--radius-sm, 6px) var(--radius-sm, 6px) 0;
   min-height: 44px;
-  transition: color 0.2s ease, border-color 0.2s ease;
+  transition: color var(--transition-base), border-color var(--transition-base);
 }
 
 .tocLink:hover {
@@ -101,7 +101,7 @@
   padding: var(--spacing-md, 16px);
   cursor: pointer;
   min-height: 44px;
-  transition: background 0.2s ease;
+  transition: background var(--transition-base);
 }
 
 .sectionHeader:hover {
@@ -118,7 +118,7 @@
 .sectionToggle {
   color: var(--text-muted, #6c7d93);
   font-size: 1.25rem;
-  transition: transform 0.2s ease;
+  transition: transform var(--transition-base);
   flex-shrink: 0;
 }
 
@@ -233,3 +233,13 @@
     transition: none;
   }
 }
+
+/* Tablet (769-1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .page { padding: 24px 20px; }
+}
+/* Laptop (1025-1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .page { max-width: 1120px; margin: 0 auto; }
+}
+

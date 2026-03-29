@@ -80,7 +80,7 @@
   height: 5px;
   background: rgba(0, 0, 0, 0.2);
   border-radius: var(--border-radius-sm);
-  transition: background 0.2s;
+  transition: background var(--transition-base);
 }
 
 .mobile-bottom-sheet-handle:active .mobile-bottom-sheet-handle-bar {
@@ -96,7 +96,7 @@
 .mobile-bottom-sheet-title {
   margin: 0;
   font-size: 20px;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: #1a1a1a;
 }
 

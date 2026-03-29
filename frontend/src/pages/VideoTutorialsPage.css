@@ -23,7 +23,7 @@
 }
 
 .page-header h1 {
-  font-size: 2rem;
+  font-size: var(--font-size-3xl, 1.875rem);
   color: var(--text-dark);
   margin-bottom: 12px;
 }
@@ -103,7 +103,7 @@
   background: rgba(0, 0, 0, 0.75);
   color: var(--white);
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   padding: 4px 8px;
   border-radius: var(--border-radius-sm);
 }
@@ -116,7 +116,7 @@
   background: rgba(0, 0, 0, 0.6);
   color: var(--white);
   font-size: 0.7rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   padding: 3px 6px;
   border-radius: var(--border-radius-sm);
   text-transform: uppercase;
@@ -131,7 +131,7 @@
 .video-card p {
   margin: 0;
   color: var(--text-gray);
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
 }
 
 @media (max-width: 480px) {

@@ -50,7 +50,7 @@
   font-size: 1.6rem;
   font-weight: var(--font-weight-bold, 700);
   color: var(--text-primary, #162133);
-  line-height: 1.2;
+  line-height: var(--line-height-tight);
 }
 
 .kpiLabel {
@@ -85,7 +85,7 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 20px;
+  padding: 12px 20px;
   background: var(--primary, #1f5fbf);
   color: var(--white, #fff);
   border: none;
@@ -249,7 +249,7 @@
     padding: var(--spacing-md, 16px);
   }
   .kpiValue {
-    font-size: 1.3rem;
+    font-size: var(--font-size-xl, 1.25rem);
   }
   .linksGrid {
     flex-direction: column;
@@ -263,4 +263,10 @@
   .kpiGrid {
     grid-template-columns: 1fr;
   }
+}
+
+/* Tablet (769-1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .page { padding: 24px 20px; }
+  .statsGrid { grid-template-columns: repeat(2, 1fr); }
 }

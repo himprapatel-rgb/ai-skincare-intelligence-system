@@ -18,8 +18,8 @@
   /* Typography */
   font-family: inherit;
   font-size: 16px;
-  font-weight: 600;
-  line-height: 1.5;
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-normal);
   letter-spacing: 0.02em;
   text-align: center;
   white-space: nowrap;
@@ -33,7 +33,7 @@
   -webkit-tap-highlight-color: transparent;
   
   /* Transitions */
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   transition-property: transform, background-color, border-color, box-shadow, opacity;
   
   /* Prevent text selection on mobile */
@@ -109,7 +109,7 @@
 
 /* Sizes */
 .mobile-button--small {
-  min-height: 40px;
+  min-height: var(--button-height-md, 44px);
   padding: 8px 16px;
   font-size: 14px;
   border-radius: var(--radius-lg);

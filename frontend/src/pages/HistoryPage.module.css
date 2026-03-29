@@ -94,7 +94,7 @@
   white-space: nowrap;
   min-height: 44px;
   flex-shrink: 0;
-  transition: border-color 0.2s ease;
+  transition: border-color var(--transition-base);
 }
 
 .filterChip:hover {
@@ -119,7 +119,7 @@
   cursor: pointer;
   min-height: 44px;
   flex-shrink: 0;
-  transition: opacity 0.2s ease;
+  transition: opacity var(--transition-base);
 }
 
 .compareButton:hover {
@@ -164,12 +164,12 @@
   border-radius: var(--radius-xl, 16px);
   padding: var(--spacing-md, 16px);
   box-shadow: var(--shadow-card);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
   cursor: pointer;
 }
 
 .scanCard:hover {
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
   box-shadow: var(--shadow-card-hover);
 }
 
@@ -224,7 +224,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
+  font-size: var(--font-size-3xl, 1.875rem);
   margin-bottom: var(--spacing-md, 16px);
 }
 
@@ -334,3 +334,13 @@
     transform: none;
   }
 }
+
+/* Tablet (769-1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .page { padding: 24px 20px; }
+}
+/* Laptop (1025-1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .page { max-width: 1120px; margin: 0 auto; }
+}
+

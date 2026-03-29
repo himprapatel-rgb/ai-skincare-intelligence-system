@@ -181,7 +181,7 @@
   font-size: var(--font-size-base, 1rem);
   color: var(--text-primary, #162133);
   background: var(--bg-primary, #fff);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
   min-height: 48px;
   box-sizing: border-box;
 }
@@ -218,7 +218,7 @@
   height: 4px;
   border-radius: var(--border-radius-sm);
   background: var(--gray-200, #e4e9ef);
-  transition: background 0.3s ease;
+  transition: background var(--transition-slow);
 }
 
 .strengthWeak {
@@ -246,7 +246,7 @@
 /* ===== Submit Button ===== */
 .submitButton {
   width: 100%;
-  padding: 14px;
+  padding: 12px;
   background: var(--primary, #1f5fbf);
   color: var(--white, #fff);
   font-size: var(--font-size-base, 1rem);
@@ -264,7 +264,7 @@
 }
 
 .submitButton:active {
-  transform: scale(0.98);
+  transform: scale(var(--button-press-scale, 0.97));
 }
 
 .submitButton:disabled {
@@ -309,7 +309,7 @@
   font-weight: var(--font-weight-medium, 500);
   color: var(--text-primary, #162133);
   cursor: pointer;
-  transition: border-color 0.2s ease, background 0.2s ease;
+  transition: border-color var(--transition-base), background var(--transition-base);
   min-height: 48px;
 }
 
@@ -472,4 +472,10 @@
   .submitButton:active {
     transform: none;
   }
+}
+
+/* Tablet (769-1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .page { padding: 24px 20px; }
+  .card { max-width: 480px; margin: 0 auto; }
 }

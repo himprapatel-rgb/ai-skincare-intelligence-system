@@ -37,7 +37,7 @@
   background: var(--bg-primary, #fff);
   color: var(--text-primary, #0f172a);
   outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
   min-height: 56px;
 }
 
@@ -63,7 +63,7 @@
   color: var(--color-gray-400, #94a3b8);
   border-radius: var(--radius-full, 9999px);
   cursor: pointer;
-  transition: color 0.2s, background 0.2s;
+  transition: color var(--transition-base), background var(--transition-base);
 }
 
 .clearButton:hover {
@@ -140,10 +140,10 @@
   background: var(--bg-primary, #fff);
   color: var(--color-gray-500, #64748b);
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
   white-space: nowrap;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   min-height: 40px;
   flex-shrink: 0;
 }
@@ -176,14 +176,14 @@
   border: 1px solid var(--border-color, #e2e8f0);
   border-radius: var(--radius-lg, 12px);
   box-shadow: var(--shadow-xs, 0 1px 2px rgba(0, 0, 0, 0.04));
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
   text-decoration: none;
   color: inherit;
   cursor: pointer;
 }
 
 .resultCard:hover {
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
   box-shadow: var(--shadow-md, 0 4px 12px rgba(0, 0, 0, 0.08));
   border-color: var(--color-primary, #1f6feb);
 }
@@ -207,7 +207,7 @@
 
 .resultTitle {
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-primary, #0f172a);
   margin: 0 0 var(--space-1, 4px);
   overflow: hidden;
@@ -226,7 +226,7 @@
 
 .resultBadge {
   font-size: 0.75rem;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   padding: var(--space-1, 4px) var(--space-2, 8px);
   border-radius: var(--radius-full, 9999px);
   background: var(--color-gray-100, #f1f5f9);
@@ -248,7 +248,7 @@
 
 .emptyTitle {
   font-size: 1.25rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-primary, #0f172a);
   margin: 0 0 var(--space-2, 8px);
 }
@@ -257,7 +257,7 @@
   font-size: 0.9375rem;
   color: var(--color-gray-500, #64748b);
   margin: 0;
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
 }
 
 .noResultsState {
@@ -270,7 +270,7 @@
 
 .noResultsTitle {
   font-size: 1.125rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-primary, #0f172a);
   margin: 0 0 var(--space-2, 8px);
 }
@@ -279,7 +279,7 @@
   font-size: 0.9375rem;
   color: var(--color-gray-500, #64748b);
   margin: 0 0 var(--space-4, 16px);
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
 }
 
 .suggestions {
@@ -296,9 +296,9 @@
   border: none;
   border-radius: var(--radius-full, 9999px);
   font-size: 0.8125rem;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: background var(--transition-base);
 }
 
 .suggestionChip:hover {
@@ -385,4 +385,30 @@
   .content {
     padding: 0 var(--space-3, 12px);
   }
+}
+
+/* Tablet (769-1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .page { padding: 24px 20px; }
+  .resultsGrid { grid-template-columns: repeat(2, 1fr); }
+  .tabs { flex-wrap: nowrap; overflow-x: auto; }
+}
+
+/* Laptop (1025-1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .page { padding: 32px 24px; max-width: 1120px; margin: 0 auto; }
+  .resultsGrid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Desktop (1441px+) */
+@media (min-width: 1441px) {
+  .page { max-width: 1120px; margin: 0 auto; }
+  .resultsGrid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Mobile refinements */
+@media (max-width: 768px) {
+  .page { padding: 16px; }
+  .resultsGrid { grid-template-columns: 1fr; }
+  .tabs { gap: 8px; }
 }

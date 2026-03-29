@@ -50,7 +50,7 @@
   background: transparent;
   border-radius: var(--radius-xl, 16px);
   font-size: 0.95rem;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   color: var(--text-gray);
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
@@ -90,12 +90,12 @@
 
 .admin-metric {
   font-size: 1.5rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--text-primary);
 }
 
 .admin-label {
-  font-size: 0.85rem;
+  font-size: var(--font-size-sm, 0.875rem);
   color: var(--text-gray);
   margin-top: 4px;
 }
@@ -123,7 +123,7 @@
 
 .admin-tab-header h2 {
   margin: 0;
-  font-size: 1.2rem;
+  font-size: var(--font-size-lg, 1.125rem);
 }
 
 .admin-form-card {
@@ -136,7 +136,7 @@
 
 .admin-form-card h3 {
   margin: 0 0 20px;
-  font-size: 1.1rem;
+  font-size: var(--font-size-lg, 1.125rem);
 }
 
 .admin-form-card .form-group {
@@ -146,7 +146,7 @@
 .admin-form-card .form-group label {
   display: block;
   margin-bottom: 6px;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   font-size: 0.9rem;
 }
 
@@ -154,7 +154,7 @@
 .admin-form-card .form-group textarea,
 .admin-form-card .form-group select {
   width: 100%;
-  padding: 10px 12px;
+  padding: 12px;
   border: 1px solid var(--border-color, #e2e8f0);
   border-radius: var(--radius-xl, 16px);
   font-size: 1rem;
@@ -196,9 +196,9 @@
 }
 
 .admin-image-spec {
-  font-weight: 400;
+  font-weight: var(--font-weight-normal);
   color: var(--text-gray);
-  font-size: 0.85rem;
+  font-size: var(--font-size-sm, 0.875rem);
 }
 
 .admin-image-upload-row {
@@ -237,7 +237,7 @@
 
 .admin-image-error {
   margin: 8px 0 0;
-  font-size: 0.85rem;
+  font-size: var(--font-size-sm, 0.875rem);
   color: var(--danger, var(--danger));
 }
 
@@ -266,7 +266,7 @@
 
 .admin-list-body .admin-meta {
   margin: 0;
-  font-size: 0.85rem;
+  font-size: var(--font-size-sm, 0.875rem);
   color: var(--text-gray);
 }
 
@@ -324,4 +324,14 @@
   .admin-summary-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+}
+
+/* Tablet (769-1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .admin-content { padding: 24px 20px; }
+  .admin-content-grid { grid-template-columns: repeat(2, 1fr); }
+}
+/* Laptop (1025-1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .admin-content { max-width: 1120px; margin: 0 auto; }
 }

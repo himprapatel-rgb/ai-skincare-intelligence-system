@@ -39,7 +39,7 @@
   padding: 8px 12px;
   font-size: 0.875rem;
   font-family: inherit;
-  font-weight: 400;
+  font-weight: var(--font-weight-normal);
   color: var(--text-primary, #0b1220);
   background: transparent;
   border: none;

@@ -34,7 +34,7 @@
 .admin-videos-page .form-group label {
   display: block;
   margin-bottom: 6px;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   font-size: 0.9rem;
 }
 
@@ -42,7 +42,7 @@
 .admin-videos-page .form-group textarea,
 .admin-videos-page .form-group select {
   width: 100%;
-  padding: 10px 12px;
+  padding: 12px;
   border: 1px solid var(--border);
   border-radius: var(--radius-xl, 16px);
   font-size: 1rem;
@@ -84,12 +84,12 @@
 
 .admin-videos-page .admin-list-body h3 {
   margin: 0 0 4px;
-  font-size: 1.1rem;
+  font-size: var(--font-size-lg, 1.125rem);
 }
 
 .admin-videos-page .admin-meta {
   margin: 0;
-  font-size: 0.85rem;
+  font-size: var(--font-size-sm, 0.875rem);
   color: var(--text-gray);
 }
 
@@ -137,4 +137,14 @@
   .admin-form-card { padding: 16px; }
   .admin-list-card { padding: 12px; }
   .admin-loading, .admin-empty { padding: 24px; }
+}
+
+/* Tablet (769-1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .admin-videos { padding: 24px 20px; }
+  .admin-videos-grid { grid-template-columns: repeat(2, 1fr); }
+}
+/* Laptop (1025-1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .admin-videos { max-width: 1120px; margin: 0 auto; }
 }

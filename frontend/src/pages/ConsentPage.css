@@ -22,7 +22,7 @@
 
 .consent-header h1 {
   font-size: 1.25rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--text-primary);
   margin: 0 0 4px 0;
 }
@@ -44,19 +44,19 @@
   background: var(--bg-white);
   border: 1px solid var(--border);
   border-radius: var(--radius-xl, 16px);
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   box-shadow: var(--shadow-sm);
 }
 
 .consent-option:hover {
   box-shadow: var(--focus-shadow);
   border-color: var(--primary);
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
 }
 
 .consent-option h3 {
   font-size: 1.25rem; /* Brand guideline: 20px / 1.25rem for H4 */
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-dark);
   margin-bottom: 8px;
 }
@@ -65,7 +65,7 @@
   font-size: 1rem; /* Brand guideline: 16px Body */
   color: var(--text-gray);
   margin-bottom: 16px;
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
 }
 
 .consent-toggle {
@@ -84,7 +84,7 @@
   font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-base);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   box-shadow: var(--shadow-primary);
   margin-top: var(--spacing-xl);
   width: 100%;
@@ -100,16 +100,16 @@
 
 .save-button:hover {
   background: var(--primary-dark);
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
   box-shadow: var(--shadow-primary);
 }
 
 .consent-summary {
   font-size: 0.95rem;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   color: var(--text-dark);
   margin: 0 0 8px 0;
-  line-height: 1.4;
+  line-height: var(--line-height-normal);
 }
 
 .consent-existing-notice {
@@ -164,7 +164,7 @@
   }
 
   .consent-title h3 {
-    font-size: 1.1rem;
+    font-size: var(--font-size-lg, 1.125rem);
   }
 
   .consent-description {
@@ -172,7 +172,7 @@
   }
 
   .consent-details {
-    font-size: 0.85rem;
+    font-size: var(--font-size-sm, 0.875rem);
   }
 
   .privacy-info {
@@ -182,4 +182,13 @@
   .consent-footer {
     padding: 20px 16px;
   }
+}
+
+/* Tablet (769-1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .consent-page { padding: 24px 20px; max-width: 680px; margin: 0 auto; }
+}
+/* Laptop (1025-1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .consent-page { max-width: 720px; margin: 0 auto; }
 }

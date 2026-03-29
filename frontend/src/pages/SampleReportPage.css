@@ -23,7 +23,7 @@
 }
 
 .sample-report-logo {
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   font-size: 1.5rem;
   color: var(--primary);
   text-decoration: none;
@@ -33,9 +33,9 @@
 .sample-report-back {
   color: var(--primary);
   text-decoration: none;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   font-size: 1rem;
-  transition: color 0.2s ease;
+  transition: color var(--transition-base);
 }
 
 .sample-report-back:hover {
@@ -58,14 +58,14 @@
   font-weight: var(--font-weight-bold);
   color: var(--text-dark);
   margin-bottom: var(--spacing-md);
-  line-height: 1.2;
+  line-height: var(--line-height-tight);
   letter-spacing: -0.5px;
 }
 
 .sample-report-hero p {
   color: var(--text-gray);
   font-size: 1.125rem; /* Brand guideline: 18px Body Large */
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
 }
 
 .sample-report-grid {
@@ -102,7 +102,7 @@
   align-items: center;
   justify-content: center;
   font-size: 2.4rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--primary);
   background: conic-gradient(var(--primary) 0deg 306deg, #e2e8f0 306deg 360deg);
 }
@@ -110,7 +110,7 @@
 .sample-card ul {
   padding-left: 18px;
   color: var(--text-gray);
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
 }
 
 .sample-report-cta {
@@ -130,7 +130,7 @@
   padding: 12px 22px;
   border-radius: var(--radius-full);
   text-decoration: none;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 @media (max-width: 768px) {
@@ -139,7 +139,7 @@
   }
 
   .sample-report-hero h1 {
-    font-size: 2rem; /* Responsive: 32px / 2rem for H2 */
+    font-size: var(--font-size-3xl, 1.875rem); /* Responsive: 32px / 2rem for H2 */
   }
 }
 
@@ -147,4 +147,17 @@
   .sample-report-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* Tablet (769-1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .app-page-content { padding: 24px 20px; max-width: 720px; margin: 0 auto; }
+}
+/* Laptop (1025-1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .app-page-content { max-width: 1120px; margin: 0 auto; }
+}
+/* Desktop (1441px+) */
+@media (min-width: 1441px) {
+  .app-page-content { max-width: 1120px; margin: 0 auto; }
 }

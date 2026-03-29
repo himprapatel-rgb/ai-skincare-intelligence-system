@@ -88,7 +88,7 @@
   justify-content: center;
   color: var(--text-gray);
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   padding: 16px;
   text-align: center;
 }
@@ -117,7 +117,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-dark);
 }
 
@@ -127,10 +127,10 @@
 
 .compare-card-section h4 {
   font-size: 0.8125rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-gray);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: var(--letter-spacing-wide);
   margin: 0 0 8px 0;
 }
 
@@ -139,7 +139,7 @@
   padding-left: 18px;
   font-size: 0.875rem;
   color: var(--text-dark);
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
 }
 
 .compare-tags {
@@ -166,7 +166,7 @@
   margin-top: auto;
   padding-top: 12px;
   font-size: 0.9375rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--primary);
   text-decoration: none;
 }
@@ -178,10 +178,10 @@
 .btn-primary,
 .btn-secondary {
   display: inline-block;
-  padding: 10px 20px;
+  padding: 12px 20px;
   border-radius: var(--radius-xl, 16px);
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   cursor: pointer;
   margin-right: 12px;
   margin-bottom: 8px;
@@ -214,4 +214,17 @@
   .compare-grid {
     gap: 24px;
   }
+}
+
+/* Tablet (769-1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .app-page-content { padding: 24px 20px; max-width: 720px; margin: 0 auto; }
+}
+/* Laptop (1025-1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .app-page-content { max-width: 1120px; margin: 0 auto; }
+}
+/* Desktop (1441px+) */
+@media (min-width: 1441px) {
+  .app-page-content { max-width: 1120px; margin: 0 auto; }
 }

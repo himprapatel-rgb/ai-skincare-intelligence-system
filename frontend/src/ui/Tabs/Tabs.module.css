@@ -15,7 +15,7 @@
   border: none;
   cursor: pointer;
   font-family: inherit;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   white-space: nowrap;
   transition: all 200ms;
   color: var(--text-secondary, #4b5b76);

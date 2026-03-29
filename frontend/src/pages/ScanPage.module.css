@@ -182,7 +182,7 @@
   inset: 4px;
   border-radius: 50%;
   background: var(--white, #fff);
-  transition: background 0.2s ease;
+  transition: background var(--transition-base);
 }
 
 .scanButtonCapturing .scanButtonInner {
@@ -202,7 +202,7 @@
   align-items: center;
   justify-content: center;
   font-size: 1.25rem;
-  transition: background 0.2s ease;
+  transition: background var(--transition-base);
   flex-shrink: 0;
 }
 
@@ -269,7 +269,7 @@
   height: 100%;
   background: var(--white, #fff);
   border-radius: var(--border-radius-sm);
-  transition: width 0.3s ease;
+  transition: width var(--transition-slow);
 }
 
 /* ===== Results Preview (Slide-up Panel) ===== */
@@ -331,7 +331,7 @@
 
 .resultsActionPrimary {
   flex: 1;
-  padding: 14px;
+  padding: 12px;
   background: var(--primary, #1f5fbf);
   color: var(--white, #fff);
   font-size: var(--font-size-base, 1rem);
@@ -340,7 +340,7 @@
   border-radius: var(--radius-md, 8px);
   cursor: pointer;
   min-height: 48px;
-  transition: background 0.2s ease;
+  transition: background var(--transition-base);
 }
 
 .resultsActionPrimary:hover {
@@ -348,7 +348,7 @@
 }
 
 .resultsActionSecondary {
-  padding: 14px 20px;
+  padding: 12px 20px;
   background: none;
   border: 1.5px solid var(--border-color, #e4e9ef);
   border-radius: var(--radius-md, 8px);
@@ -357,7 +357,7 @@
   font-weight: var(--font-weight-medium, 500);
   cursor: pointer;
   min-height: 48px;
-  transition: border-color 0.2s ease;
+  transition: border-color var(--transition-base);
 }
 
 .resultsActionSecondary:hover {
@@ -415,7 +415,7 @@
 
 .permissionButton {
   width: 100%;
-  padding: 14px;
+  padding: 12px;
   background: var(--primary, #1f5fbf);
   color: var(--white, #fff);
   font-size: var(--font-size-base, 1rem);
@@ -424,7 +424,7 @@
   border-radius: var(--radius-md, 8px);
   cursor: pointer;
   min-height: 48px;
-  transition: background 0.2s ease;
+  transition: background var(--transition-base);
   margin-bottom: var(--spacing-sm, 8px);
 }
 
@@ -541,3 +541,13 @@
     transform: none;
   }
 }
+
+/* Tablet (769-1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .page { padding: 24px 20px; }
+}
+/* Laptop (1025-1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .page { max-width: 1120px; margin: 0 auto; }
+}
+

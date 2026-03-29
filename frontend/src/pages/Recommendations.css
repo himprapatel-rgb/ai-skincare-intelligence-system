@@ -17,7 +17,7 @@
   top: 12px;
   left: 12px;
   font-size: 0.7rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   padding: 3px 10px;
   background: var(--bg-primary);
   color: var(--primary);
@@ -30,7 +30,7 @@
 .rating-max {
   font-size: 0.7rem;
   color: var(--text-muted);
-  font-weight: 400;
+  font-weight: var(--font-weight-normal);
 }
 
 /* Filters reset as text link */
@@ -110,7 +110,7 @@
 .recommendations-header p {
   color: var(--text-secondary);
   font-size: 1.125rem; /* Brand guideline: 18px Body Large */
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
 }
 
 .recommendations-header-actions {
@@ -171,7 +171,7 @@
 }
 
 .recommendations-geo-label {
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   display: block;
   margin-bottom: 8px;
 }
@@ -188,21 +188,21 @@
   border-radius: var(--radius-full);
   background: var(--bg-white);
   border: 1px solid var(--border-color);
-  font-size: 0.8rem;
-  font-weight: 500;
+  font-size: var(--font-size-xs, 0.75rem);
+  font-weight: var(--font-weight-medium);
   color: var(--text-primary);
 }
 
 .recommendations-geo-region {
   margin: 0;
-  font-size: 0.85rem;
+  font-size: var(--font-size-sm, 0.875rem);
   color: var(--text-secondary);
 }
 
 .recommendations-count {
   margin: 0 0 12px;
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-secondary);
 }
 
@@ -216,7 +216,7 @@
   background: linear-gradient(135deg, var(--primary), var(--accent));
   color: var(--white);
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   text-transform: uppercase;
   letter-spacing: 0.03em;
   box-shadow: var(--shadow-primary);
@@ -266,11 +266,11 @@
   background: transparent;
   border: 2px solid var(--primary);
   color: var(--primary);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   padding: 8px 16px;
   border-radius: var(--radius-xl, 16px);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
 }
 .filters-reset:hover {
   background: var(--primary-light, #dbeafe);
@@ -297,17 +297,17 @@
 
 .filter-label {
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-secondary);
 }
 
 .filter-select {
-  padding: 10px 14px;
+  padding: 12px 16px;
   border-radius: var(--radius-xl, 16px);
   border: 1px solid var(--border-color);
   background: var(--gray-50);
   color: var(--text-primary);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
 }
 
 .filter-select:focus {
@@ -329,14 +329,14 @@
   border: 1px solid var(--border);
   border-radius: var(--radius-xl, 16px);
   overflow: hidden;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
   box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
 }
 
 .product-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(var(--card-hover-lift, -4px));
   box-shadow: var(--shadow-lg);
 }
 
@@ -374,7 +374,7 @@
   color: var(--primary);
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
 }
 
 .product-rating {
@@ -382,7 +382,7 @@
   align-items: center;
   gap: var(--spacing-xs);
   font-size: var(--font-size-sm);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-secondary);
 }
 
@@ -392,7 +392,7 @@
 
 .product-name {
   font-size: var(--font-size-xl);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
   margin-bottom: var(--spacing-sm);
   line-height: var(--line-height-snug);
@@ -409,7 +409,7 @@
 }
 
 .product-concerns p {
-  font-size: 0.85rem;
+  font-size: var(--font-size-sm, 0.875rem);
   color: var(--text-secondary);
   margin-bottom: 6px;
 }
@@ -426,7 +426,7 @@
   background: var(--primary-light);
   color: var(--primary);
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 .concern-tag.empty {
@@ -461,10 +461,10 @@
   border: 1px solid var(--border-color, #e2e8f0);
   border-radius: var(--radius-xl, 16px);
   color: var(--text-primary);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   font-size: 0.875rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
 }
 .btn-add-to-shelf:hover:not(:disabled) {
   background: var(--primary);
@@ -479,26 +479,26 @@
 
 .price-value {
   font-size: 1.5rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--text-primary);
 }
 
 .btn-add {
-  padding: 10px 20px;
+  padding: 12px 20px;
   background: var(--primary);
   border: none;
   border-radius: var(--radius-xl, 16px); /* Brand guideline: 8px */
   color: var(--white);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   font-size: 0.95rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   box-shadow: var(--shadow-sm);
 }
 
 .btn-add:hover {
   background: var(--primary-hover);
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
   box-shadow: var(--shadow-md);
 }
 
@@ -515,12 +515,12 @@
 }
 
 .btn-disabled {
-  padding: 10px 20px;
+  padding: 12px 20px;
   border-radius: var(--radius-xl, 16px);
   border: 1px solid var(--border-color);
   background: var(--gray-100);
   color: var(--text-muted);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   font-size: 0.95rem;
 }
 
@@ -652,15 +652,15 @@
 .empty-recommendations h3 {
   color: var(--text-primary);
   font-size: 1.5rem; /* Brand guideline: 24px / 1.5rem for H3 */
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   margin-bottom: 12px;
-  line-height: 1.4;
+  line-height: var(--line-height-normal);
 }
 
 .empty-recommendations p {
   color: var(--text-secondary);
   font-size: 1rem;
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
 }
 
 .empty-recommendations .empty-reset-filters {
@@ -812,4 +812,16 @@
     flex-wrap: wrap;
     gap: 12px;
   }
+}
+
+/* Laptop (1025-1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .recommendations-page { max-width: 1120px; margin: 0 auto; }
+  .recommendations-grid { grid-template-columns: repeat(3, 1fr); }
+  .recommendations-filters { position: sticky; top: 80px; }
+}
+
+/* Desktop (1441px+) */
+@media (min-width: 1441px) {
+  .recommendations-page { max-width: 1120px; margin: 0 auto; }
 }

@@ -110,7 +110,7 @@
   box-shadow: var(--shadow-card);
   overflow: hidden;
   border-left: 4px solid transparent;
-  transition: box-shadow 0.2s ease;
+  transition: box-shadow var(--transition-base);
 }
 
 .concernCard:hover {
@@ -208,7 +208,7 @@
 
 .concernChevron {
   color: var(--gray-400, #97a6ba);
-  transition: transform 0.3s ease;
+  transition: transform var(--transition-slow);
   flex-shrink: 0;
   margin-left: var(--spacing-sm, 8px);
 }
@@ -220,7 +220,7 @@
 .concernBody {
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.3s ease;
+  transition: max-height var(--transition-slow);
 }
 
 .concernBodyOpen {
@@ -392,7 +392,7 @@
   border: none;
   border-radius: var(--radius-md, 8px);
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: background var(--transition-base);
   min-height: 48px;
   text-align: center;
 }
@@ -412,7 +412,7 @@
   border: 1.5px solid var(--border-color, #e4e9ef);
   border-radius: var(--radius-md, 8px);
   cursor: pointer;
-  transition: border-color 0.2s ease, background 0.2s ease;
+  transition: border-color var(--transition-base), background var(--transition-base);
   min-height: 48px;
   text-align: center;
 }
@@ -601,4 +601,10 @@
   .heatmapRegion:hover {
     transform: none;
   }
+}
+
+/* Tablet (769-1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .page { padding: 24px 20px; }
+  .grid { grid-template-columns: repeat(2, 1fr); }
 }

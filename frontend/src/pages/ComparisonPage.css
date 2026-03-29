@@ -21,7 +21,7 @@
 .comparison-card-title {
   margin: 0 0 16px 0;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 .comparison-card-header-row {
@@ -36,7 +36,7 @@
 .comparison-card-header-row h3 {
   margin: 0;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 .comparison-selects {
@@ -54,7 +54,7 @@
 }
 
 .comparison-label {
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   font-size: 1rem;
   color: var(--text-dark);
 }
@@ -68,7 +68,7 @@
   background: var(--bg-light);
   color: var(--text-dark);
   font-size: var(--font-size-base);
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
 }
 
 .comparison-input:focus {
@@ -91,11 +91,11 @@
   text-align: center;
   box-shadow: var(--shadow);
   border: 1px solid var(--border);
-  transition: all 0.3s ease;
+  transition: transform var(--transition-slow), box-shadow var(--transition-slow), background-color var(--transition-slow);
 }
 
 .comparison-score-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(var(--card-hover-lift, -4px));
   border-color: var(--primary);
   box-shadow: var(--shadow-primary);
 }
@@ -139,14 +139,14 @@
 
 .comparison-image-label {
   text-align: center;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-dark);
   font-size: 0.875rem;
 }
 
 .comparison-vs-divider {
   font-size: 1.5rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--primary);
   padding: 0 16px;
 }
@@ -163,7 +163,7 @@
   padding: 8px;
   cursor: pointer;
   color: var(--text-gray);
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -192,7 +192,7 @@
 .comparison-th {
   padding: 12px;
   text-align: left;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-dark);
   border-bottom: 2px solid var(--border);
 }
@@ -220,7 +220,7 @@
 }
 
 .comparison-delta {
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   padding: 4px 8px;
   border-radius: var(--border-radius-sm);
 }
@@ -237,7 +237,7 @@
 
 .comparison-section-title {
   font-size: 1.25rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-dark);
   margin: 24px 0 16px;
 }
@@ -258,7 +258,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 .comparison-duo {
@@ -380,11 +380,30 @@
   }
 
   .comparison-table {
-    font-size: 0.85rem;
+    font-size: var(--font-size-sm, 0.875rem);
   }
 
   .comparison-th,
   .comparison-td {
     padding: 8px 6px;
   }
+}
+
+/* Tablet (769-1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .comparison-page { padding: 24px 20px; }
+  .comparison-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .comparison-images { flex-direction: row; gap: 20px; }
+  .comparison-images img { max-width: 48%; }
+}
+
+/* Laptop (1025-1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .comparison-page { max-width: 1120px; margin: 0 auto; }
+  .comparison-images img { max-width: 45%; }
+}
+
+/* Desktop (1441px+) */
+@media (min-width: 1441px) {
+  .comparison-page { max-width: 1120px; margin: 0 auto; }
 }

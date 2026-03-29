@@ -60,11 +60,11 @@
   padding: var(--spacing-lg, 24px) var(--spacing-md, 16px);
   box-shadow: var(--shadow-card);
   text-align: center;
-  transition: transform 0.2s ease;
+  transition: transform var(--transition-base);
 }
 
 .teamCard:hover {
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
 }
 
 .teamAvatar {
@@ -269,4 +269,10 @@
   .teamCard:hover {
     transform: none;
   }
+}
+
+/* Tablet (769-1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .page { padding: 24px 20px; }
+  .grid { grid-template-columns: repeat(2, 1fr); }
 }

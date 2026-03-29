@@ -13,6 +13,7 @@ interface BlogPost {
   read_time?: string;
   created_at?: string;
   image_url?: string;
+  cover_image_url?: string;
 }
 
 const FALLBACK_POSTS: BlogPost[] = [
@@ -68,14 +69,25 @@ const BlogPage: React.FC = () => {
             {posts.map((post) => (
               <Link key={post.id} to={`/blog/${post.slug || post.id}`} className="blog-card">
                 <article>
-                  {post.category && <span className="blog-category">{post.category}</span>}
-                  <h3>{post.title}</h3>
-                  <p className="blog-excerpt">{post.excerpt}</p>
-                  <div className="blog-meta-row">
-                    <span className="blog-meta">{post.read_time}</span>
-                    {post.created_at && (
-                      <span className="blog-meta">{new Date(post.created_at).toLocaleDateString('en', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
-                    )}
+                  {post.cover_image_url && (
+                    <div className="blog-card-image">
+                      <img
+                        src={post.cover_image_url}
+                        alt={post.title}
+                        loading="lazy"
+                      />
+                    </div>
+                  )}
+                  <div className="blog-card-body">
+                    {post.category && <span className="blog-category">{post.category}</span>}
+                    <h3>{post.title}</h3>
+                    <p className="blog-excerpt">{post.excerpt}</p>
+                    <div className="blog-meta-row">
+                      <span className="blog-meta">{post.read_time}</span>
+                      {post.created_at && (
+                        <span className="blog-meta">{new Date(post.created_at).toLocaleDateString('en', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                      )}
+                    </div>
                   </div>
                 </article>
               </Link>

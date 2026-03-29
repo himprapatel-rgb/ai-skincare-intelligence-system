@@ -391,6 +391,33 @@ def ensure_test_user() -> None:
         # Sprint 2+: Add new columns to existing tables if missing (safe for production)
         _add_missing_columns(engine)
         _seed_blog_articles(engine)
+
+        # Auto-generate daily blog article (non-blocking)
+        import asyncio
+        async def _daily_blog_task():
+            try:
+                from app.services.blog_agent import auto_generate_daily_article
+                _db = SessionLocal()
+                try:
+                    result = await auto_generate_daily_article(_db)
+                    if result:
+                        logger.info("Daily blog article generated: %s", result.get("title"))
+                    else:
+                        logger.info("Daily blog: already posted today or generation skipped")
+                finally:
+                    _db.close()
+            except Exception as blog_err:
+                logger.warning("Daily blog generation failed (non-blocking): %s", blog_err)
+
+        try:
+            loop = asyncio.get_event_loop()
+            if loop.is_running():
+                asyncio.ensure_future(_daily_blog_task())
+            else:
+                loop.run_until_complete(_daily_blog_task())
+        except Exception:
+            pass  # Never crash startup for blog generation
+
     except (ProgrammingError, OperationalError) as exc:
         logger.warning("Main DB bootstrap unavailable; startup continues without seed: %s", exc)
         db_bootstrap_available = False

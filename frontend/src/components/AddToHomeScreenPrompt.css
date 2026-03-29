@@ -71,7 +71,7 @@
   margin: 0;
   font-size: 0.8rem;
   opacity: 0.95;
-  line-height: 1.35;
+  line-height: var(--line-height-snug);
 }
 
 .add-to-home-prompt-btn {
@@ -81,7 +81,7 @@
   border: none;
   padding: 8px 16px;
   border-radius: var(--radius-md);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   font-size: 0.9rem;
   cursor: pointer;
 }

@@ -75,7 +75,7 @@
 
 .favorites-explainer h3 {
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   margin: 0 0 8px 0;
   color: var(--text-primary);
 }
@@ -84,11 +84,11 @@
   margin: 0;
   font-size: 0.9375rem;
   color: var(--text-secondary);
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
 }
 
 .favorites-card-content {
-  padding: 14px 16px;
+  padding: 12px 16px;
 }
 
 .favorites-grid {
@@ -98,7 +98,7 @@
 }
 
 .favorites-grid .app-card {
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
 }
 
 .favorites-grid .app-card:focus-within,
@@ -128,7 +128,7 @@
 
 .favorites-search-input {
   flex: 1;
-  padding: 10px 12px;
+  padding: 12px;
   border: 1px solid var(--border, #e2e8f0);
   border-radius: var(--radius-xl, 16px);
   font-size: 0.9375rem;
@@ -154,7 +154,7 @@
   color: var(--text-muted, #64748b);
   border-radius: 50%;
   cursor: pointer;
-  transition: color 0.2s, background 0.2s;
+  transition: color var(--transition-base), background var(--transition-base);
 }
 
 .favorites-search-clear:hover {
@@ -225,4 +225,23 @@
   .favorites-toolbar {
     padding: 12px;
   }
+}
+
+/* Tablet (769-1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .favorites-page { padding: 24px 20px; }
+  .favorites-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .favorites-toolbar { flex-direction: row; align-items: center; }
+}
+
+/* Laptop (1025-1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .favorites-page { max-width: 1120px; margin: 0 auto; }
+  .favorites-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Desktop (1441px+) */
+@media (min-width: 1441px) {
+  .favorites-page { max-width: 1120px; margin: 0 auto; }
+  .favorites-grid { grid-template-columns: repeat(3, 1fr); }
 }

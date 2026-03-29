@@ -63,7 +63,7 @@
   background: var(--bg-white);
   color: var(--text-secondary);
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
   transition: background 0.2s, color 0.2s, border-color 0.2s;
 }
@@ -94,13 +94,13 @@
   width: 32px;
   height: 32px;
   border-radius: var(--border-radius-sm);
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-size: var(--font-size-xs, 0.75rem);
+  font-weight: var(--font-weight-semibold);
   color: var(--primary);
   text-decoration: none;
   background: var(--bg-white);
   border: 1px solid var(--border);
-  transition: background 0.2s, color 0.2s;
+  transition: background var(--transition-base), color var(--transition-base);
 }
 
 .alphabet-nav .alphabet-letter:hover {
@@ -136,12 +136,12 @@
 
 .ingredient-card p {
   color: var(--text-gray);
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
   margin: 0 0 10px;
 }
 
 .ingredient-card span {
-  font-size: 0.85rem;
+  font-size: var(--font-size-sm, 0.875rem);
   color: var(--text-gray);
 }
 .ingredient-highlight {
@@ -156,7 +156,7 @@
   margin-top: 24px;
 }
 .ingredient-empty-title {
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   margin-bottom: 0.25rem;
 }
 .ingredient-empty-text {
@@ -177,4 +177,24 @@
   .ingredient-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* Mobile (≤768px) */
+@media (max-width: 768px) {
+  .ingredient-dictionary-page { padding: 16px; }
+  .ingredient-grid { grid-template-columns: 1fr; }
+  .alphabet-nav { flex-wrap: wrap; gap: 4px; }
+  .alphabet-nav button { min-width: 36px; min-height: 36px; font-size: 0.75rem; }
+  .ingredient-search { width: 100%; }
+}
+
+/* Laptop (1025-1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .ingredient-dictionary-page { max-width: 1120px; margin: 0 auto; }
+  .ingredient-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Desktop (1441px+) */
+@media (min-width: 1441px) {
+  .ingredient-dictionary-page { max-width: 1120px; margin: 0 auto; }
 }

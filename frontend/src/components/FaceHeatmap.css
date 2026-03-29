@@ -17,7 +17,7 @@
 
 .face-heatmap-title {
   font-size: 1.1rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--text-primary);
   margin: 0;
 }
@@ -30,7 +30,7 @@
 
 .face-heatmap-score-value {
   font-size: 1.75rem;
-  font-weight: 800;
+  font-weight: var(--font-weight-extrabold);
   color: var(--primary);
   font-variant-numeric: tabular-nums;
   line-height: 1;
@@ -39,7 +39,7 @@
 .face-heatmap-score-label {
   font-size: 0.85rem;
   color: var(--text-tertiary);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
 }
 
 .face-heatmap-body {
@@ -92,7 +92,7 @@
 
 .face-heatmap-zone-name {
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--text-primary);
   margin: 0 0 8px;
 }
@@ -109,7 +109,7 @@
   padding: 3px 10px;
   border-radius: var(--radius-full);
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
@@ -130,7 +130,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .face-heatmap-confidence-label {
@@ -151,12 +151,12 @@
   height: 100%;
   background: linear-gradient(90deg, var(--primary), var(--accent));
   border-radius: var(--border-radius-sm);
-  transition: width 0.3s ease;
+  transition: width var(--transition-slow);
 }
 
 .face-heatmap-confidence-value {
   font-size: 0.8rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-secondary);
   font-variant-numeric: tabular-nums;
   min-width: 32px;
@@ -166,7 +166,7 @@
 .face-heatmap-notes {
   font-size: 0.85rem;
   color: var(--text-secondary);
-  line-height: 1.4;
+  line-height: var(--line-height-normal);
   margin: 8px 0 0;
   padding: 8px 10px;
   background: var(--gray-50);

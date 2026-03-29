@@ -43,7 +43,7 @@
   color: var(--primary, #1f5fbf);
   line-height: 1;
   margin: 0 0 var(--spacing-sm, 8px);
-  letter-spacing: -0.02em;
+  letter-spacing: var(--letter-spacing-tight);
 }
 
 .title {
@@ -74,7 +74,7 @@
   font-size: var(--font-size-base, 1rem);
   background: var(--bg-primary, #fff);
   min-height: 44px;
-  transition: border-color 0.2s ease;
+  transition: border-color var(--transition-base);
 }
 
 .searchInput:focus {
@@ -102,7 +102,7 @@
 }
 
 .homeButton {
-  padding: 14px;
+  padding: 12px;
   background: var(--primary, #1f5fbf);
   color: var(--white, #fff);
   border: none;
@@ -115,7 +115,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s ease;
+  transition: background var(--transition-base);
 }
 
 .homeButton:hover {
@@ -123,7 +123,7 @@
 }
 
 .backButton {
-  padding: 14px;
+  padding: 12px;
   background: none;
   border: 1.5px solid var(--border-color, #e4e9ef);
   border-radius: var(--radius-md, 8px);
@@ -136,7 +136,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: border-color 0.2s ease;
+  transition: border-color var(--transition-base);
 }
 
 .backButton:hover {
@@ -175,7 +175,7 @@
   color: var(--text-secondary, #4e6078);
   font-size: var(--font-size-sm, 0.875rem);
   min-height: 44px;
-  transition: background 0.2s ease;
+  transition: background var(--transition-base);
 }
 
 .linkItem:hover {
@@ -280,3 +280,13 @@
     transition: none;
   }
 }
+
+/* Tablet (769-1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .page { padding: 24px 20px; }
+}
+/* Laptop (1025-1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .page { max-width: 1120px; margin: 0 auto; }
+}
+

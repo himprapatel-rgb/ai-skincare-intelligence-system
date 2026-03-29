@@ -6,7 +6,7 @@
 
 /* Bottom Nav - Mobile only, Bumble-style; fits all screens, blends with safe area */
 .bottom-nav {
-  transition: transform 0.2s ease;
+  transition: transform var(--transition-base);
   display: none;
   position: fixed;
   bottom: 0;
@@ -74,8 +74,8 @@
   color: var(--text-muted);
   text-decoration: none;
   font-size: 0.7rem;
-  font-weight: 500;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: var(--font-weight-medium);
+  transition: transform var(--transition-slow), box-shadow var(--transition-slow), background-color var(--transition-slow);
   border-radius: var(--radius-lg);
   -webkit-tap-highlight-color: transparent;
 }
@@ -102,12 +102,12 @@
 
 .bottom-nav-item:hover {
   color: var(--primary);
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
 }
 
 .bottom-nav-item.active {
   color: var(--primary);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 /* Active pill indicator behind icon */
@@ -138,7 +138,7 @@
 
 /* Icon animation */
 .bottom-nav-item svg {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform var(--transition-slow), box-shadow var(--transition-slow), background-color var(--transition-slow);
 }
 
 .bottom-nav-item.active svg {
@@ -185,7 +185,7 @@
   box-shadow: 
     0 4px 16px rgba(37, 99, 235, 0.35),
     0 8px 24px rgba(124, 58, 237, 0.2);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform var(--transition-slow), box-shadow var(--transition-slow), background-color var(--transition-slow);
   overflow: hidden;
 }
 
@@ -236,7 +236,7 @@
 .bottom-nav-center-label {
   margin-top: 4px;
   font-size: 0.65rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-muted);
 }
 

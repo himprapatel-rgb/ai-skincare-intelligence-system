@@ -162,7 +162,7 @@
 .headerTitle {
   flex: 1;
   font-size: var(--font-size-lg, 1.125rem);
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--text-primary, #0f172a);
   margin: 0;
   display: flex;
@@ -290,10 +290,10 @@
 
 .emptyTitle {
   font-size: 1.5rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--text-primary, #0f172a);
   margin: 0 0 var(--space-3, 12px);
-  letter-spacing: -0.02em;
+  letter-spacing: var(--letter-spacing-tight);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -311,7 +311,7 @@
   color: var(--text-secondary, #475569);
   max-width: 420px;
   margin: 0 0 var(--space-2, 8px);
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -403,4 +403,24 @@
 
 .errorClose:hover {
   background: rgba(220, 38, 38, 0.1);
+}
+
+/* Tablet (769-1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .page { padding: 0; }
+  .sidebar { width: 280px; }
+  .main { flex: 1; }
+  .messagesArea { padding: 20px; }
+}
+
+/* Laptop (1025-1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .sidebar { width: 320px; }
+  .main { max-width: calc(1120px - 320px); }
+}
+
+/* Desktop (1441px+) */
+@media (min-width: 1441px) {
+  .page { max-width: 1440px; margin: 0 auto; }
+  .sidebar { width: 360px; }
 }

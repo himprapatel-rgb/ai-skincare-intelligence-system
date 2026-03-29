@@ -42,16 +42,16 @@
 .myshelf-hero-text h1 {
   margin: 0;
   font-size: 1.5rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-tight);
+  line-height: var(--line-height-tight);
 }
 
 .myshelf-hero-subtitle {
   margin: 4px 0 0 0;
   font-size: 0.9375rem;
   opacity: 0.95;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
 }
 
 .myshelf-hero-count {
@@ -60,7 +60,7 @@
   padding: 2px 10px;
   border-radius: var(--radius-full);
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 .myshelf-refresh-btn {
@@ -110,7 +110,7 @@
 .myshelf-expiring-heading {
   margin: 0 0 12px 0;
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--warning-700, #b45309);
   display: flex;
   align-items: center;
@@ -118,7 +118,7 @@
 }
 
 .myshelf-expiring-icon {
-  font-size: 1.2rem;
+  font-size: var(--font-size-lg, 1.125rem);
 }
 
 .myshelf-expiring-scroll {
@@ -145,7 +145,7 @@
   border: 1px solid rgba(245, 158, 11, 0.2);
   cursor: pointer;
   text-align: center;
-  transition: box-shadow 0.2s;
+  transition: box-shadow var(--transition-base);
 }
 
 .myshelf-expiring-card:hover {
@@ -161,10 +161,10 @@
 }
 
 .myshelf-expiring-name {
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-size: var(--font-size-xs, 0.75rem);
+  font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
-  line-height: 1.2;
+  line-height: var(--line-height-tight);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -173,7 +173,7 @@
 
 .myshelf-expiring-badge {
   font-size: 0.7rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   padding: 4px 8px;
   border-radius: var(--radius-xl, 16px);
 }
@@ -221,13 +221,13 @@
 .myshelf-onboarding-headline {
   flex: 1;
   font-size: 0.9375rem;
-  line-height: 1.4;
+  line-height: var(--line-height-normal);
 }
 
 .myshelf-onboarding-chevron {
   flex-shrink: 0;
   color: var(--text-muted);
-  transition: transform 0.2s ease;
+  transition: transform var(--transition-base);
 }
 
 .myshelf-onboarding-chevron.open {
@@ -245,7 +245,7 @@
 .myshelf-tip {
   font-size: 0.875rem;
   color: var(--text-secondary);
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
   padding: 12px;
   background: var(--gray-50);
   border-radius: var(--radius-xl, 16px);
@@ -253,14 +253,14 @@
 
 .myshelf-tip strong {
   color: var(--primary);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 /* ----- Toolbar: search + pills + add ----- */
 .myshelf-toolbar {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
   margin-bottom: 16px;
 }
 
@@ -273,7 +273,7 @@
   border-radius: var(--radius-xl, 16px);
   padding: 0 16px;
   min-height: 48px;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
 }
 
 .myshelf-search-wrap:focus-within {
@@ -318,7 +318,7 @@
   color: var(--text-muted);
   border-radius: 50%;
   cursor: pointer;
-  transition: color 0.2s, background 0.2s;
+  transition: color var(--transition-base), background var(--transition-base);
 }
 
 .myshelf-search-clear:hover {
@@ -379,9 +379,9 @@
   background: var(--bg-white);
   color: var(--text-secondary);
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
-  transition: all 0.2s;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
   white-space: nowrap;
 }
 
@@ -407,7 +407,7 @@
   background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
   color: var(--white);
   font-size: 0.9375rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   cursor: pointer;
   box-shadow: var(--shadow-primary);
   transition: transform 0.15s, box-shadow 0.2s;
@@ -434,7 +434,7 @@
 }
 
 .myshelf-sort-select {
-  padding: 10px 14px;
+  padding: 12px 16px;
   border: 1px solid var(--border-color);
   border-radius: var(--radius-xl, 16px);
   background: var(--bg-white);
@@ -442,7 +442,7 @@
   color: var(--text-primary);
   cursor: pointer;
   min-width: 120px;
-  transition: border-color 0.2s;
+  transition: border-color var(--transition-base);
 }
 
 .myshelf-sort-select:focus {
@@ -454,7 +454,7 @@
   margin-left: auto;
   font-size: 0.8125rem;
   color: var(--text-muted);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
 }
 
 /* ----- Empty state ----- */
@@ -482,7 +482,7 @@
 .myshelf-empty-title {
   margin: 0 0 8px 0;
   font-size: 1.25rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--text-primary);
 }
 
@@ -490,7 +490,7 @@
   margin: 0 0 24px 0;
   font-size: 0.9375rem;
   color: var(--text-secondary);
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
   max-width: 320px;
   margin-left: auto;
   margin-right: auto;
@@ -515,7 +515,7 @@
   justify-content: center;
   box-shadow: var(--shadow-primary);
   z-index: 40;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
   text-decoration: none;
 }
 
@@ -616,11 +616,11 @@
   border: none;
   padding: 0;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
   cursor: pointer;
   text-align: left;
-  line-height: 1.3;
+  line-height: var(--line-height-snug);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -646,7 +646,7 @@
 .product-status-pill {
   display: inline-block;
   font-size: 0.6875rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   text-transform: uppercase;
   letter-spacing: 0.03em;
   padding: 4px 10px;
@@ -680,7 +680,7 @@
 }
 .product-card-match {
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--primary);
 }
 
@@ -763,7 +763,7 @@
 .status-select {
   flex: 1;
   min-height: 44px;
-  padding: 10px 14px;
+  padding: 12px 16px;
   border: 1px solid var(--border-color);
   border-radius: var(--radius-xl, 16px);
   background: var(--bg-white);
@@ -784,10 +784,10 @@
   color: var(--danger);
   border: 1px solid var(--danger);
   border-radius: var(--radius-xl, 16px);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   font-size: 0.875rem;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
 }
 
 .btn-remove:hover {
@@ -820,7 +820,7 @@
 .rating-value {
   margin-left: 8px;
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-muted);
 }
 
@@ -836,12 +836,12 @@
   font-size: 0.8125rem;
   cursor: pointer;
   color: var(--text-muted);
-  transition: all 0.2s;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
 }
 
 @media (max-width: 768px) {
   .repurchase-btn {
-    padding: 10px 14px;
+    padding: 12px 16px;
     font-size: 0.875rem;
   }
 }
@@ -869,14 +869,14 @@
 .expiry-badge.expired {
   background: var(--danger-100, #fee2e2);
   color: var(--danger);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 .notes {
   margin: 0;
   font-size: 0.8125rem;
   color: var(--text-secondary);
-  line-height: 1.4;
+  line-height: var(--line-height-normal);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -1041,7 +1041,21 @@
 
 /* ── Ingredient Conflicts Banner ── */
 .myshelf-conflicts { background: var(--danger-50, #fef2f2); border: 1px solid var(--danger-200, #fecaca); border-radius: var(--radius-lg, 12px); padding: var(--spacing-md, 16px) var(--spacing-lg, 20px); margin-bottom: var(--spacing-md, 16px); }
-.myshelf-conflicts-title { font-size: var(--font-size-sm, 0.9rem); font-weight: 700; color: var(--danger-800, #991b1b); margin: 0 0 var(--spacing-xs, 8px); display: flex; align-items: center; gap: 6px; }
+.myshelf-conflicts-title { font-size: var(--font-size-sm, 0.9rem); font-weight: var(--font-weight-bold); color: var(--danger-800, #991b1b); margin: 0 0 var(--spacing-xs, 8px); display: flex; align-items: center; gap: 6px; }
 .myshelf-conflict-item { font-size: var(--font-size-sm, 0.825rem); color: var(--danger-800, #7f1d1d); margin-bottom: 6px; }
 .myshelf-conflicts-dismiss { font-size: var(--font-size-xs, 0.75rem); color: var(--danger-800, #991b1b); background: none; border: none; cursor: pointer; margin-top: 4px; }
 .myshelf-conflicts-dismiss:hover { text-decoration: underline; }
+
+/* Tablet (769-1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .myshelf-page { padding: 24px 20px; }
+  .product-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .myshelf-toolbar { flex-direction: row; align-items: center; }
+  .myshelf-stats-row { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Laptop (1025-1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .myshelf-page { max-width: 1120px; margin: 0 auto; }
+  .product-grid { grid-template-columns: repeat(3, 1fr); }
+}

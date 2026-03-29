@@ -250,10 +250,28 @@
   --font-md: clamp(14px, 3.5vw, 16px);
   --font-lg: clamp(16px, 4vw, 20px);
   --font-xl: clamp(20px, 5vw, 28px);
+
+  /* Transition tokens — standard timing for all interactive elements */
+  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-easing: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Button size tokens — single source of truth */
+  --button-height-sm: 36px;
+  --button-height-md: 44px;
+  --button-height-lg: 52px;
+  --button-padding-sm: 8px 16px;
+  --button-padding-md: 12px 24px;
+  --button-padding-lg: 16px 32px;
+  --button-press-scale: 0.97;
+
   /* Card spacing (audit standardization) */
   --card-padding: 24px;
   --card-radius: 16px;
-  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --card-shadow: var(--shadow-card);
+  --card-hover-shadow: var(--shadow-card-hover);
+  --card-hover-lift: -4px;
   --card-margin-bottom: 16px;
   /* Section spacing (audit) */
   --section-gap: 24px;
@@ -536,11 +554,20 @@ h4 {
 h5 { font-size: var(--font-size-lg); }
 h6 { font-size: var(--font-size-base); }
 
-/* Responsive typography (Tasks 921–930) */
-@media (max-width: 1024px) {
-  h1 { font-size: var(--font-size-5xl); }
-  h2 { font-size: var(--font-size-4xl); }
-  h3 { font-size: var(--font-size-2xl); }
+/* Responsive typography — 4 breakpoints matching device targets */
+/* Tablet (769-1024px): scale down from desktop */
+@media (min-width: 769px) and (max-width: 1024px) {
+  h1 { font-size: var(--font-size-4xl); }   /* 36px (was 48px — too big for tablet) */
+  h2 { font-size: var(--font-size-3xl); }   /* 30px */
+  h3 { font-size: var(--font-size-xl); }    /* 20px */
+  h4 { font-size: var(--font-size-lg); }    /* 18px */
+}
+
+/* Laptop (1025-1440px): slightly smaller than full desktop */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  h1 { font-size: var(--font-size-5xl); }   /* 48px */
+  h2 { font-size: var(--font-size-4xl); }   /* 36px */
+  h3 { font-size: var(--font-size-2xl); }   /* 24px */
 }
 
 @media (max-width: 768px) {

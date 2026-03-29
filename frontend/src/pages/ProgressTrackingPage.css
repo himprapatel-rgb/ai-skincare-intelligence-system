@@ -38,11 +38,11 @@
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--border);
   text-align: center;
-  transition: all 0.3s ease;
+  transition: transform var(--transition-slow), box-shadow var(--transition-slow), background-color var(--transition-slow);
 }
 
 .summary-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(var(--card-hover-lift, -4px));
   box-shadow: var(--shadow-card-hover);
   border-color: var(--primary);
 }
@@ -80,7 +80,7 @@
 
 .chart-header h2 {
   font-size: var(--font-size-2xl);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
   margin: 0;
 }
@@ -108,9 +108,9 @@
   border-radius: var(--radius-xl, 16px);
   color: var(--text-dark);
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   display: flex;
   align-items: center;
   gap: 6px;
@@ -142,7 +142,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 @media (min-width: 1024px) {
@@ -177,7 +177,7 @@
 
 .trend-analysis h3 {
   font-size: var(--font-size-xl);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
   margin-bottom: var(--spacing-md);
 }
@@ -199,7 +199,7 @@
   font-size: var(--font-size-sm);
   color: var(--text-secondary);
   margin-bottom: var(--spacing-sm);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
 }
 
 .trend-value {
@@ -207,7 +207,7 @@
   align-items: center;
   gap: var(--spacing-sm);
   font-size: var(--font-size-lg);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   margin-bottom: var(--spacing-sm);
 }
 
@@ -291,6 +291,19 @@
   }
 
   .chart-header h2 {
-    font-size: 1.3rem;
+    font-size: var(--font-size-xl, 1.25rem);
   }
+}
+
+/* Tablet (769-1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .app-page-content { padding: 24px 20px; max-width: 720px; margin: 0 auto; }
+}
+/* Laptop (1025-1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .app-page-content { max-width: 1120px; margin: 0 auto; }
+}
+/* Desktop (1441px+) */
+@media (min-width: 1441px) {
+  .app-page-content { max-width: 1120px; margin: 0 auto; }
 }

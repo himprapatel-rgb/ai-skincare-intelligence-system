@@ -12,7 +12,7 @@
   font-size: var(--font-size-sm, 0.875rem);
   color: var(--text-secondary, #475569);
   margin: 0;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
 }
 
 /* ===== Chips Grid ===== */

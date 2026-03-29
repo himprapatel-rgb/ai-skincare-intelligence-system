@@ -112,17 +112,17 @@
 }
 
 .results-header h1 {
-  font-size: 2rem; /* Brand guideline: 32px / 2rem for H2 */
-  font-weight: 600; /* Brand guideline: Semibold */
+  font-size: var(--font-size-3xl, 1.875rem); /* Brand guideline: 32px / 2rem for H2 */
+  font-weight: var(--font-weight-semibold); /* Brand guideline: Semibold */
   color: var(--text-dark); /* Deep Navy */
   margin-bottom: 8px;
-  line-height: 1.3; /* Brand guideline */
+  line-height: var(--line-height-snug); /* Brand guideline */
 }
 
 .results-header p {
   color: var(--text-gray);
   font-size: 1rem; /* Brand guideline: 16px Body */
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
 }
 
 .results-header-actions {
@@ -151,7 +151,7 @@
 }
 .results-share-label {
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-gray);
 }
 .results-share-social,
@@ -162,13 +162,13 @@
   background: var(--bg-light, #f8fafc);
   border: 1px solid var(--border, #e2e8f0);
   color: var(--text-gray, #64748b);
-  padding: 10px 16px;
+  padding: 12px 16px;
   border-radius: var(--radius-xl, 16px);
   font-size: 0.9375rem;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   text-decoration: none;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
 }
 .results-share-social:hover,
 .results-share-native:hover {
@@ -188,13 +188,13 @@
   font-size: 0.9375rem;
   color: var(--text-gray);
   margin: 0 0 12px;
-  line-height: 1.4;
+  line-height: var(--line-height-normal);
 }
 .analysis-legal-disclaimer {
   font-size: 0.875rem;
   color: var(--gray-600, #4b5563);
   margin: 8px 0 0;
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
   width: 100%;
 }
 
@@ -205,12 +205,12 @@
   background: var(--bg-light, #f8fafc);
   border: 1px solid var(--border, #e2e8f0);
   color: var(--text-gray, #64748b);
-  padding: 10px 16px;
+  padding: 12px 16px;
   border-radius: var(--radius-xl, 16px);
   font-size: 0.9375rem;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
 }
 
 .results-copy-link:hover {
@@ -223,18 +223,18 @@
   background: transparent;
   border: 2px solid var(--primary);
   color: var(--primary);
-  padding: 10px 20px;
+  padding: 12px 20px;
   border-radius: var(--radius-xl, 16px);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   font-size: 0.95rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
 }
 
 .results-back:hover {
   background: var(--primary);
   color: var(--white);
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
 }
 
 .confidence-row {
@@ -265,14 +265,14 @@
   height: 100%;
   background: linear-gradient(90deg, var(--success) 0%, var(--primary) 100%);
   border-radius: var(--radius-xl, 16px);
-  transition: width 0.4s ease;
+  transition: width var(--transition-slow);
   box-shadow: var(--shadow-primary);
 }
 
 .confidence-value {
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--primary);
-  font-size: 1.1rem;
+  font-size: var(--font-size-lg, 1.125rem);
 }
 
 .results-grid {
@@ -310,21 +310,21 @@
   border-radius: var(--radius-xl, 16px);
   padding: 24px;
   box-shadow: var(--shadow);
-  transition: all 0.3s ease;
+  transition: transform var(--transition-slow), box-shadow var(--transition-slow), background-color var(--transition-slow);
 }
 
 .result-card:hover {
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
   box-shadow: var(--shadow-primary);
   border-color: var(--primary);
 }
 
 .result-card h2 {
   font-size: 1.5rem; /* Brand guideline: 24px / 1.5rem for H3 */
-  font-weight: 600; /* Brand guideline: Semibold */
+  font-weight: var(--font-weight-semibold); /* Brand guideline: Semibold */
   color: var(--text-dark);
   margin-bottom: 20px;
-  line-height: 1.4;
+  line-height: var(--line-height-normal);
 }
 
 .metric-explanations h2 {
@@ -335,7 +335,7 @@
   margin: 0 0 16px;
   font-size: 0.9375rem;
   color: var(--text-gray);
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
 }
 
 .metric-grid {
@@ -353,7 +353,7 @@
 .metric-grid p {
   margin: 0;
   color: var(--text-gray);
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
 }
 
 .analysis-image img {
@@ -382,7 +382,7 @@
 
 .analysis-image-fallback span {
   display: block;
-  font-size: 0.85rem;
+  font-size: var(--font-size-sm, 0.875rem);
   color: var(--text-secondary);
 }
 
@@ -392,7 +392,7 @@
 
 .overview-section h3 {
   font-size: 1.125rem; /* Brand guideline: 18px Body Large */
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-dark);
   margin-bottom: 12px;
 }
@@ -402,7 +402,7 @@
   color: var(--primary);
   padding: 8px 16px;
   border-radius: var(--radius-xl, 16px);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   font-size: 1rem;
   display: inline-block;
 }
@@ -419,7 +419,7 @@
   padding: 6px 12px;
   border-radius: var(--radius-xl, 16px);
   font-size: 0.875rem; /* Brand guideline: 14px Body Small */
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 .severity-grid {
@@ -446,7 +446,7 @@
   border-radius: var(--radius-xl, 16px);
   padding: 24px;
   background: var(--bg-light);
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
 }
 
 .severity-card:hover {
@@ -481,14 +481,14 @@
 
 .severity-title {
   text-transform: capitalize;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   font-size: 1rem;
   color: var(--text-dark);
 }
 
 .severity-pill {
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   padding: 4px 12px;
   border-radius: var(--radius-xl, 16px);
   color: var(--white);
@@ -506,14 +506,14 @@
 .severity-fill {
   height: 100%;
   border-radius: var(--radius-xl, 16px);
-  transition: width 0.4s ease;
+  transition: width var(--transition-slow);
 }
 
 .severity-value {
   text-align: right;
   color: var(--text-gray);
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 .severity-severe {
@@ -552,7 +552,7 @@
   border-left: 4px solid var(--primary);
   color: var(--text-dark);
   font-size: 1rem;
-  line-height: 1.6;
+  line-height: var(--line-height-relaxed);
 }
 
 .history-table-wrapper {
@@ -576,7 +576,7 @@
 }
 
 .history-table th {
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-dark);
   background: var(--bg-light);
 }
@@ -596,16 +596,16 @@
   color: var(--primary);
   padding: 8px 16px;
   border-radius: var(--radius-xl, 16px);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   font-size: 0.875rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
 }
 
 .link-button:hover {
   background: var(--primary);
   color: var(--white);
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
 }
 
 .results-actions {
@@ -618,10 +618,10 @@
 .results-actions .btn {
   padding: 12px 24px;
   border-radius: var(--radius-xl, 16px);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   font-size: 1rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
 }
 
 .results-actions .btn-primary {
@@ -633,7 +633,7 @@
 
 .results-actions .btn-primary:hover {
   background: var(--primary-dark);
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
   box-shadow: var(--shadow-primary);
 }
 
@@ -645,7 +645,7 @@
 
 .results-actions .btn-secondary:hover {
   background: rgba(31, 111, 235, 0.05);
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
 }
 
 @media (max-width: 768px) {
@@ -720,7 +720,7 @@
   }
 
   .historical-table {
-    font-size: 0.85rem;
+    font-size: var(--font-size-sm, 0.875rem);
   }
 
   .historical-table th,
@@ -738,7 +738,7 @@
   margin: 0 0 20px;
   font-size: 0.95rem;
   color: var(--text-gray);
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
 }
 
 .analysis-ingredient-cards {
@@ -757,7 +757,7 @@
 
 .analysis-ingredient-name {
   font-size: 1.05rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--text-dark);
   margin: 0 0 10px;
 }
@@ -765,20 +765,20 @@
 .analysis-ingredient-why {
   font-size: 0.9rem;
   color: var(--text-gray);
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
   margin: 0 0 8px;
 }
 
 .analysis-ingredient-targets {
-  font-size: 0.85rem;
+  font-size: var(--font-size-sm, 0.875rem);
   color: var(--primary);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   margin: 0 0 10px;
 }
 
 .analysis-ingredient-learn {
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--primary);
   text-decoration: none;
 }
@@ -968,22 +968,22 @@
   border: 1px solid var(--border-color, #e4e9ef);
   text-decoration: none;
   color: inherit;
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  transition: box-shadow var(--transition-base), transform var(--transition-base);
 }
 .results-rec-card:hover {
   box-shadow: var(--shadow-md, 0 4px 12px rgba(0,0,0,0.06));
-  transform: translateY(-2px);
+  transform: translateY(var(--card-hover-lift, -4px));
 }
 .results-rec-category {
   font-size: var(--font-size-xs, 0.7rem);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: var(--letter-spacing-wide);
 }
 .results-rec-name {
   font-size: 0.9rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--text-primary);
   margin: 4px 0 2px;
 }
@@ -1001,6 +1001,6 @@
   margin-top: var(--spacing-sm, 12px);
   font-size: var(--font-size-sm, 0.85rem);
   color: var(--primary);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 .results-recs-link:hover { text-decoration: underline; }

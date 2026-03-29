@@ -28,7 +28,7 @@
 
 .error-content h2 {
   font-size: 1.35rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--text-primary);
   margin: 0 0 12px;
 }
@@ -36,7 +36,7 @@
 .error-content > p:first-of-type {
   font-size: 1rem;
   color: var(--text-secondary);
-  line-height: 1.5;
+  line-height: var(--line-height-normal);
   margin: 0 0 24px;
 }
 
@@ -51,7 +51,7 @@
 .error-suggestions h4 {
   margin: 0 0 12px;
   font-size: 0.9375rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
 }
 
@@ -78,7 +78,7 @@
   min-height: 44px;
   padding: 12px 24px;
   border-radius: var(--radius-md);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   background: var(--primary);
   color: var(--white);
   border: none;
@@ -89,7 +89,7 @@
   min-height: 44px;
   padding: 12px 24px;
   border-radius: var(--radius-md);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   background: var(--bg-white);
   color: var(--text-primary);
   border: 2px solid var(--border-color);
@@ -108,7 +108,7 @@
 .error-details summary {
   cursor: pointer;
   color: var(--danger);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 .error-details pre {

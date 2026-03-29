@@ -270,11 +270,11 @@ const displayName = nameParts.length > 1
                           </div>
                         </div>
                         <div className="app-nav-dropdown-divider" />
-                        <Link to="/profile" className="app-nav-dropdown-item" onMouseEnter={() => { void import('../pages/ProfileSettingsPage'); }}>
+                        <Link to="/profile" className="app-nav-dropdown-item" onClick={() => setUserDropdownOpen(false)} onMouseEnter={() => { void import('../pages/ProfileSettingsPage'); }}>
                           <IconUser size={18} strokeWidth={2} />
                           <span>My Profile</span>
                         </Link>
-                        <Link to="/profile?tab=settings" className="app-nav-dropdown-item" onMouseEnter={() => { void import('../pages/ProfileSettingsPage'); }}>
+                        <Link to="/profile?tab=settings" className="app-nav-dropdown-item" onClick={() => setUserDropdownOpen(false)} onMouseEnter={() => { void import('../pages/ProfileSettingsPage'); }}>
                           <IconSettings size={18} strokeWidth={2} />
                           <span>Settings</span>
                         </Link>

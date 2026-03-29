@@ -1,4 +1,5 @@
-import * as tf from "@tensorflow/tfjs";
+// TensorFlow loaded dynamically — only when face validation is needed (saves 1.9MB on initial load)
+let tf: typeof import("@tensorflow/tfjs") | null = null;
 import { removeBackground } from "./backgroundSegmentation";
 
 type FaceValidationResult = {
@@ -241,8 +242,9 @@ function normalizeLandmarks(raw: unknown): number[][] {
   if (!raw) {
     return [];
   }
-  if (raw instanceof tf.Tensor) {
-    return raw.arraySync() as number[][];
+  // Check for Tensor-like objects without importing tf at top level
+  if (raw && typeof raw === 'object' && 'arraySync' in raw && typeof (raw as { arraySync: () => unknown }).arraySync === 'function') {
+    return (raw as { arraySync: () => number[][] }).arraySync();
   }
   if (Array.isArray(raw)) {
     return raw as number[][];

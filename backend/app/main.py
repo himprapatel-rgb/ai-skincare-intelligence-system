@@ -151,6 +151,18 @@ async def add_cache_headers(request, call_next):
         elif path.startswith("/api/v1/recommendations"):
             response.headers["Cache-Control"] = "private, max-age=120"
         # Private endpoints: short cache
+        # AI endpoints: cache per-user (expensive API calls)
+        elif any(path.startswith(p) for p in [
+            "/api/v1/ai/skin-age", "/api/v1/ai/benchmark",
+            "/api/v1/ai/coach", "/api/v1/ai/shelf-analysis",
+            "/api/v1/ai/smart-recommendations",
+        ]):
+            response.headers["Cache-Control"] = "private, max-age=300, stale-while-revalidate=600"
+        elif path.startswith("/api/v1/ai/exposome"):
+            response.headers["Cache-Control"] = "private, max-age=1800"
+        elif path.startswith("/api/v1/ai/"):
+            response.headers["Cache-Control"] = "private, max-age=120"
+        # Private endpoints: short cache
         elif any(path.startswith(p) for p in [
             "/api/v1/goals", "/api/v1/shelf", "/api/v1/notifications",
             "/api/v1/profile", "/api/v1/clinical/", "/api/v1/reports/",

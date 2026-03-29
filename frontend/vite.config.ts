@@ -33,20 +33,29 @@ export default defineConfig(({ mode }) => {
       outDir: 'dist',
       sourcemap: mode !== 'production',
       chunkSizeWarningLimit: 600,
+      cssCodeSplit: true,
       rollupOptions: {
         output: {
           manualChunks(id) {
             if (!id.includes('node_modules')) return;
-            if (id.includes('react-router-dom') || id.includes('react-router')) return 'router';
+            // Heavy libs — loaded on demand only
             if (id.includes('@mediapipe')) return 'mediapipe';
             if (id.includes('@tensorflow')) return 'tensorflow';
             if (id.includes('html5-qrcode') || id.includes('react-webcam')) return 'camera';
-            if (id.includes('recharts')) return 'charts';
             if (id.includes('three')) return 'three';
             if (id.includes('jspdf') || id.includes('html2canvas')) return 'export-pdf';
+            // Charts — only dashboard/progress pages
+            if (id.includes('recharts') || id.includes('d3-')) return 'charts';
+            // Core libs — loaded immediately but small
+            if (id.includes('react-router-dom') || id.includes('react-router')) return 'router';
             if (id.includes('axios')) return 'http';
             if (id.includes('zustand')) return 'state';
+            if (id.includes('dompurify')) return 'security';
             if (id.includes('lucide-react')) return 'icons';
+            // Split react core from other vendor deps
+            if (id.includes('react-dom')) return 'react-dom';
+            if (id.includes('react/')) return 'react-core';
+            // Everything else
             return 'vendor';
           },
         },

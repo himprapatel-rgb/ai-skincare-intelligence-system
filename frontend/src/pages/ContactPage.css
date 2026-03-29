@@ -400,3 +400,16 @@
     padding: 20px;
   }
 }
+
+/* Tablet (769-1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .app-page-content { padding: 24px 20px; max-width: 720px; margin: 0 auto; }
+}
+/* Laptop (1025-1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .app-page-content { max-width: 1120px; margin: 0 auto; }
+}
+/* Desktop (1441px+) */
+@media (min-width: 1441px) {
+  .app-page-content { max-width: 1120px; margin: 0 auto; }
+}

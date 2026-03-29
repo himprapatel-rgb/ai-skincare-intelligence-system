@@ -45,6 +45,8 @@ interface Product {
   concerns: string[];
   imageUrl?: string | null;
   purchaseUrl?: string | null;
+  smart_score?: number;
+  why_recommended?: string[];
 }
 
 const PLACEHOLDER_IMAGE =
@@ -182,6 +184,8 @@ const Recommendations: React.FC = () => {
         concerns: Array.isArray(item.concerns) ? item.concerns.filter((value) => typeof value === 'string') : [],
         imageUrl: typeof item.image_url === 'string' ? item.image_url : (typeof item.imageUrl === 'string' ? item.imageUrl : null),
         purchaseUrl: typeof item.purchase_url === 'string' ? item.purchase_url : (typeof item.purchaseUrl === 'string' ? item.purchaseUrl : null),
+        smart_score: typeof item.smart_score === 'number' ? item.smart_score : undefined,
+        why_recommended: Array.isArray(item.why_recommended) ? item.why_recommended : undefined,
       }));
       setProducts(items.length > 0 ? items : fallbackProducts);
     } catch (err) {

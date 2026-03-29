@@ -3,61 +3,86 @@ globs:
   - "frontend/src/**/*.{tsx,ts,css}"
 ---
 
-# Frontend Development Rules
+# Frontend Development Rules — STRICT
+
+## NEVER DO (violations break the app)
+- NEVER hardcode hex colors — use `var(--text-primary)`, `var(--bg-secondary)`, etc.
+- NEVER hardcode px border-radius — use `var(--radius-sm/md/lg/xl/full)`
+- NEVER hardcode rgba() shadows — use `var(--shadow-sm/md/lg/xl/primary/card)`
+- NEVER hardcode font-weight numbers — use `var(--font-weight-normal/medium/semibold/bold)`
+- NEVER hardcode font-size rem values — use `var(--font-size-xs/sm/base/lg/xl/2xl/3xl)`
+- NEVER hardcode line-height — use `var(--line-height-tight/snug/normal/relaxed/loose)`
+- NEVER hardcode transition timing — use `var(--transition-fast/base/slow)`
+- NEVER hardcode z-index > 10 — use `var(--z-dropdown/sticky/overlay/modal/toast)`
+- NEVER use `transition: all` — specify exact properties
+- NEVER use `dangerouslySetInnerHTML` without `DOMPurify.sanitize(content)`
+- NEVER skip ANY of the 4 responsive breakpoints on a page
+- NEVER make touch targets under 44px
+- NEVER use `!important` (except global reduced-motion)
+- NEVER put sensitive data in localStorage (refresh tokens are httpOnly cookies)
+- NEVER use negative margins to break out of AppLayout — use flex: 1 + height: 100%
+
+## ALWAYS DO
+- ALWAYS use design tokens from index.css for ALL visual properties
+- ALWAYS add all 4 responsive breakpoints: mobile (≤768), tablet (769-1024), laptop (1025-1440), desktop (1441+)
+- ALWAYS use `DOMPurify.sanitize()` on any HTML rendering
+- ALWAYS use `React.memo()` on components receiving callback props
+- ALWAYS use `<ProtectedRoute>` wrapper for authenticated pages
+- ALWAYS test: `npx tsc --noEmit` + `npm run build` before committing
+- ALWAYS use 16px font-size on mobile inputs (prevents iOS auto-zoom)
+- ALWAYS include safe-area padding for iPhone notch
+- ALWAYS close dropdowns before navigation/logout
 
 ## Component Patterns
 - Functional components with hooks only (no class components)
 - Lazy-load pages with `React.lazy()` in App.tsx
-- Use `React.memo()` on components that receive callback props (Camera, LazyImage)
 - Protected routes use `<ProtectedRoute>` wrapper
+- Auth state: `AuthContext` (primary), NOT `authStore` (legacy Zustand)
+- Logout must: call backend POST /auth/logout, clear ALL localStorage keys including 'auth-storage'
 
-## CSS Design System (STRICT)
-- Border radius: `var(--radius-sm/md/lg/xl/full)` — never hardcode px
-- Shadows: `var(--shadow-sm/md/lg/xl/primary/card)` — never hardcode rgba()
-- Colors: `var(--text-primary/secondary/muted)`, `var(--bg-primary/secondary/tertiary)` — never hardcode hex
-- Z-index: `var(--z-dropdown/sticky/overlay/modal/toast)` — never hardcode numbers > 10
-- Max content width: 1120px
-- Card padding: 24px
-- Section padding: 56px vertical
-- Standard gaps: 12px, 20px, 24px
+## CSS Design Token Scale (MANDATORY)
+```
+Font sizes:  var(--font-size-xs/sm/base/lg/xl/2xl/3xl/4xl/5xl)
+Font weight: var(--font-weight-normal/medium/semibold/bold/extrabold) → 400/500/600/700/800
+Line height: var(--line-height-tight/snug/normal/relaxed/loose) → 1.2/1.35/1.5/1.65/1.75
+Spacing:     8px, 12px, 16px, 20px, 24px, 32px, 40px, 48px, 56px (NO other values)
+Gaps:        12px, 20px, 24px (standard) — NO 10px, 14px, 18px, 28px
+Radius:      var(--radius-sm/md/lg/xl/2xl/full) → 6/8/12/16/24/9999px
+Shadows:     var(--shadow-sm/md/lg/xl/primary/card/card-hover)
+Transitions: var(--transition-fast/base/slow) → 0.15s/0.2s/0.3s
+Buttons:     var(--button-height-sm/md/lg) → 36/44/52px
+Press:       scale(var(--button-press-scale)) → 0.97
+Hover lift:  translateY(var(--card-hover-lift)) → -4px
+Max width:   var(--content-max-width) → 1120px
+```
 
-## Security
-- All `dangerouslySetInnerHTML` MUST use `DOMPurify.sanitize(content)`
-- Import: `import DOMPurify from 'dompurify'`
-- Never store sensitive data in localStorage (refresh tokens are in httpOnly cookies)
-
-## State Management
-- Auth: `AuthContext` (React Context)
-- Theme: `ThemeContext`
-- API state: fetch in useEffect or custom hooks
-- Local UI state: `useState` / `useReducer`
-- Global stores: Zustand in `src/stores/`
-
-## API Calls
-- Use `api.ts` client for all REST calls
-- All endpoints prefixed with `/api/v1/`
-- Handle errors via Toast context
-
-## Responsive Design — 4 Breakpoints (MANDATORY on every page)
-- **Mobile**: `@media (max-width: 768px)` — 1 column, 16px side padding, 48px touch targets
-- **Tablet**: `@media (min-width: 769px) and (max-width: 1024px)` — 2 columns, 20px padding
-- **Laptop**: `@media (min-width: 1025px) and (max-width: 1440px)` — 2-3 columns, 24px padding
-- **Desktop**: `@media (min-width: 1441px)` — max-width 1120px centered, 24px padding
-- Grids: desktop=3col, laptop=3col, tablet=2col, mobile=1col
-- Hooks: `useIsMobile()` (≤768), `useIsMobileOrTablet()` (≤1024), `useViewport()` → 'mobile'|'tablet'|'desktop'
-- CSS vars: `--breakpoint-mobile: 768px`, `--breakpoint-tablet: 1024px`, `--breakpoint-laptop: 1440px`
+## Responsive Design — 4 Breakpoints (MANDATORY on EVERY page)
+```css
+@media (max-width: 768px)                              { /* Mobile: 1col, 16px pad, 48px targets */ }
+@media (min-width: 769px) and (max-width: 1024px)     { /* Tablet: 2col, 20px pad */ }
+@media (min-width: 1025px) and (max-width: 1440px)    { /* Laptop: 2-3col, 24px pad, 1120px max */ }
+@media (min-width: 1441px)                             { /* Desktop: 3col, 1120px centered */ }
+```
 
 ## Mobile-First Rules
-- Mobile components in `src/components/mobile/` (MobileButton, MobileCard, MobileInput, etc.)
-- All inputs MUST be 16px font-size (prevents iOS auto-zoom)
-- Touch targets minimum 44x44px (iOS) or 48x48px (Material)
-- Use `env(safe-area-inset-*)` for iPhone notch
+- Mobile components in `src/components/mobile/`
+- Touch targets: 44x44px minimum (iOS) / 48x48px (Material)
+- Safe areas: `env(safe-area-inset-*)` for iPhone notch
 - Bottom nav clearance: `padding-bottom: max(96px, calc(96px + env(safe-area-inset-bottom)))`
-- Haptic feedback: `hapticLight()` for taps, `hapticCapture()` for scan
-- Test with: iPhone SE (375px), iPhone 14 (390px), iPad (768px), iPad Pro (1024px)
-- Utility classes: `.r-show-mobile`, `.r-hide-mobile`, `.r-grid--2/3/4` (auto-responsive)
+- Haptic: `hapticLight()` for taps, `hapticCapture()` for scan
+- Chat page: use `body[data-page="chat"]` for full-height layout (NO negative margins)
 
-## Testing
-- TypeScript must compile: `npx tsc --noEmit`
-- Build must succeed: `npm run build`
-- Unit tests: `npm test`
+## Blog System
+- Blog links use SLUG: `/blog/{slug}`
+- BlogPostPage fetches via: `/content/blogs/by-slug/{slug}` (not numeric ID)
+- Fallback to numeric ID if slug fails
+- View tracking uses numeric ID from API response
+- All blog HTML sanitized with DOMPurify
+- Cover images from Unsplash URLs stored in `cover_image_url`
+
+## Auth System
+- Primary: `AuthContext` (React Context) — source of truth
+- Legacy: `authStore` (Zustand) — clear on logout but don't rely on it
+- Logout clears: AUTH_TOKEN, ACCESS_TOKEN, USER, refresh_token, auth-storage
+- Login stores token in localStorage + axios default header
+- Protected routes redirect to /auth with return URL saved

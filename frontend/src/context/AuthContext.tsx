@@ -116,9 +116,26 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   }, []);
 
   const logout = useCallback(() => {
+    // Call backend to blacklist token + clear httpOnly cookie
+    const currentToken = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
+    if (currentToken) {
+      api.post('/auth/logout').catch(() => {});
+    }
+
+    // Clear ALL local auth state
     setAuthToken(null);
     setToken(null);
     setUser(null);
+
+    // Clear any remaining auth artifacts from ALL storage locations
+    localStorage.removeItem(STORAGE_KEYS.AUTH_TOKEN);
+    localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
+    localStorage.removeItem(STORAGE_KEYS.USER);
+    localStorage.removeItem('refresh_token');
+    localStorage.removeItem('auth-storage'); // Zustand authStore persist key
+
+    // Force clear axios auth header
+    delete axios.defaults.headers.common['Authorization'];
   }, []);
 
   const updateUser = useCallback((userData: Partial<User>) => {

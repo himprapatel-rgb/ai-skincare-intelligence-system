@@ -283,6 +283,7 @@ const displayName = nameParts.length > 1
                           type="button"
                           className="app-nav-dropdown-item app-nav-dropdown-logout"
                           onClick={() => {
+                            setUserDropdownOpen(false);
                             logout();
                             navigate('/');
                           }}

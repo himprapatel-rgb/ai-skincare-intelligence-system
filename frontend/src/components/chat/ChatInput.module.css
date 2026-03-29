@@ -1,89 +1,49 @@
-/* ===== Input Container ===== */
+/* ===== Chat Input — Premium Redesign ===== */
+
 .inputContainer {
-  padding: var(--space-4, 16px) var(--space-5, 20px);
-  border-top: 1px solid var(--border-color, #e2e8f0);
-  background: var(--bg-primary, #ffffff);
+  padding: 16px 20px;
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
+  background: var(--bg-primary);
+  border-top: 1px solid var(--border-color);
   flex-shrink: 0;
 }
 
-@media (prefers-color-scheme: dark) {
-  .inputContainer {
-    background: var(--color-gray-900, #0f172a);
-    border-top-color: var(--color-gray-700, #334155);
-  }
-}
-
-:global(.dark-mode) .inputContainer {
-  background: var(--color-gray-900, #0f172a);
-  border-top-color: var(--color-gray-700, #334155);
-}
-
-/* ===== Input Wrapper ===== */
 .inputWrap {
   display: flex;
   align-items: flex-end;
-  gap: var(--space-3, 12px);
-  background: var(--bg-secondary, #f8fafc);
-  border: 1px solid var(--border-color, #e2e8f0);
-  border-radius: var(--radius-xl, 16px);
-  padding: var(--space-3, 12px) var(--space-4, 16px);
-  transition: border-color 200ms, box-shadow 200ms;
+  gap: 12px;
+  background: var(--bg-secondary);
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-2xl, 24px);
+  padding: 10px 12px 10px 20px;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
   max-width: 800px;
   margin: 0 auto;
 }
 
 .inputWrap:focus-within {
-  border-color: var(--color-primary, #1f6feb);
-  box-shadow: 0 0 0 3px var(--color-primary-light, #e8f0fd);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(var(--primary-rgb), 0.08);
+  background: var(--bg-primary);
 }
 
-@media (prefers-color-scheme: dark) {
-  .inputWrap {
-    background: var(--color-gray-800, #1e293b);
-    border-color: var(--color-gray-600, #475569);
-  }
-  .inputWrap:focus-within {
-    box-shadow: 0 0 0 3px rgba(31, 111, 235, 0.2);
-  }
-}
-
-:global(.dark-mode) .inputWrap {
-  background: var(--color-gray-800, #1e293b);
-  border-color: var(--color-gray-600, #475569);
-}
-
-:global(.dark-mode) .inputWrap:focus-within {
-  box-shadow: 0 0 0 3px rgba(31, 111, 235, 0.2);
-}
-
-/* ===== Textarea ===== */
 .textarea {
   flex: 1;
   border: none;
   background: transparent;
   resize: none;
   outline: none;
-  font-family: var(--font-family, 'Inter', sans-serif);
-  font-size: var(--font-size-base, 1rem);
+  font-family: inherit;
+  font-size: var(--font-size-base);
   line-height: var(--line-height-normal);
-  color: var(--text-primary, #0f172a);
-  min-height: 28px;
-  max-height: 180px;
-  padding: var(--space-1, 4px) 0;
+  color: var(--text-primary);
+  min-height: 24px;
+  max-height: 160px;
+  padding: 6px 0;
 }
 
 .textarea::placeholder {
-  color: var(--text-muted, #94a3b8);
-}
-
-@media (prefers-color-scheme: dark) {
-  .textarea {
-    color: var(--color-gray-100, #f1f5f9);
-  }
-}
-
-:global(.dark-mode) .textarea {
-  color: var(--color-gray-100, #f1f5f9);
+  color: var(--text-muted);
 }
 
 .textarea:disabled {
@@ -94,17 +54,17 @@
 /* ===== Send Button ===== */
 .sendBtn {
   flex-shrink: 0;
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radius-full, 9999px);
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
   border: none;
-  background: var(--color-gray-200, #e2e8f0);
-  color: var(--color-gray-400, #94a3b8);
+  background: var(--bg-tertiary);
+  color: var(--text-muted);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 200ms;
+  transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .sendBtn:disabled {
@@ -113,30 +73,70 @@
 }
 
 .sendBtnActive {
-  background: var(--color-primary, #1f6feb);
-  color: var(--color-white, #ffffff);
-  box-shadow: 0 2px 8px rgba(31, 111, 235, 0.25);
+  background: var(--primary);
+  color: var(--white, #fff);
+  box-shadow: var(--shadow-primary);
 }
 
 .sendBtnActive:hover {
-  background: var(--color-primary-hover, #174a95);
-  transform: scale(1.05);
+  background: var(--primary-hover);
+  transform: scale(1.08);
+  box-shadow: 0 4px 16px rgba(var(--primary-rgb), 0.35);
+}
+
+.sendBtnActive:active {
+  transform: scale(var(--button-press-scale, 0.97));
 }
 
 /* ===== Hint ===== */
 .hint {
   display: block;
-  font-size: 11px;
-  color: var(--text-muted, #94a3b8);
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
   text-align: center;
-  margin-top: var(--space-2, 8px);
+  margin-top: 8px;
   max-width: 800px;
   margin-left: auto;
   margin-right: auto;
+  opacity: 0.7;
 }
 
+/* ===== Mobile ===== */
 @media (max-width: 768px) {
+  .inputContainer {
+    padding: 12px 12px;
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+  }
+
+  .inputWrap {
+    padding: 8px 10px 8px 16px;
+    border-radius: var(--radius-xl);
+  }
+
+  .textarea {
+    font-size: 16px; /* Prevent iOS zoom */
+  }
+
+  .sendBtn {
+    width: 40px;
+    height: 40px;
+  }
+
   .hint {
     display: none;
+  }
+}
+
+/* ===== Tablet ===== */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .inputWrap {
+    max-width: 700px;
+  }
+}
+
+/* ===== Desktop ===== */
+@media (min-width: 1441px) {
+  .inputWrap {
+    max-width: 800px;
   }
 }

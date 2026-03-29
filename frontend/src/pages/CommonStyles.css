@@ -273,11 +273,19 @@
 
 .card {
   background: var(--bg-white);
-  border-radius: var(--card-radius, var(--radius-xl, 16px));
-  padding: var(--card-padding, var(--spacing-lg));
+  border-radius: var(--card-radius, 16px);
+  padding: var(--card-padding, 24px);
   border: 1px solid var(--border);
-  box-shadow: var(--card-shadow, var(--shadow-sm));
-  margin-bottom: var(--card-margin-bottom, var(--spacing-lg));
+  box-shadow: var(--shadow-card);
+  margin-bottom: var(--card-margin-bottom, 16px);
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+.card:hover {
+  transform: translateY(var(--card-hover-lift, -4px));
+  box-shadow: var(--shadow-card-hover);
+}
+.card:active {
+  transform: scale(var(--button-press-scale, 0.97));
 }
 .card-header {
   margin-bottom: 12px;

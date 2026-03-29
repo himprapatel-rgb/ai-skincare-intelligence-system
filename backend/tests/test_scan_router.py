@@ -32,8 +32,8 @@ class TestScanRouter:
         assert init_response.status_code == status.HTTP_201_CREATED
         scan_id = init_response.json()["scan_id"]
         
-        # Then upload the image
-        test_image = BytesIO(b"fake_image_data")
+        # Then upload the image (JPEG magic bytes required by validation)
+        test_image = BytesIO(b"\xff\xd8\xff\xe0" + b"\x00" * 100)
         files = {"file": ("test.jpg", test_image, "image/jpeg")}
         
         response = client.post(

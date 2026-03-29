@@ -22,7 +22,7 @@
 
 .skin-goals-card-title {
   margin: 0 0 16px 0;
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
 }
 
@@ -98,12 +98,12 @@
 
 .skin-goals-title {
   font-weight: var(--font-weight-semibold);
-  font-size: 1.125rem; /* Brand guideline: 18px Body Large */
+  font-size: var(--font-size-lg); /* Brand guideline: 18px Body Large */
   margin-bottom: 4px;
 }
 
 .skin-goals-desc {
-  font-size: 0.875rem; /* Brand guideline: 14px Body Small */
+  font-size: var(--font-size-sm); /* Brand guideline: 14px Body Small */
   opacity: 0.8;
   line-height: var(--line-height-normal);
 }

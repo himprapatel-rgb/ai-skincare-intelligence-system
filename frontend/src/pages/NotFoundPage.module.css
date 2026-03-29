@@ -38,7 +38,7 @@
 
 /* ===== Error Code ===== */
 .errorCode {
-  font-size: 5rem;
+  font-size: var(--font-size-6xl);
   font-weight: var(--font-weight-extrabold, 800);
   color: var(--primary, #1f5fbf);
   line-height: 1;
@@ -89,7 +89,7 @@
   top: 50%;
   transform: translateY(-50%);
   color: var(--text-muted, #6c7d93);
-  font-size: 1.125rem;
+  font-size: var(--font-size-lg);
   pointer-events: none;
 }
 
@@ -185,7 +185,7 @@
 
 .linkIcon {
   color: var(--primary, #1f5fbf);
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   flex-shrink: 0;
 }
 

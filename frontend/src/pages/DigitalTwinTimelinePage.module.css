@@ -80,7 +80,7 @@
   align-items: center;
   justify-content: center;
   color: var(--text-primary, #162133);
-  font-size: 1.125rem;
+  font-size: var(--font-size-lg);
 }
 
 /* ===== Timeline Scrubber ===== */

@@ -289,7 +289,7 @@
 }
 
 .emptyTitle {
-  font-size: 1.5rem;
+  font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-bold);
   color: var(--text-primary, #0f172a);
   margin: 0 0 var(--space-3, 12px);
@@ -325,7 +325,7 @@
 }
 
 .expertDisclosure {
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   color: var(--text-muted, #94a3b8);
   margin: 4px 0 var(--space-6, 24px);
   text-align: center;

@@ -50,7 +50,7 @@
 }
 .skin-type-step {
   display: inline-block;
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
   color: var(--primary);
   margin-bottom: 8px;
@@ -105,7 +105,7 @@
 }
 .skin-type-summary h2 {
   margin: 0 0 12px;
-  font-size: 1.25rem;
+  font-size: var(--font-size-xl);
   color: var(--text-dark);
 }
 .skin-type-summary-text {

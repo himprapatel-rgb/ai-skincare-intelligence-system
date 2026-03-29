@@ -15,7 +15,7 @@
   background: rgba(34, 197, 94, 0.12);
   border: 1px solid rgba(34, 197, 94, 0.3);
   border-radius: var(--radius-full);
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
   color: var(--text-primary);
 }
 
@@ -29,7 +29,7 @@
 }
 
 .location-heading {
-  font-size: 1.25rem;
+  font-size: var(--font-size-xl);
   margin: 0 0 12px 0;
   color: var(--text-primary);
 }
@@ -120,7 +120,7 @@
   min-height: 44px;
   padding: 12px 20px;
   border-radius: var(--radius-xl, 16px);
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
   cursor: pointer;
   transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
@@ -152,7 +152,7 @@
 }
 
 .contact-form h2 {
-  font-size: 1.5rem; /* Brand guideline: 24px / 1.5rem for H3 */
+  font-size: var(--font-size-2xl); /* Brand guideline: 24px / 1.5rem for H3 */
   font-weight: var(--font-weight-semibold);
   color: var(--text-dark);
   margin-bottom: 24px;
@@ -165,7 +165,7 @@
 
 .form-group label {
   display: block;
-  font-size: 1rem; /* Brand guideline: 16px Body */
+  font-size: var(--font-size-base); /* Brand guideline: 16px Body */
   font-weight: var(--font-weight-medium);
   color: var(--text-dark);
   margin-bottom: 8px;
@@ -177,7 +177,7 @@
   padding: 12px 16px; /* Brand guideline: 12px 16px */
   border: 1px solid var(--border);
   border-radius: var(--radius-xl, 16px); /* Brand guideline: 8px */
-  font-size: 1rem; /* Brand guideline: 16px Body */
+  font-size: var(--font-size-base); /* Brand guideline: 16px Body */
   background: var(--bg-light);
   transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   font-family: inherit;
@@ -190,7 +190,7 @@
 }
 .form-error {
   display: block;
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   color: var(--danger);
   margin-top: 4px;
 }
@@ -214,7 +214,7 @@
   color: var(--white);
   border: none;
   border-radius: var(--radius-xl, 16px); /* Brand guideline: 8px */
-  font-size: 1rem; /* Brand guideline: 16px Body */
+  font-size: var(--font-size-base); /* Brand guideline: 16px Body */
   font-weight: var(--font-weight-semibold); /* Brand guideline */
   cursor: pointer;
   transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
@@ -235,7 +235,7 @@
   color: var(--white);
   border: none;
   border-radius: var(--radius-xl, 16px);
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
   cursor: pointer;
   transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
@@ -250,7 +250,7 @@
 }
 
 .faq-section h2 {
-  font-size: 1.5rem;
+  font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-semibold);
   color: var(--text-dark);
   margin: 0 0 20px 0;
@@ -283,7 +283,7 @@
   min-height: 44px;
   padding: 14px 18px;
   text-align: left;
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
   color: var(--text-dark);
   background: none;
@@ -299,7 +299,7 @@
 
 .faq-accordion-icon {
   flex-shrink: 0;
-  font-size: 1.25rem;
+  font-size: var(--font-size-xl);
   color: var(--primary);
   line-height: 1;
 }
@@ -314,7 +314,7 @@
 
 .faq-accordion-content p {
   margin: 0;
-  font-size: 0.95rem;
+  font-size: var(--font-size-base);
   color: var(--text-gray);
   line-height: var(--line-height-relaxed);
 }
@@ -332,7 +332,7 @@
   }
 
   .contact-hero h1 {
-    font-size: 2.2rem;
+    font-size: var(--font-size-4xl);
   }
 
   .contact-container {
@@ -366,11 +366,11 @@
   }
 
   .contact-hero h1 {
-    font-size: 1.8rem;
+    font-size: var(--font-size-3xl);
   }
 
   .contact-hero p {
-    font-size: 1rem;
+    font-size: var(--font-size-base);
   }
 
   .contact-container {

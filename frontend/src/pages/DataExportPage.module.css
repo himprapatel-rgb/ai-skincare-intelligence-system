@@ -76,7 +76,7 @@
 
 .cardTitle {
   margin: 0 0 16px 0;
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
   padding: 0 4px;
   color: var(--text-primary, #0f172a);
@@ -90,14 +90,14 @@
 }
 
 .completeIcon {
-  font-size: 5rem;
+  font-size: var(--font-size-6xl);
   margin-bottom: 24px;
   color: var(--color-success, #10b981);
 }
 
 .completeText {
   color: var(--color-gray-500, #64748b);
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   margin-bottom: 24px;
   line-height: var(--line-height-relaxed);
 }
@@ -131,19 +131,19 @@
 
 .categoryLabel {
   font-weight: var(--font-weight-semibold);
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   color: var(--text-primary, #0f172a);
   margin-bottom: 4px;
 }
 
 .categoryDesc {
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   color: var(--color-gray-500, #64748b);
   line-height: var(--line-height-normal);
 }
 
 .categorySize {
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   color: var(--color-gray-500, #64748b);
   font-weight: var(--font-weight-medium);
   white-space: nowrap;
@@ -188,26 +188,26 @@
 }
 
 .formatTitle {
-  font-size: 1.25rem;
+  font-size: var(--font-size-xl);
   font-weight: var(--font-weight-semibold);
   margin-bottom: 4px;
 }
 
 .formatSubtitle {
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   opacity: 0.8;
 }
 
 .formatExplanation {
   margin-top: 12px;
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   color: var(--color-gray-500, #64748b);
   line-height: var(--line-height-normal);
 }
 
 .formatEta {
   margin-top: 12px;
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   color: var(--color-gray-500, #64748b);
 }
 
@@ -229,7 +229,7 @@
 
 .noteContent {
   margin: 0;
-  font-size: 0.9375rem;
+  font-size: var(--font-size-sm);
   color: var(--text-primary, #0f172a);
   line-height: var(--line-height-normal);
 }

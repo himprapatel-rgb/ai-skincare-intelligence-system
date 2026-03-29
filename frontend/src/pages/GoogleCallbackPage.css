@@ -109,13 +109,13 @@
 
 .callback-tip {
   margin-top: 0.75rem;
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
   color: var(--text-secondary);
 }
 
 .callback-backend-info {
   margin-top: 0.5rem;
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
 }
 
 .callback-backend-info code {
@@ -126,7 +126,7 @@
 .callback-redirect-hint {
   margin-top: 1rem;
   text-align: left;
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
 }
 
 .callback-redirect-hint ol {

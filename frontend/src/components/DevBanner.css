@@ -12,7 +12,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   z-index: var(--z-banner);
   animation: slideInUp 0.4s ease-out;
@@ -33,7 +33,7 @@
   background: rgba(255, 255, 255, 0.25);
   padding: 4px 10px;
   border-radius: var(--radius-xl);
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   font-weight: var(--font-weight-bold);
   letter-spacing: 0.5px;
 }
@@ -74,7 +74,7 @@
     bottom: 96px;
     right: 16px;
     left: 16px;
-    font-size: 0.8rem;
+    font-size: var(--font-size-xs);
     padding: 12px 16px;
   }
   

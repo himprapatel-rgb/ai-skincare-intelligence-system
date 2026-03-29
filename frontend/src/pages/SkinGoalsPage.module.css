@@ -60,7 +60,7 @@
 
 .cardTitle {
   margin: 0 0 16px 0;
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
   color: var(--text-primary, #0f172a);
 }
@@ -117,12 +117,12 @@
 
 .goalTitle {
   font-weight: var(--font-weight-semibold);
-  font-size: 1.125rem;
+  font-size: var(--font-size-lg);
   margin-bottom: 4px;
 }
 
 .goalDesc {
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   opacity: 0.8;
   line-height: var(--line-height-normal);
 }
@@ -154,7 +154,7 @@
 
 .rank {
   font-weight: var(--font-weight-bold);
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   color: var(--color-primary, #1f6feb);
   min-width: 32px;
 }
@@ -218,7 +218,7 @@
 }
 
 .suggestedTitle {
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
   margin: 0 0 var(--space-4, 16px);
   color: var(--text-primary, #0f172a);

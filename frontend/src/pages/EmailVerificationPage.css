@@ -84,7 +84,7 @@
 }
 
 .email-sent-info .check-spam {
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
   color: var(--text-secondary);
   margin-bottom: 0;
 }
@@ -135,7 +135,7 @@
   }
 
   .email-verification-card h1 {
-    font-size: 1.6rem;
+    font-size: var(--font-size-2xl);
   }
 
   .email-verification-card button {
@@ -154,7 +154,7 @@
   }
 
   .email-verification-card h1 {
-    font-size: 1.4rem;
+    font-size: var(--font-size-xl);
   }
 }
 

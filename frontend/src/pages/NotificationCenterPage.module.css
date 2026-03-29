@@ -73,7 +73,7 @@
   border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: var(--border-radius-md, 8px);
   color: var(--white, #fff);
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   cursor: pointer;
 }
@@ -119,13 +119,13 @@
 
 .settingsTitle {
   margin: 0 0 8px 0;
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
 }
 
 .settingsDesc {
   margin: 0 0 16px 0;
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   color: var(--text-secondary, #64748b);
 }
 
@@ -169,7 +169,7 @@
 }
 
 .settingTime {
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   padding: 8px 12px;
   border: 1px solid var(--border-color, #e2e8f0);
   border-radius: var(--border-radius-md, 8px);
@@ -237,7 +237,7 @@
 }
 
 .emptyState h3 {
-  font-size: 1.25rem;
+  font-size: var(--font-size-xl);
   font-weight: var(--font-weight-semibold);
   color: var(--text-primary, #0f172a);
   margin: 0 0 8px;
@@ -300,14 +300,14 @@
 }
 
 .notifHeader h3 {
-  font-size: 1.125rem;
+  font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
   color: var(--text-primary, #0f172a);
   margin: 0;
 }
 
 .notifTime {
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   color: var(--text-secondary, #64748b);
   white-space: nowrap;
 }
@@ -322,7 +322,7 @@
   color: var(--color-primary, #1f6feb);
   font-weight: var(--font-weight-medium);
   text-decoration: none;
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   transition: color var(--transition-base);
   display: inline-flex;
   align-items: center;
@@ -449,7 +449,7 @@
   }
 
   .notifHeader h3 {
-    font-size: 1rem;
+    font-size: var(--font-size-base);
   }
 
   .settingsCard {

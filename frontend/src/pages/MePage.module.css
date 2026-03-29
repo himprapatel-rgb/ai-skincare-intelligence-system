@@ -55,7 +55,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   border: 2px solid var(--bg-primary, #fff);
 }
 
@@ -268,7 +268,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   flex-shrink: 0;
 }
 
@@ -286,7 +286,7 @@
 
 .settingsChevron {
   color: var(--gray-400, #97a6ba);
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   flex-shrink: 0;
 }
 

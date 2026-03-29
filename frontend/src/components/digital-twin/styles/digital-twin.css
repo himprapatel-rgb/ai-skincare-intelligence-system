@@ -63,7 +63,7 @@
 
 .dt-hero-score-label {
   display: grid;
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   color: var(--text-gray);
   font-weight: var(--font-weight-semibold);
   white-space: nowrap;
@@ -88,7 +88,7 @@
 }
 
 .dt-hero-mood-label {
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   color: var(--text-gray);
   white-space: nowrap;
   word-break: normal;
@@ -111,7 +111,7 @@
   display: grid;
   gap: 6px;
   color: var(--text-gray);
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
 }
 
 .dt-stats-grid {
@@ -130,7 +130,7 @@
 }
 
 .dt-stat-label {
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   color: var(--text-gray);
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -139,7 +139,7 @@
 }
 
 .dt-stat-value {
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
   color: var(--text-dark);
   word-break: normal;
@@ -169,7 +169,7 @@
 
 .dt-card-header h2 {
   margin: 0;
-  font-size: 1.15rem;
+  font-size: var(--font-size-lg);
   color: var(--text-dark);
 }
 
@@ -177,7 +177,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.8rem;
+  font-size: var(--font-size-xs);
   color: var(--text-gray);
 }
 
@@ -197,7 +197,7 @@
 }
 
 .dt-guest-heading {
-  font-size: 1.25rem;
+  font-size: var(--font-size-xl);
   font-weight: var(--font-weight-semibold);
   color: var(--text-dark);
   margin: 0 0 12px 0;
@@ -221,7 +221,7 @@
 }
 
 .dt-guest-hint {
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
   color: var(--text-gray);
   margin: 0 0 20px 0;
 }
@@ -263,7 +263,7 @@
 }
 
 .dt-preview-feature-icon {
-  font-size: 1.25rem;
+  font-size: var(--font-size-xl);
 }
 
 .dt-preview-desc {
@@ -298,7 +298,7 @@
 .dt-select-group label {
   display: grid;
   gap: 6px;
-  font-size: 0.8rem;
+  font-size: var(--font-size-xs);
   color: var(--text-gray);
 }
 
@@ -354,7 +354,7 @@
   left: 0;
   right: 0;
   padding: 6px 8px;
-  font-size: 0.7rem;
+  font-size: var(--font-size-xs);
   color: var(--white);
   background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
 }
@@ -363,7 +363,7 @@
   padding: 10px;
   display: grid;
   gap: 4px;
-  font-size: 0.8rem;
+  font-size: var(--font-size-xs);
 }
 
 .dt-snapshot-toggle {
@@ -594,7 +594,7 @@
 
 .dt-chart-hint span {
   color: var(--primary);
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
 }
 
@@ -621,7 +621,7 @@
   color: var(--danger, #ef4444);
   padding: 8px 14px;
   border-radius: var(--radius-md);
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   cursor: pointer;
   transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
@@ -655,7 +655,7 @@
 }
 
 .dt-metric-highlight-label {
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   color: var(--text-gray);
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -679,13 +679,13 @@
 }
 
 .dt-metric-bar-label {
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   color: var(--text-dark);
   font-weight: var(--font-weight-medium);
 }
 
 .dt-metric-bar-value {
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
 }
 
@@ -790,14 +790,14 @@
 
 .simulation-header h3 {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: var(--font-size-xl);
   color: #1a1a2e;
 }
 
 .simulation-desc {
   color: #666;
   margin-bottom: 20px;
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
 }
 
 .simulation-form {
@@ -890,7 +890,7 @@
   color: #4338ca;
   padding: 4px 12px;
   border-radius: var(--radius-xl);
-  font-size: 0.8rem;
+  font-size: var(--font-size-xs);
   font-weight: var(--font-weight-medium);
   margin-bottom: 12px;
 }
@@ -915,7 +915,7 @@
 
 .metric-name {
   display: block;
-  font-size: 0.8rem;
+  font-size: var(--font-size-xs);
   color: #666;
   margin-bottom: 6px;
 }

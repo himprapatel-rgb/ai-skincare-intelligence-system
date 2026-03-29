@@ -31,7 +31,7 @@
 
 .device-ctx-title {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: var(--font-size-xl);
   font-weight: var(--font-weight-bold);
   color: var(--text-primary);
 }
@@ -53,7 +53,7 @@
 
 .device-ctx-intro p {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
   color: var(--text-secondary);
   line-height: var(--line-height-normal);
 }
@@ -78,7 +78,7 @@
   border: 1px solid rgba(239, 68, 68, 0.3);
   border-radius: var(--radius-xl, 16px);
   color: var(--text-primary);
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
 }
 
 .device-ctx-content {
@@ -97,7 +97,7 @@
 
 .device-ctx-section-title {
   margin: 0 0 12px 0;
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
 }

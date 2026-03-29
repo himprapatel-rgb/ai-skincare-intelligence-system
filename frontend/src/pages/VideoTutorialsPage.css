@@ -30,7 +30,7 @@
 
 .page-header p {
   color: var(--text-gray);
-  font-size: 1rem;
+  font-size: var(--font-size-base);
 }
 
 .video-grid {
@@ -84,7 +84,7 @@
 .tutorial-info .video-duration,
 .tutorial-info .video-difficulty {
   position: static;
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
 }
 
 .video-thumb {
@@ -102,7 +102,7 @@
 .video-duration {
   background: rgba(0, 0, 0, 0.75);
   color: var(--white);
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
   padding: 4px 8px;
   border-radius: var(--border-radius-sm);
@@ -115,7 +115,7 @@
   left: 8px;
   background: rgba(0, 0, 0, 0.6);
   color: var(--white);
-  font-size: 0.7rem;
+  font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
   padding: 3px 6px;
   border-radius: var(--border-radius-sm);

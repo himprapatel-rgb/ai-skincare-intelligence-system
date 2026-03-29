@@ -97,7 +97,7 @@
 
 .stepDragHandle {
   color: var(--text-muted, #6c7d93);
-  font-size: 1.25rem;
+  font-size: var(--font-size-xl);
   flex-shrink: 0;
   cursor: grab;
   padding: var(--spacing-xs, 4px);

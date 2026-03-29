@@ -24,7 +24,7 @@
   margin-top: var(--spacing-xl, 32px);
 }
 .about-cta h2 {
-  font-size: 1.75rem;
+  font-size: var(--font-size-3xl);
   font-weight: var(--font-weight-bold);
   color: var(--text-dark);
   margin-bottom: 12px;
@@ -55,7 +55,7 @@
 }
 
 .mission-content p {
-  font-size: 1rem; /* Brand guideline: 16px Body */
+  font-size: var(--font-size-base); /* Brand guideline: 16px Body */
   color: var(--text-gray);
   line-height: var(--line-height-relaxed);
 }
@@ -127,7 +127,7 @@
 
 .stat-label {
   color: var(--text-gray);
-  font-size: 0.95rem;
+  font-size: var(--font-size-base);
   line-height: var(--line-height-normal);
 }
 
@@ -185,7 +185,7 @@
 }
 
 .value-card h4 {
-  font-size: 1.125rem;
+  font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
   margin-bottom: 8px;
   color: var(--text-dark);
@@ -226,7 +226,7 @@
   font-weight: var(--font-weight-semibold);
   color: var(--text-dark);
   margin: 0 0 12px;
-  font-size: 1rem;
+  font-size: var(--font-size-base);
 }
 .changelog-list {
   margin: 0;
@@ -260,7 +260,7 @@
   }
 
   .about-hero h1 {
-    font-size: 2.2rem;
+    font-size: var(--font-size-4xl);
   }
 
   .about-section {
@@ -268,7 +268,7 @@
   }
 
   .about-section h2 {
-    font-size: 1.75rem;
+    font-size: var(--font-size-3xl);
   }
 
   .mission-content {
@@ -296,11 +296,11 @@
   }
 
   .about-hero h1 {
-    font-size: 1.8rem;
+    font-size: var(--font-size-3xl);
   }
 
   .about-hero p {
-    font-size: 1rem;
+    font-size: var(--font-size-base);
   }
 
   .about-section {
@@ -308,7 +308,7 @@
   }
 
   .about-section h2 {
-    font-size: 1.5rem;
+    font-size: var(--font-size-2xl);
   }
 
   .mission-content {

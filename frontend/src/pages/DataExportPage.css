@@ -41,7 +41,7 @@
 
 .export-card-title {
   margin: 0 0 16px 0;
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
   padding: 0 4px;
 }
@@ -68,13 +68,13 @@
 }
 
 .export-complete-icon {
-  font-size: 5rem;
+  font-size: var(--font-size-6xl);
   margin-bottom: 24px;
 }
 
 .export-complete-text {
   color: var(--text-gray);
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   margin-bottom: 24px;
   line-height: var(--line-height-relaxed);
 }
@@ -106,19 +106,19 @@
 
 .export-category-label {
   font-weight: var(--font-weight-semibold);
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   color: var(--text-dark);
   margin-bottom: 4px;
 }
 
 .export-category-desc {
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   color: var(--text-gray);
   line-height: var(--line-height-normal);
 }
 
 .export-category-size {
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   color: var(--text-gray);
   font-weight: var(--font-weight-medium);
 }
@@ -152,13 +152,13 @@
 }
 
 .export-format-title {
-  font-size: 1.25rem;
+  font-size: var(--font-size-xl);
   font-weight: var(--font-weight-semibold);
   margin-bottom: 4px;
 }
 
 .export-format-subtitle {
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   opacity: 0.8;
 }
 
@@ -178,21 +178,21 @@
 
 .export-note-content {
   margin: 0;
-  font-size: 0.9375rem;
+  font-size: var(--font-size-sm);
   color: var(--text-primary);
   line-height: var(--line-height-normal);
 }
 
 .export-format-explanation {
   margin-top: 12px;
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   color: var(--text-gray, #6b7280);
   line-height: var(--line-height-normal);
 }
 
 .export-eta {
   margin-top: 12px;
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   color: var(--text-gray, #6b7280);
 }
 

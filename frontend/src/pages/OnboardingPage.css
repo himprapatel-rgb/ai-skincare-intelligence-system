@@ -281,7 +281,7 @@
   padding: var(--ds-space-8);
 }
 .completion-icon {
-  font-size: 4rem;
+  font-size: var(--font-size-5xl);
   margin-bottom: var(--ds-space-4);
 }
 .completion-title {
@@ -303,7 +303,7 @@
   margin-bottom: var(--ds-space-2);
 }
 .completion-score-value {
-  font-size: 2.5rem;
+  font-size: var(--font-size-4xl);
   font-weight: var(--font-weight-extrabold);
   color: var(--ds-primary);
 }

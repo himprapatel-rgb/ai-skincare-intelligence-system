@@ -62,7 +62,7 @@
   border: 1px solid var(--border);
   background: var(--bg-white);
   color: var(--text-secondary);
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   cursor: pointer;
   transition: background 0.2s, color 0.2s, border-color 0.2s;
@@ -171,7 +171,7 @@
   .alphabet-nav .alphabet-letter {
     width: 28px;
     height: 28px;
-    font-size: 0.7rem;
+    font-size: var(--font-size-xs);
   }
 
   .ingredient-grid {
@@ -184,7 +184,7 @@
   .ingredient-dictionary-page { padding: 16px; }
   .ingredient-grid { grid-template-columns: 1fr; }
   .alphabet-nav { flex-wrap: wrap; gap: 4px; }
-  .alphabet-nav button { min-width: 36px; min-height: 36px; font-size: 0.75rem; }
+  .alphabet-nav button { min-width: 36px; min-height: 36px; font-size: var(--font-size-xs); }
   .ingredient-search { width: 100%; }
 }
 

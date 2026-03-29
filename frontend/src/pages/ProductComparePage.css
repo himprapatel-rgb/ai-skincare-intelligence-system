@@ -87,7 +87,7 @@
   align-items: center;
   justify-content: center;
   color: var(--text-gray);
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
   padding: 16px;
   text-align: center;
@@ -126,7 +126,7 @@
 }
 
 .compare-card-section h4 {
-  font-size: 0.8125rem;
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
   color: var(--text-gray);
   text-transform: uppercase;
@@ -137,7 +137,7 @@
 .compare-card-section ul {
   margin: 0;
   padding-left: 18px;
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   color: var(--text-dark);
   line-height: var(--line-height-normal);
 }
@@ -154,7 +154,7 @@
   background: rgba(31, 111, 235, 0.1);
   color: var(--primary, var(--primary));
   border-radius: var(--border-radius-sm);
-  font-size: 0.8125rem;
+  font-size: var(--font-size-sm);
 }
 
 .compare-tag.empty {
@@ -165,7 +165,7 @@
 .compare-card-link {
   margin-top: auto;
   padding-top: 12px;
-  font-size: 0.9375rem;
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
   color: var(--primary);
   text-decoration: none;
@@ -180,7 +180,7 @@
   display: inline-block;
   padding: 12px 20px;
   border-radius: var(--radius-xl, 16px);
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
   cursor: pointer;
   margin-right: 12px;

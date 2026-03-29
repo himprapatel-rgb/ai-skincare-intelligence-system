@@ -257,6 +257,22 @@
   --transition-slow: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-easing: cubic-bezier(0.4, 0, 0.2, 1);
 
+  /* Button tokens */
+  --button-height-sm: 36px;
+  --button-height-md: 44px;
+  --button-height-lg: 52px;
+  --button-padding-sm: 8px 16px;
+  --button-padding-md: 12px 24px;
+  --button-padding-lg: 16px 32px;
+  --button-press-scale: 0.97;
+
+  /* Card tokens */
+  --card-hover-lift: -4px;
+  --card-padding: 24px;
+
+  /* Content max width */
+  --content-max-width: 1120px;
+
   /* Button size tokens — single source of truth */
   --button-height-sm: 36px;
   --button-height-md: 44px;

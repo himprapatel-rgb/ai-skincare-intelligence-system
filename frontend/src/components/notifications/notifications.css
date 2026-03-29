@@ -15,7 +15,7 @@
   min-width: 16px;
   height: 16px;
   padding: 0 4px;
-  font-size: 0.65rem;
+  font-size: var(--font-size-xs);
   font-weight: var(--font-weight-bold);
   line-height: 16px;
   text-align: center;
@@ -71,7 +71,7 @@
 
 .notification-dropdown-mark-all {
   padding: 2px 6px;
-  font-size: 0.72rem;
+  font-size: var(--font-size-xs);
   font-weight: var(--font-weight-medium);
   color: var(--primary);
   background: transparent;
@@ -101,7 +101,7 @@
   padding: 12px;
   text-align: center;
   color: var(--text-muted);
-  font-size: 0.8rem;
+  font-size: var(--font-size-xs);
 }
 
 .notification-dropdown-empty p {
@@ -110,7 +110,7 @@
 
 .notification-dropdown-view-all {
   padding: 8px 12px;
-  font-size: 0.8rem;
+  font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
   color: var(--primary);
   background: rgba(124, 58, 237, 0.06);
@@ -194,14 +194,14 @@
 }
 
 .notification-item-title {
-  font-size: 0.8rem;
+  font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
   display: block;
 }
 
 .notification-item-message {
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   color: var(--text-secondary);
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -210,7 +210,7 @@
 }
 
 .notification-item-time {
-  font-size: 0.7rem;
+  font-size: var(--font-size-xs);
   color: var(--text-muted);
   margin-top: 1px;
 }
@@ -221,7 +221,7 @@
 
 .notification-item-chevron {
   flex-shrink: 0;
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   color: var(--text-muted);
   margin-top: 2px;
 }

@@ -12,7 +12,7 @@
   margin-bottom: 8px;
   color: var(--text-gray);
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
 }
 
 .admin-content-header .back-link:hover {
@@ -21,13 +21,13 @@
 
 .admin-content-header h1 {
   margin: 0 0 4px;
-  font-size: 1.5rem;
+  font-size: var(--font-size-2xl);
 }
 
 .admin-content-header p {
   margin: 0;
   color: var(--text-gray);
-  font-size: 0.95rem;
+  font-size: var(--font-size-base);
 }
 
 /* Tabs */
@@ -49,7 +49,7 @@
   border: none;
   background: transparent;
   border-radius: var(--radius-xl, 16px);
-  font-size: 0.95rem;
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-medium);
   color: var(--text-gray);
   cursor: pointer;
@@ -89,7 +89,7 @@
 }
 
 .admin-metric {
-  font-size: 1.5rem;
+  font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-bold);
   color: var(--text-primary);
 }
@@ -147,7 +147,7 @@
   display: block;
   margin-bottom: 6px;
   font-weight: var(--font-weight-medium);
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
 }
 
 .admin-form-card .form-group input,
@@ -157,7 +157,7 @@
   padding: 12px;
   border: 1px solid var(--border-color, #e2e8f0);
   border-radius: var(--radius-xl, 16px);
-  font-size: 1rem;
+  font-size: var(--font-size-base);
 }
 
 .admin-form-card .form-row {
@@ -261,7 +261,7 @@
 
 .admin-list-body h4 {
   margin: 0 0 4px;
-  font-size: 1rem;
+  font-size: var(--font-size-base);
 }
 
 .admin-list-body .admin-meta {
@@ -274,7 +274,7 @@
   display: inline-block;
   padding: 2px 8px;
   margin-left: 8px;
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   background: var(--primary);
   color: var(--white);
   border-radius: var(--border-radius-sm);
@@ -318,7 +318,7 @@
 
   .admin-tab {
     padding: 8px 12px;
-    font-size: 0.9rem;
+    font-size: var(--font-size-sm);
   }
 
   .admin-summary-grid {

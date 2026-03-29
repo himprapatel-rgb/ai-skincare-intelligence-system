@@ -21,7 +21,7 @@
 }
 
 .overview-ingredients-teaser {
-  font-size: 0.9375rem;
+  font-size: var(--font-size-sm);
   color: var(--text-secondary);
   margin-top: 12px;
   margin-bottom: 8px;
@@ -33,7 +33,7 @@
 }
 
 .ingredients-tab-hint {
-  font-size: 0.9375rem;
+  font-size: var(--font-size-sm);
   color: var(--text-secondary);
   margin-top: 8px;
 }
@@ -196,7 +196,7 @@
   border: none;
   background: rgba(255, 255, 255, 0.2);
   color: var(--white);
-  font-size: 1.5rem;
+  font-size: var(--font-size-2xl);
   line-height: 1;
   cursor: pointer;
   border-radius: var(--border-radius-full);
@@ -270,13 +270,13 @@
 }
 
 .brand {
-  font-size: 1.125rem;
+  font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
   color: var(--text-secondary);
 }
 
 .category {
-  font-size: 0.95rem;
+  font-size: var(--font-size-base);
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -296,12 +296,12 @@
 }
 
 .rating-text {
-  font-size: 0.95rem;
+  font-size: var(--font-size-base);
   color: var(--text-secondary);
 }
 
 .price {
-  font-size: 1.5rem;
+  font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-bold);
   color: var(--primary);
 }
@@ -324,7 +324,7 @@
 }
 
 .tag-group strong {
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
   color: var(--text-primary);
   margin-right: 4px;
 }
@@ -450,7 +450,7 @@
 .overview-tab h3,
 .ingredients-tab h3,
 .reviews-tab h3 {
-  font-size: 1.25rem;
+  font-size: var(--font-size-xl);
   margin-bottom: 12px;
 }
 
@@ -647,7 +647,7 @@
 
 .total-reviews {
   color: var(--text-secondary);
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
 }
 
 .rating-bars {
@@ -717,7 +717,7 @@
   color: var(--success);
   padding: 2px 8px;
   border-radius: var(--border-radius-full);
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
 }
 
@@ -727,7 +727,7 @@
 }
 
 .review-title {
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
   margin: 0 0 8px 0;
   color: var(--text-primary);
@@ -815,7 +815,7 @@
   }
 
   .brand {
-    font-size: 1rem;
+    font-size: var(--font-size-base);
   }
 
   .price {
@@ -837,7 +837,7 @@
 
   .tabs-header button {
     padding: 12px 16px;
-    font-size: 0.9rem;
+    font-size: var(--font-size-sm);
     min-height: 44px;
   }
 
@@ -871,7 +871,7 @@
   }
 
   .product-info-section h1 {
-    font-size: 1.75rem;
+    font-size: var(--font-size-3xl);
   }
 
   .rating-section {
@@ -918,7 +918,7 @@
   padding: 12px 16px;
   border: 1px solid var(--border-color);
   border-radius: var(--radius-xl, 16px);
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
   transition: border-color var(--transition-base), box-shadow var(--transition-base);
 }
 
@@ -959,7 +959,7 @@
 
 .ingredient-rank {
   display: inline-block;
-  font-size: 0.65rem;
+  font-size: var(--font-size-xs);
   padding: 2px 4px;
   background: var(--primary);
   color: var(--white);
@@ -1036,7 +1036,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 12px 16px;
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
 }
 .match-bullet.ok { color: var(--success, var(--success)); }
 .match-bullet.warn { color: var(--warning, #d97706); }
@@ -1064,13 +1064,13 @@
 }
 
 .safety-rating-card .rating-label {
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   color: var(--text-secondary);
   margin-bottom: 4px;
 }
 
 .safety-rating-card .rating-value {
-  font-size: 1.5rem;
+  font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-bold);
   margin-bottom: 8px;
   color: var(--rating-color, var(--primary));
@@ -1156,7 +1156,7 @@
   color: var(--danger);
   padding: 2px 8px;
   border-radius: var(--radius-full);
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
 }
 
 .severity-badge.moderate {
@@ -1164,7 +1164,7 @@
   color: var(--warning-700, #b45309);
   padding: 2px 8px;
   border-radius: var(--radius-full);
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
 }
 
 .severity-badge.low {
@@ -1172,11 +1172,11 @@
   color: var(--primary);
   padding: 2px 8px;
   border-radius: var(--radius-full);
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
 }
 
 .flagged-reason {
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
   color: var(--text-secondary);
   margin: 0 0 8px 0;
   line-height: var(--line-height-normal);
@@ -1190,7 +1190,7 @@
 }
 
 .flagged-categories .category-tag {
-  font-size: 0.7rem;
+  font-size: var(--font-size-xs);
   padding: 2px 6px;
   background: var(--bg-tertiary);
   color: var(--text-secondary);
@@ -1321,7 +1321,7 @@
 .usage-value {
   font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
 }
 
 /* Benefits list */
@@ -1369,7 +1369,7 @@
 
 .pairing-good strong,
 .pairing-avoid strong {
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
 }
 
 .pairing-good span,

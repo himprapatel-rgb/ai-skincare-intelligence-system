@@ -41,7 +41,7 @@
 
 .myshelf-hero-text h1 {
   margin: 0;
-  font-size: 1.5rem;
+  font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-bold);
   letter-spacing: var(--letter-spacing-tight);
   line-height: var(--line-height-tight);
@@ -172,7 +172,7 @@
 }
 
 .myshelf-expiring-badge {
-  font-size: 0.7rem;
+  font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
   padding: 4px 8px;
   border-radius: var(--radius-xl, 16px);
@@ -679,7 +679,7 @@
   margin-top: 4px;
 }
 .product-card-match {
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
   color: var(--primary);
 }
@@ -854,7 +854,7 @@
 
 .expiry-badge {
   display: inline-block;
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   padding: 4px 10px;
   border-radius: var(--radius-xl, 16px);
   background: var(--gray-100);

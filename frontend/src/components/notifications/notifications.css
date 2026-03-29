@@ -15,7 +15,7 @@
   min-width: 16px;
   height: 16px;
   padding: 0 4px;
-  font-size: 0.65rem;
+  font-size: var(--font-size-xs);
   font-weight: var(--font-weight-bold);
   line-height: 16px;
   text-align: center;
@@ -201,7 +201,7 @@
 }
 
 .notification-item-message {
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   color: var(--text-secondary);
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -210,7 +210,7 @@
 }
 
 .notification-item-time {
-  font-size: 0.7rem;
+  font-size: var(--font-size-xs);
   color: var(--text-muted);
   margin-top: 1px;
 }

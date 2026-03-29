@@ -39,13 +39,13 @@
 
 .admin-quick-upload h3 {
   margin: 0 0 4px;
-  font-size: 1.15rem;
+  font-size: var(--font-size-lg);
 }
 
 .admin-quick-upload p {
   margin: 0 0 16px;
   color: var(--text-secondary);
-  font-size: 0.95rem;
+  font-size: var(--font-size-base);
 }
 
 .admin-content-cta {

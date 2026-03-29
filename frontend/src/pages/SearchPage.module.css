@@ -225,7 +225,7 @@
 }
 
 .resultBadge {
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   font-weight: var(--font-weight-medium);
   padding: var(--space-1, 4px) var(--space-2, 8px);
   border-radius: var(--radius-full, 9999px);

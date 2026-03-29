@@ -82,7 +82,7 @@
   padding: 8px 16px;
   border-radius: var(--radius-md);
   font-weight: var(--font-weight-semibold);
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
   cursor: pointer;
 }
 

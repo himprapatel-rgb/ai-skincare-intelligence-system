@@ -24,7 +24,7 @@
 
 .sample-report-logo {
   font-weight: var(--font-weight-bold);
-  font-size: 1.5rem;
+  font-size: var(--font-size-2xl);
   color: var(--primary);
   text-decoration: none;
   letter-spacing: -0.5px;

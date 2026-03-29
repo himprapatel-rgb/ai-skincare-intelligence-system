@@ -25,14 +25,14 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   color: var(--text-muted);
   margin-top: 12px;
 }
 
 /* Inline disclaimer on left panel */
 .auth-disclaimer-inline {
-  font-size: 0.7rem;
+  font-size: var(--font-size-xs);
   color: rgba(255, 255, 255, 0.6);
   margin-top: 16px;
   line-height: var(--line-height-normal);
@@ -131,17 +131,16 @@
 }
 
 .feature-text h3 {
-  font-size: 1.15rem;
+  font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
   margin-bottom: 6px;
-  color: var(--white);
+  color: var(--white, #fff);
 }
 
 .feature-text p {
-  font-size: 0.9rem;
-  line-height: var(--line-height-normal);
-  color: rgba(255, 255, 255, 0.98);
-  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.12);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
+  color: rgba(255, 255, 255, 0.95);
 }
 
 .auth-right {
@@ -297,7 +296,7 @@
 
 /* Phase 2: Forgot password as text link, not button */
 .forgot-password {
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
   color: var(--primary);
   text-decoration: none;
   padding: 0;
@@ -394,7 +393,7 @@
 
 .password-field .strength-text {
   display: block;
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   margin-top: 4px;
   color: var(--text-secondary);
 }
@@ -452,7 +451,7 @@
 .auth-toggle span {
   display: block;
   color: var(--text-secondary);
-  font-size: 0.95rem;
+  font-size: var(--font-size-base);
   margin-bottom: 16px;
 }
 
@@ -510,7 +509,7 @@
   color: var(--success);
   padding: 12px 16px;
   border-radius: var(--radius-xl, 16px);
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
 }
 
 /* Mobile compact brand - shows when left panel hidden */
@@ -589,7 +588,7 @@
   padding-top: 28px;
   border-top: 1px solid var(--gray-200, #e2e8f0);
   color: var(--text-secondary);
-  font-size: 0.95rem;
+  font-size: var(--font-size-base);
 }
 
 .btn-link {
@@ -647,7 +646,7 @@
 
 .error-message__text {
   color: var(--danger-800, #991b1b);
-  font-size: 0.95rem;
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-medium);
   line-height: var(--line-height-normal);
   margin: 0;

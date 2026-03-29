@@ -33,7 +33,7 @@
   background: rgba(255, 255, 255, 0.25);
   padding: 4px 10px;
   border-radius: var(--radius-xl);
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   font-weight: var(--font-weight-bold);
   letter-spacing: 0.5px;
 }

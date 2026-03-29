@@ -263,7 +263,7 @@
 }
 
 .notification-time {
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   color: var(--text-secondary);
   white-space: nowrap;
 }
@@ -333,7 +333,7 @@
 }
 
 .empty-state h3 {
-  font-size: 1.5rem;
+  font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
   margin-bottom: 8px;

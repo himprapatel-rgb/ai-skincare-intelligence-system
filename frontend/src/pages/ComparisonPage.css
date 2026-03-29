@@ -145,7 +145,7 @@
 }
 
 .comparison-vs-divider {
-  font-size: 1.5rem;
+  font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-bold);
   color: var(--primary);
   padding: 0 16px;
@@ -340,7 +340,7 @@
   }
 
   .comparison-table {
-    font-size: 0.9rem;
+    font-size: var(--font-size-sm);
   }
 
   .comparison-th,

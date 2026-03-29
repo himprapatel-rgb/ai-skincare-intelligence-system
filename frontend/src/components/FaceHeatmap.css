@@ -78,7 +78,7 @@
   text-align: center;
   padding: 24px 12px;
   color: var(--text-tertiary);
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
 }
 
 .face-heatmap-info {
@@ -108,7 +108,7 @@
   display: inline-block;
   padding: 3px 10px;
   border-radius: var(--radius-full);
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   font-weight: var(--font-weight-bold);
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -121,7 +121,7 @@
 .face-heatmap-severity--severe { background: rgba(239, 68, 68, 0.12); color: var(--danger); }
 
 .face-heatmap-concern-type {
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
   color: var(--text-secondary);
   text-transform: capitalize;
 }
@@ -186,7 +186,7 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   color: var(--text-tertiary);
 }
 

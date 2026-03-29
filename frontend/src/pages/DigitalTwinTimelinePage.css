@@ -124,7 +124,7 @@
 }
 
 .summary-unit {
-  font-size: 0.95rem;
+  font-size: var(--font-size-base);
   color: var(--text-gray);
   margin-left: 4px;
   font-weight: var(--font-weight-semibold);
@@ -186,7 +186,7 @@
 }
 
 .card-header h2 {
-  font-size: 1.5rem;
+  font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-semibold);
   color: var(--text-dark);
   margin: 0;
@@ -282,7 +282,7 @@
   background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
   color: var(--white);
   padding: 8px;
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
 }
 
@@ -310,7 +310,7 @@
 }
 
 .snapshot-mood {
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   color: var(--text-gray);
   margin-top: 4px;
 }
@@ -363,7 +363,7 @@
 }
 
 .metric-value {
-  font-size: 1.5rem;
+  font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-bold);
   color: var(--text-dark);
 }
@@ -510,7 +510,7 @@
   transform: translateX(-50%);
   background: rgba(15, 23, 42, 0.8);
   color: var(--white);
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
   padding: 4px 8px;
   border-radius: var(--radius-full);
@@ -554,7 +554,7 @@
 }
 
 .compare-score {
-  font-size: 0.95rem;
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
   color: var(--primary);
 }

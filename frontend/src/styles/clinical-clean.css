@@ -285,7 +285,7 @@ body {
 }
 
 .dashboard-page .stat-card .stat-content p {
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
   line-height: var(--line-height-normal);
   color: var(--clinical-label);
 }

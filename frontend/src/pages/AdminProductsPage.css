@@ -122,14 +122,14 @@
 
 .admin-product-subtitle {
   color: var(--text-secondary);
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
 }
 
 .admin-product-meta {
   display: flex;
   gap: 16px;
   color: var(--text-secondary);
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
 }
 
 @media (max-width: 768px) {
@@ -173,7 +173,7 @@
   .admin-products-table th,
   .admin-products-table td {
     padding: 12px;
-    font-size: 0.95rem;
+    font-size: var(--font-size-base);
   }
 }
 

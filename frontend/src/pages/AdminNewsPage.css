@@ -11,7 +11,7 @@
   margin-bottom: 8px;
   color: var(--text-gray);
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
 }
 
 .admin-news-page .back-link:hover {
@@ -35,7 +35,7 @@
   display: block;
   margin-bottom: 6px;
   font-weight: var(--font-weight-medium);
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
 }
 
 .admin-news-page .form-group input,
@@ -85,7 +85,7 @@
 }
 
 .admin-news-page .admin-list-body .badge {
-  font-size: 0.7rem;
+  font-size: var(--font-size-xs);
   padding: 2px 8px;
   background: var(--primary);
   color: var(--white);

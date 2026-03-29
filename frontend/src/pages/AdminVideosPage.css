@@ -11,7 +11,7 @@
   margin-bottom: 8px;
   color: var(--text-gray);
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
 }
 
 .admin-videos-page .back-link:hover {
@@ -35,7 +35,7 @@
   display: block;
   margin-bottom: 6px;
   font-weight: var(--font-weight-medium);
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
 }
 
 .admin-videos-page .form-group input,

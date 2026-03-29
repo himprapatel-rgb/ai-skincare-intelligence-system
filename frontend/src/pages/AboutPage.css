@@ -127,7 +127,7 @@
 
 .stat-label {
   color: var(--text-gray);
-  font-size: 0.95rem;
+  font-size: var(--font-size-base);
   line-height: var(--line-height-normal);
 }
 
@@ -308,7 +308,7 @@
   }
 
   .about-section h2 {
-    font-size: 1.5rem;
+    font-size: var(--font-size-2xl);
   }
 
   .mission-content {

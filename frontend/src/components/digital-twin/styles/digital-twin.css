@@ -63,7 +63,7 @@
 
 .dt-hero-score-label {
   display: grid;
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   color: var(--text-gray);
   font-weight: var(--font-weight-semibold);
   white-space: nowrap;
@@ -88,7 +88,7 @@
 }
 
 .dt-hero-mood-label {
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   color: var(--text-gray);
   white-space: nowrap;
   word-break: normal;
@@ -111,7 +111,7 @@
   display: grid;
   gap: 6px;
   color: var(--text-gray);
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
 }
 
 .dt-stats-grid {
@@ -130,7 +130,7 @@
 }
 
 .dt-stat-label {
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   color: var(--text-gray);
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -169,7 +169,7 @@
 
 .dt-card-header h2 {
   margin: 0;
-  font-size: 1.15rem;
+  font-size: var(--font-size-lg);
   color: var(--text-dark);
 }
 
@@ -197,7 +197,7 @@
 }
 
 .dt-guest-heading {
-  font-size: 1.25rem;
+  font-size: var(--font-size-xl);
   font-weight: var(--font-weight-semibold);
   color: var(--text-dark);
   margin: 0 0 12px 0;
@@ -221,7 +221,7 @@
 }
 
 .dt-guest-hint {
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
   color: var(--text-gray);
   margin: 0 0 20px 0;
 }
@@ -263,7 +263,7 @@
 }
 
 .dt-preview-feature-icon {
-  font-size: 1.25rem;
+  font-size: var(--font-size-xl);
 }
 
 .dt-preview-desc {
@@ -354,7 +354,7 @@
   left: 0;
   right: 0;
   padding: 6px 8px;
-  font-size: 0.7rem;
+  font-size: var(--font-size-xs);
   color: var(--white);
   background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
 }
@@ -655,7 +655,7 @@
 }
 
 .dt-metric-highlight-label {
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   color: var(--text-gray);
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -790,14 +790,14 @@
 
 .simulation-header h3 {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: var(--font-size-xl);
   color: #1a1a2e;
 }
 
 .simulation-desc {
   color: #666;
   margin-bottom: 20px;
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
 }
 
 .simulation-form {

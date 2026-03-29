@@ -329,7 +329,7 @@
 }
 
 .processing-card h3 {
-  font-size: 1.5rem;
+  font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-semibold);
   color: var(--text-dark);
   margin-bottom: 12px;
@@ -357,7 +357,7 @@
   display: inline-block;
   padding: 4px 12px;
   border-radius: var(--radius-xl, 16px);
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
   text-transform: uppercase;
 }
@@ -409,7 +409,7 @@
   padding: 12px 20px;
   color: var(--primary);
   font-weight: var(--font-weight-semibold);
-  font-size: 0.95rem;
+  font-size: var(--font-size-base);
   text-decoration: none;
   border: 2px solid var(--primary);
   border-radius: var(--radius-xl, 16px);
@@ -491,7 +491,7 @@
 }
 
 .scanner-header h2 {
-  font-size: 1.5rem;
+  font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-semibold);
   color: var(--text-dark);
   margin: 0;
@@ -687,7 +687,7 @@
 }
 
 .error-card h3 {
-  font-size: 1.5rem;
+  font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-semibold);
   color: var(--text-dark);
   margin-bottom: 12px;
@@ -791,7 +791,7 @@
 }
 
 .product-details h3 {
-  font-size: 1.5rem;
+  font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-semibold);
   color: var(--text-dark);
   margin-bottom: 8px;
@@ -851,7 +851,7 @@
 }
 .skin-match-sub {
   margin: 0 0 6px 0;
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
   color: var(--text-muted);
   text-transform: uppercase;
@@ -868,14 +868,14 @@
 }
 .how-to-use-title {
   margin: 0 0 10px 0;
-  font-size: 0.95rem;
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
 }
 .how-to-use-list {
   margin: 0;
   padding-left: 1.2em;
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
   color: var(--text-secondary);
   line-height: var(--line-height-relaxed);
 }
@@ -899,14 +899,14 @@
 }
 .ingredient-conflict-title {
   margin: 0 0 8px 0;
-  font-size: 0.95rem;
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
   display: flex;
   align-items: center;
   gap: 6px;
 }
-.ingredient-conflict-text { margin: 0 0 6px 0; font-size: 0.9rem; color: var(--text-secondary); }
+.ingredient-conflict-text { margin: 0 0 6px 0; font-size: var(--font-size-sm); color: var(--text-secondary); }
 .ingredient-conflict-advice { margin: 0; font-size: var(--font-size-sm, 0.875rem); font-weight: var(--font-weight-semibold); color: var(--warning-700, #b45309); }
 
 .track-product-modal-overlay {
@@ -927,8 +927,8 @@
   width: 100%;
   box-shadow: var(--shadow-lg);
 }
-.track-product-modal h3 { margin: 0 0 8px 0; font-size: 1.15rem; color: var(--text-primary); }
-.track-product-desc { margin: 0 0 20px 0; font-size: 0.9rem; color: var(--text-secondary); }
+.track-product-modal h3 { margin: 0 0 8px 0; font-size: var(--font-size-lg); color: var(--text-primary); }
+.track-product-desc { margin: 0 0 20px 0; font-size: var(--font-size-sm); color: var(--text-secondary); }
 .track-product-field {
   margin-bottom: 16px;
 }
@@ -1285,7 +1285,7 @@
 }
 
 .safety-recommendations li {
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
   color: var(--warning-900, #78350f);
   margin-bottom: 6px;
   line-height: var(--line-height-normal);
@@ -1483,7 +1483,7 @@
 
   .btn-toggle-camera {
     padding: 12px 16px;
-    font-size: 0.9rem;
+    font-size: var(--font-size-sm);
     min-height: 44px;
   }
 
@@ -1550,7 +1550,7 @@
 }
 
 .processing-step {
-  font-size: 0.95rem;
+  font-size: var(--font-size-base);
   color: var(--text-muted);
   margin-bottom: 20px;
 }
@@ -1643,7 +1643,7 @@
 }
 
 .scan-history-section .section-header h2 {
-  font-size: 1.5rem;
+  font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-bold);
   margin-bottom: 8px;
 }
@@ -1695,7 +1695,7 @@
 }
 
 .history-details h4 {
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
   margin-bottom: 4px;
   white-space: nowrap;
@@ -1711,7 +1711,7 @@
 
 .history-badge {
   display: inline-block;
-  font-size: 0.7rem;
+  font-size: var(--font-size-xs);
   padding: 3px 8px;
   border-radius: var(--radius-xl, 16px);
   font-weight: var(--font-weight-medium);
@@ -1739,7 +1739,7 @@
   
   .processing-steps {
     gap: 16px;
-    font-size: 0.75rem;
+    font-size: var(--font-size-xs);
   }
 }
 
@@ -1891,7 +1891,7 @@
 }
 
 .manual-entry-toggle {
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
   color: var(--primary);
   text-decoration: underline;
   cursor: pointer;
@@ -2114,7 +2114,7 @@
 }
 
 .capture-divider span {
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
   text-transform: uppercase;
   letter-spacing: 1px;
 }
@@ -2204,7 +2204,7 @@
 
 .not-sure-prompt p {
   color: var(--warning-800, #92400e);
-  font-size: 0.9rem;
+  font-size: var(--font-size-sm);
   margin-bottom: 12px;
 }
 

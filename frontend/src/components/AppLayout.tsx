@@ -67,8 +67,8 @@ const displayName = nameParts.length > 1
         setUserDropdownOpen(false);
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
   }, []);
 
   // Focus trap and Escape in user dropdown (issue #79)
@@ -239,21 +239,16 @@ const displayName = nameParts.length > 1
                 <>
                   {/* User Dropdown */}
                   <div className="app-nav-user-dropdown" ref={userDropdownRef}>
-                    <button 
+                    <button
                       type="button"
                       className="app-nav-user-trigger"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
+                      onClick={() => {
                         setUserDropdownOpen((prev) => !prev);
                       }}
                       aria-expanded={userDropdownOpen}
                       aria-controls="user-dropdown-menu"
                       aria-haspopup="menu"
                       aria-label={`Account menu for ${displayName}`}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Escape') setUserDropdownOpen(false);
-                      }}
                     >
                       <span className="app-nav-avatar">{userInitial}</span>
                       <span className="app-nav-user-name">{displayName}</span>

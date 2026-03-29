@@ -400,7 +400,7 @@ const ProductDetailsPage: React.FC = () => {
         }
       }
     } catch (error) {
-      console.error('Failed to fetch product details:', error);
+      if (import.meta.env.DEV) console.error('Failed to fetch product details:', error);
     } finally {
       setLoading(false);
     }
@@ -413,7 +413,7 @@ const ProductDetailsPage: React.FC = () => {
       const response = await api.get(`/products/${id}/reviews`);
       setReviewsData(response.data);
     } catch (error) {
-      console.error('Failed to fetch reviews:', error);
+      if (import.meta.env.DEV) console.error('Failed to fetch reviews:', error);
     } finally {
       setReviewsLoading(false);
     }
@@ -444,7 +444,7 @@ const ProductDetailsPage: React.FC = () => {
       // Refresh reviews
       fetchReviews();
     } catch (error: unknown) {
-      if (import.meta.env.DEV) console.error('Failed to submit review:', error);
+      if (import.meta.env.DEV) if (import.meta.env.DEV) console.error('Failed to submit review:', error);
       const res = error && typeof error === 'object' && 'response' in error ? (error as { response?: { status?: number } }).response : undefined;
       if (res?.status === 400) {
         setReviewError('You have already reviewed this product.');
@@ -476,7 +476,7 @@ const ProductDetailsPage: React.FC = () => {
         toast.success('Added to My Shelf');
       }
     } catch (error) {
-      console.error('Failed to add to shelf:', error);
+      if (import.meta.env.DEV) console.error('Failed to add to shelf:', error);
       toast.error('Could not add to shelf. Try again.');
     } finally {
       setShelfActionLoading(false);
@@ -500,7 +500,7 @@ const ProductDetailsPage: React.FC = () => {
         if (success) setInShelf(false);
       }
     } catch (error) {
-      console.error('Failed to remove from shelf:', error);
+      if (import.meta.env.DEV) console.error('Failed to remove from shelf:', error);
     } finally {
       setShelfActionLoading(false);
     }
@@ -546,7 +546,7 @@ const ProductDetailsPage: React.FC = () => {
               {imageZoomed && (
                 <div ref={zoomOverlayRef} className="product-image-zoom-overlay" role="dialog" aria-modal="true" aria-label="Enlarged product image" onClick={(e) => e.target === e.currentTarget && closeZoom()}>
                   <button type="button" className="product-image-zoom-close" onClick={closeZoom} aria-label="Close zoom">×</button>
-                  <img src={product.imageUrl} alt={product.name} onClick={(e) => e.stopPropagation()} />
+                  <img loading="lazy" src={product.imageUrl} alt={product.name} onClick={(e) => e.stopPropagation()} />
                 </div>
               )}
             </>

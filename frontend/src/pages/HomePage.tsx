@@ -454,7 +454,7 @@ const HomePage: React.FC = () => {
           <div className="testimonial-card">
             <div className="testimonial-header">
               <div className="testimonial-avatar">
-                <img src={avatarBase('AP', '#1f6feb')} alt="Ananya P." />
+                <img loading="lazy" src={avatarBase('AP', '#1f6feb')} alt="Ananya P." />
               </div>
               <div>
                 <h3>Ananya P.</h3>
@@ -474,7 +474,7 @@ const HomePage: React.FC = () => {
           <div className="testimonial-card">
             <div className="testimonial-header">
               <div className="testimonial-avatar">
-                <img src={avatarBase('JR', '#0f766e')} alt="James R." />
+                <img loading="lazy" src={avatarBase('JR', '#0f766e')} alt="James R." />
               </div>
               <div>
                 <h3>James R.</h3>
@@ -494,7 +494,7 @@ const HomePage: React.FC = () => {
           <div className="testimonial-card">
             <div className="testimonial-header">
               <div className="testimonial-avatar">
-                <img src={avatarBase('SK', '#f97316')} alt="Sarah K." />
+                <img loading="lazy" src={avatarBase('SK', '#f97316')} alt="Sarah K." />
               </div>
               <div>
                 <h3>Sarah K.</h3>

@@ -24,6 +24,9 @@ interface SkinAnalysis {
   imageUrl: string;
   timestamp: string;
   recommendations?: string[];
+  skinAge?: { estimated_age: number; confidence: number; factors_aging: string[]; factors_youthful: string[] };
+  hydrationLevel?: string;
+  barrierHealth?: string;
 }
 
 type ScanHistoryItem = {
@@ -104,6 +107,18 @@ const AnalysisResults: React.FC = () => {
       ? rawSkinType.trim()
       : 'Unknown';
 
+    // Extract skin age, hydration, barrier from analysis
+    const skinAge = (analysis as { skin_age?: SkinAnalysis['skinAge'] }).skin_age ||
+      (result as { skin_age?: SkinAnalysis['skinAge'] }).skin_age;
+    const hydrationLevel = String(
+      (analysis as { hydration_level?: string }).hydration_level ||
+      (result as { hydration_level?: string }).hydration_level || ''
+    );
+    const barrierHealth = String(
+      (analysis as { barrier_health?: string }).barrier_health ||
+      (result as { barrier_health?: string }).barrier_health || ''
+    );
+
     return {
       id: analysisId || 'unknown',
       userId: '',
@@ -116,6 +131,9 @@ const AnalysisResults: React.FC = () => {
       imageUrl: resolvedImageUrl || '',
       timestamp: String((scanResult as { created_at?: string }).created_at || new Date().toISOString()),
       recommendations,
+      skinAge: skinAge || undefined,
+      hydrationLevel: hydrationLevel || undefined,
+      barrierHealth: barrierHealth || undefined,
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps -- buildScanImageUrl is stable
   }, [analysisId]);
@@ -678,6 +696,34 @@ const AnalysisResults: React.FC = () => {
               <h3>Skin Type</h3>
               <div className="skin-type-badge">{analysis.skinType}</div>
             </div>
+            {analysis.skinAge && (
+              <div className="overview-section">
+                <h3>Skin Age</h3>
+                <div className="skin-age-display">
+                  <span className="skin-age-number">{analysis.skinAge.estimated_age}</span>
+                  <span className="skin-age-label">years</span>
+                </div>
+                {analysis.skinAge.factors_youthful.length > 0 && (
+                  <div className="skin-age-factors">
+                    <span className="factor-positive">Youthful: {analysis.skinAge.factors_youthful.slice(0, 2).join(', ')}</span>
+                  </div>
+                )}
+              </div>
+            )}
+            {(analysis.hydrationLevel || analysis.barrierHealth) && (
+              <div className="overview-section overview-badges">
+                {analysis.hydrationLevel && (
+                  <span className={`health-badge hydration-${analysis.hydrationLevel.replace(/_/g, '-')}`}>
+                    💧 {analysis.hydrationLevel.replace(/_/g, ' ')}
+                  </span>
+                )}
+                {analysis.barrierHealth && (
+                  <span className={`health-badge barrier-${analysis.barrierHealth}`}>
+                    🛡️ Barrier: {analysis.barrierHealth}
+                  </span>
+                )}
+              </div>
+            )}
             <div className="overview-section">
               <h3>Identified Concerns</h3>
               <div className="concern-tags">

@@ -225,3 +225,73 @@ All under `/api/v1/`. Key prefixes:
 - `usePullToRefresh` — Pull-to-refresh gesture
 - `useWebSocket` — WebSocket with auto-reconnect
 - `useOptimizedApi` — API calls with loading/error states
+
+## AI Features (20 features — all production-ready)
+
+### Scan & Analysis (GPT-4V Vision)
+- `services/openai_vision_service.py` — Skin scan analysis with 10 signals + skin age + hydration + barrier health
+- Every scan saves: scores, concerns, zone analysis, skin age, recommendations to DB
+
+### AI Intelligence Engine (GPT-4o-mini)
+- `services/ai_intelligence_service.py` — 16 AI functions:
+  1. `ai_recommend_products()` — Weighted scoring (40% ingredients, 25% skin type, 20% concerns, 15% quality)
+  2. `ai_generate_routine()` — AM/PM routines with reasoning
+  3. `ai_analyze_ingredients()` — Safety + efficacy analysis
+  4. `ai_generate_notifications()` — Smart alerts from scan trends
+  5. `ai_curate_content()` — Personalized blog/video ranking
+  6. `ai_predict_skin_future()` — 4-week skin predictions
+  7. `ai_compare_scans()` — Before/after AI narration
+  8. `ai_rerank_search()` — Search result optimization
+  9. `ai_detect_seasonal_trends()` — Pattern detection across scans
+  10. `ai_skin_age_report()` — Skin age vs real age analysis
+  11. `ai_exposome_prediction()` — UV/humidity/pollution skin impact
+  12. `ai_community_benchmark()` — Percentile ranking vs similar users
+  13. `ai_shelf_conflicts()` — Cross-product ingredient conflicts/synergies
+  14. `ai_proactive_insights()` — AI Coach with full journey context
+  15. `ai_product_match_score()` — Personalized product compatibility %
+  16. `build_profile_context()` — Profile → prompt context builder
+
+### Smart Recommendation Engine
+- `services/smart_recommendation_engine.py` — Multi-signal scoring:
+  - 35% AI analysis, 25% effectiveness data, 20% community reviews, 10% shelf compatibility, 10% scan correlation
+  - `auto_track_effectiveness()` — Auto-called after every scan, links shelf products to score changes
+  - Builds proprietary dataset (ProductEffectiveness table) that gets smarter with every user
+
+### Blog Agent
+- `services/blog_agent.py` — Auto-generates daily blog articles:
+  - Data-driven articles from scan trends ("Why Dehydration Is Trending")
+  - Marketing articles from 30-topic rotation (SEO-optimized)
+  - Cover images from curated Unsplash URLs
+  - `auto_generate_daily_article()` — One article per day, alternating data/marketing
+
+### Digital Twin & Simulation
+- `services/simulation_service.py` — Enhanced with:
+  - 30+ ingredient effects database
+  - Ingredient synergy detection (vitamin C+E, niacinamide+zinc, etc.)
+  - Ingredient conflict detection (retinol+AHA, vitamin C+BP, etc.)
+  - Environmental impact factors (UV, humidity, temperature, pollution)
+  - `simulate_advanced()` — Combines all factors for realistic predictions
+
+### AI Chat
+- `services/ai_chat_service.py` — Context-aware GPT-4o-mini streaming chat
+  - Gathers: profile, detailed scan scores, shelf products, goals, routine adherence, skin trends
+  - SSE streaming with cost tracking
+
+### Clinical Insights
+- `services/clinical_insights_service.py` — Derm reports, skin alerts, benchmarking, trend analysis
+
+### Security
+- DOMPurify on all dangerouslySetInnerHTML
+- Magic-byte file upload validation + UUID filenames
+- httpOnly cookies for refresh tokens
+- SECRET_KEY fails fast in production/staging
+
+### API Endpoints (AI)
+- `GET /api/v1/ai/skin-age` — Skin age analysis
+- `GET /api/v1/ai/exposome` — Environmental predictions
+- `GET /api/v1/ai/benchmark` — Community comparison
+- `GET /api/v1/ai/shelf-analysis` — Shelf conflicts/synergies
+- `GET /api/v1/ai/coach` — Proactive AI coaching
+- `GET /api/v1/ai/product-match/{id}` — Product compatibility score
+- `GET /api/v1/ai/smart-recommendations` — Multi-signal recommendations
+- `POST /admin/generate-articles` — AI blog generation

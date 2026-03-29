@@ -80,7 +80,7 @@ const ComparisonPage: React.FC = () => {
         setAnalyses(mapped);
         setAllAnalysesForChart(mapped);
       } catch (error) {
-        console.error('Failed to load analyses:', error);
+        if (import.meta.env.DEV) console.error('Failed to load analyses:', error);
         setAnalyses([]);
         setAllAnalysesForChart([]);
       }
@@ -182,7 +182,7 @@ const ComparisonPage: React.FC = () => {
       link.href = canvas.toDataURL('image/png');
       link.click();
     } catch (err) {
-      console.error('Export failed:', err);
+      if (import.meta.env.DEV) console.error('Export failed:', err);
       alert('Export failed. Please try again.');
     }
   };
@@ -264,10 +264,10 @@ const ComparisonPage: React.FC = () => {
               <div className="comparison-card-header-row">
                 <h3>Visual comparison</h3>
                 <div className="comparison-actions-header">
-                  <button onClick={handleShareComparison} className="btn-icon-small" title="Share">
+                  <button onClick={handleShareComparison} className="btn-icon-small" title="Share" aria-label="Share comparison">
                     <IconShare2 size={18} strokeWidth={2} />
                   </button>
-                  <button onClick={handleExportComparison} className="btn-icon-small" title="Export">
+                  <button onClick={handleExportComparison} className="btn-icon-small" title="Export" aria-label="Export comparison">
                     <IconDownload size={18} strokeWidth={2} />
                   </button>
                 </div>

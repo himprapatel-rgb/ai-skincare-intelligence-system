@@ -67,7 +67,7 @@ const ConsentPage: React.FC = () => {
           setHasExistingConsent(false);
         }
       } catch (err) {
-        console.error('Failed to fetch consent data:', err);
+        if (import.meta.env.DEV) console.error('Failed to fetch consent data:', err);
         // Use defaults if API fails
       } finally {
         setInitialLoading(false);
@@ -125,7 +125,7 @@ const ConsentPage: React.FC = () => {
       // Navigate to next page (onboarding or home)
       navigate('/onboarding');
     } catch (err: unknown) {
-      if (import.meta.env.DEV) console.error('Failed to save consent:', err);
+      if (import.meta.env.DEV) if (import.meta.env.DEV) console.error('Failed to save consent:', err);
       const res = err && typeof err === 'object' && 'response' in err ? (err as { response?: { status?: number } }).response : undefined;
       if (res?.status === 401) {
         setError('Please log in to save your preferences.');

@@ -256,7 +256,7 @@ const DigitalTwinTimelinePage: React.FC = () => {
         setComparisonBefore((current) => current ?? finalSnapshots[finalSnapshots.length - 1]?.id ?? null);
         setComparisonAfter((current) => current ?? finalSnapshots[0]?.id ?? null);
       } catch (error) {
-        console.error('Failed to load digital twin timeline:', error);
+        if (import.meta.env.DEV) console.error('Failed to load digital twin timeline:', error);
         setHasError(true);
         setSnapshots([]);
         setInsights(null);
@@ -278,7 +278,7 @@ const DigitalTwinTimelinePage: React.FC = () => {
       setComparisonAfter(null);
       setRefreshKey((k) => k + 1);
     } catch (err) {
-      console.error('Failed to delete snapshot:', err);
+      if (import.meta.env.DEV) console.error('Failed to delete snapshot:', err);
       alert('Failed to delete snapshot. Please try again.');
     }
   };

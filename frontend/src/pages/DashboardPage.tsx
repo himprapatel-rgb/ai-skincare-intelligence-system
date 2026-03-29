@@ -180,7 +180,7 @@ const DashboardPage: React.FC = () => {
       }).catch(() => {});
 
     } catch (error) {
-      console.error('Failed to fetch dashboard data:', error);
+      if (import.meta.env.DEV) console.error('Failed to fetch dashboard data:', error);
       setData({
         recentScans: 0,
         skinScore: 0,

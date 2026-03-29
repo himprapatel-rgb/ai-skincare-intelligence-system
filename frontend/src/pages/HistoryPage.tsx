@@ -61,8 +61,8 @@ const HistoryPage: React.FC = () => {
         } as ScanHistory;
       });
       setHistory(mapped);
-    } catch (error) {
-      console.error('Error fetching history:', error);
+    } catch {
+      // Error handled silently — user sees empty state
     } finally {
       setLoading(false);
     }

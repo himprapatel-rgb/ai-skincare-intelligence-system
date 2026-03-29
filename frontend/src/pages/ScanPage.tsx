@@ -1114,7 +1114,7 @@ export default function ScanPage() {
                 <div className="scan-preview-modal" onClick={() => setShowPreview(false)}>
                   <div className="scan-preview-card" onClick={(e) => e.stopPropagation()}>
                     <h3>Confirm Your Photo</h3>
-                    <img src={previewUrl} alt="Scan preview" className="scan-preview-image" />
+                    <img loading="lazy" src={previewUrl} alt="Scan preview" className="scan-preview-image" />
                     <div className="scan-preview-quality">
                       <span className="scan-quality-dot">
                         <span className={`scan-quality-dot-indicator ${faceLocked ? 'good' : 'warn'}`} />

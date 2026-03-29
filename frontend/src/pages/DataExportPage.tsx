@@ -126,7 +126,7 @@ const DataExportPage: React.FC = () => {
 
       setExportComplete(true);
     } catch (error) {
-      console.error('Export failed:', error);
+      if (import.meta.env.DEV) console.error('Export failed:', error);
       toast?.error('Export failed. Please try again.');
     } finally {
       setIsExporting(false);

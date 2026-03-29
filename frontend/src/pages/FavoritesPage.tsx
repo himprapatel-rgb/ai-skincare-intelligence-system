@@ -53,7 +53,7 @@ const FavoritesPage: React.FC = () => {
         addedAt: (typeof f.created_at === 'string' ? f.created_at.split('T')[0] : '') || '',
       })));
     } catch (err: unknown) {
-      if (import.meta.env.DEV) console.error('Failed to fetch favorites:', err);
+      if (import.meta.env.DEV) if (import.meta.env.DEV) console.error('Failed to fetch favorites:', err);
       setFavorites([]);
       const res = err && typeof err === 'object' && 'response' in err ? (err as { response?: { status?: number } }).response : undefined;
       if (res?.status !== 401) {
@@ -74,7 +74,7 @@ const FavoritesPage: React.FC = () => {
       await api.delete(`/favorites/${confirmRemoveId}`);
       setFavorites(prev => prev.filter(p => p.id !== confirmRemoveId));
     } catch (err) {
-      console.error('Failed to remove favorite:', err);
+      if (import.meta.env.DEV) console.error('Failed to remove favorite:', err);
       setFavorites(prev => prev.filter(p => p.id !== confirmRemoveId));
     } finally {
       setConfirmRemoveId(null);

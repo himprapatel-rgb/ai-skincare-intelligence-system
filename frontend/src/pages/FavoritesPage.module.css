@@ -52,7 +52,7 @@
   border-radius: var(--radius-lg, 12px);
   color: var(--white, #fff);
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background var(--transition-base);
 }
 
 .refreshBtn:hover {
@@ -140,7 +140,7 @@
   color: var(--color-gray-400, #94a3b8);
   border-radius: 50%;
   cursor: pointer;
-  transition: color 0.2s, background 0.2s;
+  transition: color var(--transition-base), background var(--transition-base);
 }
 
 .searchClear:hover {
@@ -208,7 +208,7 @@
   border-radius: var(--radius-lg, 12px);
   box-shadow: var(--shadow-sm, 0 2px 4px rgba(0,0,0,0.06));
   overflow: hidden;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
 }
 
 .productCard:hover,
@@ -299,7 +299,7 @@
   background: transparent;
   border: none;
   cursor: pointer;
-  transition: color 0.2s, background 0.2s;
+  transition: color var(--transition-base), background var(--transition-base);
 }
 
 .removeBtn:hover {
@@ -401,3 +401,13 @@
     padding: 12px;
   }
 }
+
+/* Tablet (769-1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .page { padding: 24px 20px; }
+}
+/* Laptop (1025-1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .page { max-width: 1120px; margin: 0 auto; }
+}
+

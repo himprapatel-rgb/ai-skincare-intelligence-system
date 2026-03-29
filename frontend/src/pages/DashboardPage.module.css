@@ -75,7 +75,7 @@
   color: var(--text-primary, #162133);
   cursor: pointer;
   white-space: nowrap;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
   min-height: 44px;
   flex-shrink: 0;
 }
@@ -323,3 +323,13 @@
     background: var(--gray-200, #e4e9ef);
   }
 }
+
+/* Tablet (769-1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .page { padding: 24px 20px; }
+}
+/* Laptop (1025-1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .page { max-width: 1120px; margin: 0 auto; }
+}
+

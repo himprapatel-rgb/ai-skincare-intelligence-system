@@ -711,7 +711,7 @@
 .dt-metric-bar-fill {
   height: 100%;
   border-radius: var(--border-radius-sm);
-  transition: width 0.4s ease;
+  transition: width var(--transition-slow);
 }
 
 .dt-metric-bar-fill.metric-good {
@@ -828,7 +828,7 @@
   border: 1px solid #ddd;
   border-radius: var(--radius-md);
   font-size: 0.95rem;
-  transition: border-color 0.2s;
+  transition: border-color var(--transition-base);
 }
 
 .simulation-form input:focus,
@@ -849,7 +849,7 @@
   border-radius: var(--radius-md);
   font-weight: var(--font-weight-medium);
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
 }
 
 .btn-simulate:hover:not(:disabled) {

@@ -118,7 +118,7 @@
   box-shadow: var(--shadow-card);
   overflow: hidden;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
 }
 
 .articleCard:hover {
@@ -272,4 +272,10 @@
   .articleCard:hover {
     transform: none;
   }
+}
+
+/* Tablet (769-1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .page { padding: 24px 20px; }
+  .grid { grid-template-columns: repeat(2, 1fr); }
 }

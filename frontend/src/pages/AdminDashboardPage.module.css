@@ -264,3 +264,9 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Tablet (769-1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .page { padding: 24px 20px; }
+  .statsGrid { grid-template-columns: repeat(2, 1fr); }
+}

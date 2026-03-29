@@ -308,7 +308,7 @@
   text-align: center;
   cursor: pointer;
   min-height: 44px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
 }
 
 .stat-card:hover {

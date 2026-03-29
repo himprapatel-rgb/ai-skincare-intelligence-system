@@ -175,7 +175,7 @@
   color: var(--text-muted);
   border-radius: 50%;
   cursor: pointer;
-  transition: color 0.2s, background 0.2s;
+  transition: color var(--transition-base), background var(--transition-base);
 }
 
 .history-search-clear:hover {

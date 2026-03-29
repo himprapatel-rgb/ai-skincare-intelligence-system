@@ -100,7 +100,7 @@
   text-decoration: none;
   background: var(--bg-white);
   border: 1px solid var(--border);
-  transition: background 0.2s, color 0.2s;
+  transition: background var(--transition-base), color var(--transition-base);
 }
 
 .alphabet-nav .alphabet-letter:hover {

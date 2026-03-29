@@ -88,3 +88,13 @@
   .card { background: var(--bg-primary-dark, #1a1a2e); }
   .title { color: var(--text-primary-dark, #f0f0f5); }
 }
+
+/* Tablet (769-1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .page { padding: 24px 20px; }
+}
+/* Laptop (1025-1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .page { max-width: 1120px; margin: 0 auto; }
+}
+

@@ -33,7 +33,7 @@
   color: var(--text-primary, #1a1a1a);
   
   /* Transitions */
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform var(--transition-slow), box-shadow var(--transition-slow), background-color var(--transition-slow);
   
   /* Prevent auto-zoom on iOS */
   -webkit-text-size-adjust: 100%;
@@ -64,7 +64,7 @@
   font-size: 16px;
   font-weight: var(--font-weight-medium);
   color: var(--text-muted, #666);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform var(--transition-slow), box-shadow var(--transition-slow), background-color var(--transition-slow);
   background: transparent;
   padding: 0 4px;
 }
@@ -102,7 +102,7 @@
   color: var(--text-muted, #666);
   pointer-events: none;
   z-index: 1;
-  transition: color 0.3s;
+  transition: color var(--transition-slow);
 }
 
 .mobile-input__icon svg {
@@ -191,7 +191,7 @@
 /* Placeholder (only show when focused) */
 .mobile-input__input::placeholder {
   opacity: 0;
-  transition: opacity 0.3s;
+  transition: opacity var(--transition-slow);
 }
 
 .mobile-input--focused .mobile-input__input::placeholder {

@@ -90,7 +90,7 @@
   color: var(--text-secondary, #64748b);
   border: 1px solid var(--gray-200, #e2e8f0);
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
+  transition: background var(--transition-base), color var(--transition-base);
 }
 
 .confirm-modal-cancel:hover {
@@ -106,7 +106,7 @@
   color: var(--white);
   border: none;
   cursor: pointer;
-  transition: background 0.2s, transform 0.1s;
+  transition: background var(--transition-base), transform var(--transition-fast);
 }
 
 .confirm-modal-confirm:hover {

@@ -574,7 +574,7 @@
   padding: 4px;
   cursor: pointer;
   color: var(--text-muted);
-  transition: color 0.2s;
+  transition: color var(--transition-base);
 }
 
 .star-btn.active,
@@ -677,7 +677,7 @@
   height: 100%;
   background: var(--warning);
   border-radius: var(--border-radius-sm);
-  transition: width 0.3s ease;
+  transition: width var(--transition-slow);
 }
 
 /* Reviews List */
@@ -919,7 +919,7 @@
   border: 1px solid var(--border-color);
   border-radius: var(--radius-xl, 16px);
   font-size: 0.9rem;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
 }
 
 .ingredient-search:focus {
@@ -1030,7 +1030,7 @@
   height: 100%;
   border-radius: var(--radius-full);
   background: var(--primary);
-  transition: width 0.4s ease;
+  transition: width var(--transition-slow);
 }
 .match-for-you-bullets {
   display: flex;
@@ -1088,7 +1088,7 @@
   height: 100%;
   width: var(--rating-width, 0%);
   background-color: var(--rating-color, var(--primary));
-  transition: width 0.3s ease;
+  transition: width var(--transition-slow);
 }
 
 .flagged-ingredients-section {

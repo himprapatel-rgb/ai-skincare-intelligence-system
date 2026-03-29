@@ -52,7 +52,7 @@
   cursor: pointer;
   white-space: nowrap;
   min-height: 44px;
-  transition: color 0.2s ease, border-color 0.2s ease;
+  transition: color var(--transition-base), border-color var(--transition-base);
 }
 
 .tabButton:hover {
@@ -330,3 +330,13 @@
     transition: none;
   }
 }
+
+/* Tablet (769-1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .page { padding: 24px 20px; }
+}
+/* Laptop (1025-1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .page { max-width: 1120px; margin: 0 auto; }
+}
+

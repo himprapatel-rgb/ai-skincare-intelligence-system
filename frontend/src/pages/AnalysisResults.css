@@ -265,7 +265,7 @@
   height: 100%;
   background: linear-gradient(90deg, var(--success) 0%, var(--primary) 100%);
   border-radius: var(--radius-xl, 16px);
-  transition: width 0.4s ease;
+  transition: width var(--transition-slow);
   box-shadow: var(--shadow-primary);
 }
 
@@ -506,7 +506,7 @@
 .severity-fill {
   height: 100%;
   border-radius: var(--radius-xl, 16px);
-  transition: width 0.4s ease;
+  transition: width var(--transition-slow);
 }
 
 .severity-value {
@@ -968,7 +968,7 @@
   border: 1px solid var(--border-color, #e4e9ef);
   text-decoration: none;
   color: inherit;
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  transition: box-shadow var(--transition-base), transform var(--transition-base);
 }
 .results-rec-card:hover {
   box-shadow: var(--shadow-md, 0 4px 12px rgba(0,0,0,0.06));

@@ -325,3 +325,13 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+/* Tablet (769-1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .admin-content { padding: 24px 20px; }
+  .admin-content-grid { grid-template-columns: repeat(2, 1fr); }
+}
+/* Laptop (1025-1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .admin-content { max-width: 1120px; margin: 0 auto; }
+}

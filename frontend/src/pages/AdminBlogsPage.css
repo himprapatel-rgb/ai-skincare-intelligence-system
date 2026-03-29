@@ -137,3 +137,12 @@
   .admin-list-card { padding: 12px; }
   .admin-loading, .admin-empty { padding: 24px; }
 }
+
+/* Tablet (769-1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .admin-blogs { padding: 24px 20px; }
+}
+/* Laptop (1025-1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .admin-blogs { max-width: 1120px; margin: 0 auto; }
+}

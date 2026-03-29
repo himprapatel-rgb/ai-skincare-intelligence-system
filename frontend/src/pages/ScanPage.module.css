@@ -269,7 +269,7 @@
   height: 100%;
   background: var(--white, #fff);
   border-radius: var(--border-radius-sm);
-  transition: width 0.3s ease;
+  transition: width var(--transition-slow);
 }
 
 /* ===== Results Preview (Slide-up Panel) ===== */
@@ -541,3 +541,13 @@
     transform: none;
   }
 }
+
+/* Tablet (769-1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .page { padding: 24px 20px; }
+}
+/* Laptop (1025-1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .page { max-width: 1120px; margin: 0 auto; }
+}
+

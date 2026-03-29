@@ -12,7 +12,7 @@
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-medium);
   cursor: pointer;
-  transition: border-color 0.2s, color 0.2s;
+  transition: border-color var(--transition-base), color var(--transition-base);
 }
 
 .back-button:hover {

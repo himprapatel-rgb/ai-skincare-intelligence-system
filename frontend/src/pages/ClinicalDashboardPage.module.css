@@ -143,7 +143,7 @@
   font-weight: var(--font-weight-medium, 500);
   color: var(--text-secondary, #64748b);
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: transform var(--transition-fast), background-color var(--transition-fast);
 }
 .rangeTab:hover {
   color: var(--text-primary, #162133);
@@ -344,4 +344,15 @@
   .reportModal {
     padding: var(--spacing-md, 16px);
   }
+}
+
+/* Tablet (769-1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .page { padding: 24px 20px; }
+  .grid { grid-template-columns: repeat(2, 1fr); }
+  .statsGrid { grid-template-columns: repeat(2, 1fr); }
+}
+/* Laptop (1025-1440px) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .page { max-width: 1120px; margin: 0 auto; }
 }

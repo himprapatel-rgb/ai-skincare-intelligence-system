@@ -484,7 +484,7 @@
   background: var(--primary);
   transform: scaleX(0);
   transform-origin: right;
-  transition: transform 0.3s ease;
+  transition: transform var(--transition-slow);
   z-index: -1;
 }
 

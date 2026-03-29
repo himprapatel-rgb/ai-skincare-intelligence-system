@@ -140,7 +140,7 @@
   background: var(--bg-primary, #fff);
   color: var(--color-gray-500, #64748b);
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
   white-space: nowrap;
   transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
@@ -207,7 +207,7 @@
 
 .resultTitle {
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-primary, #0f172a);
   margin: 0 0 var(--space-1, 4px);
   overflow: hidden;
@@ -226,7 +226,7 @@
 
 .resultBadge {
   font-size: 0.75rem;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   padding: var(--space-1, 4px) var(--space-2, 8px);
   border-radius: var(--radius-full, 9999px);
   background: var(--color-gray-100, #f1f5f9);
@@ -248,7 +248,7 @@
 
 .emptyTitle {
   font-size: 1.25rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-primary, #0f172a);
   margin: 0 0 var(--space-2, 8px);
 }
@@ -270,7 +270,7 @@
 
 .noResultsTitle {
   font-size: 1.125rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-primary, #0f172a);
   margin: 0 0 var(--space-2, 8px);
 }
@@ -296,9 +296,9 @@
   border: none;
   border-radius: var(--radius-full, 9999px);
   font-size: 0.8125rem;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: background var(--transition-base);
 }
 
 .suggestionChip:hover {

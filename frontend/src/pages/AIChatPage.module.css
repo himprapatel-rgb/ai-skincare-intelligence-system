@@ -162,7 +162,7 @@
 .headerTitle {
   flex: 1;
   font-size: var(--font-size-lg, 1.125rem);
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--text-primary, #0f172a);
   margin: 0;
   display: flex;
@@ -290,10 +290,10 @@
 
 .emptyTitle {
   font-size: 1.5rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--text-primary, #0f172a);
   margin: 0 0 var(--space-3, 12px);
-  letter-spacing: -0.02em;
+  letter-spacing: var(--letter-spacing-tight);
 }
 
 @media (prefers-color-scheme: dark) {

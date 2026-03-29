@@ -16,7 +16,7 @@
   height: 16px;
   padding: 0 4px;
   font-size: 0.65rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   line-height: 16px;
   text-align: center;
   color: var(--white, #fff);
@@ -65,14 +65,14 @@
 .notification-dropdown-title {
   margin: 0;
   font-size: 0.85rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
 }
 
 .notification-dropdown-mark-all {
   padding: 2px 6px;
   font-size: 0.72rem;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   color: var(--primary);
   background: transparent;
   border: none;
@@ -98,7 +98,7 @@
 }
 
 .notification-dropdown-empty {
-  padding: 10px 12px;
+  padding: 12px;
   text-align: center;
   color: var(--text-muted);
   font-size: 0.8rem;
@@ -111,7 +111,7 @@
 .notification-dropdown-view-all {
   padding: 8px 12px;
   font-size: 0.8rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--primary);
   background: rgba(124, 58, 237, 0.06);
   border: none;
@@ -195,7 +195,7 @@
 
 .notification-item-title {
   font-size: 0.8rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
   display: block;
 }

@@ -20,9 +20,9 @@
 .today-greeting {
   margin: 0;
   font-size: clamp(1.25rem, 4vw + 1rem, 1.5rem);
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--text-primary);
-  letter-spacing: -0.02em;
+  letter-spacing: var(--letter-spacing-tight);
   overflow-wrap: break-word;
   word-break: normal;
   min-width: 0;
@@ -137,9 +137,9 @@
 .today-prediction-title {
   margin: 0 0 12px 0;
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--text-primary);
-  letter-spacing: -0.02em;
+  letter-spacing: var(--letter-spacing-tight);
 }
 
 .today-prediction-statement {
@@ -150,7 +150,7 @@
 
 .today-prediction-delta {
   color: var(--success, #10B981);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 .today-prediction-tip {
@@ -165,7 +165,7 @@
   align-items: center;
   gap: 6px;
   font-size: 0.95rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--primary);
   text-decoration: none;
 }
@@ -197,13 +197,13 @@
   font-size: 0.75rem;
   color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: var(--letter-spacing-wide);
   margin-bottom: 4px;
 }
 
 .today-progress-score {
   font-size: 1.5rem;
-  font-weight: 800;
+  font-weight: var(--font-weight-extrabold);
   color: var(--primary);
 }
 
@@ -221,7 +221,7 @@
 .today-card-title {
   margin: 0 0 12px 0;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
 }
 
@@ -339,14 +339,14 @@
   transform: translate(-50%, -50%);
   margin: 0;
   font-size: var(--font-size-3xl, 1.875rem);
-  font-weight: 800;
+  font-weight: var(--font-weight-extrabold);
   color: var(--primary);
 }
 
 .today-skin-score {
   display: block;
   font-size: 2.75rem;
-  font-weight: 800;
+  font-weight: var(--font-weight-extrabold);
   color: var(--primary);
   line-height: 1.1;
   letter-spacing: -0.03em;
@@ -359,7 +359,7 @@
 .today-skin-trend {
   display: inline-block;
   font-size: var(--font-size-sm, 0.875rem);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-secondary);
   margin-top: 4px;
 }
@@ -369,7 +369,7 @@
   font-size: 0.75rem;
   color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: var(--letter-spacing-wide);
   margin-top: 4px;
 }
 
@@ -391,7 +391,7 @@
 /* Compact skin card (design system) */
 .today-card-title-caps {
   font-size: var(--font-size-xs, 0.75rem);
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--text-secondary);
@@ -446,10 +446,10 @@
   transform: translate(-50%, -50%);
   margin-top: -4px;
   font-size: 1.75rem;
-  font-weight: 800;
+  font-weight: var(--font-weight-extrabold);
   color: var(--primary);
   line-height: 1;
-  transition: opacity 0.3s ease;
+  transition: opacity var(--transition-slow);
 }
 
 .today-skin-gauge-label {
@@ -459,9 +459,9 @@
   transform: translate(-50%, -50%);
   margin-top: 18px;
   font-size: 0.65rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: var(--letter-spacing-wide);
   color: var(--text-muted);
 }
 
@@ -472,7 +472,7 @@
 
 .today-skin-trend-inline {
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
 }
 
@@ -490,7 +490,7 @@
 
 .today-skin-score-num {
   font-size: 1.75rem;
-  font-weight: 800;
+  font-weight: var(--font-weight-extrabold);
   color: var(--primary);
   line-height: 1;
 }
@@ -503,7 +503,7 @@
 .today-skin-actions {
   display: flex;
   gap: 12px;
-  margin-top: 14px;
+  margin-top: 12px;
 }
 
 .today-skin-btn {
@@ -545,7 +545,7 @@
 
 .today-concern-badge {
   font-size: 0.65rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   text-transform: uppercase;
   letter-spacing: 0.03em;
   margin-bottom: 4px;
@@ -553,7 +553,7 @@
 
 .today-concern-name {
   font-size: var(--font-size-xs, 0.75rem);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
   word-break: normal;
 }
@@ -618,7 +618,7 @@
 .today-toppick-card {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
   border-radius: var(--radius-xl, 16px);
   overflow: hidden;
   border: 1px solid var(--border-color);
@@ -653,7 +653,7 @@
 
 .today-toppick-brand {
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.03em;
@@ -662,7 +662,7 @@
 
 .today-toppick-name {
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--text-primary);
   margin: 0;
   line-height: 1.25;
@@ -676,7 +676,7 @@
 
 .today-toppick-match-pct {
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--primary);
 }
 
@@ -724,7 +724,7 @@
 
 .today-card-toppick .today-card-title {
   font-size: 1.05rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--text-primary);
   white-space: normal;
   line-height: var(--line-height-snug);
@@ -732,7 +732,7 @@
 }
 
 .today-card-toppick .today-see-all {
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   font-size: 0.9rem;
   color: var(--primary);
   flex-shrink: 0;
@@ -817,11 +817,11 @@
 
 .today-product-card-placeholder {
   font-size: 0.6rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--text-muted);
   opacity: 0.9;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: var(--letter-spacing-wide);
   text-align: center;
   padding: 0 8px;
   line-height: var(--line-height-tight);
@@ -839,10 +839,10 @@
 
 .today-product-card-brand {
   font-size: 0.65rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: var(--letter-spacing-wide);
   margin: 0;
   white-space: nowrap;
   overflow: hidden;
@@ -851,7 +851,7 @@
 
 .today-product-card-name {
   font-size: var(--font-size-xs, 0.75rem);
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--text-primary);
   margin: 0;
   line-height: 1.28;
@@ -871,7 +871,7 @@
 
 .today-product-card-match-pct {
   font-size: 0.7rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--primary);
   letter-spacing: 0.02em;
 }
@@ -897,7 +897,7 @@
 }
 
 .today-product-card-price {
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
 }
 
@@ -910,7 +910,7 @@
   margin-top: 4px;
   min-height: 32px;
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   padding: 6px 8px;
   border-radius: var(--radius-xl, 16px);
   text-decoration: none;
@@ -943,7 +943,7 @@
 
 .today-routine-count {
   font-size: var(--font-size-sm, 0.875rem);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-secondary);
 }
 
@@ -1056,7 +1056,7 @@
 
 .today-streak-title {
   font-size: var(--font-size-lg, 1.125rem);
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--text-primary);
 }
 
@@ -1092,7 +1092,7 @@
 .today-streak-celebration {
   margin: 0 0 8px 0;
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--primary);
 }
 
@@ -1112,11 +1112,11 @@
   justify-content: center;
   gap: 6px;
   min-height: 44px;
-  padding: 10px 12px;
+  padding: 12px;
   border: none;
   border-radius: var(--radius-xl, 16px);
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-secondary);
   background: transparent;
   cursor: pointer;
@@ -1141,7 +1141,7 @@
 
 .today-see-all {
   font-size: var(--font-size-sm, 0.875rem);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--primary);
   text-decoration: none;
 }
@@ -1185,13 +1185,13 @@
 
 .today-foryou-pct {
   font-size: 1.25rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--primary);
 }
 
 .today-foryou-name {
   font-size: clamp(0.7rem, 2.2vw, 0.8rem);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
   text-align: center;
   word-break: normal;
@@ -1239,7 +1239,7 @@
   align-items: center;
   gap: 6px;
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--primary);
   text-decoration: none;
 }
@@ -1256,7 +1256,7 @@
 .today-twin-badge {
   display: inline-block;
   font-size: 0.7rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--primary);
@@ -1267,7 +1267,7 @@
 
 .today-twin-intro {
   margin: 12px 0 16px;
-  padding: 14px;
+  padding: 12px;
   background: rgba(124, 58, 237, 0.08);
   border: 1px solid rgba(124, 58, 237, 0.2);
   border-radius: var(--radius-xl, 16px);

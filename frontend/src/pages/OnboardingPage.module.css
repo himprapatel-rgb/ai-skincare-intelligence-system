@@ -40,7 +40,7 @@
 
 .stepTitle {
   font-size: var(--font-size-xl, 1.375rem);
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--text-primary, #1a1a2e);
   margin-bottom: var(--spacing-sm, 8px);
 }
@@ -82,7 +82,7 @@
   border-color: var(--primary, #6C63FF);
   background: var(--primary-light, rgba(108, 99, 255, 0.08));
   color: var(--primary, #6C63FF);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 .actions {

@@ -223,7 +223,7 @@
 .table th,
 .table td {
   text-align: left;
-  padding: 10px 12px;
+  padding: 12px;
   font-size: var(--font-size-sm, 0.875rem);
   border-bottom: 1px solid var(--border-color, #e4e9ef);
 }

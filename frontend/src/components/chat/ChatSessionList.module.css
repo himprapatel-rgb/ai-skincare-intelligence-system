@@ -30,7 +30,7 @@
   color: var(--color-primary, #1f6feb);
   font-size: var(--font-size-sm, 0.875rem);
   font-family: var(--font-family, 'Inter', sans-serif);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
   transition: all 200ms;
 }
@@ -136,7 +136,7 @@
 
 .itemTitle {
   font-size: var(--font-size-sm, 0.875rem);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   color: var(--text-primary, #0f172a);
   white-space: nowrap;
   overflow: hidden;

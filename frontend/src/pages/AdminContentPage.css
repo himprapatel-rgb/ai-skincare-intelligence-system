@@ -50,7 +50,7 @@
   background: transparent;
   border-radius: var(--radius-xl, 16px);
   font-size: 0.95rem;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   color: var(--text-gray);
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
@@ -90,7 +90,7 @@
 
 .admin-metric {
   font-size: 1.5rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--text-primary);
 }
 
@@ -146,7 +146,7 @@
 .admin-form-card .form-group label {
   display: block;
   margin-bottom: 6px;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   font-size: 0.9rem;
 }
 
@@ -154,7 +154,7 @@
 .admin-form-card .form-group textarea,
 .admin-form-card .form-group select {
   width: 100%;
-  padding: 10px 12px;
+  padding: 12px;
   border: 1px solid var(--border-color, #e2e8f0);
   border-radius: var(--radius-xl, 16px);
   font-size: 1rem;
@@ -196,7 +196,7 @@
 }
 
 .admin-image-spec {
-  font-weight: 400;
+  font-weight: var(--font-weight-normal);
   color: var(--text-gray);
   font-size: var(--font-size-sm, 0.875rem);
 }

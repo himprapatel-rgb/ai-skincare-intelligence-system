@@ -77,7 +77,7 @@
 .cardTitle {
   margin: 0 0 16px 0;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   padding: 0 4px;
   color: var(--text-primary, #0f172a);
 }
@@ -130,7 +130,7 @@
 }
 
 .categoryLabel {
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   font-size: 1rem;
   color: var(--text-primary, #0f172a);
   margin-bottom: 4px;
@@ -145,7 +145,7 @@
 .categorySize {
   font-size: 0.875rem;
   color: var(--color-gray-500, #64748b);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   white-space: nowrap;
 }
 
@@ -189,7 +189,7 @@
 
 .formatTitle {
   font-size: 1.25rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   margin-bottom: 4px;
 }
 

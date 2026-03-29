@@ -68,7 +68,7 @@
   font-size: 0.7rem;
   font-weight: var(--font-weight-bold, 700);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: var(--letter-spacing-wide);
   padding: 2px 8px;
   border-radius: var(--radius-full, 9999px);
   width: fit-content;

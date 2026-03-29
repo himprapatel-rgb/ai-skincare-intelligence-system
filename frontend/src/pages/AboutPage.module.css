@@ -60,7 +60,7 @@
   padding: var(--spacing-lg, 24px) var(--spacing-md, 16px);
   box-shadow: var(--shadow-card);
   text-align: center;
-  transition: transform 0.2s ease;
+  transition: transform var(--transition-base);
 }
 
 .teamCard:hover {

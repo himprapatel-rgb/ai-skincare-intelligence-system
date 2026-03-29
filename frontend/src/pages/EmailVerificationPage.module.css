@@ -49,7 +49,7 @@
 
 .title {
   font-size: var(--font-size-xl, 1.375rem);
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--text-primary, #1a1a2e);
   margin-bottom: var(--spacing-xs, 4px);
 }

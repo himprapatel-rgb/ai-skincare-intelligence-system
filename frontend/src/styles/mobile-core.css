@@ -159,9 +159,9 @@
   .me-page h1,
   .scan-page h1 {
     font-size: clamp(1.35rem, 4vw + 1rem, 1.6rem);
-    font-weight: 700;
+    font-weight: var(--font-weight-bold);
     color: var(--text-primary);
-    letter-spacing: -0.02em;
+    letter-spacing: var(--letter-spacing-tight);
     margin: 0 0 0.5em 0;
   }
 
@@ -169,7 +169,7 @@
   .today-page h2,
   .me-page h2 {
     font-size: 1.1rem;
-    font-weight: 600;
+    font-weight: var(--font-weight-semibold);
     color: var(--text-primary);
     margin: 1.25em 0 0.5em 0;
   }
@@ -210,7 +210,7 @@
     background: var(--bg-white);
     border-radius: var(--radius-xl);
     padding: 18px 20px;
-    margin-bottom: 14px;
+    margin-bottom: 12px;
     border: 1px solid var(--border-color);
     box-shadow: var(--shadow-sm);
     box-sizing: border-box;
@@ -263,9 +263,9 @@
   .scan-page .btn-primary,
   .auth-page .btn-primary {
     min-height: 48px;
-    padding: 14px 24px;
+    padding: 12px 24px;
     font-size: 1rem;
-    font-weight: 600;
+    font-weight: var(--font-weight-semibold);
     border-radius: var(--radius-lg);
     background: var(--gradient-primary);
     border: none;
@@ -280,7 +280,7 @@
     min-height: 48px;
     padding: 12px 20px;
     font-size: 0.9375rem;
-    font-weight: 600;
+    font-weight: var(--font-weight-semibold);
     border-radius: var(--radius-lg);
     background: var(--bg-white);
     border: 2px solid var(--primary);
@@ -333,7 +333,7 @@
     min-height: 44px;
     display: inline-flex;
     align-items: center;
-    padding: 10px 12px;
+    padding: 12px;
     margin: -2px -12px;
     box-sizing: border-box;
   }
@@ -567,7 +567,7 @@
   .me-section-title,
   .section-label {
     font-size: 0.8125rem;
-    font-weight: 600;
+    font-weight: var(--font-weight-semibold);
     color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 0.04em;
@@ -608,7 +608,7 @@
   }
 
   .app-shell-mode .app-logo-text {
-    font-weight: 700;
+    font-weight: var(--font-weight-bold);
     color: var(--text-primary);
   }
 
@@ -647,7 +647,7 @@
   .scan-page .mode-btn {
     min-height: 48px;
     border-radius: var(--radius-lg);
-    font-weight: 500;
+    font-weight: var(--font-weight-medium);
     transition: transform 0.15s ease, box-shadow 0.15s ease;
   }
 
@@ -658,7 +658,7 @@
 
   .scan-page .scan-progress-section .progress-title {
     font-size: 1.5rem;
-    font-weight: 700;
+    font-weight: var(--font-weight-bold);
     color: var(--text-primary, #0f172a);
     margin-bottom: 8px;
   }
@@ -707,14 +707,14 @@
 
   .myshelf-page .myshelf-empty-title {
     font-size: 1.25rem;
-    font-weight: 700;
+    font-weight: var(--font-weight-bold);
     color: var(--text-primary);
   }
 
   .myshelf-page .myshelf-empty-cta {
     min-height: 48px;
     padding: 14px 28px;
-    font-weight: 600;
+    font-weight: var(--font-weight-semibold);
     border-radius: var(--radius-lg);
   }
 
@@ -730,7 +730,7 @@
 
   .dashboard-page .stat-card .stat-content h3 {
     font-size: 1.75rem;
-    font-weight: 700;
+    font-weight: var(--font-weight-bold);
     color: var(--text-primary);
     line-height: var(--line-height-tight);
     margin: 0 0 4px 0;
@@ -791,7 +791,7 @@
   /* Product/recommendation cards */
   .today-products-grid,
   .recommendations-grid {
-    gap: 14px;
+    gap: 12px;
   }
 
   .today-product-card,
@@ -820,7 +820,7 @@
     background: var(--gradient-primary);
     color: var(--white);
     font-size: 1.35rem;
-    font-weight: 700;
+    font-weight: var(--font-weight-bold);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -846,7 +846,7 @@
   .auth-page input[type="password"],
   .auth-page input[type="text"] {
     min-height: 52px;
-    padding: 14px 16px;
+    padding: 12px 16px;
     font-size: 1rem;
     border-radius: var(--radius-lg);
     border: 1px solid var(--border-color);

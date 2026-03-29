@@ -8,7 +8,7 @@
 
 .barLabel {
   font-size: var(--font-xs, 0.75rem);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   color: var(--text-secondary, #64748b);
   line-height: 1;
 }
@@ -46,7 +46,7 @@
 
 .ringLabel {
   font-size: var(--font-xs, 0.75rem);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   color: var(--text-secondary, #64748b);
   line-height: 1;
 }

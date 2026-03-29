@@ -42,7 +42,7 @@
 .export-card-title {
   margin: 0 0 16px 0;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   padding: 0 4px;
 }
 
@@ -105,7 +105,7 @@
 }
 
 .export-category-label {
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   font-size: 1rem;
   color: var(--text-dark);
   margin-bottom: 4px;
@@ -120,7 +120,7 @@
 .export-category-size {
   font-size: 0.875rem;
   color: var(--text-gray);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
 }
 
 .export-format-card {
@@ -153,7 +153,7 @@
 
 .export-format-title {
   font-size: 1.25rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   margin-bottom: 4px;
 }
 

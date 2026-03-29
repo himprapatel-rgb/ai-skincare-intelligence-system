@@ -6,7 +6,7 @@
 
 /* Bottom Nav - Mobile only, Bumble-style; fits all screens, blends with safe area */
 .bottom-nav {
-  transition: transform 0.2s ease;
+  transition: transform var(--transition-base);
   display: none;
   position: fixed;
   bottom: 0;
@@ -74,7 +74,7 @@
   color: var(--text-muted);
   text-decoration: none;
   font-size: 0.7rem;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border-radius: var(--radius-lg);
   -webkit-tap-highlight-color: transparent;
@@ -107,7 +107,7 @@
 
 .bottom-nav-item.active {
   color: var(--primary);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 /* Active pill indicator behind icon */
@@ -236,7 +236,7 @@
 .bottom-nav-center-label {
   margin-top: 4px;
   font-size: 0.65rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-muted);
 }
 

@@ -16,7 +16,7 @@
 .action-sheet-title {
   margin: 0 0 6px;
   font-size: 17px;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: #1a1a1a;
 }
 
@@ -40,7 +40,7 @@
   background: transparent;
   border: none;
   font-size: 17px;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   color: #1a1a1a;
   text-align: left;
   cursor: pointer;
@@ -62,12 +62,12 @@
 /* Variants */
 .action-sheet-option--primary {
   color: var(--primary);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 .action-sheet-option--danger {
   color: var(--danger);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 .action-sheet-option-icon {
@@ -97,7 +97,7 @@
   border: 2px solid rgba(0, 0, 0, 0.08);
   border-radius: var(--radius-xl);
   font-size: 17px;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-muted);
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);

@@ -18,7 +18,7 @@
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border-color);
-  padding: 10px 16px;
+  padding: 12px 16px;
   padding-top: max(10px, env(safe-area-inset-top));
   transform: translateY(-100%);
   opacity: 0;
@@ -64,7 +64,7 @@
   padding-top: max(12px, env(safe-area-inset-top));
   padding-left: max(16px, env(safe-area-inset-left));
   color: var(--text-primary);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   text-decoration: none;
   min-height: 44px;
 }
@@ -92,13 +92,13 @@
 
 .profile-sticky-avatar span {
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--white);
 }
 
 .profile-sticky-name {
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
   white-space: nowrap;
   overflow: hidden;
@@ -123,7 +123,7 @@
   padding: 12px 20px;
   font-size: 0.875rem;
   color: var(--text-secondary);
-  transition: transform 0.2s ease;
+  transition: transform var(--transition-base);
 }
 
 .profile-pull-text {
@@ -157,7 +157,7 @@
   padding: 14px 28px;
   border-radius: var(--radius-full);
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--white);
   background: var(--primary);
   border: none;
@@ -190,7 +190,7 @@
   border: none;
   padding: 0;
   font-size: 0.95rem;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   color: var(--primary);
   cursor: pointer;
   text-decoration: underline;
@@ -243,7 +243,7 @@
 .profile-modal h2 {
   margin: 0 0 16px 0;
   font-size: 1.25rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
 }
 
@@ -322,7 +322,7 @@
   align-items: center;
   justify-content: center;
   font-size: 1.75rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--white);
 }
 
@@ -364,7 +364,7 @@
 
 .profile-header-name {
   font-size: 1.15rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   margin: 0 0 2px 0;
   color: var(--white);
   word-break: break-word;
@@ -403,7 +403,7 @@
 .stat-value {
   display: block;
   font-size: 1.05rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--white);
 }
 
@@ -449,7 +449,7 @@
 
 .section-title {
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -469,7 +469,7 @@
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 10px 12px;
+  padding: 12px;
   border: none;
   border-bottom: 1px solid var(--gray-100);
   background: transparent;
@@ -527,7 +527,7 @@
 
 .settings-label {
   flex: 1;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   min-width: 0;
   white-space: nowrap;
   overflow: hidden;
@@ -551,7 +551,7 @@
 }
 
 .profile-footer-actions {
-  margin-top: 28px;
+  margin-top: 24px;
   padding-top: 16px;
   padding-bottom: env(safe-area-inset-bottom);
   border-top: 1px solid var(--border-color);
@@ -560,13 +560,13 @@
 .sign-out-button {
   display: block;
   width: 100%;
-  padding: 14px 20px;
+  padding: 12px 20px;
   background: transparent;
   border: 1px solid var(--danger);
   border-radius: var(--radius-xl, 16px);
   color: var(--danger);
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   text-align: center;
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
@@ -580,7 +580,7 @@
   display: block;
   width: 100%;
   padding: 12px 20px;
-  margin-top: 10px;
+  margin-top: 12px;
   background: transparent;
   border: none;
   border-radius: var(--radius-xl, 16px);
@@ -742,7 +742,7 @@
 
 .profile-container h1 {
   font-size: var(--font-size-3xl, 1.875rem);
-  font-weight: 700; /* Brand guideline: Bold */
+  font-weight: var(--font-weight-bold); /* Brand guideline: Bold */
   color: var(--text-primary); /* Deep Navy */
   margin-bottom: 6px;
   line-height: var(--line-height-tight);
@@ -760,7 +760,7 @@
   padding: 6px 12px;
   border-radius: var(--radius-full);
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   border: 1px solid var(--warning-400, rgba(146, 64, 14, 0.15));
 }
 
@@ -831,7 +831,7 @@
 
 .profile-name {
   font-size: var(--font-size-lg, 1.125rem);
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--text-primary);
 }
 
@@ -869,7 +869,7 @@
 
 .quick-stat-value {
   font-size: 1.5rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -878,7 +878,7 @@
 
 .quick-stat-label {
   font-size: var(--font-size-xs, 0.75rem);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -900,7 +900,7 @@
 .quick-stat-action {
   font-size: 0.7rem;
   color: var(--primary);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   margin-top: 2px;
 }
 
@@ -922,7 +922,7 @@
   border-radius: var(--radius-xl, 16px);
   cursor: pointer;
   font-size: 0.95rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-secondary);
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   text-align: left;
@@ -966,7 +966,7 @@
 
 .profile-settings-links-title {
   font-size: var(--font-size-xs, 0.75rem);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -984,7 +984,7 @@
   background: transparent;
   font-family: inherit;
   font-size: 0.95rem;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   color: var(--text-primary);
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
@@ -1037,7 +1037,7 @@
 .section-card-header h2,
 .section-card-header h3 {
   font-size: var(--font-size-xl);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
   margin: 0;
 }
@@ -1059,7 +1059,7 @@
 
 .tab-content h2 {
   font-size: 1.5rem; /* Brand guideline: 24px / 1.5rem for H3 */
-  font-weight: 600; /* Brand guideline: Semibold */
+  font-weight: var(--font-weight-semibold); /* Brand guideline: Semibold */
   color: var(--text-primary);
   margin-bottom: 20px;
   line-height: var(--line-height-normal);
@@ -1067,7 +1067,7 @@
 
 .tab-content h3 {
   font-size: 1.125rem; /* Brand guideline: 18px Body Large */
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
   margin: 24px 0 16px;
 }
@@ -1080,7 +1080,7 @@
 .form-group label {
   display: block;
   font-size: 0.9rem;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   color: var(--gray-700, #374151);
   margin-bottom: 6px;
 }
@@ -1163,7 +1163,7 @@
   color: var(--white);
   border: none;
   border-radius: var(--radius-xl, 16px);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   font-size: 1rem;
   cursor: pointer;
   transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
@@ -1182,7 +1182,7 @@
   border: none;
   border-radius: var(--radius-xl, 16px);
   padding: 12px 24px;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   font-size: 0.9rem;
   color: var(--white);
   cursor: pointer;
@@ -1200,7 +1200,7 @@
   border: 1.5px solid var(--gray-200, #e2e8f0);
   border-radius: var(--radius-xl, 16px);
   padding: 12px 24px;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   font-size: 0.9rem;
   color: var(--text-secondary);
   cursor: pointer;
@@ -1217,9 +1217,9 @@
   color: var(--white);
   border: none;
   border-radius: var(--radius-xl, 16px);
-  padding: 10px 20px;
+  padding: 12px 20px;
   font-size: var(--font-size-sm, 0.875rem);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   cursor: pointer;
   transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
 }
@@ -1244,7 +1244,7 @@
   align-items: center;
   justify-content: center;
   color: var(--text-secondary);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   font-size: 0.95rem;
   text-align: center;
 }
@@ -1301,7 +1301,7 @@
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
 }
 
@@ -1400,13 +1400,13 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 16px;
+  padding: 12px 16px;
   border-radius: var(--radius-xl, 16px);
   border: 1.5px solid var(--border-color);
   background: var(--bg-white);
   color: var(--text-primary);
   font-size: 0.9375rem;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
   transition: border-color 0.2s, background 0.2s, color 0.2s;
 }
@@ -1444,7 +1444,7 @@
 
 .privacy-link {
   color: var(--primary);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 .stats-grid {
@@ -1529,7 +1529,7 @@
 .btn-account {
   font-family: inherit;
   font-size: 0.95rem;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   padding: 12px 20px;
   border-radius: var(--radius-xl, 16px);
   cursor: pointer;
@@ -1617,7 +1617,7 @@
 
   .profile-header-email {
     font-size: 0.75rem;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
   }
 
   .profile-stats-row {
@@ -1681,7 +1681,7 @@
   }
 
   .settings-section {
-    margin-top: 14px;
+    margin-top: 12px;
   }
 
   .section-title {
@@ -1749,7 +1749,7 @@
   }
   .profile-settings-page .profile-card .profile-name {
     font-size: 1.25rem;
-    font-weight: 600;
+    font-weight: var(--font-weight-semibold);
     color: var(--white);
   }
   .profile-settings-page .profile-card .profile-email {
@@ -1760,7 +1760,7 @@
   .profile-settings-page .profile-card .btn-upload {
     width: 100%;
     min-height: 44px;
-    padding: 10px 16px;
+    padding: 12px 16px;
     background: rgba(255, 255, 255, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.5);
     color: var(--white);

@@ -137,7 +137,7 @@
 
 .acceptButton {
   width: 100%;
-  padding: 14px;
+  padding: 12px;
   background: var(--primary, #1f5fbf);
   color: var(--white, #fff);
   border: none;
@@ -146,7 +146,7 @@
   font-weight: var(--font-weight-semibold, 600);
   cursor: pointer;
   min-height: 44px;
-  transition: background 0.2s ease;
+  transition: background var(--transition-base);
 }
 
 .acceptButton:hover {
@@ -160,7 +160,7 @@
 
 .declineButton {
   width: 100%;
-  padding: 14px;
+  padding: 12px;
   background: none;
   border: 1.5px solid var(--border-color, #e4e9ef);
   border-radius: var(--radius-md, 8px);
@@ -169,7 +169,7 @@
   font-weight: var(--font-weight-medium, 500);
   cursor: pointer;
   min-height: 44px;
-  transition: border-color 0.2s ease;
+  transition: border-color var(--transition-base);
 }
 
 .declineButton:hover {

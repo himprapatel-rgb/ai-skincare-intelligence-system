@@ -58,7 +58,7 @@
   gap: 8px;
   padding: 12px 20px;
   font-size: 0.95rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-secondary, #64748b);
   background: transparent;
   border: none;
@@ -112,7 +112,7 @@
 .scan-product-title {
   margin: 0 0 8px 0;
   font-size: var(--font-size-lg, 1.125rem);
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--text-primary);
 }
 
@@ -252,7 +252,7 @@
 
 .scan-title {
   font-size: var(--font-size-3xl, 1.875rem); /* Brand guideline: 48px / 3rem for H1 */
-  font-weight: 700; /* Brand guideline: Bold */
+  font-weight: var(--font-weight-bold); /* Brand guideline: Bold */
   color: var(--text-dark); /* Deep Navy */
   margin-bottom: 16px;
   letter-spacing: -0.5px;
@@ -293,7 +293,7 @@
 }
 .scan-step-title {
   font-size: 1.125rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-dark);
   margin: 0 0 4px;
 }
@@ -355,7 +355,7 @@
   background: transparent;
   border-radius: var(--radius-xl, 16px); /* Brand guideline: 8px */
   font-size: 1rem; /* Brand guideline: 16px Body */
-  font-weight: 500; /* Brand guideline: Medium */
+  font-weight: var(--font-weight-medium); /* Brand guideline: Medium */
   color: var(--text-gray);
   cursor: pointer;
   transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
@@ -370,7 +370,7 @@
   background: var(--bg-white);
   color: var(--primary);
   box-shadow: var(--shadow-md);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 /* Issue #20: Clear pressed/active state for camera/upload buttons */
@@ -394,14 +394,14 @@
   background: rgba(15, 23, 42, 0.06);
   border: 1px solid rgba(15, 23, 42, 0.12);
   border-radius: var(--radius-xl, 16px);
-  padding: 10px 14px;
-  font-weight: 600;
+  padding: 12px 16px;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-dark);
 }
 
 .scan-camera-countdown {
   color: var(--success);
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
 }
 
 .camera-container {
@@ -480,7 +480,7 @@
   background: var(--surface);
   color: var(--text-secondary);
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   min-height: 44px;
   min-width: 44px;
 }
@@ -666,10 +666,10 @@
   transform: translateX(-50%);
   color: var(--white);
   background: rgba(31, 111, 235, 0.9); /* Brand blue */
-  padding: 10px 20px;
+  padding: 12px 20px;
   border-radius: var(--radius-xl, 16px);
   font-size: 0.95rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   box-shadow: var(--shadow-primary);
   z-index: 4;
 }
@@ -735,7 +735,7 @@
   inset: 0;
   background: linear-gradient(135deg, rgba(31, 95, 191, 0.08) 0%, rgba(139, 92, 246, 0.05) 100%);
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity var(--transition-slow);
 }
 
 .scan-upload-label:hover {
@@ -855,7 +855,7 @@
 
 .scan-upload-text {
   font-size: 1.25rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-dark);
   margin-bottom: 12px;
 }
@@ -893,7 +893,7 @@
 
 .scan-tips h3 {
   font-size: 1.25rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--text-dark);
   margin-bottom: 20px;
   line-height: var(--line-height-normal);
@@ -911,7 +911,7 @@
 }
 
 .scan-tips li {
-  padding: 14px 16px;
+  padding: 12px 16px;
   color: var(--text-gray);
   font-size: 0.95rem;
   line-height: var(--line-height-normal);
@@ -1013,7 +1013,7 @@
   border: none;
   border-radius: var(--radius-xl, 16px); /* Brand guideline: 8px */
   font-size: 1rem;
-  font-weight: 600; /* Brand guideline */
+  font-weight: var(--font-weight-semibold); /* Brand guideline */
   cursor: pointer;
   transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   box-shadow: var(--shadow-primary);
@@ -1039,7 +1039,7 @@
   border: 2px solid var(--primary); /* Brand guideline */
   border-radius: var(--radius-xl, 16px); /* Brand guideline: 8px */
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
   transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
 }
@@ -1096,7 +1096,7 @@
 
 .progress-phase {
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--primary);
   margin-bottom: 8px;
   text-transform: uppercase;
@@ -1109,7 +1109,7 @@
 
 .progress-title {
   font-size: var(--font-size-3xl, 1.875rem); /* Brand guideline: 32px / 2rem for H2 */
-  font-weight: 600; /* Brand guideline: Semibold */
+  font-weight: var(--font-weight-semibold); /* Brand guideline: Semibold */
   color: var(--text-dark); /* Deep Navy */
   margin-bottom: 16px;
   line-height: var(--line-height-snug); /* Brand guideline */
@@ -1177,7 +1177,7 @@
 
 .progress-percentage {
   font-size: var(--font-size-lg, 1.125rem);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--primary);
 }
 
@@ -1208,7 +1208,7 @@
   align-items: center;
   justify-content: center;
   font-size: var(--font-size-xs, 0.75rem);
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   border: 2px solid var(--border-color, #e2e8f0);
   background: var(--bg-white, #fff);
   color: var(--text-secondary, #64748b);
@@ -1231,7 +1231,7 @@
 
 .scan-step-label {
   font-size: var(--font-size-xs, 0.75rem);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-secondary, #64748b);
   white-space: nowrap;
   transition: color 0.3s ease;
@@ -1315,7 +1315,7 @@
 
 .results-success h2 {
   font-size: var(--font-size-3xl, 1.875rem); /* Brand guideline: 32px / 2rem for H2 */
-  font-weight: 600; /* Brand guideline: Semibold */
+  font-weight: var(--font-weight-semibold); /* Brand guideline: Semibold */
   color: var(--text-dark); /* Deep Navy */
   margin-bottom: 16px;
   line-height: var(--line-height-snug); /* Brand guideline */
@@ -1380,7 +1380,7 @@
 
 .scan-info .info-content {
   font-size: 0.95rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 .error-icon {
@@ -1890,7 +1890,7 @@
 
 .scan-coach-title {
   font-size: var(--font-size-lg, 1.125rem);
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--text-primary);
   margin: 0 0 8px;
 }
@@ -1905,7 +1905,7 @@
 .scan-coach-tip {
   font-size: 0.8125rem;
   color: var(--primary);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   margin: 0 0 20px;
   font-style: italic;
 }
@@ -1917,15 +1917,15 @@
 }
 
 .scan-coach-back {
-  padding: 10px 20px;
+  padding: 12px 20px;
   background: none;
   border: 1.5px solid var(--border-color);
   border-radius: var(--radius-lg);
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-secondary);
   cursor: pointer;
-  transition: border-color 0.2s ease;
+  transition: border-color var(--transition-base);
 }
 
 .scan-coach-back:hover {
@@ -1933,12 +1933,12 @@
 }
 
 .scan-coach-next {
-  padding: 10px 24px;
+  padding: 12px 24px;
   background: linear-gradient(135deg, var(--primary), var(--accent));
   border: none;
   border-radius: var(--radius-lg);
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--white);
   cursor: pointer;
   display: flex;
@@ -1989,7 +1989,7 @@
 
 .scan-preview-card h3 {
   font-size: var(--font-size-lg, 1.125rem);
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   text-align: center;
   margin: 0 0 16px;
 }
@@ -2039,10 +2039,10 @@
   background: none;
   border: 1.5px solid var(--border-color);
   border-radius: var(--radius-lg);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-secondary);
   cursor: pointer;
-  transition: border-color 0.2s ease;
+  transition: border-color var(--transition-base);
 }
 
 .scan-preview-retake:hover {
@@ -2055,7 +2055,7 @@
   background: linear-gradient(135deg, var(--primary), var(--accent));
   border: none;
   border-radius: var(--radius-lg);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--white);
   cursor: pointer;
   box-shadow: var(--shadow-primary);
@@ -2089,7 +2089,7 @@
   align-items: center;
   gap: 4px;
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   padding: 3px 8px;
   border-radius: var(--radius-full);
 }
@@ -2114,7 +2114,7 @@
   border: none;
   color: var(--primary);
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   cursor: pointer;
   text-decoration: underline;
   text-underline-offset: 2px;

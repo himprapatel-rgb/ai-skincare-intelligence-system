@@ -95,7 +95,7 @@
 
 .consent-modal .error {
   color: var(--danger);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   margin-top: var(--spacing-md);
 }
 
@@ -114,7 +114,7 @@
   border: none;
   border-radius: var(--border-radius-md);
   font-size: var(--font-size-base);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   cursor: pointer;
   transition: transform var(--transition-base), box-shadow var(--transition-base);
 }

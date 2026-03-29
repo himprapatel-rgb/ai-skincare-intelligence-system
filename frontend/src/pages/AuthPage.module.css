@@ -246,7 +246,7 @@
 /* ===== Submit Button ===== */
 .submitButton {
   width: 100%;
-  padding: 14px;
+  padding: 12px;
   background: var(--primary, #1f5fbf);
   color: var(--white, #fff);
   font-size: var(--font-size-base, 1rem);

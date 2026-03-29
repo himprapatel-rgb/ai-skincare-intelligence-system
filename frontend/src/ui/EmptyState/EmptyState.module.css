@@ -24,7 +24,7 @@
 
 .title {
   font-size: var(--font-lg, 1.125rem);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-primary, #0b1220);
   margin: 0;
   line-height: 1.3;

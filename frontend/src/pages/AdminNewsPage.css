@@ -34,14 +34,14 @@
 .admin-news-page .form-group label {
   display: block;
   margin-bottom: 6px;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   font-size: 0.9rem;
 }
 
 .admin-news-page .form-group input,
 .admin-news-page .form-group textarea {
   width: 100%;
-  padding: 10px 12px;
+  padding: 12px;
   border: 1px solid var(--border);
   border-radius: var(--radius-xl, 16px);
   font-size: 1rem;

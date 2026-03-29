@@ -181,7 +181,7 @@
   cursor: pointer;
   min-height: 44px;
   margin-top: var(--spacing-md, 16px);
-  transition: opacity 0.2s ease;
+  transition: opacity var(--transition-base);
 }
 
 .simulateButton:hover {
@@ -209,7 +209,7 @@
   box-shadow: var(--shadow-card);
   overflow: hidden;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  transition: transform var(--transition-base);
   border: 2px solid transparent;
 }
 

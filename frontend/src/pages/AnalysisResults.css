@@ -113,7 +113,7 @@
 
 .results-header h1 {
   font-size: var(--font-size-3xl, 1.875rem); /* Brand guideline: 32px / 2rem for H2 */
-  font-weight: 600; /* Brand guideline: Semibold */
+  font-weight: var(--font-weight-semibold); /* Brand guideline: Semibold */
   color: var(--text-dark); /* Deep Navy */
   margin-bottom: 8px;
   line-height: var(--line-height-snug); /* Brand guideline */
@@ -151,7 +151,7 @@
 }
 .results-share-label {
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-gray);
 }
 .results-share-social,
@@ -162,10 +162,10 @@
   background: var(--bg-light, #f8fafc);
   border: 1px solid var(--border, #e2e8f0);
   color: var(--text-gray, #64748b);
-  padding: 10px 16px;
+  padding: 12px 16px;
   border-radius: var(--radius-xl, 16px);
   font-size: 0.9375rem;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   text-decoration: none;
   cursor: pointer;
   transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
@@ -205,10 +205,10 @@
   background: var(--bg-light, #f8fafc);
   border: 1px solid var(--border, #e2e8f0);
   color: var(--text-gray, #64748b);
-  padding: 10px 16px;
+  padding: 12px 16px;
   border-radius: var(--radius-xl, 16px);
   font-size: 0.9375rem;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
   transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
 }
@@ -223,9 +223,9 @@
   background: transparent;
   border: 2px solid var(--primary);
   color: var(--primary);
-  padding: 10px 20px;
+  padding: 12px 20px;
   border-radius: var(--radius-xl, 16px);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   font-size: 0.95rem;
   cursor: pointer;
   transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
@@ -270,7 +270,7 @@
 }
 
 .confidence-value {
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--primary);
   font-size: var(--font-size-lg, 1.125rem);
 }
@@ -321,7 +321,7 @@
 
 .result-card h2 {
   font-size: 1.5rem; /* Brand guideline: 24px / 1.5rem for H3 */
-  font-weight: 600; /* Brand guideline: Semibold */
+  font-weight: var(--font-weight-semibold); /* Brand guideline: Semibold */
   color: var(--text-dark);
   margin-bottom: 20px;
   line-height: var(--line-height-normal);
@@ -392,7 +392,7 @@
 
 .overview-section h3 {
   font-size: 1.125rem; /* Brand guideline: 18px Body Large */
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-dark);
   margin-bottom: 12px;
 }
@@ -402,7 +402,7 @@
   color: var(--primary);
   padding: 8px 16px;
   border-radius: var(--radius-xl, 16px);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   font-size: 1rem;
   display: inline-block;
 }
@@ -419,7 +419,7 @@
   padding: 6px 12px;
   border-radius: var(--radius-xl, 16px);
   font-size: 0.875rem; /* Brand guideline: 14px Body Small */
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 .severity-grid {
@@ -481,14 +481,14 @@
 
 .severity-title {
   text-transform: capitalize;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   font-size: 1rem;
   color: var(--text-dark);
 }
 
 .severity-pill {
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   padding: 4px 12px;
   border-radius: var(--radius-xl, 16px);
   color: var(--white);
@@ -513,7 +513,7 @@
   text-align: right;
   color: var(--text-gray);
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 .severity-severe {
@@ -576,7 +576,7 @@
 }
 
 .history-table th {
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-dark);
   background: var(--bg-light);
 }
@@ -596,7 +596,7 @@
   color: var(--primary);
   padding: 8px 16px;
   border-radius: var(--radius-xl, 16px);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   font-size: 0.875rem;
   cursor: pointer;
   transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
@@ -618,7 +618,7 @@
 .results-actions .btn {
   padding: 12px 24px;
   border-radius: var(--radius-xl, 16px);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   font-size: 1rem;
   cursor: pointer;
   transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
@@ -757,7 +757,7 @@
 
 .analysis-ingredient-name {
   font-size: 1.05rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--text-dark);
   margin: 0 0 10px;
 }
@@ -772,13 +772,13 @@
 .analysis-ingredient-targets {
   font-size: var(--font-size-sm, 0.875rem);
   color: var(--primary);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   margin: 0 0 10px;
 }
 
 .analysis-ingredient-learn {
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--primary);
   text-decoration: none;
 }
@@ -976,14 +976,14 @@
 }
 .results-rec-category {
   font-size: var(--font-size-xs, 0.7rem);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: var(--letter-spacing-wide);
 }
 .results-rec-name {
   font-size: 0.9rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--text-primary);
   margin: 4px 0 2px;
 }
@@ -1001,6 +1001,6 @@
   margin-top: var(--spacing-sm, 12px);
   font-size: var(--font-size-sm, 0.85rem);
   color: var(--primary);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 .results-recs-link:hover { text-decoration: underline; }

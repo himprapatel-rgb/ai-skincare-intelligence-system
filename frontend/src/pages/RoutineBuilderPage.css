@@ -163,7 +163,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   font-size: var(--font-size-lg);
   flex-shrink: 0;
 }
@@ -174,7 +174,7 @@
 
 .step-content h3 {
   font-size: var(--font-size-lg);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
   margin-bottom: var(--spacing-sm);
 }
@@ -196,7 +196,7 @@
   padding: 8px 16px;
   border: none;
   border-radius: var(--radius-xl, 16px);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   font-size: 0.875rem;
   cursor: pointer;
   transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
@@ -229,7 +229,7 @@
   border: 2px dashed var(--border);
   border-radius: var(--radius-xl, 16px);
   color: var(--primary);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   font-size: 1rem;
   cursor: pointer;
   transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
@@ -251,7 +251,7 @@
   border: none;
   border-radius: var(--radius-xl, 16px);
   font-size: var(--font-size-lg, 1.125rem);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   cursor: pointer;
   transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   box-shadow: var(--shadow-primary);
@@ -272,7 +272,7 @@
 
 .routine-header h1 {
   font-size: var(--font-size-3xl, 1.875rem);
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--text-dark);
   margin-bottom: 12px;
 }
@@ -324,7 +324,7 @@
   background: var(--bg-white);
   color: var(--text-gray);
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
   transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   display: flex;
@@ -369,7 +369,7 @@
 
 .suggestion-content h4 {
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-dark);
   margin-bottom: 4px;
   word-break: normal;
@@ -390,7 +390,7 @@
   color: var(--white);
   border: none;
   border-radius: var(--radius-xl, 16px);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
   transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
 }
@@ -450,7 +450,7 @@
 }
 
 .step-field label {
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   color: var(--text-dark);
   font-size: 0.875rem;
 }
@@ -484,7 +484,7 @@
   border: none;
   color: var(--primary);
   cursor: pointer;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   text-decoration: underline;
   white-space: nowrap;
   flex-shrink: 0;
@@ -533,7 +533,7 @@
 
 .routine-tips h3 {
   font-size: 1.25rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-dark);
   margin-bottom: 16px;
 }
@@ -556,7 +556,7 @@
   position: absolute;
   left: 0;
   color: var(--primary);
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
 }
 
 /* Routine Reminders */
@@ -583,7 +583,7 @@
 
 .reminder-title h3 {
   font-size: 1.25rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-dark);
   margin: 0;
 }
@@ -598,7 +598,7 @@
   border: 1px solid var(--border);
   border-radius: var(--radius-xl, 16px);
   color: var(--text-dark);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
   transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
 }
@@ -623,7 +623,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   color: var(--text-dark);
   cursor: pointer;
 }
@@ -645,7 +645,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   color: var(--text-dark);
   font-size: 0.875rem;
 }
@@ -671,7 +671,7 @@
 
 .reminder-days > label {
   display: block;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   color: var(--text-dark);
   margin-bottom: 12px;
 }
@@ -693,7 +693,7 @@
   cursor: pointer;
   transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
 }
 
 .day-checkbox:hover {
@@ -723,7 +723,7 @@
 .routine-actions .btn-secondary {
   padding: 12px 24px;
   border-radius: var(--radius-xl, 16px);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   font-size: 1rem;
   cursor: pointer;
   transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
@@ -783,7 +783,7 @@
 
   .tab-btn {
     min-height: 48px;
-    padding: 10px 20px;
+    padding: 12px 20px;
   }
 
   .routine-step,

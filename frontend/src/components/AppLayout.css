@@ -31,7 +31,7 @@
   border-radius: 0 0 var(--border-radius-md) 0;
   z-index: calc(var(--z-index-sticky) + 1);
   text-decoration: none;
-  transition: transform 0.2s ease;
+  transition: transform var(--transition-base);
   display: inline-flex;
   align-items: center;
 }
@@ -129,7 +129,7 @@
   gap: 12px;
   text-decoration: none;
   color: var(--text-primary);
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   flex-shrink: 0;
 }
 
@@ -159,8 +159,8 @@
 
 .app-logo-text {
   font-size: 1.25rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-tight);
 }
 
 .app-logo-ai {
@@ -194,7 +194,7 @@
 .app-nav-link {
   color: var(--text-secondary);
   text-decoration: none;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   font-size: var(--font-size-sm);
   transition: color 0.2s ease, background 0.2s ease;
   position: relative;
@@ -222,7 +222,7 @@
 
 .app-nav-link.active {
   color: var(--primary);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   background: rgba(31, 111, 235, 0.08);
   position: relative;
 }
@@ -279,7 +279,7 @@
   display: block;
   padding: 8px 14px;
   font-size: 0.825rem;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   color: var(--text-primary);
   text-decoration: none;
   border-radius: var(--radius-md);
@@ -337,7 +337,7 @@
 }
 
 .app-nav-user-trigger svg {
-  transition: transform 0.2s ease;
+  transition: transform var(--transition-base);
   color: var(--text-muted);
 }
 
@@ -354,7 +354,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   font-size: 0.85rem;
 }
 
@@ -365,7 +365,7 @@
 }
 
 .app-nav-user-name {
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   font-size: 0.9rem;
   color: var(--text-primary);
   max-width: 120px;
@@ -408,7 +408,7 @@
 }
 
 .app-nav-dropdown-name {
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   font-size: 0.95rem;
   color: var(--text-primary);
 }
@@ -431,11 +431,11 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 10px 12px;
+  padding: 12px;
   border-radius: var(--radius-md);
   color: var(--text-secondary);
   font-size: 0.9rem;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   text-decoration: none;
   transition: all 0.15s ease;
   width: 100%;
@@ -471,7 +471,7 @@
   align-items: center;
   padding: 10px 18px;
   border-radius: var(--radius-md);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   font-size: 0.9rem;
   color: var(--primary);
   background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(168, 85, 247, 0.08));
@@ -493,7 +493,7 @@
   gap: 8px;
   padding: 12px 20px;
   border-radius: var(--radius-xl, 16px);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-sm);
   color: var(--white);
   background: var(--gradient-primary);
@@ -570,7 +570,7 @@
   height: 18px;
   padding: 0 4px;
   font-size: 0.7rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   line-height: 18px;
   text-align: center;
   background: var(--danger, #ef4444);
@@ -665,7 +665,7 @@
   background: transparent;
   font-family: inherit;
   font-size: var(--font-size-base);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   color: var(--text-secondary);
   cursor: pointer;
   text-align: left;
@@ -680,7 +680,7 @@
 
 .app-nav-mobile-expand .chevron {
   margin-left: auto;
-  transition: transform 0.2s ease;
+  transition: transform var(--transition-base);
 }
 
 .app-nav-mobile-expand.expanded .chevron {
@@ -714,7 +714,7 @@
   padding: 12px 16px;
   border-radius: var(--border-radius-md);
   color: var(--text-secondary);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   font-size: var(--font-size-base);
   text-decoration: none;
   transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
@@ -760,7 +760,7 @@
 }
 
 .app-nav-mobile-user-name {
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
 }
 
@@ -781,10 +781,10 @@
 
 .app-nav-mobile-btn-secondary {
   display: block;
-  padding: 14px 20px;
+  padding: 12px 20px;
   border-radius: var(--radius-md);
   text-align: center;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--primary);
   background: rgba(31, 111, 235, 0.08);
   text-decoration: none;
@@ -797,10 +797,10 @@
   justify-content: center;
   min-height: 48px;
   min-width: 48px;
-  padding: 14px 20px;
+  padding: 12px 20px;
   border-radius: var(--border-radius-md);
   text-align: center;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--white);
   background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
   text-decoration: none;
@@ -825,7 +825,7 @@
   margin-top: var(--spacing-md);
   padding: var(--spacing-md) var(--spacing-lg);
   border-radius: var(--border-radius-md);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-base);
   color: var(--white);
   background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
@@ -868,7 +868,7 @@
 /* ---------- MOBILE (small ≤480px) ---------- */
 @media (max-width: 480px) {
   .app-header-container {
-    padding: 10px 16px;
+    padding: 12px 16px;
   }
   
   .app-logo-text {
@@ -977,7 +977,7 @@
 
 .app-breadcrumb-current {
   color: var(--text-primary);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 .app-breadcrumb-separator {
@@ -1038,7 +1038,7 @@
 .app-footer-newsletter-text h3 {
   color: var(--white, #fff);
   font-size: 1.5rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   margin-bottom: 8px;
 }
 
@@ -1057,7 +1057,7 @@
 
 .app-footer-newsletter-form input {
   flex: 1;
-  padding: 14px 20px;
+  padding: 12px 20px;
   border: none;
   border-radius: var(--radius-md);
   font-size: 0.95rem;
@@ -1080,7 +1080,7 @@
   border: none;
   border-radius: var(--radius-md);
   font-size: 0.95rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   background: var(--gray-900);
   color: var(--white, #fff);
   cursor: pointer;
@@ -1153,9 +1153,9 @@
 
 .app-footer-logo-text {
   font-size: 1.25rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--text-primary);
-  letter-spacing: -0.02em;
+  letter-spacing: var(--letter-spacing-tight);
 }
 
 .app-footer-tagline {
@@ -1200,7 +1200,7 @@
 
 .app-footer-column h4 {
   font-size: var(--font-size-xs);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -1211,7 +1211,7 @@
   display: block;
   color: var(--text-secondary);
   font-size: var(--font-size-sm);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   padding: var(--spacing-sm) 0;
   text-decoration: none;
   transition: color 0.15s ease;
@@ -1353,7 +1353,7 @@
   
   .app-footer-newsletter-form button {
     min-height: 44px;
-    padding: 14px 24px;
+    padding: 12px 24px;
   }
   
   .app-footer-main {
@@ -1389,7 +1389,7 @@
   
   .app-footer-column h4 {
     font-size: 0.75rem;
-    margin-bottom: 14px;
+    margin-bottom: 12px;
   }
   
   .app-footer-column a {
@@ -1489,7 +1489,7 @@
   gap: 8px;
   padding: 12px 22px;
   border-radius: var(--radius-full);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   text-decoration: none;
   transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }

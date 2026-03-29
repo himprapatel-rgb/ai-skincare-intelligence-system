@@ -36,7 +36,7 @@ body {
 .app-page h1 {
   font-size: clamp(1.75rem, 2.6vw, 2.25rem);
   line-height: var(--line-height-tight);
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
 }
 
 .app-page h2 {
@@ -48,7 +48,7 @@ body {
 .app-page h3 {
   font-size: clamp(1.05rem, 1.5vw, 1.2rem);
   line-height: var(--line-height-snug);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 .app-page p {
@@ -112,7 +112,7 @@ body {
   box-shadow: var(--shadow-primary);
   border-radius: var(--clinical-radius-sm);
   min-height: 44px;
-  padding: 10px 20px;
+  padding: 12px 20px;
 }
 
 .btn-primary:hover,
@@ -132,7 +132,7 @@ body {
   color: var(--primary);
   border-radius: var(--clinical-radius-sm);
   min-height: 44px;
-  padding: 10px 20px;
+  padding: 12px 20px;
 }
 
 /* App shell */
@@ -270,11 +270,11 @@ body {
 }
 
 .dashboard-page .dashboard-stats {
-  gap: 14px;
+  gap: 12px;
 }
 
 .dashboard-page .stat-card {
-  padding: 14px 16px;
+  padding: 12px 16px;
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
 }
@@ -292,13 +292,13 @@ body {
 
 .dashboard-page .dashboard-section {
   border-radius: var(--radius-md);
-  padding: 14px;
+  padding: 12px;
 }
 
 .dashboard-page .dashboard-section .app-section-title {
   font-size: 1rem;
   font-weight: 650;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .dashboard-page .app-list-item {
@@ -307,7 +307,7 @@ body {
 }
 
 .dashboard-page .app-list-label {
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--clinical-heading);
 }
 
@@ -377,7 +377,7 @@ body {
 
 .auth-form .form-group label {
   font-size: 0.88rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--clinical-heading);
 }
 
@@ -398,7 +398,7 @@ body {
 }
 
 .auth-left .auth-feature {
-  padding: 14px;
+  padding: 12px;
   border-radius: var(--radius-lg);
 }
 
@@ -419,7 +419,7 @@ textarea,
   border-radius: var(--clinical-radius-sm);
   background: var(--white);
   min-height: 44px;
-  padding: 10px 12px;
+  padding: 12px;
 }
 
 input:focus,
@@ -501,14 +501,14 @@ textarea:focus,
 }
 
 .profile-settings-page .form-group {
-  margin-bottom: 14px;
+  margin-bottom: 12px;
   gap: 6px;
 }
 
 .profile-settings-page label,
 .profile-settings-page .form-label {
   font-size: 0.88rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--clinical-heading);
 }
 
@@ -539,7 +539,7 @@ textarea:focus,
 @media (max-width: 768px) {
   .dashboard-page .dashboard-hero,
   .dashboard-page .app-header-card {
-    padding: 14px;
+    padding: 12px;
   }
 
   .dashboard-page .stat-card {

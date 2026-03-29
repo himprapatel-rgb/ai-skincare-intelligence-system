@@ -72,7 +72,7 @@
   color: var(--text-primary, #162133);
   background: var(--bg-primary, #fff);
   min-height: 44px;
-  transition: border-color 0.2s ease;
+  transition: border-color var(--transition-base);
 }
 
 .formInput:focus {
@@ -89,7 +89,7 @@
 
 .formSubmit {
   width: 100%;
-  padding: 14px;
+  padding: 12px;
   background: var(--primary, #1f5fbf);
   color: var(--white, #fff);
   border: none;
@@ -98,7 +98,7 @@
   font-weight: var(--font-weight-semibold, 600);
   cursor: pointer;
   min-height: 44px;
-  transition: background 0.2s ease;
+  transition: background var(--transition-base);
 }
 
 .formSubmit:hover {

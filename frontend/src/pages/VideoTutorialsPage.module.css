@@ -58,7 +58,7 @@
   white-space: nowrap;
   min-height: 44px;
   flex-shrink: 0;
-  transition: border-color 0.2s ease;
+  transition: border-color var(--transition-base);
 }
 
 .categoryTab:hover {
@@ -115,7 +115,7 @@
   justify-content: center;
   background: rgba(0, 0, 0, 0.2);
   opacity: 0;
-  transition: opacity 0.2s ease;
+  transition: opacity var(--transition-base);
 }
 
 .videoCard:hover .playOverlay {

@@ -21,7 +21,7 @@
 .comparison-card-title {
   margin: 0 0 16px 0;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 .comparison-card-header-row {
@@ -36,7 +36,7 @@
 .comparison-card-header-row h3 {
   margin: 0;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 .comparison-selects {
@@ -54,7 +54,7 @@
 }
 
 .comparison-label {
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   font-size: 1rem;
   color: var(--text-dark);
 }
@@ -139,14 +139,14 @@
 
 .comparison-image-label {
   text-align: center;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-dark);
   font-size: 0.875rem;
 }
 
 .comparison-vs-divider {
   font-size: 1.5rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--primary);
   padding: 0 16px;
 }
@@ -192,7 +192,7 @@
 .comparison-th {
   padding: 12px;
   text-align: left;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-dark);
   border-bottom: 2px solid var(--border);
 }
@@ -220,7 +220,7 @@
 }
 
 .comparison-delta {
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   padding: 4px 8px;
   border-radius: var(--border-radius-sm);
 }
@@ -237,7 +237,7 @@
 
 .comparison-section-title {
   font-size: 1.25rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-dark);
   margin: 24px 0 16px;
 }
@@ -258,7 +258,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 .comparison-duo {

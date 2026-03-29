@@ -42,7 +42,7 @@
   gap: 12px;
   background: var(--bg-white);
   border-radius: var(--radius-lg);
-  padding: 10px 14px;
+  padding: 12px 16px;
   border: 1px solid var(--border);
   min-width: 0;
 }
@@ -57,7 +57,7 @@
 
 .dt-hero-score-value {
   font-size: 2rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--primary);
 }
 
@@ -65,7 +65,7 @@
   display: grid;
   font-size: 0.75rem;
   color: var(--text-gray);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   white-space: nowrap;
   word-break: normal;
 }
@@ -83,7 +83,7 @@
 .dt-hero-mood,
 .dt-hero-count {
   font-size: 1.3rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--text-dark);
 }
 
@@ -102,7 +102,7 @@
   border: none;
   background: none;
   color: var(--primary);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   cursor: pointer;
 }
 
@@ -140,7 +140,7 @@
 
 .dt-stat-value {
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-dark);
   word-break: normal;
   min-width: 0;
@@ -164,7 +164,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .dt-card-header h2 {
@@ -198,7 +198,7 @@
 
 .dt-guest-heading {
   font-size: 1.25rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-dark);
   margin: 0 0 12px 0;
 }
@@ -258,7 +258,7 @@
   background: var(--bg-white);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   color: var(--text-dark);
 }
 
@@ -369,13 +369,13 @@
 .dt-snapshot-toggle {
   display: flex;
   justify-content: center;
-  margin-top: 10px;
+  margin-top: 12px;
 }
 
 .dt-snapshot-toggle .btn-secondary {
   padding: 8px 16px;
   font-size: 0.85rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   border-radius: var(--radius-full);
   min-height: 40px;
 }
@@ -497,7 +497,7 @@
 .dt-improvement {
   text-align: center;
   font-size: 1.1rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   padding: 6px 16px;
   border-radius: var(--radius-full, 999px);
   display: inline-block;
@@ -579,7 +579,7 @@
   color: var(--white);
   padding: 8px 16px;
   border-radius: var(--radius-md);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   cursor: pointer;
 }
 
@@ -595,7 +595,7 @@
 .dt-chart-hint span {
   color: var(--primary);
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
 }
 
 /* Chart tooltip – prevent truncation on mobile */
@@ -622,7 +622,7 @@
   padding: 8px 14px;
   border-radius: var(--radius-md);
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
   transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
 }
@@ -649,7 +649,7 @@
 .dt-metric-highlight-value {
   display: block;
   font-size: 2rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--primary);
   line-height: var(--line-height-tight);
 }
@@ -663,7 +663,7 @@
 
 .dt-metric-bars {
   display: grid;
-  gap: 14px;
+  gap: 12px;
 }
 
 .dt-metric-bar-item {
@@ -681,12 +681,12 @@
 .dt-metric-bar-label {
   font-size: 0.875rem;
   color: var(--text-dark);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
 }
 
 .dt-metric-bar-value {
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 .dt-metric-bar-value.metric-good {
@@ -816,7 +816,7 @@
 .simulation-form label {
   display: block;
   font-size: 0.85rem;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   color: #444;
   margin-bottom: 6px;
 }
@@ -824,7 +824,7 @@
 .simulation-form input,
 .simulation-form select {
   width: 100%;
-  padding: 10px 14px;
+  padding: 12px 16px;
   border: 1px solid #ddd;
   border-radius: var(--radius-md);
   font-size: 0.95rem;
@@ -842,12 +842,12 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 20px;
+  padding: 12px 20px;
   background: linear-gradient(135deg, var(--accent), var(--accent));
   color: var(--white);
   border: none;
   border-radius: var(--radius-md);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
 }
@@ -891,7 +891,7 @@
   padding: 4px 12px;
   border-radius: var(--radius-xl);
   font-size: 0.8rem;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   margin-bottom: 12px;
 }
 
@@ -924,7 +924,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
 }
 
 .metric-values .current {

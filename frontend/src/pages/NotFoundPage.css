@@ -59,7 +59,7 @@
   padding: 12px 16px;
   border-radius: var(--radius-xl, 16px);
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   text-decoration: none;
   transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   border: 2px solid transparent;

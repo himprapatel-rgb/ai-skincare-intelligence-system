@@ -101,7 +101,7 @@
   padding: var(--spacing-md, 16px);
   cursor: pointer;
   min-height: 44px;
-  transition: background 0.2s ease;
+  transition: background var(--transition-base);
 }
 
 .sectionHeader:hover {
@@ -118,7 +118,7 @@
 .sectionToggle {
   color: var(--text-muted, #6c7d93);
   font-size: 1.25rem;
-  transition: transform 0.2s ease;
+  transition: transform var(--transition-base);
   flex-shrink: 0;
 }
 

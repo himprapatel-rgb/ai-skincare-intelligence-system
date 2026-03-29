@@ -22,7 +22,7 @@
 .admin-users-toolbar input {
   flex: 1;
   min-width: 240px;
-  padding: 10px 14px;
+  padding: 12px 16px;
   border-radius: var(--radius-xl, 16px);
   border: 1px solid var(--border-color);
 }
@@ -63,7 +63,7 @@
 
 .admin-users-row.admin-users-header {
   background: var(--bg-secondary);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
 }
 
 .admin-users-row.admin-users-header th {
@@ -79,7 +79,7 @@
   border: none;
   cursor: pointer;
   font: inherit;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   padding: 0;
   color: inherit;
 }
@@ -113,7 +113,7 @@
   height: 16px;
   background: var(--bg-white);
   border-radius: 50%;
-  transition: transform 0.2s ease;
+  transition: transform var(--transition-base);
 }
 
 .admin-toggle input:checked {
@@ -231,7 +231,7 @@
     padding: var(--spacing-sm) 0;
     cursor: pointer;
     font-size: var(--font-size-sm);
-    font-weight: 500;
+    font-weight: var(--font-weight-medium);
   }
 
   .admin-user-card-toggle input {

@@ -153,7 +153,7 @@
   font-weight: var(--font-weight-semibold, 600);
   cursor: pointer;
   min-height: 44px;
-  transition: opacity 0.2s ease;
+  transition: opacity var(--transition-base);
 }
 
 .aiGenerateButton:hover {

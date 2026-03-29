@@ -75,7 +75,7 @@
   border: none;
   border-radius: var(--radius-xl, 16px);
   font-size: var(--font-size-base);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   cursor: pointer;
   transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
   display: inline-flex;
@@ -108,7 +108,7 @@
   border: 1px solid var(--border);
   border-radius: var(--radius-xl, 16px);
   font-size: var(--font-size-base);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -129,7 +129,7 @@
   border: 2px solid var(--primary);
   border-radius: var(--radius-xl, 16px);
   font-size: var(--font-size-base);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -292,7 +292,7 @@
 }
 .card-title {
   font-size: 16px;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   margin: 0;
 }
 .card-content {

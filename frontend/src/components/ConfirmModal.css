@@ -63,7 +63,7 @@
 
 .confirm-modal-title {
   font-size: var(--font-size-xl);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-primary, #0f172a);
   margin-bottom: var(--spacing-sm);
 }
@@ -83,9 +83,9 @@
 }
 
 .confirm-modal-cancel {
-  padding: 10px 20px;
+  padding: 12px 20px;
   border-radius: var(--border-radius-md);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   background: var(--gray-100, #f1f5f9);
   color: var(--text-secondary, #64748b);
   border: 1px solid var(--gray-200, #e2e8f0);
@@ -99,9 +99,9 @@
 }
 
 .confirm-modal-confirm {
-  padding: 10px 20px;
+  padding: 12px 20px;
   border-radius: var(--border-radius-md);
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   background: var(--danger, #ef4444);
   color: var(--white);
   border: none;

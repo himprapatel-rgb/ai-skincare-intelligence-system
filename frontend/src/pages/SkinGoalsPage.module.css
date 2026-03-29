@@ -61,7 +61,7 @@
 .cardTitle {
   margin: 0 0 16px 0;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   color: var(--text-primary, #0f172a);
 }
 
@@ -71,7 +71,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 14px 16px;
+  padding: 12px 16px;
   background: var(--bg-primary, #fff);
   border-radius: var(--radius-lg, 12px);
   border: 2px solid var(--border-color, #e2e8f0);
@@ -116,7 +116,7 @@
 }
 
 .goalTitle {
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   font-size: 1.125rem;
   margin-bottom: 4px;
 }
@@ -153,7 +153,7 @@
 }
 
 .rank {
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   font-size: 1rem;
   color: var(--color-primary, #1f6feb);
   min-width: 32px;
@@ -161,7 +161,7 @@
 
 .priorityName {
   flex: 1;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   color: var(--text-primary, #0f172a);
 }
 
@@ -190,7 +190,7 @@
 }
 
 .btnIconSmall:disabled {
-  opacity: 0.4;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
@@ -219,7 +219,7 @@
 
 .suggestedTitle {
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   margin: 0 0 var(--space-4, 16px);
   color: var(--text-primary, #0f172a);
 }
@@ -274,7 +274,7 @@
 
   .goalItem,
   .goalItemSelected {
-    padding: 14px;
+    padding: 12px;
   }
 
   .goalToggle {

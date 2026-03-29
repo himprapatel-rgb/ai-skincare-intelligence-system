@@ -100,7 +100,7 @@
 
 .terms-section h2 {
   font-size: 1.5rem; /* Brand guideline: 24px / 1.5rem for H3 */
-  font-weight: 600; /* Brand guideline: Semibold */
+  font-weight: var(--font-weight-semibold); /* Brand guideline: Semibold */
   color: var(--text-dark);
   margin-bottom: 20px;
   line-height: var(--line-height-normal);

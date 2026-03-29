@@ -285,7 +285,7 @@
   font-weight: var(--font-weight-semibold, 600);
   cursor: pointer;
   min-height: 44px;
-  transition: background 0.2s ease;
+  transition: background var(--transition-base);
 }
 
 .emptyAction:hover {
@@ -337,7 +337,7 @@
   border: 1.5px solid var(--border-color, #e4e9ef);
   background: var(--bg-primary, #fff);
   color: var(--text-primary, #162133);
-  transition: background 0.2s ease;
+  transition: background var(--transition-base);
 }
 
 .bulkButton:hover {

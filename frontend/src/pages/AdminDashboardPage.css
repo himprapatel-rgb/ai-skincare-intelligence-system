@@ -20,7 +20,7 @@
 
 .admin-metric {
   font-size: 1.6rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   color: var(--text-primary);
 }
 

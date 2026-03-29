@@ -1004,3 +1004,60 @@
   font-weight: var(--font-weight-semibold);
 }
 .results-recs-link:hover { text-decoration: underline; }
+
+/* ===== Skin Age Display ===== */
+.skin-age-display {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+.skin-age-number {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--primary);
+  line-height: 1;
+}
+.skin-age-label {
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+  font-weight: var(--font-weight-medium);
+}
+.skin-age-factors {
+  margin-top: 4px;
+}
+.factor-positive {
+  font-size: var(--font-size-xs);
+  color: var(--success-700);
+  background: var(--success-100, #dcfce7);
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+}
+
+/* ===== Health Badges ===== */
+.overview-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.health-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  padding: 5px 12px;
+  border-radius: var(--radius-full);
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+}
+.health-badge.hydration-well-hydrated,
+.health-badge.hydration-balanced { background: var(--success-100, #dcfce7); color: var(--success-700); }
+.health-badge.hydration-slightly-dry,
+.health-badge.hydration-dehydrated { background: var(--warning-100); color: var(--warning-800); }
+.health-badge.hydration-severely-dehydrated { background: var(--danger-100); color: var(--danger-700); }
+.health-badge.barrier-strong,
+.health-badge.barrier-healthy { background: var(--success-100, #dcfce7); color: var(--success-700); }
+.health-badge.barrier-moderate { background: var(--bg-tertiary); color: var(--text-secondary); }
+.health-badge.barrier-weakened { background: var(--warning-100); color: var(--warning-800); }
+.health-badge.barrier-compromised { background: var(--danger-100); color: var(--danger-700); }

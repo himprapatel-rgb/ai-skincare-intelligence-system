@@ -1138,3 +1138,73 @@
 .dash-prediction-label { font-size: var(--font-size-sm, 0.8rem); color: var(--text-muted); }
 .dash-prediction-tags { margin-top: 12px; display: flex; gap: 6px; flex-wrap: wrap; }
 .dash-prediction-tag { font-size: var(--font-size-xs, 0.7rem); font-weight: var(--font-weight-semibold); padding: 3px 10px; background: rgba(var(--primary-rgb), 0.06); color: var(--primary); border-radius: var(--radius-full, 12px); }
+
+/* ===== AI Coach Widget ===== */
+.dash-mood-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  padding: 3px 12px;
+  border-radius: var(--radius-full);
+  margin-left: 12px;
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+}
+.dash-mood-great { background: var(--success-100, #dcfce7); color: var(--success-700); }
+.dash-mood-improving { background: var(--primary-100, #dbeafe); color: var(--primary); }
+.dash-mood-needs_attention { background: var(--warning-100); color: var(--warning-800); }
+
+.dash-coach-insights {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dash-coach-card {
+  padding: 16px;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+.dash-coach-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+.dash-coach-high { border-left: 4px solid var(--primary); }
+.dash-coach-medium { border-left: 4px solid var(--warning-400); }
+.dash-coach-low { border-left: 4px solid var(--border-color); }
+
+.dash-coach-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: var(--font-size-sm);
+}
+
+.dash-coach-card p {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  line-height: var(--line-height-relaxed);
+  margin: 0;
+}
+
+.dash-coach-action {
+  display: inline-block;
+  font-size: var(--font-size-xs);
+  color: var(--primary);
+  font-weight: var(--font-weight-semibold);
+  margin-top: 8px;
+}
+
+.dash-coach-type {
+  font-size: var(--font-size-lg);
+}
+
+@media (max-width: 768px) {
+  .dash-mood-badge { margin-left: 8px; }
+  .dash-coach-card { padding: 12px; }
+}

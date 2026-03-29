@@ -61,6 +61,7 @@ const DashboardPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [scanDates, setScanDates] = useState<string[]>([]);
   const [prediction, setPrediction] = useState<{ projected_score?: number; improvements?: string[]; summary?: string } | null>(null);
+  const [coachInsights, setCoachInsights] = useState<{ insights: Array<{ type: string; title: string; message: string; priority: string; action: string }>; weekly_focus: string; skin_mood: string } | null>(null);
   const [routineAdherence, setRoutineAdherence] = useState<{ completion_rate: number; current_streak: number; this_week: Array<{ day: string; completed: boolean }> } | null>(null);
   const [weeklySummary, setWeeklySummary] = useState<{ scans_this_week: number; score_trend: string; routine_adherence_pct: number; insight: string; active_goals: number } | null>(null);
   const [scanReminder, setScanReminder] = useState<ScanReminder>(() => {
@@ -174,9 +175,14 @@ const DashboardPage: React.FC = () => {
         }
       }).catch(() => {});
 
-      // AI prediction is slow (OpenAI call) — keep separate and non-blocking
+      // AI features are slow (OpenAI calls) — keep separate and non-blocking
       api.post('/api/v1/ai/predict', {}).then(res => {
         setPrediction(res.data);
+      }).catch(() => {});
+
+      // AI Coach insights
+      api.get('/api/v1/ai/coach').then(res => {
+        setCoachInsights(res.data);
       }).catch(() => {});
 
     } catch (error) {
@@ -506,6 +512,37 @@ const DashboardPage: React.FC = () => {
                   ))}
                 </div>
               )}
+            </div>
+          </div>
+        )}
+
+        {/* AI Coach Insights */}
+        {coachInsights && coachInsights.insights && coachInsights.insights.length > 0 && (
+          <div className="app-section dashboard-section">
+            <h2 className="app-section-title">
+              AI Coach
+              {coachInsights.skin_mood && (
+                <span className={`dash-mood-badge dash-mood-${coachInsights.skin_mood}`}>
+                  {coachInsights.skin_mood === 'great' ? '🌟' : coachInsights.skin_mood === 'improving' ? '📈' : coachInsights.skin_mood === 'needs_attention' ? '⚠️' : '→'} {coachInsights.skin_mood.replace(/_/g, ' ')}
+                </span>
+              )}
+            </h2>
+            {coachInsights.weekly_focus && (
+              <p className="dash-widget-insight" style={{ marginBottom: 16 }}>
+                <strong>This week:</strong> {coachInsights.weekly_focus}
+              </p>
+            )}
+            <div className="dash-coach-insights">
+              {coachInsights.insights.slice(0, 3).map((insight, i) => (
+                <div key={i} className={`dash-coach-card dash-coach-${insight.priority}`}>
+                  <div className="dash-coach-header">
+                    <span className="dash-coach-type">{insight.type === 'alert' ? '🔔' : insight.type === 'tip' ? '💡' : insight.type === 'milestone' ? '🏆' : insight.type === 'warning' ? '⚠️' : '✨'}</span>
+                    <strong>{insight.title}</strong>
+                  </div>
+                  <p>{insight.message}</p>
+                  {insight.action && <span className="dash-coach-action">{insight.action}</span>}
+                </div>
+              ))}
             </div>
           </div>
         )}

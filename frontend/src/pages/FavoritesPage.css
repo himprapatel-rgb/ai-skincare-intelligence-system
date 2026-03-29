@@ -74,7 +74,7 @@
 }
 
 .favorites-explainer h3 {
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
   margin: 0 0 8px 0;
   color: var(--text-primary);
@@ -82,7 +82,7 @@
 
 .favorites-explainer-p {
   margin: 0;
-  font-size: 0.9375rem;
+  font-size: var(--font-size-sm);
   color: var(--text-secondary);
   line-height: var(--line-height-normal);
 }
@@ -131,7 +131,7 @@
   padding: 12px;
   border: 1px solid var(--border, #e2e8f0);
   border-radius: var(--radius-xl, 16px);
-  font-size: 0.9375rem;
+  font-size: var(--font-size-sm);
   background: var(--bg-light, #f8fafc);
 }
 

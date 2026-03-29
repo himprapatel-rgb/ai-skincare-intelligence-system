@@ -30,7 +30,7 @@
 
 .page-header p {
   color: var(--text-gray);
-  font-size: 1rem;
+  font-size: var(--font-size-base);
 }
 
 .video-grid {

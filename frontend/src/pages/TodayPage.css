@@ -136,7 +136,7 @@
 
 .today-prediction-title {
   margin: 0 0 12px 0;
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-bold);
   color: var(--text-primary);
   letter-spacing: var(--letter-spacing-tight);
@@ -208,7 +208,7 @@
 }
 
 .today-progress-arrow {
-  font-size: 1.25rem;
+  font-size: var(--font-size-xl);
   color: var(--text-muted);
 }
 
@@ -220,7 +220,7 @@
 
 .today-card-title {
   margin: 0 0 12px 0;
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
 }
@@ -445,7 +445,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   margin-top: -4px;
-  font-size: 1.75rem;
+  font-size: var(--font-size-3xl);
   font-weight: var(--font-weight-extrabold);
   color: var(--primary);
   line-height: 1;
@@ -489,7 +489,7 @@
 }
 
 .today-skin-score-num {
-  font-size: 1.75rem;
+  font-size: var(--font-size-3xl);
   font-weight: var(--font-weight-extrabold);
   color: var(--primary);
   line-height: 1;
@@ -584,7 +584,7 @@
 }
 
 .today-ingredient-emoji {
-  font-size: 1.25rem;
+  font-size: var(--font-size-xl);
   flex-shrink: 0;
 }
 
@@ -661,7 +661,7 @@
 }
 
 .today-toppick-name {
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-bold);
   color: var(--text-primary);
   margin: 0;
@@ -723,7 +723,7 @@
 }
 
 .today-card-toppick .today-card-title {
-  font-size: 1.05rem;
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-bold);
   color: var(--text-primary);
   white-space: normal;
@@ -816,7 +816,7 @@
 }
 
 .today-product-card-placeholder {
-  font-size: 0.6rem;
+  font-size: var(--font-size-xs);
   font-weight: var(--font-weight-bold);
   color: var(--text-muted);
   opacity: 0.9;
@@ -891,7 +891,7 @@
 }
 
 .today-product-card-meta {
-  font-size: 0.72rem;
+  font-size: var(--font-size-xs);
   color: var(--text-secondary);
   margin: 0;
 }
@@ -1045,7 +1045,7 @@
 }
 
 .today-streak-emoji {
-  font-size: 1.75rem;
+  font-size: var(--font-size-3xl);
   animation: streakBounce 2s ease-in-out infinite;
 }
 
@@ -1184,7 +1184,7 @@
 }
 
 .today-foryou-pct {
-  font-size: 1.25rem;
+  font-size: var(--font-size-xl);
   font-weight: var(--font-weight-bold);
   color: var(--primary);
 }
@@ -1299,7 +1299,7 @@
 
 .today-welcome-text {
   margin: 0 0 20px 0;
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   color: var(--text-secondary);
 }
 
@@ -1388,7 +1388,7 @@
 /* Mobile (≤768px) */
 @media (max-width: 768px) {
   .today-page { padding: 16px; }
-  .today-greeting h1 { font-size: 1.35rem; }
+  .today-greeting h1 { font-size: var(--font-size-xl); }
   .today-products-grid { grid-template-columns: 1fr; gap: 12px; }
   .today-routine-steps { gap: 12px; }
   .today-stats-row { grid-template-columns: repeat(2, 1fr); gap: 12px; }

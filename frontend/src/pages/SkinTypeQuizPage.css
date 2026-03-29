@@ -30,7 +30,7 @@
   letter-spacing: 0.1em; color: var(--primary); background: rgba(var(--primary-rgb), 0.08);
   padding: 4px 14px; border-radius: var(--border-radius-sm); margin-bottom: 12px;
 }
-.quiz-result-type h2 { font-size: 1.25rem; font-weight: var(--font-weight-bold); color: var(--text-primary); margin: 0; text-transform: capitalize; }
+.quiz-result-type h2 { font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); color: var(--text-primary); margin: 0; text-transform: capitalize; }
 .quiz-result-desc { font-size: var(--font-size-sm); color: var(--text-secondary); line-height: var(--line-height-relaxed); margin: 0 0 24px; }
 
 .quiz-result-concerns { margin-bottom: 24px; }

@@ -29,7 +29,7 @@
 }
 
 .face-heatmap-score-value {
-  font-size: 1.75rem;
+  font-size: var(--font-size-3xl);
   font-weight: var(--font-weight-extrabold);
   color: var(--primary);
   font-variant-numeric: tabular-nums;
@@ -91,7 +91,7 @@
 }
 
 .face-heatmap-zone-name {
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-bold);
   color: var(--text-primary);
   margin: 0 0 8px;
@@ -134,7 +134,7 @@
 }
 
 .face-heatmap-confidence-label {
-  font-size: 0.8rem;
+  font-size: var(--font-size-xs);
   color: var(--text-tertiary);
   flex-shrink: 0;
 }
@@ -155,7 +155,7 @@
 }
 
 .face-heatmap-confidence-value {
-  font-size: 0.8rem;
+  font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
   color: var(--text-secondary);
   font-variant-numeric: tabular-nums;

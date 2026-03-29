@@ -49,7 +49,7 @@
 
 .myshelf-hero-subtitle {
   margin: 4px 0 0 0;
-  font-size: 0.9375rem;
+  font-size: var(--font-size-sm);
   opacity: 0.95;
   font-weight: var(--font-weight-medium);
 }
@@ -59,7 +59,7 @@
   background: rgba(255, 255, 255, 0.25);
   padding: 2px 10px;
   border-radius: var(--radius-full);
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
 }
 
@@ -109,7 +109,7 @@
 
 .myshelf-expiring-heading {
   margin: 0 0 12px 0;
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-bold);
   color: var(--warning-700, #b45309);
   display: flex;
@@ -220,7 +220,7 @@
 
 .myshelf-onboarding-headline {
   flex: 1;
-  font-size: 0.9375rem;
+  font-size: var(--font-size-sm);
   line-height: var(--line-height-normal);
 }
 
@@ -243,7 +243,7 @@
 }
 
 .myshelf-tip {
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   color: var(--text-secondary);
   line-height: var(--line-height-normal);
   padding: 12px;
@@ -291,7 +291,7 @@
   flex: 1;
   border: none;
   background: transparent;
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   color: var(--text-primary);
   min-width: 0;
 }
@@ -378,7 +378,7 @@
   border: 1px solid var(--border-color);
   background: var(--bg-white);
   color: var(--text-secondary);
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   cursor: pointer;
   transition: transform var(--transition-base), box-shadow var(--transition-base);
@@ -406,7 +406,7 @@
   border: none;
   background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
   color: var(--white);
-  font-size: 0.9375rem;
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
   cursor: pointer;
   box-shadow: var(--shadow-primary);
@@ -438,7 +438,7 @@
   border: 1px solid var(--border-color);
   border-radius: var(--radius-xl, 16px);
   background: var(--bg-white);
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   color: var(--text-primary);
   cursor: pointer;
   min-width: 120px;
@@ -452,7 +452,7 @@
 
 .myshelf-results {
   margin-left: auto;
-  font-size: 0.8125rem;
+  font-size: var(--font-size-sm);
   color: var(--text-muted);
   font-weight: var(--font-weight-medium);
 }
@@ -481,14 +481,14 @@
 
 .myshelf-empty-title {
   margin: 0 0 8px 0;
-  font-size: 1.25rem;
+  font-size: var(--font-size-xl);
   font-weight: var(--font-weight-bold);
   color: var(--text-primary);
 }
 
 .myshelf-empty-desc {
   margin: 0 0 24px 0;
-  font-size: 0.9375rem;
+  font-size: var(--font-size-sm);
   color: var(--text-secondary);
   line-height: var(--line-height-normal);
   max-width: 320px;
@@ -615,7 +615,7 @@
   background: none;
   border: none;
   padding: 0;
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
   cursor: pointer;
@@ -635,7 +635,7 @@
 .product-info .brand,
 .product-info .category {
   margin: 0;
-  font-size: 0.8125rem;
+  font-size: var(--font-size-sm);
   color: var(--text-muted);
   white-space: nowrap;
   overflow: hidden;
@@ -645,7 +645,7 @@
 
 .product-status-pill {
   display: inline-block;
-  font-size: 0.6875rem;
+  font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
   text-transform: uppercase;
   letter-spacing: 0.03em;
@@ -732,7 +732,7 @@
   border: none;
   background: transparent;
   text-align: left;
-  font-size: 0.9375rem;
+  font-size: var(--font-size-sm);
   color: var(--text-primary);
   border-radius: var(--radius-xl, 16px);
   cursor: pointer;
@@ -767,7 +767,7 @@
   border: 1px solid var(--border-color);
   border-radius: var(--radius-xl, 16px);
   background: var(--bg-white);
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   color: var(--text-primary);
   cursor: pointer;
 }
@@ -785,7 +785,7 @@
   border: 1px solid var(--danger);
   border-radius: var(--radius-xl, 16px);
   font-weight: var(--font-weight-semibold);
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   cursor: pointer;
   transition: transform var(--transition-base), box-shadow var(--transition-base);
 }
@@ -819,7 +819,7 @@
 
 .rating-value {
   margin-left: 8px;
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
   color: var(--text-muted);
 }
@@ -833,7 +833,7 @@
   border: 1px solid var(--border-color);
   border-radius: var(--radius-xl, 16px);
   padding: 6px 12px;
-  font-size: 0.8125rem;
+  font-size: var(--font-size-sm);
   cursor: pointer;
   color: var(--text-muted);
   transition: transform var(--transition-base), box-shadow var(--transition-base);
@@ -842,7 +842,7 @@
 @media (max-width: 768px) {
   .repurchase-btn {
     padding: 12px 16px;
-    font-size: 0.875rem;
+    font-size: var(--font-size-sm);
   }
 }
 
@@ -874,7 +874,7 @@
 
 .notes {
   margin: 0;
-  font-size: 0.8125rem;
+  font-size: var(--font-size-sm);
   color: var(--text-secondary);
   line-height: var(--line-height-normal);
   display: -webkit-box;
@@ -896,7 +896,7 @@
   }
 
   .myshelf-hero-text h1 {
-    font-size: 1.35rem;
+    font-size: var(--font-size-xl);
   }
 
   .products-grid {
@@ -942,12 +942,12 @@
 
   .product-title-button {
     width: 100%;
-    font-size: 0.9375rem;
+    font-size: var(--font-size-sm);
     -webkit-line-clamp: 1;
   }
 
   .product-info .brand {
-    font-size: 0.8125rem;
+    font-size: var(--font-size-sm);
     flex: 1;
     min-width: 0;
     white-space: nowrap;
@@ -1009,7 +1009,7 @@
   }
 
   .product-title-button {
-    font-size: 0.875rem;
+    font-size: var(--font-size-sm);
   }
 
   .myshelf-fab {

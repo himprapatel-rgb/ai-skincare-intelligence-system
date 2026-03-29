@@ -20,7 +20,7 @@
 
 .comparison-card-title {
   margin: 0 0 16px 0;
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
 }
 
@@ -35,7 +35,7 @@
 
 .comparison-card-header-row h3 {
   margin: 0;
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
 }
 
@@ -55,7 +55,7 @@
 
 .comparison-label {
   font-weight: var(--font-weight-semibold);
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   color: var(--text-dark);
 }
 
@@ -141,7 +141,7 @@
   text-align: center;
   font-weight: var(--font-weight-semibold);
   color: var(--text-dark);
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
 }
 
 .comparison-vs-divider {
@@ -236,7 +236,7 @@
 }
 
 .comparison-section-title {
-  font-size: 1.25rem;
+  font-size: var(--font-size-xl);
   font-weight: var(--font-weight-semibold);
   color: var(--text-dark);
   margin: 24px 0 16px;
@@ -303,7 +303,7 @@
   }
 
   .comparison-header h1 {
-    font-size: 2.2rem;
+    font-size: var(--font-size-4xl);
   }
 
   .comparison-selects {
@@ -364,7 +364,7 @@
   }
 
   .comparison-header h1 {
-    font-size: 1.8rem;
+    font-size: var(--font-size-3xl);
   }
 
   .comparison-summary {
@@ -376,7 +376,7 @@
   }
 
   .comparison-score-value {
-    font-size: 1.8rem;
+    font-size: var(--font-size-3xl);
   }
 
   .comparison-table {

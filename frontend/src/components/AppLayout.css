@@ -361,7 +361,7 @@
 .app-nav-avatar-lg {
   width: 40px;
   height: 40px;
-  font-size: 1rem;
+  font-size: var(--font-size-base);
 }
 
 .app-nav-user-name {
@@ -414,7 +414,7 @@
 }
 
 .app-nav-dropdown-email {
-  font-size: 0.8rem;
+  font-size: var(--font-size-xs);
   color: var(--text-muted);
   max-width: 160px;
   overflow: hidden;
@@ -1044,7 +1044,7 @@
 
 .app-footer-newsletter-text p {
   color: rgba(255, 255, 255, 0.85);
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   margin: 0;
 }
 
@@ -1270,7 +1270,7 @@
 }
 .app-footer-version {
   opacity: 0.8;
-  font-size: 0.8rem;
+  font-size: var(--font-size-xs);
   margin-left: 0.25em;
 }
 .app-footer-whats-new {
@@ -1402,7 +1402,7 @@
   }
   
   .app-footer-disclaimer {
-    font-size: 0.8rem;
+    font-size: var(--font-size-xs);
     padding: 5px 10px;
   }
 }

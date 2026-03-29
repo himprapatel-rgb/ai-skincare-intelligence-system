@@ -275,7 +275,7 @@
 
 .scan-subtitle {
   color: var(--text-gray);
-  font-size: 1.125rem; /* Brand guideline: 18px Body Large */
+  font-size: var(--font-size-lg); /* Brand guideline: 18px Body Large */
   line-height: var(--line-height-relaxed); /* Brand guideline: 28px / 1.6 */
   max-width: 600px;
   margin: 0 auto;
@@ -292,13 +292,13 @@
   margin-right: auto;
 }
 .scan-step-title {
-  font-size: 1.125rem;
+  font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
   color: var(--text-dark);
   margin: 0 0 4px;
 }
 .scan-step-text {
-  font-size: 0.9375rem;
+  font-size: var(--font-size-sm);
   color: var(--text-gray);
   margin: 0;
   line-height: var(--line-height-normal);
@@ -306,14 +306,14 @@
 
 /* Legal disclaimer (Tasks 245, 246) */
 .scan-tip {
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   color: var(--text-secondary, var(--text-gray));
   margin: 0 auto 12px;
   text-align: center;
 }
 
 .scan-legal-disclaimer {
-  font-size: 0.8125rem;
+  font-size: var(--font-size-sm);
   color: var(--text-gray);
   max-width: 560px;
   margin: 12px auto 0;
@@ -327,7 +327,7 @@
 }
 
 .scan-home-link {
-  font-size: 0.9375rem;
+  font-size: var(--font-size-sm);
   color: var(--text-secondary);
   text-decoration: none;
   display: inline-flex;
@@ -354,7 +354,7 @@
   border: none;
   background: transparent;
   border-radius: var(--radius-xl, 16px); /* Brand guideline: 8px */
-  font-size: 1rem; /* Brand guideline: 16px Body */
+  font-size: var(--font-size-base); /* Brand guideline: 16px Body */
   font-weight: var(--font-weight-medium); /* Brand guideline: Medium */
   color: var(--text-gray);
   cursor: pointer;
@@ -479,7 +479,7 @@
   border: 1px solid var(--border);
   background: var(--surface);
   color: var(--text-secondary);
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   min-height: 44px;
   min-width: 44px;
@@ -854,14 +854,14 @@
 }
 
 .scan-upload-text {
-  font-size: 1.25rem;
+  font-size: var(--font-size-xl);
   font-weight: var(--font-weight-semibold);
   color: var(--text-dark);
   margin-bottom: 12px;
 }
 
 .scan-upload-hint {
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   color: var(--text-gray);
   white-space: normal;
   word-wrap: break-word;
@@ -892,7 +892,7 @@
 }
 
 .scan-tips h3 {
-  font-size: 1.25rem;
+  font-size: var(--font-size-xl);
   font-weight: var(--font-weight-bold);
   color: var(--text-dark);
   margin-bottom: 20px;
@@ -1012,7 +1012,7 @@
   color: var(--white);
   border: none;
   border-radius: var(--radius-xl, 16px); /* Brand guideline: 8px */
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold); /* Brand guideline */
   cursor: pointer;
   transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
@@ -1038,7 +1038,7 @@
   color: var(--primary); /* Brand blue */
   border: 2px solid var(--primary); /* Brand guideline */
   border-radius: var(--radius-xl, 16px); /* Brand guideline: 8px */
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-medium);
   cursor: pointer;
   transition: transform var(--transition-base), box-shadow var(--transition-base), background-color var(--transition-base);
@@ -1095,7 +1095,7 @@
 }
 
 .progress-phase {
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
   color: var(--primary);
   margin-bottom: 8px;
@@ -1124,7 +1124,7 @@
 
 .progress-hint {
   color: var(--text-muted, var(--text-gray));
-  font-size: 0.9375rem;
+  font-size: var(--font-size-sm);
   margin-bottom: 24px;
 }
 
@@ -1323,7 +1323,7 @@
 
 .results-success p {
   color: var(--text-gray);
-  font-size: 1.125rem; /* Brand guideline: 18px Body Large */
+  font-size: var(--font-size-lg); /* Brand guideline: 18px Body Large */
   line-height: var(--line-height-relaxed); /* Brand guideline: 28px / 1.6 */
 }
 
@@ -1384,13 +1384,13 @@
 }
 
 .error-icon {
-  font-size: 1.8rem;
+  font-size: var(--font-size-3xl);
   flex-shrink: 0;
 }
 
 .error-content {
   flex: 1;
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   line-height: var(--line-height-relaxed);
 }
 
@@ -1480,7 +1480,7 @@
   }
 
   .scan-title {
-    font-size: 1.75rem;
+    font-size: var(--font-size-3xl);
     line-height: var(--line-height-tight);
   }
 
@@ -1532,7 +1532,7 @@
   }
 
   .scan-upload-text {
-    font-size: 1rem;
+    font-size: var(--font-size-base);
   }
 
   .scan-upload-hint {
@@ -1564,13 +1564,13 @@
   }
 
   .results-success h2 {
-    font-size: 1.6rem;
+    font-size: var(--font-size-2xl);
   }
 }
 
 @media (max-width: 375px) {
   .scan-title {
-    font-size: 1.6rem;
+    font-size: var(--font-size-2xl);
   }
 
   .scan-content {
@@ -1638,13 +1638,13 @@
   }
 
   .scan-step-label {
-    font-size: 0.72rem;
+    font-size: var(--font-size-xs);
   }
 
   .scan-step-dot {
     width: 28px;
     height: 28px;
-    font-size: 0.72rem;
+    font-size: var(--font-size-xs);
   }
 }
 
@@ -1896,14 +1896,14 @@
 }
 
 .scan-coach-desc {
-  font-size: 0.9375rem;
+  font-size: var(--font-size-sm);
   color: var(--text-secondary);
   line-height: var(--line-height-normal);
   margin: 0 0 8px;
 }
 
 .scan-coach-tip {
-  font-size: 0.8125rem;
+  font-size: var(--font-size-sm);
   color: var(--primary);
   font-weight: var(--font-weight-medium);
   margin: 0 0 20px;

@@ -31,7 +31,7 @@
 
 .device-ctx-title {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: var(--font-size-xl);
   font-weight: var(--font-weight-bold);
   color: var(--text-primary);
 }
@@ -97,7 +97,7 @@
 
 .device-ctx-section-title {
   margin: 0 0 12px 0;
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
 }

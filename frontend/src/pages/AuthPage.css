@@ -76,7 +76,7 @@
 }
 
 .auth-brand p {
-  font-size: 1.125rem;
+  font-size: var(--font-size-lg);
   line-height: var(--line-height-relaxed);
   max-width: 500px;
   color: var(--white);
@@ -313,7 +313,7 @@
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  font-size: 0.9375rem;
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   color: var(--text-secondary, #64748b);
   cursor: pointer;
@@ -404,7 +404,7 @@
   padding: 12px 24px; /* Brand guideline: 12px 24px */
   border: none;
   border-radius: var(--radius-xl, 16px); /* Brand guideline: 8px */
-  font-size: 1rem; /* Brand guideline: 16px Body */
+  font-size: var(--font-size-base); /* Brand guideline: 16px Body */
   font-weight: var(--font-weight-semibold); /* Brand guideline */
   cursor: pointer;
   transition: transform var(--transition-base), box-shadow var(--transition-base);
@@ -460,7 +460,7 @@
   display: inline-block;
   color: var(--primary); /* Brand blue */
   font-weight: var(--font-weight-semibold);
-  font-size: 1rem; /* Brand guideline: 16px Body */
+  font-size: var(--font-size-base); /* Brand guideline: 16px Body */
   text-decoration: none;
   background: transparent;
   border: 2px solid var(--primary);
@@ -561,7 +561,7 @@
   }
 
   .auth-header h2 {
-    font-size: 1.6rem;
+    font-size: var(--font-size-2xl);
   }
 
   .form-group input {
@@ -571,7 +571,7 @@
 
   .auth-submit {
     padding: 12px 24px;
-    font-size: 1rem;
+    font-size: var(--font-size-base);
     min-height: 48px;
   }
 
@@ -595,7 +595,7 @@
   display: inline-block;
   color: var(--primary); /* Brand blue */
   font-weight: var(--font-weight-semibold);
-  font-size: 1rem; /* Brand guideline: 16px Body */
+  font-size: var(--font-size-base); /* Brand guideline: 16px Body */
   text-decoration: none;
   background: transparent;
   border: 2px solid var(--primary);
@@ -639,7 +639,7 @@
 }
 
 .error-message__icon {
-  font-size: 1.25rem;
+  font-size: var(--font-size-xl);
   color: var(--danger);
   flex-shrink: 0;
 }
@@ -712,7 +712,7 @@
   justify-content: center;
   gap: 8px;
   padding: 12px 24px; /* Brand guideline: 12px 24px */
-  font-size: 1rem; /* Brand guideline: 16px Body */
+  font-size: var(--font-size-base); /* Brand guideline: 16px Body */
   font-weight: var(--font-weight-semibold); /* Brand guideline */
   color: var(--white);
   background: var(--primary); /* Brand blue */

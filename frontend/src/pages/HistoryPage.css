@@ -152,7 +152,7 @@
   padding: 12px 16px;
   border: 1px solid var(--border);
   border-radius: var(--radius-xl, 16px);
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   background: var(--bg-light);
 }
 
@@ -195,7 +195,7 @@
 }
 
 .history-sort label {
-  font-size: 0.9375rem;
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   color: var(--text-gray);
 }
@@ -204,7 +204,7 @@
   padding: 8px 12px;
   border: 1px solid var(--border);
   border-radius: var(--radius-xl, 16px);
-  font-size: 0.9375rem;
+  font-size: var(--font-size-sm);
   background: var(--bg-white);
   cursor: pointer;
 }
@@ -255,7 +255,7 @@
 
 .stat-card .stat-label {
   color: var(--text-gray);
-  font-size: 1rem; /* Brand guideline: 16px Body */
+  font-size: var(--font-size-base); /* Brand guideline: 16px Body */
   font-weight: var(--font-weight-medium);
 }
 
@@ -351,7 +351,7 @@
 }
 
 .history-date {
-  font-size: 0.875rem; /* Brand guideline: 14px Body Small */
+  font-size: var(--font-size-sm); /* Brand guideline: 14px Body Small */
   color: var(--text-gray);
   font-weight: var(--font-weight-medium);
   margin-bottom: 8px;
@@ -363,7 +363,7 @@
 }
 
 .history-title {
-  font-size: 1.125rem; /* Brand guideline: 18px Body Large */
+  font-size: var(--font-size-lg); /* Brand guideline: 18px Body Large */
   font-weight: var(--font-weight-semibold);
   color: var(--text-dark);
   margin-bottom: 12px;
@@ -376,7 +376,7 @@
   padding: 6px 14px;
   background: var(--success);
   border-radius: var(--radius-xl, 16px);
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
   color: var(--success-800, #065f46);
   margin-bottom: 12px;
@@ -403,7 +403,7 @@
   padding: 4px 12px;
   background: var(--bg-light);
   border-radius: var(--radius-xl, 16px);
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   color: var(--text-gray);
   font-weight: var(--font-weight-medium);
   border: 1px solid var(--border);
@@ -436,7 +436,7 @@
 }
 
 .recommendations-count {
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   color: var(--text-gray);
 }
 
@@ -473,7 +473,7 @@
 
 .empty-state p {
   color: var(--text-gray);
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   margin-bottom: 24px;
   line-height: var(--line-height-relaxed);
 }
@@ -495,11 +495,11 @@
   }
 
   .history-header h1 {
-    font-size: 2.2rem;
+    font-size: var(--font-size-4xl);
   }
 
   .history-header p {
-    font-size: 1rem;
+    font-size: var(--font-size-base);
   }
 
   .history-filters {
@@ -550,7 +550,7 @@
   }
 
   .history-header h1 {
-    font-size: 1.8rem;
+    font-size: var(--font-size-3xl);
   }
 
   .history-filters {

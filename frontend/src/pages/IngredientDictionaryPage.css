@@ -62,7 +62,7 @@
   border: 1px solid var(--border);
   background: var(--bg-white);
   color: var(--text-secondary);
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   cursor: pointer;
   transition: background 0.2s, color 0.2s, border-color 0.2s;

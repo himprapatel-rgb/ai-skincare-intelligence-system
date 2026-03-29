@@ -179,7 +179,7 @@
   right: var(--spacing-sm, 8px);
   padding: 3px 8px;
   border-radius: var(--radius-full, 9999px);
-  font-size: 0.6875rem;
+  font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold, 600);
   line-height: var(--line-height-tight);
 }

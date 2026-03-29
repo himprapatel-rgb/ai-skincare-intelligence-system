@@ -34,7 +34,7 @@
   color: var(--primary);
   text-decoration: none;
   font-weight: var(--font-weight-semibold);
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   transition: color var(--transition-base);
 }
 
@@ -64,7 +64,7 @@
 
 .sample-report-hero p {
   color: var(--text-gray);
-  font-size: 1.125rem; /* Brand guideline: 18px Body Large */
+  font-size: var(--font-size-lg); /* Brand guideline: 18px Body Large */
   line-height: var(--line-height-relaxed);
 }
 
@@ -88,7 +88,7 @@
 }
 
 .sample-card h2 {
-  font-size: 1.25rem;
+  font-size: var(--font-size-xl);
   margin-bottom: 12px;
   color: var(--text-dark);
 }

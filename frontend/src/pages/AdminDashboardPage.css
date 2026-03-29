@@ -19,7 +19,7 @@
 }
 
 .admin-metric {
-  font-size: 1.6rem;
+  font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-bold);
   color: var(--text-primary);
 }
@@ -71,7 +71,7 @@
   }
 
   .admin-metric {
-    font-size: 1.4rem;
+    font-size: var(--font-size-xl);
   }
 
   .admin-label {

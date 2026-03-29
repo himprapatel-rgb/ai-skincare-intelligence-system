@@ -69,7 +69,7 @@
 
 .add-to-home-prompt-content p {
   margin: 0;
-  font-size: 0.8rem;
+  font-size: var(--font-size-xs);
   opacity: 0.95;
   line-height: var(--line-height-snug);
 }

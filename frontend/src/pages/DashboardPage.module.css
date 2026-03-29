@@ -86,7 +86,7 @@
 }
 
 .quickActionIcon {
-  font-size: 1.125rem;
+  font-size: var(--font-size-lg);
   flex-shrink: 0;
 }
 

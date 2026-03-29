@@ -51,7 +51,7 @@
   top: 50%;
   transform: translateY(-50%);
   color: var(--text-muted, #6c7d93);
-  font-size: 1.125rem;
+  font-size: var(--font-size-lg);
   pointer-events: none;
 }
 

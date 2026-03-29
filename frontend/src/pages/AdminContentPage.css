@@ -157,7 +157,7 @@
   padding: 12px;
   border: 1px solid var(--border-color, #e2e8f0);
   border-radius: var(--radius-xl, 16px);
-  font-size: 1rem;
+  font-size: var(--font-size-base);
 }
 
 .admin-form-card .form-row {
@@ -261,7 +261,7 @@
 
 .admin-list-body h4 {
   margin: 0 0 4px;
-  font-size: 1rem;
+  font-size: var(--font-size-base);
 }
 
 .admin-list-body .admin-meta {

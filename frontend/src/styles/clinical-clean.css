@@ -296,7 +296,7 @@ body {
 }
 
 .dashboard-page .dashboard-section .app-section-title {
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   font-weight: 650;
   margin-bottom: 12px;
 }
@@ -393,7 +393,7 @@ body {
 }
 
 .auth-left .auth-brand p {
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   line-height: 1.55;
 }
 
@@ -495,7 +495,7 @@ textarea:focus,
 
 .profile-settings-page .settings-section-title,
 .profile-settings-page .section-title {
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   font-weight: 650;
   margin-bottom: 8px;
 }

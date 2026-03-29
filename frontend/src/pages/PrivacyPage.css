@@ -67,7 +67,7 @@
 .privacy-toc a {
   color: var(--primary);
   text-decoration: none;
-  font-size: 0.9375rem;
+  font-size: var(--font-size-sm);
 }
 .privacy-toc a:hover { text-decoration: underline; }
 
@@ -102,7 +102,7 @@
 }
 
 .privacy-section p {
-  font-size: 1rem; /* Brand guideline: 16px Body */
+  font-size: var(--font-size-base); /* Brand guideline: 16px Body */
   color: var(--text-gray);
   line-height: var(--line-height-relaxed);
   margin-bottom: 16px;
@@ -114,7 +114,7 @@
 }
 
 .privacy-section li {
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   color: var(--text-gray);
   line-height: var(--line-height-relaxed);
   margin-bottom: 8px;
@@ -126,7 +126,7 @@
   }
 
   .privacy-hero h1 {
-    font-size: 2.2rem;
+    font-size: var(--font-size-4xl);
   }
 
   .privacy-container {
@@ -148,11 +148,11 @@
   }
 
   .privacy-hero h1 {
-    font-size: 1.8rem;
+    font-size: var(--font-size-3xl);
   }
 
   .privacy-hero p {
-    font-size: 1rem;
+    font-size: var(--font-size-base);
   }
 
   .privacy-container {

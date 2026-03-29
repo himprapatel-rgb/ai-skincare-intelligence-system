@@ -99,7 +99,7 @@
 }
 
 .filterChipIcon {
-  font-size: 1rem;
+  font-size: var(--font-size-base);
 }
 
 /* ===== Product Grid ===== */
@@ -175,7 +175,7 @@
   background: var(--primary-light, #e8f0fd);
   color: var(--primary, #1f5fbf);
   border-radius: var(--radius-full, 9999px);
-  font-size: 0.6875rem;
+  font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold, 600);
   line-height: var(--line-height-snug);
 }

@@ -1,6 +1,6 @@
 """Schemas for blogs, videos, news."""
 from datetime import datetime
-from typing import Optional
+from typing import List, Optional
 
 from pydantic import BaseModel, Field
 
@@ -36,6 +36,9 @@ class BlogUpdate(BaseModel):
 
 class BlogResponse(BlogBase):
     id: int
+    category: Optional[str] = None
+    tags: Optional[List[str]] = None
+    view_count: Optional[int] = 0
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
 

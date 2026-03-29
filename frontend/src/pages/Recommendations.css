@@ -73,7 +73,7 @@
 }
 
 .recommendations-container {
-  max-width: var(--max-width-xl);
+  max-width: var(--content-max-width, 1120px);
   margin: 0 auto;
 }
 
@@ -824,4 +824,47 @@
 /* Desktop (1441px+) */
 @media (min-width: 1441px) {
   .recommendations-page { max-width: 1120px; margin: 0 auto; }
+}
+
+/* ===== Product Card Polish ===== */
+.product-card img {
+  transition: transform 0.4s ease;
+}
+.product-card:hover img {
+  transform: scale(1.05);
+}
+.product-card:active {
+  transform: scale(var(--button-press-scale, 0.97));
+}
+
+/* ===== Filter Chips — replace plain selects with pills ===== */
+.filter-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.filter-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: background var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
+  min-height: 40px;
+}
+.filter-pill:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: var(--primary-light);
+}
+.filter-pill.active {
+  background: var(--primary);
+  color: var(--white, #fff);
+  border-color: var(--primary);
 }

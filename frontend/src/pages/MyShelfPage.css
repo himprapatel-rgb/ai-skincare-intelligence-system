@@ -1059,3 +1059,62 @@
   .myshelf-page { max-width: 1120px; margin: 0 auto; }
   .product-grid { grid-template-columns: repeat(3, 1fr); }
 }
+
+/* ===== Shelf Card Polish ===== */
+.product-card img,
+.myshelf-product-image img {
+  transition: transform 0.4s ease;
+}
+.product-card:hover img,
+.myshelf-product-card:hover .myshelf-product-image img {
+  transform: scale(1.05);
+}
+
+/* Expiry countdown — more prominent */
+.myshelf-expiry-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+}
+.myshelf-expiry-badge--soon {
+  background: var(--warning-100);
+  color: var(--warning-800);
+  animation: expiryPulse 2s ease-in-out infinite;
+}
+.myshelf-expiry-badge--expired {
+  background: var(--danger-100);
+  color: var(--danger-700);
+}
+@keyframes expiryPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* Would repurchase toggle */
+.myshelf-repurchase-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: background var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
+}
+.myshelf-repurchase-btn:hover {
+  border-color: var(--success, #22c55e);
+  color: var(--success-700);
+}
+.myshelf-repurchase-btn.active {
+  background: var(--success-100, #dcfce7);
+  border-color: var(--success, #22c55e);
+  color: var(--success-700);
+}

@@ -197,5 +197,94 @@ export const getSkinConcernIcon = (concernName: string) => {
   return LucideCircle;
 };
 
+
+// =============================================================================
+// BRANDED ICON CONTAINER — makes icons look custom-designed
+// =============================================================================
+
+type IconTheme = 'primary' | 'success' | 'warning' | 'danger' | 'purple' | 'orange' | 'teal' | 'neutral';
+
+interface BrandedIconProps {
+  icon: React.ElementType;
+  theme?: IconTheme;
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+  className?: string;
+}
+
+const THEME_COLORS: Record<IconTheme, { bg: string; color: string }> = {
+  primary: { bg: 'rgba(31, 95, 191, 0.1)', color: 'var(--primary)' },
+  success: { bg: 'rgba(27, 127, 83, 0.1)', color: 'var(--success)' },
+  warning: { bg: 'rgba(185, 119, 16, 0.1)', color: 'var(--warning)' },
+  danger:  { bg: 'rgba(180, 35, 24, 0.1)', color: 'var(--danger)' },
+  purple:  { bg: 'rgba(124, 58, 237, 0.1)', color: '#7c3aed' },
+  orange:  { bg: 'rgba(249, 115, 22, 0.1)', color: '#f97316' },
+  teal:    { bg: 'rgba(13, 148, 136, 0.1)', color: '#0d9488' },
+  neutral: { bg: 'var(--bg-tertiary)', color: 'var(--text-secondary)' },
+};
+
+const SIZE_MAP = {
+  sm: { container: 32, icon: 16, radius: 8 },
+  md: { container: 44, icon: 22, radius: 12 },
+  lg: { container: 56, icon: 28, radius: 16 },
+  xl: { container: 72, icon: 36, radius: 20 },
+};
+
+/**
+ * BrandedIcon — Pellicura's signature icon style.
+ * Wraps any Lucide icon in a themed container with consistent sizing.
+ *
+ * Usage:
+ *   <BrandedIcon icon={IconScan} theme="primary" size="lg" />
+ *   <BrandedIcon icon={IconShield} theme="success" size="md" />
+ *   <BrandedIcon icon={IconSun} theme="orange" size="sm" />
+ */
+export const BrandedIcon: React.FC<BrandedIconProps> = ({
+  icon: Icon,
+  theme = 'primary',
+  size = 'md',
+  className = '',
+}) => {
+  const colors = THEME_COLORS[theme];
+  const dims = SIZE_MAP[size];
+
+  return (
+    <div
+      className={`branded-icon branded-icon--${theme} branded-icon--${size} ${className}`}
+      style={{
+        width: dims.container,
+        height: dims.container,
+        borderRadius: dims.radius,
+        background: colors.bg,
+        color: colors.color,
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexShrink: 0,
+        transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+      }}
+    >
+      <Icon size={dims.icon} strokeWidth={1.8} />
+    </div>
+  );
+};
+
+/**
+ * Feature icon themes for specific sections:
+ */
+export const featureIconTheme = {
+  scan: 'primary' as IconTheme,
+  dashboard: 'primary' as IconTheme,
+  shelf: 'purple' as IconTheme,
+  routine: 'success' as IconTheme,
+  recommendations: 'orange' as IconTheme,
+  chat: 'teal' as IconTheme,
+  history: 'neutral' as IconTheme,
+  goals: 'warning' as IconTheme,
+  clinical: 'danger' as IconTheme,
+  ingredients: 'success' as IconTheme,
+  blog: 'primary' as IconTheme,
+  settings: 'neutral' as IconTheme,
+};
+
 // Also export the raw lucide icons
 export { Flame, Droplets, Fingerprint, CircleDot, Thermometer, Waves, CircleOff, Sparkle, ShieldCheck };

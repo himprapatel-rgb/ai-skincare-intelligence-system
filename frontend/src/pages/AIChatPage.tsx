@@ -13,7 +13,7 @@ import {
   ChatSession,
   ChatMessage as ChatMessageType,
 } from '../services/chatApi';
-import styles from './AIChatPage.module.css';
+import './AIChatPage.css';
 
 const AIChatPage: React.FC = () => {
   const [sessions, setSessions] = useState<ChatSession[]>([]);
@@ -199,18 +199,18 @@ const AIChatPage: React.FC = () => {
   const hasMessages = messages.length > 0 || isStreaming;
 
   return (
-    <div className={styles.page}>
+    <div className="chat-page">
       {/* Mobile sidebar backdrop */}
       {sidebarOpen && (
         <div
-          className={styles.backdrop}
+          className="chat-backdrop"
           onClick={() => setSidebarOpen(false)}
           role="presentation"
         />
       )}
 
       {/* Sidebar */}
-      <aside className={`${styles.sidebar} ${sidebarOpen ? styles.sidebarOpen : ''}`}>
+      <aside className={`chat-sidebar ${sidebarOpen ? 'chat-sidebar-open' : ''}`}>
         <ChatSessionList
           sessions={sessionItems}
           activeSessionId={activeSessionId}
@@ -221,11 +221,11 @@ const AIChatPage: React.FC = () => {
       </aside>
 
       {/* Main chat area */}
-      <main className={styles.main}>
+      <main className="chat-main">
         {/* Header */}
-        <header className={styles.header}>
+        <header className="chat-header">
           <button
-            className={styles.menuBtn}
+            className="chat-menu-btn"
             onClick={() => setSidebarOpen((o) => !o)}
             aria-label="Toggle chat history"
             type="button"
@@ -236,12 +236,12 @@ const AIChatPage: React.FC = () => {
               <line x1="3" y1="18" x2="21" y2="18" />
             </svg>
           </button>
-          <h1 className={styles.headerTitle}>
-            <span className={styles.expertDot} />
+          <h1 className="chat-header-title">
+            <span className="chat-expert-dot" />
             Skin Expert
           </h1>
           <button
-            className={styles.newChatBtn}
+            className="chat-new-btn"
             onClick={handleCreateSession}
             aria-label="New chat"
             type="button"
@@ -254,11 +254,11 @@ const AIChatPage: React.FC = () => {
         </header>
 
         {/* Messages area */}
-        <div className={styles.messagesArea}>
+        <div className="chat-messages-area">
           {error && (
-            <div className={styles.errorBanner}>
+            <div className="chat-error-banner">
               <span>{error}</span>
-              <button onClick={() => setError(null)} className={styles.errorClose} type="button">
+              <button onClick={() => setError(null)} className="chat-error-close" type="button">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <line x1="18" y1="6" x2="6" y2="18" />
                   <line x1="6" y1="6" x2="18" y2="18" />
@@ -268,28 +268,28 @@ const AIChatPage: React.FC = () => {
           )}
 
           {isLoadingSessions || isLoadingMessages ? (
-            <div className={styles.centerState}>
-              <div className={styles.loadingSpinner} />
+            <div className="chat-center-state">
+              <div className="chat-loading-spinner" />
               <p>Loading conversations...</p>
             </div>
           ) : !hasMessages ? (
-            <div className={styles.emptyState}>
-              <div className={styles.emptyIcon}>
+            <div className="chat-empty-state">
+              <div className="chat-empty-icon">
                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                 </svg>
               </div>
-              <h2 className={styles.emptyTitle}>Ask Our Skin Expert</h2>
-              <p className={styles.emptyText}>
+              <h2 className="chat-empty-title">Ask Our Skin Expert</h2>
+              <p className="chat-empty-text">
                 Get expert skincare guidance based on dermatology research, your skin profile, and scan history.
               </p>
-              <p className={styles.expertDisclosure}>
+              <p className="chat-expert-disclosure">
                 Powered by AI &middot; Not a substitute for medical advice
               </p>
               <ChatSuggestions onSelect={handleSend} />
             </div>
           ) : (
-            <div className={styles.messagesList}>
+            <div className="chat-messages-list">
               {messages.map((msg) => (
                 <ChatMessage
                   key={msg.id}

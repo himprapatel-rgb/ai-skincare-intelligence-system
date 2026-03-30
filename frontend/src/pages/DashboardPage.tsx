@@ -16,7 +16,8 @@ import {
   IconTrendingDown,
   IconArrowRight,
   IconBell,
-  IconRefresh
+  IconRefresh,
+  BrandedIcon,
 } from '../components/Icons';
 import { EmptyState } from '../components/EmptyState';
 import { ScanStreak } from '../components/ScanStreak';
@@ -551,25 +552,25 @@ const DashboardPage: React.FC = () => {
           <h2 className="app-section-title">Quick Actions</h2>
           <div className="app-list-group">
             <button type="button" className="app-list-item" onClick={() => navigate('/scan')}>
-              <span className="app-list-icon blue"><IconScan size={20} strokeWidth={2} /></span>
+              <BrandedIcon icon={IconScan} theme="primary" size="md" />
               <span className="app-list-label">New Scan</span>
               <span className="app-list-value">Analyze your skin</span>
               <IconArrowRight size={20} strokeWidth={2} className="app-list-arrow" />
             </button>
             <button type="button" className="app-list-item" onClick={() => navigate('/myshelf')}>
-              <span className="app-list-icon purple"><IconPackage size={20} strokeWidth={2} /></span>
+              <BrandedIcon icon={IconPackage} theme="purple" size="md" />
               <span className="app-list-label">My Shelf</span>
               <span className="app-list-value">{data.productsInShelf} products</span>
               <IconArrowRight size={20} strokeWidth={2} className="app-list-arrow" />
             </button>
             <button type="button" className="app-list-item" onClick={() => navigate('/routine-builder')}>
-              <span className="app-list-icon green"><IconCalendar size={20} strokeWidth={2} /></span>
+              <BrandedIcon icon={IconCalendar} theme="success" size="md" />
               <span className="app-list-label">Routines</span>
               <span className="app-list-value">Build routine</span>
               <IconArrowRight size={20} strokeWidth={2} className="app-list-arrow" />
             </button>
             <button type="button" className="app-list-item" onClick={() => navigate('/recommendations')}>
-              <span className="app-list-icon orange"><IconStar size={20} strokeWidth={2} /></span>
+              <BrandedIcon icon={IconStar} theme="orange" size="md" />
               <span className="app-list-label">Discover</span>
               <span className="app-list-value">Recommendations</span>
               <IconArrowRight size={20} strokeWidth={2} className="app-list-arrow" />

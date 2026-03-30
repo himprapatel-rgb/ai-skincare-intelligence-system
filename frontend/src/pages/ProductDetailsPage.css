@@ -1429,3 +1429,14 @@
 @media (min-width: 1441px) {
   .product-details-page { max-width: 1120px; margin: 0 auto; }
 }
+
+/* AI Match Tip */
+.match-tip {
+  font-size: var(--font-size-sm);
+  color: var(--primary);
+  background: rgba(var(--primary-rgb), 0.06);
+  padding: 12px 16px;
+  border-radius: var(--radius-lg);
+  margin-top: 12px;
+  line-height: var(--line-height-relaxed);
+}

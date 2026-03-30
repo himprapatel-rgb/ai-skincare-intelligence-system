@@ -196,6 +196,7 @@ const ProductDetailsPage: React.FC = () => {
   const zoomOverlayRef = useRef<HTMLDivElement>(null);
   const [compareIds, setCompareIds] = useState<string[]>(() => getCompareIds());
   const [fromCatalog, setFromCatalog] = useState(false);
+  const [aiMatch, setAiMatch] = useState<{ match_score: number; verdict: string; pros: string[]; cons: string[]; personalized_tip: string } | null>(null);
   const [confirmRemoveFromShelf, setConfirmRemoveFromShelf] = useState(false);
 
   const closeZoom = useCallback(() => {
@@ -403,6 +404,13 @@ const ProductDetailsPage: React.FC = () => {
       if (import.meta.env.DEV) console.error('Failed to fetch product details:', error);
     } finally {
       setLoading(false);
+    }
+
+    // Fetch AI product match score (non-blocking)
+    if (id) {
+      api.get(`/ai/product-match/${id}`).then(res => {
+        setAiMatch(res.data);
+      }).catch(() => {});
     }
   }, [id, location.state, shelfProducts, shelfProductFromState, isOnShelf]);
 
@@ -712,6 +720,27 @@ const ProductDetailsPage: React.FC = () => {
         <div className="tab-content">
           {activeTab === 'overview' && (
             <div className="overview-tab">
+              {/* AI Match Score — shown when no catalog suitability but AI analyzed */}
+              {product.suitabilityScore == null && aiMatch && (
+                <section className="match-for-you-section" aria-label="AI match for your skin">
+                  <h3 className="match-for-you-title">🎯 {Math.round(aiMatch.match_score)}% AI match for you</h3>
+                  <div className="match-for-you-bar-wrap">
+                    <div className="match-for-you-bar" style={{ width: `${Math.min(100, aiMatch.match_score)}%` }} />
+                  </div>
+                  <div className="match-for-you-bullets">
+                    {aiMatch.pros.slice(0, 2).map((pro, i) => (
+                      <span key={i} className="match-bullet ok">✅ {pro}</span>
+                    ))}
+                    {aiMatch.cons.slice(0, 1).map((con, i) => (
+                      <span key={i} className="match-bullet warn">⚠️ {con}</span>
+                    ))}
+                  </div>
+                  {aiMatch.personalized_tip && (
+                    <p className="match-tip">💡 {aiMatch.personalized_tip}</p>
+                  )}
+                </section>
+              )}
+
               {/* Match for you – prominent when we have suitability (from scan/shelf) */}
               {product.suitabilityScore != null && (
                 <section className="match-for-you-section" aria-label="Match for your skin">

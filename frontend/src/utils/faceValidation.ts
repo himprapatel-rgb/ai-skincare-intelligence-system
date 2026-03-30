@@ -1,5 +1,5 @@
 // TensorFlow loaded dynamically — only when face validation is needed (saves 1.9MB on initial load)
-let tf: typeof import("@tensorflow/tfjs") | null = null;
+const tf: typeof import("@tensorflow/tfjs") | null = null;
 import { removeBackground } from "./backgroundSegmentation";
 
 type FaceValidationResult = {

@@ -2119,3 +2119,73 @@ p, li, span, .page-container {
     min-width: 44px;
   }
 }
+
+/* ===== Global Visual Polish — Affects ALL pages ===== */
+
+/* Better heading styles — consistent across all pages */
+h1, h2, h3, h4 {
+  letter-spacing: var(--letter-spacing-tight);
+  text-rendering: optimizeLegibility;
+}
+
+h1 { font-weight: var(--font-weight-bold); line-height: var(--line-height-tight); }
+h2 { font-weight: var(--font-weight-bold); line-height: var(--line-height-tight); }
+h3 { font-weight: var(--font-weight-semibold); line-height: var(--line-height-snug); }
+
+/* All images should have border-radius by default */
+img {
+  border-radius: var(--radius-md);
+}
+
+/* Better text selection color */
+::selection {
+  background: rgba(var(--primary-rgb), 0.15);
+  color: var(--text-primary);
+}
+
+/* Smooth page background transitions for theme changes */
+body {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Better focus ring for keyboard users */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+/* Remove focus ring for mouse users */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Global link hover underline animation */
+a:not([class]) {
+  text-decoration-color: transparent;
+  transition: text-decoration-color var(--transition-base), color var(--transition-base);
+}
+a:not([class]):hover {
+  text-decoration: underline;
+  text-decoration-color: var(--primary);
+}
+
+/* Scrollbar styling for all scrollable areas */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-color) transparent;
+}
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: var(--radius-full);
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}

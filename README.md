@@ -18,15 +18,14 @@
 | **Production Frontend** | [pellicura.pages.dev](https://pellicura.pages.dev) |
 | **Staging Frontend** | [staging.pellicura.pages.dev](https://staging.pellicura.pages.dev) |
 | **Production Backend** | [ai-skincare-intelligence-system-production.up.railway.app](https://ai-skincare-intelligence-system-production.up.railway.app) |
-| **Staging Backend** | [pellicura-api-staging.fly.dev](https://pellicura-api-staging.fly.dev) |
-| **API Documentation** | `/api/docs` (Swagger UI) |
+| **API Documentation** | `/docs` (Swagger UI) |
 | **GitHub Repository** | [github.com/himprapatel-rgb/ai-skincare-intelligence-system](https://github.com/himprapatel-rgb/ai-skincare-intelligence-system) |
 
 ### Infrastructure (Current)
 | Service | Platform | Status |
 |---------|----------|--------|
-| Frontend | Cloudflare Pages | ✅ Live |
-| Backend | Fly.io | ✅ Live |
+| Frontend | Cloudflare Pages (`frontend/wrangler.toml`) | ✅ Live |
+| Backend | Railway (`railway.json`, Docker) | ✅ Live |
 | Database | Railway PostgreSQL | ✅ Live |
 | Domain | pellicura.pages.dev | ✅ Active |
 
@@ -125,13 +124,11 @@ The AI Skincare Intelligence System is a full-stack web application that uses ar
 | **Lucide React** | Icons |
 | **CSS Modules** | Styling |
 
-### Infrastructure (Current → Target)
-| Technology | Purpose | Migration Target |
-|------------|---------|------------------|
-| **Railway** | Current Hosting | Frontend, Backend, Database |
-| **Cloudflare Pages** | Frontend CDN | ✅ Target |
-| **Railway** | Backend + Frontend + DB | ✅ Live |
-| **Neon** | Serverless PostgreSQL | ✅ Target |
+### Infrastructure (Current)
+| Technology | Purpose | Status |
+|------------|---------|--------|
+| **Cloudflare Pages** | Frontend hosting/CDN (project `pellicura`) | ✅ Live |
+| **Railway** | Backend API (Docker) + PostgreSQL | ✅ Live |
 | **GitHub Actions** | CI/CD pipelines | Unchanged |
 | **Docker** | Containerization | Unchanged |
 | **Playwright** | E2E testing | Unchanged |
@@ -190,7 +187,7 @@ ai-skincare-intelligence-system/
 
 - **Python 3.11+**
 - **Node.js 20+**
-- **PostgreSQL 14+**
+- **PostgreSQL 15** (see `docker-compose.yml`)
 - **Git**
 
 ### Local Development Setup
@@ -240,7 +237,7 @@ npm run dev
 #### 4. Access the Application
 - **Frontend**: http://localhost:3000
 - **Backend API**: http://localhost:8000
-- **API Docs**: http://localhost:8000/api/docs
+- **API Docs**: http://localhost:8000/docs
 
 ---
 
@@ -273,7 +270,7 @@ Use the documentation hub and canonical map first:
 
 | Service | Platform | URL | Status |
 |---------|----------|-----|--------|
-| **Frontend** | Railway | https://pellicura.com | ✅ Live |
+| **Frontend** | Cloudflare Pages | https://pellicura.pages.dev | ✅ Live |
 | **Backend** | Railway | https://ai-skincare-intelligence-system-production.up.railway.app | ✅ Live |
 | **Database** | Railway PostgreSQL | Private | ✅ Live |
 
@@ -281,7 +278,7 @@ Use the documentation hub and canonical map first:
 
 | Branch | Deploys To |
 |--------|------------|
-| `main` | Production (Railway – frontend + backend) |
+| `main` | Production (Railway backend; Cloudflare Pages frontend) |
 
 ### Deployment Workflow
 
@@ -340,15 +337,16 @@ See [ENVIRONMENT_VARIABLES.md](./docs/ENVIRONMENT_VARIABLES.md) for complete lis
 | POST | `/api/v1/auth/login` | Login with email/password |
 | POST | `/api/v1/auth/google` | Google OAuth login |
 | GET | `/api/v1/auth/me` | Get current user |
-| GET | `/api/v1/auth/verify-email` | Verify email token |
+| POST | `/api/v1/auth/verify-email` | Verify email token (JSON body) |
 
 ### Scan Endpoints
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| POST | `/api/v1/scan/analyze` | Analyze skin photo |
+| POST | `/api/v1/scan/init` | Create a scan session |
+| POST | `/api/v1/scan/{id}/upload` | Upload image and run analysis |
+| GET | `/api/v1/scan/{id}/results` | Get analysis results |
 | GET | `/api/v1/scan/history` | Get scan history |
-| GET | `/api/v1/scan/{id}` | Get scan details |
 
 ### Digital Twin Endpoints
 
@@ -365,7 +363,7 @@ See [ENVIRONMENT_VARIABLES.md](./docs/ENVIRONMENT_VARIABLES.md) for complete lis
 | GET | `/api/v1/recommendations` | Get personalized recommendations |
 | GET | `/api/v1/recommendations/routines` | Get routine suggestions |
 
-See full API documentation at `/api/docs` (Swagger UI). The **API contract** (OpenAPI 3) is available at `https://ai-skincare-intelligence-system-production.up.railway.app/api/docs` (production) or `http://localhost:8000/api/docs` (local).
+See full API documentation at `/docs` (Swagger UI). The **API contract** (OpenAPI 3) is available at `https://ai-skincare-intelligence-system-production.up.railway.app/docs` (production) or `http://localhost:8000/docs` (local).
 
 ---
 
@@ -419,7 +417,7 @@ For questions or issues, please open a GitHub issue or contact the development t
 - **Product Scanner**: AI-powered product identification with ingredient percentages, scan history, confidence scoring
 - **Ingredient Safety**: 50+ harmful ingredients database with severity levels, categories, alternatives
 - **My Shelf**: Interactive star ratings, expiry tracking, "Would Repurchase" toggle
-- **Infrastructure**: Migrated to Fly.io (backend) + Cloudflare Pages (frontend)
+- **Infrastructure**: Railway (backend API + PostgreSQL) + Cloudflare Pages (frontend)
 
 ### Key Documents
 

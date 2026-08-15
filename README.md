@@ -15,19 +15,21 @@
 
 | Resource | URL |
 |----------|-----|
-| **Production Frontend** | [pellicura.pages.dev](https://pellicura.pages.dev) |
-| **Staging Frontend** | [staging.pellicura.pages.dev](https://staging.pellicura.pages.dev) |
+| **Production Frontend** | [pellicura.com](https://pellicura.com) |
 | **Production Backend** | [ai-skincare-intelligence-system-production.up.railway.app](https://ai-skincare-intelligence-system-production.up.railway.app) |
 | **API Documentation** | `/docs` (Swagger UI) |
 | **GitHub Repository** | [github.com/himprapatel-rgb/ai-skincare-intelligence-system](https://github.com/himprapatel-rgb/ai-skincare-intelligence-system) |
 
 ### Infrastructure (Current)
+All three services run on **Railway** (git-connected; auto-deploy on push to `main`).
+
 | Service | Platform | Status |
 |---------|----------|--------|
-| Frontend | Cloudflare Pages (`frontend/wrangler.toml`) | ✅ Live |
+| Frontend | Railway (`frontend/Dockerfile` → `server.js`, `frontend/railway.toml`) | ✅ Live |
 | Backend | Railway (`railway.json`, Docker) | ✅ Live |
 | Database | Railway PostgreSQL | ✅ Live |
-| Domain | pellicura.pages.dev | ✅ Active |
+
+> The repo also contains a Cloudflare Pages config (`frontend/wrangler.toml`, `.github/workflows/deploy-cloudflare.yml`) as an optional/alternate frontend host; Railway is the production deployment.
 
 ---
 
@@ -127,8 +129,7 @@ The AI Skincare Intelligence System is a full-stack web application that uses ar
 ### Infrastructure (Current)
 | Technology | Purpose | Status |
 |------------|---------|--------|
-| **Cloudflare Pages** | Frontend hosting/CDN (project `pellicura`) | ✅ Live |
-| **Railway** | Backend API (Docker) + PostgreSQL | ✅ Live |
+| **Railway** | Frontend (Docker/`server.js`) + Backend API (Docker) + PostgreSQL | ✅ Live |
 | **GitHub Actions** | CI/CD pipelines | Unchanged |
 | **Docker** | Containerization | Unchanged |
 | **Playwright** | E2E testing | Unchanged |
@@ -270,7 +271,7 @@ Use the documentation hub and canonical map first:
 
 | Service | Platform | URL | Status |
 |---------|----------|-----|--------|
-| **Frontend** | Cloudflare Pages | https://pellicura.pages.dev | ✅ Live |
+| **Frontend** | Railway (`frontend/Dockerfile` → `server.js`) | https://pellicura.com | ✅ Live |
 | **Backend** | Railway | https://ai-skincare-intelligence-system-production.up.railway.app | ✅ Live |
 | **Database** | Railway PostgreSQL | Private | ✅ Live |
 
@@ -278,7 +279,7 @@ Use the documentation hub and canonical map first:
 
 | Branch | Deploys To |
 |--------|------------|
-| `main` | Production (Railway backend; Cloudflare Pages frontend) |
+| `main` | Production (Railway — frontend, backend, and database) |
 
 ### Deployment Workflow
 
@@ -417,7 +418,7 @@ For questions or issues, please open a GitHub issue or contact the development t
 - **Product Scanner**: AI-powered product identification with ingredient percentages, scan history, confidence scoring
 - **Ingredient Safety**: 50+ harmful ingredients database with severity levels, categories, alternatives
 - **My Shelf**: Interactive star ratings, expiry tracking, "Would Repurchase" toggle
-- **Infrastructure**: Railway (backend API + PostgreSQL) + Cloudflare Pages (frontend)
+- **Infrastructure**: Railway — frontend (`server.js`), backend API, and PostgreSQL
 
 ### Key Documents
 

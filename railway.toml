@@ -1,15 +1,18 @@
-# DEPRECATED: Backend deploy uses railway.json at repo root (same Dockerfile; migrations and healthcheck are correct there).
-# Keep this file only for reference; do not create a second Railway service from it.
+# Kept in sync with railway.json (repo root) so the backend deploys correctly
+# regardless of which config the Railway service reads.
 [build]
 builder = "DOCKERFILE"
 dockerfilePath = "backend/Dockerfile"
 watchPaths = ["/backend/**"]
 
 [deploy]
-# Set UVICORN_WORKERS in Railway Variables if you want to override (default 16 for 32 vCPU)
-startCommand = "python3 /app/backend/scripts/run_migrations.py && uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000} --workers ${UVICORN_WORKERS:-16}"
-# Readiness: 200 only when DB is reachable; prevents traffic during migrations or DB issues
+# run_migrations.py lives at /app/scripts (Dockerfile COPY scripts /app/scripts) and
+# refuses to run without RUN_MIGRATIONS=true, so guard it with `|| true` and never let
+# it block uvicorn. Worker count is overridable via UVICORN_WORKERS (default 4 to avoid
+# OOM on smaller instances; raise it for larger plans).
+startCommand = "(python3 /app/scripts/run_migrations.py || true) && exec uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000} --workers ${UVICORN_WORKERS:-4}"
+# Readiness: 200 only when DB is reachable; generous window for cold DB/instance starts.
 healthcheckPath = "/api/health/ready"
-healthcheckTimeout = 30
+healthcheckTimeout = 300
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 10

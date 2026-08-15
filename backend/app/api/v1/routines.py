@@ -88,7 +88,7 @@ def list_routines(
     return items
 
 
-@router.get("/{routine_id}", response_model=SavedRoutineResponse)
+@router.get("/{routine_id:uuid}", response_model=SavedRoutineResponse)
 def get_routine(
     routine_id: UUID,
     db: Session = Depends(get_db),
@@ -103,7 +103,7 @@ def get_routine(
     return routine
 
 
-@router.put("/{routine_id}", response_model=SavedRoutineResponse)
+@router.put("/{routine_id:uuid}", response_model=SavedRoutineResponse)
 def update_routine(
     routine_id: UUID,
     payload: SavedRoutineUpdate,
@@ -139,7 +139,7 @@ def update_routine(
     return routine
 
 
-@router.delete("/{routine_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{routine_id:uuid}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_routine(
     routine_id: UUID,
     db: Session = Depends(get_db),

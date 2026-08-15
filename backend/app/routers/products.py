@@ -157,12 +157,19 @@ async def get_recommendations(
     return recommendations
 
 
-@router.post("/analyze", response_model=SafetyAnalysis)
+@router.post("/analyze-ingredients", response_model=SafetyAnalysis)
 async def analyze_ingredients(
     request: IngredientAnalysisRequest,
     db: Session = Depends(get_db)
 ):
-    """Analyze ingredient safety and compatibility"""
+    """Analyze ingredient safety and compatibility.
+
+    Exposed at ``/api/v1/products/analyze-ingredients`` because the ML product
+    suitability endpoint (``app/api/v1/endpoints/products.py``) already owns
+    ``POST /api/v1/products/analyze``; sharing the path made this public
+    ingredient-safety endpoint unreachable (it was shadowed by the auth-gated
+    ML route).
+    """
     flagged = []
     total_safety = 0
     count = 0

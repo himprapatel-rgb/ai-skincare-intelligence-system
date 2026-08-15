@@ -127,13 +127,15 @@ npm run dev
 ```
   VITE v5.0.8  ready in 234 ms
 
-  ➜  Local:   http://localhost:5173/
-  ➜  Network: use --host to expose
+  ➜  Local:   http://localhost:3000/
+  ➜  Network: http://<your-ip>:3000/
   ➜  press h + enter to show help
 ```
 
+> This project pins the dev server to **port 3000** (`server.port` in `vite.config.ts`) with `host: true`, so it is reachable on your LAN too. It is not Vite's default `5173`.
+
 ### Step 6: Open in Browser
-Navigate to: `http://localhost:5173`
+Navigate to: `http://localhost:3000`
 
 You should see:
 - Home page with "AI Skincare Intelligence System" header
@@ -274,15 +276,15 @@ nvm use 20
 npm install
 ```
 
-### Issue: Port 5173 already in use
+### Issue: Port 3000 already in use
 
 **Solution:**
 ```bash
-# Kill process using port 5173
-lsof -ti:5173 | xargs kill -9
+# Kill process using port 3000
+lsof -ti:3000 | xargs kill -9
 
-# Or use different port
-npm run dev -- --port 3000
+# Or use a different port
+npm run dev -- --port 3001
 ```
 
 ### Issue: "Cannot find module" errors
@@ -415,23 +417,15 @@ npm run build
 
 **Output:** `dist/` directory with optimized assets
 
-### Deploy to GitHub Pages
+### Deploy to Cloudflare Pages (production)
+Production frontend is hosted on **Cloudflare Pages** (project `pellicura`, see `frontend/wrangler.toml`).
 ```bash
-# Automatically handled by .github/workflows/deploy-frontend.yml
-# Triggers on push to main branch
+npm run build
+npx wrangler pages deploy dist --project-name pellicura
 ```
+The manual GitHub Actions workflow `.github/workflows/deploy-cloudflare.yml` performs the same deploy.
 
-### Deploy to Vercel
-```bash
-npm install -g vercel
-vercel --prod
-```
-
-### Deploy to Netlify
-```bash
-npm install -g netlify-cli
-netlify deploy --prod --dir=dist
-```
+> Note: `.github/workflows/deploy-frontend.yml` publishes a **GitHub Pages** build as a legacy/alternate path. Vercel and Netlify are not used by this project.
 
 ---
 

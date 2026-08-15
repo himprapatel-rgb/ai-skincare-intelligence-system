@@ -210,7 +210,7 @@ async def create_goal(
     )
 
 
-@router.get("/{goal_id}", response_model=GoalResponse)
+@router.get("/{goal_id:int}", response_model=GoalResponse)
 async def get_goal(
     goal_id: int,
     current_user: User = Depends(get_current_user),
@@ -251,7 +251,7 @@ async def get_goal(
     )
 
 
-@router.patch("/{goal_id}", response_model=GoalResponse)
+@router.patch("/{goal_id:int}", response_model=GoalResponse)
 async def update_goal(
     goal_id: int,
     goal_update: GoalUpdate,
@@ -308,7 +308,7 @@ async def update_goal(
     )
 
 
-@router.delete("/{goal_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{goal_id:int}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_goal(
     goal_id: int,
     current_user: User = Depends(get_current_user),
@@ -499,7 +499,7 @@ async def get_goals_timeline(
     return entries
 
 
-@router.post("/{goal_id}/progress")
+@router.post("/{goal_id:int}/progress")
 async def update_progress(
     goal_id: int,
     current_value: float,

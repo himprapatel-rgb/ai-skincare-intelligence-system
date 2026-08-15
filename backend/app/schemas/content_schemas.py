@@ -15,7 +15,7 @@ class BlogBase(BaseModel):
     read_time_min: int = 5
     published: bool = True
     published_at: Optional[datetime] = None
-    sort_order: int = 0
+    sort_order: Optional[int] = 0
 
 
 class BlogCreate(BlogBase):
@@ -55,7 +55,7 @@ class VideoBase(BaseModel):
     duration_sec: Optional[int] = None
     difficulty: str = "Beginner"
     published: bool = True
-    sort_order: int = 0
+    sort_order: Optional[int] = 0
 
 
 class VideoCreate(VideoBase):
@@ -90,7 +90,7 @@ class NewsBase(BaseModel):
     is_featured: bool = False
     published: bool = True
     published_at: Optional[datetime] = None
-    sort_order: int = 0
+    sort_order: Optional[int] = 0
 
 
 class NewsCreate(NewsBase):

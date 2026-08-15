@@ -108,6 +108,19 @@ class ScanSession(Base):
 
     def __repr__(self):
         return f"<ScanSession(id={self.id}, user_id={self.user_id}, status={self.status})>"
+
+    @property
+    def analysis_result(self):
+        """Alias for scan_metadata.
+
+        The AI analysis envelope (scores, summary, recommendations) is persisted
+        in ``scan_metadata``. Several consumers historically read
+        ``scan.analysis_result``; expose it as a read-only alias so those code
+        paths (AI insight endpoints, effectiveness tracking) work instead of
+        raising AttributeError.
+        """
+        return self.scan_metadata
+
     
     def to_dict(self):
         """Convert model to dictionary"""

@@ -740,7 +740,7 @@ app.include_router(routines_router, prefix="/api/v1", tags=["routines"])
 app.include_router(progress_router, prefix="/api/v1", tags=["progress"])
 app.include_router(external_products_router, prefix="/api/v1", tags=["external_products"])
 app.include_router(products.router)  # Router already includes /api/v1/products prefix
-app.include_router(admin.router, prefix="/api/v1/admin", tags=["admin"])  # Admin endpoints
+app.include_router(admin.router, prefix="/api/v1", tags=["admin"])  # Admin endpoints (router already prefixes /admin)
 app.include_router(consent.router, prefix="/api/v1", tags=["consent"])  # GDPR Compliance (FR44-FR46)
 app.include_router(profile.router, prefix="/api/v1", tags=["profile"])  # User Profile Management
 

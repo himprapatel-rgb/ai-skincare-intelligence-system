@@ -167,7 +167,7 @@ const DashboardPage: React.FC = () => {
       setData(dashboardData);
 
       // Single aggregated call for dashboard widgets (replaces 4 separate calls)
-      api.get('/api/v1/reports/dashboard-aggregate').then(res => {
+      api.get('/reports/dashboard-aggregate').then(res => {
         const d = res.data;
         if (d.weekly_summary) setWeeklySummary({ ...d.weekly_summary, score_trend: 'stable', insight: '' });
         if (d.adherence) setRoutineAdherence(d.adherence);
@@ -177,12 +177,12 @@ const DashboardPage: React.FC = () => {
       }).catch(() => {});
 
       // AI features are slow (OpenAI calls) — keep separate and non-blocking
-      api.post('/api/v1/ai/predict', {}).then(res => {
+      api.post('/ai/predict', {}).then(res => {
         setPrediction(res.data);
       }).catch(() => {});
 
       // AI Coach insights
-      api.get('/api/v1/ai/coach').then(res => {
+      api.get('/ai/coach').then(res => {
         setCoachInsights(res.data);
       }).catch(() => {});
 

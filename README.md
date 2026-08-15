@@ -431,5 +431,5 @@ For questions or issues, please open a GitHub issue or contact the development t
 ---
 
 *Last updated: January 29, 2026*  
-*Domain: pellicura.pages.dev*  
-*Status: Production Live on Railway (no Fly.io)*
+*Domain: pellicura.com*  
+*Status: Production Live on Railway — frontend, backend, and database (no Fly.io)*

@@ -3,7 +3,7 @@
 [build]
 builder = "DOCKERFILE"
 dockerfilePath = "backend/Dockerfile"
-watchPaths = ["/backend/**"]
+watchPaths = ["/backend/**", "/railway.json", "/railway.toml"]
 
 [deploy]
 # run_migrations.py lives at /app/scripts (Dockerfile COPY scripts /app/scripts) and

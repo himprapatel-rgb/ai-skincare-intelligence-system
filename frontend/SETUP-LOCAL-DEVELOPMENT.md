@@ -417,15 +417,16 @@ npm run build
 
 **Output:** `dist/` directory with optimized assets
 
-### Deploy to Cloudflare Pages (production)
-Production frontend is hosted on **Cloudflare Pages** (project `pellicura`, see `frontend/wrangler.toml`).
-```bash
-npm run build
-npx wrangler pages deploy dist --project-name pellicura
-```
-The manual GitHub Actions workflow `.github/workflows/deploy-cloudflare.yml` performs the same deploy.
+### Deploy to Railway (production)
+The frontend runs on **Railway**, built from `frontend/Dockerfile` (which serves the built `dist/` via `server.js` on port 3000; see `frontend/railway.toml`). Railway is git-connected, so pushing to `main` triggers an automatic deploy.
 
-> Note: `.github/workflows/deploy-frontend.yml` publishes a **GitHub Pages** build as a legacy/alternate path. Vercel and Netlify are not used by this project.
+```bash
+# Production build (what the Docker image runs)
+npm run build
+node server.js   # serves dist/ on $PORT (default 3000)
+```
+
+> The repo also contains a Cloudflare Pages config (`frontend/wrangler.toml`, `.github/workflows/deploy-cloudflare.yml`) as an optional/alternate host. Vercel and Netlify are not used by this project.
 
 ---
 

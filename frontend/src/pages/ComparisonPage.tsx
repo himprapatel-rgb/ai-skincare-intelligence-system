@@ -155,7 +155,7 @@ const ComparisonPage: React.FC = () => {
     (async () => {
       try {
         setLoadingInsight(true);
-        const { data } = await api.post('/api/v1/ai/compare', {
+        const { data } = await api.post('/ai/compare', {
           scan_id_1: analysis1.id,
           scan_id_2: analysis2.id,
         });

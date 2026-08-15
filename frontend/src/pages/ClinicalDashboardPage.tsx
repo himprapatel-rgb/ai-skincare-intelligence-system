@@ -52,7 +52,7 @@ const ClinicalDashboardPage: React.FC = () => {
       try {
         setIsLoadingTrends(true);
         const days = parseInt(trendRange);
-        const { data } = await api.get(`/api/v1/clinical/trends?days=${days}`);
+        const { data } = await api.get(`/clinical/trends?days=${days}`);
         if (cancelled) return;
         // Normalize response — backend may return { data_points, insights } or { scores }
         const points: TrendDataPoint[] = [];
@@ -80,7 +80,7 @@ const ClinicalDashboardPage: React.FC = () => {
     (async () => {
       try {
         setIsLoadingAlerts(true);
-        const { data } = await api.get('/api/v1/clinical/alerts');
+        const { data } = await api.get('/clinical/alerts');
         if (!cancelled) setAlerts(data);
       } catch {
         if (!cancelled) setAlerts([]);
@@ -93,7 +93,7 @@ const ClinicalDashboardPage: React.FC = () => {
 
   const handleDismiss = useCallback(async (id: number) => {
     try {
-      await api.post(`/api/v1/clinical/alerts/${id}/dismiss`);
+      await api.post(`/clinical/alerts/${id}/dismiss`);
       setAlerts((prev) =>
         prev.map((a) => (a.id === id ? { ...a, is_dismissed: true } : a))
       );
@@ -110,10 +110,10 @@ const ClinicalDashboardPage: React.FC = () => {
       setIsGenerating(true);
       setError(null);
       // Use latest scan ID if available; fallback to generating without specific scan
-      const { data: scanData } = await api.get('/api/v1/scan/history?limit=1').catch(() => ({ data: { data: [] } }));
+      const { data: scanData } = await api.get('/scan/history?limit=1').catch(() => ({ data: { data: [] } }));
       const scanId = scanData?.data?.[0]?.scan_id;
       if (!scanId) { setError('No scan available to generate report'); return; }
-      const { data } = await api.get(`/api/v1/clinical/report/${scanId}`);
+      const { data } = await api.get(`/clinical/report/${scanId}`);
       setReport(data);
       setShowReport(true);
     } catch (err: unknown) {

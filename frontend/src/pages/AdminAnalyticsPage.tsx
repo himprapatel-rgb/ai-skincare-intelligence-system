@@ -35,7 +35,7 @@ const AdminAnalyticsPage: React.FC = () => {
     try {
       setIsLoading(true);
       setError(null);
-      const { data } = await api.get('/api/v1/admin/analytics/overview');
+      const { data } = await api.get('/admin/analytics/overview');
       setKpis({
         dau: data.dau ?? 0,
         mau: data.mau ?? 0,
